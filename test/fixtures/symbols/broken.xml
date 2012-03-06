@@ -1,0 +1,4 @@
+<?xml version='1.0' ?>
+<Symbols logic="CASL">
+  <Invalid name="nat" range="Examples/Reichel:28.9">sort nat</Invalid>
+</Symbols>

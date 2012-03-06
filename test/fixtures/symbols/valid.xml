@@ -1,0 +1,8 @@
+<?xml version='1.0' ?>
+<Symbols logic="CASL">
+  <Symbol name="nat" range="Examples/Reichel:28.9">sort nat</Symbol>
+  <Symbol name="__*__" range="Examples/Reichel:33.11">op __*__ : nat * nat -&gt; nat</Symbol>
+  <Symbol name="__+__" range="Examples/Reichel:32.11">op __+__ : nat * nat -&gt; nat</Symbol>
+  <Symbol name="succ" range="Examples/Reichel:30.9">op succ : nat -&gt; nat</Symbol>
+  <Symbol name="zero" range="Examples/Reichel:29.9">op zero : nat</Symbol>
+</Symbols>

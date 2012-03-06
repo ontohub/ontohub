@@ -17,3 +17,12 @@ end
 
 gem 'jquery-rails'
 
+# XML Parser
+gem 'nokogiri', '~> 1.5.0'
+
+
+group :test do
+  gem 'shoulda'
+  gem 'shoulda-matchers'
+  gem 'shoulda-context'
+end
