@@ -11,7 +11,41 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20120307103820) do
+ActiveRecord::Schema.define(:version => 20120307143553) do
+
+  create_table "logics", :force => true do |t|
+    t.string   "name"
+    t.string   "uri"
+    t.datetime "created_at", :null => false
+    t.datetime "updated_at", :null => false
+  end
+
+  create_table "ontologies", :force => true do |t|
+    t.integer  "logic_id"
+    t.string   "uri"
+    t.string   "state"
+    t.string   "name"
+    t.text     "description"
+    t.datetime "created_at",  :null => false
+    t.datetime "updated_at",  :null => false
+  end
+
+  add_index "ontologies", ["logic_id"], :name => "index_ontologies_on_logic_id"
+
+  create_table "ontology_versions", :force => true do |t|
+    t.integer  "user_id",       :null => false
+    t.integer  "ontology_id",   :null => false
+    t.string   "source_uri"
+    t.string   "raw_file_name"
+    t.integer  "raw_file_size"
+    t.string   "xml_file_name"
+    t.integer  "xml_file_size"
+    t.datetime "created_at",    :null => false
+    t.datetime "updated_at",    :null => false
+  end
+
+  add_index "ontology_versions", ["ontology_id"], :name => "index_ontology_versions_on_ontology_id"
+  add_index "ontology_versions", ["user_id"], :name => "index_ontology_versions_on_user_id"
 
   create_table "users", :force => true do |t|
     t.string   "email",                                 :null => false
@@ -34,5 +68,10 @@ ActiveRecord::Schema.define(:version => 20120307103820) do
   add_index "users", ["email"], :name => "index_users_on_email", :unique => true
   add_index "users", ["reset_password_token"], :name => "index_users_on_reset_password_token", :unique => true
   add_index "users", ["unlock_token"], :name => "index_users_on_unlock_token", :unique => true
+
+  add_foreign_key "ontologies", "logics", :name => "ontologies_logic_id_fk"
+
+  add_foreign_key "ontology_versions", "ontologies", :name => "ontology_versions_ontology_id_fk", :dependent => :delete
+  add_foreign_key "ontology_versions", "users", :name => "ontology_versions_user_id_fk"
 
 end
