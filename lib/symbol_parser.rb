@@ -14,36 +14,60 @@ module SymbolParser
   # Listener for the SAX Parser
   class Listener < Nokogiri::XML::SAX::Document
     
+    ROOT   = 'Ontology'
+    SYMBOL = 'Symbol'
+    AXIOM  = 'Axiom'
+    
     # the callback function is called for each Symbol tag
     def initialize(callbacks)
       @callbacks = callbacks
+      @current_tag    = nil
       @current_symbol = nil
+      @current_axiom  = nil
     end
     
     # a tag
     def start_element(name, attributes)
+      @current_tag = name
       case name
-        when 'Symbols'
-          callback(:symbols, Hash[*[attributes]])
-        when 'Symbol'
+        when ROOT
+          callback(:ontology, Hash[*[attributes]])
+        when SYMBOL
           @current_symbol = Hash[*[attributes]]
+          @current_symbol['text'] = ''
+        when AXIOM
+          @current_axiom = Hash[*[attributes]]
+          @current_axiom['symbols'] = []
         else
-          raise ParseException, "unsupported element: #{name}"
+          # NOTHING
       end
     end
     
     # a text node
     def characters(text)
-      @current_symbol['text'] = text if @current_symbol
+      if @current_tag == SYMBOL
+        @current_symbol['text'] << text
+      end
     end
     
     # closing tag
     def end_element(name)
-      if name == 'Symbol'
-        callback(:symbol, @current_symbol)
+      case name
+        when SYMBOL
+          if @current_axiom
+            # add to current axiom
+            @current_axiom['symbols'] << @current_symbol
+          else
+            # return the current symcol
+            callback(:symbol, @current_symbol)
+          end
+          @current_symbol = nil
+        when AXIOM
+          callback(:axiom, @current_axiom)
+          @current_axiom = nil
       end
       
-      @current_symbol = nil
+      @current_tag = nil
     end
     
     # error handler for parsing problems
