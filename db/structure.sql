@@ -82,6 +82,7 @@ CREATE TABLE entities (
     text character varying(255) NOT NULL,
     name character varying(255) NOT NULL,
     uri character varying(255),
+    range character varying(255),
     created_at timestamp without time zone NOT NULL,
     updated_at timestamp without time zone NOT NULL
 );
@@ -212,8 +213,8 @@ ALTER SEQUENCE metadata_id_seq OWNED BY metadata.id;
 CREATE TABLE ontologies (
     id integer NOT NULL,
     logic_id integer,
-    uri character varying(255),
-    state character varying(255),
+    uri character varying(255) NOT NULL,
+    state character varying(255) DEFAULT 'pending'::character varying NOT NULL,
     name character varying(255),
     description text,
     created_at timestamp without time zone NOT NULL,

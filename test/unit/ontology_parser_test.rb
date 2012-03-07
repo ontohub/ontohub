@@ -1,15 +1,15 @@
 require 'test_helper'
 
-class SymbolParserTest < ActiveSupport::TestCase
+class OntologyParserTest < ActiveSupport::TestCase
   
-  context "SymbolParser" do
+  context "OntologyParser" do
     
     context 'parsing valid XML with symbols' do
       setup do
         @logic   = nil
         @symbols = []
         @axioms  = []
-        SymbolParser.parse open_fixture('valid.xml'),
+        OntologyParser.parse open_fixture('valid.xml'),
           ontology: Proc.new{ |h| @logic = h['logic'] },
           symbol:   Proc.new{ |h| @symbols << h },
           axiom:    Proc.new{ |h| @axioms << h }
@@ -41,7 +41,7 @@ class SymbolParserTest < ActiveSupport::TestCase
         assert_equal [{
           "name"=>"... (if exists)",
           "range"=>"Examples/Reichel:40.9",
-          "symbols"=>[{"text"=>"nat"}, {"text"=>"succ : nat -> nat"}]
+          "symbols"=>["nat","succ : nat -> nat"]
         }], @axioms
       end
     end
@@ -49,7 +49,7 @@ class SymbolParserTest < ActiveSupport::TestCase
     context 'parsing empty XML' do
       setup do
         @symbols = []
-        SymbolParser.parse open_fixture('empty.xml'),
+        OntologyParser.parse open_fixture('empty.xml'),
           symbol: Proc.new{ |h| @symbols << h }
       end
       
@@ -60,7 +60,7 @@ class SymbolParserTest < ActiveSupport::TestCase
     
     context 'parsing invalid XML' do
       should 'not throw an exception' do
-        SymbolParser.parse open_fixture('broken.xml'), {}
+        OntologyParser.parse open_fixture('broken.xml'), {}
         assert true
       end
     end
@@ -68,7 +68,7 @@ class SymbolParserTest < ActiveSupport::TestCase
   end
   
   def open_fixture(name)
-    File.open("#{Rails.root}/test/fixtures/symbols/#{name}")
+    File.open("#{Rails.root}/test/fixtures/ontologies/#{name}")
   end
   
 end

@@ -1,4 +1,4 @@
-module SymbolParser
+module OntologyParser
   
   class ParseException < Exception; end
   
@@ -56,7 +56,7 @@ module SymbolParser
         when SYMBOL
           if @current_axiom
             # add to current axiom
-            @current_axiom['symbols'] << @current_symbol
+            @current_axiom['symbols'] << @current_symbol['text']
           else
             # return the current symcol
             callback(:symbol, @current_symbol)
