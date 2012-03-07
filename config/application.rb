@@ -18,6 +18,12 @@ module Ontohub
     # Custom directories with classes and modules you want to be autoloadable.
     config.autoload_paths += %W(#{config.root}/lib)
 
+    # HACK https://gist.github.com/1184816
+    if defined? Compass
+      config.sass.load_paths << Compass::Frameworks['blueprint'].stylesheets_directory
+      config.sass.load_paths << Compass::Frameworks['compass'].stylesheets_directory
+    end
+
     # Only load the plugins named here, in the order given (default is alphabetical).
     # :all can be used as a placeholder for all plugins not explicitly named.
     # config.plugins = [ :exception_notification, :ssl_requirement, :all ]

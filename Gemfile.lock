@@ -37,6 +37,7 @@ GEM
       net-sftp (>= 2.0.0)
       net-ssh (>= 2.0.14)
       net-ssh-gateway (>= 1.1.0)
+    chunky_png (1.2.5)
     coffee-rails (3.2.2)
       coffee-script (>= 2.2.0)
       railties (~> 3.2.0)
@@ -44,6 +45,10 @@ GEM
       coffee-script-source
       execjs
     coffee-script-source (1.2.0)
+    compass (0.12.rc.1)
+      chunky_png (~> 1.2)
+      fssm (>= 0.2.7)
+      sass (~> 3.1)
     devise (2.0.4)
       bcrypt-ruby (~> 3.0)
       orm_adapter (~> 0.0.3)
@@ -63,6 +68,7 @@ GEM
       activerecord (>= 3.0.0)
     formtastic (2.1.1)
       actionpack (~> 3.0)
+    fssm (0.2.8.1)
     haml (3.1.4)
     has_scope (0.5.1)
     highline (1.6.11)
@@ -154,6 +160,7 @@ PLATFORMS
 DEPENDENCIES
   capistrano
   coffee-rails (~> 3.2.1)
+  compass (= 0.12.rc.1)
   devise (~> 2.0.0)
   factory_girl_rails (~> 1.7.0)
   faker (~> 1.0)

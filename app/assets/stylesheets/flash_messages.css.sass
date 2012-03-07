@@ -1,0 +1,23 @@
+@import "compass/css3"
+@import "variables"
+
+.flash
+  +text-shadow(rgba(#eee, .5) 2px 2px 1px)
+  border-bottom: 1px solid #eee098
+  color: #cb9810
+  font-weight: bold
+  font-size: 1.1em
+  line-height: 1em
+  margin: .5em 0em
+  padding: 13px 30px 11px
+  position: relative
+
+  &.notice
+    +background-image(linear-gradient(#dce9dd, #ccdfcd))
+    border-bottom: 1px solid #adcbaf
+    color: #416347
+  
+  &.alert, &.error
+    +background-image(linear-gradient(#f5e4e4, #f1dcdc))
+    border-bottom: 1px solid #e0c2c0
+    color: #b33c33
