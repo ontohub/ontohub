@@ -107,6 +107,71 @@ ALTER SEQUENCE entities_id_seq OWNED BY entities.id;
 
 
 --
+-- Name: entity_maps; Type: TABLE; Schema: public; Owner: -; Tablespace: 
+--
+
+CREATE TABLE entity_maps (
+    id integer NOT NULL,
+    entity_id integer,
+    confidence integer,
+    created_at timestamp without time zone NOT NULL,
+    updated_at timestamp without time zone NOT NULL
+);
+
+
+--
+-- Name: entity_maps_id_seq; Type: SEQUENCE; Schema: public; Owner: -
+--
+
+CREATE SEQUENCE entity_maps_id_seq
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1;
+
+
+--
+-- Name: entity_maps_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: -
+--
+
+ALTER SEQUENCE entity_maps_id_seq OWNED BY entity_maps.id;
+
+
+--
+-- Name: links; Type: TABLE; Schema: public; Owner: -; Tablespace: 
+--
+
+CREATE TABLE links (
+    id integer NOT NULL,
+    source_id integer NOT NULL,
+    target_id integer NOT NULL,
+    kind character varying(255),
+    created_at timestamp without time zone NOT NULL,
+    updated_at timestamp without time zone NOT NULL
+);
+
+
+--
+-- Name: links_id_seq; Type: SEQUENCE; Schema: public; Owner: -
+--
+
+CREATE SEQUENCE links_id_seq
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1;
+
+
+--
+-- Name: links_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: -
+--
+
+ALTER SEQUENCE links_id_seq OWNED BY links.id;
+
+
+--
 -- Name: logics; Type: TABLE; Schema: public; Owner: -; Tablespace: 
 --
 
@@ -280,6 +345,20 @@ ALTER TABLE ONLY entities ALTER COLUMN id SET DEFAULT nextval('entities_id_seq':
 -- Name: id; Type: DEFAULT; Schema: public; Owner: -
 --
 
+ALTER TABLE ONLY entity_maps ALTER COLUMN id SET DEFAULT nextval('entity_maps_id_seq'::regclass);
+
+
+--
+-- Name: id; Type: DEFAULT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY links ALTER COLUMN id SET DEFAULT nextval('links_id_seq'::regclass);
+
+
+--
+-- Name: id; Type: DEFAULT; Schema: public; Owner: -
+--
+
 ALTER TABLE ONLY logics ALTER COLUMN id SET DEFAULT nextval('logics_id_seq'::regclass);
 
 
@@ -318,6 +397,22 @@ ALTER TABLE ONLY axioms
 
 ALTER TABLE ONLY entities
     ADD CONSTRAINT entities_pkey PRIMARY KEY (id);
+
+
+--
+-- Name: entity_maps_pkey; Type: CONSTRAINT; Schema: public; Owner: -; Tablespace: 
+--
+
+ALTER TABLE ONLY entity_maps
+    ADD CONSTRAINT entity_maps_pkey PRIMARY KEY (id);
+
+
+--
+-- Name: links_pkey; Type: CONSTRAINT; Schema: public; Owner: -; Tablespace: 
+--
+
+ALTER TABLE ONLY links
+    ADD CONSTRAINT links_pkey PRIMARY KEY (id);
 
 
 --
@@ -392,6 +487,27 @@ CREATE UNIQUE INDEX index_axioms_on_ontology_id_and_id ON axioms USING btree (on
 --
 
 CREATE UNIQUE INDEX index_entities_on_ontology_id_and_id ON entities USING btree (ontology_id, id);
+
+
+--
+-- Name: index_entity_maps_on_entity_id; Type: INDEX; Schema: public; Owner: -; Tablespace: 
+--
+
+CREATE INDEX index_entity_maps_on_entity_id ON entity_maps USING btree (entity_id);
+
+
+--
+-- Name: index_links_on_source_id; Type: INDEX; Schema: public; Owner: -; Tablespace: 
+--
+
+CREATE INDEX index_links_on_source_id ON links USING btree (source_id);
+
+
+--
+-- Name: index_links_on_target_id; Type: INDEX; Schema: public; Owner: -; Tablespace: 
+--
+
+CREATE INDEX index_links_on_target_id ON links USING btree (target_id);
 
 
 --
@@ -476,6 +592,22 @@ ALTER TABLE ONLY entities
 
 
 --
+-- Name: links_source_id_fk; Type: FK CONSTRAINT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY links
+    ADD CONSTRAINT links_source_id_fk FOREIGN KEY (source_id) REFERENCES ontologies(id);
+
+
+--
+-- Name: links_target_id_fk; Type: FK CONSTRAINT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY links
+    ADD CONSTRAINT links_target_id_fk FOREIGN KEY (target_id) REFERENCES ontologies(id);
+
+
+--
 -- Name: ontologies_logic_id_fk; Type: FK CONSTRAINT; Schema: public; Owner: -
 --
 
@@ -516,3 +648,7 @@ INSERT INTO schema_migrations (version) VALUES ('20120307152347');
 INSERT INTO schema_migrations (version) VALUES ('20120307152935');
 
 INSERT INTO schema_migrations (version) VALUES ('20120307154214');
+
+INSERT INTO schema_migrations (version) VALUES ('20120307162705');
+
+INSERT INTO schema_migrations (version) VALUES ('20120307163615');
