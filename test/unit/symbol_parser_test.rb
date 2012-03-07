@@ -8,27 +8,41 @@ class SymbolParserTest < ActiveSupport::TestCase
       setup do
         @logic   = nil
         @symbols = []
+        @axioms  = []
         SymbolParser.parse open_fixture('valid.xml'),
-          symbols: Proc.new{ |h| @logic = h['logic'] },
-          symbol:  Proc.new{ |h| @symbols << h }
+          ontology: Proc.new{ |h| @logic = h['logic'] },
+          symbol:   Proc.new{ |h| @symbols << h },
+          axiom:    Proc.new{ |h| @axioms << h }
       end
       
       should 'find logic' do
-        assert_equal 'CASL', @logic
+        assert_equal 'OWL', @logic
       end
       
       should 'found all symbols' do
         assert_equal 5, @symbols.count
       end
       
+      should 'found all axioms' do
+        assert_equal 1, @axioms.count
+      end
+      
       should 'have correct symbols' do
         assert_equal [
-          {"name"=>"nat", "range"=>"Examples/Reichel:28.9", "text"=>"sort nat"},
-          {"name"=>"__*__", "range"=>"Examples/Reichel:33.11", "text"=>" nat"},
-          {"name"=>"__+__", "range"=>"Examples/Reichel:32.11", "text"=>" nat"},
-          {"name"=>"succ", "range"=>"Examples/Reichel:30.9", "text"=>" nat"},
-          {"name"=>"zero", "range"=>"Examples/Reichel:29.9", "text"=>"op zero : nat"},
+          {"name"=>"nat", "range"=>"Examples/Reichel:28.9", "kind" => "sort", "text"=>"nat"},
+          {"name"=>"__*__", "range"=>"Examples/Reichel:33.11", "kind" => "op", "text"=>"__*__ : nat * nat -> nat"},
+          {"name"=>"__+__", "range"=>"Examples/Reichel:32.11", "kind" => "op", "text"=>"__+__ : nat * nat -> nat"},
+          {"name"=>"succ", "range"=>"Examples/Reichel:30.9", "kind" => "op", "text"=>"succ : nat -> nat"},
+          {"name"=>"zero", "range"=>"Examples/Reichel:29.9", "kind" => "op", "text"=>"zero : nat"},
         ], @symbols
+      end
+      
+      should 'have correct axioms' do
+        assert_equal [{
+          "name"=>"... (if exists)",
+          "range"=>"Examples/Reichel:40.9",
+          "symbols"=>[{"text"=>"nat"}, {"text"=>"succ : nat -> nat"}]
+        }], @axioms
       end
     end
     
@@ -36,7 +50,7 @@ class SymbolParserTest < ActiveSupport::TestCase
       setup do
         @symbols = []
         SymbolParser.parse open_fixture('empty.xml'),
-          symbols: Proc.new{ |h| @logic = h['logic'] }
+          symbol: Proc.new{ |h| @symbols << h }
       end
       
       should 'not found any symbols' do
@@ -45,13 +59,9 @@ class SymbolParserTest < ActiveSupport::TestCase
     end
     
     context 'parsing invalid XML' do
-      should 'throw an exception' do
-        begin
-          SymbolParser.parse open_fixture('broken.xml'), {}
-          fail "exception expected"
-        rescue SymbolParser::ParseException => e
-          assert_equal 'unsupported element: Invalid', e.message
-        end
+      should 'not throw an exception' do
+        SymbolParser.parse open_fixture('broken.xml'), {}
+        assert true
       end
     end
     

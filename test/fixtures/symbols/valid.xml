@@ -1,8 +1,16 @@
 <?xml version='1.0' ?>
-<Symbols logic="CASL">
-  <Symbol name="nat" range="Examples/Reichel:28.9">sort nat</Symbol>
-  <Symbol name="__*__" range="Examples/Reichel:33.11">op __*__ : nat * nat -&gt; nat</Symbol>
-  <Symbol name="__+__" range="Examples/Reichel:32.11">op __+__ : nat * nat -&gt; nat</Symbol>
-  <Symbol name="succ" range="Examples/Reichel:30.9">op succ : nat -&gt; nat</Symbol>
-  <Symbol name="zero" range="Examples/Reichel:29.9">op zero : nat</Symbol>
-</Symbols>
+<Ontology logic="OWL">
+  <Symbols>
+    <Symbol name="nat" range="Examples/Reichel:28.9" kind="sort">nat</Symbol>
+    <Symbol name="__*__" range="Examples/Reichel:33.11" kind="op">__*__ : nat * nat -&gt; nat</Symbol>
+    <Symbol name="__+__" range="Examples/Reichel:32.11" kind="op">__+__ : nat * nat -&gt; nat</Symbol>
+    <Symbol name="succ" range="Examples/Reichel:30.9" kind="op">succ : nat -&gt; nat</Symbol>
+    <Symbol name="zero" range="Examples/Reichel:29.9" kind="op">zero : nat</Symbol>
+  </Symbols>
+  <Axioms>
+    <Axiom name="... (if exists)" range="Examples/Reichel:40.9">
+      <Symbol>nat</Symbol>
+      <Symbol>succ : nat -&gt; nat</Symbol>
+    </Axiom>
+  </Axioms>
+</Ontology>
