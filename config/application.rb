@@ -23,6 +23,9 @@ module Ontohub
       config.sass.load_paths << Compass::Frameworks['blueprint'].stylesheets_directory
       config.sass.load_paths << Compass::Frameworks['compass'].stylesheets_directory
     end
+    
+    # Mailer Layout for Devise https://github.com/plataformatec/devise/issues/1671
+    config.to_prepare { Devise::Mailer.layout "mailer" }
 
     # Only load the plugins named here, in the order given (default is alphabetical).
     # :all can be used as a placeholder for all plugins not explicitly named.
