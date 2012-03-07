@@ -18,6 +18,13 @@ end
 
 gem 'jquery-rails'
 
+# Fancy Forms
+gem 'formtastic', '~> 2.1.1'
+
+# Inherited Resources
+gem 'inherited_resources'
+gem 'has_scope'
+
 # XML Parser
 gem 'nokogiri', '~> 1.5.0'
 

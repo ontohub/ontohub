@@ -1,0 +1,12 @@
+%h2= @page_title = resource.name
+
+%dl
+  - for attr in resource_class.attribute_names
+    %dt= attr
+    %dd
+      - if attr =~ /^_id$/
+        = attr.sub(/_id$/,'')
+      - else
+        = resource.send(attr)
+
+%p= link_to 'list users', collection_path
