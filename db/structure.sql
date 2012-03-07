@@ -292,8 +292,8 @@ CREATE TABLE schema_migrations (
 
 CREATE TABLE users (
     id integer NOT NULL,
-    email character varying(255) NOT NULL,
-    encrypted_password character varying(255) NOT NULL,
+    email character varying(255),
+    encrypted_password character varying(255),
     reset_password_token character varying(255),
     reset_password_sent_at timestamp without time zone,
     remember_created_at timestamp without time zone,
@@ -305,8 +305,11 @@ CREATE TABLE users (
     failed_attempts integer DEFAULT 0,
     unlock_token character varying(255),
     locked_at timestamp without time zone,
+    name character varying(255),
+    admin boolean DEFAULT false NOT NULL,
     created_at timestamp without time zone NOT NULL,
-    updated_at timestamp without time zone NOT NULL
+    updated_at timestamp without time zone NOT NULL,
+    deleted_at timestamp without time zone
 );
 
 

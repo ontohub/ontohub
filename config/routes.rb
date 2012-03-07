@@ -6,6 +6,7 @@ Ontohub::Application.routes.draw do
   # first created -> highest priority.
 
 
+  root :to => 'home#show'
 
   # See how all your routes lay out with "rake routes"
 
