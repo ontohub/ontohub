@@ -28,8 +28,13 @@ group :test do
   gem 'shoulda'
   gem 'shoulda-matchers'
   gem 'shoulda-context'
+  
+  gem "factory_girl_rails", "~> 1.7.0"
 end
 
 group :development do
   gem 'capistrano'
 end
+
+gem "faker", "~> 1.0", :group => [:test, :development]
+
