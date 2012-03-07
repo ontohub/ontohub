@@ -8,11 +8,21 @@ class User < ActiveRecord::Base
     name? ? name : email.split("@").first
   end
   
+  # marks the user as deleted
   def delete
-    self.email = nil
-    self.password = nil
+    self.encrypted_password = nil
     self.deleted_at = Time.now
+    
+    # nullify email fields
+    @bypass_postpone       = true
+    self.email             = nil
+    self.unconfirmed_email = nil
+    
     save(:validate => false)
+  end
+  
+  def email_required?
+    deleted_at.nil?
   end
   
 end

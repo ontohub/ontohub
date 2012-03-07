@@ -4,7 +4,12 @@ class UserTest < ActiveSupport::TestCase
   
   context 'User instance' do
     setup do
+      @mails_sent = ActionMailer::Base.deliveries.size
       @user = Factory :user
+    end
+    
+    should 'sent email' do
+      assert_equal @mails_sent+1, ActionMailer::Base.deliveries.size
     end
     
     should 'have email' do
@@ -28,9 +33,9 @@ class UserTest < ActiveSupport::TestCase
         assert_nil @user.email
       end
       
-      should 'have blank password' do
-        assert_nil @user.password
-      end
+      #should 'have blank password' do
+      #  assert_nil @user.password
+      #end
       
       should 'have deleted_at' do
         assert_not_nil @user.deleted_at
