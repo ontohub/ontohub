@@ -28,3 +28,7 @@ group :test do
   gem 'shoulda-matchers'
   gem 'shoulda-context'
 end
+
+group :development do
+  gem 'capistrano'
+end
