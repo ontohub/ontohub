@@ -20,6 +20,8 @@ gem 'jquery-rails'
 # XML Parser
 gem 'nokogiri', '~> 1.5.0'
 
+# Authorization
+gem 'devise', '~> 2.0.0'
 
 group :test do
   gem 'shoulda'
