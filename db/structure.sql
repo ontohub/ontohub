@@ -34,8 +34,8 @@ SET default_with_oids = false;
 
 CREATE TABLE axioms (
     id integer NOT NULL,
-    text character varying(255),
-    ontology_id integer,
+    ontology_id integer NOT NULL,
+    text character varying(255) NOT NULL,
     created_at timestamp without time zone NOT NULL,
     updated_at timestamp without time zone NOT NULL
 );
@@ -77,11 +77,11 @@ ALTER SEQUENCE axioms_id_seq OWNED BY axioms.id;
 
 CREATE TABLE entities (
     id integer NOT NULL,
+    ontology_id integer NOT NULL,
     kind character varying(255),
     text character varying(255) NOT NULL,
     name character varying(255) NOT NULL,
     uri character varying(255),
-    ontology_id integer,
     created_at timestamp without time zone NOT NULL,
     updated_at timestamp without time zone NOT NULL
 );
@@ -104,38 +104,6 @@ CREATE SEQUENCE entities_id_seq
 --
 
 ALTER SEQUENCE entities_id_seq OWNED BY entities.id;
-
-
---
--- Name: entity_maps; Type: TABLE; Schema: public; Owner: -; Tablespace: 
---
-
-CREATE TABLE entity_maps (
-    id integer NOT NULL,
-    entity_id integer,
-    confidence integer,
-    created_at timestamp without time zone NOT NULL,
-    updated_at timestamp without time zone NOT NULL
-);
-
-
---
--- Name: entity_maps_id_seq; Type: SEQUENCE; Schema: public; Owner: -
---
-
-CREATE SEQUENCE entity_maps_id_seq
-    START WITH 1
-    INCREMENT BY 1
-    NO MINVALUE
-    NO MAXVALUE
-    CACHE 1;
-
-
---
--- Name: entity_maps_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: -
---
-
-ALTER SEQUENCE entity_maps_id_seq OWNED BY entity_maps.id;
 
 
 --
@@ -201,6 +169,40 @@ CREATE SEQUENCE logics_id_seq
 --
 
 ALTER SEQUENCE logics_id_seq OWNED BY logics.id;
+
+
+--
+-- Name: metadata; Type: TABLE; Schema: public; Owner: -; Tablespace: 
+--
+
+CREATE TABLE metadata (
+    id integer NOT NULL,
+    metadatable_id integer,
+    metadatable_type character varying(255),
+    key character varying(255),
+    value character varying(255),
+    created_at timestamp without time zone NOT NULL,
+    updated_at timestamp without time zone NOT NULL
+);
+
+
+--
+-- Name: metadata_id_seq; Type: SEQUENCE; Schema: public; Owner: -
+--
+
+CREATE SEQUENCE metadata_id_seq
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1;
+
+
+--
+-- Name: metadata_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: -
+--
+
+ALTER SEQUENCE metadata_id_seq OWNED BY metadata.id;
 
 
 --
@@ -345,13 +347,6 @@ ALTER TABLE ONLY entities ALTER COLUMN id SET DEFAULT nextval('entities_id_seq':
 -- Name: id; Type: DEFAULT; Schema: public; Owner: -
 --
 
-ALTER TABLE ONLY entity_maps ALTER COLUMN id SET DEFAULT nextval('entity_maps_id_seq'::regclass);
-
-
---
--- Name: id; Type: DEFAULT; Schema: public; Owner: -
---
-
 ALTER TABLE ONLY links ALTER COLUMN id SET DEFAULT nextval('links_id_seq'::regclass);
 
 
@@ -360,6 +355,13 @@ ALTER TABLE ONLY links ALTER COLUMN id SET DEFAULT nextval('links_id_seq'::regcl
 --
 
 ALTER TABLE ONLY logics ALTER COLUMN id SET DEFAULT nextval('logics_id_seq'::regclass);
+
+
+--
+-- Name: id; Type: DEFAULT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY metadata ALTER COLUMN id SET DEFAULT nextval('metadata_id_seq'::regclass);
 
 
 --
@@ -400,14 +402,6 @@ ALTER TABLE ONLY entities
 
 
 --
--- Name: entity_maps_pkey; Type: CONSTRAINT; Schema: public; Owner: -; Tablespace: 
---
-
-ALTER TABLE ONLY entity_maps
-    ADD CONSTRAINT entity_maps_pkey PRIMARY KEY (id);
-
-
---
 -- Name: links_pkey; Type: CONSTRAINT; Schema: public; Owner: -; Tablespace: 
 --
 
@@ -421,6 +415,14 @@ ALTER TABLE ONLY links
 
 ALTER TABLE ONLY logics
     ADD CONSTRAINT logics_pkey PRIMARY KEY (id);
+
+
+--
+-- Name: metadata_pkey; Type: CONSTRAINT; Schema: public; Owner: -; Tablespace: 
+--
+
+ALTER TABLE ONLY metadata
+    ADD CONSTRAINT metadata_pkey PRIMARY KEY (id);
 
 
 --
@@ -483,6 +485,13 @@ CREATE UNIQUE INDEX index_axioms_on_ontology_id_and_id ON axioms USING btree (on
 
 
 --
+-- Name: index_axioms_on_ontology_id_and_text; Type: INDEX; Schema: public; Owner: -; Tablespace: 
+--
+
+CREATE UNIQUE INDEX index_axioms_on_ontology_id_and_text ON axioms USING btree (ontology_id, text);
+
+
+--
 -- Name: index_entities_on_ontology_id_and_id; Type: INDEX; Schema: public; Owner: -; Tablespace: 
 --
 
@@ -490,10 +499,10 @@ CREATE UNIQUE INDEX index_entities_on_ontology_id_and_id ON entities USING btree
 
 
 --
--- Name: index_entity_maps_on_entity_id; Type: INDEX; Schema: public; Owner: -; Tablespace: 
+-- Name: index_entities_on_ontology_id_and_text; Type: INDEX; Schema: public; Owner: -; Tablespace: 
 --
 
-CREATE INDEX index_entity_maps_on_entity_id ON entity_maps USING btree (entity_id);
+CREATE UNIQUE INDEX index_entities_on_ontology_id_and_text ON entities USING btree (ontology_id, text);
 
 
 --
@@ -508,6 +517,13 @@ CREATE INDEX index_links_on_source_id ON links USING btree (source_id);
 --
 
 CREATE INDEX index_links_on_target_id ON links USING btree (target_id);
+
+
+--
+-- Name: index_metadata_on_metadatable_id_and_metadatable_type; Type: INDEX; Schema: public; Owner: -; Tablespace: 
+--
+
+CREATE INDEX index_metadata_on_metadatable_id_and_metadatable_type ON metadata USING btree (metadatable_id, metadatable_type);
 
 
 --
@@ -649,6 +665,6 @@ INSERT INTO schema_migrations (version) VALUES ('20120307152935');
 
 INSERT INTO schema_migrations (version) VALUES ('20120307154214');
 
-INSERT INTO schema_migrations (version) VALUES ('20120307162705');
-
 INSERT INTO schema_migrations (version) VALUES ('20120307163615');
+
+INSERT INTO schema_migrations (version) VALUES ('20120307165334');
