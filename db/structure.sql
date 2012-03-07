@@ -172,6 +172,40 @@ ALTER SEQUENCE logics_id_seq OWNED BY logics.id;
 
 
 --
+-- Name: metadata; Type: TABLE; Schema: public; Owner: -; Tablespace: 
+--
+
+CREATE TABLE metadata (
+    id integer NOT NULL,
+    metadatable_id integer,
+    metadatable_type character varying(255),
+    key character varying(255),
+    value character varying(255),
+    created_at timestamp without time zone NOT NULL,
+    updated_at timestamp without time zone NOT NULL
+);
+
+
+--
+-- Name: metadata_id_seq; Type: SEQUENCE; Schema: public; Owner: -
+--
+
+CREATE SEQUENCE metadata_id_seq
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1;
+
+
+--
+-- Name: metadata_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: -
+--
+
+ALTER SEQUENCE metadata_id_seq OWNED BY metadata.id;
+
+
+--
 -- Name: ontologies; Type: TABLE; Schema: public; Owner: -; Tablespace: 
 --
 
@@ -334,6 +368,13 @@ ALTER TABLE ONLY logics ALTER COLUMN id SET DEFAULT nextval('logics_id_seq'::reg
 -- Name: id; Type: DEFAULT; Schema: public; Owner: -
 --
 
+ALTER TABLE ONLY metadata ALTER COLUMN id SET DEFAULT nextval('metadata_id_seq'::regclass);
+
+
+--
+-- Name: id; Type: DEFAULT; Schema: public; Owner: -
+--
+
 ALTER TABLE ONLY ontologies ALTER COLUMN id SET DEFAULT nextval('ontologies_id_seq'::regclass);
 
 
@@ -381,6 +422,14 @@ ALTER TABLE ONLY links
 
 ALTER TABLE ONLY logics
     ADD CONSTRAINT logics_pkey PRIMARY KEY (id);
+
+
+--
+-- Name: metadata_pkey; Type: CONSTRAINT; Schema: public; Owner: -; Tablespace: 
+--
+
+ALTER TABLE ONLY metadata
+    ADD CONSTRAINT metadata_pkey PRIMARY KEY (id);
 
 
 --
@@ -475,6 +524,13 @@ CREATE INDEX index_links_on_source_id ON links USING btree (source_id);
 --
 
 CREATE INDEX index_links_on_target_id ON links USING btree (target_id);
+
+
+--
+-- Name: index_metadata_on_metadatable_id_and_metadatable_type; Type: INDEX; Schema: public; Owner: -; Tablespace: 
+--
+
+CREATE INDEX index_metadata_on_metadatable_id_and_metadatable_type ON metadata USING btree (metadatable_id, metadatable_type);
 
 
 --
@@ -617,3 +673,5 @@ INSERT INTO schema_migrations (version) VALUES ('20120307152935');
 INSERT INTO schema_migrations (version) VALUES ('20120307154214');
 
 INSERT INTO schema_migrations (version) VALUES ('20120307163615');
+
+INSERT INTO schema_migrations (version) VALUES ('20120307165334');
