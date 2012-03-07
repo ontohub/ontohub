@@ -6,11 +6,15 @@ class SymbolParserTest < ActiveSupport::TestCase
     
     context 'parsing valid XML with symbols' do
       setup do
+        @logic   = nil
         @symbols = []
-        SymbolParser.parse open_fixture('valid.xml') do |symbol|
-          # collect symbols
-          @symbols << symbol
-        end
+        SymbolParser.parse open_fixture('valid.xml'),
+          symbols: Proc.new{ |h| @logic = h['logic'] },
+          symbol:  Proc.new{ |h| @symbols << h }
+      end
+      
+      should 'find logic' do
+        assert_equal 'CASL', @logic
       end
       
       should 'found all symbols' do
@@ -31,10 +35,8 @@ class SymbolParserTest < ActiveSupport::TestCase
     context 'parsing empty XML' do
       setup do
         @symbols = []
-        SymbolParser.parse open_fixture('empty.xml') do |symbol|
-          # collect symbols
-          @symbols << symbol
-        end
+        SymbolParser.parse open_fixture('empty.xml'),
+          symbols: Proc.new{ |h| @logic = h['logic'] }
       end
       
       should 'not found any symbols' do
@@ -45,7 +47,7 @@ class SymbolParserTest < ActiveSupport::TestCase
     context 'parsing invalid XML' do
       should 'throw an exception' do
         begin
-          SymbolParser.parse open_fixture('broken.xml') do; end
+          SymbolParser.parse open_fixture('broken.xml'), {}
           fail "exception expected"
         rescue SymbolParser::ParseException => e
           assert_equal 'unsupported element: Invalid', e.message

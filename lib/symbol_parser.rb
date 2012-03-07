@@ -3,9 +3,9 @@ module SymbolParser
   class ParseException < Exception; end
   
   # Parses the given string and executes the callback for each symbol
-  def self.parse(input, &callback)
+  def self.parse(input, callbacks)
     # Create a new parser
-    parser = Nokogiri::XML::SAX::Parser.new(Listener.new(&callback))
+    parser = Nokogiri::XML::SAX::Parser.new(Listener.new(callbacks))
     
     # Feed the parser some XML
     parser.parse(input)
@@ -15,10 +15,8 @@ module SymbolParser
   class Listener < Nokogiri::XML::SAX::Document
     
     # the callback function is called for each Symbol tag
-    def initialize(&callback)
-      raise ArgumentError, "no block given" unless block_given?
-      
-      @callback = callback
+    def initialize(callbacks)
+      @callbacks = callbacks
       @current_symbol = nil
     end
     
@@ -26,7 +24,7 @@ module SymbolParser
     def start_element(name, attributes)
       case name
         when 'Symbols'
-          # do nothing
+          callback(:symbols, Hash[*[attributes]])
         when 'Symbol'
           @current_symbol = Hash[*[attributes]]
         else
@@ -42,7 +40,7 @@ module SymbolParser
     # closing tag
     def end_element(name)
       if name == 'Symbol'
-        @callback.call(@current_symbol)
+        callback(:symbol, @current_symbol)
       end
       
       @current_symbol = nil
@@ -51,6 +49,13 @@ module SymbolParser
     # error handler for parsing problems
     def error(string)
       raise ParseException, 'cannot parse: ' + string
+    end
+    
+    private
+    
+    def callback(name, args)
+      block = @callbacks[name]
+      block.call(args) if block
     end
   
   end
