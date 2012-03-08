@@ -1,0 +1,12 @@
+%h2= @page_title ='Users'
+
+= render :partial => 'filter'
+
+%table
+  %thead
+    %th ID
+    %th Name
+    %th Email
+    %th Admin
+  %tbody
+    = render collection

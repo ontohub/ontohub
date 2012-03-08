@@ -7,5 +7,5 @@
   %body
     = render :partial => '/shared/header'
     = flash_messages
-    = yield
+    %section= yield
     = javascript_include_tag "application"
