@@ -1,0 +1,3 @@
+#!/usr/bin/env bash
+rvm --create use ruby-1.9.3@ontohub
+
