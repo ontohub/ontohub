@@ -3,8 +3,13 @@ class ApplicationController < ActionController::Base
   
   protected
   
+  helper_method :admin?
+  def admin?
+    current_user.try(:admin?)
+  end
+  
   def authenticate_admin!
-    unless current_user.try(:admin?)
+    unless admin?
       flash[:error] = "you need admin privileges for this action"
       redirect_to :root
     end

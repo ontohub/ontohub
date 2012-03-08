@@ -1,7 +1,7 @@
 %tr
   %td= user.id
   %td= user.name
-  %td= user.email
+  %td= highlight user.email, params[:email_search]
   %td= user.admin?
   %td
     = link_to 'show', resource_path(user)

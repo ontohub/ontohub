@@ -4,6 +4,8 @@ class User < ActiveRecord::Base
   
   attr_accessible :email, :name, :admin, :password, :as => :admin
   
+  scope :email_search, ->(term) { where "email ILIKE ?", "%" << term << "%" }
+  
   def to_s
     name? ? name : email.split("@").first
   end
