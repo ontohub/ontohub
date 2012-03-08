@@ -6,6 +6,8 @@ class Ontology < ActiveRecord::Base
   include Ontology::Import
 
   belongs_to :logic
-  belongs_to :user
+  belongs_to :owner, :polymorphic => true
+
   has_many :versions, :class_name => 'OntologyVersion'
+  has_many :permissions
 end

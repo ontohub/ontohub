@@ -1,6 +1,9 @@
 class User < ActiveRecord::Base
   
   include User::Authentication
+
+  has_many :team_users
+  has_many :teams, :through => :team_users
   
   attr_accessible :email, :name, :admin, :password, :as => :admin
   

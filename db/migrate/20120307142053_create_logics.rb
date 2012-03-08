@@ -4,7 +4,7 @@ class CreateLogics < ActiveRecord::Migration
       t.string :name
       t.string :uri
 
-      t.timestamps
+      t.timestamps :null => false
     end
   end
 end
