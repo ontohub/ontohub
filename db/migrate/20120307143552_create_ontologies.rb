@@ -2,8 +2,8 @@ class CreateOntologies < ActiveRecord::Migration
   def change
     create_table :ontologies do |t|
       t.references :logic
-      t.string :uri
-      t.string :state
+      t.string :uri, :null => false
+      t.string :state, :default => 'pending', :null => false
       t.string :name
       t.text :description
 

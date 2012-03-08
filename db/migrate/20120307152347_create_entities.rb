@@ -6,6 +6,7 @@ class CreateEntities < ActiveRecord::Migration
       t.string :text, :null => false
       t.string :name, :null => false
       t.string :uri
+      t.string :range
 
       t.timestamps :null => false
     end
