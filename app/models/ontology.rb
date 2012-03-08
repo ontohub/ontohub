@@ -10,6 +10,8 @@ class Ontology < ActiveRecord::Base
   belongs_to :owner, :polymorphic => true
 
   has_many :versions, :class_name => 'OntologyVersion'
+
+  attr_accessible :uri, :name, :description
   
   def to_s
     uri
