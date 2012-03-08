@@ -12,10 +12,10 @@ class CreateAxiomsEntitiesTable < ActiveRecord::Migration
     add_index :axioms_entities, [:entity_id, :ontology_id], :unique => true
     add_index :axioms_entities, [:axiom_id,  :ontology_id], :unique => true
 
-    execute "ALTER TABLE axioms ADD FOREIGN KEY (id, ontology_id)
-      REFERENCES axioms_entities (axiom_id, ontology_id) ON DELETE CASCADE"
+    execute "ALTER TABLE axioms_entities ADD FOREIGN KEY (axiom_id, ontology_id)
+      REFERENCES axioms (id, ontology_id) ON DELETE CASCADE"
 
-    execute "ALTER TABLE entities ADD FOREIGN KEY (id, ontology_id)
-      REFERENCES axioms_entities (entity_id, ontology_id) ON DELETE CASCADE"
+    execute "ALTER TABLE axioms_entities ADD FOREIGN KEY (entity_id, ontology_id)
+      REFERENCES entities (id, ontology_id) ON DELETE CASCADE"
   end
 end

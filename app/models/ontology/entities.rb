@@ -9,12 +9,13 @@ module Ontology::Entities
     def update_or_create_from_hash(hash)
       e = find_or_initialize_by_text(hash['text'])
 
-      e.name = hash['name']
-      e.range = hash['uri']
-      e.kind = hash['kind']
-      e.text = hash['text']
+      e.ontology = @association.owner
 
-      e.save!
+      e.name = hash['name']
+      e.range = hash['range']
+      e.kind = hash['kind']
+
+      e.save
     end
   end
 end
