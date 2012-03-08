@@ -9,6 +9,7 @@ class OntologyImportFromXMLTest < ActiveSupport::TestCase
     setup do
       @ontology = Factory :ontology
       @ontology.import_from_xml fixture_file('valid.xml')
+#     @ontology.save!
     end
 
     should 'save logic' do

@@ -1,0 +1,10 @@
+%tr
+  %td= ontology.id
+  %td= ontology.uri
+  %td= ontology.state
+  %td= ontology.name
+  %td= ontology.description
+  %td
+    = link_to 'show', resource_path(ontology)
+    = link_to 'edit', edit_resource_path(ontology)
+    = link_to 'delete', resource_path(ontology), :confirm => 'really delete?', :method => :delete

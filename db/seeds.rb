@@ -9,3 +9,13 @@ User.create!({
   :admin    => true,
   :password => 'foobar'
 }, :as => :admin)
+
+# Create 5 ontologies
+5.times do |n|
+  o = Ontology.new
+
+  o.uri = "schema://host/ontology/#{n}"
+  o.name = Faker::Name.name
+
+  o.import_from_xml File.open('test/fixtures/ontologies/valid.xml')
+end

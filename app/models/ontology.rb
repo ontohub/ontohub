@@ -6,5 +6,6 @@ class Ontology < ActiveRecord::Base
   include Ontology::Import
 
   belongs_to :logic
+  belongs_to :user
   has_many :versions, :class_name => 'OntologyVersion'
 end

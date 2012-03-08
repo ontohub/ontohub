@@ -214,6 +214,7 @@ ALTER SEQUENCE metadata_id_seq OWNED BY metadata.id;
 CREATE TABLE ontologies (
     id integer NOT NULL,
     logic_id integer,
+    owner_id integer,
     uri character varying(255) NOT NULL,
     state character varying(255) DEFAULT 'pending'::character varying NOT NULL,
     name character varying(255),
@@ -529,6 +530,13 @@ CREATE INDEX index_ontologies_on_logic_id ON ontologies USING btree (logic_id);
 
 
 --
+-- Name: index_ontologies_on_owner_id; Type: INDEX; Schema: public; Owner: -; Tablespace: 
+--
+
+CREATE INDEX index_ontologies_on_owner_id ON ontologies USING btree (owner_id);
+
+
+--
 -- Name: index_ontology_versions_on_ontology_id; Type: INDEX; Schema: public; Owner: -; Tablespace: 
 --
 
@@ -624,6 +632,14 @@ ALTER TABLE ONLY links
 
 ALTER TABLE ONLY ontologies
     ADD CONSTRAINT ontologies_logic_id_fk FOREIGN KEY (logic_id) REFERENCES logics(id);
+
+
+--
+-- Name: ontologies_owner_id_fk; Type: FK CONSTRAINT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY ontologies
+    ADD CONSTRAINT ontologies_owner_id_fk FOREIGN KEY (owner_id) REFERENCES users(id);
 
 
 --

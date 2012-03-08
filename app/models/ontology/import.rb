@@ -18,7 +18,7 @@ module Ontology::Import
           axioms.update_or_create_from_hash h
         }
 
-      save!
+#     save!
     end
   end
 end
