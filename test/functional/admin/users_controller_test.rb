@@ -2,11 +2,7 @@ require 'test_helper'
 
 class Admin::UsersControllerTest < ActionController::TestCase
 
-  should route(:get, "/admin/users").to(:controller=> 'admin/users', :action => :index)
-  should route(:get, "/admin/users/id").to(:controller=> 'admin/users', :action => :show, :id => 'id')
-  should route(:get, "/admin/users/id/edit").to(:controller=> 'admin/users', :action => :edit, :id => 'id')
-  should route(:put, "/admin/users/id").to(:controller=> 'admin/users', :action => :update, :id => 'id')
-  should route(:delete, "/admin/users/id").to(:controller=> 'admin/users', :action => :destroy, :id => 'id')
+  should_map_resources 'admin/users'
 
   context 'on GET to index' do
     context 'not signed in' do

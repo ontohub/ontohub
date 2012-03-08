@@ -136,6 +136,7 @@ GEM
       shoulda-matchers (~> 1.0.0)
     shoulda-context (1.0.0)
     shoulda-matchers (1.0.0)
+    shoulda_routing_macros (0.1.2)
     sprockets (2.1.2)
       hike (~> 1.2)
       rack (~> 1.0)
@@ -177,5 +178,6 @@ DEPENDENCIES
   shoulda
   shoulda-context
   shoulda-matchers
+  shoulda_routing_macros (~> 0.1.2)
   therubyracer
   uglifier (>= 1.0.3)
