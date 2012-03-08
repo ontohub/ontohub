@@ -35,7 +35,8 @@ SET default_with_oids = false;
 CREATE TABLE axioms (
     id integer NOT NULL,
     ontology_id integer NOT NULL,
-    text character varying(255) NOT NULL,
+    name character varying(255) NOT NULL,
+    range character varying(255),
     created_at timestamp without time zone NOT NULL,
     updated_at timestamp without time zone NOT NULL
 );
@@ -82,6 +83,7 @@ CREATE TABLE entities (
     text character varying(255) NOT NULL,
     name character varying(255) NOT NULL,
     uri character varying(255),
+    range character varying(255),
     created_at timestamp without time zone NOT NULL,
     updated_at timestamp without time zone NOT NULL
 );
@@ -212,8 +214,8 @@ ALTER SEQUENCE metadata_id_seq OWNED BY metadata.id;
 CREATE TABLE ontologies (
     id integer NOT NULL,
     logic_id integer,
-    uri character varying(255),
-    state character varying(255),
+    uri character varying(255) NOT NULL,
+    state character varying(255) DEFAULT 'pending'::character varying NOT NULL,
     name character varying(255),
     description text,
     created_at timestamp without time zone NOT NULL,
@@ -492,10 +494,10 @@ CREATE UNIQUE INDEX index_axioms_on_ontology_id_and_id ON axioms USING btree (on
 
 
 --
--- Name: index_axioms_on_ontology_id_and_text; Type: INDEX; Schema: public; Owner: -; Tablespace: 
+-- Name: index_axioms_on_ontology_id_and_name; Type: INDEX; Schema: public; Owner: -; Tablespace: 
 --
 
-CREATE UNIQUE INDEX index_axioms_on_ontology_id_and_text ON axioms USING btree (ontology_id, text);
+CREATE UNIQUE INDEX index_axioms_on_ontology_id_and_name ON axioms USING btree (ontology_id, name);
 
 
 --
@@ -583,11 +585,19 @@ CREATE UNIQUE INDEX unique_schema_migrations ON schema_migrations USING btree (v
 
 
 --
--- Name: axioms_id_fkey; Type: FK CONSTRAINT; Schema: public; Owner: -
+-- Name: axioms_entities_axiom_id_fkey; Type: FK CONSTRAINT; Schema: public; Owner: -
 --
 
-ALTER TABLE ONLY axioms
-    ADD CONSTRAINT axioms_id_fkey FOREIGN KEY (id, ontology_id) REFERENCES axioms_entities(axiom_id, ontology_id) ON DELETE CASCADE;
+ALTER TABLE ONLY axioms_entities
+    ADD CONSTRAINT axioms_entities_axiom_id_fkey FOREIGN KEY (axiom_id, ontology_id) REFERENCES axioms(id, ontology_id) ON DELETE CASCADE;
+
+
+--
+-- Name: axioms_entities_entity_id_fkey; Type: FK CONSTRAINT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY axioms_entities
+    ADD CONSTRAINT axioms_entities_entity_id_fkey FOREIGN KEY (entity_id, ontology_id) REFERENCES entities(id, ontology_id) ON DELETE CASCADE;
 
 
 --
@@ -596,14 +606,6 @@ ALTER TABLE ONLY axioms
 
 ALTER TABLE ONLY axioms
     ADD CONSTRAINT axioms_ontology_id_fk FOREIGN KEY (ontology_id) REFERENCES ontologies(id) ON DELETE CASCADE;
-
-
---
--- Name: entities_id_fkey; Type: FK CONSTRAINT; Schema: public; Owner: -
---
-
-ALTER TABLE ONLY entities
-    ADD CONSTRAINT entities_id_fkey FOREIGN KEY (id, ontology_id) REFERENCES axioms_entities(entity_id, ontology_id) ON DELETE CASCADE;
 
 
 --
