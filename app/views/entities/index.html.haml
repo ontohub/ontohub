@@ -1,0 +1,10 @@
+- @page_title = "#{parent.to_s} / Entities"
+%h2
+  = link_to parent, parent
+  \/
+  Entities
+
+%p #{collection.size} Entities found
+
+%ol
+  = render collection

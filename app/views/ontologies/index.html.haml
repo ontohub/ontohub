@@ -2,12 +2,5 @@
 
 %p #{collection.size} Ontologies found
 
-%table
-  %thead
-    %th ID
-    %th URI
-    %th State
-    %th Name
-    %th Description
-  %tbody
-    = render collection
+%ul.ontologies
+  = render collection

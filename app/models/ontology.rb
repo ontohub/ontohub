@@ -10,4 +10,8 @@ class Ontology < ActiveRecord::Base
 
   has_many :versions, :class_name => 'OntologyVersion'
   has_many :permissions
+  
+  def to_s
+    uri
+  end
 end

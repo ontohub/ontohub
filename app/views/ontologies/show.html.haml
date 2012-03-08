@@ -1,12 +1,29 @@
 %h2= @page_title = resource.name
 
+%ul.stats
+  %li= link_to "#{resource.entities.count} Entities", [resource, :entities]
+  %li= link_to "#{resource.axioms.count} Axioms", [resource, :axioms]
+
+= simple_format resource.description
+
 %dl
-  - for attr in resource_class.attribute_names
-    %dt= attr
-    %dd
-      - if attr =~ /^_id$/
-        = attr.sub(/_id$/,'')
-      - else
-        = resource.send(attr)
+  %dt Logic
+  %dd= resource.logic
+  
+  %dt Name
+  %dd= resource.name
+  
+  %dt Owner
+  %dd= resource.owner rescue '?' # TODO
+  
+  %dt Created at
+  %dd= l resource.created_at
+  
+  %dt Updated at
+  %dd= l resource.created_at
+
+%ul
+  %li= link_to 'edit', edit_resource_path
+  %li= link_to 'delete', resource_path, :confirm => 'really delete?', :method => :delete
 
 %p= link_to 'List', collection_path

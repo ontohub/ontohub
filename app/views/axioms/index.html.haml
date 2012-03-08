@@ -1,0 +1,10 @@
+- @page_title = "#{parent.to_s} / Axioms"
+%h2
+  = link_to parent, parent
+  \/
+  Axioms
+
+%p #{collection.size} Axioms found
+
+%ol
+  = render collection

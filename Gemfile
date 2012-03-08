@@ -44,5 +44,5 @@ group :development do
   gem 'capistrano'
 end
 
-gem "faker", "~> 1.0", :group => [:test, :development]
+gem "faker", "~> 1.0"
 
