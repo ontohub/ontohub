@@ -14,7 +14,7 @@ User.create!({
 5.times do |n|
   o = Ontology.new \
     uri:         "schema://host/ontology/#{n}",
-    name:        Faker::Name.name,
+    name:        Faker::Lorem.words(2+rand(4)).join(" "),
     description: Faker::Lorem.paragraph
 
   o.import_from_xml File.open('test/fixtures/ontologies/valid.xml')
