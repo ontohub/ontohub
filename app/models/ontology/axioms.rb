@@ -14,8 +14,8 @@ module Ontology::Axioms
       e.save!
 
       execute_sql "DELETE FROM axioms_entities WHERE axiom_id=#{e.id}"
-      execute_sql "INSERT INTO axioms_entities (axiom_id, entity_id)
-                  SELECT #{e.id}, id FROM entities WHERE
+      execute_sql "INSERT INTO axioms_entities (axiom_id, entity_id, ontology_id)
+                  SELECT #{e.id}, id, ontology_id FROM entities WHERE
                   ontology_id=#{@association.owner.id} AND text IN (?)",
                   hash['symbols']
 

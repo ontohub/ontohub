@@ -5,13 +5,14 @@ class OntologyImportFromXMLTest < ActiveSupport::TestCase
     File.open(Rails.root + 'test/fixtures/ontologies/' + name)
   end
 
-  context 'foo' do
+  context 'Import valid Ontology' do
     setup do
-      ontology = Ontology.import_from_xml(fixture_file('valid.xml'))
+      @ontology = Factory :ontology
+      @ontology.import_from_xml fixture_file('valid.xml')
     end
 
     should 'save logic' do
-      assert_equal 'OWL', ontology.logic.name
+      assert_equal 'OWL', @ontology.logic.name
     end
   end
 end

@@ -462,14 +462,7 @@ ALTER TABLE ONLY users
 -- Name: index_axioms_entities_on_axiom_id_and_entity_id; Type: INDEX; Schema: public; Owner: -; Tablespace: 
 --
 
-CREATE INDEX index_axioms_entities_on_axiom_id_and_entity_id ON axioms_entities USING btree (axiom_id, entity_id);
-
-
---
--- Name: index_axioms_entities_on_axiom_id_and_ontology_id; Type: INDEX; Schema: public; Owner: -; Tablespace: 
---
-
-CREATE UNIQUE INDEX index_axioms_entities_on_axiom_id_and_ontology_id ON axioms_entities USING btree (axiom_id, ontology_id);
+CREATE UNIQUE INDEX index_axioms_entities_on_axiom_id_and_entity_id ON axioms_entities USING btree (axiom_id, entity_id);
 
 
 --
@@ -477,13 +470,6 @@ CREATE UNIQUE INDEX index_axioms_entities_on_axiom_id_and_ontology_id ON axioms_
 --
 
 CREATE INDEX index_axioms_entities_on_entity_id_and_axiom_id ON axioms_entities USING btree (entity_id, axiom_id);
-
-
---
--- Name: index_axioms_entities_on_entity_id_and_ontology_id; Type: INDEX; Schema: public; Owner: -; Tablespace: 
---
-
-CREATE UNIQUE INDEX index_axioms_entities_on_entity_id_and_ontology_id ON axioms_entities USING btree (entity_id, ontology_id);
 
 
 --

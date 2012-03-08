@@ -7,6 +7,8 @@ module Ontology::Entities
 
   module Methods
     def update_or_create_from_hash(hash)
+      raise ArgumentError, 'No hash given.' unless hash.is_a? Hash
+
       e = find_or_initialize_by_text(hash['text'])
 
       e.ontology = @association.owner
@@ -15,7 +17,7 @@ module Ontology::Entities
       e.range = hash['range']
       e.kind = hash['kind']
 
-      e.save
+      e.save!
     end
   end
 end

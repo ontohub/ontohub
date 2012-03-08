@@ -1,27 +1,24 @@
 module Ontology::Import
 	extend ActiveSupport::Concern
 
-  module ClassMethods
-    def import_from_xml(io)
-      @logic_name = nil
-      @entities   = []
-      @axioms     = []
+  def import_from_xml(io)
+    @logic_name = nil
+    @entities   = []
+    @axioms     = []
 
+    transaction do
       OntologyParser.parse io,
-        ontology: Proc.new { |h| @logic_name = h['logic'] },
-        symbol:   Proc.new { |h| @entities << h },
-        axiom:    Proc.new { |h| @axioms << h }
+        ontology: Proc.new { |h| 
+          self.logic = Logic.find_or_create_by_name h['logic']
+        },
+        symbol:   Proc.new { |h|
+          entities.update_or_create_from_hash h
+        },
+        axiom:    Proc.new { |h|
+          axioms.update_or_create_from_hash h
+        }
 
-      p @logic_name, @entities, @axioms
-
-      o = Ontology.new
-
-      o.logic = Logic.find_or_create_by_name(@logic_name)
-
-      o.entities.update_or_create_from_hash @entities
-      o.axioms.update_or_create_from_hash @axioms
-
-      o.save!
+      save!
     end
   end
 end
