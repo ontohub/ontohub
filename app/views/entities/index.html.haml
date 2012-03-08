@@ -4,7 +4,8 @@
   \/
   Entities
 
-%p #{collection.size} Entities found
+%p
+  = pluralize(collection.size, 'Entity')
 
 %ol
   = render collection

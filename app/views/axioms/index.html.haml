@@ -4,7 +4,8 @@
   \/
   Axioms
 
-%p #{collection.size} Axioms found
+%p
+  = pluralize(collection.count, 'Axiom')
 
 %ol
   = render collection

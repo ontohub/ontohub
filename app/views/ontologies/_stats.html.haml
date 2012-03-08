@@ -1,0 +1,3 @@
+%ul.stats
+  %li= link_to pluralize(resource.entities.count, 'Entity'), [resource, :entities]
+  %li= link_to pluralize(resource.axioms.count, 'Axiom'), [resource, :axioms]
