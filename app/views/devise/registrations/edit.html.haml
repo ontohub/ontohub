@@ -1,6 +1,9 @@
 %h2
   Settings
 
+- unless resource.confirmed?
+  %p.error Your account is not yet confirmed!
+
 = semantic_form_for resource, :url => registration_path(resource_name) do |f|
 
   = f.inputs do

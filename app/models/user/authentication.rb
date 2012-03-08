@@ -12,4 +12,9 @@ module User::Authentication
     attr_accessible :email, :password, :password_confirmation, :remember_me, :name
   end
   
+  # display an alert to the user?
+  def display_alert?
+    !confirmed?
+  end
+  
 end
