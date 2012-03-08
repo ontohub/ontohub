@@ -1,8 +1,8 @@
 %h2= @page_title = resource.name
 
 %ul.stats
-  %li= link_to "#{resource.entities.count} Entities", [resource, :entities]
-  %li= link_to "#{resource.axioms.count} Axioms", [resource, :axioms]
+  %li= link_to pluralize(resource.entities.count, 'Entity'), [resource, :entities]
+  %li= link_to pluralize(resource.axioms.count, 'Axiom'), [resource, :axioms]
 
 = simple_format resource.description
 
