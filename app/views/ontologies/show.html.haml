@@ -1,4 +1,4 @@
-%h2= @page_title = resource.name
+%h2= @page_title = resource
 
 %ul.stats
   %li= link_to pluralize(resource.entities.count, 'Entity'), [resource, :entities]
