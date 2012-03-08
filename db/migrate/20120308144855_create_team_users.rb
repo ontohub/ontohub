@@ -3,6 +3,7 @@ class CreateTeamUsers < ActiveRecord::Migration
     create_table :team_users do |t|
       t.references :team
       t.references :user
+      t.boolean :admin, :default => false, :null => false
     end
 
     change_table :team_users do |t|

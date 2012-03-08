@@ -4,12 +4,12 @@ class Ontology < ActiveRecord::Base
   include Ontology::Entities
   include Ontology::Axioms
   include Ontology::Import
+  include Ontology::Permissions
 
   belongs_to :logic
   belongs_to :owner, :polymorphic => true
 
   has_many :versions, :class_name => 'OntologyVersion'
-  has_many :permissions
   
   def to_s
     uri

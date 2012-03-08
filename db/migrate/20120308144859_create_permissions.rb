@@ -1,12 +1,12 @@
-class CreatePermission < ActiveRecord::Migration
+class CreatePermissions < ActiveRecord::Migration
   def change
-    create_table :permission do |t|
+    create_table :permissions do |t|
       t.references :owner, :polymorphic => true
       t.references :ontology
       t.timestamps
     end
 
-    change_table :permission do |t|
+    change_table :permissions do |t|
       t.index [:ontology_id, :owner_id, :owner_type], :unique => true
       t.foreign_key :ontologies, :dependent => :delete
     end
