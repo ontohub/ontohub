@@ -10,6 +10,18 @@ User.create!({
   :password => 'foobar'
 }, :as => :admin)
 
+
+Dir["#{Rails.root}/db/seeds/*.xml"].each do |file|
+  basename = File.basename(file)
+  
+  o = Ontology.new \
+    uri:         "file://seeds/#{basename}",
+    name:        basename.split(".")[0].capitalize,
+    description: Faker::Lorem.paragraph
+
+  o.import_from_xml File.open(file)
+end
+
 # Create 5 ontologies
 5.times do |n|
   o = Ontology.new \
