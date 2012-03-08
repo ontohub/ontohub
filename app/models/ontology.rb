@@ -8,6 +8,8 @@ class Ontology < ActiveRecord::Base
   belongs_to :logic
   belongs_to :user
   has_many :versions, :class_name => 'OntologyVersion'
+
+  attr_accessible :uri, :name, :description
   
   def to_s
     uri
