@@ -1,4 +1,4 @@
-%h2 Sign in
+%h2 Log in
 
 = semantic_form_for resource, :url => session_path(resource_name) do |f|
   
@@ -8,6 +8,6 @@
     = f.input :remember_me, :as => :boolean if devise_mapping.rememberable?
   
   = f.actions do
-    = f.action :submit, :label => 'Sign in', :button_html => { :disable_with => t(:wait) }
+    = f.action :submit, :label => 'Log in', :button_html => { :disable_with => t(:wait) }
 
 = render "links"

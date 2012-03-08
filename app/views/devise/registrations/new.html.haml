@@ -1,4 +1,4 @@
-%h2 Sign up
+%h2 Register
 = semantic_form_for resource, :url => registration_path(resource_name) do |f|
   =# devise_error_messages!
   = f.inputs do
@@ -8,6 +8,6 @@
     = f.input :password_confirmation, :required => true
   
   = f.actions do
-    = f.action :submit, :label => 'Sign up', :button_html => { :disable_with => t(:wait) }
+    = f.action :submit, :label => 'Create Account', :button_html => { :disable_with => t(:wait) }
   
 = render "links"

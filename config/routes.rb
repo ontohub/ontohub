@@ -11,6 +11,7 @@ Ontohub::Application.routes.draw do
     resources :axioms
   end
 
-  root :to => 'home#show'
+# root :to => 'home#show'
+  root :to => 'ontologies#index'
 
 end
