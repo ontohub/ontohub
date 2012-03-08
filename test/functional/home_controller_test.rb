@@ -2,7 +2,7 @@ require 'test_helper'
 
 class HomeControllerTest < ActionController::TestCase
   
-  should route(:get, "/").to(:controller=> :home, :action => :show)
+  # should route(:get, "/").to(:controller=> :home, :action => :show)
   
   context 'on GET to show' do
     context 'not signed in' do
