@@ -12,10 +12,10 @@ User.create!({
 
 # Create 5 ontologies
 5.times do |n|
-  o = Ontology.new
-
-  o.uri = "schema://host/ontology/#{n}"
-  o.name = Faker::Name.name
+  o = Ontology.new \
+    uri:         "schema://host/ontology/#{n}",
+    name:        Faker::Name.name,
+    description: Faker::Lorem.paragraph
 
   o.import_from_xml File.open('test/fixtures/ontologies/valid.xml')
 end

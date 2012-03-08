@@ -6,7 +6,10 @@ Ontohub::Application.routes.draw do
     resources :users
   end
 
-  resources :ontologies
+  resources :ontologies do
+    resources :entities
+    resources :axioms
+  end
 
   root :to => 'home#show'
 

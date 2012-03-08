@@ -1,0 +1,31 @@
+@import compass
+
+ul.ontologies
+  +no-bullet
+  padding: 0em
+  
+  > li
+    border: 1px solid #ccc
+    padding: .5em
+    margin-bottom: .5em
+    +background-image(linear-gradient(#f6f6f6, #ddd))
+    
+    max-width: 500px
+    
+    h3
+      margin-top: 0em
+    
+    p
+      margin-bottom: 0em
+    
+    ul.stats
+      float: right
+      +inline-block-list-container
+      
+      > li
+        +inline-block-list-item
+        border-right: 1px solid #999
+        padding-right: 5px
+        
+        &:last-child
+          border: 0px
