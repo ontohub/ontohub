@@ -11,7 +11,7 @@
   margin: .5em .4em
   padding: 13px 30px 11px
   position: relative
-
+  
   &.notice
     +background-image(linear-gradient(#dce9dd, #ccdfcd))
     border-bottom: 1px solid #adcbaf
@@ -21,3 +21,17 @@
     +background-image(linear-gradient(#f5e4e4, #f1dcdc))
     border-bottom: 1px solid #e0c2c0
     color: #b33c33
+  
+  button
+    cursor: pointer
+    position: absolute
+    margin-top: -.35em
+    margin-left: .5em
+    border: 1px solid #ccc
+    background: #fff
+    font-size: 1.5em
+    +border-radius(2em)
+    +opacity(.7)
+    
+    &:hover
+      +opacity(1)
