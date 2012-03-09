@@ -3,7 +3,7 @@ class CreateAxioms < ActiveRecord::Migration
     create_table :axioms do |t|
       t.references :ontology, :null => false
       t.string :name, :null => false
-      t.string :text, :null => false
+      t.text :text, :null => false
       t.string :range
 
       t.timestamps :null => false

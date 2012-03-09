@@ -3,7 +3,7 @@ class CreateEntities < ActiveRecord::Migration
     create_table :entities do |t|
       t.references :ontology, :null => false
       t.string :kind
-      t.string :text, :null => false
+      t.text :text, :null => false
       t.string :name, :null => false
       t.string :uri
       t.string :range

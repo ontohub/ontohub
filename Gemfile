@@ -49,4 +49,3 @@ group :development do
 end
 
 gem "faker", "~> 1.0"
-
