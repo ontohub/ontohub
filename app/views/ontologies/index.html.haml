@@ -4,7 +4,6 @@
   = pluralize(collection.total_count, 'Ontology')
   found
 
-%ul.ontologies
-  = render collection
-
-= paginate collection
+= paginaton collection do
+  %ul.ontologies
+    = render collection

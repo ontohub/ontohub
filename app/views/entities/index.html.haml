@@ -7,6 +7,5 @@
 %p
   = pluralize(collection.total_count, 'Entity')
 
-= render :partial => 'list'
-
-= paginate collection
+= paginaton collection do
+  = render :partial => 'list'

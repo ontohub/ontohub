@@ -7,6 +7,5 @@
 %p
   = pluralize(collection.total_count, 'Axiom')
 
-= render collection
-
-= paginate collection
+= paginaton collection do
+  = render collection
