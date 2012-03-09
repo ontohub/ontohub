@@ -8,4 +8,10 @@
   = pluralize(collection.total_count, 'Axiom')
 
 = paginaton collection do
-  = render collection
+  %table.axioms
+    %thead
+      %tr
+        %th Name
+        %th Text
+    %tbody
+      = render collection

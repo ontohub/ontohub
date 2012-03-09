@@ -6,14 +6,13 @@
   = pluralize(collection.total_count, 'User')
   found
 
-%table
-  %thead
-    %th ID
-    %th Name
-    %th Email
-    %th Admin
-    %th
-  %tbody
-    = render collection
-
-= paginate collection
+= paginaton collection do
+  %table
+    %thead
+      %th ID
+      %th Name
+      %th Email
+      %th Admin
+      %th
+    %tbody
+      = render collection

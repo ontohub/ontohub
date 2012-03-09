@@ -36,6 +36,7 @@ CREATE TABLE axioms (
     id integer NOT NULL,
     ontology_id integer NOT NULL,
     name character varying(255) NOT NULL,
+    text character varying(255) NOT NULL,
     range character varying(255),
     created_at timestamp without time zone NOT NULL,
     updated_at timestamp without time zone NOT NULL
