@@ -3,14 +3,19 @@ class AutocompleteController < ActionController::Base
   MIN_LENGTH = 3
   
   def index
-    query = params[:query].to_s.strip
+    term = params[:term].to_s.strip
     
-    if query.length < MIN_LENGTH
+    if term.length < MIN_LENGTH
       @result = []
     else
-      autocomplete = Autocomplete.new(params[:scope], query)
-      @result = autocomplete.result
+      autocomplete = Autocomplete.new(params[:scope], term)
+      @result = autocomplete.result.map{|r| {
+        id:    r.id,
+        type:  r.class.to_s,
+        value: r.to_s
+      }}
     end
+    render :json => @result
   rescue Autocomplete::InvalidScope => error
     render :text => error.message, :status => :unprocessable_entity
   end

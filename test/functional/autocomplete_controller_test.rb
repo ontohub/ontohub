@@ -6,9 +6,9 @@ class AutocompleteControllerTest < ActionController::TestCase
   
   context 'users and teams' do
     setup do
-      @query = 'foo'
-      @user = Factory :user, :name => "#{@query}user"
-      @team = Factory :team, :name => "#{@query}team"
+      @term = 'foo'
+      @user = Factory :user, :name => "#{@term}user"
+      @team = Factory :team, :name => "#{@term}team"
     end
     
     context 'on GET to index' do
@@ -16,9 +16,10 @@ class AutocompleteControllerTest < ActionController::TestCase
         setup do
           get :index,
             scope: 'user,team',
-            query: @query
+            term:  @term
         end
         
+        should respond_with_content_type :json
         should respond_with :success
       end
       
@@ -26,7 +27,7 @@ class AutocompleteControllerTest < ActionController::TestCase
         setup do
           get :index,
             scope: 'user,team',
-            query: 'xxxyyyzzz'
+            term:  'xxxyyyzzz'
         end
         
         should respond_with :success
@@ -40,7 +41,7 @@ class AutocompleteControllerTest < ActionController::TestCase
       setup do
         get :index,
           scope: 'foo',
-          query: 'bar'
+          term:  'bar'
       end
       
       should respond_with :unprocessable_entity
@@ -49,23 +50,23 @@ class AutocompleteControllerTest < ActionController::TestCase
     context 'without scope' do
       setup do
         get :index,
-          query: 'foo'
+          term:  'foo'
       end
       
       should respond_with :success
     end
     
-    context 'on GET to index with empty query' do
+    context 'on GET to index with empty term' do
       setup do
         get :index,
           scope: 'foo',
-          query: ''
+          term:  ''
       end
       
       should respond_with :success
     end
     
-    context 'on GET to index without query' do
+    context 'on GET to index without term' do
       setup do
         get :index,
           scope: 'foo'

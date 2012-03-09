@@ -11,7 +11,9 @@ Ontohub::Application.routes.draw do
     resources :axioms,   :only => :index
   end
   
-  resources :teams
+  resources :teams do
+    resources :team_users, :only => [:create, :update, :destroy], :path => 'users'
+  end
   
   get 'autocomplete' => 'autocomplete#index'
 

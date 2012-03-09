@@ -330,8 +330,8 @@ CREATE TABLE schema_migrations (
 
 CREATE TABLE team_users (
     id integer NOT NULL,
-    team_id integer,
-    user_id integer,
+    team_id integer NOT NULL,
+    user_id integer NOT NULL,
     admin boolean DEFAULT false NOT NULL
 );
 
@@ -701,7 +701,14 @@ CREATE INDEX index_permissions_on_subject_id_and_subject_type ON permissions USI
 -- Name: index_team_users_on_team_id_and_user_id; Type: INDEX; Schema: public; Owner: -; Tablespace: 
 --
 
-CREATE INDEX index_team_users_on_team_id_and_user_id ON team_users USING btree (team_id, user_id);
+CREATE UNIQUE INDEX index_team_users_on_team_id_and_user_id ON team_users USING btree (team_id, user_id);
+
+
+--
+-- Name: index_team_users_on_user_id; Type: INDEX; Schema: public; Owner: -; Tablespace: 
+--
+
+CREATE INDEX index_team_users_on_user_id ON team_users USING btree (user_id);
 
 
 --

@@ -20,6 +20,11 @@ class Team < ActiveRecord::Base
     name
   end
   
+  # does the given user have admin-privileges in this team?
+  def admin?(user)
+    user && (user.admin? || team_users.admin.find_by_user_id(user.id))
+  end
+  
   protected
   
   # create admin user after team-creation

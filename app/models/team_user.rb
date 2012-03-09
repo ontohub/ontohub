@@ -6,6 +6,8 @@ class TeamUser < ActiveRecord::Base
   attr_accessible :user_id, :team_id
 
   before_create :set_admin_if_owner
+  
+  scope :admin, where(:admin => true)
 
 protected
 

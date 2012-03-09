@@ -3,9 +3,11 @@
   %head
     %title #{page_title} | Ontohub
     = stylesheet_link_tag "application", :media => "all"
+    = stylesheet_link_tag "https://ajax.googleapis.com/ajax/libs/jqueryui/1.8.18/themes/smoothness/jquery-ui.css"
     = csrf_meta_tags
   %body
     = render :partial => '/shared/header'
     = flash_messages
     %section= yield
     = javascript_include_tag "application"
+    = javascript_include_tag "https://ajax.googleapis.com/ajax/libs/jqueryui/1.8.18/jquery-ui.min.js"

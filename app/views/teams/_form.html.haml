@@ -1,4 +1,5 @@
 = semantic_form_for resource do |f|
   = f.inputs do
     = f.input :name, :required => true
-  = f.actions
+  = f.actions do
+    = f.action :submit, :button_html => { :disable_with => t(:wait) }
