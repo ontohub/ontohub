@@ -1,26 +1,10 @@
+.metadata
+  = render :partial => 'stats'
+  = render :partial => 'info'
+
 %h2= @page_title = resource
 
-%ul.stats
-  %li= link_to pluralize(resource.entities.count, 'Entity'), [resource, :entities]
-  %li= link_to pluralize(resource.axioms.count, 'Axiom'), [resource, :axioms]
-
 = simple_format resource.description
-
-%dl
-  %dt Logic
-  %dd= resource.logic
-  
-  %dt Name
-  %dd= resource.name
-  
-  %dt Owner
-  %dd= resource.owner rescue '?' # TODO
-  
-  %dt Created at
-  %dd= l resource.created_at
-  
-  %dt Updated at
-  %dd= l resource.created_at
 
 %ul
   %li= link_to 'edit', edit_resource_path

@@ -5,7 +5,7 @@
   Entities
 
 %p
-  = pluralize(collection.size, 'Entity')
+  = pluralize(collection.total_count, 'Entity')
 
-%ol
-  = render collection
+= paginaton collection do
+  = render :partial => 'list'

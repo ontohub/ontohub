@@ -1,8 +1,9 @@
 %h2= @page_title = 'Ontologies'
 
 %p
-  = pluralize(collection.count, 'Ontology')
+  = pluralize(collection.total_count, 'Ontology')
   found
 
-%ul.ontologies
-  = render collection
+= paginaton collection do
+  %ul.ontologies
+    = render collection

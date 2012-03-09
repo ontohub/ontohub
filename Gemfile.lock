@@ -82,6 +82,10 @@ GEM
       railties (>= 3.2.0, < 5.0)
       thor (~> 0.14)
     json (1.6.5)
+    kaminari (0.13.0)
+      actionpack (>= 3.0.0)
+      activesupport (>= 3.0.0)
+      railties (>= 3.0.0)
     libv8 (3.3.10.4)
     mail (2.4.3)
       i18n (>= 0.4.0)
@@ -136,6 +140,7 @@ GEM
       shoulda-matchers (~> 1.0.0)
     shoulda-context (1.0.0)
     shoulda-matchers (1.0.0)
+    shoulda_routing_macros (0.1.2)
     sprockets (2.1.2)
       hike (~> 1.2)
       rack (~> 1.0)
@@ -170,6 +175,7 @@ DEPENDENCIES
   has_scope
   inherited_resources
   jquery-rails
+  kaminari
   nokogiri (~> 1.5.0)
   pg
   rails (~> 3.2.2)
@@ -177,5 +183,6 @@ DEPENDENCIES
   shoulda
   shoulda-context
   shoulda-matchers
+  shoulda_routing_macros (~> 0.1.2)
   therubyracer
   uglifier (>= 1.0.3)

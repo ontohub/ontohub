@@ -9,6 +9,7 @@ module Ontology::Axioms
     def update_or_create_from_hash(hash)
       e = find_or_initialize_by_name(hash['name'])
 
+      e.text  = hash['text'].to_s
       e.range = hash['range']
 
       e.save!

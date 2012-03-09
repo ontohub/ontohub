@@ -5,7 +5,13 @@
   Axioms
 
 %p
-  = pluralize(collection.count, 'Axiom')
+  = pluralize(collection.total_count, 'Axiom')
 
-%ol
-  = render collection
+= paginaton collection do
+  %table.axioms
+    %thead
+      %tr
+        %th Name
+        %th Text
+    %tbody
+      = render collection

@@ -1,0 +1,16 @@
+%ul.info
+  %li
+    .label Logic
+    = resource.logic
+  %li
+    .label Name
+    = resource.name
+  %li
+    .label Owner
+    = resource.owner rescue '?' # TODO
+  %li
+    .label Created at
+    = l resource.created_at
+  %li
+    .label Updated at
+    = l resource.created_at

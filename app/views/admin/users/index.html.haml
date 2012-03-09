@@ -2,13 +2,17 @@
 
 = render :partial => 'filter'
 
-%p #{collection.size} Users found
+%p
+  = pluralize(collection.total_count, 'User')
+  found
 
-%table
-  %thead
-    %th ID
-    %th Name
-    %th Email
-    %th Admin
-  %tbody
-    = render collection
+= paginaton collection do
+  %table
+    %thead
+      %th ID
+      %th Name
+      %th Email
+      %th Admin
+      %th
+    %tbody
+      = render collection

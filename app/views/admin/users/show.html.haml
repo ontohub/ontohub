@@ -4,9 +4,12 @@
   - for attr in resource_class.attribute_names
     %dt= attr
     %dd
-      - if attr =~ /^_id$/
+      - val = resource.send(attr).to_s
+      - if val.blank?
+        \-
+      - elsif val =~ /^_id$/
         = attr.sub(/_id$/,'')
       - else
-        = resource.send(attr)
+        = val
 
 %p= link_to 'list users', collection_path

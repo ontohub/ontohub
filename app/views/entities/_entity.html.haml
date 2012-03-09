@@ -1,1 +1,3 @@
-%li= entity.attributes.inspect
+%tr
+  - for key in %w(name kind text uri range)
+    %td= entity.send(key)
