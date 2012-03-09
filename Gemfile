@@ -32,6 +32,9 @@ gem 'nokogiri', '~> 1.5.0'
 # Authorization
 gem 'devise', '~> 2.0.0'
 
+# Pagination
+gem 'kaminari'
+
 group :test do
   gem 'shoulda'
   gem 'shoulda-matchers'

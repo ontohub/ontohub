@@ -82,6 +82,10 @@ GEM
       railties (>= 3.2.0, < 5.0)
       thor (~> 0.14)
     json (1.6.5)
+    kaminari (0.13.0)
+      actionpack (>= 3.0.0)
+      activesupport (>= 3.0.0)
+      railties (>= 3.0.0)
     libv8 (3.3.10.4)
     mail (2.4.3)
       i18n (>= 0.4.0)
@@ -171,6 +175,7 @@ DEPENDENCIES
   has_scope
   inherited_resources
   jquery-rails
+  kaminari
   nokogiri (~> 1.5.0)
   pg
   rails (~> 3.2.2)
