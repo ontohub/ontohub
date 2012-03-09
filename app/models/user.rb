@@ -7,6 +7,8 @@ class User < ActiveRecord::Base
   
   attr_accessible :email, :name, :admin, :password, :as => :admin
   
+  strip_attributes :only => [:name, :email]
+  
   scope :email_search, ->(query) { where "email ILIKE ?", "%" << query << "%" }
   
   scope :autocomplete_search, ->(query) {

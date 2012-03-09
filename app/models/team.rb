@@ -10,11 +10,16 @@ class Team < ActiveRecord::Base
   
   attr_accessible :name
   
+  strip_attributes :only => :name
+  
   scope :autocomplete_search, ->(query) {
     limit(10).where("name ILIKE ?", "%" << query << "%")
   }
   
-  validates :name, :uniqueness => { :case_sensitive => false }
+  validates :name,
+    :presence   => true,
+    :length     => { :minimum => 3, :maximum => 50 },
+    :uniqueness => { :case_sensitive => false }
   
   def to_s
     name
