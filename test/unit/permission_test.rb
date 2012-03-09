@@ -19,7 +19,7 @@ class PermissionTest < ActiveSupport::TestCase
 
     context 'owner user' do
       setup do
-        @permission = Factory :permission, object: @ontology
+        @permission = Factory :permission, item: @ontology
       end
 
       should 'have owner and editor permissions' do
@@ -30,7 +30,7 @@ class PermissionTest < ActiveSupport::TestCase
 
     context 'editor user' do
       setup do
-        @permission = Factory :permission, object: @ontology, role: 'editor'
+        @permission = Factory :permission, item: @ontology, role: 'editor'
       end
 
       should 'have editor permission' do
@@ -41,7 +41,7 @@ class PermissionTest < ActiveSupport::TestCase
     context 'team user' do
       setup do
         @team_user = Factory :team_user
-        @permission = Factory :permission, object: @ontology, subject: @team_user.team
+        @permission = Factory :permission, item: @ontology, subject: @team_user.team
       end
 
       should 'have owner and editor permissions' do
@@ -59,7 +59,7 @@ class PermissionTest < ActiveSupport::TestCase
 
     context 'editor' do
       setup do
-        @permission = Factory :permission, object: @ontology, role: 'editor'
+        @permission = Factory :permission, item: @ontology, role: 'editor'
       end
 
       should 'not have owner permission' do
@@ -70,7 +70,7 @@ class PermissionTest < ActiveSupport::TestCase
     context 'user on other team' do
       setup do
         @team_user = Factory :team_user
-        @permission = Factory :permission, object: @ontology
+        @permission = Factory :permission, item: @ontology
       end
 
       should 'not have owner and editor permissions' do

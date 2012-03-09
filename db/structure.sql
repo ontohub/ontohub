@@ -286,10 +286,10 @@ ALTER SEQUENCE ontology_versions_id_seq OWNED BY ontology_versions.id;
 
 CREATE TABLE permissions (
     id integer NOT NULL,
-    subject_id integer,
-    subject_type character varying(255),
-    object_id integer,
-    object_type character varying(255),
+    subject_id integer NOT NULL,
+    subject_type character varying(255) NOT NULL,
+    item_id integer NOT NULL,
+    item_type character varying(255) NOT NULL,
     role character varying(255) DEFAULT 'editor'::character varying NOT NULL,
     created_at timestamp without time zone NOT NULL,
     updated_at timestamp without time zone NOT NULL
@@ -684,10 +684,10 @@ CREATE INDEX index_ontology_versions_on_user_id ON ontology_versions USING btree
 
 
 --
--- Name: index_permissions_on_ontology_id_and_polymorphic_subject; Type: INDEX; Schema: public; Owner: -; Tablespace: 
+-- Name: index_permissions_on_item_and_subject; Type: INDEX; Schema: public; Owner: -; Tablespace: 
 --
 
-CREATE UNIQUE INDEX index_permissions_on_ontology_id_and_polymorphic_subject ON permissions USING btree (object_id, object_type, subject_id, subject_type);
+CREATE UNIQUE INDEX index_permissions_on_item_and_subject ON permissions USING btree (item_id, item_type, subject_id, subject_type);
 
 
 --

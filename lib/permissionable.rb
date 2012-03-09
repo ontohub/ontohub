@@ -14,11 +14,11 @@ module Permissionable
     return true if user.admin? rescue nil
 
     # Retrieve direct user permissions.
-    @perms = Permission.find(self, user).all
+    @perms = Permission.item(self).subject(user).all
 
     # Retrieve permissions through team.
     user.teams.each do |team|
-      @perms << Permission.find(self, team)
+      @perms << Permission.item(self).subject(team).all
     end
 
     # Deny if no permission is found.

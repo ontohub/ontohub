@@ -1,9 +1,16 @@
 class Permission < ActiveRecord::Base
   belongs_to :subject, :polymorphic => true
-  belongs_to :object, :polymorphic => true
+  belongs_to :item, :polymorphic => true
 
-  scope :find, ->(o, s) {
-    where object_id:  o.id, object_type:  o.class.to_s,
-          subject_id: s.id, subject_type: s.class.to_s
+  scope :item, ->(item) {
+    where \
+      item_id:   item.id,
+      item_type: item.class.to_s
+  }
+  
+  scope :subject, ->(subject) {
+    where \
+      subject_id:   subject.id,
+      subject_type: subject.class.to_s
   }
 end
