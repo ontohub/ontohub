@@ -9,6 +9,8 @@ class TeamUserTest < ActiveSupport::TestCase
   context 'Team Users' do
     setup do
       @team_user = Factory :team_user
+      @another_one = Factory :user
+      @team_user.team.users << @another_one
     end
 
     should 'have team' do
@@ -17,6 +19,10 @@ class TeamUserTest < ActiveSupport::TestCase
 
     should 'be admin, if first' do
       assert @team_user.admin?
+    end
+
+    should 'not be admin, if not first' do
+      assert !@another_one.admin?
     end
   end
 end
