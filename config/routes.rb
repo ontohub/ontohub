@@ -10,6 +10,8 @@ Ontohub::Application.routes.draw do
     resources :entities, :only => :index
     resources :axioms,   :only => :index
   end
+  
+  get 'autocomplete' => 'autocomplete#index'
 
 # root :to => 'home#show'
   root :to => 'ontologies#index'
