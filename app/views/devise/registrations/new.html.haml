@@ -1,9 +1,10 @@
-%h2 Register
+%h2= @page_title = 'Register'
+
 = semantic_form_for resource, :url => registration_path(resource_name) do |f|
   =# devise_error_messages!
   = f.inputs do
-    = f.input :name
     = f.input :email, :input_html => {:autofocus => true}
+    = f.input :name
     = f.input :password
     = f.input :password_confirmation, :required => true
   

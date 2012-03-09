@@ -7,8 +7,8 @@ Ontohub::Application.routes.draw do
   end
 
   resources :ontologies do
-    resources :entities
-    resources :axioms
+    resources :entities, :only => :index
+    resources :axioms,   :only => :index
   end
 
 # root :to => 'home#show'

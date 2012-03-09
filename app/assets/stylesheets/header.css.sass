@@ -1,5 +1,5 @@
-@import "compass/css3"
-@import "variables"
+@import compass
+@import variables
 
 header
   padding: .5em 2em
@@ -31,3 +31,11 @@ header
     margin: 0em
     font-weight: normal
     display: inline-block
+  
+  nav
+    display: inline-block
+    ul
+      +inline-block-list-container
+      > li
+        +inline-block-list-item
+        margin-right: 1em

@@ -2,8 +2,7 @@ require 'test_helper'
 
 class OntologiesControllerTest < ActionController::TestCase
   
-  should route(:get, "/ontologies").to(:controller=> :ontologies, :action => :index)
-  should route(:get, "/ontologies/id").to(:controller=> :ontologies, :action => :show, :id => 'id')
+  should_map_resources :ontologies
   
   context 'Ontology Instance' do
     setup do
@@ -24,6 +23,24 @@ class OntologiesControllerTest < ActionController::TestCase
       end
       
       should respond_with :success
+    end
+    
+    context 'on GET to edit' do
+      setup do
+        get :edit, :id => @ontology.to_param
+      end
+      
+      should respond_with :success
+    end
+    
+    context 'on PUT to update' do
+      setup do
+        put :update, 
+          :id   => @ontology.to_param,
+          :name => 'foo bar'
+      end
+      
+      should redirect_to("show action"){ @ontology }
     end
   end
   

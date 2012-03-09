@@ -1,1 +1,3 @@
-%li= axiom.attributes.inspect
+%section
+  %h3= axiom.name
+  = render :partial => '/entities/list', :locals => {:collection => axiom.entities}

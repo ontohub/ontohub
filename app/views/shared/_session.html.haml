@@ -1,9 +1,8 @@
 #session
   - if user_signed_in?
-    Logged in as
-    = current_user.to_s
     %a{:href => edit_user_registration_path}
-      Settings
+      Logged in as
+      = current_user
       - if current_user.display_alert?
         %strong !
     = link_to 'Log out', :destroy_user_session, :method => :delete
