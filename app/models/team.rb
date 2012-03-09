@@ -4,8 +4,9 @@ class Team < ActiveRecord::Base
   has_many :users, :through => :team_users
   
   # create admin user after team creation
-  attr_accessor :admin_user
-  after_create :create_admin_user
+  attr_accessor   :admin_user
+  attr_accessible :admin_user
+  after_create    :create_admin_user
   
   attr_accessible :name
   

@@ -10,8 +10,9 @@ user = User.create!({
   :password => 'foobar'
 }, :as => :admin)
 
-user.teams.create! \
-  :name => 'Lorem Ipsum'
+Team.create! \
+  :name       => 'Lorem Ipsum',
+  :admin_user => user
 
 Dir["#{Rails.root}/db/seeds/*.xml"].each do |file|
   basename = File.basename(file)
