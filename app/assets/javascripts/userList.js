@@ -1,6 +1,13 @@
 $(function(){
-  // Adding users to userlists
-  $(".userList input.autocomplete" ).bind( "autocompleteselect", function(event, ui) {
+  var userList = $(".userList");
+  
+  // Never submit the autocompletion form
+  userList.on("submit", "form", function(){
+    return false;
+  })
+  
+  // Adding users by autocomplete
+  userList.on("autocompleteselect", "input.autocomplete", function(event, ui) {
     var input = $(this);
     var container = $(this).closest(".userList");
     
@@ -14,15 +21,16 @@ $(function(){
     return false;
   });
   
-  // Events on user removals
-  $(".userList")
-  .on("ajax:success", "a[data-method=delete]", function(){
+  // User removal succeeded
+  userList.on("ajax:success", "a[data-method=delete]", function(){
     var li = $(this).closest("li");
     li.fadeOut(function(){
       li.remove();
     });
   })
-  .on("ajax:error", "a[data-method=delete]", function(xhr, status, error) {
+  
+  // User removal failed
+  userList.on("ajax:error", "a[data-method=delete]", function(xhr, status, error) {
     alert(status.responseText);
   });
 });
