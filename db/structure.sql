@@ -705,6 +705,13 @@ CREATE INDEX index_team_users_on_team_id_and_user_id ON team_users USING btree (
 
 
 --
+-- Name: index_teams_on_name; Type: INDEX; Schema: public; Owner: -; Tablespace: 
+--
+
+CREATE UNIQUE INDEX index_teams_on_name ON teams USING btree (name);
+
+
+--
 -- Name: index_users_on_email; Type: INDEX; Schema: public; Owner: -; Tablespace: 
 --
 

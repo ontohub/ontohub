@@ -14,5 +14,5 @@ class AutocompleteController < ActionController::Base
   rescue Autocomplete::InvalidScope => error
     render :text => error.message, :status => :unprocessable_entity
   end
-  
+   
 end

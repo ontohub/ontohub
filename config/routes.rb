@@ -1,7 +1,7 @@
 Ontohub::Application.routes.draw do
   
   devise_for :users
-
+  
   namespace :admin do
     resources :users
   end
@@ -10,6 +10,8 @@ Ontohub::Application.routes.draw do
     resources :entities, :only => :index
     resources :axioms,   :only => :index
   end
+  
+  resources :teams
   
   get 'autocomplete' => 'autocomplete#index'
 

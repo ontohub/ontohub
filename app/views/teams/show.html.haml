@@ -1,0 +1,7 @@
+%h2= @page_title = resource
+
+%h3 Users
+%ul
+  = render :collection => resource.team_users, :partial => 'user'
+
+%p= link_to "My Teams", collection_path
