@@ -29,5 +29,5 @@ class User < ActiveRecord::Base
   def email_required?
     deleted_at.nil?
   end
-  
+
 end

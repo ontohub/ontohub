@@ -215,8 +215,6 @@ ALTER SEQUENCE metadata_id_seq OWNED BY metadata.id;
 CREATE TABLE ontologies (
     id integer NOT NULL,
     logic_id integer,
-    owner_id integer,
-    owner_type character varying(255),
     uri character varying(255) NOT NULL,
     state character varying(255) DEFAULT 'pending'::character varying NOT NULL,
     name character varying(255),
@@ -288,9 +286,11 @@ ALTER SEQUENCE ontology_versions_id_seq OWNED BY ontology_versions.id;
 
 CREATE TABLE permissions (
     id integer NOT NULL,
-    owner_id integer,
-    owner_type character varying(255),
-    ontology_id integer,
+    subject_id integer,
+    subject_type character varying(255),
+    object_id integer,
+    object_type character varying(255),
+    role character varying(255) DEFAULT 'editor'::character varying NOT NULL,
     created_at timestamp without time zone NOT NULL,
     updated_at timestamp without time zone NOT NULL
 );
@@ -670,13 +670,6 @@ CREATE INDEX index_ontologies_on_logic_id ON ontologies USING btree (logic_id);
 
 
 --
--- Name: index_ontologies_on_owner_id_and_owner_type; Type: INDEX; Schema: public; Owner: -; Tablespace: 
---
-
-CREATE INDEX index_ontologies_on_owner_id_and_owner_type ON ontologies USING btree (owner_id, owner_type);
-
-
---
 -- Name: index_ontology_versions_on_ontology_id; Type: INDEX; Schema: public; Owner: -; Tablespace: 
 --
 
@@ -691,10 +684,17 @@ CREATE INDEX index_ontology_versions_on_user_id ON ontology_versions USING btree
 
 
 --
--- Name: index_permissions_on_ontology_id_and_owner_id_and_owner_type; Type: INDEX; Schema: public; Owner: -; Tablespace: 
+-- Name: index_permissions_on_ontology_id_and_polymorphic_subject; Type: INDEX; Schema: public; Owner: -; Tablespace: 
 --
 
-CREATE UNIQUE INDEX index_permissions_on_ontology_id_and_owner_id_and_owner_type ON permissions USING btree (ontology_id, owner_id, owner_type);
+CREATE UNIQUE INDEX index_permissions_on_ontology_id_and_polymorphic_subject ON permissions USING btree (object_id, object_type, subject_id, subject_type);
+
+
+--
+-- Name: index_permissions_on_subject_id_and_subject_type; Type: INDEX; Schema: public; Owner: -; Tablespace: 
+--
+
+CREATE INDEX index_permissions_on_subject_id_and_subject_type ON permissions USING btree (subject_id, subject_type);
 
 
 --
@@ -802,14 +802,6 @@ ALTER TABLE ONLY ontology_versions
 
 ALTER TABLE ONLY ontology_versions
     ADD CONSTRAINT ontology_versions_user_id_fk FOREIGN KEY (user_id) REFERENCES users(id);
-
-
---
--- Name: permissions_ontology_id_fk; Type: FK CONSTRAINT; Schema: public; Owner: -
---
-
-ALTER TABLE ONLY permissions
-    ADD CONSTRAINT permissions_ontology_id_fk FOREIGN KEY (ontology_id) REFERENCES ontologies(id) ON DELETE CASCADE;
 
 
 --
