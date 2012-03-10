@@ -4,10 +4,8 @@ class CreateOntologyVersions < ActiveRecord::Migration
       t.references :user, :null => false
       t.references :ontology, :null => false
       t.string :source_uri
-      t.string :raw_file_name
-      t.integer :raw_file_size
-      t.string :xml_file_name
-      t.integer :xml_file_size
+      t.string :raw_file
+      t.string :xml_file
 
       t.timestamps :null => false
     end

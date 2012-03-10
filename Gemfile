@@ -29,7 +29,7 @@ gem 'has_scope'
 # XML Parser
 gem 'nokogiri', '~> 1.5.0'
 
-# Authorization
+# Authentication
 gem 'devise', '~> 2.0.0'
 
 # Pagination
@@ -37,6 +37,9 @@ gem 'kaminari'
 
 # Strip spaces in attributes
 gem "strip_attributes", "~> 1.0"
+
+# Manage uploads
+gem 'carrierwave'
 
 group :test do
   gem 'shoulda'
