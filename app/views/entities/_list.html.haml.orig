@@ -1,0 +1,18 @@
+%table.entities
+  %thead
+<<<<<<< HEAD
+    %tr
+      %th Text
+      %th Kind
+      %th Name
+      %th URI
+      %th Range
+=======
+    %th Name
+    %th Type
+    %th Text
+    %th URI
+    %th Range
+>>>>>>> c8afe220ba170fe476f3b3fb8d3a3610610b40bb
+  %tbody
+    = render collection

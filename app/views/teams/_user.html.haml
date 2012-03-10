@@ -1,0 +1,8 @@
+%li
+  = user.user
+  
+  - if user.admin?
+    (admin)
+  
+  - if show_admin_links
+    = link_to 'delete', [user.team, user], method: :delete, remote: true, confirm: 'really delete?'

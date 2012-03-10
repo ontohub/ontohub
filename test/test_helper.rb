@@ -16,3 +16,9 @@ end
 class ActionController::TestCase
   include Devise::TestHelpers
 end
+
+# for strip_attributes
+require "strip_attributes/shoulda"
+class Test::Unit::TestCase
+  extend StripAttributes::Shoulda::Macros
+end

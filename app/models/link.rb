@@ -1,4 +1,5 @@
 class Link < ActiveRecord::Base
+  include Permissionable
   include Metadatable
 
   belongs_to :source

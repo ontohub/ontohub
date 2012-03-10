@@ -2,6 +2,9 @@ require 'test_helper'
 
 class UserTest < ActiveSupport::TestCase
   
+  should_strip_attributes :name, :email
+  should_not_strip_attributes :password
+  
   context 'User instance' do
     setup do
       @mails_sent = ActionMailer::Base.deliveries.size

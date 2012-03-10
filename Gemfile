@@ -35,6 +35,9 @@ gem 'devise', '~> 2.0.0'
 # Pagination
 gem 'kaminari'
 
+# Strip spaces in attributes
+gem "strip_attributes", "~> 1.0"
+
 group :test do
   gem 'shoulda'
   gem 'shoulda-matchers'

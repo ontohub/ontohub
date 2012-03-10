@@ -1,0 +1,18 @@
+%h2= @page_title = resource
+
+%h3 Users
+
+.userList{'data-uri' => url_for([resource, :team_users])}
+  
+  %ul
+    = render :collection => resource.team_users, :partial => 'user', :locals => {:show_admin_links => team_admin?}
+  
+  - if team_admin?
+    %form
+      = text_field_tag :name, nil, :class => 'autocomplete', :placeholder => 'Add users to your team', 'data-scope' => 'user'
+
+%ul
+  %li= link_to "Rename", edit_resource_path
+  %li= link_to "Delete", resource_path, method: :delete, confirm: "Do you really want to remove this team?"
+
+%p= link_to "My Teams", collection_path

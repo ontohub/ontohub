@@ -215,7 +215,6 @@ ALTER SEQUENCE metadata_id_seq OWNED BY metadata.id;
 CREATE TABLE ontologies (
     id integer NOT NULL,
     logic_id integer,
-    owner_id integer,
     uri character varying(255) NOT NULL,
     state character varying(255) DEFAULT 'pending'::character varying NOT NULL,
     name character varying(255),
@@ -282,12 +281,107 @@ ALTER SEQUENCE ontology_versions_id_seq OWNED BY ontology_versions.id;
 
 
 --
+-- Name: permissions; Type: TABLE; Schema: public; Owner: -; Tablespace: 
+--
+
+CREATE TABLE permissions (
+    id integer NOT NULL,
+    subject_id integer NOT NULL,
+    subject_type character varying(255) NOT NULL,
+    item_id integer NOT NULL,
+    item_type character varying(255) NOT NULL,
+    role character varying(255) DEFAULT 'editor'::character varying NOT NULL,
+    created_at timestamp without time zone NOT NULL,
+    updated_at timestamp without time zone NOT NULL
+);
+
+
+--
+-- Name: permissions_id_seq; Type: SEQUENCE; Schema: public; Owner: -
+--
+
+CREATE SEQUENCE permissions_id_seq
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1;
+
+
+--
+-- Name: permissions_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: -
+--
+
+ALTER SEQUENCE permissions_id_seq OWNED BY permissions.id;
+
+
+--
 -- Name: schema_migrations; Type: TABLE; Schema: public; Owner: -; Tablespace: 
 --
 
 CREATE TABLE schema_migrations (
     version character varying(255) NOT NULL
 );
+
+
+--
+-- Name: team_users; Type: TABLE; Schema: public; Owner: -; Tablespace: 
+--
+
+CREATE TABLE team_users (
+    id integer NOT NULL,
+    team_id integer NOT NULL,
+    user_id integer NOT NULL,
+    admin boolean DEFAULT false NOT NULL
+);
+
+
+--
+-- Name: team_users_id_seq; Type: SEQUENCE; Schema: public; Owner: -
+--
+
+CREATE SEQUENCE team_users_id_seq
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1;
+
+
+--
+-- Name: team_users_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: -
+--
+
+ALTER SEQUENCE team_users_id_seq OWNED BY team_users.id;
+
+
+--
+-- Name: teams; Type: TABLE; Schema: public; Owner: -; Tablespace: 
+--
+
+CREATE TABLE teams (
+    id integer NOT NULL,
+    name character varying(255) NOT NULL
+);
+
+
+--
+-- Name: teams_id_seq; Type: SEQUENCE; Schema: public; Owner: -
+--
+
+CREATE SEQUENCE teams_id_seq
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1;
+
+
+--
+-- Name: teams_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: -
+--
+
+ALTER SEQUENCE teams_id_seq OWNED BY teams.id;
 
 
 --
@@ -393,6 +487,27 @@ ALTER TABLE ONLY ontology_versions ALTER COLUMN id SET DEFAULT nextval('ontology
 -- Name: id; Type: DEFAULT; Schema: public; Owner: -
 --
 
+ALTER TABLE ONLY permissions ALTER COLUMN id SET DEFAULT nextval('permissions_id_seq'::regclass);
+
+
+--
+-- Name: id; Type: DEFAULT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY team_users ALTER COLUMN id SET DEFAULT nextval('team_users_id_seq'::regclass);
+
+
+--
+-- Name: id; Type: DEFAULT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY teams ALTER COLUMN id SET DEFAULT nextval('teams_id_seq'::regclass);
+
+
+--
+-- Name: id; Type: DEFAULT; Schema: public; Owner: -
+--
+
 ALTER TABLE ONLY users ALTER COLUMN id SET DEFAULT nextval('users_id_seq'::regclass);
 
 
@@ -450,6 +565,30 @@ ALTER TABLE ONLY ontologies
 
 ALTER TABLE ONLY ontology_versions
     ADD CONSTRAINT ontology_versions_pkey PRIMARY KEY (id);
+
+
+--
+-- Name: permissions_pkey; Type: CONSTRAINT; Schema: public; Owner: -; Tablespace: 
+--
+
+ALTER TABLE ONLY permissions
+    ADD CONSTRAINT permissions_pkey PRIMARY KEY (id);
+
+
+--
+-- Name: team_users_pkey; Type: CONSTRAINT; Schema: public; Owner: -; Tablespace: 
+--
+
+ALTER TABLE ONLY team_users
+    ADD CONSTRAINT team_users_pkey PRIMARY KEY (id);
+
+
+--
+-- Name: teams_pkey; Type: CONSTRAINT; Schema: public; Owner: -; Tablespace: 
+--
+
+ALTER TABLE ONLY teams
+    ADD CONSTRAINT teams_pkey PRIMARY KEY (id);
 
 
 --
@@ -531,13 +670,6 @@ CREATE INDEX index_ontologies_on_logic_id ON ontologies USING btree (logic_id);
 
 
 --
--- Name: index_ontologies_on_owner_id; Type: INDEX; Schema: public; Owner: -; Tablespace: 
---
-
-CREATE INDEX index_ontologies_on_owner_id ON ontologies USING btree (owner_id);
-
-
---
 -- Name: index_ontology_versions_on_ontology_id; Type: INDEX; Schema: public; Owner: -; Tablespace: 
 --
 
@@ -549,6 +681,41 @@ CREATE INDEX index_ontology_versions_on_ontology_id ON ontology_versions USING b
 --
 
 CREATE INDEX index_ontology_versions_on_user_id ON ontology_versions USING btree (user_id);
+
+
+--
+-- Name: index_permissions_on_item_and_subject; Type: INDEX; Schema: public; Owner: -; Tablespace: 
+--
+
+CREATE UNIQUE INDEX index_permissions_on_item_and_subject ON permissions USING btree (item_id, item_type, subject_id, subject_type);
+
+
+--
+-- Name: index_permissions_on_subject_id_and_subject_type; Type: INDEX; Schema: public; Owner: -; Tablespace: 
+--
+
+CREATE INDEX index_permissions_on_subject_id_and_subject_type ON permissions USING btree (subject_id, subject_type);
+
+
+--
+-- Name: index_team_users_on_team_id_and_user_id; Type: INDEX; Schema: public; Owner: -; Tablespace: 
+--
+
+CREATE UNIQUE INDEX index_team_users_on_team_id_and_user_id ON team_users USING btree (team_id, user_id);
+
+
+--
+-- Name: index_team_users_on_user_id; Type: INDEX; Schema: public; Owner: -; Tablespace: 
+--
+
+CREATE INDEX index_team_users_on_user_id ON team_users USING btree (user_id);
+
+
+--
+-- Name: index_teams_on_name; Type: INDEX; Schema: public; Owner: -; Tablespace: 
+--
+
+CREATE UNIQUE INDEX index_teams_on_name ON teams USING btree (name);
 
 
 --
@@ -636,14 +803,6 @@ ALTER TABLE ONLY ontologies
 
 
 --
--- Name: ontologies_owner_id_fk; Type: FK CONSTRAINT; Schema: public; Owner: -
---
-
-ALTER TABLE ONLY ontologies
-    ADD CONSTRAINT ontologies_owner_id_fk FOREIGN KEY (owner_id) REFERENCES users(id);
-
-
---
 -- Name: ontology_versions_ontology_id_fk; Type: FK CONSTRAINT; Schema: public; Owner: -
 --
 
@@ -657,6 +816,22 @@ ALTER TABLE ONLY ontology_versions
 
 ALTER TABLE ONLY ontology_versions
     ADD CONSTRAINT ontology_versions_user_id_fk FOREIGN KEY (user_id) REFERENCES users(id);
+
+
+--
+-- Name: team_users_team_id_fk; Type: FK CONSTRAINT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY team_users
+    ADD CONSTRAINT team_users_team_id_fk FOREIGN KEY (team_id) REFERENCES teams(id) ON DELETE CASCADE;
+
+
+--
+-- Name: team_users_user_id_fk; Type: FK CONSTRAINT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY team_users
+    ADD CONSTRAINT team_users_user_id_fk FOREIGN KEY (user_id) REFERENCES users(id) ON DELETE CASCADE;
 
 
 --
@@ -680,3 +855,9 @@ INSERT INTO schema_migrations (version) VALUES ('20120307154214');
 INSERT INTO schema_migrations (version) VALUES ('20120307163615');
 
 INSERT INTO schema_migrations (version) VALUES ('20120307165334');
+
+INSERT INTO schema_migrations (version) VALUES ('20120308144854');
+
+INSERT INTO schema_migrations (version) VALUES ('20120308144855');
+
+INSERT INTO schema_migrations (version) VALUES ('20120308144859');

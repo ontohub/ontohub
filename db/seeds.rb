@@ -3,13 +3,28 @@
 #
 
 # Create Admin User
-User.create!({
+user = User.create!({
   :email    => "admin@example.com",
   :name     => 'admin',
   :admin    => true,
   :password => 'foobar'
 }, :as => :admin)
 
+# Create Team
+team = Team.create! \
+  :name       => 'Lorem Ipsum',
+  :admin_user => user
+
+# Create some other users
+%w(Bob Alice Carol Dave Ted).each_with_index do |name, i|
+  user = User.create! \
+    :email    => "#{name}@example.com",
+    :name     => name,
+    :password => 'foobar'
+  
+  # add two users to the first team
+  team.users << user if i < 2
+end
 
 Dir["#{Rails.root}/db/seeds/*.xml"].each do |file|
   basename = File.basename(file)
