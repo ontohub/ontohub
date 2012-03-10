@@ -21,7 +21,7 @@ class Autocomplete
   end
   
   # search the added scopes
-  def search(query)
+  def search(query, limit = 10)
     result = []
     
     @scopes.each do |name, without_ids|
@@ -35,7 +35,7 @@ class Autocomplete
       # finally apply the search scope
       scope = scope.autocomplete_search(query)
       
-      result += scope.all
+      result += scope.limit(limit).all
     end
     
     result

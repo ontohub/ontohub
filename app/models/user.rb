@@ -13,7 +13,7 @@ class User < ActiveRecord::Base
   scope :email_search, ->(query) { where "email ILIKE ?", "%" << query << "%" }
   
   scope :autocomplete_search, ->(query) {
-    limit(10).where("name ILIKE ? OR email ILIKE ?", "%" << query << "%", query)
+    where("name ILIKE ? OR email ILIKE ?", "%" << query << "%", query)
   }
   
   def to_s

@@ -14,7 +14,7 @@ class Team < ActiveRecord::Base
   strip_attributes :only => :name
   
   scope :autocomplete_search, ->(query) {
-    limit(10).where("name ILIKE ?", "%" << query << "%")
+    where("name ILIKE ?", "%" << query << "%")
   }
   
   validates :name,
