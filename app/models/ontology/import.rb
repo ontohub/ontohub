@@ -1,7 +1,7 @@
 module Ontology::Import
 	extend ActiveSupport::Concern
 
-  def import_from_xml(io)
+  def import_xml(io)
     @logic_name = nil
     @entities   = []
     @axioms     = []
@@ -20,5 +20,9 @@ module Ontology::Import
 
 #     save!
     end
+  end
+
+  def import_xml_from_file(path)
+    import_xml File.open path
   end
 end

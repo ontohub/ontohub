@@ -16,7 +16,7 @@ class HetsTest < ActiveSupport::TestCase
     should 'have generated importable output' do
       assert_nothing_raised do
         ontology = Factory :ontology
-        ontology.import_from_xml @path
+        ontology.import_xml_from_file @path
       end
     end
   end

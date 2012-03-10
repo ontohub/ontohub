@@ -1,15 +1,14 @@
 require 'test_helper'
 
-class OntologyImportFromXMLTest < ActiveSupport::TestCase
+class OntologyImportXMLTest < ActiveSupport::TestCase
   def fixture_file(name)
-    File.open(Rails.root + 'test/fixtures/ontologies/' + name)
+    Rails.root + 'test/fixtures/ontologies/' + name
   end
 
   context 'Import valid Ontology' do
     setup do
       @ontology = Factory :ontology
-      @ontology.import_from_xml fixture_file('valid.xml')
-#     @ontology.save!
+      @ontology.import_xml_from_file fixture_file('valid.xml')
     end
 
     should 'save logic' do
