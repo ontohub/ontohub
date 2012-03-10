@@ -50,6 +50,19 @@ class TeamUsersControllerTest < ActionController::TestCase
         @team_user = @team.team_users.create! :user => @user
       end
       
+      context 'setting the admin flag' do
+        setup do
+          sign_in @admin
+          xhr :put, :update,
+            :team_id   => @team.id,
+            :id        => @team_user.id,
+            :team_user => {:admin => 1}
+        end
+        
+        should render_template '/teams/_user'
+        should respond_with :success
+      end
+      
       context 'team admin deleting other user' do
         setup do
           sign_in @admin

@@ -1,8 +1,10 @@
-%li{'data-id' => user.user_id, 'data-type' => 'user'}
+%li{'data-id' => user.user_id, 'data-type' => 'user', 'data-admin' => (user.admin ? 1 : 0), 'data-uri' => url_for([user.team, user]) }
+  - if show_admin_links
+    .functions
+      = link_to 'edit', '#', rel: :edit
+      = link_to 'delete', [user.team, user], method: :delete, remote: true, confirm: 'really delete?'
+  
   = user.user
   
   - if user.admin?
     (admin)
-  
-  - if show_admin_links
-    = link_to 'delete', [user.team, user], method: :delete, remote: true, confirm: 'really delete?'

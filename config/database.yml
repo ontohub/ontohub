@@ -6,7 +6,7 @@ development: &config
   template: template0
   hostname: localhost
   database: ontohub_development
-  username: postgres
+  username: julian
   password:
   pool: 5
 

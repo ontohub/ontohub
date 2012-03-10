@@ -10,7 +10,14 @@ class TeamUsersController < InheritedResources::Base
   def create
     build_resource.save!
     respond_to do |format|
-      format.html { render :partial => '/teams/user', :locals => {:user => resource, :show_admin_links => true} }
+      format.html { render_resource }
+    end
+  end
+  
+  def update
+    resource.update_attributes! params[:team_user]
+    respond_to do |format|
+      format.html { render_resource }
     end
   end
   
@@ -20,6 +27,10 @@ class TeamUsersController < InheritedResources::Base
   end
   
   protected
+  
+  def render_resource
+    render :partial => '/teams/user', :locals => {:user => resource, :show_admin_links => true}
+  end
   
   def parent
     # only admins should administrate the given team

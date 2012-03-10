@@ -1,6 +1,13 @@
 $(function() {
   var permissionList = $(".permissionList");
 
+  // Tipsy tooltip
+  permissionList.find("button.help")
+  .tipsy({gravity: 'w'})
+  .click(function(){
+    permissionList.find("input.autocomplete").focus();
+  });
+
   // Attach Autocomplete to inputs
   permissionList.find("input.autocomplete").autocomplete({
     minLength : 3,
@@ -32,10 +39,9 @@ $(function() {
     },
     select : function(event, ui) {
       var input = $(this);
-      var container = $(this).closest(".permissionList");
-      var list = container.find("ul");
+      var list = permissionList.find("ul");
 
-      $.post(container.data('uri'), {'team_user[user_id]' : ui.item.id}, function(data) {
+      $.post(permissionList.data('uri'), {'team_user[user_id]' : ui.item.id}, function(data) {
         data = $(data)
         list.append(data);
         data.effect("highlight", {}, 1500);
@@ -47,18 +53,73 @@ $(function() {
   });
 
   // Never submit the autocompletion form
-  permissionList.on("submit", "form", function() {
-    return false;
-  })
+  permissionList.on("submit", "form.autocomplete", function(event) {
+    event.preventDefault();
+  });
+  
   // User removal succeeded
   permissionList.on("ajax:success", "a[data-method=delete]", function() {
     var li = $(this).closest("li");
     li.fadeOut(function() {
       li.remove();
     });
-  })
-  // User removal failed
-  permissionList.on("ajax:error", "a[data-method=delete]", function(xhr, status, error) {
+  });
+  
+  // Show / Hide edit form
+  permissionList.on("click", "a[rel=edit]", function(event) {
+    event.preventDefault();
+    this.blur();
+    
+    var li   = $(this).closest("li");
+    var form = li.find("form");
+    if(form.size() == 0){
+      // show form
+      var random = Math.random().toString().split(".")[1];
+      
+      // clone template form
+      var form = permissionList.find("form.editTemplate").clone().wrap("<div></div>").parent().html();
+      form = $(form.replace(/%RANDOM%/g, random))
+      .removeClass("editTemplate")
+      .addClass("edit")
+      .attr("action", li.data('uri'))
+      .appendTo(li)
+      
+      // extend selector for more supported elements
+      form.find("input[type=checkbox]").each(function(){
+        var name = $(this).attr("name")
+        if(!name)
+          return;
+        
+        // change 'model[name]' into 'name'
+        var match = name.match(/\w+\[(\w+)\]/)
+        if(match)
+          name = match[1]
+        
+        var value = li.data(name);
+        var tagName = this.tagName.toLowerCase();
+        var type = tagName=='input' ? this.type.toLowerCase() : '';
+        
+        if(type=='checkbox'){
+          this.checked = value=='1'
+        }
+        // add here support for other input types, when needed
+      });
+    }else{
+      // hide form
+      form.remove();
+    }
+  });
+  
+  // User removal succeeded
+  permissionList.on("ajax:success", "ul", function(event, data) {
+    var target = $(event.target)
+    var li = target.closest("li");
+    li.replaceWith(data);
+  });
+  
+  
+  // AJAX Actions failed
+  permissionList.on("ajax:error", function(xhr, status, error) {
     alert(status.responseText);
   });
 });
