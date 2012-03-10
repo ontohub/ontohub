@@ -41,6 +41,7 @@ class OntologyParserTest < ActiveSupport::TestCase
         assert_equal [{
           "name"=>"... (if exists)",
           "range"=>"Examples/Reichel:40.9",
+          "text"=>"Kind1: <http://example.com/ontology#kind1> Kind2: <http://example.com/ontology#kind2>",
           "symbols"=>["nat","succ : nat -> nat"]
         }], @axioms
       end

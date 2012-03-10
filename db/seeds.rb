@@ -30,11 +30,11 @@ Dir["#{Rails.root}/db/seeds/*.xml"].each do |file|
   basename = File.basename(file)
   
   o = Ontology.new \
-    uri:         "file://seeds/#{basename}",
+    uri:         "file:///db/seeds/#{basename}",
     name:        basename.split(".")[0].capitalize,
     description: Faker::Lorem.paragraph
 
-  o.import_from_xml File.open(file)
+  o.import_xml_from_file file
 end
 
 # Create 5 ontologies
@@ -44,5 +44,5 @@ end
     name:        Faker::Lorem.words(2+rand(4)).join(" "),
     description: Faker::Lorem.paragraph
 
-  o.import_from_xml File.open('test/fixtures/ontologies/valid.xml')
+  o.import_xml_from_file 'test/fixtures/ontologies/valid.xml'
 end
