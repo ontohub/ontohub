@@ -1,0 +1,14 @@
+%h2= @page_title = 'Teams'
+
+%p
+  = pluralize(collection.total_count, 'Team')
+  found
+
+= paginaton collection do
+  %table
+    %thead
+      %th Name
+      %th Users
+      %th
+    %tbody
+      = render collection
