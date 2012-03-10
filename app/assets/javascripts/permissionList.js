@@ -53,7 +53,7 @@ $(function() {
   });
 
   // Never submit the autocompletion form
-  permissionList.on("submit", "form.autocomplete", function(event) {
+  permissionList.on("submit", "form.add", function(event) {
     event.preventDefault();
   });
   
