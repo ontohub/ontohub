@@ -36,7 +36,9 @@ $(function() {
       var list = container.find("ul");
 
       $.post(container.data('uri'), {'team_user[user_id]' : ui.item.id}, function(data) {
+        data = $(data)
         list.append(data);
+        data.effect("highlight", {}, 1500);
       });
 
       $(this).val('');
