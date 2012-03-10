@@ -1,5 +1,7 @@
 %h2= @page_title = 'Log in'
 
+= render "links"
+
 = semantic_form_for resource, :url => session_path(resource_name) do |f|
   
   = f.inputs do
@@ -9,5 +11,3 @@
   
   = f.actions do
     = f.action :submit, :label => 'Log in', :button_html => { :disable_with => t(:wait) }
-
-= render "links"

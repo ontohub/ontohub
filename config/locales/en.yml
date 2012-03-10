@@ -5,8 +5,10 @@ en:
   wait: 'Please wait..'
   formtastic:
     labels:
+      user:
+        email: E-Mail
       ontology:
-        uri: 'URI'
+        uri: URI
       ontology_version:
-        source_uri: 'Source URI'
-        raw_file: 'Source File'
+        source_uri: Source URI
+        raw_file: Source File
