@@ -8,8 +8,7 @@
     <Symbol name="zero" range="Examples/Reichel:29.9" kind="op">zero : nat</Symbol>
   </Symbols>
   <Axioms>
-    <Axiom name="... (if exists)" range="Examples/Reichel:40.9" text="Kind1: &lt;http://example.com/ontology#kind1&gt;
-Kind2: &lt;http://example.com/ontology#kind2&gt;">
+    <Axiom name="... (if exists)" range="Examples/Reichel:40.9" text="Kind1: &lt;http://example.com/ontology#kind1&gt;&#10;Kind2: &lt;http://example.com/ontology#kind2&gt;">
       <Symbol>nat</Symbol>
       <Symbol>succ : nat -&gt; nat</Symbol>
     </Axiom>
