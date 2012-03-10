@@ -252,10 +252,8 @@ CREATE TABLE ontology_versions (
     user_id integer NOT NULL,
     ontology_id integer NOT NULL,
     source_uri character varying(255),
-    raw_file_name character varying(255),
-    raw_file_size integer,
-    xml_file_name character varying(255),
-    xml_file_size integer,
+    raw_file character varying(255),
+    xml_file character varying(255),
     created_at timestamp without time zone NOT NULL,
     updated_at timestamp without time zone NOT NULL
 );
