@@ -19,6 +19,25 @@ class AutocompleteControllerTest < ActionController::TestCase
             term:  @term
         end
         
+        should 'return two entries' do
+          assert_equal 2, JSON.parse(@response.body).size
+        end
+        
+        should respond_with_content_type :json
+        should respond_with :success
+      end
+      
+      context 'with results, one excluded' do
+        setup do
+          get :index,
+            scope: 'user,team',
+            term:  @term,
+            exclude: {user: @user.id}
+        end
+        
+        should 'return one entry' do
+          assert_equal 1, JSON.parse(@response.body).size
+        end
         should respond_with_content_type :json
         should respond_with :success
       end

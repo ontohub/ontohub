@@ -83,7 +83,7 @@ class AutocompleteTest < ActiveSupport::TestCase
         end
       end
       
-      # 1 1 team
+      # 1 team
       context 'faker' do
         setup do
           autocomplete 'user,team', @team_faker.name
@@ -97,8 +97,25 @@ class AutocompleteTest < ActiveSupport::TestCase
     
   end
   
-  def autocomplete(scope, query)
-    @result = Autocomplete.new(scope, query).result
+  context 'autocomplete with exclusion' do
+    setup do
+      @users = 5.times.map{|i| Factory :user, :name => "foo#{i}" }
+      
+      ac = Autocomplete.new
+      ac.add_scope("user", @users.shift(2).map(&:id))
+      @result = ac.search("foo")
+    end
+    
+    should "only find 3 users" do
+      assert_equal 3, @result.count
+    end
+    
+  end
+  
+  def autocomplete(scopes, query)
+    ac = Autocomplete.new
+    scopes.split(",").each { |s| ac.add_scope(s) }
+    @result = ac.search(query)
   end
   
 end
