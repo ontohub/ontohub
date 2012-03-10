@@ -1,7 +1,7 @@
 class OntologiesController < InheritedResources::Base
   has_scope :page, :default => 1
 
-  before_filter :changable?, :only => [:edit, :update]
+  before_filter :changeable?, :only => [:edit, :update]
 
   def new
     @version = build_resource.versions.build
@@ -15,7 +15,7 @@ class OntologiesController < InheritedResources::Base
 
 protected
 
-  def changable?
-    resource.changable?
+  def changeable?
+    resource.changeable?
   end
 end

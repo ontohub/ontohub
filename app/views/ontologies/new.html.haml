@@ -1,3 +1,9 @@
 %h2= @page_title = "Create an ontology"
 
-= render :partial => 'form'
+= semantic_form_for resource do |f|
+  = f.inputs :uri, :logic, :name, :description
+  = f.semantic_fields_for :versions, resource.versions.first do |vf|
+    = vf.input :raw_file, :as => :file
+    = vf.input :source_uri
+  = f.actions do
+    = f.action :submit, :button_html => { :disable_with => t(:wait) }

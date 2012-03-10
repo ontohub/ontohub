@@ -1,7 +1,7 @@
 %h2= @page_title = 'Ontologies'
 
-%p
-  = link_to 'Create Ontology!', new_ontology_path
+%ul.actions
+  %li= link_to 'Create Ontology', new_ontology_path
 
 %p
   = pluralize(collection.total_count, 'Ontology')

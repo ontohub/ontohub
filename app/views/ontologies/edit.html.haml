@@ -1,3 +1,6 @@
 %h2= @page_title = "Edit ontology: #{resource}"
 
-= render :partial => 'form'
+= semantic_form_for resource do |f|
+  = f.inputs :uri, :logic, :name, :description
+  = f.actions do
+    = f.action :submit, :button_html => { :disable_with => t(:wait) }

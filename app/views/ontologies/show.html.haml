@@ -6,8 +6,9 @@
 
 = simple_format resource.description
 
-%ul
-  %li= link_to 'edit', edit_resource_path
-  %li= link_to 'delete', resource_path, :confirm => 'really delete?', :method => :delete
+%ul.actions
+  %li= link_to 'Edit', edit_resource_path
+  %li= link_to 'Delete', resource_path, :confirm => 'Really delete?', :method => :delete
 
-%p= link_to 'List', collection_path
+%ul.actions
+  %li= link_to 'List', collection_path
