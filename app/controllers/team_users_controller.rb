@@ -4,8 +4,8 @@
 class TeamUsersController < InheritedResources::Base
   
   before_filter :authenticate_user!
-  before_filter :check_remaining_admins, :only => [:destroy]
   belongs_to :team
+  rescue_from Permission::PowerVaccuumError, :with => :power_error
   
   def create
     build_resource.save!
@@ -26,11 +26,8 @@ class TeamUsersController < InheritedResources::Base
     @team ||= current_user.team_users.admin.find_by_team_id!(params[:team_id]).team
   end
   
-  # never allow to remove the last admin
-  def check_remaining_admins
-    if resource.admin? && end_of_association_chain.admin.count < 2
-      render :text => 'What the hell ... nobody cares for your group if you remove the only one admin!', :status => :unprocessable_entity
-    end
+  def power_error(exception)
+    render :text => exception.message, :status => :unprocessable_entity
   end
-
+  
 end

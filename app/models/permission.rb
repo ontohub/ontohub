@@ -1,4 +1,8 @@
 class Permission < ActiveRecord::Base
+  
+  # thrown if the last admin/owner tries to remove itself
+  class PowerVaccuumError < Exception; end
+  
   belongs_to :subject, :polymorphic => true
   belongs_to :item, :polymorphic => true
 
