@@ -1,6 +1,6 @@
 FactoryGirl.define do
   factory :team do
-    name  { Faker::Name.first_name }
+    name  { Faker::Lorem.words(2).join(" ") }
   end
 
   factory :team_user do

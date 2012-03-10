@@ -2,7 +2,7 @@
 
 %h3 Users
 
-.userList{'data-uri' => url_for([resource, :team_users])}
+.permissionList{'data-uri' => url_for([resource, :team_users])}
   
   %ul
     = render :collection => resource.team_users, :partial => 'user', :locals => {:show_admin_links => team_admin?}

@@ -6,23 +6,44 @@ class TeamUserTest < ActiveSupport::TestCase
     should belong_to :user
   end
 
-  context 'Team Users' do
+  context 'team with admin and user' do
     setup do
-      @team_user = Factory :team_user
-      @another_one = Factory :user
-      @team_user.team.users << @another_one
+      @team_admin = Factory :user # admin in team
+      @team_user  = Factory :user # non-admin in team
+      
+      @admin_user  = Factory :team_user, :user => @team_admin
+      @team        = @admin_user.team
+      
+      @team.users << @team_user
+      @non_admim_user = @team.team_users.non_admin.first
+    end
+    
+    should 'have 2 members' do
+      assert_equal 2, @team.team_users.count
+    end
+    
+    should 'have a admin' do
+      assert_equal @team_admin, @team.team_users.admin.first.user
     end
 
-    should 'have team' do
-      assert_not_nil @team_user.team
+    should 'have a non-admin' do
+      assert_equal @team_user, @team.team_users.non_admin.first.user
     end
-
-    should 'be admin, if first' do
-      assert @team_user.admin?
+    
+    should 'remove non-admin' do
+      assert @non_admim_user.destroy
     end
-
-    should 'not be admin, if not first' do
-      assert !@another_one.admin?
+    
+    should 'not destroy the last admin' do
+      assert_raises Permission::PowerVaccuumError do
+        assert @admin_user.destroy
+      end
+    end
+    
+    should 'not remove the last admin flag' do
+      assert_raises Permission::PowerVaccuumError do
+        @admin_user.update_attribute :admin, false
+      end
     end
   end
 end

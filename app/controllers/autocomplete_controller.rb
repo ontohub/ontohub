@@ -8,8 +8,16 @@ class AutocompleteController < ActionController::Base
     if term.length < MIN_LENGTH
       @result = []
     else
-      autocomplete = Autocomplete.new(params[:scope], term)
-      @result = autocomplete.result.map{|r| {
+      autocomplete = Autocomplete.new
+      
+      # add scopes
+      params[:scope].to_s.split(",").each do |scope|
+        exclude = params[:exclude] || {}
+        autocomplete.add_scope(scope, exclude[scope] )
+      end
+      
+      # do the search
+      @result = autocomplete.search(term).map{|r| {
         id:    r.id,
         type:  r.class.to_s,
         value: r.to_s
