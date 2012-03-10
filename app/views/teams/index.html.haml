@@ -1,10 +1,11 @@
 %h2= @page_title = 'My Teams'
 
+%ul.actions
+  %li= link_to 'Create new Team', new_resource_path
+
 %p
   You are member of 
   = pluralize(collection.count, 'Team')
 
 %ul
   = render :collection => collection, :partial => 'team'
-
-%p= link_to 'Create new Team', new_resource_path

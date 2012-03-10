@@ -1,5 +1,10 @@
 %h2= @page_title = resource
 
+%ul.actions
+  %li= link_to "My Teams", collection_path
+  %li= link_to "Rename", edit_resource_path
+  %li= link_to "Delete", resource_path, method: :delete, confirm: "Do you really want to remove this team?"
+
 %h3 Users
 
 .permissionList{'data-uri' => url_for([resource, :team_users])}
@@ -10,9 +15,3 @@
   - if team_admin?
     %form
       = text_field_tag :name, nil, :class => 'autocomplete', :placeholder => 'Add users to your team', 'data-scope' => 'user'
-
-%ul
-  %li= link_to "Rename", edit_resource_path
-  %li= link_to "Delete", resource_path, method: :delete, confirm: "Do you really want to remove this team?"
-
-%p= link_to "My Teams", collection_path

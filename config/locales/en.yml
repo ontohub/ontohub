@@ -2,4 +2,11 @@
 # See https://github.com/svenfuchs/rails-i18n/tree/master/rails%2Flocale for starting points.
 
 en:
-  wait: "Please wait ..."
+  wait: 'Please wait..'
+  formtastic:
+    labels:
+      ontology:
+        uri: 'URI'
+      ontology_version:
+        source_uri: 'Source URI'
+        raw_file: 'Source File'

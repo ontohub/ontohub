@@ -1,5 +1,8 @@
 %h2= @page_title = resource.name
 
+%ul.actions
+  %li= link_to 'List users', collection_path
+
 %dl
   - for attr in resource_class.attribute_names
     %dt= attr
@@ -11,5 +14,3 @@
         = attr.sub(/_id$/,'')
       - else
         = val
-
-%p= link_to 'list users', collection_path
