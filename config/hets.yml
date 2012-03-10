@@ -1,9 +1,9 @@
 hets_path:
-  - '/usr/lib/hets/hets'
-  - '~/uni/awe/Hets/hets'
+  - /usr/lib/hets/hets
+  - ~/uni/awe/Hets/hets
 hets_lib:
-  - '/usr/lib/hets/hets-lib'
-  - '~/uni/awe/Hets-lib'
+  - /usr/lib/hets/hets-lib
+  - ~/uni/awe/Hets-lib
 hets_owl_tools:
-  - '/usr/lib/hets/hets-owl-tools'
-  - '~/uni/awe/Hets/OWL2'
+  - /usr/lib/hets/hets-owl-tools
+  - ~/uni/awe/Hets/OWL2
