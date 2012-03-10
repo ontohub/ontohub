@@ -1,4 +1,6 @@
 %h2= @page_title = 'Register'
+  
+= render "links"
 
 = semantic_form_for resource, :url => registration_path(resource_name) do |f|
   =# devise_error_messages!
@@ -10,5 +12,3 @@
   
   = f.actions do
     = f.action :submit, :label => 'Create Account', :button_html => { :disable_with => t(:wait) }
-  
-= render "links"
