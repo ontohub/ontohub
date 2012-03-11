@@ -10,7 +10,7 @@
 .permissionList{'data-uri' => url_for([resource, :team_users])}
   
   %ul
-    = render :collection => resource.team_users, :partial => 'user', :locals => {:show_admin_links => team_admin?}
+    = render :collection => @team_users, :partial => 'user', :locals => {:show_admin_links => team_admin?}
   
   - if team_admin?
     = form_for :team_user, :method => :put, :remote => true, :html => {:class => 'editTemplate'} do |f|

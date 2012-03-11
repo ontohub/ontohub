@@ -6,6 +6,10 @@ class TeamsController < InheritedResources::Base
   before_filter :authenticate_user!
   before_filter :check_team_admin!, :only => [:edit, :update, :destroy]
   
+  def show
+    @team_users = resource.team_users.joins(:user).order(:name).all
+  end
+  
   def create
     build_resource.admin_user = current_user
     super
