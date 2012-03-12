@@ -2,3 +2,19 @@
 // Show spinner during XHR
 .ui-autocomplete-loading
   background: white url('https://ajax.googleapis.com/ajax/libs/jqueryui/1.8.2/themes/smoothness/images/ui-anim_basic_16x16.gif') right center no-repeat
+
+.ui-autocomplete a, .permissionList li
+
+  &[data-type=Team]
+    background:
+      image: image-url('icons/team.png')
+      repeat: no-repeat
+      position:  5px center
+    padding-left: 30px !important
+
+  &[data-type=User]
+    background:
+      image: image-url('icons/user.png')
+      repeat: no-repeat
+      position:  5px center
+    padding-left: 30px !important

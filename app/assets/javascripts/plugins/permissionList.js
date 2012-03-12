@@ -16,7 +16,8 @@ $.widget("ui.permissionList", {
     });
     
     // Attach Autocomplete to inputs
-    this.autocomplete = element.find("input.autocomplete").autocomplete({
+    this.autocomplete = element.find("input.autocomplete")
+    this.autocomplete.autocomplete({
       minLength : 3,
       source : function(request, response) {
         return self.autocompleteSource(request, response);
@@ -24,7 +25,7 @@ $.widget("ui.permissionList", {
       select : function(event, ui) {
         return self.autocompleteSelect(event, ui);
       },
-    });
+    }).data( "autocomplete")._renderItem = this.autocompleteIcon;
 
     // Never submit the autocompletion form
     element.on("submit", "form.add", function(event) {
@@ -158,13 +159,20 @@ $.widget("ui.permissionList", {
     
     // Create the permission
     $.post(this.element.data('uri'), params, function(data) {
-      data = $(data)
+      data = $(data).hide();
       list.append(data);
-      data.effect("highlight", {}, 1500);
+      data.fadeIn('slow');
     });
 
-    $(this.autocomplete).val('');
+    this.autocomplete.val('');
     return false;
+  },
+  
+  autocompleteIcon: function( ul, item ) {
+    return $( "<li></li>" )
+      .data( "item.autocomplete", item )
+      .append( "<a data-type='"+item.type+"'>" + item.label +  "</a>" )
+      .appendTo( ul );
   },
   
   // camelCase to under_score
