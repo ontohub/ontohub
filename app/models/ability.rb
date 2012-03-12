@@ -13,6 +13,7 @@ class Ability
       can [:edit, :update, :destroy], Ontology do |subject|
         subject.permission?(:owner, user)
       end
+      can [:new, :create], Ontology
       
       # Team permissions
       can [:create, :show, :index], Team

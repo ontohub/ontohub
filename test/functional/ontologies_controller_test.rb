@@ -7,6 +7,7 @@ class OntologiesControllerTest < ActionController::TestCase
   context 'Ontology Instance' do
     setup do
       @ontology = Factory :ontology
+      @user     = Factory :user
     end
     
     context 'on GET to index' do
@@ -25,22 +26,78 @@ class OntologiesControllerTest < ActionController::TestCase
       should respond_with :success
     end
     
-    context 'on GET to edit' do
+    context 'signed in' do
       setup do
-        get :edit, :id => @ontology.to_param
+        sign_in @user
       end
       
-      should respond_with :success
+      context 'on GET to new' do
+        setup do
+          get :new
+        end
+        
+        should respond_with :success
+        should render_template :new
+      end
+      
+      context 'on POST to create' do
+        
+        context 'with invalid input' do
+          setup do
+            post :create, :ontology => {
+              uri: 'fooo',
+              versions_attributes: [{
+                source_uri: 'fooo'
+              }],
+            }
+          end
+          
+          should respond_with :success
+          should render_template :new
+        end
+        
+        context 'with valid input' do
+          setup do
+            post :create, :ontology => {
+              uri: 'fooo',
+              versions_attributes: [{
+                source_uri: 'http://example.com/dummy.ontology'
+              }],
+            }
+          end
+          
+          should respond_with :redirect
+        end
+        
+      end
     end
     
-    context 'on PUT to update' do
+    context 'owned by signed in user' do
       setup do
-        put :update, 
-          :id   => @ontology.to_param,
-          :name => 'foo bar'
+        sign_in @user
+        @ontology.permissions.create! \
+          :role    => 'owner',
+          :subject => @user
       end
       
-      should redirect_to("show action"){ @ontology }
+      context 'on GET to edit' do
+        setup do
+          get :edit, :id => @ontology.to_param
+        end
+        
+        should respond_with :success
+        should render_template :edit
+      end
+      
+      context 'on PUT to update' do
+        setup do
+          put :update, 
+            :id   => @ontology.to_param,
+            :name => 'foo bar'
+        end
+        
+        should redirect_to("show action"){ @ontology }
+      end
     end
   end
   

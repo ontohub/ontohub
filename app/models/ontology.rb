@@ -12,6 +12,8 @@ class Ontology < ActiveRecord::Base
 
   attr_accessible :uri, :name, :description, :logic_id
 
+  validates_presence_of :uri
+  
   strip_attributes :only => [:name, :uri]
   
   def to_s
