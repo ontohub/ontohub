@@ -44,17 +44,22 @@ gem "strip_attributes", "~> 1.0"
 # Manage uploads
 gem 'carrierwave'
 
+# Async jobs
+gem 'resque'
+
 group :test do
   gem 'shoulda'
   gem 'shoulda-matchers'
   gem 'shoulda-context'
   gem "shoulda_routing_macros", "~> 0.1.2"
-  
   gem "factory_girl_rails", "~> 1.7.0"
+  gem "faker", "~> 1.0"
 end
 
 group :development do
   gem 'capistrano'
 end
 
-gem "faker", "~> 1.0"
+group :production do
+  gem 'god'
+end
