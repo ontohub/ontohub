@@ -29,12 +29,10 @@ class TeamUsersControllerTest < ActionController::TestCase
       context 'as user' do
         setup do
           sign_in @user
+          get :index, :team_id => @team.to_param
         end
-        should 'not get index' do
-          assert_raises ActiveRecord::RecordNotFound do
-            get :index, :team_id => @team.to_param
-          end
-        end
+        should set_the_flash.to(/not authorized/)
+        should redirect_to("root path"){ :root }
       end
     end
     
@@ -98,18 +96,6 @@ class TeamUsersControllerTest < ActionController::TestCase
         should respond_with :success
       end
       
-      context 'other user deleting team admin' do
-        setup do
-          sign_in @user
-        end
-        should 'throw not found exception' do
-          assert_raises ActiveRecord::RecordNotFound do
-            xhr :delete, :destroy,
-              :team_id   => @team.id,
-              :id        => @admin.id
-          end
-        end
-      end
     end
   end
   

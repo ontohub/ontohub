@@ -7,6 +7,8 @@ class PrivilegeList::Base < InheritedResources::Base
   actions :create, :update, :destroy
   rescue_from Permission::PowerVaccuumError, :with => :power_error
   
+  before_filter :authorize_parent
+  
   def create
     build_resource.save!
     respond_to do |format|
@@ -27,6 +29,10 @@ class PrivilegeList::Base < InheritedResources::Base
   end
   
   protected
+  
+  def authorize_parent
+    authorize! :edit, parent
+  end
   
   helper_method :permission_list
   def permission_list

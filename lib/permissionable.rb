@@ -6,10 +6,12 @@ module Permissionable
   end
 
   def permission?(role, user)
-    # Deny if role is unknown or user is wrong object.
-    return false unless [:owner, :editor].include? role
-    return false unless user.is_a? User
-
+    # Deny if user is nil
+    return false unless user
+    
+    # Deny if user is of wrong type
+    raise ArgumentError, "no user given" unless user.is_a? User
+    
     # Allow any admin user.
     return true if user.admin? rescue nil
 

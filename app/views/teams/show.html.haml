@@ -2,9 +2,10 @@
 
 %ul.actions
   %li= link_to "My Teams", collection_path
-  %li= link_to "Edit Users", [resource, :team_users]
-  %li= link_to "Rename", edit_resource_path
-  %li= link_to "Delete", resource_path, method: :delete, confirm: "Do you really want to remove this team?"
+  - if can? :edit, resource
+    %li= link_to "Edit Users", [resource, :team_users]
+    %li= link_to "Rename", edit_resource_path
+    %li= link_to "Delete", resource_path, method: :delete, confirm: "Do you really want to remove this team?"
 
 %h3 Users
 

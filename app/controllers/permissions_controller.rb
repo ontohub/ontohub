@@ -3,7 +3,6 @@
 # 
 class PermissionsController < PrivilegeList::Base
   
-  before_filter :authenticate_user!
   belongs_to :ontology
  
   protected
@@ -14,10 +13,6 @@ class PermissionsController < PrivilegeList::Base
       :collection  => collection,
       :association => :subject,
       :scope       => [User, Team]
-  end
-  
-  def parent
-    super #TODO check access
   end
   
 end

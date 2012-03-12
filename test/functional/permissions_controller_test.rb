@@ -18,20 +18,9 @@ class PermissionsControllerTest < ActionController::TestCase
           get :index, :ontology_id => @ontology.to_param
         end
         
-        should respond_with :redirect
-        should set_the_flash.to(/log in/)
+        should set_the_flash.to(/not authorized/)
+        should redirect_to("root path"){ :root }
       end
-      
-      context 'signed in as user' do
-        setup do
-          sign_in @user
-          get :index, :ontology_id => @ontology.to_param
-        end
-        
-        should respond_with :success
-        should render_template :index
-      end
-      
       
     end
     

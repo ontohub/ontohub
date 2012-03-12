@@ -3,8 +3,6 @@
 # 
 class TeamUsersController < PrivilegeList::Base
   
-  before_filter :authenticate_user!
-  before_filter :parent
   belongs_to :team
   
   protected
@@ -15,11 +13,6 @@ class TeamUsersController < PrivilegeList::Base
       :collection  => collection,
       :association => :user,
       :scope       => User
-  end
-  
-  def parent
-    # only admins should administrate the given team
-    @team ||= current_user.team_users.admin.find_by_team_id!(params[:team_id]).team
   end
   
 end

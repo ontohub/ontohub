@@ -23,4 +23,9 @@ class Permission < ActiveRecord::Base
       subject_id:   subject.id,
       subject_type: subject.class.to_s
   }
+  
+  scope :role, ->(role) { where :role => role }
+  scope :owner, role(:owner)
+  scope :owner, role(:editor)
+  
 end

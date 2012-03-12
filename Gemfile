@@ -32,6 +32,9 @@ gem 'nokogiri', '~> 1.5.0'
 # Authentication
 gem 'devise', '~> 2.0.0'
 
+# Authorization
+gem 'cancan', '~> 1.6.7'
+
 # Pagination
 gem 'kaminari'
 
