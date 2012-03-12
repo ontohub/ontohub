@@ -10,11 +10,15 @@ class User < ActiveRecord::Base
   
   strip_attributes :only => [:name, :email]
   
+  scope :admin, where(:admin => true)
+  
   scope :email_search, ->(query) { where "email ILIKE ?", "%" << query << "%" }
   
   scope :autocomplete_search, ->(query) {
     where("name ILIKE ? OR email ILIKE ?", "%" << query << "%", query)
   }
+  
+  before_destroy :check_remaining_admins
   
   def to_s
     name? ? name : email.split("@").first
@@ -35,6 +39,14 @@ class User < ActiveRecord::Base
   
   def email_required?
     deleted_at.nil?
+  end
+  
+  protected
+  
+  def check_remaining_admins
+    if User.admin.count < 2
+      raise Permission::PowerVaccuumError, "What the hell ... nobody cares for your site if you remove the only one admin!"
+    end
   end
 
 end

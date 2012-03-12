@@ -1,6 +1,15 @@
 require 'test_helper'
 
 class PermissionTest < ActiveSupport::TestCase
+  
+  [ 'owner', 'editor' ].each do |val|
+    should allow_value(val).for :role
+  end
+
+  [ nil, '','foo' ].each do |val|
+    should_not allow_value(val).for :role
+  end
+  
   context 'Ontology' do
     setup do
       @ontology = Factory :ontology

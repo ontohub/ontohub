@@ -26,6 +26,7 @@ team = Team.create! \
   team.users << user if i < 2
 end
 
+# Import ontologies
 Dir["#{Rails.root}/db/seeds/*.xml"].each do |file|
   basename = File.basename(file)
   
@@ -46,3 +47,16 @@ end
 
   o.import_xml_from_file 'test/fixtures/ontologies/valid.xml'
 end
+
+
+# Add permissions to the first ontology
+ontology = Ontology.first
+
+ontology.permissions.create! \
+  subject: Team.first,
+  role: 'owner'
+
+ontology.permissions.create! \
+  subject: User.first,
+  role: 'editor'
+
