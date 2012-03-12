@@ -254,6 +254,7 @@ CREATE TABLE ontology_versions (
     source_uri character varying(255),
     raw_file character varying(255),
     xml_file character varying(255),
+    last_error character varying(255),
     created_at timestamp without time zone NOT NULL,
     updated_at timestamp without time zone NOT NULL
 );

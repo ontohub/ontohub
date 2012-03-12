@@ -6,6 +6,7 @@ class CreateOntologyVersions < ActiveRecord::Migration
       t.string :source_uri
       t.string :raw_file
       t.string :xml_file
+      t.string :last_error
 
       t.timestamps :null => false
     end

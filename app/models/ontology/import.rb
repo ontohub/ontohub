@@ -17,6 +17,8 @@ module Ontology::Import
         axiom:    Proc.new { |h|
           axioms.update_or_create_from_hash h
         }
+
+      save!
     end
   end
 
