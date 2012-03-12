@@ -4,7 +4,7 @@ class TeamUsersControllerTest < ActionController::TestCase
   
   should_map_nested_resources :teams, :team_users,
     :as     => 'users',
-    :except => [:index, :new, :show, :edit, :delete]
+    :except => [:new, :show, :edit, :delete]
   
   context 'teams' do
     setup do
@@ -12,6 +12,30 @@ class TeamUsersControllerTest < ActionController::TestCase
       @user  = Factory :user
       @team  = Factory :team,
         :admin_user => @admin
+    end
+    
+    context 'on GET to index' do
+      context 'as admin' do
+        setup do
+          sign_in @admin
+          get :index, :team_id => @team.to_param
+        end
+        
+        should render_template 'permission_list/_permission_list'
+        should render_template :index
+        should respond_with :success
+      end
+      
+      context 'as user' do
+        setup do
+          sign_in @user
+        end
+        should 'not get index' do
+          assert_raises ActiveRecord::RecordNotFound do
+            get :index, :team_id => @team.to_param
+          end
+        end
+      end
     end
     
     context 'adding a user' do

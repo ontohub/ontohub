@@ -61,7 +61,7 @@ class TeamsControllerTest < ActionController::TestCase
         
         should respond_with :success
         should render_template :show
-        should assign_to :permission_list
+        should assign_to :team_users
       end
       
       context 'on GET to edit' do

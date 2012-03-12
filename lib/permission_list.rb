@@ -3,32 +3,24 @@
 # 
 class PermissionList
   
-  attr_reader :model, :collection_path, :collection, :scope, :polymorphic
+  attr_reader :model, :collection_path, :collection, :scope, :association
   
   # 
   # first argument: restful path to the permissions collection
   # second argument: options hash that may contain the following elements:
   # 
   # :scope       => scope for the autocompleter
-  # :collection  => all current permissions to show
   # :model       => class that represents the permissions
-  # :editable    => boolean, true if the permission list should be editable
-  # :polymorphic => name of the attribute, if polymorphic
-  # 
+  # :association => name of the activerecord-association
+  # :collection  => collection of all permissions
   def initialize(collection_path, options)
     @collection_path = collection_path
     @editable        = true
     
     options.each do |key,value|
       case key
-        when :collection
-          @collection = value
-        when :editable
-          @editable = value
-        when :model
-          @model = value
-        when :polymorphic
-          @polymorphic = value
+        when :model, :collection, :association
+          instance_variable_set("@#{key}", value)
         when :scope
           value = [value] unless value.is_a?(Array)
           value.each do |v|
@@ -40,13 +32,14 @@ class PermissionList
       end
     end
     
-    raise ArgumentError, "no model given" unless @model
-    raise ArgumentError, "no collection given" unless @collection
-    raise ArgumentError, "no scope given"      if @scope.blank?
+    # check required attributes
+    for key in %w( model scope collection )
+      raise ArgumentError, "#{key} is not set" unless instance_variable_get("@#{key}")
+    end
   end
   
-  def editable?
-    @editable
+  def polymorphic?
+    @model.reflect_on_association(@association).options[:polymorphic]==true
   end
   
   # path for rendering a PermissionsList instance
@@ -73,6 +66,15 @@ class PermissionList
   
   def t(key)
     I18n.t(key, :scope => "permission_list.#{model_underscore}" )
+  end
+  
+  def to_data
+    {
+      'data-model'       => model,
+      'data-scope'       => scope,
+      'data-polymorphic' => polymorphic? && 'true',
+      'data-association' => association
+    }
   end
   
 end

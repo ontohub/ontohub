@@ -2,9 +2,15 @@
 
 %ul.actions
   %li= link_to "My Teams", collection_path
+  %li= link_to "Edit Users", [resource, :team_users]
   %li= link_to "Rename", edit_resource_path
   %li= link_to "Delete", resource_path, method: :delete, confirm: "Do you really want to remove this team?"
 
 %h3 Users
 
-= render @permission_list
+%ul
+  - @team_users.each do |team_user|
+    %li
+      = team_user.user
+      - if team_user.admin?
+        (admin)
