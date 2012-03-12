@@ -10,8 +10,6 @@ namespace :god do
   end
   
   desc 'Restart god'
-  task :restart do
-    stop
-    start
+  task :restart => [:stop, :start] do
   end
 end

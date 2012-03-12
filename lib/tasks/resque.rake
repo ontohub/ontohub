@@ -6,7 +6,7 @@ namespace :resque do
     Resque.before_fork = Proc.new { ActiveRecord::Base.establish_connection }
   end
 
-  task :restart => :environment do
+  task :stop => :environment do
     pids = Array.new
     
     Resque.workers.each do |worker|
@@ -17,6 +17,6 @@ namespace :resque do
       system "kill -QUIT #{pids.join(' ')}"
     end
     
-    system 'rm /var/run/god/resque*.pid'
+    system 'rm /var/run/god/resque*.pid 2>/dev/null'
   end
 end
