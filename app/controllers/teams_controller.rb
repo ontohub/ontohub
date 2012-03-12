@@ -7,7 +7,12 @@ class TeamsController < InheritedResources::Base
   before_filter :check_team_admin!, :only => [:edit, :update, :destroy]
   
   def show
-    @team_users = resource.team_users.joins(:user).order(:name).all
+    team_users = resource.team_users.joins(:user).order(:name).all
+    @permission_list = PermissionList.new [resource, :team_users],
+      :model      => TeamUser,
+      :collection => team_users,
+      :editable   => team_admin?,
+      :scope      => User
   end
   
   def create
@@ -16,6 +21,12 @@ class TeamsController < InheritedResources::Base
   end
   
   protected
+  
+  def permission_list
+    raise NotImplementedError
+    # you need to override this method with something like:
+    # @permission_list ||= PermissionList.new ...
+  end
   
   def check_team_admin!
     unless team_admin?

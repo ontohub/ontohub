@@ -1,0 +1,3 @@
+= form_for :permission, :method => :put, :remote => true, :html => {:class => 'editTemplate'} do |f|
+  = f.select :role, options_for_select(Permission::ROLES), :id  => "role_%RANDOM%"
+  = submit_tag "save"

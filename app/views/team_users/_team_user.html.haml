@@ -1,0 +1,10 @@
+%li{'data-id' => team_user.user_id, 'data-admin' => (team_user.admin ? 1 : 0), 'data-uri' => url_for([team_user.team, team_user]) }
+  - if permission_list.editable?
+    .functions
+      = link_to 'edit', '#', rel: :edit
+      = link_to 'delete', [team_user.team, team_user], method: :delete, remote: true, confirm: 'really delete?'
+  
+  = team_user.user
+  
+  - if team_user.admin?
+    (admin)

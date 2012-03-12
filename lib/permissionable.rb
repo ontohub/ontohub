@@ -2,7 +2,7 @@ module Permissionable
   extend ActiveSupport::Concern
 
   included do
-    has_many :permissions, :as => :permissionable
+    has_many :permissions, :as => :item
   end
 
   def permission?(role, user)

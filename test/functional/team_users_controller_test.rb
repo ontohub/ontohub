@@ -2,7 +2,7 @@ require 'test_helper'
 
 class TeamUsersControllerTest < ActionController::TestCase
   
-  should_map_nested_resources :teams, :team_users, \
+  should_map_nested_resources :teams, :team_users,
     :as     => 'users',
     :except => [:index, :new, :show, :edit, :delete]
   
@@ -23,7 +23,7 @@ class TeamUsersControllerTest < ActionController::TestCase
             :team_user => {:user_id => @user.id}
         end
         
-        should render_template '/teams/_user'
+        should render_template 'team_users/_team_user'
         should respond_with :success
       end
     end
@@ -59,7 +59,7 @@ class TeamUsersControllerTest < ActionController::TestCase
             :team_user => {:admin => 1}
         end
         
-        should render_template '/teams/_user'
+        should render_template 'team_users/_team_user'
         should respond_with :success
       end
       

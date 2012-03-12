@@ -7,16 +7,4 @@
 
 %h3 Users
 
-.permissionList{'data-uri' => url_for([resource, :team_users])}
-  
-  %ul
-    = render :collection => @team_users, :partial => 'user', :locals => {:show_admin_links => team_admin?}
-  
-  - if team_admin?
-    = form_for :team_user, :method => :put, :remote => true, :html => {:class => 'editTemplate'} do |f|
-      = f.check_box :admin, :id  => "admin_%RANDOM%"
-      = f.label     :admin, 'Admin privileges', :for => "admin_%RANDOM%"
-      = submit_tag "save"
-    %form.add
-      = text_field_tag :name, nil, :class => 'autocomplete', :placeholder => 'Add users to your team', 'data-scope' => 'user'
-      %button.help{:title => 'Enter at least three characters or complete e-mail addresses to start searching.'} ?
+= render @permission_list
