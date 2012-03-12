@@ -1,7 +1,7 @@
 namespace :god do
   desc 'Start god'
   task :start do
-    system 'cd ~/current && RAILS_ENV=production bundle exec god -c ~/current/config/god/app.god'
+    system 'cd ~/current && RAILS_ENV=production bundle exec god -c ~/current/config/god/app.rb'
   end
   
   desc 'Stop god'
