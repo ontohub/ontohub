@@ -219,6 +219,8 @@ CREATE TABLE ontologies (
     state character varying(255) DEFAULT 'pending'::character varying NOT NULL,
     name character varying(255),
     description text,
+    entities_count integer,
+    axioms_count integer,
     created_at timestamp without time zone NOT NULL,
     updated_at timestamp without time zone NOT NULL
 );

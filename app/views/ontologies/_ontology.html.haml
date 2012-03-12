@@ -1,8 +1,14 @@
 %li
   %ul.stats
-    %li= ontology.logic
-    %li= link_to pluralize(ontology.entities.count, 'Entity'), [ontology, :entities]
-    %li= link_to pluralize(ontology.axioms.count, 'Axiom'), [ontology, :axioms]
+    - if ontology.logic
+      %li= ontology.logic
+    
+    - if ontology.entities_count
+      %li= link_to pluralize(ontology.entities_count, 'Entity'), [ontology, :entities]
+      %li= link_to pluralize(ontology.axioms_count, 'Axiom'), [ontology, :axioms]
+    
+    - else
+      %li= ontology.state
   
   %h3= link_to ontology, ontology
   

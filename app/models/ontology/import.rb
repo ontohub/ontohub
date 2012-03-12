@@ -2,9 +2,8 @@ module Ontology::Import
 	extend ActiveSupport::Concern
 
   def import_xml(io)
-    @logic_name = nil
-    @entities   = []
-    @axioms     = []
+    entities_count   = 0
+    axioms_count     = 0
 
     transaction do
       OntologyParser.parse io,
@@ -13,11 +12,16 @@ module Ontology::Import
         },
         symbol:   Proc.new { |h|
           entities.update_or_create_from_hash h
+          entities_count += 1
         },
         axiom:    Proc.new { |h|
           axioms.update_or_create_from_hash h
+          axioms_count += 1
         }
-
+      
+      self.entities_count = entities_count
+      self.axioms_count   = axioms_count
+      
       save!
     end
   end
