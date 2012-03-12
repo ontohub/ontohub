@@ -5,15 +5,14 @@ class PermissionsController < PrivilegeList::Base
   
   before_filter :authenticate_user!
   belongs_to :ontology
-  
+ 
   protected
   
   def permission_list
     @permission_list ||= PermissionList.new [parent, :permissions],
       :model       => Permission,
-      :polymorphic => 'subject',
-      :collection  => collection.all,
-      :editable    => true, # TODO
+      :collection  => collection,
+      :association => :subject,
       :scope       => [User, Team]
   end
   

@@ -47,4 +47,20 @@ class UserTest < ActiveSupport::TestCase
     
   end
   
+  context 'Admin instance' do
+    setup do
+      @admins = 2.times.map{ Factory :admin }
+    end
+    
+    should 'destroy one admin' do
+      @admins.first.destroy
+    end
+    
+    should 'destroy not destroy all admins' do
+      assert_raises Permission::PowerVaccuumError do
+        @admins.each(&:destroy)
+      end
+    end
+  end
+  
 end

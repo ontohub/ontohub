@@ -4,15 +4,17 @@
 class TeamUsersController < PrivilegeList::Base
   
   before_filter :authenticate_user!
+  before_filter :parent
   belongs_to :team
   
   protected
   
   def permission_list
     @permission_list ||= PermissionList.new [parent, :team_users],
-      :model      => TeamUser,
-      :collection => collection.all,
-      :scope      => User
+      :model       => TeamUser,
+      :collection  => collection,
+      :association => :user,
+      :scope       => User
   end
   
   def parent

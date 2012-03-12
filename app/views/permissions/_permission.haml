@@ -1,8 +1,8 @@
 %li{'data-id' => permission.subject_id, 'data-type' => permission.subject_type, 'data-role' => permission.role, 'data-uri' => url_for([permission.item, permission]) }
-  - if permission_list.editable?
-    .functions
-      = link_to 'edit', '#', rel: :edit
-      = link_to 'delete', [permission.item, permission], method: :delete, remote: true, confirm: 'really delete?'
+  
+  .functions
+    = link_to 'edit',   '#', rel: :edit
+    = link_to 'delete', '#', rel: :delete
   
   %strong #{permission.subject_type}
   = permission.subject

@@ -3,6 +3,7 @@ $.widget("ui.permissionList", {
   _create : function() {
     var self = this, element = this.element;
     
+    this.association = element.data('association')
     this.scope       = element.data('scope').split(",");
     this.polymorphic = element.data('polymorphic')
     this.model       = this.toUnderscore(element.data('model'));
@@ -30,11 +31,25 @@ $.widget("ui.permissionList", {
       event.preventDefault();
     });
     
-    // User removal succeeded
-    element.on("ajax:success", "a[data-method=delete]", function() {
+    // Removal of permissions
+    element.on("click", "a[rel=delete]", function() {
       var li = $(this).closest("li");
-      li.fadeOut(function() {
-        li.remove();
+      
+      if(!confirm("really delete?"))
+        return;
+      
+      $.ajax({
+        type: 'POST',
+        url: li.data('uri'),
+        data: {_method: 'delete'},
+        success: function(){
+          li.fadeOut(function() {
+            li.remove();
+          })
+        },
+        error: function(xhr, status, error){
+          li.trigger('ajax:error', [xhr, status, error]);
+        }
       });
     });
     
@@ -129,19 +144,19 @@ $.widget("ui.permissionList", {
       }
     })
   },
+  
   // autocomplete select-handler
   autocompleteSelect : function(event, ui) {
     var input = $(this);
     var list = this.element.find("ul");
     var params = {}
     
+    params[this.model + '[' + this.association + '_id]'] = ui.item.id;
     if(this.polymorphic){
-      params[this.model + '[' + this.polymorphic + '_id]'] = ui.item.id
-      params[this.model + '[' + this.polymorphic + '_type]'] = ui.item.type
-    }else{
-      params[this.model + '[user_id]'] = ui.item.id
+      params[this.model + '[' + this.association + '_type]'] = ui.item.type;
     }
-
+    
+    // Create the permission
     $.post(this.element.data('uri'), params, function(data) {
       data = $(data)
       list.append(data);

@@ -7,12 +7,7 @@ class TeamsController < InheritedResources::Base
   before_filter :check_team_admin!, :only => [:edit, :update, :destroy]
   
   def show
-    team_users = resource.team_users.joins(:user).order(:name).all
-    @permission_list = PermissionList.new [resource, :team_users],
-      :model      => TeamUser,
-      :collection => team_users,
-      :editable   => team_admin?,
-      :scope      => User
+    @team_users = resource.team_users.joins(:user).order(:name).all
   end
   
   def create
