@@ -49,14 +49,14 @@ end
 end
 
 
-# Add permissions to the first ontology
-ontology = Ontology.first
+# Add permissions
+Ontology.find_each do |o|
+  o.permissions.create! \
+    subject: Team.first,
+    role: 'owner'
+end
 
-ontology.permissions.create! \
-  subject: Team.first,
-  role: 'owner'
-
-ontology.permissions.create! \
+Ontology.first.permissions.create! \
   subject: User.first,
   role: 'editor'
 
