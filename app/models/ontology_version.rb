@@ -20,19 +20,20 @@ class OntologyVersion < ActiveRecord::Base
   def parse
     raise ArgumentError.new('No raw_file set.') unless raw_file?
 
-    begin
-      path = Hets.parse(self.raw_file.current_path)
-    rescue Hets::HetsError => e
-      self.ontology.state = 'failed'
-      raise e
+    do_or_set_failed do
+      @path = Hets.parse(self.raw_file.current_path)
     end
 
-    self.xml_file = File.open(path)
-    self.save!
+    self.xml_file = File.open(@path)
+    save!
 
-    self.ontology.import_latest_version
+    do_or_set_failed do
+      self.ontology.import_latest_version
+    end
 
-    File.delete(path)
+    File.delete(@path)
+
+    update_state! :done
   end
 
 protected
@@ -47,5 +48,24 @@ protected
     if raw_file.size > 10.megabytes.to_i
       errors.add :raw_file, 'Maximum upload size is 10M.'
     end
+  end
+
+  def do_or_set_failed(&block)
+    raise ArgumentError.new('No block given.') unless block_given?
+
+    begin
+      yield
+    rescue Exception => e
+      update_state! :failed, e.message
+      raise e
+    end
+  end
+
+  def update_state!(state, error_message = nil)
+    ontology.state = state.to_s
+    ontology.save!
+
+    self.last_error = error_message
+    save!
   end
 end

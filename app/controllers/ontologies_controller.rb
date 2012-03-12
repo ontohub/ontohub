@@ -4,6 +4,8 @@ class OntologiesController < InheritedResources::Base
 
   load_and_authorize_resource :except => [:index, :show]
 
+  respond_to :json
+
   def new
     @version = build_resource.versions.build
   end
@@ -12,6 +14,7 @@ class OntologiesController < InheritedResources::Base
     @version = build_resource.versions.first
     @version.user = current_user
     super
+    @version.async :parse
   end
 
 end
