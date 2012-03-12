@@ -1,4 +1,6 @@
 class OntologyVersion < ActiveRecord::Base
+  @queue = :hets
+
   belongs_to :user
   belongs_to :ontology
 
@@ -11,13 +13,27 @@ class OntologyVersion < ActiveRecord::Base
     :with => URI::regexp(%w(http https file gopher)),
     :if => :source_uri?
 
-# validates :raw_file, :file_size => {
-#   :maximum => 10.megabytes.to_i
-# }, :if => :raw_file?
-
   validate :validates_file_or_source_uri
 
   validate :validates_size_of_raw_file, :if => :raw_file?
+
+  def parse
+    raise ArgumentError.new('No raw_file set.') unless raw_file?
+
+    begin
+      path = Hets.parse(self.raw_file.current_path)
+    rescue Hets::HetsError => e
+      self.ontology.state = 'failed'
+      raise e
+    end
+
+    self.xml_file = File.open(path)
+    self.save!
+
+    self.ontology.import_latest_version
+
+    File.delete(path)
+  end
 
 protected
 

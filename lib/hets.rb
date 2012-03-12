@@ -33,11 +33,12 @@ module Hets
     config = Config.new
 
     status = `#{config.path} -o sym.xml -v2 #{input_file} 2>/dev/null`
+    status = status.split("\n").last
 
-    begin
-      status.split("\n").last.split(': ').last
-    rescue NoMethodError
+    if status =~ /^\*\*\*\ Error/
       raise HetsError.new(status)
     end
+
+    status.split(': ').last
   end
 end
