@@ -16,14 +16,18 @@ class OntologyImportXMLTest < ActiveSupport::TestCase
     end
 
     context 'entity count' do
-      should 'be 5' do
-        assert_equal 5, @ontology.entities.count
+      should 'be correct' do
+        count = @ontology.entities.count
+        assert_equal 5, count
+        assert_equal count, @ontology.entities_count
       end
     end
 
     context 'axiom count' do
-      should 'be 1' do
-        assert_equal 1, @ontology.axioms.count
+      should 'be correct' do
+        count = @ontology.axioms.count
+        assert_equal 1, count
+        assert_equal count, @ontology.axioms_count
       end
     end
   end

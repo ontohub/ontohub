@@ -10,6 +10,7 @@ Ontohub::Application.routes.draw do
   resources :ontologies do
     resources :entities, :only => :index
     resources :axioms,   :only => :index
+    resources :ontology_versions, :only => :index, :path => 'versions'
     resources :permissions, :only => [:index, :create, :update, :destroy]
   end
   

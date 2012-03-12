@@ -1,0 +1,17 @@
+- @page_title = "#{parent.to_s} / Versions"
+%h2
+  = link_to parent, parent
+  \/
+  Versions
+
+%p
+  = pluralize(collection.count, 'Version')
+
+%table
+  %thead
+    %tr
+      %td Created
+      %td Source
+      %td Uploaded by
+  %tbody
+    = render collection
