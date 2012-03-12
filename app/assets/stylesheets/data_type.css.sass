@@ -1,0 +1,22 @@
+
+.ui-autocomplete a, .permissionList li, span
+
+  &[data-type=Team]
+    background:
+      image: image-url('icons/team.png')
+      repeat: no-repeat
+      position:  5px center
+    padding-left: 30px !important
+
+  &[data-type=User]
+    background:
+      image: image-url('icons/user.png')
+      repeat: no-repeat
+      position:  5px center
+    padding-left: 30px !important
+
+// inline listings
+span[data-type]
+  background-position: 0px center
+  padding-left: 20px !important
+  padding-right: 5px

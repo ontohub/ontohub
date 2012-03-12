@@ -7,7 +7,9 @@
     %td= resource.name
   %tr
     %td Owner
-    %td= resource.owner rescue '[coming soon]' # TODO
+    %td
+      - for owner in resource.permissions.owner
+        %span{'data-type' => owner.subject_type}= owner.subject
   %tr
     %td Created at
     %td= l resource.created_at
