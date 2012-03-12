@@ -5,7 +5,7 @@ class Autocomplete
   
   class InvalidScope < Exception; end
   
-  SCOPES = %w( user team )
+  SCOPES = %w( User Team )
   
   def initialize
     # scope_name => excluded_ids
@@ -22,12 +22,14 @@ class Autocomplete
   
   # search the added scopes
   def search(query, limit = 10)
+    raise "no scopes added" if @scopes.empty?
+    
     result = []
     
     @scopes.each do |name, without_ids|
       
       # get class of scope
-      scope = name.camelize.constantize
+      scope = name.constantize
       
       # exclude the given ids
       scope = scope.without_ids(without_ids) if without_ids.any?

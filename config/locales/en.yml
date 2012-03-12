@@ -12,3 +12,10 @@ en:
       ontology_version:
         source_uri: Source URI
         raw_file: Source File
+  permission_list:
+    team_user:
+      placeholder: Add users to your team
+      help: Enter at least three characters or complete e-mail addresses to start searching.
+    permission:
+      placeholder: Add teams or users
+      help: Enter at least three characters to search for users or teams.

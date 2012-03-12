@@ -10,10 +10,11 @@ Ontohub::Application.routes.draw do
   resources :ontologies do
     resources :entities, :only => :index
     resources :axioms,   :only => :index
+    resources :permissions, :only => [:index, :create, :update, :destroy]
   end
   
   resources :teams do
-    resources :team_users, :only => [:create, :update, :destroy], :path => 'users'
+    resources :team_users, :only => [:index, :create, :update, :destroy], :path => 'users'
   end
   
   get 'autocomplete' => 'autocomplete#index'

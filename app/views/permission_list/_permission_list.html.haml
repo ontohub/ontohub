@@ -1,0 +1,9 @@
+.permissionList{'data-uri' => url_for(permission_list.collection_path), 'data-model' => permission_list.model, 'data-scope' => permission_list.scope, 'data-polymorphic' => permission_list.polymorphic}
+  
+  %ul
+    = render :collection => permission_list.collection, :partial => permission_list.permission_path, :locals => {:permission_list => permission_list}
+  - if permission_list.editable?
+    = render :partial => permission_list.form_path
+    %form.add
+      = text_field_tag :name, nil, :class => 'autocomplete', :placeholder => permission_list.t(:placeholder)
+      %button.help{:title => permission_list.t(:help) } ?

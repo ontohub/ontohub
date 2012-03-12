@@ -15,7 +15,7 @@ class AutocompleteControllerTest < ActionController::TestCase
       context 'with results' do
         setup do
           get :index,
-            scope: 'user,team',
+            scope: 'User,Team',
             term:  @term
         end
         
@@ -30,9 +30,9 @@ class AutocompleteControllerTest < ActionController::TestCase
       context 'with results, one excluded' do
         setup do
           get :index,
-            scope: 'user,team',
+            scope: 'User,Team',
             term:  @term,
-            exclude: {user: @user.id}
+            exclude: {User: @user.id}
         end
         
         should 'return one entry' do
@@ -45,7 +45,7 @@ class AutocompleteControllerTest < ActionController::TestCase
       context 'without results' do
         setup do
           get :index,
-            scope: 'user,team',
+            scope: 'User,Team',
             term:  'xxxyyyzzz'
         end
         
@@ -67,12 +67,13 @@ class AutocompleteControllerTest < ActionController::TestCase
     end
     
     context 'without scope' do
-      setup do
-        get :index,
-          term:  'foo'
+      should "throw RuntimeError" do
+        assert_raises RuntimeError do
+          get :index,
+            term:  'foo'
+        end
       end
       
-      should respond_with :success
     end
     
     context 'on GET to index with empty term' do

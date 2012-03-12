@@ -26,6 +26,7 @@ class TeamsControllerTest < ActionController::TestCase
       end
       
       should respond_with :success
+      should render_template :index
       should assign_to(:team_users).with{ [] }
     end
     
@@ -35,6 +36,7 @@ class TeamsControllerTest < ActionController::TestCase
       end
       
       should respond_with :success
+      should render_template :new
     end
     
     context 'with teams' do 
@@ -48,17 +50,27 @@ class TeamsControllerTest < ActionController::TestCase
           get :index
         end
         
-        should assign_to(:team_users).with{ @team.team_users }
         should respond_with :success
+        should render_template :index
+      end
+      
+      context 'on GET to show' do
+        setup do
+          get :show, :id => @team.to_param
+        end
+        
+        should respond_with :success
+        should render_template :show
+        should assign_to :permission_list
       end
       
       context 'on GET to edit' do
         setup do
-          get :index
+          get :edit, :id => @team.to_param
         end
         
-        should assign_to(:team_users).with{ @team.team_users }
         should respond_with :success
+        should render_template :edit
       end
       
       context 'on DELETE to destroy' do

@@ -1,0 +1,4 @@
+= form_for :team_user, :method => :put, :remote => true, :html => {:class => 'editTemplate'} do |f|
+  = f.check_box :admin, :id  => "admin_%RANDOM%"
+  = f.label     :admin, 'Admin privileges', :for => "admin_%RANDOM%"
+  = submit_tag "save"

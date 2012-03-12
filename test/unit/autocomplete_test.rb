@@ -20,7 +20,7 @@ class AutocompleteTest < ActiveSupport::TestCase
       # two results
       context 'foo' do
         setup do
-          autocomplete 'user', @foo.name
+          autocomplete 'User', @foo.name
         end
         
         should 'find two users' do
@@ -32,7 +32,7 @@ class AutocompleteTest < ActiveSupport::TestCase
       context 'foobar' do
         context 'by name' do
           setup do
-            autocomplete 'user', @foobar.name
+            autocomplete 'User', @foobar.name
           end
           
           should 'find the user' do
@@ -42,7 +42,7 @@ class AutocompleteTest < ActiveSupport::TestCase
         
         context 'by email' do
           setup do
-            autocomplete 'user', @foobar.email
+            autocomplete 'User', @foobar.email
           end
           
           should 'find the user' do
@@ -54,7 +54,7 @@ class AutocompleteTest < ActiveSupport::TestCase
       # no results
       context 'baz' do
         setup do
-          autocomplete 'user', 'baz'
+          autocomplete 'User', 'baz'
         end
         
         should 'not found any users' do
@@ -67,7 +67,7 @@ class AutocompleteTest < ActiveSupport::TestCase
       # 1 user + 1 team
       context 'bar' do
         setup do
-          autocomplete 'user,team', 'bar'
+          autocomplete 'User,Team', 'bar'
         end
         
         should 'get two results' do
@@ -86,7 +86,7 @@ class AutocompleteTest < ActiveSupport::TestCase
       # 1 team
       context 'faker' do
         setup do
-          autocomplete 'user,team', @team_faker.name
+          autocomplete 'User,Team', @team_faker.name
         end
         
         should 'find the team' do
@@ -102,7 +102,7 @@ class AutocompleteTest < ActiveSupport::TestCase
       @users = 5.times.map{|i| Factory :user, :name => "foo#{i}" }
       
       ac = Autocomplete.new
-      ac.add_scope("user", @users.shift(2).map(&:id))
+      ac.add_scope("User", @users.shift(2).map(&:id))
       @result = ac.search("foo")
     end
     
