@@ -12,6 +12,9 @@ en:
       ontology_version:
         source_uri: Source URI
         raw_file: Source File
+    hints:
+      ontology_version:
+        source_uri: Please enter the URI to import the ontology from.
   permission_list:
     team_user:
       placeholder: Add users to your team
