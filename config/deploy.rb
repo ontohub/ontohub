@@ -25,5 +25,7 @@ namespace :deploy do
   desc "Restart Application"
   task :restart, :roles => :app, :except => { :no_release => true } do
     run "touch #{current_path}/tmp/restart.txt"
+    run "cd #{current_path} && RAILS_ENV=production rake resque:restart"
+    run "cd #{current_path} && RAILS_ENV=production rake god:restart"
   end
 end

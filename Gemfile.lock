@@ -71,6 +71,7 @@ GEM
     formtastic (2.1.1)
       actionpack (~> 3.0)
     fssm (0.2.8.1)
+    god (0.12.1)
     haml (3.1.4)
     has_scope (0.5.1)
     highline (1.6.11)
@@ -192,6 +193,7 @@ DEPENDENCIES
   faker (~> 1.0)
   foreigner
   formtastic (~> 2.1.1)
+  god
   haml (~> 3.1.4)
   has_scope
   inherited_resources
