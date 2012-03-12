@@ -20,17 +20,17 @@ header
       +border-radius(1em)
       +box-shadow(#fff 0px 0px 6px)
       padding: 2px 8px
-    &:hover strong
-      background-color: #900
-  
-  a:hover
-    color: lighten($primary-color, 100%)
-    //background-color: lighten($primary-color, 10%)
+
+    &:hover
+      color: lighten($primary-color, 100%)
+      background-color: lighten($primary-color, 10%)
   
   h1
     margin: 0em
     font-weight: normal
     display: inline-block
+    > a:hover
+      background-color: transparent
   
   nav
     &.admin

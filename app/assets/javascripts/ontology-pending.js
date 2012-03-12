@@ -1,7 +1,7 @@
 $(function() {
   var updateStatus = function() {
     $.getJSON(
-      document.location.pathname,
+      document.location.pathname + '.json',
       function(data) {
         if(data.state != 'pending') {
           location.reload();
