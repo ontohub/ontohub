@@ -31,6 +31,7 @@ GEM
     arel (3.0.2)
     bcrypt-ruby (3.0.1)
     builder (3.0.0)
+    cancan (1.6.7)
     capistrano (2.11.2)
       highline
       net-scp (>= 1.0.0)
@@ -167,6 +168,7 @@ PLATFORMS
   ruby
 
 DEPENDENCIES
+  cancan (~> 1.6.7)
   capistrano
   carrierwave
   coffee-rails (~> 3.2.1)

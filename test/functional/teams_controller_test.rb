@@ -10,7 +10,8 @@ class TeamsControllerTest < ActionController::TestCase
         get :index
       end
       
-      should redirect_to("log in"){ :new_user_session }
+      should set_the_flash.to(/not authorized/)
+      should redirect_to("root path"){ :root }
     end
   end
   
@@ -91,8 +92,8 @@ class TeamsControllerTest < ActionController::TestCase
             delete :destroy, :id => @team.id
           end
           
-          should redirect_to("index"){ @team }
-          should set_the_flash.to(/not admin/)
+          should redirect_to("root"){ :root }
+          should set_the_flash.to(/not authorized/)
         end
       end
     end
