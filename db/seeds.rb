@@ -40,7 +40,7 @@ end
 # Create 5 ontologies
 5.times do |n|
   o = Ontology.new \
-    uri:         "schema://host/ontology/#{n}",
+    uri:         "gopher://host/ontology/#{n}",
     name:        Faker::Lorem.words(2+rand(4)).join(" "),
     description: Faker::Lorem.paragraph
 

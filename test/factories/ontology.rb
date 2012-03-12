@@ -1,5 +1,5 @@
 Factory.sequence :uri do |n|
-  "schema://host/ontology/#{n}"
+  "gopher://host/ontology/#{n}"
 end
 
 FactoryGirl.define do
