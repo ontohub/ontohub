@@ -2,7 +2,6 @@
 %ol.latest
   - @comments.each do |comment|
     %li
-      = link_to comment.user, comment.user
       commented
       = link_to comment.commentable, comment.commentable
       = timestamp comment

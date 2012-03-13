@@ -26,6 +26,9 @@ class Ability
       
       # Comments
       can [:create], Comment
+      can [:destroy], Comment do |subject|
+        subject.user == user || subject.commentable.permission?(:owner, user)
+      end
       
     end
     

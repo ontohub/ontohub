@@ -2,6 +2,11 @@ require 'test_helper'
 
 class UserTest < ActiveSupport::TestCase
   
+  should have_many :comments
+  should have_many :ontology_versions
+  should have_many :team_users
+  should have_many :teams
+  
   should_strip_attributes :name, :email
   should_not_strip_attributes :password
   

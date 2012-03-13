@@ -3,7 +3,5 @@
   - @versions.each do |version|
     %li
       = link_to version.ontology, version.ontology
-      by
-      = link_to version.user, version.user
-      = timestamp version
+      = time_ago_in_words version.created_at
       ago

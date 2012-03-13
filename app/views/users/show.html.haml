@@ -1,9 +1,4 @@
 %h2= @page_title = resource
 
-%h3 Latest updates
-%ul
-  - @versions.each do |version|
-    %li
-      = link_to version.ontology, version.ontology
-      = time_ago_in_words version.created_at
-      ago
+= render :partial => 'versions'
+= render :partial => 'comments'
