@@ -30,7 +30,10 @@ class Ability
         subject.user == user || subject.commentable.permission?(:owner, user)
       end
       
-      # TODO can for Metadata!
+      can [:create, :destroy], Metadatum do |subject|
+        # TODO tests written?
+        subject.user == user || subject.metadatable.permission?(:editor, user)
+      end
       
     end
     

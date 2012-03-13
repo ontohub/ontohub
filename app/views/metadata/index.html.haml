@@ -15,5 +15,8 @@
     %tbody
       = render collection
 
-  - if user_signed_in?
+  - if can? :create, parent.metadata.build
     = render :partial => 'form'
+  - else
+    %p
+      Only owners and editors of this ontology are allowed to edit the metadata.

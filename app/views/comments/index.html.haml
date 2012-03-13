@@ -7,7 +7,7 @@
   %ol
     = render collection
   
-  - if signed_in?
+  - if can? :create, parent.comments.build
     = render :partial => 'form'
   - else
     %p
