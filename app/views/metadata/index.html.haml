@@ -3,15 +3,16 @@
 %p
   = pluralize(collection.count, 'Metadatum')
 
-%table
-  %thead
-    %tr
-      %th Key
-      %th Value
-      %th Last editor
-      %th Updated
-  %tbody
-    = render collection
+.metadatable
+  %table
+    %thead
+      %tr
+        %th Key
+        %th Value
+        %th Last editor
+        %th Updated
+    %tbody
+      = render collection
 
-- if user_signed_in?
-  = render :partial => 'form'
+  - if user_signed_in?
+    = render :partial => 'form'
