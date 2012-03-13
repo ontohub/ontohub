@@ -15,6 +15,9 @@ en:
     hints:
       ontology_version:
         source_uri: Please enter the URI to import the ontology from.
+    placeholders:
+      comment:
+        text: Write a new comment
   permission_list:
     team_user:
       placeholder: Add users to your team

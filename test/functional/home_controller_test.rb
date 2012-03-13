@@ -12,6 +12,7 @@ class HomeControllerTest < ActionController::TestCase
       
       should respond_with :success
       should assign_to :versions
+      should assign_to :comments
       should render_template :show
     end
     
@@ -23,6 +24,7 @@ class HomeControllerTest < ActionController::TestCase
       
       should respond_with :success
       should assign_to :versions
+      should assign_to :comments
       should render_template :show
     end
   end

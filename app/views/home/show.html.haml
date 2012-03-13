@@ -1,11 +1,4 @@
 %h2= @page_title = 'Welcome!'
 
-%h3 Latest updates
-%ul
-  - @versions.each do |version|
-    %li
-      = link_to version.ontology, version.ontology
-      by
-      = link_to version.user, version.user
-      = time_ago_in_words version.created_at
-      ago
+= render :partial => 'versions'
+= render :partial => 'comments'

@@ -17,6 +17,7 @@ module OntologyHelper
       [:entites,     [ontology, :entities]],
       [:versions,    [ontology, :ontology_versions]],
       [:metadata,    [ontology, :metadata]]
+      [:comments,    [ontology, :comments]]
     ]
     
     if can? :permissions, ontology

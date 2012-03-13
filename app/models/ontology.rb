@@ -1,4 +1,6 @@
 class Ontology < ActiveRecord::Base
+  
+  include Commentable
   include Permissionable
   include Metadatable
 

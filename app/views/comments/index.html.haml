@@ -1,0 +1,18 @@
+= ontology_nav parent, :comments if respond_to?(:parent)
+
+%p
+  = pluralize(collection.count, 'Comment')
+
+.comments
+  %ol
+    = render collection
+  
+  - if signed_in?
+    = render :partial => 'form'
+  - else
+    %p
+      Please
+      = link_to "log in", :new_user_session
+      or
+      = link_to "register", :new_user_registration
+      to write a comment.
