@@ -49,7 +49,7 @@ end
   
   # create a version
   v = o.versions.build
-  v.created_at = rand(300).minutes.ago
+  v.created_at = (60 - n*5).minutes.ago
   v.user       = User.first
   v.save(:validate => false)
 end
