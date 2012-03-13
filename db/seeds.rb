@@ -53,9 +53,9 @@ end
   v.user       = User.first
   v.save(:validate => false)
 
-  m = Metadatum.new(key: 'foo', value: 'bar')
+  m = Metadatum.new(key: 'gopher:///', value: 'bar')
   m.user = user
-  m.save
+  m.save!
 
   o.metadata << m
 end

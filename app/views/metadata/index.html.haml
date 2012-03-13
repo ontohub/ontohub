@@ -13,4 +13,5 @@
   %tbody
     = render collection
 
-= render :partial => 'form'
+- if user_signed_in?
+  = render :partial => 'form'

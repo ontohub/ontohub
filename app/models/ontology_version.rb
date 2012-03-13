@@ -11,7 +11,7 @@ class OntologyVersion < ActiveRecord::Base
   attr_accessible :raw_file, :source_uri
 
   validates_format_of :source_uri,
-    :with => URI::regexp(%w(http https file gopher)),
+    :with => URI::regexp(ALLOWED_URI_SCHEMAS),
     :if => :source_uri?
 
   validate :validates_file_or_source_uri

@@ -18,6 +18,9 @@ en:
     placeholders:
       comment:
         text: Write a new comment
+      metadatum:
+        key: Key
+        value: Value
   permission_list:
     team_user:
       placeholder: Add users to your team
