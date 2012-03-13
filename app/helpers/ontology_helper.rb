@@ -16,7 +16,7 @@ module OntologyHelper
       [:axioms,      [ontology, :axioms]],
       [:entites,     [ontology, :entities]],
       [:versions,    [ontology, :ontology_versions]],
-      [:metadata,    [ontology, :metadata]]
+      [:metadata,    [ontology, :metadata]],
       [:comments,    [ontology, :comments]]
     ]
     
