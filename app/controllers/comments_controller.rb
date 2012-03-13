@@ -21,7 +21,8 @@ class CommentsController < InheritedResources::Base
   
   def destroy
     authorize! :destroy, resource
-    super
+    resource.destroy
+    head :ok
   end
   
 end

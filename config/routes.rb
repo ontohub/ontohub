@@ -14,7 +14,7 @@ Ontohub::Application.routes.draw do
     resources :ontology_versions, :only => :index, :path => 'versions'
     resources :permissions, :only => [:index, :create, :update, :destroy]
     
-    resources :comments, :only => [:index, :create]
+    resources :comments, :only => [:index, :create, :destroy]
   end
   
   resources :teams do

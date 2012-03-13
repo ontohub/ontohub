@@ -60,6 +60,15 @@ class CommentsControllerTest < ActionController::TestCase
           should respond_with :success
           should render_template 'comments/index'
         end
+        
+        context 'on POST to delete' do
+          setup do
+            @comment = Factory :comment, :commentable => @ontology, :user => @user
+            xhr :delete, :destroy, :ontology_id => @ontology.to_param, :id => @comment.id
+          end
+          
+          should respond_with :success
+        end
       end
       
       context 'on POST to create' do
