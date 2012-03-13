@@ -30,6 +30,8 @@ class Ability
         subject.user == user || subject.commentable.permission?(:owner, user)
       end
       
+      # TODO can for Metadata!
+      
     end
     
     # See the wiki for details: https://github.com/ryanb/cancan/wiki/Defining-Abilities

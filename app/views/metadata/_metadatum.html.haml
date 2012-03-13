@@ -3,3 +3,7 @@
   %td= metadatum.value
   %td= metadatum.user
   %td= timestamp metadatum.updated_at
+  %td
+    - if can? :destroy, metadatum
+      %ul.actions
+        %li= link_to 'delete', [metadatum.metadatable, metadatum], method: :delete, remote: true, confirm: 'Really delete this entry?'
