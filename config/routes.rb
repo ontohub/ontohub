@@ -1,5 +1,5 @@
 Ontohub::Application.routes.draw do
-  
+
   devise_for :users, :controllers => { :registrations => "users/registrations" }
   resources :users, :only => :show
   
@@ -13,6 +13,8 @@ Ontohub::Application.routes.draw do
     resources :axioms,   :only => :index
     resources :ontology_versions, :only => :index, :path => 'versions'
     resources :permissions, :only => [:index, :create, :update, :destroy]
+    
+    resources :comments, :only => [:index, :create]
   end
   
   resources :teams do

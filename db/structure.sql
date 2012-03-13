@@ -74,6 +74,40 @@ ALTER SEQUENCE axioms_id_seq OWNED BY axioms.id;
 
 
 --
+-- Name: comments; Type: TABLE; Schema: public; Owner: -; Tablespace: 
+--
+
+CREATE TABLE comments (
+    id integer NOT NULL,
+    commentable_id integer NOT NULL,
+    commentable_type character varying(255) NOT NULL,
+    user_id integer NOT NULL,
+    text text NOT NULL,
+    created_at timestamp without time zone NOT NULL,
+    updated_at timestamp without time zone NOT NULL
+);
+
+
+--
+-- Name: comments_id_seq; Type: SEQUENCE; Schema: public; Owner: -
+--
+
+CREATE SEQUENCE comments_id_seq
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1;
+
+
+--
+-- Name: comments_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: -
+--
+
+ALTER SEQUENCE comments_id_seq OWNED BY comments.id;
+
+
+--
 -- Name: entities; Type: TABLE; Schema: public; Owner: -; Tablespace: 
 --
 
@@ -446,6 +480,13 @@ ALTER TABLE ONLY axioms ALTER COLUMN id SET DEFAULT nextval('axioms_id_seq'::reg
 -- Name: id; Type: DEFAULT; Schema: public; Owner: -
 --
 
+ALTER TABLE ONLY comments ALTER COLUMN id SET DEFAULT nextval('comments_id_seq'::regclass);
+
+
+--
+-- Name: id; Type: DEFAULT; Schema: public; Owner: -
+--
+
 ALTER TABLE ONLY entities ALTER COLUMN id SET DEFAULT nextval('entities_id_seq'::regclass);
 
 
@@ -518,6 +559,14 @@ ALTER TABLE ONLY users ALTER COLUMN id SET DEFAULT nextval('users_id_seq'::regcl
 
 ALTER TABLE ONLY axioms
     ADD CONSTRAINT axioms_pkey PRIMARY KEY (id);
+
+
+--
+-- Name: comments_pkey; Type: CONSTRAINT; Schema: public; Owner: -; Tablespace: 
+--
+
+ALTER TABLE ONLY comments
+    ADD CONSTRAINT comments_pkey PRIMARY KEY (id);
 
 
 --
@@ -626,6 +675,20 @@ CREATE UNIQUE INDEX index_axioms_on_ontology_id_and_id ON axioms USING btree (on
 --
 
 CREATE UNIQUE INDEX index_axioms_on_ontology_id_and_name ON axioms USING btree (ontology_id, name);
+
+
+--
+-- Name: index_comments_on_commentable_and_id; Type: INDEX; Schema: public; Owner: -; Tablespace: 
+--
+
+CREATE INDEX index_comments_on_commentable_and_id ON comments USING btree (commentable_id, commentable_type, id);
+
+
+--
+-- Name: index_comments_on_user_id; Type: INDEX; Schema: public; Owner: -; Tablespace: 
+--
+
+CREATE INDEX index_comments_on_user_id ON comments USING btree (user_id);
 
 
 --
@@ -772,6 +835,14 @@ ALTER TABLE ONLY axioms
 
 
 --
+-- Name: comments_user_id_fk; Type: FK CONSTRAINT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY comments
+    ADD CONSTRAINT comments_user_id_fk FOREIGN KEY (user_id) REFERENCES users(id);
+
+
+--
 -- Name: entities_ontology_id_fk; Type: FK CONSTRAINT; Schema: public; Owner: -
 --
 
@@ -862,3 +933,5 @@ INSERT INTO schema_migrations (version) VALUES ('20120308144854');
 INSERT INTO schema_migrations (version) VALUES ('20120308144855');
 
 INSERT INTO schema_migrations (version) VALUES ('20120308144859');
+
+INSERT INTO schema_migrations (version) VALUES ('20120313131338');

@@ -17,7 +17,8 @@ class OntologyVersion < ActiveRecord::Base
   validate :validates_file_or_source_uri
 
   validate :validates_size_of_raw_file, :if => :raw_file?
-
+  
+  scope :latest, order('id DESC')
 
 protected
 

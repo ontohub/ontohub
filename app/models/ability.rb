@@ -24,6 +24,9 @@ class Ability
         subject.admin?(user)
       end
       
+      # Comments
+      can [:create], Comment
+      
     end
     
     # See the wiki for details: https://github.com/ryanb/cancan/wiki/Defining-Abilities
