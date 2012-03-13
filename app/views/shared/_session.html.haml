@@ -1,8 +1,9 @@
 #session
   - if user_signed_in?
+    = link_to "Logged in as #{current_user}", current_user
+    = link_to 'My Teams', :teams
     %a{:href => edit_user_registration_path}
-      Logged in as
-      = current_user
+      Settings
       - if current_user.display_alert?
         %strong !
     = link_to 'Log out', :destroy_user_session, :method => :delete
