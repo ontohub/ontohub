@@ -11,5 +11,7 @@
 // GO AFTER THE REQUIRES BELOW.
 //
 //= require jquery
+//= require jquery.ui.autocomplete
+//= require jquery.ui.tabs
 //= require jquery_ujs
 //= require_tree .

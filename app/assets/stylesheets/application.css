@@ -9,6 +9,8 @@
  * compiled file, but it's generally better to create a new file per style scope.
  *
  *= require_self
+ *= require jquery.ui.autocomplete
+ *= require jquery.ui.tabs
+ *= require formtastic
  *= require_tree .
- *= require 'formtastic'
 */

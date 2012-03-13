@@ -85,6 +85,9 @@ GEM
     jquery-rails (2.0.1)
       railties (>= 3.2.0, < 5.0)
       thor (~> 0.14)
+    jquery-ui-rails (0.2.2)
+      jquery-rails
+      railties (>= 3.1.0)
     json (1.6.5)
     kaminari (0.13.0)
       actionpack (>= 3.0.0)
@@ -200,6 +203,7 @@ DEPENDENCIES
   has_scope
   inherited_resources
   jquery-rails
+  jquery-ui-rails
   kaminari
   nokogiri (~> 1.5.0)
   pg
