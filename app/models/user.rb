@@ -20,6 +20,8 @@ class User < ActiveRecord::Base
   }
   
   before_destroy :check_remaining_admins
+
+  validates_length_of :name, :in => 3..32
   
   def to_s
     name? ? name : email.split("@").first
