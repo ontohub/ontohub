@@ -1,0 +1,18 @@
+= ontology_nav parent, :metadata
+
+%p
+  = pluralize(collection.count, 'Metadatum')
+
+.metadatable
+  %table
+    %thead
+      %tr
+        %th Key
+        %th Value
+        %th Last editor
+        %th Updated
+    %tbody
+      = render collection
+
+  - if user_signed_in?
+    = render :partial => 'form'

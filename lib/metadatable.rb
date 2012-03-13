@@ -2,6 +2,6 @@ module Metadatable
   extend ActiveSupport::Concern
 
   included do
-    has_many :meta_datas, :as => :metadatable
+    has_many :metadata, :as => :metadatable
   end
 end

@@ -13,7 +13,7 @@ Ontohub::Application.routes.draw do
     resources :axioms,   :only => :index
     resources :ontology_versions, :only => :index, :path => 'versions'
     resources :permissions, :only => [:index, :create, :update, :destroy]
-    
+    resources :metadata, :only => [:index, :create]
     resources :comments, :only => [:index, :create, :destroy]
   end
   

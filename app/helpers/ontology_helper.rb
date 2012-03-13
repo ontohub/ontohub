@@ -16,6 +16,7 @@ module OntologyHelper
       [:axioms,      [ontology, :axioms], ontology.axioms_count],
       [:entites,     [ontology, :entities], ontology.entities_count],
       [:versions,    [ontology, :ontology_versions], ontology.versions.count],
+      [:metadata,    [ontology, :metadata], ontology.metadata.count],
       [:comments,    [ontology, :comments], ontology.comments.count]
     ]
     
@@ -24,7 +25,7 @@ module OntologyHelper
     end
     
     @page_title = ontology.to_s
-    @page_title = "#{current_page} · #{@page_title}" if current_page != pages[0][0]
+    @page_title = "#{current_page.capitalize} · #{@page_title}" if current_page != pages[0][0]
     
     render :partial => '/ontologies/subnav', :locals => {
       ontology:     ontology,
