@@ -1,6 +1,8 @@
 %h2= @page_title = resource
 
 %ul.actions
+  - if admin?
+    %li= link_to "All Teams", :admin_teams
   %li= link_to "My Teams", collection_path
   - if can? :edit, resource
     %li= link_to "Edit Users", [resource, :team_users]
