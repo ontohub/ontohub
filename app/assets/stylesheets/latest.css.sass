@@ -1,0 +1,27 @@
+@import compass
+@import variables
+
+ol.latest
+  +no-bullet
+  padding: 0em
+  max-width: 600px
+  
+  > li
+    margin-bottom: .5em
+    padding: .5em
+    background: $even-color
+    +border-radius(.5em)
+    
+    &:nth-of-type(odd)
+      background: $odd-color
+    
+    &:hover
+      background: $hover-color
+    
+    .text
+      margin-top: .5em
+      padding-top: .5em
+      border-top: 1px dashed #ccc
+      font-size: .8em
+      a
+        margin-left: .5em

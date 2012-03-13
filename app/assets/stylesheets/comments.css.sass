@@ -1,9 +1,23 @@
+@import compass/css3
+@import variables
+
 .comments
   .actions
     display: inline-block
     vertical-align: middle
   
+  > ol > li
+    +border-radius(.5em)
+    padding: .5em
+    margin-bottom: .5em
+    
+    background: $even-color
+    
+    &:nth-of-type(odd)
+      background: $odd-color
+  
   form.formtastic
+    margin-left: 2.5em
     textarea
       width: 50%
       height: 10em

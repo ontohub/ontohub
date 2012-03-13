@@ -13,5 +13,7 @@
 //= require jquery
 //= require jquery.ui.autocomplete
 //= require jquery.ui.tabs
+//= require jquery.effects.fade
+//= require jquery.effects.highlight
 //= require jquery_ujs
 //= require_tree .
