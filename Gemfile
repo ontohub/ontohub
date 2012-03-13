@@ -17,7 +17,7 @@ group :assets do
   gem 'uglifier', '>= 1.0.3'
 end
 
-gem 'haml', '~> 3.1.4'
+gem 'haml-rails'
 gem 'jquery-rails'
 
 # Fancy Forms
