@@ -12,6 +12,6 @@
 %ul
   - @team_users.each do |team_user|
     %li
-      = team_user.user
+      = link_to team_user.user, team_user.user
       - if team_user.admin?
         (admin)

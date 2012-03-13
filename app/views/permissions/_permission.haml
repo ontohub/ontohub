@@ -4,6 +4,6 @@
     = link_to 'edit',   '#', rel: :edit
     = link_to 'delete', '#', rel: :delete
   
-  = permission.subject
+  = link_to permission.subject, permission.subject
   
   (#{permission.role})
