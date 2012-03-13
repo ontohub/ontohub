@@ -5,19 +5,25 @@ class Autocomplete
   
   class InvalidScope < Exception; end
   
-  SCOPES = %w( User Team )
+  # you need these scopes in all searchable models
+  AUTOCOMPLETE_SCOPE = :autocomplete_search
+  ID_EXCLUSION_SCOPE = :without_ids
+  
+  # to split the string of excluded ids
+  ID_DELIMITER = ','
   
   def initialize
-    # scope_name => excluded_ids
+    # clazz => excluded_ids
     @scopes = {}
   end
   
   # adds a scope to the autocompleter
   def add_scope(name, without_ids="")
-    raise InvalidScope, "invalid scope: #{name}" unless SCOPES.include?(name)
+    clazz = name.to_s.constantize rescue nil
+    raise InvalidScope, "invalid scope: #{name}" unless clazz.respond_to?(AUTOCOMPLETE_SCOPE)
     
-    without_ids   = without_ids.to_s.split(",") unless without_ids.is_a?(Array)
-    @scopes[name] = without_ids
+    without_ids    = without_ids.to_s.split(ID_DELIMITER) unless without_ids.is_a?(Array)
+    @scopes[clazz] = without_ids
   end
   
   # search the added scopes
@@ -26,16 +32,15 @@ class Autocomplete
     
     result = []
     
-    @scopes.each do |name, without_ids|
+    @scopes.each do |clazz, without_ids|
       
-      # get class of scope
-      scope = name.constantize
+      scope = clazz
       
       # exclude the given ids
-      scope = scope.without_ids(without_ids) if without_ids.any?
+      scope = scope.send ID_EXCLUSION_SCOPE, without_ids if without_ids.any?
       
       # finally apply the search scope
-      scope = scope.autocomplete_search(query)
+      scope = scope.send AUTOCOMPLETE_SCOPE, query
       
       result += scope.limit(limit).all
     end
