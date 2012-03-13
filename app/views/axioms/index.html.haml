@@ -1,8 +1,4 @@
-- @page_title = "#{parent.to_s} / Axioms"
-%h2
-  = link_to parent, parent
-  \/
-  Axioms
+= ontology_nav parent, :axioms
 
 %p
   = pluralize(collection.total_count, 'Axiom')

@@ -1,0 +1,14 @@
+- if can? :edit, ontology
+  %ul.ontology.actions
+    %li= link_to 'Edit', [:edit, ontology]
+    %li= link_to 'Delete', ontology, :confirm => 'Really delete?', :method => :delete
+
+%h2= link_to ontology, ontology
+
+%nav.ui-tabs.ui-widget
+  %ul{:class => 'ui-tabs-nav ui-helper-reset ui-helper-clearfix ui-widget-header ui-corner-all'}
+    - pages.each do |page, path|
+      %li{:class => 'ui-state-default ui-corner-top' << (page==current_page ? ' ui-tabs-selected ui-state-active' : '')}
+        = link_to page, path
+
+%h3= current_page.to_s.capitalize

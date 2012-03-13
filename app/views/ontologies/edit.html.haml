@@ -1,4 +1,4 @@
-%h2= @page_title = "Edit ontology: #{resource}"
+= ontology_nav resource, :edit
 
 = semantic_form_for resource do |f|
   = f.inputs :uri, :logic, :name, :description

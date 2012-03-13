@@ -1,8 +1,4 @@
-- @page_title = "#{parent.to_s} / Versions"
-%h2
-  = link_to parent, parent
-  \/
-  Versions
+= ontology_nav parent, :versions
 
 %p
   = pluralize(collection.count, 'Version')

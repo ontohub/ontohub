@@ -1,15 +1,7 @@
+= ontology_nav resource, :overview
+
 .metadata
   = render :partial => 'stats'
   = render :partial => 'info'
-
-%h2= @page_title = resource
-
-%ul.actions
-  %li= link_to 'List ontologies', collection_path
-  %li= link_to pluralize(resource.versions.count, 'Version'), [resource, :ontology_versions]
-  - if can? :edit, resource
-    %li= link_to 'Permissions', [resource, :permissions]
-    %li= link_to 'Edit', edit_resource_path
-    %li= link_to 'Delete', resource_path, :confirm => 'Really delete?', :method => :delete
 
 = simple_format resource.description
