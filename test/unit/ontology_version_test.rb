@@ -1,6 +1,7 @@
 require 'test_helper'
 
 class OntologyVersionTest < ActiveSupport::TestCase
+  
   context 'Associations' do
     should belong_to :user
     should belong_to :ontology
@@ -8,6 +9,7 @@ class OntologyVersionTest < ActiveSupport::TestCase
 
   context 'Validation' do
     setup do
+      OntologyVersion.any_instance.expects(:parse_async).once
       @ontology_version = Factory :ontology_version
       @pizza_owl = 'test/fixtures/ontologies/owl/pizza.owl'
     end

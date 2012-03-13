@@ -14,7 +14,6 @@ class OntologiesController < InheritedResources::Base
     @version = build_resource.versions.first
     @version.user = current_user
     super
-    @version.async :parse
   end
 
 end

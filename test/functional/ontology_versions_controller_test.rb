@@ -8,6 +8,7 @@ class OntologiesControllerTest < ActionController::TestCase
   
   context 'OntologyVersion Instance' do
     setup do
+      OntologyVersion.any_instance.expects(:parse_async).once
       @version  = Factory :ontology_version
       @ontology = @version.ontology
     end

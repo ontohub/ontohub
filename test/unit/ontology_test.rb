@@ -19,6 +19,8 @@ class OntologyTest < ActiveSupport::TestCase
   
   context 'creating ontology with version' do
     setup do
+      OntologyVersion.any_instance.expects(:parse_async).once
+      
       @user       = Factory :user
       @source_uri = 'http://example.com/dummy.ontology'
       @ontology   = Ontology.new \

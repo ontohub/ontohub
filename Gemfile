@@ -51,6 +51,7 @@ gem 'resque'
 gem "faker", "~> 1.0"
 
 group :test do
+  gem 'mocha'
   gem 'shoulda'
   gem 'shoulda-matchers'
   gem 'shoulda-context'

@@ -58,6 +58,8 @@ class OntologiesControllerTest < ActionController::TestCase
         
         context 'with valid input' do
           setup do
+            OntologyVersion.any_instance.expects(:parse_async).once
+            
             post :create, :ontology => {
               uri: 'fooo',
               versions_attributes: [{

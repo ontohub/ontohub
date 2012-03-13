@@ -1,5 +1,6 @@
 class OntologyVersion < ActiveRecord::Base
-  @queue = :hets
+  
+  include OntologyVersion::Parsing
 
   belongs_to :user
   belongs_to :ontology
@@ -17,24 +18,6 @@ class OntologyVersion < ActiveRecord::Base
 
   validate :validates_size_of_raw_file, :if => :raw_file?
 
-  def parse
-    raise ArgumentError.new('No raw_file set.') unless raw_file?
-
-    do_or_set_failed do
-      @path = Hets.parse(self.raw_file.current_path)
-    end
-
-    self.xml_file = File.open(@path)
-    save!
-
-    do_or_set_failed do
-      self.ontology.import_latest_version
-    end
-
-    File.delete(@path)
-
-    update_state! :done
-  end
 
 protected
 
@@ -50,22 +33,5 @@ protected
     end
   end
 
-  def do_or_set_failed(&block)
-    raise ArgumentError.new('No block given.') unless block_given?
 
-    begin
-      yield
-    rescue Exception => e
-      update_state! :failed, e.message
-      raise e
-    end
-  end
-
-  def update_state!(state, error_message = nil)
-    ontology.state = state.to_s
-    ontology.save!
-
-    self.last_error = error_message
-    save!
-  end
 end

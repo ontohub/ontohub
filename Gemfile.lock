@@ -98,7 +98,10 @@ GEM
       i18n (>= 0.4.0)
       mime-types (~> 1.16)
       treetop (~> 1.4.8)
+    metaclass (0.0.1)
     mime-types (1.17.2)
+    mocha (0.10.5)
+      metaclass (~> 0.0.1)
     multi_json (1.1.0)
     net-scp (1.0.4)
       net-ssh (>= 1.99.1)
@@ -205,6 +208,7 @@ DEPENDENCIES
   jquery-rails
   jquery-ui-rails
   kaminari
+  mocha
   nokogiri (~> 1.5.0)
   pg
   rails (~> 3.2.2)
