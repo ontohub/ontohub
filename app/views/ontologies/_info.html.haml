@@ -9,7 +9,7 @@
     %td Owner
     %td
       - for owner in resource.permissions.owner
-        %span{'data-type' => owner.subject_type}= owner.subject
+        = link_to owner.subject, owner.subject, 'data-type' => owner.subject_type
   %tr
     %td Created at
     %td= l resource.created_at

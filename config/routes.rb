@@ -1,6 +1,7 @@
 Ontohub::Application.routes.draw do
   
   devise_for :users, :controllers => { :registrations => "users/registrations" }
+  resources :users, :only => :show
   
   namespace :admin do
     resources :teams, :only => :index
@@ -20,7 +21,6 @@ Ontohub::Application.routes.draw do
   
   get 'autocomplete' => 'autocomplete#index'
 
-# root :to => 'home#show'
-  root :to => 'ontologies#index'
+  root :to => 'home#show'
 
 end

@@ -46,6 +46,12 @@ end
     description: Faker::Lorem.paragraph
 
   o.import_xml_from_file 'test/fixtures/ontologies/valid.xml'
+  
+  # create a version
+  v = o.versions.build
+  v.created_at = rand(300).minutes.ago
+  v.user       = User.first
+  v.save(:validate => false)
 end
 
 

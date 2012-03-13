@@ -11,6 +11,8 @@ class HomeControllerTest < ActionController::TestCase
       end
       
       should respond_with :success
+      should assign_to :versions
+      should render_template :show
     end
     
     context 'signed in' do
@@ -20,6 +22,8 @@ class HomeControllerTest < ActionController::TestCase
       end
       
       should respond_with :success
+      should assign_to :versions
+      should render_template :show
     end
   end
   

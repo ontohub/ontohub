@@ -3,6 +3,7 @@ class User < ActiveRecord::Base
   include Common::Scopes
   include User::Authentication
   
+  has_many :ontology_versions
   has_many :team_users
   has_many :teams, :through => :team_users
   
