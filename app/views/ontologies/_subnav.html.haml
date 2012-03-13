@@ -7,8 +7,11 @@
 
 %nav.ui-tabs.ui-widget.static
   %ul{:class => 'ui-tabs-nav ui-helper-reset ui-helper-clearfix ui-widget-header ui-corner-all'}
-    - pages.each do |page, path|
+    - pages.each do |page, path, count|
       %li{:class => 'ui-state-default ui-corner-top' << (page==current_page ? ' ui-tabs-selected ui-state-active' : '')}
-        = link_to page.to_s.capitalize, path
+        %a{:href => url_for(path)}
+          = page.to_s.capitalize
+          - if count && count > 0
+            %span= count
 
 %h3= current_page.to_s.capitalize

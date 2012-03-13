@@ -13,14 +13,14 @@ module OntologyHelper
   def ontology_nav(ontology, current_page)
     pages = [
       [:overview,     ontology],
-      [:axioms,      [ontology, :axioms]],
-      [:entites,     [ontology, :entities]],
-      [:versions,    [ontology, :ontology_versions]],
-      [:comments,    [ontology, :comments]]
+      [:axioms,      [ontology, :axioms], ontology.axioms_count],
+      [:entites,     [ontology, :entities], ontology.entities_count],
+      [:versions,    [ontology, :ontology_versions], ontology.versions.count],
+      [:comments,    [ontology, :comments], ontology.comments.count]
     ]
     
     if can? :permissions, ontology
-      pages << [:permissions, [ontology, :permissions]]
+      pages << [:permissions, [ontology, :permissions], ontology.permissions.count]
     end
     
     @page_title = ontology.to_s
