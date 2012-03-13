@@ -14,5 +14,9 @@ class TeamUsersController < PrivilegeList::Base
       :association => :user,
       :scope       => User
   end
+
+  def authorize_parent
+    authorize! :edit, parent
+  end
   
 end

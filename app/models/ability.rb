@@ -10,7 +10,10 @@ class Ability
       can { true }
     elsif user.id
       # Ontologies
-      can [:edit, :update, :destroy], Ontology do |subject|
+      can [:edit, :update], Ontology do |subject|
+        subject.permission?(:editor, user)
+      end
+      can [:destroy, :permissions], Ontology do |subject|
         subject.permission?(:owner, user)
       end
       can [:new, :create], Ontology

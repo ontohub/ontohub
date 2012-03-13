@@ -14,5 +14,9 @@ class PermissionsController < PrivilegeList::Base
       :association => :subject,
       :scope       => [User, Team]
   end
+
+  def authorize_parent
+    authorize! :permissions, parent
+  end
   
 end

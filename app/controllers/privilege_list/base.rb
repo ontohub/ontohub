@@ -31,7 +31,7 @@ class PrivilegeList::Base < InheritedResources::Base
   protected
   
   def authorize_parent
-    authorize! :edit, parent
+    raise NotImplementedError
   end
   
   helper_method :permission_list
