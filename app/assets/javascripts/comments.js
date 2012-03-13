@@ -7,9 +7,8 @@ $(function(){
     var form = $(this)
     var commentsListing = form.closest(".comments").children("ol");
     
-    $(data).appendTo(commentsListing).hide().fadeIn('slow', function(){
-      form.html();
-    });
+    $(data).appendTo(commentsListing).hide().fadeIn('slow');
+    form.html("Thanks for your comment.");
   })
   // Comment NOT created, render the returned form
   .on("ajax:error", function(xhr, status, error){
