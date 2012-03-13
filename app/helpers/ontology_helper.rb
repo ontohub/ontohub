@@ -18,7 +18,7 @@ module OntologyHelper
       [:versions,    [ontology, :ontology_versions]],
     ]
     
-    if can? :edit, ontology
+    if can? :permissions, ontology
       pages << [:permissions, [ontology, :permissions]]
     end
     
