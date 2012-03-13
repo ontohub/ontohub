@@ -1,3 +1,4 @@
 $('.timestamp').relatizeDate({
-  //defaultLanguage: 'en'
+  defaultLanguage: 'en',
+  titleize: true
 });
