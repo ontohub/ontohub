@@ -52,6 +52,12 @@ end
   v.created_at = (60 - n*5).minutes.ago
   v.user       = User.first
   v.save(:validate => false)
+
+  m = Metadatum.new(key: 'foo', value: 'bar')
+  m.user = user
+  m.save
+
+  o.metadata << m
 end
 
 

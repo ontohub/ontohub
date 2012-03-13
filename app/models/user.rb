@@ -6,6 +6,7 @@ class User < ActiveRecord::Base
   has_many :ontology_versions
   has_many :team_users
   has_many :teams, :through => :team_users
+  has_many :metadata
   
   attr_accessible :email, :name, :admin, :password, :as => :admin
   

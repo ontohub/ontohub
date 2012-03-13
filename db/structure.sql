@@ -182,6 +182,7 @@ CREATE TABLE metadata (
     id integer NOT NULL,
     metadatable_id integer,
     metadatable_type character varying(255),
+    user_id integer,
     key character varying(255),
     value character varying(255),
     created_at timestamp without time zone NOT NULL,
@@ -664,6 +665,13 @@ CREATE INDEX index_metadata_on_metadatable_id_and_metadatable_type ON metadata U
 
 
 --
+-- Name: index_metadata_on_user_id; Type: INDEX; Schema: public; Owner: -; Tablespace: 
+--
+
+CREATE INDEX index_metadata_on_user_id ON metadata USING btree (user_id);
+
+
+--
 -- Name: index_ontologies_on_logic_id; Type: INDEX; Schema: public; Owner: -; Tablespace: 
 --
 
@@ -793,6 +801,14 @@ ALTER TABLE ONLY links
 
 ALTER TABLE ONLY links
     ADD CONSTRAINT links_target_id_fk FOREIGN KEY (target_id) REFERENCES ontologies(id);
+
+
+--
+-- Name: metadata_user_id_fk; Type: FK CONSTRAINT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY metadata
+    ADD CONSTRAINT metadata_user_id_fk FOREIGN KEY (user_id) REFERENCES users(id);
 
 
 --

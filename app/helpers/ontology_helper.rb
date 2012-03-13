@@ -16,6 +16,7 @@ module OntologyHelper
       [:axioms,      [ontology, :axioms]],
       [:entites,     [ontology, :entities]],
       [:versions,    [ontology, :ontology_versions]],
+      [:metadata,    [ontology, :metadata]]
     ]
     
     if can? :permissions, ontology
@@ -23,7 +24,7 @@ module OntologyHelper
     end
     
     @page_title = ontology.to_s
-    @page_title = "#{current_page} · #{@page_title}" if current_page != pages[0][0]
+    @page_title = "#{current_page.capitalize} · #{@page_title}" if current_page != pages[0][0]
     
     render :partial => '/ontologies/subnav', :locals => {
       ontology:     ontology,
