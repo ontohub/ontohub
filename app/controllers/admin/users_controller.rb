@@ -4,7 +4,7 @@ class Admin::UsersController < ApplicationController
   
   inherit_resources
   has_scope :email_search
-  has_scope :page, :default => 1
+  has_pagination
   
   with_role :admin
   

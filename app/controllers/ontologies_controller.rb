@@ -1,6 +1,6 @@
 class OntologiesController < InheritedResources::Base
 
-  has_scope :page, :default => 1
+  has_pagination
 
   load_and_authorize_resource :except => [:index, :show]
 

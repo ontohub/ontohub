@@ -4,6 +4,6 @@ class Admin::TeamsController < ApplicationController
   
   inherit_resources
   actions :index
-  has_scope :page, :default => 1
+  has_pagination
   
 end
