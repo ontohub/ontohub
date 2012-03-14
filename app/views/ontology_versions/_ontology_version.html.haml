@@ -2,3 +2,5 @@
   %td= l ontology_version.created_at
   %td= ontology_version.source_uri? ? ontology_version.source_uri : 'File upload'
   %td= ontology_version.user
+  %td= status ontology_version
+  %td= ontology_version.last_error

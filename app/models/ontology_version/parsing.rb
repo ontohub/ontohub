@@ -42,6 +42,7 @@ protected
     ontology.state = state.to_s
     ontology.save!
 
+    self.state      = state.to_s
     self.last_error = error_message
     save!
   end
