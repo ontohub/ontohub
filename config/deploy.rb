@@ -30,7 +30,7 @@ end
 
 namespace :resque do
   def rake_command(cmd)
-    run "cd #{current_path} && rake #{cmd}", :env => { :RAILS_ENV => rails_env }
+    run "cd #{current_path} && bundle exec rake #{cmd}", :env => { :RAILS_ENV => rails_env }
   end
   
   desc "Stop resque"
@@ -51,9 +51,7 @@ namespace :god do
 
   desc "Start god"
   task :start do
-    config_file = "#{current_path}/config/resque.god"
-    environment = { :RAILS_ENV => rails_env, :RAILS_ROOT => current_path }
-    run "#{god_command} -c #{config_file}", :env => environment
+    run "#{god_command} -c config/god/app.god", :env => environment = { :RAILS_ENV => rails_env }
   end
 
   desc "Stop god"
