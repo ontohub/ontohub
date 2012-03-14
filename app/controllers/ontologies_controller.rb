@@ -10,7 +10,7 @@ class OntologiesController < InheritedResources::Base
   respond_to :json
   
   def show
-    @grouped_kinds = resource.entities.grouped_by_kind
+    show! { @grouped_kinds = resource.entities.grouped_by_kind }
   end
 
   def new

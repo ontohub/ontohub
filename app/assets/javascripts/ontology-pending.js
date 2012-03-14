@@ -10,7 +10,9 @@ $(function() {
     )
   };
 
-  if($('.metadata .info .pending').length > 0) {
+  if($('aside .info .pending').length > 0) {
     setInterval(updateStatus, 5000);
   }
+
+  $('aside .info .error .help').tipsy({gravity:'s'});
 });
