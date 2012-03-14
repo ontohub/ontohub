@@ -1,12 +1,17 @@
+- if user_signed_in?
+  %ul.actions.right
+    %li= link_to 'Create Ontology', new_ontology_path
+
 %h2= @page_title = 'Ontologies'
 
-- if user_signed_in?
-  %ul.actions
-    %li= link_to 'Create Ontology', new_ontology_path
+= render :partial => 'filter'
 
 %p
   = pluralize(collection.total_count, 'Ontology')
   found
+  - if @search
+    for
+    %strong= @search
 
 = paginaton collection do
   %ul.ontologies

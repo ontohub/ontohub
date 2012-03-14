@@ -1,4 +1,5 @@
-%h2= @page_title = resource
+- @page_title = resource
+%h2= link_to resource, resource, 'data-type' => resource_class
 
 = render :partial => 'stats'
 = render :partial => 'versions'

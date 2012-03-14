@@ -18,6 +18,8 @@ class Ontology < ActiveRecord::Base
   
   strip_attributes :only => [:name, :uri]
   
+  scope :search, ->(query) { where "uri ILIKE :term OR name ILIKE :term", :term => "%" << query << "%" }
+  
   def to_s
     uri
   end

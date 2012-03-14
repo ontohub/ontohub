@@ -13,11 +13,28 @@ class OntologiesControllerTest < ActionController::TestCase
     end
     
     context 'on GET to index' do
-      setup do
-        get :index
+      context 'without search' do
+        setup do
+          get :index
+        end
+        
+        should respond_with :success
+        should assign_to(:search).with{ nil }
+        should render_template :index
+        should render_template 'ontologies/_ontology'
       end
       
-      should respond_with :success
+      context 'with search' do
+        setup do
+          @search = @ontology.name
+          get :index, :search => @search
+        end
+        
+        should respond_with :success
+        should assign_to(:search).with{ @search }
+        should render_template :index
+        should render_template 'ontologies/_ontology'
+      end
     end
     
     context 'on GET to show' do
