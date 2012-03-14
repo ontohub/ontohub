@@ -2,12 +2,13 @@ module Hets
   class HetsError < Exception; end
 
   class Config
-    attr_reader :path
+    attr_reader :path, :allowed_extensions
 
     def initialize
       yaml = YAML.load_file(File.join(Rails.root, 'config', 'hets.yml'))
 
       @path = first_which_exists yaml['hets_path']
+      @allowed_extensions = yaml.delete 'allowed_extensions'
 
       raise ArgumentError.new('Wrong hets path.') unless @path
 

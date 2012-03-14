@@ -1,5 +1,4 @@
 class OntologyVersion < ActiveRecord::Base
-  
   include OntologyVersion::Parsing
 
   belongs_to :user
@@ -33,6 +32,4 @@ protected
       errors.add :raw_file, 'Maximum upload size is 10M.'
     end
   end
-
-
 end
