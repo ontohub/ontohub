@@ -705,6 +705,13 @@ CREATE UNIQUE INDEX index_entities_on_ontology_id_and_id ON entities USING btree
 
 
 --
+-- Name: index_entities_on_ontology_id_and_kind; Type: INDEX; Schema: public; Owner: -; Tablespace: 
+--
+
+CREATE INDEX index_entities_on_ontology_id_and_kind ON entities USING btree (ontology_id, kind);
+
+
+--
 -- Name: index_entities_on_ontology_id_and_text; Type: INDEX; Schema: public; Owner: -; Tablespace: 
 --
 

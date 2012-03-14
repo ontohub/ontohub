@@ -1,0 +1,6 @@
+%h4 Entities in this ontology
+%table.info
+  - @grouped_kinds.each do |entity|
+    %tr
+      %td.numeric= entity.count
+      %td= link_to (entity.count.to_i == 1 ? entity.kind : entity.kind.pluralize), ontology_entities_path(resource, :kind => entity.kind)

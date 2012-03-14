@@ -1,6 +1,7 @@
 = ontology_nav resource, :overview
 
-.metadata
+%aside
   = render :partial => 'info'
+  = render :partial => 'kinds' if @grouped_kinds.any?
 
 = simple_format resource.description

@@ -2,4 +2,7 @@
   %td= team.name
   %td= team.users.count
   %td
-    = link_to 'show', team
+    %ul.actions
+      %li= link_to 'show', team
+      %li= link_to 'permissions', [team, :permissions]
+      %li= link_to 'members', [team, :team_users]

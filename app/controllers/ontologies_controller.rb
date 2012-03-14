@@ -1,3 +1,6 @@
+# 
+# Controller for ontologies
+# 
 class OntologiesController < InheritedResources::Base
 
   has_pagination
@@ -5,6 +8,10 @@ class OntologiesController < InheritedResources::Base
   load_and_authorize_resource :except => [:index, :show]
 
   respond_to :json
+  
+  def show
+    @grouped_kinds = resource.entities.grouped_by_kind
+  end
 
   def new
     @version = build_resource.versions.build

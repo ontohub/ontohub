@@ -1,3 +1,6 @@
+# 
+# Autocompletion for models
+# 
 class AutocompleteController < ActionController::Base
   
   MIN_LENGTH = 3

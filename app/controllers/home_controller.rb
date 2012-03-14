@@ -1,3 +1,6 @@
+# 
+# The home page that displays all latest news
+# 
 class HomeController < ApplicationController
   
   def show

@@ -1,0 +1,9 @@
+= team_nav parent, :permissions
+
+%p
+  = pluralize(collection.total_count, 'Permission')
+  found
+
+= paginaton collection do
+  %ul
+    = render collection
