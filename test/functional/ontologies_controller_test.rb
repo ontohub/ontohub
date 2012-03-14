@@ -47,7 +47,7 @@ class OntologiesControllerTest < ActionController::TestCase
             post :create, :ontology => {
               uri: 'fooo',
               versions_attributes: [{
-                source_uri: 'fooo'
+                remote_raw_file_url: 'foo'
               }],
             }
           end
@@ -63,7 +63,7 @@ class OntologiesControllerTest < ActionController::TestCase
             post :create, :ontology => {
               uri: 'fooo',
               versions_attributes: [{
-                source_uri: 'http://example.com/dummy.ontology'
+                remote_raw_file_url: 'http://example.com/dummy.ontology'
               }],
             }
           end

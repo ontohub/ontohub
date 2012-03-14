@@ -22,20 +22,20 @@ class OntologyTest < ActiveSupport::TestCase
     setup do
       OntologyVersion.any_instance.expects(:parse_async).once
       
-      @user       = Factory :user
-      @source_uri = 'http://example.com/dummy.ontology'
-      @ontology   = Ontology.new \
+      @user                = Factory :user
+      @remote_raw_file_url = 'http://colore.googlecode.com/svn/trunk/ontologies/arithmetic/robinson_arithmetic.clif'
+      @ontology            = Ontology.new \
         :uri => 'fooo',
         :versions_attributes => [{
-          source_uri: @source_uri
+          remote_raw_file_url: @remote_raw_file_url
         }]
         
       @ontology.versions.first.user = @user
       @ontology.save!
     end
     
-    should 'create a version with source_uri' do
-      assert_equal @source_uri, @ontology.versions.first.source_uri
+    should 'create a version with remote_raw_file_url' do
+      assert_equal @remote_raw_file_url, @ontology.versions.first.remote_raw_file_url
     end
     
     context 'creating a permission' do

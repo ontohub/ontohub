@@ -11,16 +11,12 @@ module OntologyVersion::Parsing
 
     do_or_set_failed do
       @path = Hets.parse(self.raw_file.current_path)
-    end
 
-    self.xml_file = File.open(@path)
-    save!
+      self.xml_file = File.open(@path)
+      save!
 
-    do_or_set_failed do
       self.ontology.import_latest_version
     end
-
-    File.delete(@path)
 
     update_state! :done
   end
