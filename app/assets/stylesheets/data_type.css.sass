@@ -1,19 +1,21 @@
 
+
+@mixin data-icon($name)
+  background:
+    image: image-url('icons/'+$name+'.png')
+    repeat: no-repeat
+    position:  5px center
+  padding-left: 30px !important
+
 .ui-autocomplete a, .permissionList li, a
-
   &[data-type=Team]
-    background:
-      image: image-url('icons/team.png')
-      repeat: no-repeat
-      position:  5px center
-    padding-left: 30px !important
-
+    +data-icon(team)
+  
   &[data-type=User]
-    background:
-      image: image-url('icons/user.png')
-      repeat: no-repeat
-      position:  5px center
-    padding-left: 30px !important
+    +data-icon(user)
+  
+  &[data-type=Ontology]
+    +data-icon(ontology)
 
 // inline listings
 a[data-type]
