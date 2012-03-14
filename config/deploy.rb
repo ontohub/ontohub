@@ -11,7 +11,6 @@ set :application, 'ontohub'
 set :scm, :git
 set :repository, "git@github.com:digineo/#{application}.git"
 set :deploy_to, "/srv/http/#{hostname}"
-#set :bundle_without, [:development, :test]
 
 set :user, application
 set :use_sudo, false
@@ -70,3 +69,5 @@ end
 before "deploy:update", "god:stop"
 before "deploy:update", "resque:stop"
 after "deploy:update", "god:start"
+after :deploy, "deploy:cleanup"
+
