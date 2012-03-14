@@ -5,8 +5,8 @@ class OntologyUploader < CarrierWave::Uploader::Base
     "uploads/#{model.class.to_s.underscore}/#{mounted_as}/#{model.id}"
   end
 
-  # XML is white-listed here to avoid another Uploader.
+  # XML is white-listed here to avoid creating another Uploader.
   def extension_white_list
-    %w(owl clif) + %w(xml)
+    Hets::Config.new.allowed_extensions
   end
 end

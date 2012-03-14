@@ -49,5 +49,4 @@ protected
     self.last_error = error_message
     save!
   end
-  
 end

@@ -7,3 +7,8 @@ hets_lib:
 hets_owl_tools:
   - /usr/lib/hets/hets-owl-tools
   - ~/uni/awe/Hets/OWL2
+allowed_extensions:
+  - owl
+  - clf
+  - clif
+  - xml

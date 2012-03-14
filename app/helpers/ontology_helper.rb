@@ -14,7 +14,7 @@ module OntologyHelper
     pages = [
       [:overview,     ontology],
       [:axioms,      [ontology, :axioms]],
-      [:entites,     [ontology, :entities]],
+      [:entities,    [ontology, :entities]],
       [:versions,    [ontology, :ontology_versions]],
       [:metadata,    [ontology, :metadata]],
       [:comments,    [ontology, :comments]]
