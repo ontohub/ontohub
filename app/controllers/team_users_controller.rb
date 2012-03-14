@@ -1,5 +1,5 @@
 # 
-# Managing users of a team, only accessible by team admins
+# Member list administration of a team, only accessible by team admins
 # 
 class TeamUsersController < PrivilegeList::Base
   

@@ -1,10 +1,10 @@
 # 
-# Managing users of a team, only accessible by team admins
+# Permissions list administration of a team, only accessible by ontology owners
 # 
 class PermissionsController < PrivilegeList::Base
   
   belongs_to :ontology
- 
+  
   protected
   
   def permission_list

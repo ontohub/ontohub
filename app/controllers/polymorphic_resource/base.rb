@@ -1,3 +1,7 @@
+# 
+# Indexes, creates and deletes entries of a collection
+# To be subclassed
+# 
 class PolymorphicResource::Base < InheritedResources::Base
   actions :index, :create
   

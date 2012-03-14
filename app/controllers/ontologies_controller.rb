@@ -1,3 +1,6 @@
+# 
+# Controller for ontologies
+# 
 class OntologiesController < InheritedResources::Base
 
   has_pagination

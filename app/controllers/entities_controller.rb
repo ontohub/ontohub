@@ -1,3 +1,6 @@
+# 
+# Lists entities of a ontology
+# 
 class EntitiesController < InheritedResources::Base
   
   belongs_to :ontology
