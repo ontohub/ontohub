@@ -1,0 +1,61 @@
+#!/usr/bin/env ruby
+
+require 'getoptlong'
+
+def usage_message
+	$stderr << "#{File.basename( $0 )} [options] [dirs]
+Imports ontology files from several directories into Ontohub.
+
+  -h            This help.
+  -r            Use redis for parsing jobs.
+
+"
+	exit( 1 )
+end
+
+options = GetoptLong.new(
+	[ '-h', GetoptLong::NO_ARGUMENT ],
+	[ '-r', GetoptLong::NO_ARGUMENT ],
+)
+
+redis = false
+
+options.each do |option, argument|
+	case option
+		when '-h'
+			usage_message
+		when '-r'
+			redis = true
+	end
+end
+
+require File.expand_path('../../config/environment',  __FILE__)
+
+config = Hets::Config.new
+
+user = User.find(1)
+
+ARGV.each do |dir|
+  config.allowed_extensions.each do |ext|
+    Dir.glob("#{dir}/**/*.#{ext}").each do |file|
+      puts file
+
+      o = Ontology.new
+      o.uri = "file://#{file}"
+      o.name = File.basename(file, ".#{ext}")
+      o.save!
+
+      ov = OntologyVersion.new
+      ov.user = user
+      ov.raw_file = File.open(file)
+      ov.ontology = o
+      ov.save!
+
+      if redis
+        ov.async :parse
+      else
+        ov.parse
+      end
+    end
+  end
+end
