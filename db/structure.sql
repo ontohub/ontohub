@@ -38,6 +38,7 @@ CREATE TABLE axioms (
     name character varying(255) NOT NULL,
     text text NOT NULL,
     range character varying(255),
+    comments_count integer DEFAULT 0 NOT NULL,
     created_at timestamp without time zone NOT NULL,
     updated_at timestamp without time zone NOT NULL
 );
@@ -119,6 +120,7 @@ CREATE TABLE entities (
     name character varying(255) NOT NULL,
     uri character varying(255),
     range character varying(255),
+    comments_count integer DEFAULT 0 NOT NULL,
     created_at timestamp without time zone NOT NULL,
     updated_at timestamp without time zone NOT NULL
 );
@@ -256,6 +258,9 @@ CREATE TABLE ontologies (
     description text,
     entities_count integer,
     axioms_count integer,
+    versions_count integer DEFAULT 0 NOT NULL,
+    metadata_count integer DEFAULT 0 NOT NULL,
+    comments_count integer DEFAULT 0 NOT NULL,
     created_at timestamp without time zone NOT NULL,
     updated_at timestamp without time zone NOT NULL
 );

@@ -13,15 +13,19 @@ module OntologyHelper
   def ontology_nav(ontology, current_page)
     pages = [
       [:overview,     ontology],
-      [:axioms,      [ontology, :axioms], ontology.axioms_count],
-      [:entites,     [ontology, :entities], ontology.entities_count],
-      [:versions,    [ontology, :ontology_versions], ontology.versions.count],
-      [:metadata,    [ontology, :metadata], ontology.metadata.count],
-      [:comments,    [ontology, :comments], ontology.comments.count]
+      [:axioms,      [ontology, :axioms]],
+      [:entites,     [ontology, :entities]],
+      [:versions,    [ontology, :ontology_versions]],
+      [:metadata,    [ontology, :metadata]],
+      [:comments,    [ontology, :comments]]
     ]
     
-    if can? :permissions, ontology
-      pages << [:permissions, [ontology, :permissions], ontology.permissions.count]
+    pages << [:permissions, [ontology, :permissions]] if can? :permissions, ontology
+    
+    # add counters
+    pages.each do |row|
+      counter_key = "#{row[0]}_count"
+      row << ontology.send(counter_key) if ontology.respond_to?(counter_key)
     end
     
     @page_title = ontology.to_s

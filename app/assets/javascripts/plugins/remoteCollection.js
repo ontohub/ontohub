@@ -52,8 +52,12 @@ $.widget("ui.remoteCollection", {
       return;
     
     var count = parseInt(counter.text()) + change;
+    counter.text(count)
     
-    counter.text(count).effect("highlight", {}, 3000);
+    if(count > 0)
+      counter.show().effect("highlight", {}, 3000);
+    else
+      counter.hide();
     
     return count;
   }

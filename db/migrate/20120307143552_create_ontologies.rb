@@ -8,6 +8,7 @@ class CreateOntologies < ActiveRecord::Migration
       t.text :description
       
       t.integer :entities_count, :axioms_count
+      t.integer :versions_count, :metadata_count, :comments_count, :null => false, :default => 0
       
       t.timestamps :null => false
     end

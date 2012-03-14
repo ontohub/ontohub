@@ -3,7 +3,7 @@ class OntologyVersion < ActiveRecord::Base
   include OntologyVersion::Parsing
 
   belongs_to :user
-  belongs_to :ontology
+  belongs_to :ontology, :counter_cache => :versions_count
 
   mount_uploader :raw_file, OntologyUploader
   mount_uploader :xml_file, OntologyUploader

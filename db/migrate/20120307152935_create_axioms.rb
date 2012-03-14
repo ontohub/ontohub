@@ -5,6 +5,7 @@ class CreateAxioms < ActiveRecord::Migration
       t.string :name, :null => false
       t.text :text, :null => false
       t.string :range
+      t.integer :comments_count, :null => false, :default => 0
 
       t.timestamps :null => false
     end

@@ -4,7 +4,11 @@ module Permissionable
   included do
     has_many :permissions, :as => :item
   end
-
+  
+  def permissions_count
+    permissions.count
+  end
+  
   def permission?(role, user)
     # Deny if user is nil
     return false unless user
