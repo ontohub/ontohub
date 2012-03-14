@@ -33,11 +33,10 @@ module Hets
   def self.parse(input_file)
     config = Config.new
 
-    status = `#{config.path} -o sym.xml -v2 #{input_file} 2>/dev/null`
+    status = `#{config.path} -o sym.xml -v2 #{input_file} 2>&1`
     status = status.split("\n").last
-    
-    # hets always returns status 0
-    if status.starts_with?("*** Error")
+
+    if $?.exitstatus != 0 or status.starts_with? '*** Error'
       raise HetsError.new(status)
     end
 
