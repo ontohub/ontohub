@@ -62,6 +62,11 @@ namespace :god do
       run "#{god_command} terminate"
     end
   end
+
+  desc "Test if god is running"
+  task :status do
+    puts god_is_running ? "God is running" : "God is NOT running"
+  end
 end
 
 before "deploy:update", "god:stop"
