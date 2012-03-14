@@ -25,7 +25,7 @@ class EntityTest < ActiveSupport::TestCase
   		setup do
 	  		@entity_hash = {
 	  			'name' => 'nat',
-	  			'range' => 'Examples/Reichel:28.9',
+	  			'range' => '28.9',
 	  			'kind' =>  'sort',
 	  			'text' => 'nat'
 	  		}

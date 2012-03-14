@@ -12,10 +12,15 @@ module Ontology::Entities
       e = find_or_initialize_by_text(hash['text'])
 
       e.ontology = @association.owner
-
-      e.name = hash['name']
-      e.range = hash['range']
-      e.kind = hash['kind']
+      e.name     = hash['name']
+      e.range    = hash['range']
+      e.kind     = hash['kind']
+      
+      if e.range.to_s.include?(":")
+        # remove path from range
+        # Examples/Reichel:28.9 -> 28.9
+        e.range = e.range.split(":",2).last
+      end
 
       e.save!
     end
