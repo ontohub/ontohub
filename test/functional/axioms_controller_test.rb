@@ -6,7 +6,8 @@ class AxiomsControllerTest < ActionController::TestCase
   
   context 'Ontology Instance' do
     setup do
-      @ontology = Factory :ontology
+      @axiom    = Factory :axiom
+      @ontology = @axiom.ontology
     end
     
     context 'on GET to index' do
@@ -15,6 +16,8 @@ class AxiomsControllerTest < ActionController::TestCase
       end
       
       should respond_with :success
+      should render_template :index
+      should render_template 'axioms/_axiom'
     end
     
   end
