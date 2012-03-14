@@ -8,6 +8,8 @@ class OntologiesControllerTest < ActionController::TestCase
     setup do
       @ontology = Factory :ontology
       @user     = Factory :user
+      
+      2.times { Factory :entity, :ontology => @ontology }
     end
     
     context 'on GET to index' do
@@ -24,6 +26,8 @@ class OntologiesControllerTest < ActionController::TestCase
       end
       
       should respond_with :success
+      should assign_to :grouped_kinds
+      should render_template :show
     end
     
     context 'signed in' do
@@ -37,6 +41,7 @@ class OntologiesControllerTest < ActionController::TestCase
         end
         
         should respond_with :success
+        should assign_to :version
         should render_template :new
       end
       
@@ -53,6 +58,7 @@ class OntologiesControllerTest < ActionController::TestCase
           end
           
           should respond_with :success
+          should assign_to :version
           should render_template :new
         end
         
@@ -68,6 +74,7 @@ class OntologiesControllerTest < ActionController::TestCase
             }
           end
           
+          should assign_to :version
           should respond_with :redirect
         end
         

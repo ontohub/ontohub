@@ -15,6 +15,7 @@ class CreateEntities < ActiveRecord::Migration
     change_table :entities do |t|
       t.index [:ontology_id, :id], :unique => true
       t.index [:ontology_id, :text], :unique => true
+      t.index [:ontology_id, :kind] # for grouping
       t.foreign_key :ontologies, :dependent => :delete
     end
   end

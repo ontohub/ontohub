@@ -1,10 +1,20 @@
 require 'test_helper'
 
 class EntityTest < ActiveSupport::TestCase
-  context 'Associations' do
-    should belong_to :ontology
-    should have_and_belong_to_many :axioms
+  
+  %w( ontology_id comments_count ).each do |column|
+    should have_db_column(:comments_count).of_type(:integer)
   end
+  
+  %w( kind name uri range ).each do |column|
+    should have_db_column(column).of_type(:string)
+  end
+
+  should have_db_index([:ontology_id, :text]).unique(true)
+  should have_db_index([:ontology_id, :kind])
+  
+  should belong_to :ontology
+  should have_and_belong_to_many :axioms
 
   context 'OntologyInstance' do
   	setup do

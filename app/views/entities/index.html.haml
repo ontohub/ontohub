@@ -1,4 +1,10 @@
 = ontology_nav parent, :entites
 
+- if params[:kind]
+  %p
+    of kind
+    %strong= params[:kind]
+    (#{link_to 'show all', collection_path})
+
 = paginaton collection do
   = render :partial => 'list'
