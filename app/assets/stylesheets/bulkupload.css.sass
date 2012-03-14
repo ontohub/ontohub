@@ -1,0 +1,44 @@
+@import compass
+
+$width: 600px
+
+form#bulkupload
+  width: $width
+  
+  textarea
+    width: $width
+    height: 300px
+  
+  fieldset
+    border: 0
+    padding: 0
+  
+  ol.queue
+    max-height: 300px
+    overflow-y: auto
+    border: 1px solid #ccc
+    
+    li
+      padding: .2em
+      
+      &.success
+        background-color: #fdf
+      &.error
+        background-color: #fee
+  
+  .status
+    width: $width
+    white-space: nowrap
+  
+  .stats
+    margin: 1em 0em
+    strong
+      padding: .2em .5em
+      border: 1px solid #ccc
+      +border-radius(1em)
+  
+  .ui-progressbar
+    height: 22px
+    margin: .5em 0em
+  .ui-progressbar-value
+    background-image: image-url("pbar-ani.gif")

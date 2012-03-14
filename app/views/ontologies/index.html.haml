@@ -1,6 +1,7 @@
-- if user_signed_in?
+- if can? :create, Ontology
   %ul.actions.right
-    %li= link_to 'Create Ontology', new_ontology_path
+    %li= link_to 'Create Ontology', :new_ontology
+    %li= link_to 'Bulk Upload', :bulk_ontologies
 
 %h2= @page_title = 'Ontologies'
 

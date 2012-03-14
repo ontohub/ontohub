@@ -1,0 +1,29 @@
+%h2= @page_title = "Bulk upload ontologies"
+
+%p
+  Please paste your ontology URIs into the following text field.
+  Currently http:// and https:// URIs are supported.
+  You do not need a specific delimiter like newlines. We find all URIs in this field.
+
+%form#bulkupload{:action => ontologies_path}
+  .inputs
+    %textarea{:required => true, :placeholder => 'Paste any http:// or https:// URIs in this area.'}
+  
+  .stats
+    %strong.created 0
+    created
+    %strong.failed 0
+    failed
+    %strong.remaining ?
+    remaining
+  
+  %fieldset.actions
+    .start= submit_tag "Start Upload"
+    .stop
+      .status
+        Uploading
+        %span.uri
+      .progressbar
+      = submit_tag "Cancel Upload"
+    %ul.restart.actions
+      %li= link_to "Start new bulk upload", :bulk_ontologies

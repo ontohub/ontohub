@@ -12,6 +12,7 @@
 //
 //= require jquery
 //= require jquery.ui.autocomplete
+//= require jquery.ui.progressbar
 //= require jquery.ui.tabs
 //= require jquery.effects.fade
 //= require jquery.effects.highlight

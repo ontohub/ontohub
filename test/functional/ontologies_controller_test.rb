@@ -3,6 +3,7 @@ require 'test_helper'
 class OntologiesControllerTest < ActionController::TestCase
   
   should_map_resources :ontologies
+  should route(:get, "/ontologies/bulk").to(:controller=> :ontologies, :action => :bulk)
   
   context 'Ontology Instance' do
     setup do
@@ -50,6 +51,15 @@ class OntologiesControllerTest < ActionController::TestCase
     context 'signed in' do
       setup do
         sign_in @user
+      end
+      
+      context 'on GET to bulk' do
+        setup do
+          get :bulk
+        end
+        
+        should respond_with :success
+        should render_template :bulk
       end
       
       context 'on GET to new' do

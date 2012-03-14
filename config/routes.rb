@@ -19,6 +19,7 @@ Ontohub::Application.routes.draw do
   end
 
   resources :ontologies do
+    get 'bulk', :on => :collection
     resources :entities, :only => :index
     resources :axioms,   :only => :index
     resources :ontology_versions, :only => :index, :path => 'versions'
