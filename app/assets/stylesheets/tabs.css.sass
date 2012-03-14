@@ -1,15 +1,21 @@
 @import compass
 
-.ui-tabs li
-  span
-    padding: 0em .5em
-    font-size: .8em
-    border-top: 1px solid #CCCCCC
-    display: inline-block
-    background-color: white
-    +border-radius(1em)
-    color: #666
-  
-  &.ui-state-active span
-    background: #eee
-    border: 1px solid #ccc
+.ui-tabs
+  font-size: small
+
+  .ui-tabs-nav
+    background: #fff
+
+  li
+    span
+      padding: 0em .5em
+      font-size: .8em
+      border-top: 1px solid #ccc
+      display: inline-block
+      background-color: white
+      +border-radius(1em)
+      color: #666
+    
+    &.ui-state-active span
+      background: #eee
+      border: 1px solid #ccc
