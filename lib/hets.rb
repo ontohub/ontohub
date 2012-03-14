@@ -35,8 +35,9 @@ module Hets
 
     status = `#{config.path} -o sym.xml -v2 #{input_file} 2>/dev/null`
     status = status.split("\n").last
-
-    if status =~ /^\*\*\*\ Error/
+    
+    # hets always returns status 0
+    if status.starts_with?("*** Error")
       raise HetsError.new(status)
     end
 
