@@ -20,6 +20,7 @@ $.widget("ui.remoteCollection", {
       
       newElement.appendTo(collection).hide().fadeIn('slow');
       
+      self.updateCounter(+1);
       options.success(form);
     });
     
@@ -39,6 +40,21 @@ $.widget("ui.remoteCollection", {
       e.fadeOut(function(){
         e.remove();
       })
+      
+      self.updateCounter(-1);
     })
+  },
+  
+  // Updates a <span>-counter in the active ui-tab navigation
+  updateCounter: function(change){
+    var counter = $("nav.ui-tabs li.ui-tabs-selected span");
+    if(!counter[0])
+      return;
+    
+    var count = parseInt(counter.text()) + change;
+    
+    counter.text(count).effect("highlight", {}, 3000);
+    
+    return count;
   }
 });

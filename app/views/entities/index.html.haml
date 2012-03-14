@@ -1,7 +1,4 @@
 = ontology_nav parent, :entites
 
-%p
-  = pluralize(collection.total_count, 'Entity')
-
 = paginaton collection do
   = render :partial => 'list'

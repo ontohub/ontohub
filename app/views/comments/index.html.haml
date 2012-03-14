@@ -1,8 +1,5 @@
 = ontology_nav parent, :comments if respond_to?(:parent)
 
-%p
-  = pluralize(collection.count, 'Comment')
-
 .comments
   %ol
     = render collection
