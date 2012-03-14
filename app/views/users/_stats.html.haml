@@ -1,0 +1,13 @@
+%p
+  has created or updated
+  %strong= pluralize resource.ontology_versions.count, "Ontology"
+  , written
+  %strong= pluralize resource.comments.count, "Comment"
+  and
+  - if resource.teams.any?
+    is member of
+    - for team in resource.teams
+      = link_to team, team, 'data-type' => 'Team'
+  - else
+    is not member of a team
+  \.

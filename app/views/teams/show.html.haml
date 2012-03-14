@@ -1,15 +1,6 @@
-%h2= @page_title = resource
+= team_nav resource, :overview
 
-%ul.actions
-  - if admin?
-    %li= link_to "All Teams", :admin_teams
-  %li= link_to "My Teams", collection_path
-  - if can? :edit, resource
-    %li= link_to "Edit Users", [resource, :team_users]
-    %li= link_to "Rename", edit_resource_path
-    %li= link_to "Delete", resource_path, method: :delete, confirm: "Do you really want to remove this team?"
-
-%h3 Users
+%p This team consists of #{pluralize @team_users.count, 'Member' }:
 
 %ul
   - @team_users.each do |team_user|

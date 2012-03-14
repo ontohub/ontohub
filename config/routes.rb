@@ -18,6 +18,7 @@ Ontohub::Application.routes.draw do
   end
   
   resources :teams do
+    resources :permissions, :only => [:index], :controller => 'teams/permissions'
     resources :team_users, :only => [:index, :create, :update, :destroy], :path => 'users'
   end
   

@@ -3,6 +3,7 @@ require 'test_helper'
 class TeamTest < ActiveSupport::TestCase
   
   should_strip_attributes :name
+  should have_many :permissions
   
   context 'Associations' do
     should have_many :team_users

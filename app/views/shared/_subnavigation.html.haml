@@ -1,9 +1,9 @@
-- if can? :edit, ontology
+- if can? :edit, resource
   %ul.ontology.actions
-    %li= link_to 'Edit', [:edit, ontology]
-    %li= link_to 'Delete', ontology, :confirm => 'Really delete?', :method => :delete
+    %li= link_to 'Edit', [:edit, resource]
+    %li= link_to 'Delete', resource, :confirm => 'Really delete?', :method => :delete
 
-%h2= link_to ontology, ontology
+%h2= link_to resource, resource
 
 %nav.ui-tabs.ui-widget.static
   %ul{:class => 'ui-tabs-nav ui-helper-reset ui-helper-clearfix ui-widget-header ui-corner-all'}
