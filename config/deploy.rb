@@ -51,7 +51,7 @@ namespace :god do
 
   desc "Start god"
   task :start do
-    run "#{god_command} -c config/god/app.god", :env => environment = { :RAILS_ENV => rails_env }
+    run "#{god_command} -c config/god/app.rb", :env => environment = { :RAILS_ENV => rails_env }
   end
 
   desc "Stop god"
