@@ -1,3 +1,9 @@
+require 'resque/server'
+
+auth_resque = ->(request) {
+  request.env['warden'].authenticate? and request.env['warden'].user.admin?
+}
+
 Ontohub::Application.routes.draw do
 
   devise_for :users, :controllers => { :registrations => "users/registrations" }
@@ -6,6 +12,10 @@ Ontohub::Application.routes.draw do
   namespace :admin do
     resources :teams, :only => :index
     resources :users
+  end
+
+  constraints auth_resque do
+    mount Resque::Server, :at => "/admin/resque"
   end
 
   resources :ontologies do

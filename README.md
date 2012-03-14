@@ -18,10 +18,22 @@ Lange][3] of the [AG Bernd Krieg-Brückner][4].
 
 Initial developers are [Julian Kornberger][5] and [Henning Müller][6].
 
-Installation
-------------
+Configuration
+-------------
 
-Installation directions are to be written.
+### Hets environment variables
+
+Hets environment variables and the extensions of files allowed for upload are
+to be set in "config/hets.yml".
+
+### Allowed URI schemas
+
+Allowed URI schemas are to be set in
+"config/initializers/ontohub_config.rb".
+
+### Clean upload cache
+
+    rails runner CarrierWave.clean_cached_files!
 
 
 [0]: http://www.tzi.org/~cabo/awe12
