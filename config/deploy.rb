@@ -32,14 +32,22 @@ namespace :deploy do
   end
 end
 
-namespace :resque do
-  def rake_command(cmd)
-    run "cd #{current_path} && bundle exec rake #{cmd}", :env => { :RAILS_ENV => rails_env }
-  end
-  
+
+def rake_command(cmd)
+  run "cd #{current_path} && bundle exec rake #{cmd}", :env => { :RAILS_ENV => rails_env }
+end
+
+namespace :resque do  
   desc "Stop resque"
   task :stop do
     rake_command 'resque:stop'
+  end
+end
+
+namespace :sunspot do
+  desc "Reindex all solr models"
+  task :reindex do
+    rake_command 'sunspot:reindex'
   end
 end
 
