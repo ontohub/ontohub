@@ -3,11 +3,13 @@ module OntologyVersion::Parsing
   
   included do
     @queue = :hets
-    after_create :parse_async
+    after_create :parse_async, :if => :raw_file?
   end
 
   def parse
     raise ArgumentError.new('No raw_file set.') unless raw_file?
+
+    update_state! :processing
 
     do_or_set_failed do
       @path = Hets.parse(self.raw_file.current_path)
@@ -23,27 +25,5 @@ module OntologyVersion::Parsing
   
   def parse_async
     async :parse
-  end
-  
-protected
-  
-  def do_or_set_failed(&block)
-    raise ArgumentError.new('No block given.') unless block_given?
-
-    begin
-      yield
-    rescue Exception => e
-      update_state! :failed, e.message
-      raise e
-    end
-  end
-
-  def update_state!(state, error_message = nil)
-    ontology.state = state.to_s
-    ontology.save!
-
-    self.state      = state.to_s
-    self.last_error = error_message
-    save!
   end
 end
