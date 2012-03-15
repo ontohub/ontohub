@@ -6,6 +6,7 @@ class TeamsController < InheritedResources::Base
   load_and_authorize_resource
   
   def show
+    # users of current team
     @team_users = resource.team_users.joins(:user).order(:name).all
   end
   
@@ -16,14 +17,9 @@ class TeamsController < InheritedResources::Base
   
   protected
   
-  def permission_list
-    raise NotImplementedError
-    # you need to override this method with something like:
-    # @permission_list ||= PermissionList.new ...
-  end
-  
   def collection
-    @team_users ||= current_user.team_users
+    # show only teams of current user
+    @team_users ||= current_user.team_users.joins(:team).order(:name).all
   end
 
 end
