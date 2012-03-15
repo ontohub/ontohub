@@ -24,5 +24,9 @@ module OntologyHelper
 
     html
   end
+
+  def download_path(resource)
+    ontology_ontology_version_path(resource, resource.versions.last)
+  end
   
 end
