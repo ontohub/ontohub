@@ -17,6 +17,8 @@ module OntologyVersion::Parsing
       self.xml_file = File.open(@path)
       save!
 
+      File.delete(@path)
+
       self.ontology.import_latest_version
     end
 
