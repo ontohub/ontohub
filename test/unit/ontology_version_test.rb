@@ -8,6 +8,56 @@ class OntologyVersionTest < ActiveSupport::TestCase
   should belong_to :user
   should belong_to :ontology
   
+  context 'creating OntologyVersion' do
+    setup do
+      @ontology = Factory :ontology
+      @version  = @ontology.versions.build
+    end
+    
+    context 'without addional attributes' do
+      should 'be invalid' do
+        assert @version.invalid?
+      end
+    end
+    
+    context 'with invalid source_uri' do
+      setup do
+        @version.source_uri = 'invalid'
+      end
+      should 'be invalid' do
+        assert @version.invalid?
+      end
+    end
+    
+    context 'with valid remote_raw_file_url' do
+      setup do
+        @version.remote_raw_file_url = 'http://trac.informatik.uni-bremen.de:8080/hets/export/16726/trunk/OWL2/tests/family.owl'
+      end
+      should 'be valid' do
+        assert @version.valid?
+      end
+    end
+    
+    context 'with valid raw_file' do
+      setup do
+        @version.raw_file = File.open("#{Rails.root}/test/fixtures/ontologies/owl/pizza.owl")
+      end
+      should 'be invalid' do
+        assert @version.valid?
+      end
+    end
+    
+    context 'with valid source_uri' do
+      setup do
+        @version.source_uri = 'http://example.com/fooo'
+      end
+      should 'be valid' do
+        assert @version.valid?
+      end
+    end
+  end
+  
+  
   context 'Parsing' do
     setup do
       OntologyVersion.any_instance.expects(:parse_async).once

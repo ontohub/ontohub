@@ -75,36 +75,68 @@ class OntologiesControllerTest < ActionController::TestCase
       context 'on POST to create' do
         
         context 'with invalid input' do
-          setup do
-            post :create, :ontology => {
-              uri: 'fooo',
-              versions_attributes: [{
-                remote_raw_file_url: 'foo'
-              }],
-            }
+          context 'without format' do
+            setup do
+              post :create, :ontology => {
+                uri: 'fooo',
+                versions_attributes: [{
+                  remote_raw_file_url: ''
+                }],
+              }
+            end
+            
+            should respond_with :success
+            should assign_to :version
+            should render_template :new
           end
           
-          should respond_with :success
-          should assign_to :version
-          should render_template :new
+          context 'with format :json' do
+            setup do
+              post :create, :format => :json, :ontology => {
+                uri: 'fooo',
+                versions_attributes: [{
+                  remote_raw_file_url: ''
+                }],
+              }
+            end
+            
+            should respond_with :unprocessable_entity
+          end
         end
         
         context 'with valid input' do
-          setup do
-            OntologyVersion.any_instance.expects(:parse_async).once
+          context 'without format' do
+            setup do
+              OntologyVersion.any_instance.expects(:parse_async).once
+              
+              post :create, :ontology => {
+                uri: 'fooo',
+                versions_attributes: [{
+                  remote_raw_file_url: 'http://example.com/dummy.ontology'
+                }],
+              }
+            end
             
-            post :create, :ontology => {
-              uri: 'fooo',
-              versions_attributes: [{
-                remote_raw_file_url: 'http://example.com/dummy.ontology'
-              }],
-            }
+            should assign_to :version
+            should respond_with :redirect
           end
           
-          should assign_to :version
-          should respond_with :redirect
+          context 'with format :json' do
+            setup do
+              OntologyVersion.any_instance.expects(:parse_async).once
+              
+              post :create, :format => :json, :ontology => {
+                uri: 'fooo',
+                versions_attributes: [{
+                  remote_raw_file_url: 'http://example.com/dummy.ontology'
+                }],
+              }
+            end
+            
+            should assign_to :version
+            should respond_with :redirect
+          end
         end
-        
       end
     end
     

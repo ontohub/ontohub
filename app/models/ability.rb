@@ -16,7 +16,7 @@ class Ability
       can [:destroy, :permissions], Ontology do |subject|
         subject.permission?(:owner, user)
       end
-      can [:new, :create], Ontology
+      can [:new, :create, :bulk], Ontology
       
       # Team permissions
       can [:create, :show, :index], Team

@@ -12,6 +12,16 @@ class OntologyTest < ActiveSupport::TestCase
   should_strip_attributes :name, :uri
   should_not_strip_attributes :description
 
+  
+  [ 'http://example.com/', 'https://example.com/' ].each do |val|
+    should allow_value(val).for :name
+  end
+
+  [ nil, '','fooo', 'file://path/to/file' ].each do |val|
+    should_not allow_value(val).for :name
+  end
+  
+
   context 'ontology instance' do
     setup do
       @ontology = Factory :ontology
