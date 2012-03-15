@@ -1,41 +1,64 @@
 @import compass
 
-$width: 600px
+$width: 700px
+
+$created-color: #060
+$failed-color: #f00
+$remaining-color: #333
 
 form#bulkupload
   width: $width
   
   textarea
     width: $width
-    height: 300px
+    height: 400px
   
   fieldset
     border: 0
     padding: 0
   
   ol.queue
-    max-height: 300px
+    height: 400px
     overflow-y: auto
     border: 1px solid #ccc
     
-    li
-      padding: .2em
+    > li
+      padding: .3em
+      margin: 1px
+      border: 1px solid $remaining-color
+      background-color: #eee
       
       &.success
-        background-color: #fdf
+        background-color: lighten($created-color, 60%)
+        border-color: $created-color
       &.error
-        background-color: #fee
+        background-color: lighten($failed-color, 45%)
+        border-color: $failed-color
   
   .status
     width: $width
     white-space: nowrap
   
-  .stats
+  ul.stats
     margin: 1em 0em
+    padding: 0em
+    +no-bullet
+    li
+      +inline-block-list-item
+      &.created
+        color: $created-color
+      &.failed
+        color: $failed-color
+      &.remaining
+        color: $remaining-color
     strong
       padding: .2em .5em
       border: 1px solid #ccc
       +border-radius(1em)
+  
+  ul.errors
+    margin-top: .5em
+    font-size: .8em
   
   .ui-progressbar
     height: 22px
