@@ -33,14 +33,19 @@ header
       background-color: transparent
   
   nav
-    &.admin
-      border: lighten($primary-color, 50%) 1px solid
-      +border-radius(10px)
-      padding: .5em
-    
     display: inline-block
     ul
       +inline-block-list-container
       > li
         +inline-block-list-item
         margin-right: 1em
+    > ul > li
+      > ul
+        display: none
+        background: darken($primary-color, 7%)
+        +border-radius(1em)
+        padding: .5em
+      &:hover
+        > ul
+          display: block
+          position: absolute
