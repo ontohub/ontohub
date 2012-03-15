@@ -12,7 +12,7 @@ class OntologyVersion < ActiveRecord::Base
   attr_accessible :raw_file, :source_uri
 
   validate :raw_file_xor_source_uri, :on => :create
-  validate :raw_file_size_maximum
+# validate :raw_file_size_maximum
 
   validates_format_of :source_uri,
     :with => URI::regexp(ALLOWED_URI_SCHEMAS), :if => :source_uri?

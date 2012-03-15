@@ -1,7 +1,7 @@
 require 'test_helper'
 
 class HetsTest < ActiveSupport::TestCase
-  %w(owl/pizza.owl clif/cat.clif).each do |path|
+  %w(owl/pizza.owl owl/generations.owl clif/cat.clif).each do |path|
     context path do
       setup do
         assert_nothing_raised do

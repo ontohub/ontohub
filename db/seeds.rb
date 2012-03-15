@@ -2,6 +2,8 @@
 # The data can then be loaded with the rake db:seed (or created alongside the db with db:setup).
 #
 
+ActiveRecord::Base.logger = Logger.new($stdout)
+
 # Create Admin User
 user = User.create!({
   :email    => "admin@example.com",
