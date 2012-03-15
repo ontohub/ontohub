@@ -70,6 +70,10 @@ The war-Package should be automatically loaded.
 
     apt-get install postgresql-server
 
+### Redis
+
+    apt-get install redis-server
+
 ### hets
 
     apt-add-repository ppa:hets/hets
@@ -96,6 +100,48 @@ Allowed URI schemas are to be set in `config/initializers/ontohub_config.rb`.
 ### Clean upload cache
 
     rails runner CarrierWave.clean_cached_files!
+
+Development
+-----------
+
+### Installation
+
+    git clone git@<FIXME>/ontohub.git
+    cd ontohub
+    bundle install
+
+### Set up your database
+
+After configuring your `config/database.yml` you have to create the tables:
+
+    rake db:migrate:reset
+
+### Background processes
+
+Start the background processes:
+
+    rake sunspot:solr:start
+    rake resque:work
+
+### Seeds
+
+Fill the database with dummy data
+
+    rake db:seed
+
+### Start the rails server
+
+Start the rails server - it will be available at http://localhost:3000/ until you stop it by pressing CTRL + C.
+
+    rails s
+
+Now you can log in as *admin@example.com* with password *foobar*.
+*Alice, Bob, Carolm, Dave* @example.com can also be used.
+
+### Stop the background processes
+
+    rake resque:work
+    rake sunspot:solr:stop
 
 
 [0]: http://www.tzi.org/~cabo/awe12
