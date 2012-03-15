@@ -1,3 +1,11 @@
+GIT
+  remote: git://github.com/jnicklas/carrierwave.git
+  revision: 789a8b952764a21e3ff837a628d8c15558cc7ad1
+  specs:
+    carrierwave (0.6.0.beta)
+      activemodel (>= 3.2.0)
+      activesupport (>= 3.2.0)
+
 GEM
   remote: https://rubygems.org/
   specs:
@@ -38,8 +46,6 @@ GEM
       net-sftp (>= 2.0.0)
       net-ssh (>= 2.0.14)
       net-ssh-gateway (>= 1.1.0)
-    carrierwave (0.5.8)
-      activesupport (~> 3.0)
     chunky_png (1.2.5)
     coffee-rails (3.2.2)
       coffee-script (>= 2.2.0)
@@ -200,7 +206,7 @@ PLATFORMS
 DEPENDENCIES
   cancan (~> 1.6.7)
   capistrano
-  carrierwave
+  carrierwave!
   coffee-rails (~> 3.2.1)
   compass (= 0.12.rc.1)
   devise (~> 2.0.0)
