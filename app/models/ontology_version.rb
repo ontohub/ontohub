@@ -10,6 +10,7 @@ class OntologyVersion < ActiveRecord::Base
   attr_accessible :raw_file, :remote_raw_file_url
 
   validates :raw_file, file_size: { maximum: 10.megabytes.to_i }
+  validate :raw_file_xor_remote_raw_file_url
 
   scope :latest, order('id DESC')
 
@@ -17,5 +18,13 @@ class OntologyVersion < ActiveRecord::Base
 
   def set_source_uri
     self.source_uri = self.remote_raw_file_url
+  end
+
+protected
+
+  def raw_file_xor_remote_raw_file_url
+    if !(raw_file.blank? ^ source_uri.blank?)
+      errors.add :remote_raw_file_url, 'Specify either a source file or URI.'
+    end
   end
 end

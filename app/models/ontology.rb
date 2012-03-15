@@ -16,6 +16,7 @@ class Ontology < ActiveRecord::Base
 
   validates_presence_of :uri
   validates_uniqueness_of :uri, :if => :uri_changed?
+  validates_format_of :uri, :with => URI::regexp(ALLOWED_URI_SCHEMAS)
   
   strip_attributes :only => [:name, :uri]
   

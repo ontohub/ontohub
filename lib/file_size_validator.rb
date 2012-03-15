@@ -1,6 +1,15 @@
 class FileSizeValidator < ActiveModel::EachValidator
-  MESSAGES = { :is => :wrong_size, :minimum => :size_too_small, :maximum => :size_too_big }.freeze
-  CHECKS = { :is => :==, :minimum => :>=, :maximum => :<= }.freeze
+  MESSAGES = {
+    :is => :wrong_size,
+    :minimum => :size_too_small,
+    :maximum => :size_too_big
+  }.freeze
+
+  CHECKS = {
+    :is => :==,
+    :minimum => :>=,
+    :maximum => :<=
+  }.freeze
 
   DEFAULT_TOKENIZER = ->(value) { value.split(//) }
   RESERVED_OPTIONS = [:minimum, :maximum, :within, :is, :tokenizer, :too_short, :too_long]
@@ -26,15 +35,19 @@ class FileSizeValidator < ActiveModel::EachValidator
       value = options[key]
 
       unless value.is_a?(Integer) && value >= 0
-        raise ArgumentError, ":#{key} must be a nonnegative Integer"
+        raise ArgumentError, ":#{key} must be a non-negative Integer"
       end
     end
   end
 
   def validate_each(record, attribute, value)
-    raise(ArgumentError, "A CarrierWave::Uploader::Base object was expected") unless value.kind_of? CarrierWave::Uploader::Base
+    unless value.kind_of? CarrierWave::Uploader::Base
+      raise ArgumentError, 'A CarrierWave::Uploader::Base object was expected'
+    end
     
-    value = (options[:tokenizer] || DEFAULT_TOKENIZER).call(value) if value.kind_of?(String)
+    if value.kind_of?(String)
+      value = (options[:tokenizer] || DEFAULT_TOKENIZER).call(value)
+    end
 
     CHECKS.each do |key, validity_check|
       next unless check_value = options[key]
