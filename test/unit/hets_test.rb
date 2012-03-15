@@ -5,7 +5,6 @@ class HetsTest < ActiveSupport::TestCase
     context path do
       setup do
         assert_nothing_raised do
-          `rm -f test/fixtures/ontologies/*/*.xml`
           @xml_path = Hets.parse "test/fixtures/ontologies/#{path}"
         end
       end
@@ -18,14 +17,15 @@ class HetsTest < ActiveSupport::TestCase
         assert_nothing_raised do
           ontology = Factory :ontology
           ontology.import_xml_from_file @xml_path
+          `rm -f #{@xml_path}`
         end
       end
+    end
+  end
 
-      should 'raise exception if provided with wrong file-format' do
-        assert_raise Hets::HetsError do
-          Hets.parse 'test/fixtures/ontologies/valid.xml'
-        end
-      end
+  should 'raise exception if provided with wrong file-format' do
+    assert_raise Hets::HetsError do
+      Hets.parse 'test/fixtures/ontologies/valid.xml'
     end
   end
 end
