@@ -65,4 +65,5 @@ end
 
 group :production do
   gem 'god'
+  gem 'newrelic_rpm'
 end
