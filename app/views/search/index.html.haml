@@ -1,0 +1,13 @@
+%h2= @page_title = 'Entity Search'
+
+= form_tag :search, :method => :get do
+  = text_field_tag :q, @query, :placeholder => 'Search for entities'
+  = submit_tag 'Search', :name => nil, :disable_with => 'Searching ...'
+
+%p
+  %strong= pluralize @group.matches, "Entity"
+  found in
+  %strong= pluralize @groups.size, "Ontology"
+
+%ol.searchResult
+  = render :partial => 'group', :collection => @groups
