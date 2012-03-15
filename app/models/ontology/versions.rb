@@ -10,6 +10,10 @@ module Ontology::Versions
     accepts_nested_attributes_for :versions
     
     after_create :create_permission_for_first_version
+
+    def last_valid_version
+      self.versions.where(state: 'done').last
+    end
   end
   
   protected

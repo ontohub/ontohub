@@ -19,6 +19,7 @@
   %tr
     %td Hets status
     %td= status resource
-  %tr
-    %td
-    %td= link_to 'Download', download_path(resource)
+  - if resource.last_valid_version
+    %tr
+      %td
+      %td= link_to 'Download', download_path(resource)
