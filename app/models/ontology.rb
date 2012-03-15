@@ -12,7 +12,7 @@ class Ontology < ActiveRecord::Base
 
   belongs_to :logic
 
-  attr_accessible :uri, :name, :description
+  attr_accessible :uri, :name, :description, :logic_id
 
   validates_presence_of :uri
   validates_uniqueness_of :uri, :if => :uri_changed?

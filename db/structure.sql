@@ -755,20 +755,6 @@ CREATE INDEX index_ontologies_on_logic_id ON ontologies USING btree (logic_id);
 
 
 --
--- Name: index_ontologies_on_state; Type: INDEX; Schema: public; Owner: -; Tablespace: 
---
-
-CREATE INDEX index_ontologies_on_state ON ontologies USING btree (state);
-
-
---
--- Name: index_ontologies_on_uri; Type: INDEX; Schema: public; Owner: -; Tablespace: 
---
-
-CREATE UNIQUE INDEX index_ontologies_on_uri ON ontologies USING btree (uri);
-
-
---
 -- Name: index_ontology_versions_on_ontology_id; Type: INDEX; Schema: public; Owner: -; Tablespace: 
 --
 
