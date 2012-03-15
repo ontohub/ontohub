@@ -1,20 +1,20 @@
 require 'test_helper'
 
 class OntologyVersionTest < ActiveSupport::TestCase
-  
   should have_db_index(:ontology_id)
   should have_db_index(:user_id)
   
   should belong_to :user
   should belong_to :ontology
   
+  context 'validating OntologyVersion' do
+    [ 'http://example.com/', 'https://example.com/' ].each do |val|
+      should allow_value(val).for :source_uri
+    end
 
-  [ 'http://example.com/', 'https://example.com/' ].each do |val|
-    should allow_value(val).for :source_uri
-  end
-
-  [ nil, '','fooo', 'file://path/to/file' ].each do |val|
-    should_not allow_value(val).for :source_uri
+    [ nil, '','fooo', 'file://path/to/file' ].each do |val|
+      should_not allow_value(val).for :source_uri
+    end
   end
   
   context 'creating OntologyVersion' do
