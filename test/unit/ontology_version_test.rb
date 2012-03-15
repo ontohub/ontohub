@@ -1,11 +1,13 @@
 require 'test_helper'
 
 class OntologyVersionTest < ActiveSupport::TestCase
-  context 'Associations' do
-    should belong_to :user
-    should belong_to :ontology
-  end
-
+  
+  should have_db_index(:ontology_id)
+  should have_db_index(:user_id)
+  
+  should belong_to :user
+  should belong_to :ontology
+  
   context 'Parsing' do
     setup do
       OntologyVersion.any_instance.expects(:parse_async).once
