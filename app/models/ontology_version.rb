@@ -11,8 +11,11 @@ class OntologyVersion < ActiveRecord::Base
 
   attr_accessible :raw_file, :source_uri
 
-  validates :raw_file, file_size: { maximum: 10.megabytes.to_i }
-# validate :raw_file_xor_source_uri
+  validate :raw_file_xor_source_uri
+  validate :raw_file_size_maximum
+
+  validates_format_of :source_uri,
+    :with => URI::regexp(ALLOWED_URI_SCHEMAS), :if => :source_uri?
 
   scope :latest, order('id DESC')
 
@@ -21,6 +24,12 @@ protected
   def raw_file_xor_source_uri
     if !(raw_file.blank? ^ source_uri.blank?)
       errors.add :source_uri, 'Specify either a source file or URI.'
+    end
+  end
+
+  def raw_file_size_maximum
+    if raw_file.size > 10.megabytes.to_i
+      errors.add :raw_file, 'The maximum file size is 10M.'
     end
   end
 end

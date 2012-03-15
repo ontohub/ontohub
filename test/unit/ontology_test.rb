@@ -12,12 +12,13 @@ class OntologyTest < ActiveSupport::TestCase
   should_strip_attributes :name, :uri
   should_not_strip_attributes :description
 
-  
-  [ 'http://example.com/', 'https://example.com/', 'file://path/to/file' ].each do |val|
-    should allow_value(val).for :uri
+  context 'Validations' do
+    ['http://example.com/', 'https://example.com/', 'file://path/to/file'].each do |val|
+      should allow_value(val).for :uri
+    end
   end
 
-  [ nil, '','fooo', ].each do |val|
+  [nil, '', 'fooo'].each do |val|
     should_not allow_value(val).for :uri
   end
   
@@ -35,20 +36,20 @@ class OntologyTest < ActiveSupport::TestCase
     setup do
       OntologyVersion.any_instance.expects(:parse_async).once
       
-      @user                = Factory :user
-      @remote_raw_file_url = 'http://colore.googlecode.com/svn/trunk/ontologies/arithmetic/robinson_arithmetic.clif'
-      @ontology            = Ontology.new \
+      @user       = Factory :user
+      @source_uri = 'http://colore.googlecode.com/svn/trunk/ontologies/arithmetic/robinson_arithmetic.clif'
+      @ontology   = Ontology.new \
         :uri => 'http://example.com/ontology',
         :versions_attributes => [{
-          remote_raw_file_url: @remote_raw_file_url
+          source_uri: @source_uri
         }]
         
       @ontology.versions.first.user = @user
       @ontology.save!
     end
     
-    should 'create a version with remote_raw_file_url' do
-      assert_equal @remote_raw_file_url, @ontology.versions.first.remote_raw_file_url
+    should 'create a version with source_uri' do
+      assert_equal @source_uri, @ontology.versions.first.source_uri
     end
     
     context 'creating a permission' do

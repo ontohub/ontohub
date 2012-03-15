@@ -80,7 +80,7 @@ class OntologiesControllerTest < ActionController::TestCase
               post :create, :ontology => {
                 uri: 'fooo',
                 versions_attributes: [{
-                  remote_raw_file_url: ''
+                  source_uri: ''
                 }],
               }
             end
@@ -95,7 +95,7 @@ class OntologiesControllerTest < ActionController::TestCase
               post :create, :format => :json, :ontology => {
                 uri: 'fooo',
                 versions_attributes: [{
-                  remote_raw_file_url: ''
+                  source_uri: ''
                 }],
               }
             end
@@ -110,9 +110,9 @@ class OntologiesControllerTest < ActionController::TestCase
               OntologyVersion.any_instance.expects(:parse_async).once
               
               post :create, :ontology => {
-                uri: 'fooo',
+                uri: 'http://example.com/dummy.ontology',
                 versions_attributes: [{
-                  remote_raw_file_url: 'http://example.com/dummy.ontology'
+                  source_uri: 'http://example.com/dummy.ontology'
                 }],
               }
             end
@@ -126,15 +126,15 @@ class OntologiesControllerTest < ActionController::TestCase
               OntologyVersion.any_instance.expects(:parse_async).once
               
               post :create, :format => :json, :ontology => {
-                uri: 'fooo',
+                uri: 'http://example.com/dummy.ontology',
                 versions_attributes: [{
-                  remote_raw_file_url: 'http://example.com/dummy.ontology'
+                  source_uri: 'http://example.com/dummy.ontology'
                 }],
               }
             end
             
             should assign_to :version
-            should respond_with :redirect
+            should respond_with :created
           end
         end
       end

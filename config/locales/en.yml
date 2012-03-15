@@ -28,8 +28,3 @@ en:
     permission:
       placeholder: Add teams or users
       help: Enter at least three characters to search for users or teams.
-  errors:
-    messages:
-      wrong_size: "File size should be %{file_size}."
-      size_too_small: "The minimum file size is %{file_size}."
-      size_too_big: "The maximum file size is %{file_size}."

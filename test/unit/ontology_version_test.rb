@@ -7,17 +7,17 @@ class OntologyVersionTest < ActiveSupport::TestCase
   should belong_to :user
   should belong_to :ontology
   
-  context 'validating OntologyVersion' do
-    [ 'http://example.com/', 'https://example.com/' ].each do |val|
+  context 'Validating OntologyVersion' do
+    ['http://example.com/', 'https://example.com/'].each do |val|
       should allow_value(val).for :source_uri
     end
 
-    [ nil, '','fooo', 'file://path/to/file' ].each do |val|
+    [nil, '','fooo'].each do |val|
       should_not allow_value(val).for :source_uri
     end
   end
   
-  context 'creating OntologyVersion' do
+  context 'Creating OntologyVersion' do
     setup do
       @ontology = Factory :ontology
       @version  = @ontology.versions.build

@@ -27,7 +27,7 @@ class UsersControllerTest < ActionController::TestCase
         OntologyVersion.any_instance.expects(:parse_async).once
         
         Factory :comment, :user => @user
-        Factory :ontology_version, :user => @user
+        Factory :ontology_version_with_file, :user => @user
       end
       context 'on GET to show' do
         setup do
