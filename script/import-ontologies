@@ -7,25 +7,30 @@ def usage_message
 Imports ontology files from several directories into Ontohub.
 
   -h            This help.
-  -r            Use redis for parsing jobs.
+  -r            Do not use redis for parsing jobs.
+  -u <uid>      ID of user which should own imported objects.
 
 "
-	exit( 1 )
+	exit 1
 end
 
 options = GetoptLong.new(
 	[ '-h', GetoptLong::NO_ARGUMENT ],
 	[ '-r', GetoptLong::NO_ARGUMENT ],
+	[ '-u', GetoptLong::REQUIRED_ARGUMENT ],
 )
 
-redis = false
+redis = true
+uid = 1
 
 options.each do |option, argument|
 	case option
 		when '-h'
 			usage_message
 		when '-r'
-			redis = true
+			redis = false
+    when '-u'
+      uid = argument.to_i
 	end
 end
 
@@ -33,7 +38,7 @@ require File.expand_path('../../config/environment',  __FILE__)
 
 config = Hets::Config.new
 
-user = User.find(1)
+user = User.find(uid)
 
 ARGV.each do |dir|
   config.allowed_extensions.each do |ext|
