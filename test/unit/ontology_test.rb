@@ -5,6 +5,8 @@ class OntologyTest < ActiveSupport::TestCase
   should have_many :versions
   should have_many :comments
   
+  should have_db_index(:uri).unique(true)
+  
   should_strip_attributes :name, :uri
   should_not_strip_attributes :description
 

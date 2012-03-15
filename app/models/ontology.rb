@@ -15,6 +15,7 @@ class Ontology < ActiveRecord::Base
   attr_accessible :uri, :name, :description
 
   validates_presence_of :uri
+  validates_uniqueness_of :uri, :if => :uri_changed?
   
   strip_attributes :only => [:name, :uri]
   

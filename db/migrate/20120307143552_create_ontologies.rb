@@ -14,6 +14,8 @@ class CreateOntologies < ActiveRecord::Migration
     end
 
     change_table :ontologies do |t|
+      t.index :uri, :unique => true
+      t.index :state
       t.index :logic_id
       t.foreign_key :logics
     end
