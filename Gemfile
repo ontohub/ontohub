@@ -48,7 +48,7 @@ gem 'carrierwave', :git => 'git://github.com/jnicklas/carrierwave.git'
 # Async jobs
 gem 'resque'
 
-# Async jobs
+# Search engine
 gem 'sunspot_rails', :git => 'git://github.com/sunspot/sunspot.git'
 
 gem "faker", "~> 1.0"
