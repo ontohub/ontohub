@@ -34,6 +34,7 @@ Ontohub::Application.routes.draw do
   end
   
   get 'autocomplete' => 'autocomplete#index'
+  get 'search'       => 'search#index'
 
   root :to => 'home#show'
 

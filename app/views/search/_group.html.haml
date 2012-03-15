@@ -1,0 +1,19 @@
+- ontology = Ontology.find_by_id(group.value)
+%li
+  %h3= link_to ontology, ontology
+  %p
+    = pluralize group.total, "Entity"
+    found.
+    - if group.hits.count < group.total
+      Showing 1 - #{group.hits.count}
+  
+  %table.entities
+    %thead
+      %tr
+        %th Text
+        %th Kind
+        %th Name
+        %th URI
+        %th Range
+    %tbody
+      = render :collection => group.hits, :partial => 'hit'

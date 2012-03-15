@@ -54,6 +54,18 @@ now enable the module an restart apache2:
 
 TODO: virtual host configuration
 
+### Tomcat with Solr
+
+    apt-get install tomcat6
+    
+    cd /root/
+    version=3.5.0
+    wget http://apache.openmirror.de/lucene/solr/$version/apache-solr-$version.tgz
+    tar xzf apache-solr-$version.tgz
+    sudo cp apache-solr-$version/dist/apache-solr-solrj-$version.jar /var/lib/tomcat6/webapps/solr.war
+
+The war-Package should be automatically loaded.
+
 ### PostgreSQL
 
     apt-get install postgresql-server
