@@ -1,3 +1,8 @@
 %nav
   %ul
     %li= link_to 'Ontologies', :ontologies
+    
+    - if admin?
+      %li
+        = link_to 'Admin', '#'
+        = render :partial => '/shared/admin_navigation' 
