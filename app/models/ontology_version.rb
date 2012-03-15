@@ -9,7 +9,7 @@ class OntologyVersion < ActiveRecord::Base
 
   attr_accessible :raw_file, :remote_raw_file_url
 
-  validate :validates_size_of_raw_file, :if => :raw_file?
+  validates :raw_file, file_size: { maximum: 10.megabytes.to_i }
 
   scope :latest, order('id DESC')
 
@@ -17,13 +17,5 @@ class OntologyVersion < ActiveRecord::Base
 
   def set_source_uri
     self.source_uri = self.remote_raw_file_url
-  end
-
-protected
-
-  def validates_size_of_raw_file
-    if raw_file.size > 10.megabytes.to_i
-      errors.add :raw_file, 'Maximum upload size is 10M.'
-    end
   end
 end
