@@ -48,6 +48,9 @@ gem 'carrierwave', :git => 'git://github.com/jnicklas/carrierwave.git'
 # Async jobs
 gem 'resque'
 
+# Async jobs
+gem 'sunspot_rails', :git => 'git://github.com/sunspot/sunspot.git'
+
 gem "faker", "~> 1.0"
 
 group :test do
@@ -61,6 +64,8 @@ end
 
 group :development do
   gem 'capistrano'
+  # pre-packaged Solr distribution for use in development
+  gem 'sunspot_solr', :git => 'git://github.com/sunspot/sunspot.git'
 end
 
 group :production do
