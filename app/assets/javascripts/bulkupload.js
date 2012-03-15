@@ -121,7 +121,7 @@ $(function(){
     // updates the created/failed/remaining counter
     updateStats: function(field, change){
       this[field] += change;
-      this.statsContainer.find("."+field).text(this[field]);
+      this.statsContainer.find("."+field+" .count").text(this[field]);
     },
     
     // executes the next job
@@ -140,15 +140,25 @@ $(function(){
           data: {
             'ontology[uri]': uri,
             'ontology[versions_attributes][0][remote_raw_file_url]': uri
-          }
+          },
+          format: 'json'
         })
         .success(function(){
-          self.updateStats('success',1);
+          self.updateStats('created',1);
           job.addClass('success');
         })
         .error(function(xhr, status, error){
           self.updateStats('failed',1);
-          job.addClass('error').append($("<div class='message'>Foo</div>").text(error));
+          var message = $("<ul class='errors'></ul>")
+          
+          if(xhr.getResponseHeader("Content-Type").indexOf("application/json") === 0){
+            $.each($.parseJSON(xhr.responseText).errors, function(attr,errors){
+              $("<li></li>").text(attr + " " + errors).appendTo(message);
+            });
+          }else{
+            $("<li></li>").text(error).appendTo(message);
+          }
+          job.addClass('error').append(message);
         })
         .complete(function(){
           self.jobDone();
