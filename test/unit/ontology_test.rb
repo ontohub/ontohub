@@ -13,15 +13,14 @@ class OntologyTest < ActiveSupport::TestCase
   should_not_strip_attributes :description
 
   
-  [ 'http://example.com/', 'https://example.com/' ].each do |val|
-    should allow_value(val).for :name
+  [ 'http://example.com/', 'https://example.com/', 'file://path/to/file' ].each do |val|
+    should allow_value(val).for :uri
   end
 
-  [ nil, '','fooo', 'file://path/to/file' ].each do |val|
-    should_not allow_value(val).for :name
+  [ nil, '','fooo', ].each do |val|
+    should_not allow_value(val).for :uri
   end
   
-
   context 'ontology instance' do
     setup do
       @ontology = Factory :ontology
@@ -39,7 +38,7 @@ class OntologyTest < ActiveSupport::TestCase
       @user                = Factory :user
       @remote_raw_file_url = 'http://colore.googlecode.com/svn/trunk/ontologies/arithmetic/robinson_arithmetic.clif'
       @ontology            = Ontology.new \
-        :uri => 'fooo',
+        :uri => 'http://example.com/ontology',
         :versions_attributes => [{
           remote_raw_file_url: @remote_raw_file_url
         }]

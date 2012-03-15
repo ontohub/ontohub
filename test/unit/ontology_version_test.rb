@@ -8,6 +8,15 @@ class OntologyVersionTest < ActiveSupport::TestCase
   should belong_to :user
   should belong_to :ontology
   
+
+  [ 'http://example.com/', 'https://example.com/' ].each do |val|
+    should allow_value(val).for :source_uri
+  end
+
+  [ nil, '','fooo', 'file://path/to/file' ].each do |val|
+    should_not allow_value(val).for :source_uri
+  end
+  
   context 'creating OntologyVersion' do
     setup do
       @ontology = Factory :ontology
@@ -61,7 +70,7 @@ class OntologyVersionTest < ActiveSupport::TestCase
   context 'Parsing' do
     setup do
       OntologyVersion.any_instance.expects(:parse_async).once
-      @ontology_version = Factory :ontology_version
+      @ontology_version = Factory.build :ontology_version
       @pizza_owl = 'test/fixtures/ontologies/owl/pizza.owl'
     end
 
