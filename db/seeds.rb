@@ -29,7 +29,7 @@ team = Team.create! \
 end
 
 # Import ontologies
-Dir["#{Rails.root}/test/fixtures/ontologies/*/*.*"].each do |file|
+Dir["#{Rails.root}/test/fixtures/ontologies/*/*.{clf,clif,owl}"].each do |file|
   basename = File.basename(file)
   
   o = Ontology.new \
