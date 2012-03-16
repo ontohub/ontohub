@@ -7,7 +7,7 @@
 
 %p
   %strong= pluralize @group.matches, "Entity"
-  = @max_groups > @groups.size ? 'found in' : 'found, displaying the first'}
+  = @max_groups > @groups.size ? 'found in' : 'found, displaying the first'
   %strong= pluralize @groups.size, "Ontology"
 
 %ol.searchResult
