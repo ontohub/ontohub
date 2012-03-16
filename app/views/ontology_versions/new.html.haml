@@ -1,0 +1,9 @@
+= ontology_nav parent, 'New ontology version'
+
+= semantic_form_for [:ontology, resource] do |f|
+  = f.inputs do
+    = f.input :raw_file, :as => :file
+    %li - OR -
+    = f.input :source_uri, :as => :url
+  = f.actions do
+    = f.action :submit, :button_html => { :disable_with => t(:wait) }
