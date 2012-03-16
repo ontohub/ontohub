@@ -8,13 +8,6 @@ $.widget("ui.permissionList", {
     this.polymorphic = element.data('polymorphic')
     this.model       = this.toUnderscore(element.data('model'));
     
-    // Tipsy tooltip
-    element.find("button.help").tipsy({
-      gravity : 'w'
-    }).click(function() {
-      element.find("input.autocomplete").focus();
-    });
-    
     // Attach Autocomplete to inputs
     this.autocomplete = element.find("input.autocomplete")
     this.autocomplete.autocomplete({
