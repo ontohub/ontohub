@@ -29,37 +29,19 @@ team = Team.create! \
 end
 
 # Import ontologies
-Dir["#{Rails.root}/db/seeds/*.xml"].each do |file|
+Dir["#{Rails.root}/test/fixtures/ontologies/*/*.*"].each do |file|
   basename = File.basename(file)
   
   o = Ontology.new \
     uri:         "file:///db/seeds/#{basename}",
     name:        basename.split(".")[0].capitalize,
     description: Faker::Lorem.paragraph
-
-  o.import_xml_from_file file
-end
-
-# Create 5 ontologies
-5.times do |n|
-  o = Ontology.new \
-    uri:         "gopher://host/ontology/#{n}",
-    name:        Faker::Lorem.words(2+rand(4)).join(" "),
-    description: Faker::Lorem.paragraph
-
-  o.import_xml_from_file 'test/fixtures/ontologies/valid.xml'
   
-  # create a version
-  v = o.versions.build
-  v.created_at = (60 - n*5).minutes.ago
-  v.user       = User.first
-  v.save(:validate => false)
-
-  m = o.metadata.build(key: 'gopher:///', value: 'bar')
-  m.user = user
-  m.save!
+  v = o.versions.build raw_file: File.open(file)
+  v.user       = user
+  v.created_at = rand(60).minutes.ago
+  o.save! 
 end
-
 
 # Add permissions
 Ontology.find_each do |o|
