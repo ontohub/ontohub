@@ -2,8 +2,9 @@ module Ontology::Import
 	extend ActiveSupport::Concern
 
   def import_xml(io)
-    entities_count   = 0
-    axioms_count     = 0
+    entities_count = 0
+    axioms_count   = 0
+    now            = Time.now
 
     transaction do
       OntologyParser.parse io,
@@ -11,13 +12,18 @@ module Ontology::Import
           self.logic = Logic.find_or_create_by_name h['logic']
         },
         symbol:   Proc.new { |h|
-          entities.update_or_create_from_hash h
+          entities.update_or_create_from_hash(h, now)
           entities_count += 1
         },
         axiom:    Proc.new { |h|
-          axioms.update_or_create_from_hash h
+          axioms.update_or_create_from_hash(h, now)
           axioms_count += 1
         }
+
+      condition = ['updated_at < ?', now]
+
+      self.entities.destroy_all! condition
+      self.axioms.delete_all! condition
       
       self.entities_count = entities_count
       self.axioms_count   = axioms_count
