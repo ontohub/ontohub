@@ -6,7 +6,7 @@ module Entity::Searching
       text    :text,
         :stored => true # necessary for highlighting
       
-      string  :kind
+      string( :kind) { |e| e.kind.to_s.downcase }
       integer :ontology_id
       string( :ontology_id_str) { |e| e.ontology_id.to_s }
     end
@@ -32,7 +32,7 @@ module Entity::Searching
         end
         
         # search for kind
-        with :kind, kind if kind
+        with :kind, kind.downcase if kind
         
         # group by ontology
         group :ontology_id_str do

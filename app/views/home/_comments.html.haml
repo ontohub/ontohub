@@ -2,11 +2,10 @@
 %ol.latest
   - @comments.each do |comment|
     %li
-      = link_to comment.user, comment.user
+      = fancy_link comment.user
       commented
-      = link_to comment.commentable, comment.commentable
+      = fancy_link comment.commentable
       = timestamp comment
-      ago
       .text
         = truncate comment.text, :length => 100, :seperator => ' '
         = link_to 'read more', commentable_path(comment)

@@ -27,8 +27,23 @@ class OntologyTest < ActiveSupport::TestCase
       @ontology = Factory :ontology
     end
     
-    should 'have to_s' do
-      assert_equal @ontology.uri, @ontology.to_s
+    context 'with name' do
+      setup do
+        @name = "fooo"
+        @ontology.name = @name
+      end
+      should 'have to_s' do
+        assert_equal @name, @ontology.to_s
+      end
+    end
+    
+    context 'without name' do
+      setup do
+        @ontology.name = nil
+      end
+      should 'have to_s' do
+        assert_equal @ontology.uri, @ontology.to_s
+      end
     end
   end
   

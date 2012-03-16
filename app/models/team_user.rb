@@ -2,6 +2,7 @@ class TeamUser < ActiveRecord::Base
   
   belongs_to :team
   belongs_to :user
+  belongs_to :creator, :class_name => 'User'
 
   attr_accessible :user, :admin
   attr_accessible :user_id, :team_id

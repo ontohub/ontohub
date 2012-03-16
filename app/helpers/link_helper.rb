@@ -1,5 +1,11 @@
 module LinkHelper
   
+  def fancy_link(resource)
+    link_to resource, resource,
+      'data-type' => resource.class,
+      :title      => resource.respond_to?(:title) ? resource.title : nil
+  end
+  
   def counter_link(url, counter, subject)
     
     text = content_tag(:strong, counter || '?')

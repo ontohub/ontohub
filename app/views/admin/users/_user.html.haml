@@ -1,6 +1,6 @@
 %tr
   %td= user.id
-  %td= link_to user.name, user
+  %td= fancy_link user
   %td= highlight user.email, params[:email_search]
   %td= user.admin?
   %td

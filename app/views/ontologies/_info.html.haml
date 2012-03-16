@@ -1,21 +1,31 @@
 %table.info
   %tr
-    %td Logic
-    %td= resource.logic
+    %td URI
+    %td= resource.uri
+  
   %tr
     %td Name
-    %td= resource.name
+    %td= resource.name?? resource.name : '-'
+  
+  %tr
+    %td Logic
+    %td= resource.logic
+  
   %tr
     %td Owner
     %td
       - for owner in resource.permissions.owner
         = link_to owner.subject, owner.subject, 'data-type' => owner.subject_type
   %tr
-    %td Created at
-    %td= l resource.created_at
-  %tr
-    %td Updated at
-    %td= l resource.created_at
+    %td Created
+    %td
+      = timestamp resource
+  
+  - if resource.versions_count > 0
+    %tr
+      %td Updated
+      %td= timestamp resource.versions.last_updated_at
+  
   %tr
     %td Hets status
     %td= status resource

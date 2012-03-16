@@ -1,7 +1,7 @@
 %tr
   %td= metadatum.key
   %td= metadatum.value
-  %td= metadatum.user
+  %td= fancy_link metadatum.user
   %td= timestamp metadatum.updated_at
   %td
     - if can? :destroy, metadatum
