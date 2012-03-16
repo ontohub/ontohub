@@ -11,6 +11,8 @@ class OntologyVersion < ActiveRecord::Base
 
   attr_accessible :raw_file, :source_uri
 
+  before_validation :set_checksum
+
   validate :raw_file_xor_source_uri, :on => :create
 # validate :raw_file_size_maximum
 
@@ -43,5 +45,8 @@ protected
       errors.add :raw_file, 'The maximum file size is 10M.'
     end
   end
-  
+
+  def set_checksum
+    self.checksum = raw_file.sha1 if raw_file.present? and raw_file_changed?
+  end
 end

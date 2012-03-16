@@ -15,12 +15,11 @@ class OntologyVersionsController < InheritedResources::Base
   end
 
   def new
-    @version = build_resource
+    build_resource.source_uri = collection.latest.first.source_uri
   end
 
   def create
-    @version = build_resource
-    @version.user = current_user
+    build_resource.user = current_user
 
     super do |success, failure|
       success.html { redirect_to collection_path }

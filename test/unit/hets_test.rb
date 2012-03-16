@@ -25,7 +25,7 @@ class HetsTest < ActiveSupport::TestCase
 
   should 'raise exception if provided with wrong file-format' do
     assert_raise Hets::HetsError do
-      Hets.parse 'test/fixtures/ontologies/valid.xml'
+      Hets.parse 'test/fixtures/ontologies/xml/valid.xml'
     end
   end
 end

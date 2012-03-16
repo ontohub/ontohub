@@ -2,7 +2,7 @@ require 'test_helper'
 
 class OntologyImportXMLTest < ActiveSupport::TestCase
   def fixture_file(name)
-    Rails.root + 'test/fixtures/ontologies/' + name
+    Rails.root + 'test/fixtures/ontologies/xml/' + name
   end
 
   context 'Import valid Ontology' do
