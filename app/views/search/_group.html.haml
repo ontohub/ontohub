@@ -2,7 +2,7 @@
 %li
   %h3= link_to ontology, ontology
   %p
-    = pluralize group.total, "Entity"
+    %strong= pluralize group.total, "Entity"
     found.
     - if group.hits.count < group.total
       Showing 1 - #{group.hits.count}

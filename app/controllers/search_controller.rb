@@ -3,10 +3,9 @@
 # 
 class SearchController < ApplicationController
   
-  DEFAULT_PAGE_LEN = 25
-  
   def index
-    @query = query = params[:q]
+    @query      = query = params[:q]
+    @max_groups = 100
     
     @search = Entity.search :include => [:ontology] do
       fulltext query do
@@ -15,7 +14,7 @@ class SearchController < ApplicationController
       group :ontology_id_str do
         limit 10
       end
-      paginate :page => params[:page], :per_page => params[:per_page] || DEFAULT_PAGE_LEN
+      paginate :page => params[:page], :per_page => @max_groups
     end
     
     @group  = @search.group(:ontology_id_str)
