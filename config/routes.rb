@@ -22,7 +22,7 @@ Ontohub::Application.routes.draw do
     get 'bulk', :on => :collection
     resources :entities, :only => :index
     resources :axioms,   :only => :index
-    resources :ontology_versions, :only => [:index, :show], :path => 'versions'
+    resources :ontology_versions, :only => [:index, :show, :new, :create], :path => 'versions'
     resources :permissions, :only => [:index, :create, :update, :destroy]
     resources :metadata, :only => [:index, :create, :destroy]
     resources :comments, :only => [:index, :create, :destroy]

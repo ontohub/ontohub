@@ -1,5 +1,7 @@
 - if can? :edit, resource
   %ul.actions.right
+    - additional_actions.each do |action_link|
+      %li= action_link
     %li= link_to 'Edit', [:edit, resource]
     %li= link_to 'Delete', resource, :confirm => 'Really delete?', :method => :delete
 

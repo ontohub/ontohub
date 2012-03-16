@@ -4,7 +4,7 @@ class OntologiesControllerTest < ActionController::TestCase
   
   should_map_nested_resources :ontologies, :ontology_versions,
     :as     => 'versions',
-    :except => [:new, :create, :show, :edit, :update, :destroy]
+    :except => [:show, :edit, :update, :destroy]
   
   context 'OntologyVersion Instance' do
     setup do
