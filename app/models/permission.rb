@@ -9,6 +9,7 @@ class Permission < ActiveRecord::Base
   
   belongs_to :subject, :polymorphic => true
   belongs_to :item, :polymorphic => true
+  belongs_to :creator, :class_name => 'User'
   
   validates_inclusion_of :role, :in => ROLES
 

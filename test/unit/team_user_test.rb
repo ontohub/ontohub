@@ -4,6 +4,7 @@ class TeamUserTest < ActiveSupport::TestCase
   context 'Associations' do
     should belong_to :team
     should belong_to :user
+    should belong_to :creator
   end
 
   context 'team with admin and user' do

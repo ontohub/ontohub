@@ -10,6 +10,7 @@ class PrivilegeList::Base < InheritedResources::Base
   before_filter :authorize_parent
   
   def create
+    build_resource.creator = current_user
     build_resource.save!
     respond_to do |format|
       format.html { render_resource }

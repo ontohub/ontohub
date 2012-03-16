@@ -2,6 +2,10 @@ require 'test_helper'
 
 class PermissionTest < ActiveSupport::TestCase
   
+  should belong_to :creator
+  should belong_to :item
+  should belong_to :subject
+  
   [ 'owner', 'editor' ].each do |val|
     should allow_value(val).for :role
   end

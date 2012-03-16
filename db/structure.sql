@@ -332,6 +332,7 @@ CREATE TABLE permissions (
     subject_type character varying(255) NOT NULL,
     item_id integer NOT NULL,
     item_type character varying(255) NOT NULL,
+    creator_id integer,
     role character varying(255) DEFAULT 'editor'::character varying NOT NULL,
     created_at timestamp without time zone NOT NULL,
     updated_at timestamp without time zone NOT NULL
@@ -374,6 +375,7 @@ CREATE TABLE team_users (
     id integer NOT NULL,
     team_id integer NOT NULL,
     user_id integer NOT NULL,
+    creator_id integer,
     admin boolean DEFAULT false NOT NULL
 );
 
@@ -783,6 +785,13 @@ CREATE INDEX index_ontology_versions_on_user_id ON ontology_versions USING btree
 
 
 --
+-- Name: index_permissions_on_creator_id; Type: INDEX; Schema: public; Owner: -; Tablespace: 
+--
+
+CREATE INDEX index_permissions_on_creator_id ON permissions USING btree (creator_id);
+
+
+--
 -- Name: index_permissions_on_item_and_subject; Type: INDEX; Schema: public; Owner: -; Tablespace: 
 --
 
@@ -794,6 +803,13 @@ CREATE UNIQUE INDEX index_permissions_on_item_and_subject ON permissions USING b
 --
 
 CREATE INDEX index_permissions_on_subject_id_and_subject_type ON permissions USING btree (subject_id, subject_type);
+
+
+--
+-- Name: index_team_users_on_creator_id; Type: INDEX; Schema: public; Owner: -; Tablespace: 
+--
+
+CREATE INDEX index_team_users_on_creator_id ON team_users USING btree (creator_id);
 
 
 --
@@ -931,6 +947,22 @@ ALTER TABLE ONLY ontology_versions
 
 ALTER TABLE ONLY ontology_versions
     ADD CONSTRAINT ontology_versions_user_id_fk FOREIGN KEY (user_id) REFERENCES users(id);
+
+
+--
+-- Name: permissions_creator_id_fk; Type: FK CONSTRAINT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY permissions
+    ADD CONSTRAINT permissions_creator_id_fk FOREIGN KEY (creator_id) REFERENCES users(id) ON DELETE SET NULL;
+
+
+--
+-- Name: team_users_creator_id_fk; Type: FK CONSTRAINT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY team_users
+    ADD CONSTRAINT team_users_creator_id_fk FOREIGN KEY (creator_id) REFERENCES users(id) ON DELETE SET NULL;
 
 
 --
