@@ -1,6 +1,6 @@
 %li
   %a{:name => "comment_#{comment.id}"}
-  = link_to comment.user, comment.user
+  = fancy_link comment.user
   wrote
   = timestamp comment
   - if can? :destroy, comment

@@ -4,7 +4,7 @@
     = link_to 'edit',   '#', rel: :edit
     = link_to 'delete', '#', rel: :delete
   
-  = link_to team_user.user, team_user.user
+  = fancy_link team_user.user
   
   - if team_user.admin?
     (admin)

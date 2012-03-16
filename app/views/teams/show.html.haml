@@ -2,9 +2,9 @@
 
 %p This team consists of #{pluralize @team_users.count, 'Member' }:
 
-%ul
+%ul.no-bullet
   - @team_users.each do |team_user|
     %li
-      = link_to team_user.user, team_user.user
+      = fancy_link team_user.user
       - if team_user.admin?
         (admin)

@@ -1,6 +1,6 @@
 - ontology = Ontology.find_by_id(group.value)
 %li
-  %h3= link_to ontology, ontology
+  %h3= link_with_title ontology
   %p
     %strong= pluralize group.total, "Entity"
     found.

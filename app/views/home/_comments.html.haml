@@ -2,9 +2,9 @@
 %ol.latest
   - @comments.each do |comment|
     %li
-      = link_to comment.user, comment.user
+      = fancy_link comment.user
       commented
-      = link_to comment.commentable, comment.commentable
+      = fancy_link comment.commentable
       = timestamp comment
       .text
         = truncate comment.text, :length => 100, :seperator => ' '

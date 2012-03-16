@@ -26,6 +26,10 @@ class OntologyVersion < ActiveRecord::Base
     latest.first.try(:updated_at)
   end
   
+  def source_name
+    source_uri? ? source_uri : 'File upload'
+  end
+  
 protected
 
   def raw_file_xor_source_uri

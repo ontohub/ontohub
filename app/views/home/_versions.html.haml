@@ -2,7 +2,7 @@
 %ol.latest
   - @versions.each do |version|
     %li
-      = link_to version.ontology, version.ontology
+      = fancy_link version.ontology
       by
-      = link_to version.user, version.user
+      = fancy_link version.user
       = timestamp version
