@@ -298,6 +298,7 @@ CREATE TABLE ontology_versions (
     xml_file character varying(255),
     state character varying(255) DEFAULT 'pending'::character varying,
     last_error character varying(255),
+    checksum character varying(255),
     created_at timestamp without time zone NOT NULL,
     updated_at timestamp without time zone NOT NULL
 );
@@ -768,6 +769,13 @@ CREATE INDEX index_ontologies_on_state ON ontologies USING btree (state);
 --
 
 CREATE UNIQUE INDEX index_ontologies_on_uri ON ontologies USING btree (uri);
+
+
+--
+-- Name: index_ontology_versions_on_checksum; Type: INDEX; Schema: public; Owner: -; Tablespace: 
+--
+
+CREATE INDEX index_ontology_versions_on_checksum ON ontology_versions USING btree (checksum);
 
 
 --
