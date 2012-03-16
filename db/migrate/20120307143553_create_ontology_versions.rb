@@ -8,6 +8,7 @@ class CreateOntologyVersions < ActiveRecord::Migration
       t.string :xml_file
       t.string :state, :default => 'pending'
       t.string :last_error
+      t.string :checksum
 
       t.timestamps :null => false
     end
@@ -15,6 +16,7 @@ class CreateOntologyVersions < ActiveRecord::Migration
     change_table :ontology_versions do |t|
       t.index :user_id
       t.index :ontology_id
+      t.index :checksum
       t.foreign_key :users
       t.foreign_key :ontologies, :dependent => :delete
     end

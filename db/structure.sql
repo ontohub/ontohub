@@ -298,6 +298,7 @@ CREATE TABLE ontology_versions (
     xml_file character varying(255),
     state character varying(255) DEFAULT 'pending'::character varying,
     last_error character varying(255),
+    checksum character varying(255),
     created_at timestamp without time zone NOT NULL,
     updated_at timestamp without time zone NOT NULL
 );

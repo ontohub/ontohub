@@ -9,6 +9,13 @@ module OntologyVersion::Parsing
   def parse
     raise ArgumentError.new('No raw_file set.') unless raw_file?
 
+    do_or_set_failed do
+      condition = ['checksum = ? and id != ?', self.checksum, self.id]
+      if OntologyVersion.where(condition).any?
+        raise Exception.new('Another file with same checksum already exists.')
+      end
+    end
+
     update_state! :processing
 
     do_or_set_failed do

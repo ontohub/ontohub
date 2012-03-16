@@ -9,4 +9,8 @@ class OntologyUploader < CarrierWave::Uploader::Base
   def extension_white_list
     Hets::Config.new.allowed_extensions
   end
+
+  def sha1
+    ::Digest::SHA1.file(current_path).hexdigest
+  end
 end
