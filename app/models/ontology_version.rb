@@ -21,6 +21,11 @@ class OntologyVersion < ActiveRecord::Base
   scope :state, ->(state) { where :state => state }
   scope :done, state('done')
 
+  # updated_at of the latest version
+  def self.last_updated_at
+    latest.first.try(:updated_at)
+  end
+  
 protected
 
   def raw_file_xor_source_uri
@@ -34,4 +39,5 @@ protected
       errors.add :raw_file, 'The maximum file size is 10M.'
     end
   end
+  
 end

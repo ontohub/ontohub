@@ -72,7 +72,7 @@
 
 				$(this).data("timestamp", $(this).text()).
 						text(time_ago_in_words(date, settings.include_seconds,
-								translation));
+								translation) + " ago");
 			}
 		});
 	};
