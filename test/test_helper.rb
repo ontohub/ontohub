@@ -22,3 +22,6 @@ require "strip_attributes/shoulda"
 class Test::Unit::TestCase
   extend StripAttributes::Shoulda::Macros
 end
+
+# disable sunspot during tests
+Sunspot.session = Sunspot::Rails::StubSessionProxy.new(Sunspot.session)
