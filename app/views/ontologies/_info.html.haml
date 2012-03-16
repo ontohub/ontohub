@@ -1,11 +1,15 @@
 %table.info
   %tr
-    %td Logic
-    %td= resource.logic
+    %td URI
+    %td= resource.uri
   
   %tr
     %td Name
-    %td= resource.name
+    %td= resource.name?? resource.name : '-'
+  
+  %tr
+    %td Logic
+    %td= resource.logic
   
   %tr
     %td Owner

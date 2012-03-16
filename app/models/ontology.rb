@@ -23,6 +23,6 @@ class Ontology < ActiveRecord::Base
   scope :search, ->(query) { where "uri ILIKE :term OR name ILIKE :term", :term => "%" << query << "%" }
   
   def to_s
-    uri
+    name?? name : uri
   end
 end
