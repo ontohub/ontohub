@@ -139,7 +139,7 @@ $(function(){
           url: self.uri,
           data: {
             'ontology[uri]': uri,
-            'ontology[versions_attributes][0][remote_raw_file_url]': uri
+            'ontology[versions_attributes][0][source_uri]': uri
           },
           format: 'json'
         })
