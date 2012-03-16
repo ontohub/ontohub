@@ -20,11 +20,12 @@ module Ontology::Import
           axioms_count += 1
         }
 
+      # remove outdated axioms and entities
       condition = ['updated_at < ?', now]
-
-      self.entities.destroy_all! condition
-      self.axioms.delete_all! condition
+      self.entities.destroy_all condition
+      self.axioms.delete_all    condition
       
+      # update the counters
       self.entities_count = entities_count
       self.axioms_count   = axioms_count
       
