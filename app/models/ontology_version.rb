@@ -18,6 +18,8 @@ class OntologyVersion < ActiveRecord::Base
     :with => URI::regexp(ALLOWED_URI_SCHEMAS), :if => :source_uri?
 
   scope :latest, order('id DESC')
+  scope :state, ->(state) { where :state => state }
+  scope :done, state('done')
 
 protected
 

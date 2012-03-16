@@ -11,9 +11,6 @@ module Ontology::Versions
     
     after_create :create_permission_for_first_version
 
-    def last_valid_version
-      self.versions.where(state: 'done').last
-    end
   end
   
   protected
