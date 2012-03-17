@@ -8,6 +8,3 @@ hets_lib:
 hets_owl_tools:
   - /usr/lib/hets/hets-owl-tools
   - ~/uni/awe/Hets/OWL2
-
-# Maximum file size to expose Hets with.
-maximum_file_size: 10

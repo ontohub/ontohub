@@ -14,12 +14,6 @@ module OntologyVersion::Parsing
       if OntologyVersion.where(condition).any?
         raise Exception.new('Another file with same checksum already exists.')
       end
-
-      max = Hets::Config.new.maximum_file_size
-      raise Exception.new("#{raw_file.size}, #{max.megabytes}")
-      if raw_file.size > max.megabytes
-        raise Exception.new("Maximum file size is #{max}M.")
-      end
     end
 
     update_state! :processing

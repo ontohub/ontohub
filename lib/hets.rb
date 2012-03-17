@@ -2,13 +2,12 @@ module Hets
   class HetsError < Exception; end
 
   class Config
-    attr_reader :path, :maximum_file_size
+    attr_reader :path
 
     def initialize
       yaml = YAML.load_file(File.join(Rails.root, 'config', 'hets.yml'))
 
       @path = first_which_exists yaml['hets_path']
-      @maximum_file_size = yaml.delete 'maximum_file_size'
 
       raise ArgumentError.new('Wrong hets path.') unless @path
 
