@@ -11,10 +11,10 @@ en:
         uri: URI
       ontology_version:
         raw_file: Source File
-        remote_raw_file_url: Source URI
+        source_uri: Source URL
     hints:
       ontology_version:
-        source_uri: Please enter the URI to import the ontology from.
+        source_uri: Please enter the URL to import the ontology from.
     placeholders:
       comment:
         text: Write a new comment
