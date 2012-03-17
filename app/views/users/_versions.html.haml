@@ -4,3 +4,10 @@
     %li
       = fancy_link version.ontology
       = timestamp version
+%h3 Failed ontology versions
+%ol.latest
+  - @failed_versions.each do |failed|
+    %li
+      = fancy_link failed.ontology
+      = timestamp failed
+      %p= failed.last_error

@@ -22,6 +22,7 @@ class OntologyVersion < ActiveRecord::Base
   scope :latest, order('id DESC')
   scope :state, ->(state) { where :state => state }
   scope :done, state('done')
+  scope :failed, state('failed')
 
   # updated_at of the latest version
   def self.last_updated_at
