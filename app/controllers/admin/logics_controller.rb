@@ -1,12 +1,9 @@
-class Admin::LogicsController < ApplicationController
+class Admin::LogicsController < InheritedResources::Base
   
   before_filter :authenticate_admin!
   
-  inherit_resources
   actions :index, :new, :create
   respond_to :json, :xml
-  
-  with_role :admin
   
   def create
     super do |success, failure|

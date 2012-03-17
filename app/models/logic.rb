@@ -10,9 +10,9 @@ class Logic < ActiveRecord::Base
   validates_uniqueness_of :uri, if: :uri_changed?
   validates_format_of :uri, with: URI::regexp(ALLOWED_URI_SCHEMAS)
 
-  validates :extension, length: { minimum: 1, maximum: 10 }
+  validates :extension, length: { minimum: 1, maximum: 10, allow_blank: true }
 
-  validates_format_of :mimetype, with: /.*\/.*/
+  validates_format_of :mimetype, with: /[0-9a-z+-]+\/[0-9a-z+-]+/, allow_blank: true
   
   def to_s
     name

@@ -19,7 +19,6 @@ class UsersController < InheritedResources::Base
         render :xml => resource.to_xml(:only => [:id, :name])
       end
     end
-    
   end
   
 end
