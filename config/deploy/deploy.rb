@@ -11,7 +11,7 @@ namespace :deploy do
     run "ln -nfs #{shared_path}/config/newrelic.yml #{release_path}/config/"
   end
   
-  desc "Moves an replaces secret-token if missing in shared directory"
+  desc "Moves and replaces the secret-token if missing in shared directory"
   task :symlink_secret, :roles => :app, :except => { :no_release => true } do 
     filename       = 'secret_token.rb'
     release_secret = "#{release_path}/config/initializers/#{filename}"
