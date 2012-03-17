@@ -10,6 +10,7 @@ protected
       yield
     rescue Exception => e
       update_state! :failed, e.message
+      self.remove_raw_file!
       raise e
     end
   end

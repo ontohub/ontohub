@@ -1,3 +1,4 @@
+# Hets environment. The first matching item in the lists is used.
 hets_path:
   - /usr/lib/hets/hets
   - ~/uni/awe/Hets/hets
@@ -7,8 +8,6 @@ hets_lib:
 hets_owl_tools:
   - /usr/lib/hets/hets-owl-tools
   - ~/uni/awe/Hets/OWL2
-allowed_extensions:
-  - owl
-  - clf
-  - clif
-  - xml
+
+# Maximum file size to expose Hets with.
+maximum_file_size: 10

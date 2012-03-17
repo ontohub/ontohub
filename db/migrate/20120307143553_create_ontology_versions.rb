@@ -7,7 +7,7 @@ class CreateOntologyVersions < ActiveRecord::Migration
       t.string :raw_file
       t.string :xml_file
       t.string :state, :default => 'pending'
-      t.string :last_error
+      t.text :last_error
       t.string :checksum
 
       t.timestamps :null => false
