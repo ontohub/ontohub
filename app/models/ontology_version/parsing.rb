@@ -16,6 +16,7 @@ module OntologyVersion::Parsing
       end
 
       max = Hets::Config.new.maximum_file_size
+      raise Exception.new("#{raw_file.size}, #{max.megabytes}")
       if raw_file.size > max.megabytes
         raise Exception.new("Maximum file size is #{max}M.")
       end
