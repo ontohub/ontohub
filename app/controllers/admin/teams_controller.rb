@@ -4,6 +4,7 @@ class Admin::TeamsController < ApplicationController
   
   inherit_resources
   actions :index
+  respond_to :json, :xml
   has_pagination
   
 end

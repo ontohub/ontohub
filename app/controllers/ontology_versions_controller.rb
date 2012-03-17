@@ -5,6 +5,7 @@ class OntologyVersionsController < InheritedResources::Base
   defaults :collection_name => :versions
   actions :index, :show, :new, :create
   belongs_to :ontology
+  respond_to :json, :xml
 
   before_filter :check_changeable, only: [:new, :create]
 

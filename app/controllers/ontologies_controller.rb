@@ -3,6 +3,7 @@
 # 
 class OntologiesController < InheritedResources::Base
 
+  respond_to :json, :xml
   has_pagination
   has_scope :search
 
@@ -11,8 +12,12 @@ class OntologiesController < InheritedResources::Base
   respond_to :json
   
   def index
-    @search = params[:search]
-    @search = nil if @search.blank?
+    super do |format|
+      format.html do
+        @search = params[:search]
+        @search = nil if @search.blank?
+      end
+    end
   end
   
   def show

@@ -1,0 +1,7 @@
+%tr
+  %td= logic.name
+  %td= logic.uri
+  %td
+    %ul.actions
+      %li= link_to 'edit', edit_resource_path(logic)
+      %li= link_to 'delete', resource_path(logic), :confirm => 'really delete?', :method => :delete

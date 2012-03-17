@@ -4,7 +4,8 @@
 # 
 class PrivilegeList::Base < InheritedResources::Base
   
-  actions :create, :update, :destroy
+  actions :index, :create, :update, :destroy
+  respond_to :json, :xml
   rescue_from Permission::PowerVaccuumError, :with => :power_error
   
   before_filter :authorize_parent

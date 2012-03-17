@@ -3,7 +3,9 @@
 # To be subclassed
 # 
 class PolymorphicResource::Base < InheritedResources::Base
+  
   actions :index, :create
+  respond_to :json, :xml
   
   def create
     authorize! :create, build_resource
