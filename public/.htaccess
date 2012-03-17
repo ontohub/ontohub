@@ -1,0 +1,5 @@
+RewriteEngine On
+
+# remove ending slash
+RewriteRule ^(.+)/$ /$1 [R=301,L]
+
