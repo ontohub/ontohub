@@ -22,6 +22,7 @@ options = GetoptLong.new(
 
 redis = true
 uid = 1
+allowed_extensions = %w(clif clf owl)
 
 options.each do |option, argument|
 	case option
@@ -36,12 +37,10 @@ end
 
 require File.expand_path('../../config/environment',  __FILE__)
 
-config = Hets::Config.new
-
 user = User.find(uid)
 
 ARGV.each do |dir|
-  config.allowed_extensions.each do |ext|
+  allowed_extensions.each do |ext|
     Dir.glob("#{dir}/**/*.#{ext}").each do |file|
       puts file
 
