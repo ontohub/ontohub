@@ -28,12 +28,25 @@ team = Team.create! \
   team.users << user if i < 2
 end
 
+# Create initial logic configuration.
+Logic.create! \
+  name: 'OWL',
+  uri: 'http://purl.net/dol/logics/OWL',
+  extension: 'owl',
+  mimetype: 'application/rdf+xml'
+
+Logic.create! \
+  name: 'CommonLogic',
+  uri: 'http://purl.net/dol/logics/CommonLogic',
+  extension: 'clif',
+  mimetype: 'text/plain'
+
 # Import ontologies
 Dir["#{Rails.root}/test/fixtures/ontologies/*/*.{clf,clif,owl}"].each do |file|
   basename = File.basename(file)
   
   o = Ontology.new \
-    uri:         "file:///db/seeds/#{basename}",
+    uri:         "file://db/seeds/#{basename}",
     name:        basename.split(".")[0].capitalize,
     description: Faker::Lorem.paragraph
   

@@ -9,9 +9,20 @@ class OntologyVersionsController < InheritedResources::Base
   before_filter :check_changeable, only: [:new, :create]
 
   def show
-    mime = 'text/plain'
-    mime = 'application/rdf+xml' if resource.ontology.logic.name == 'OWL'
-    send_file resource.raw_file.current_path, type: mime
+    o = resource.ontology
+
+    path = resource.raw_file.current_path
+
+    mime = o.logic.mimetype
+    mime = 'text/plain' if mime.empty?
+
+    name = o.name.to_slug.normalize.to_s
+    name = File.basename(path) if name.empty?
+
+    ext = o.logic.extension
+    name += ".#{ext}" unless ext.empty?
+
+    send_file path, type: mime, filename: name
   rescue Errno::ENOENT, NoMethodError
     redirect_to collection_path, flash: { error: 'The cake is a lie.' }
   end

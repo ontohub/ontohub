@@ -184,8 +184,10 @@ ALTER SEQUENCE links_id_seq OWNED BY links.id;
 
 CREATE TABLE logics (
     id integer NOT NULL,
-    name character varying(255),
+    name character varying(255) NOT NULL,
     uri character varying(255),
+    extension character varying(255),
+    mimetype character varying(255),
     created_at timestamp without time zone NOT NULL,
     updated_at timestamp without time zone NOT NULL
 );
@@ -734,6 +736,13 @@ CREATE INDEX index_links_on_source_id ON links USING btree (source_id);
 --
 
 CREATE INDEX index_links_on_target_id ON links USING btree (target_id);
+
+
+--
+-- Name: index_logics_on_name; Type: INDEX; Schema: public; Owner: -; Tablespace: 
+--
+
+CREATE UNIQUE INDEX index_logics_on_name ON logics USING btree (name);
 
 
 --

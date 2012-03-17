@@ -53,6 +53,9 @@ gem 'sunspot_rails', :git => 'git://github.com/sunspot/sunspot.git'
 
 gem "faker", "~> 1.0"
 
+# Generate filename-friendly strings
+gem 'babosa'
+
 group :test do
   gem 'mocha'
   gem 'shoulda'
