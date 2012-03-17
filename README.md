@@ -34,9 +34,13 @@ Installation of [RVM](https://rvm.beginrescueend.com/ "Ruby Version Manager"):
 
 ### Apache2 with passenger
 
+#### Installation
+
     apt-get install apache2 apache2-prefork-dev libapr1-dev
     gem install passenger
     passenger-install-apache2-module
+
+#### Passenger Configuration
 
 Depending on the installed ruby and passenger version you need to create a `/etc/apache2/mods-available/passenger.load` with the LoadModule directive:
 
@@ -52,7 +56,17 @@ now enable the module an restart apache2:
     a2enmod passenger
     service apache2 restart
 
-TODO: virtual host configuration
+#### Virtual Host Configuration
+
+    <VirtualHost *:80>
+      ServerName ontohub.orgizm.net
+      DocumentRoot /srv/http/ontohub.orgizm.net/current/public
+
+      <Directory /srv/http/ontohub.orgizm.net/public>
+        AllowOverride all 
+        Options -MultiViews
+      </Directory>
+    </VirtualHost>
 
 ### Tomcat with Solr
 
@@ -81,12 +95,19 @@ The war-Package should be automatically loaded.
     apt-get update
     apt-get install hets-core subversion
 
-If you need the latest nightly build, just update hets:
+If you need the latest nightly build, just update hets (assure you have a
+working internet connection):
 
     hets -update
 
 Configuration
 -------------
+
+### Change secret token
+
+    rake secret
+
+... and save it into `config/initializers/secret_token.rb`.
 
 ### Hets environment variables
 
@@ -99,6 +120,9 @@ Allowed URI schemas are to be set in `config/initializers/ontohub_config.rb`.
 
 ### Clean upload cache
 
+You can run the following command periodically to delete temporary files
+from uploads.
+
     rails runner CarrierWave.clean_cached_files!
 
 Development
@@ -106,7 +130,7 @@ Development
 
 ### Installation
 
-    git clone git@<FIXME>/ontohub.git
+    git clone git@github.com/digineo/ontohub.git
     cd ontohub
     bundle install
 
@@ -116,31 +140,32 @@ After configuring your `config/database.yml` you have to create the tables:
 
     rake db:migrate:reset
 
-### Background processes
-
-Start the background processes:
+### Solr and Resque
 
     rake sunspot:solr:start
     rake resque:work
 
 ### Seeds
 
-Fill the database with dummy data
+Fill the database with dummy data:
 
     rake db:seed
 
 ### Start the rails server
 
-Start the rails server - it will be available at http://localhost:3000/ until you stop it by pressing CTRL + C.
+Start the rails server. It will be available at http://localhost:3000/ until you
+stop it by pressing `CTRL+C`.
 
     rails s
 
 Now you can log in as *admin@example.com* with password *foobar*.
-*Alice, Bob, Carolm, Dave* @example.com can also be used.
+*Alice, Bob, Carol, Dave, Ted* @example.com can also be used.
 
-### Stop the background processes
+### Stopping Solr and Resque
 
-    rake resque:work
+Resque has to be stopped with `CTRL+C` on the terminal you typed `rake
+resque:work`. Solr is to be stopped as follows:
+
     rake sunspot:solr:stop
 
 
