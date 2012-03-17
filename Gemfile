@@ -49,7 +49,7 @@ gem 'carrierwave', :git => 'git://github.com/jnicklas/carrierwave.git'
 gem 'resque'
 
 # Search engine
-gem 'sunspot_rails', :git => 'git://github.com/sunspot/sunspot.git'
+gem 'sunspot_rails', :git => 'git://github.com/digineo/sunspot.git'
 
 gem "faker", "~> 1.0"
 
@@ -65,7 +65,7 @@ end
 group :development do
   gem 'capistrano'
   # pre-packaged Solr distribution for use in development
-  gem 'sunspot_solr', :git => 'git://github.com/sunspot/sunspot.git'
+  gem 'sunspot_solr', :git => 'git://github.com/digineo/sunspot.git'
 end
 
 group :production do

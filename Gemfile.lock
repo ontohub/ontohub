@@ -1,14 +1,6 @@
 GIT
-  remote: git://github.com/jnicklas/carrierwave.git
-  revision: 789a8b952764a21e3ff837a628d8c15558cc7ad1
-  specs:
-    carrierwave (0.6.0.beta)
-      activemodel (>= 3.2.0)
-      activesupport (>= 3.2.0)
-
-GIT
-  remote: git://github.com/sunspot/sunspot.git
-  revision: c290d353807a23d45d3b07ab4b8cd2b4e12eb682
+  remote: git://github.com/digineo/sunspot.git
+  revision: 122f7c60207b9539903f06a66ce35a01cb1bf481
   specs:
     sunspot (2.0.0.pre.111215)
       escape (~> 0.0.4)
@@ -19,6 +11,14 @@ GIT
       sunspot (= 2.0.0.pre.111215)
     sunspot_solr (2.0.0.pre.111215)
       escape (~> 0.0.4)
+
+GIT
+  remote: git://github.com/jnicklas/carrierwave.git
+  revision: 789a8b952764a21e3ff837a628d8c15558cc7ad1
+  specs:
+    carrierwave (0.6.0.beta)
+      activemodel (>= 3.2.0)
+      activesupport (>= 3.2.0)
 
 GEM
   remote: https://rubygems.org/
