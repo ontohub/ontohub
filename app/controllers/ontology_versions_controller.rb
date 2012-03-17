@@ -17,7 +17,7 @@ class OntologyVersionsController < InheritedResources::Base
     mime = o.logic.mimetype
     mime = 'text/plain' if mime.empty?
 
-    name = o.name.to_slug.normalize.to_s
+    name = o.name.parameterize
     name = File.basename(path) if name.empty?
 
     ext = o.logic.extension
