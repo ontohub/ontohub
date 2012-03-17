@@ -19,7 +19,7 @@ en:
       comment:
         text: Write a new comment
       metadatum:
-        key: Key
+        key: URI
         value: Value
   permission_list:
     team_user:
