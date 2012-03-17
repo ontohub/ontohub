@@ -9,19 +9,23 @@ class OntologyVersionsController < InheritedResources::Base
 
   before_filter :check_changeable, only: [:new, :create]
 
+  # TODO Needs testing !!!
   def show
     o = resource.ontology
-
+    
     path = resource.raw_file.current_path
+    
+    name = o.to_s.parameterize
+    name = File.basename(path) if name.blank?
 
-    mime = o.logic.mimetype
-    mime = 'text/plain' if mime.empty?
-
-    name = o.name.parameterize
-    name = File.basename(path) if name.empty?
-
-    ext = o.logic.extension
-    name += ".#{ext}" unless ext.empty?
+    if o.logic
+      mime = o.logic.mimetype if o.logic
+      
+      ext = o.logic.extension
+      name << ".#{ext}" unless ext.blank?
+    end
+    
+    mime ||= 'text/plain' if mime.blank?
 
     send_file path, type: mime, filename: name
   rescue Errno::ENOENT, NoMethodError
