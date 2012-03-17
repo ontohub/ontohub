@@ -5,7 +5,8 @@
     %li= link_to 'Edit', [:edit, resource]
     %li= link_to 'Delete', resource, :confirm => 'Really delete?', :method => :delete
 
-%h2= link_to resource, resource, 'data-type' => resource.class
+%h2
+  = link_to resource, resource, 'data-type' => resource.class
 
 %nav.ui-tabs.ui-widget.static
   %ul{:class => 'ui-tabs-nav ui-helper-reset ui-helper-clearfix ui-widget-header ui-corner-all'}
@@ -16,4 +17,5 @@
           - if count # hide counter if empty
             %span{:style => count==0 && 'display:none'}= count
 
+= format_links
 %h3= current_page.to_s.capitalize

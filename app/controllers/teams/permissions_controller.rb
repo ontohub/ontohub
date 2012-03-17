@@ -6,7 +6,9 @@ class Teams::PermissionsController < InheritedResources::Base
   before_filter :authorize_parent
   
   belongs_to :team
+  respond_to :json, :xml
   actions :index
+  
   has_pagination
   
   protected

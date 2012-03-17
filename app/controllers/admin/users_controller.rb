@@ -3,6 +3,7 @@ class Admin::UsersController < ApplicationController
   before_filter :authenticate_admin!
   
   inherit_resources
+  respond_to :json, :xml
   has_scope :email_search
   has_pagination
   

@@ -6,4 +6,8 @@ $(function(){
     event.preventDefault();
     $(this).closest("form").find("input:visible").first().focus();
   });
+  
+  $("ul.formats a[title]").tipsy({
+    gravity : 'e'
+  })
 })

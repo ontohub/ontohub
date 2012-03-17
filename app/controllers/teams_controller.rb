@@ -3,11 +3,16 @@
 # 
 class TeamsController < InheritedResources::Base
   
+  respond_to :json, :xml
   load_and_authorize_resource
   
   def show
-    # users of current team
-    @team_users = resource.team_users.joins(:user).order(:name).all
+    super do |format|
+      format.html do
+        # users of current team
+        @team_users = resource.team_users.joins(:user).order(:name).all
+      end
+    end
   end
   
   def create
