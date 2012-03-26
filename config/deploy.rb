@@ -9,7 +9,7 @@ hostname = 'ontohub.orgizm.net'
 
 set :application, 'ontohub'
 set :scm, :git
-set :repository, "git@github.com:digineo/#{application}.git"
+set :repository, "git@github.com:#{application}/#{application}.git"
 set :deploy_to, "/srv/http/#{hostname}"
 
 set :user, application
