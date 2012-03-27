@@ -52,7 +52,7 @@
   :CUSTOM_ID: ontology-view
   :END:
   1. after upload, looking at the ontology's page
-  2. explain Hets status: "Hets tells Ontohub about the logic of an imported ontology and about the entities and axioms it contains.  This works across logics, for any logic supported by Hets."
+  2. explain Hets status: "Hets, the heterogeneous tool set, tells Ontohub about the logic of an imported ontology and about the entities and axioms it contains.  This works across logics, for any logic supported by Hets."
   3. explain the kinds of entities (say that they depend on the logic)
   4. point at "axioms" and "entities" tabs
   5. unsuccessful import
@@ -62,6 +62,10 @@
      * say: Hets reports entities and axioms with their name, source, text, URI (later) and range
      * show sublogic\_fullcl.clif
 * Versioning
-  1. go to version tab
+  1. go to version tab of the same ontology
   2. say: "old versions are stored (not more than this, for now); one can upload a new one"
-  3. 
+* Administration
+  As an administrator, you can manage:
+  * users and teams (they can also manage themselves to some extent)
+  * logics (later: users can contribute new logics, these will be reviewed and approved)
+  * jobs (here: Hets; later: further local or web services)
