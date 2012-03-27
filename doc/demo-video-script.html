@@ -104,7 +104,8 @@
 <li><a href="#sec-4">4 Entity search</a></li>
 <li><a href="#sec-5">5 Registration</a></li>
 <li><a href="#sec-6">6 Ontology upload</a></li>
-<li><a href="#sec-7">7 Ontology view and Hets output</a></li>
+<li><a href="#ontology-view">7 Ontology view and Hets output</a></li>
+<li><a href="#sec-8">8 Versioning</a></li>
 </ul>
 </div>
 </div>
@@ -124,12 +125,16 @@
 </li>
 <li>some Common Logic ontologies from COLORE
 </li>
+<li><a href="https://svn-agbkb.informatik.uni-bremen.de/Hets/trunk/CommonLogic/TestData/sublogic_fullcl.clif">sublogic<sub>fullcl</sub>.clif</a>
+</li>
 </ul>
 
 </li>
 <li>be sure that some ontologies do not exist:
 <ul>
 <li><a href="http://pav-ontology.googlecode.com/svn/trunk/pav.owl">http://pav-ontology.googlecode.com/svn/trunk/pav.owl</a>
+</li>
+<li><a href="http://interop.cim3.net/file/pub/OntoIOp/Working_Draft/registry/registry.rdf">DOL registry</a>
 </li>
 </ul>
 
@@ -164,8 +169,7 @@
 <ol>
 <li>go to "<a href="http://ontohub.informatik.uni-bremen.de/ontologies">ontologies</a>"
 </li>
-<li>explain one ontology that has more than one entity and axiom
-     (some of the COLORE ontologies just have one)
+<li>point at one ontology, say: We will look into an ontology <a href="#ontology-view">later</a>.
 </li>
 </ol>
 
@@ -234,9 +238,9 @@
 
 </div>
 
-<div id="outline-container-7" class="outline-2">
-<h2 id="sec-7"><span class="section-number-2">7</span> Ontology view and Hets output</h2>
-<div class="outline-text-2" id="text-7">
+<div id="outline-container-ontology-view" class="outline-2">
+<h2 id="ontology-view"><a name="sec-7" id="sec-7"></a><span class="section-number-2">7</span> Ontology view and Hets output</h2>
+<div class="outline-text-2" id="text-ontology-view">
 
 <ol>
 <li>after upload, looking at the ontology's page
@@ -246,6 +250,41 @@
 <li>explain the kinds of entities (say that they depend on the logic)
 </li>
 <li>point at "axioms" and "entities" tabs
+</li>
+<li>unsuccessful import
+<ul>
+<li>upload DOL registry
+</li>
+<li>say that Hets's RDF support is still under development
+</li>
+</ul>
+
+</li>
+<li>entities
+<ul>
+<li>say: Hets reports entities and axioms with their name, source, text, URI (later) and range
+</li>
+<li>show sublogic_fullcl.clif
+</li>
+</ul>
+
+</li>
+</ol>
+
+</div>
+
+</div>
+
+<div id="outline-container-8" class="outline-2">
+<h2 id="sec-8"><span class="section-number-2">8</span> Versioning</h2>
+<div class="outline-text-2" id="text-8">
+
+<ol>
+<li>go to version tab
+</li>
+<li>say: "old versions are stored (not more than this, for now); one can upload a new one"
+</li>
+<li>
 </li>
 </ol>
 

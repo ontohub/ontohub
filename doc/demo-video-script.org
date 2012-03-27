@@ -20,16 +20,17 @@
      * FOAF (need to upload from local file, as Hets otherwise thinks it's in the unsupported logic RDF)
      * [[http://openaal.org/download][OpenAAL]] (need to upload from local file, as the ontology is not published in source form)
      * some Common Logic ontologies from COLORE
+     * [[https://svn-agbkb.informatik.uni-bremen.de/Hets/trunk/CommonLogic/TestData/sublogic_fullcl.clif][sublogic_fullcl.clif]]
   3. be sure that some ontologies do not exist:
      * http://pav-ontology.googlecode.com/svn/trunk/pav.owl
+     * [[http://interop.cim3.net/file/pub/OntoIOp/Working_Draft/registry/registry.rdf][DOL registry]]
 * Main page
   1. go to http://ontohub.informatik.uni-bremen.de
   2. explain "latest ontologies"
   3. explain "latest comments"
 * Ontologies
   1. go to "[[http://ontohub.informatik.uni-bremen.de/ontologies][ontologies]]"
-  2. explain one ontology that has more than one entity and axiom
-     (some of the COLORE ontologies just have one)
+  2. point at one ontology, say: We will look into an ontology [[#ontology-view][later]].
 * Entity search
   1. search for "Person"
   2. refine search by "kind:ObjectProperty"
@@ -47,7 +48,20 @@
      * use http://purl.org/pav/2.0/
      * enter a short name and description; say that further metadata can be added as well
 * Ontology view and Hets output
+  :PROPERTIES:
+  :CUSTOM_ID: ontology-view
+  :END:
   1. after upload, looking at the ontology's page
   2. explain Hets status: "Hets tells Ontohub about the logic of an imported ontology and about the entities and axioms it contains.  This works across logics, for any logic supported by Hets."
   3. explain the kinds of entities (say that they depend on the logic)
   4. point at "axioms" and "entities" tabs
+  5. unsuccessful import
+     * upload DOL registry
+     * say that Hets's RDF support is still under development
+  6. entities
+     * say: Hets reports entities and axioms with their name, source, text, URI (later) and range
+     * show sublogic\_fullcl.clif
+* Versioning
+  1. go to version tab
+  2. say: "old versions are stored (not more than this, for now); one can upload a new one"
+  3. 
