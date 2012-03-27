@@ -1,0 +1,264 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN"
+               "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en">
+<head>
+<title>Ontohub demo video script</title>
+<meta http-equiv="Content-Type" content="text/html;charset=utf-8"/>
+<meta name="title" content="Ontohub demo video script"/>
+<meta name="generator" content="Org-mode"/>
+<meta name="generated" content="2012-03-27 Tue"/>
+<meta name="author" content=""/>
+<meta name="description" content=""/>
+<meta name="keywords" content=""/>
+<style type="text/css">
+ <!--/*--><![CDATA[/*><!--*/
+  html { font-family: Times, serif; font-size: 12pt; }
+  .title  { text-align: center; }
+  .todo   { color: red; }
+  .done   { color: green; }
+  .tag    { background-color: #add8e6; font-weight:normal }
+  .target { }
+  .timestamp { color: #bebebe; }
+  .timestamp-kwd { color: #5f9ea0; }
+  .right  {margin-left:auto; margin-right:0px;  text-align:right;}
+  .left   {margin-left:0px;  margin-right:auto; text-align:left;}
+  .center {margin-left:auto; margin-right:auto; text-align:center;}
+  p.verse { margin-left: 3% }
+  pre {
+	border: 1pt solid #AEBDCC;
+	background-color: #F3F5F7;
+	padding: 5pt;
+	font-family: courier, monospace;
+        font-size: 90%;
+        overflow:auto;
+  }
+  table { border-collapse: collapse; }
+  td, th { vertical-align: top;  }
+  th.right  { text-align:center;  }
+  th.left   { text-align:center;   }
+  th.center { text-align:center; }
+  td.right  { text-align:right;  }
+  td.left   { text-align:left;   }
+  td.center { text-align:center; }
+  dt { font-weight: bold; }
+  div.figure { padding: 0.5em; }
+  div.figure p { text-align: center; }
+  div.inlinetask {
+    padding:10px;
+    border:2px solid gray;
+    margin:10px;
+    background: #ffffcc;
+  }
+  textarea { overflow-x: auto; }
+  .linenr { font-size:smaller }
+  .code-highlighted {background-color:#ffff00;}
+  .org-info-js_info-navigation { border-style:none; }
+  #org-info-js_console-label { font-size:10px; font-weight:bold;
+                               white-space:nowrap; }
+  .org-info-js_search-highlight {background-color:#ffff00; color:#000000;
+                                 font-weight:bold; }
+  /*]]>*/-->
+</style>
+<script type="text/javascript">
+<!--/*--><![CDATA[/*><!--*/
+ function CodeHighlightOn(elem, id)
+ {
+   var target = document.getElementById(id);
+   if(null != target) {
+     elem.cacheClassElem = elem.className;
+     elem.cacheClassTarget = target.className;
+     target.className = "code-highlighted";
+     elem.className   = "code-highlighted";
+   }
+ }
+ function CodeHighlightOff(elem, id)
+ {
+   var target = document.getElementById(id);
+   if(elem.cacheClassElem)
+     elem.className = elem.cacheClassElem;
+   if(elem.cacheClassTarget)
+     target.className = elem.cacheClassTarget;
+ }
+/*]]>*///-->
+</script>
+
+</head>
+<body>
+
+<div id="preamble">
+
+</div>
+
+<div id="content">
+<h1 class="title">Ontohub demo video script</h1>
+
+
+<div id="table-of-contents">
+<h2>Table of Contents</h2>
+<div id="text-table-of-contents">
+<ul>
+<li><a href="#sec-1">1 Preparation</a></li>
+<li><a href="#sec-2">2 Main page</a></li>
+<li><a href="#sec-3">3 Ontologies</a></li>
+<li><a href="#sec-4">4 Entity search</a></li>
+<li><a href="#sec-5">5 Registration</a></li>
+<li><a href="#sec-6">6 Ontology upload</a></li>
+<li><a href="#sec-7">7 Ontology view and Hets output</a></li>
+</ul>
+</div>
+</div>
+
+<div id="outline-container-1" class="outline-2">
+<h2 id="sec-1"><span class="section-number-2">1</span> Preparation</h2>
+<div class="outline-text-2" id="text-1">
+
+<ol>
+<li>be sure to be logged out
+</li>
+<li>be sure that some ontologies exist:
+<ul>
+<li>FOAF (need to upload from local file, as Hets otherwise thinks it's in the unsupported logic RDF)
+</li>
+<li><a href="http://openaal.org/download">OpenAAL</a> (need to upload from local file, as the ontology is not published in source form)
+</li>
+<li>some Common Logic ontologies from COLORE
+</li>
+</ul>
+
+</li>
+<li>be sure that some ontologies do not exist:
+<ul>
+<li><a href="http://pav-ontology.googlecode.com/svn/trunk/pav.owl">http://pav-ontology.googlecode.com/svn/trunk/pav.owl</a>
+</li>
+</ul>
+
+</li>
+</ol>
+
+</div>
+
+</div>
+
+<div id="outline-container-2" class="outline-2">
+<h2 id="sec-2"><span class="section-number-2">2</span> Main page</h2>
+<div class="outline-text-2" id="text-2">
+
+<ol>
+<li>go to <a href="http://ontohub.informatik.uni-bremen.de">http://ontohub.informatik.uni-bremen.de</a>
+</li>
+<li>explain "latest ontologies"
+</li>
+<li>explain "latest comments"
+</li>
+</ol>
+
+</div>
+
+</div>
+
+<div id="outline-container-3" class="outline-2">
+<h2 id="sec-3"><span class="section-number-2">3</span> Ontologies</h2>
+<div class="outline-text-2" id="text-3">
+
+<ol>
+<li>go to "<a href="http://ontohub.informatik.uni-bremen.de/ontologies">ontologies</a>"
+</li>
+<li>explain one ontology that has more than one entity and axiom
+     (some of the COLORE ontologies just have one)
+</li>
+</ol>
+
+</div>
+
+</div>
+
+<div id="outline-container-4" class="outline-2">
+<h2 id="sec-4"><span class="section-number-2">4</span> Entity search</h2>
+<div class="outline-text-2" id="text-4">
+
+<ol>
+<li>search for "Person"
+</li>
+<li>refine search by "kind:ObjectProperty"
+</li>
+</ol>
+
+</div>
+
+</div>
+
+<div id="outline-container-5" class="outline-2">
+<h2 id="sec-5"><span class="section-number-2">5</span> Registration</h2>
+<div class="outline-text-2" id="text-5">
+
+<ol>
+<li>register
+</li>
+<li>confirm e-mail
+</li>
+</ol>
+
+</div>
+
+</div>
+
+<div id="outline-container-6" class="outline-2">
+<h2 id="sec-6"><span class="section-number-2">6</span> Ontology upload</h2>
+<div class="outline-text-2" id="text-6">
+
+<ol>
+<li>go to "ontologies"
+</li>
+<li>"create ontology"
+</li>
+<li>say that one can upload from a local file …
+</li>
+<li>… but actually do upload from a URL:
+<ul>
+<li><a href="http://pav-ontology.googlecode.com/svn/trunk/pav.owl">http://pav-ontology.googlecode.com/svn/trunk/pav.owl</a>
+</li>
+<li>URI defaults to URL, but here one should change it
+       (at this point we can not yet look into the ontology!)
+</li>
+<li>use <a href="http://purl.org/pav/2.0/">http://purl.org/pav/2.0/</a>
+</li>
+<li>enter a short name and description; say that further metadata can be added as well
+</li>
+</ul>
+
+</li>
+</ol>
+
+</div>
+
+</div>
+
+<div id="outline-container-7" class="outline-2">
+<h2 id="sec-7"><span class="section-number-2">7</span> Ontology view and Hets output</h2>
+<div class="outline-text-2" id="text-7">
+
+<ol>
+<li>after upload, looking at the ontology's page
+</li>
+<li>explain Hets status: "Hets tells Ontohub about the logic of an imported ontology and about the entities and axioms it contains.  This works across logics, for any logic supported by Hets."
+</li>
+<li>explain the kinds of entities (say that they depend on the logic)
+</li>
+<li>point at "axioms" and "entities" tabs
+</li>
+</ol>
+
+</div>
+</div>
+</div>
+
+<div id="postamble">
+<p class="date">Date: 2012-03-27 Tue</p>
+<p class="author">Author: </p>
+<p class="creator">Org version 7.8.03 with Emacs version 24</p>
+<a href="http://validator.w3.org/check?uri=referer">Validate XHTML 1.0</a>
+
+</div>
+</body>
+</html>
