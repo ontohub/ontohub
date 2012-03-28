@@ -169,6 +169,11 @@ resque:work`. Solr is to be stopped as follows:
 
     rake sunspot:solr:stop
 
+License
+-------
+
+Copyright © 2012 [Universität Bremen](http://www.uni-bremen.de/), released under the [GNU AGPL 3.0](http://www.gnu.org/licenses/agpl-3.0.html) license.
+
 
 [0]: http://www.tzi.org/~cabo/awe12
 [1]: http://www.tzi.org/~cabo
