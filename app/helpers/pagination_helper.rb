@@ -5,7 +5,7 @@ module PaginationHelper
     
     html = ''
     html << pages
-    html << capture_haml(&block)
+    html << capture(&block)
     html << pages
     html.html_safe
   end

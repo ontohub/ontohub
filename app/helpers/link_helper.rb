@@ -21,7 +21,7 @@ module LinkHelper
     options[:url]  ||= {}
     
     links = ''
-    links << capture_haml(&block) << ' ' if block_given?
+    links << capture(&block) << ' ' if block_given?
     links << args.collect{ |f|
       content_tag :li, link_to(f.to_s.upcase, params.merge(options[:url]).merge(:format => f), :title => "Get this page as #{f.upcase}")
     }.join("")
