@@ -6,5 +6,5 @@
     %strong= params[:kind]
     (#{link_to 'show all', collection_path})
 
-= pagination collection do
+= pagination do
   = render :partial => 'list'

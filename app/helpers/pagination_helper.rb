@@ -1,6 +1,9 @@
 module PaginationHelper
   
-  def pagination(collection, &block)
+  def pagination(collection=nil, &block)
+    # call the collection-method if no collection is given
+    collection ||= send :collection
+    
     pages = paginate(collection)
     
     html = ''
