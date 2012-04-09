@@ -1,6 +1,6 @@
 module PaginationHelper
   
-  def paginaton(collection, &block)
+  def pagination(collection, &block)
     pages = paginate(collection)
     
     html = ''
