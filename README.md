@@ -21,7 +21,7 @@ Initial developers are [Julian Kornberger][5] and [Henning Müller][6].
 Installation
 ------------
 
-These commands should work on Ubuntu 11.04. First of all you need a root shell.
+These commands should work on Ubuntu 11.10. First of all you need a root shell.
 
 ### RVM with Ruby 1.9.3
 
