@@ -43,7 +43,7 @@ gem 'kaminari'
 gem "strip_attributes", "~> 1.0"
 
 # Manage uploads
-gem 'carrierwave', :git => 'git://github.com/jnicklas/carrierwave.git'
+gem 'carrierwave', "~> 0.6.1"
 
 # Async jobs
 gem 'resque'
