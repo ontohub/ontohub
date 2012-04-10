@@ -295,7 +295,7 @@ CREATE TABLE ontology_versions (
     id integer NOT NULL,
     user_id integer NOT NULL,
     ontology_id integer NOT NULL,
-    source_uri character varying(255),
+    source_url character varying(255),
     raw_file character varying(255),
     xml_file character varying(255),
     state character varying(255) DEFAULT 'pending'::character varying,

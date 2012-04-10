@@ -52,19 +52,19 @@ class OntologyTest < ActiveSupport::TestCase
       OntologyVersion.any_instance.expects(:parse_async).once
       
       @user       = Factory :user
-      @source_uri = 'http://colore.googlecode.com/svn/trunk/ontologies/arithmetic/robinson_arithmetic.clif'
+      @source_url = 'http://colore.googlecode.com/svn/trunk/ontologies/arithmetic/robinson_arithmetic.clif'
       @ontology   = Ontology.new \
         :uri => 'http://example.com/ontology',
         :versions_attributes => [{
-          source_uri: @source_uri
+          source_url: @source_url
         }]
         
       @ontology.versions.first.user = @user
       @ontology.save!
     end
     
-    should 'create a version with source_uri' do
-      assert_equal @source_uri, @ontology.versions.first.source_uri
+    should 'create a version with source_url' do
+      assert_equal @source_url, @ontology.versions.first.source_url
     end
     
     context 'creating a permission' do

@@ -9,11 +9,11 @@ class OntologyVersionTest < ActiveSupport::TestCase
   
   context 'Validating OntologyVersion' do
     ['http://example.com/', 'https://example.com/'].each do |val|
-      should allow_value(val).for :source_uri
+      should allow_value(val).for :source_url
     end
 
     [nil, '','fooo'].each do |val|
-      should_not allow_value(val).for :source_uri
+      should_not allow_value(val).for :source_url
     end
   end
   
@@ -29,9 +29,9 @@ class OntologyVersionTest < ActiveSupport::TestCase
       end
     end
     
-    context 'with invalid source_uri' do
+    context 'with invalid source_url' do
       setup do
-        @version.source_uri = 'invalid'
+        @version.source_url = 'invalid'
       end
       should 'be invalid' do
         assert @version.invalid?
@@ -56,9 +56,9 @@ class OntologyVersionTest < ActiveSupport::TestCase
       end
     end
     
-    context 'with valid source_uri' do
+    context 'with valid source_url' do
       setup do
-        @version.source_uri = 'http://example.com/fooo'
+        @version.source_url = 'http://example.com/fooo'
       end
       should 'be valid' do
         assert @version.valid?

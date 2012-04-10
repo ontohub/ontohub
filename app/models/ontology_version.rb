@@ -9,15 +9,15 @@ class OntologyVersion < ActiveRecord::Base
   mount_uploader :raw_file, OntologyUploader
   mount_uploader :xml_file, OntologyUploader
 
-  attr_accessible :raw_file, :source_uri
+  attr_accessible :raw_file, :source_url
 
   before_validation :set_checksum
 
-  validate :raw_file_xor_source_uri, :on => :create
+  validate :raw_file_xor_source_url, :on => :create
 # validate :raw_file_size_maximum
 
-  validates_format_of :source_uri,
-    :with => URI::regexp(ALLOWED_URI_SCHEMAS), :if => :source_uri?
+  validates_format_of :source_url,
+    :with => URI::regexp(ALLOWED_URI_SCHEMAS), :if => :source_url?
 
   scope :latest, order('id DESC')
   scope :state, ->(state) { where :state => state }
@@ -30,14 +30,14 @@ class OntologyVersion < ActiveRecord::Base
   end
   
   def source_name
-    source_uri? ? source_uri : 'File upload'
+    source_url? ? source_url : 'File upload'
   end
   
 protected
 
-  def raw_file_xor_source_uri
-    if !(raw_file.blank? ^ source_uri.blank?)
-      errors.add :source_uri, 'Specify either a source file or URI.'
+  def raw_file_xor_source_url
+    if !(raw_file.blank? ^ source_url.blank?)
+      errors.add :source_url, 'Specify either a source file or URI.'
     end
   end
 

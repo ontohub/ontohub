@@ -80,7 +80,7 @@ class OntologiesControllerTest < ActionController::TestCase
               post :create, :ontology => {
                 uri: 'fooo',
                 versions_attributes: [{
-                  source_uri: ''
+                  source_url: ''
                 }],
               }
             end
@@ -95,7 +95,7 @@ class OntologiesControllerTest < ActionController::TestCase
               post :create, :format => :json, :ontology => {
                 uri: 'fooo',
                 versions_attributes: [{
-                  source_uri: ''
+                  source_url: ''
                 }],
               }
             end
@@ -112,7 +112,7 @@ class OntologiesControllerTest < ActionController::TestCase
               post :create, :ontology => {
                 uri: 'http://example.com/dummy.ontology',
                 versions_attributes: [{
-                  source_uri: 'http://example.com/dummy.ontology'
+                  source_url: 'http://example.com/dummy.ontology'
                 }],
               }
             end
@@ -128,7 +128,7 @@ class OntologiesControllerTest < ActionController::TestCase
               post :create, :format => :json, :ontology => {
                 uri: 'http://example.com/dummy.ontology',
                 versions_attributes: [{
-                  source_uri: 'http://example.com/dummy.ontology'
+                  source_url: 'http://example.com/dummy.ontology'
                 }],
               }
             end

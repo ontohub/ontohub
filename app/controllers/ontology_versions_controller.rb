@@ -33,7 +33,7 @@ class OntologyVersionsController < InheritedResources::Base
   end
 
   def new
-    build_resource.source_uri = collection.latest.first.source_uri
+    build_resource.source_url = collection.latest.first.source_url
   end
 
   def create

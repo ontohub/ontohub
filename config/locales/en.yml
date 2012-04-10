@@ -11,14 +11,14 @@ en:
         uri: URI
       ontology_version:
         raw_file: Source File
-        source_uri: Source URL
+        source_url: Source URL
       logic:
         uri: URI
         extension: File extension
         mimetype: MIME-Type
     hints:
       ontology_version:
-        source_uri: Please enter the URL to import the ontology from.
+        source_url: Please enter the URL to import the ontology from.
     placeholders:
       comment:
         text: Write a new comment

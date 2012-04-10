@@ -3,7 +3,7 @@ class CreateOntologyVersions < ActiveRecord::Migration
     create_table :ontology_versions do |t|
       t.references :user, :null => false
       t.references :ontology, :null => false
-      t.string :source_uri
+      t.string :source_url
       t.string :raw_file
       t.string :xml_file
       t.string :state, :default => 'pending'
