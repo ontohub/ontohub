@@ -83,7 +83,7 @@ The war-Package should be automatically loaded.
 
 ### PostgreSQL
 
-    apt-get install postgresql-server
+    apt-get install postgresql
 
 ### Redis
 
