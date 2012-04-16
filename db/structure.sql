@@ -4,23 +4,10 @@
 
 SET statement_timeout = 0;
 SET client_encoding = 'UTF8';
-SET standard_conforming_strings = on;
+SET standard_conforming_strings = off;
 SET check_function_bodies = false;
 SET client_min_messages = warning;
-
---
--- Name: plpgsql; Type: EXTENSION; Schema: -; Owner: -
---
-
-CREATE EXTENSION IF NOT EXISTS plpgsql WITH SCHEMA pg_catalog;
-
-
---
--- Name: EXTENSION plpgsql; Type: COMMENT; Schema: -; Owner: -
---
-
-COMMENT ON EXTENSION plpgsql IS 'PL/pgSQL procedural language';
-
+SET escape_string_warning = off;
 
 SET search_path = public, pg_catalog;
 
@@ -62,8 +49,8 @@ CREATE TABLE axioms_entities (
 CREATE SEQUENCE axioms_id_seq
     START WITH 1
     INCREMENT BY 1
-    NO MINVALUE
     NO MAXVALUE
+    NO MINVALUE
     CACHE 1;
 
 
@@ -96,8 +83,8 @@ CREATE TABLE comments (
 CREATE SEQUENCE comments_id_seq
     START WITH 1
     INCREMENT BY 1
-    NO MINVALUE
     NO MAXVALUE
+    NO MINVALUE
     CACHE 1;
 
 
@@ -133,8 +120,8 @@ CREATE TABLE entities (
 CREATE SEQUENCE entities_id_seq
     START WITH 1
     INCREMENT BY 1
-    NO MINVALUE
     NO MAXVALUE
+    NO MINVALUE
     CACHE 1;
 
 
@@ -166,8 +153,8 @@ CREATE TABLE links (
 CREATE SEQUENCE links_id_seq
     START WITH 1
     INCREMENT BY 1
-    NO MINVALUE
     NO MAXVALUE
+    NO MINVALUE
     CACHE 1;
 
 
@@ -200,8 +187,8 @@ CREATE TABLE logics (
 CREATE SEQUENCE logics_id_seq
     START WITH 1
     INCREMENT BY 1
-    NO MINVALUE
     NO MAXVALUE
+    NO MINVALUE
     CACHE 1;
 
 
@@ -235,8 +222,8 @@ CREATE TABLE metadata (
 CREATE SEQUENCE metadata_id_seq
     START WITH 1
     INCREMENT BY 1
-    NO MINVALUE
     NO MAXVALUE
+    NO MINVALUE
     CACHE 1;
 
 
@@ -275,8 +262,8 @@ CREATE TABLE ontologies (
 CREATE SEQUENCE ontologies_id_seq
     START WITH 1
     INCREMENT BY 1
-    NO MINVALUE
     NO MAXVALUE
+    NO MINVALUE
     CACHE 1;
 
 
@@ -313,8 +300,8 @@ CREATE TABLE ontology_versions (
 CREATE SEQUENCE ontology_versions_id_seq
     START WITH 1
     INCREMENT BY 1
-    NO MINVALUE
     NO MAXVALUE
+    NO MINVALUE
     CACHE 1;
 
 
@@ -349,8 +336,8 @@ CREATE TABLE permissions (
 CREATE SEQUENCE permissions_id_seq
     START WITH 1
     INCREMENT BY 1
-    NO MINVALUE
     NO MAXVALUE
+    NO MINVALUE
     CACHE 1;
 
 
@@ -390,8 +377,8 @@ CREATE TABLE team_users (
 CREATE SEQUENCE team_users_id_seq
     START WITH 1
     INCREMENT BY 1
-    NO MINVALUE
     NO MAXVALUE
+    NO MINVALUE
     CACHE 1;
 
 
@@ -419,8 +406,8 @@ CREATE TABLE teams (
 CREATE SEQUENCE teams_id_seq
     START WITH 1
     INCREMENT BY 1
-    NO MINVALUE
     NO MAXVALUE
+    NO MINVALUE
     CACHE 1;
 
 
@@ -469,8 +456,8 @@ CREATE TABLE users (
 CREATE SEQUENCE users_id_seq
     START WITH 1
     INCREMENT BY 1
-    NO MINVALUE
     NO MAXVALUE
+    NO MINVALUE
     CACHE 1;
 
 

@@ -1,5 +1,6 @@
 class Logic < ActiveRecord::Base
-  has_many :ontologies
+  has_many :ontologyVersions
+  has_many :supports
 
   attr_accessible :name, :uri, :extension, :mimetype
 
