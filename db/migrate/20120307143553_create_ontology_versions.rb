@@ -9,6 +9,8 @@ class CreateOntologyVersions < ActiveRecord::Migration
       t.string :state, :default => 'pending'
       t.text :last_error
       t.string :checksum
+      t.integer :version_number
+      t.boolean :current
 
       t.timestamps :null => false
     end

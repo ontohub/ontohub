@@ -20,7 +20,7 @@ class CreateOntologies < ActiveRecord::Migration
       t.index :language_id
       t.index :current_version_id
       t.foreign_key :languages
-      t.foreign_key :ontology_versions, :column => :current_version_id
+      t.foreign_key :current_version
     end
   end
 end
