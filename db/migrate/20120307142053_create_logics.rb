@@ -2,9 +2,7 @@ class CreateLogics < ActiveRecord::Migration
   def change
     create_table :logics do |t|
       t.string :name, :null => false
-      t.string :uri
-      t.string :extension
-      t.string :mimetype
+      t.string :iri
 
       t.timestamps :null => false
     end
