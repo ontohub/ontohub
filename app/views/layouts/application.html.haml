@@ -6,6 +6,7 @@
     = csrf_meta_tags
   %body
     = render :partial => '/shared/header'
-    = flash_messages
-    %section= yield
+    .container
+      = flash_messages
+      %section= yield
     = javascript_include_tag "application"

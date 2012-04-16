@@ -1,5 +1,8 @@
-%header
-  = render :partial => '/shared/session'
-  %h1= link_to 'Ontohub', '/'
-  = render :partial => '/shared/navigation'
-  = render :partial => '/shared/quicksearch'
+%header.navbar.navbar-fixed-top
+  .navbar-inner
+    .container
+      = link_to 'Ontohub', :root, :class => 'brand'
+  
+      = render :partial => '/shared/navigation'
+      = render :partial => '/shared/quicksearch'
+      = render :partial => '/shared/session'

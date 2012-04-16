@@ -1,8 +1,7 @@
-%nav
-  %ul
-    %li= link_to 'Ontologies', :ontologies
-    
-    - if admin?
-      %li
-        = link_to 'Admin', '#'
-        = render :partial => '/shared/admin_navigation' 
+%ul.nav
+  %li= link_to 'Ontologies', :ontologies
+  
+  - if admin?
+    %li
+      = link_to 'Admin', '#', :class => 'dropdown-toggle', 'data-toggle' => 'dropdown'
+      = render :partial => '/shared/admin_navigation' 
