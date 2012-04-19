@@ -6,6 +6,7 @@ class CreateOntologies < ActiveRecord::Migration
       t.string :state, :default => 'pending', :null => false
       t.string :name
       t.text :description
+      t.boolean :distributed, :default => false
       
       t.integer :entities_count, :axioms_count
       t.integer :versions_count, :metadata_count, :comments_count, :null => false, :default => 0

@@ -4,9 +4,14 @@ class CreateSerializations < ActiveRecord::Migration
       t.string :name
       t.string :extension
       t.string :mimetype
-      t.integer :language_id
+      t.reference :language
 
       t.timestamps
     end
-  end
+    
+    change_table :serializations do |t|
+      t.index :language_id
+      t.foreign_key :languages
+    end  
+  end 
 end
