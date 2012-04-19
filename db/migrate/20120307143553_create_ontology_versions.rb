@@ -9,15 +9,14 @@ class CreateOntologyVersions < ActiveRecord::Migration
       t.string :state, :default => 'pending'
       t.text :last_error
       t.string :checksum
-      t.integer :version_number
-      t.boolean :current
+      t.integer :number, :null => false
 
       t.timestamps :null => false
     end
 
     change_table :ontology_versions do |t|
       t.index :user_id
-      t.index :ontology_id
+      t.index [:ontology_id, :number], :unique => true
       t.index :checksum
       t.foreign_key :users
       t.foreign_key :ontologies, :dependent => :delete

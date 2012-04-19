@@ -2,7 +2,6 @@ class CreateOntologies < ActiveRecord::Migration
   def change
     create_table :ontologies do |t|
       t.references :language
-      t.references :current_version
       t.string :uri, :null => false
       t.string :state, :default => 'pending', :null => false
       t.string :name
@@ -18,9 +17,7 @@ class CreateOntologies < ActiveRecord::Migration
       t.index :uri, :unique => true
       t.index :state
       t.index :language_id
-      t.index :current_version_id
       t.foreign_key :languages
-      t.foreign_key :current_version
     end
   end
 end

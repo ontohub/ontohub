@@ -4,7 +4,13 @@ module Ontology::Versions
   included do
     has_many :versions,
       :dependent  => :destroy,
-      :class_name => 'OntologyVersion'
+      :order      => :number,
+      :class_name => 'OntologyVersion' do
+
+      def current
+        reorder('number DESC').first
+      end
+    end
 
     attr_accessible :versions_attributes
     accepts_nested_attributes_for :versions

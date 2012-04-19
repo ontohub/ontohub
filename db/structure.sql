@@ -274,9 +274,7 @@ ALTER SEQUENCE links_id_seq OWNED BY links.id;
 CREATE TABLE logics (
     id integer NOT NULL,
     name character varying(255) NOT NULL,
-    uri character varying(255),
-    extension character varying(255),
-    mimetype character varying(255),
+    iri character varying(255),
     created_at timestamp without time zone NOT NULL,
     updated_at timestamp without time zone NOT NULL
 );
@@ -342,7 +340,7 @@ ALTER SEQUENCE metadata_id_seq OWNED BY metadata.id;
 
 CREATE TABLE ontologies (
     id integer NOT NULL,
-    logic_id integer,
+    language_id integer,
     uri character varying(255) NOT NULL,
     state character varying(255) DEFAULT 'pending'::character varying NOT NULL,
     name character varying(255),
@@ -390,6 +388,7 @@ CREATE TABLE ontology_versions (
     state character varying(255) DEFAULT 'pending'::character varying,
     last_error text,
     checksum character varying(255),
+    number integer NOT NULL,
     created_at timestamp without time zone NOT NULL,
     updated_at timestamp without time zone NOT NULL
 );
@@ -997,10 +996,10 @@ CREATE INDEX index_metadata_on_user_id ON metadata USING btree (user_id);
 
 
 --
--- Name: index_ontologies_on_logic_id; Type: INDEX; Schema: public; Owner: -; Tablespace: 
+-- Name: index_ontologies_on_language_id; Type: INDEX; Schema: public; Owner: -; Tablespace: 
 --
 
-CREATE INDEX index_ontologies_on_logic_id ON ontologies USING btree (logic_id);
+CREATE INDEX index_ontologies_on_language_id ON ontologies USING btree (language_id);
 
 
 --
@@ -1025,10 +1024,10 @@ CREATE INDEX index_ontology_versions_on_checksum ON ontology_versions USING btre
 
 
 --
--- Name: index_ontology_versions_on_ontology_id; Type: INDEX; Schema: public; Owner: -; Tablespace: 
+-- Name: index_ontology_versions_on_ontology_id_and_number; Type: INDEX; Schema: public; Owner: -; Tablespace: 
 --
 
-CREATE INDEX index_ontology_versions_on_ontology_id ON ontology_versions USING btree (ontology_id);
+CREATE UNIQUE INDEX index_ontology_versions_on_ontology_id_and_number ON ontology_versions USING btree (ontology_id, number);
 
 
 --
@@ -1057,6 +1056,20 @@ CREATE UNIQUE INDEX index_permissions_on_item_and_subject ON permissions USING b
 --
 
 CREATE INDEX index_permissions_on_subject_id_and_subject_type ON permissions USING btree (subject_id, subject_type);
+
+
+--
+-- Name: index_supports_on_language_id; Type: INDEX; Schema: public; Owner: -; Tablespace: 
+--
+
+CREATE INDEX index_supports_on_language_id ON supports USING btree (language_id);
+
+
+--
+-- Name: index_supports_on_logic_id; Type: INDEX; Schema: public; Owner: -; Tablespace: 
+--
+
+CREATE INDEX index_supports_on_logic_id ON supports USING btree (logic_id);
 
 
 --
@@ -1180,11 +1193,11 @@ ALTER TABLE ONLY metadata
 
 
 --
--- Name: ontologies_logic_id_fk; Type: FK CONSTRAINT; Schema: public; Owner: -
+-- Name: ontologies_language_id_fk; Type: FK CONSTRAINT; Schema: public; Owner: -
 --
 
 ALTER TABLE ONLY ontologies
-    ADD CONSTRAINT ontologies_logic_id_fk FOREIGN KEY (logic_id) REFERENCES logics(id);
+    ADD CONSTRAINT ontologies_language_id_fk FOREIGN KEY (language_id) REFERENCES languages(id);
 
 
 --
@@ -1209,6 +1222,22 @@ ALTER TABLE ONLY ontology_versions
 
 ALTER TABLE ONLY permissions
     ADD CONSTRAINT permissions_creator_id_fk FOREIGN KEY (creator_id) REFERENCES users(id) ON DELETE SET NULL;
+
+
+--
+-- Name: supports_language_id_fk; Type: FK CONSTRAINT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY supports
+    ADD CONSTRAINT supports_language_id_fk FOREIGN KEY (language_id) REFERENCES languages(id);
+
+
+--
+-- Name: supports_logic_id_fk; Type: FK CONSTRAINT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY supports
+    ADD CONSTRAINT supports_logic_id_fk FOREIGN KEY (logic_id) REFERENCES logics(id);
 
 
 --
@@ -1239,6 +1268,8 @@ ALTER TABLE ONLY team_users
 -- PostgreSQL database dump complete
 --
 
+INSERT INTO schema_migrations (version) VALUES ('20120000000001');
+
 INSERT INTO schema_migrations (version) VALUES ('20120307103820');
 
 INSERT INTO schema_migrations (version) VALUES ('20120307142053');
@@ -1264,8 +1295,6 @@ INSERT INTO schema_migrations (version) VALUES ('20120308144855');
 INSERT INTO schema_migrations (version) VALUES ('20120308144859');
 
 INSERT INTO schema_migrations (version) VALUES ('20120313131338');
-
-INSERT INTO schema_migrations (version) VALUES ('20120416184025');
 
 INSERT INTO schema_migrations (version) VALUES ('20120416185310');
 
