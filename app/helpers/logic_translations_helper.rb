@@ -1,0 +1,2 @@
+module LogicTranslationsHelper
+end
