@@ -1,7 +1,7 @@
 class CreateAxioms < ActiveRecord::Migration
   def change
     create_table :axioms do |t|
-      t.references :ontology, :null => false
+      t.references :ontology_version, :null => false
       t.string :name, :null => false
       t.text :text, :null => false
       t.string :range
@@ -11,9 +11,9 @@ class CreateAxioms < ActiveRecord::Migration
     end
 
     change_table :axioms do |t|
-      t.index [:ontology_id, :id], :unique => true
-      t.index [:ontology_id, :name], :unique => true
-      t.foreign_key :ontologies, :dependent => :delete
+      t.index [:ontology_version_id, :id], :unique => true
+      t.index [:ontology_version_id, :name], :unique => true
+      t.foreign_key :ontology_versions, :dependent => :delete
     end
   end
 end

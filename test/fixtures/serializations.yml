@@ -1,0 +1,13 @@
+# Read about fixtures at http://api.rubyonrails.org/classes/ActiveRecord/Fixtures.html
+
+one:
+  name: MyString
+  extension: MyString
+  mimetype: MyString
+  language_id: 1
+
+two:
+  name: MyString
+  extension: MyString
+  mimetype: MyString
+  language_id: 1

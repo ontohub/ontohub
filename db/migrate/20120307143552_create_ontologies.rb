@@ -1,11 +1,12 @@
 class CreateOntologies < ActiveRecord::Migration
   def change
     create_table :ontologies do |t|
-      t.references :logic
+      t.references :language
       t.string :uri, :null => false
       t.string :state, :default => 'pending', :null => false
       t.string :name
       t.text :description
+      t.boolean :distributed, :default => false
       
       t.integer :entities_count, :axioms_count
       t.integer :versions_count, :metadata_count, :comments_count, :null => false, :default => 0
@@ -16,8 +17,8 @@ class CreateOntologies < ActiveRecord::Migration
     change_table :ontologies do |t|
       t.index :uri, :unique => true
       t.index :state
-      t.index :logic_id
-      t.foreign_key :logics
+      t.index :language_id
+      t.foreign_key :languages
     end
   end
 end

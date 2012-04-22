@@ -10,7 +10,9 @@ class Ontology < ActiveRecord::Base
   include Ontology::States
   include Ontology::Versions
 
-  belongs_to :logic
+  belongs_to :language
+  belongs_to :version
+  has_many :versions
 
   attr_accessible :uri, :name, :description, :logic_id
 

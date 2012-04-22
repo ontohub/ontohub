@@ -1,0 +1,9 @@
+# Read about fixtures at http://api.rubyonrails.org/classes/ActiveRecord/Fixtures.html
+
+one:
+  language_id: 1
+  logic_id: 1
+
+two:
+  language_id: 1
+  logic_id: 1

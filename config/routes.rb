@@ -6,6 +6,8 @@ auth_resque = ->(request) {
 
 Ontohub::Application.routes.draw do
 
+  resources :logic_translations
+
   devise_for :users, :controllers => { :registrations => "users/registrations" }
   resources :users, :only => :show
   
