@@ -5,8 +5,8 @@ class CreateMembers < ActiveRecord::Migration
       t.references :distributed_ontology_version, :null => false
     end
 
-    add_index :members, [:ontology_version_id, :distributed_ontology_version_id]
-    add_index :members, [:distributed_ontology_version_id, :ontology_version_id]
+    #add_index :members, [:ontology_version_id, :distributed_ontology_version_id]
+    #add_index :members, [:distributed_ontology_version_id, :ontology_version_id]
 
   end
 end

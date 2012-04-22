@@ -4,7 +4,7 @@ class CreateSerializations < ActiveRecord::Migration
       t.string :name
       t.string :extension
       t.string :mimetype
-      t.reference :language
+      t.references :language
 
       t.timestamps
     end
