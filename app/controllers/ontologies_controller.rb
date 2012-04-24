@@ -10,7 +10,7 @@ class OntologiesController < InheritedResources::Base
   load_and_authorize_resource :except => [:index, :show]
 
   respond_to :json
-  
+
   def index
     super do |format|
       format.html do
@@ -19,7 +19,7 @@ class OntologiesController < InheritedResources::Base
       end
     end
   end
-  
+
   def show
     show! { @grouped_kinds = resource.entities.grouped_by_kind }
   end

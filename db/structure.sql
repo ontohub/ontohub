@@ -253,16 +253,6 @@ CREATE TABLE `schema_migrations` (
   UNIQUE KEY `unique_schema_migrations` (`version`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
 
-CREATE TABLE `sentence_has_entities` (
-  `sentence_id` int(11) NOT NULL,
-  `entity_id` int(11) NOT NULL,
-  `ontology_version_id` int(11) NOT NULL,
-  UNIQUE KEY `index_sentence_has_entities_on_sentence_id_and_entity_id` (`sentence_id`,`entity_id`),
-  KEY `index_sentence_has_entities_on_entity_id_and_sentence_id` (`entity_id`,`sentence_id`),
-  CONSTRAINT `sentence_has_entities_sentence_id_fk` FOREIGN KEY (`sentence_id`) REFERENCES `sentences` (`id`) ON DELETE CASCADE,
-  CONSTRAINT `sentence_has_entities_entity_id_fk` FOREIGN KEY (`entity_id`) REFERENCES `entities` (`id`) ON DELETE CASCADE
-) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
-
 CREATE TABLE `sentences` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
   `ontology_version_id` int(11) NOT NULL,
@@ -276,6 +266,16 @@ CREATE TABLE `sentences` (
   UNIQUE KEY `index_sentences_on_ontology_version_id_and_id` (`ontology_version_id`,`id`),
   UNIQUE KEY `index_sentences_on_ontology_version_id_and_name` (`ontology_version_id`,`name`),
   CONSTRAINT `sentences_ontology_version_id_fk` FOREIGN KEY (`ontology_version_id`) REFERENCES `ontology_versions` (`id`) ON DELETE CASCADE
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
+
+CREATE TABLE `sentences_entities` (
+  `sentence_id` int(11) NOT NULL,
+  `entity_id` int(11) NOT NULL,
+  `ontology_version_id` int(11) NOT NULL,
+  UNIQUE KEY `index_sentences_entities_on_sentence_id_and_entity_id` (`sentence_id`,`entity_id`),
+  KEY `index_sentences_entities_on_entity_id_and_sentence_id` (`entity_id`,`sentence_id`),
+  CONSTRAINT `sentences_entities_sentence_id_fk` FOREIGN KEY (`sentence_id`) REFERENCES `sentences` (`id`) ON DELETE CASCADE,
+  CONSTRAINT `sentences_entities_entity_id_fk` FOREIGN KEY (`entity_id`) REFERENCES `entities` (`id`) ON DELETE CASCADE
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
 
 CREATE TABLE `serializations` (

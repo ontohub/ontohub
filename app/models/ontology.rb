@@ -5,7 +5,7 @@ class Ontology < ActiveRecord::Base
   include Metadatable
 
   include Ontology::Entities
-  include Ontology::Axioms
+  include Ontology::Sentences
   include Ontology::Import
   include Ontology::States
   include Ontology::Versions
@@ -21,9 +21,9 @@ class Ontology < ActiveRecord::Base
   validates_format_of :uri, :with => URI::regexp(ALLOWED_URI_SCHEMAS)
   
   strip_attributes :only => [:name, :uri]
-  
-  scope :search, ->(query) { where "uri ILIKE :term OR name ILIKE :term", :term => "%" << query << "%" }
-  
+
+  scope :search, ->(query) { where "uri LIKE :term OR name LIKE :term", :term => "%" << query << "%" }
+
   def to_s
     name? ? name : uri
   end

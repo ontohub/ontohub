@@ -1,8 +1,8 @@
-module Ontology::Axioms
+module Ontology::Sentences
   extend ActiveSupport::Concern
 
   included do
-    has_many :axioms, :extend => Methods
+    has_many :sentences, :extend => Methods
   end
 
   module Methods

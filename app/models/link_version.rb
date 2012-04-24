@@ -1,4 +1,4 @@
-class LinkVersions < ActiveRecord::Base
+class LinkVersion < ActiveRecord::Base
   belongs_to :link
   belongs_to :source
   belongs_to :target

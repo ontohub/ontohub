@@ -1,4 +1,4 @@
-class Axiom < ActiveRecord::Base
+class Sentence < ActiveRecord::Base
   include Metadatable
 
   belongs_to :ontology
