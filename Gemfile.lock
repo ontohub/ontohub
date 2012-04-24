@@ -13,7 +13,7 @@ GIT
       escape (~> 0.0.4)
 
 GEM
-  remote: https://rubygems.org/
+  remote: http://rubygems.org/
   specs:
     actionmailer (3.2.3)
       actionpack (= 3.2.3)

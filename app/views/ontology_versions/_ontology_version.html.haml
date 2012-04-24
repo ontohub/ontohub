@@ -6,4 +6,4 @@
   %td= ontology_version.last_error
   %td
     - if ontology_version.raw_file?
-      = link_to "Download", [ontology_version.ontology, ontology_version]
+      = link_to "Download", [ontology_version.ontology, ontology_version], :class => 'btn'

@@ -2,6 +2,6 @@
   %li= link_to 'Ontologies', :ontologies
   
   - if admin?
-    %li
-      = link_to 'Admin', '#', :class => 'dropdown-toggle', 'data-toggle' => 'dropdown'
+    %li.dropdown
+      = link_to 'Admin <b class="caret"></b>'.html_safe, '#', :class => 'dropdown-toggle', 'data-toggle' => 'dropdown'
       = render :partial => '/shared/admin_navigation' 
