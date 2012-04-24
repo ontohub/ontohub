@@ -3,6 +3,7 @@ class CreateOntologyVersions < ActiveRecord::Migration
     create_table :ontology_versions do |t|
       t.references :user, :null => false
       t.references :ontology, :null => false
+      t.references :previous_version
       t.string :source_url
       t.string :raw_file
       t.string :xml_file
@@ -18,8 +19,10 @@ class CreateOntologyVersions < ActiveRecord::Migration
       t.index :user_id
       t.index [:ontology_id, :number], :unique => true
       t.index :checksum
+	  t.index :previous_version_id
       t.foreign_key :users
       t.foreign_key :ontologies, :dependent => :delete
+	  t.foreign_key :ontology_versions, :column => :previous_version_id
     end
   end
 end

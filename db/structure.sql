@@ -1,1272 +1,360 @@
---
--- PostgreSQL database dump
---
-
-SET statement_timeout = 0;
-SET client_encoding = 'UTF8';
-SET standard_conforming_strings = off;
-SET check_function_bodies = false;
-SET client_min_messages = warning;
-SET escape_string_warning = off;
-
-SET search_path = public, pg_catalog;
-
-SET default_tablespace = '';
-
-SET default_with_oids = false;
-
---
--- Name: axioms; Type: TABLE; Schema: public; Owner: -; Tablespace: 
---
-
-CREATE TABLE axioms (
-    id integer NOT NULL,
-    ontology_id integer NOT NULL,
-    name character varying(255) NOT NULL,
-    text text NOT NULL,
-    range character varying(255),
-    comments_count integer DEFAULT 0 NOT NULL,
-    created_at timestamp without time zone NOT NULL,
-    updated_at timestamp without time zone NOT NULL
-);
-
-
---
--- Name: axioms_entities; Type: TABLE; Schema: public; Owner: -; Tablespace: 
---
-
-CREATE TABLE axioms_entities (
-    axiom_id integer NOT NULL,
-    entity_id integer NOT NULL,
-    ontology_id integer NOT NULL
-);
-
-
---
--- Name: axioms_id_seq; Type: SEQUENCE; Schema: public; Owner: -
---
-
-CREATE SEQUENCE axioms_id_seq
-    START WITH 1
-    INCREMENT BY 1
-    NO MAXVALUE
-    NO MINVALUE
-    CACHE 1;
-
-
---
--- Name: axioms_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: -
---
-
-ALTER SEQUENCE axioms_id_seq OWNED BY axioms.id;
-
-
---
--- Name: comments; Type: TABLE; Schema: public; Owner: -; Tablespace: 
---
-
-CREATE TABLE comments (
-    id integer NOT NULL,
-    commentable_id integer NOT NULL,
-    commentable_type character varying(255) NOT NULL,
-    user_id integer NOT NULL,
-    text text NOT NULL,
-    created_at timestamp without time zone NOT NULL,
-    updated_at timestamp without time zone NOT NULL
-);
-
-
---
--- Name: comments_id_seq; Type: SEQUENCE; Schema: public; Owner: -
---
-
-CREATE SEQUENCE comments_id_seq
-    START WITH 1
-    INCREMENT BY 1
-    NO MAXVALUE
-    NO MINVALUE
-    CACHE 1;
-
-
---
--- Name: comments_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: -
---
-
-ALTER SEQUENCE comments_id_seq OWNED BY comments.id;
-
-
---
--- Name: entities; Type: TABLE; Schema: public; Owner: -; Tablespace: 
---
-
-CREATE TABLE entities (
-    id integer NOT NULL,
-    ontology_id integer NOT NULL,
-    kind character varying(255),
-    text text NOT NULL,
-    name character varying(255) NOT NULL,
-    uri character varying(255),
-    range character varying(255),
-    comments_count integer DEFAULT 0 NOT NULL,
-    created_at timestamp without time zone NOT NULL,
-    updated_at timestamp without time zone NOT NULL
-);
-
-
---
--- Name: entities_id_seq; Type: SEQUENCE; Schema: public; Owner: -
---
-
-CREATE SEQUENCE entities_id_seq
-    START WITH 1
-    INCREMENT BY 1
-    NO MAXVALUE
-    NO MINVALUE
-    CACHE 1;
-
-
---
--- Name: entities_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: -
---
-
-ALTER SEQUENCE entities_id_seq OWNED BY entities.id;
-
-
---
--- Name: entity_mappings; Type: TABLE; Schema: public; Owner: -; Tablespace: 
---
-
-CREATE TABLE entity_mappings (
-    id integer NOT NULL,
-    source_id integer,
-    target_id integer,
-    confidence integer,
-    kind character varying(255),
-    created_at timestamp without time zone NOT NULL,
-    updated_at timestamp without time zone NOT NULL
-);
-
-
---
--- Name: entity_mappings_id_seq; Type: SEQUENCE; Schema: public; Owner: -
---
-
-CREATE SEQUENCE entity_mappings_id_seq
-    START WITH 1
-    INCREMENT BY 1
-    NO MAXVALUE
-    NO MINVALUE
-    CACHE 1;
-
-
---
--- Name: entity_mappings_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: -
---
-
-ALTER SEQUENCE entity_mappings_id_seq OWNED BY entity_mappings.id;
-
-
---
--- Name: languages; Type: TABLE; Schema: public; Owner: -; Tablespace: 
---
-
-CREATE TABLE languages (
-    id integer NOT NULL,
-    name character varying(255),
-    uri character varying(255),
-    created_at timestamp without time zone NOT NULL,
-    updated_at timestamp without time zone NOT NULL
-);
-
-
---
--- Name: languages_id_seq; Type: SEQUENCE; Schema: public; Owner: -
---
-
-CREATE SEQUENCE languages_id_seq
-    START WITH 1
-    INCREMENT BY 1
-    NO MAXVALUE
-    NO MINVALUE
-    CACHE 1;
-
-
---
--- Name: languages_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: -
---
-
-ALTER SEQUENCE languages_id_seq OWNED BY languages.id;
-
-
---
--- Name: link_versions; Type: TABLE; Schema: public; Owner: -; Tablespace: 
---
-
-CREATE TABLE link_versions (
-    id integer NOT NULL,
-    source_id integer,
-    target_id integer,
-    version_number integer,
-    current boolean,
-    proof_status boolean,
-    couse_status boolean,
-    created_at timestamp without time zone NOT NULL,
-    updated_at timestamp without time zone NOT NULL
-);
-
-
---
--- Name: link_versions_id_seq; Type: SEQUENCE; Schema: public; Owner: -
---
-
-CREATE SEQUENCE link_versions_id_seq
-    START WITH 1
-    INCREMENT BY 1
-    NO MAXVALUE
-    NO MINVALUE
-    CACHE 1;
-
-
---
--- Name: link_versions_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: -
---
-
-ALTER SEQUENCE link_versions_id_seq OWNED BY link_versions.id;
-
-
---
--- Name: links; Type: TABLE; Schema: public; Owner: -; Tablespace: 
---
-
-CREATE TABLE links (
-    id integer NOT NULL,
-    source_id integer NOT NULL,
-    target_id integer NOT NULL,
-    kind character varying(255),
-    created_at timestamp without time zone NOT NULL,
-    updated_at timestamp without time zone NOT NULL
-);
-
-
---
--- Name: links_id_seq; Type: SEQUENCE; Schema: public; Owner: -
---
-
-CREATE SEQUENCE links_id_seq
-    START WITH 1
-    INCREMENT BY 1
-    NO MAXVALUE
-    NO MINVALUE
-    CACHE 1;
-
-
---
--- Name: links_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: -
---
-
-ALTER SEQUENCE links_id_seq OWNED BY links.id;
-
-
---
--- Name: logics; Type: TABLE; Schema: public; Owner: -; Tablespace: 
---
-
-CREATE TABLE logics (
-    id integer NOT NULL,
-    name character varying(255) NOT NULL,
-    iri character varying(255),
-    created_at timestamp without time zone NOT NULL,
-    updated_at timestamp without time zone NOT NULL
-);
-
-
---
--- Name: logics_id_seq; Type: SEQUENCE; Schema: public; Owner: -
---
-
-CREATE SEQUENCE logics_id_seq
-    START WITH 1
-    INCREMENT BY 1
-    NO MAXVALUE
-    NO MINVALUE
-    CACHE 1;
-
-
---
--- Name: logics_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: -
---
-
-ALTER SEQUENCE logics_id_seq OWNED BY logics.id;
-
-
---
--- Name: metadata; Type: TABLE; Schema: public; Owner: -; Tablespace: 
---
-
-CREATE TABLE metadata (
-    id integer NOT NULL,
-    metadatable_id integer,
-    metadatable_type character varying(255),
-    user_id integer,
-    key character varying(255),
-    value character varying(255),
-    created_at timestamp without time zone NOT NULL,
-    updated_at timestamp without time zone NOT NULL
-);
-
-
---
--- Name: metadata_id_seq; Type: SEQUENCE; Schema: public; Owner: -
---
-
-CREATE SEQUENCE metadata_id_seq
-    START WITH 1
-    INCREMENT BY 1
-    NO MAXVALUE
-    NO MINVALUE
-    CACHE 1;
-
-
---
--- Name: metadata_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: -
---
-
-ALTER SEQUENCE metadata_id_seq OWNED BY metadata.id;
-
-
---
--- Name: ontologies; Type: TABLE; Schema: public; Owner: -; Tablespace: 
---
-
-CREATE TABLE ontologies (
-    id integer NOT NULL,
-    language_id integer,
-    uri character varying(255) NOT NULL,
-    state character varying(255) DEFAULT 'pending'::character varying NOT NULL,
-    name character varying(255),
-    description text,
-    entities_count integer,
-    axioms_count integer,
-    versions_count integer DEFAULT 0 NOT NULL,
-    metadata_count integer DEFAULT 0 NOT NULL,
-    comments_count integer DEFAULT 0 NOT NULL,
-    created_at timestamp without time zone NOT NULL,
-    updated_at timestamp without time zone NOT NULL
-);
-
-
---
--- Name: ontologies_id_seq; Type: SEQUENCE; Schema: public; Owner: -
---
-
-CREATE SEQUENCE ontologies_id_seq
-    START WITH 1
-    INCREMENT BY 1
-    NO MAXVALUE
-    NO MINVALUE
-    CACHE 1;
-
-
---
--- Name: ontologies_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: -
---
-
-ALTER SEQUENCE ontologies_id_seq OWNED BY ontologies.id;
-
-
---
--- Name: ontology_versions; Type: TABLE; Schema: public; Owner: -; Tablespace: 
---
-
-CREATE TABLE ontology_versions (
-    id integer NOT NULL,
-    user_id integer NOT NULL,
-    ontology_id integer NOT NULL,
-    source_url character varying(255),
-    raw_file character varying(255),
-    xml_file character varying(255),
-    state character varying(255) DEFAULT 'pending'::character varying,
-    last_error text,
-    checksum character varying(255),
-    number integer NOT NULL,
-    created_at timestamp without time zone NOT NULL,
-    updated_at timestamp without time zone NOT NULL
-);
-
-
---
--- Name: ontology_versions_id_seq; Type: SEQUENCE; Schema: public; Owner: -
---
-
-CREATE SEQUENCE ontology_versions_id_seq
-    START WITH 1
-    INCREMENT BY 1
-    NO MAXVALUE
-    NO MINVALUE
-    CACHE 1;
-
-
---
--- Name: ontology_versions_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: -
---
-
-ALTER SEQUENCE ontology_versions_id_seq OWNED BY ontology_versions.id;
-
-
---
--- Name: permissions; Type: TABLE; Schema: public; Owner: -; Tablespace: 
---
-
-CREATE TABLE permissions (
-    id integer NOT NULL,
-    subject_id integer NOT NULL,
-    subject_type character varying(255) NOT NULL,
-    item_id integer NOT NULL,
-    item_type character varying(255) NOT NULL,
-    creator_id integer,
-    role character varying(255) DEFAULT 'editor'::character varying NOT NULL,
-    created_at timestamp without time zone NOT NULL,
-    updated_at timestamp without time zone NOT NULL
-);
-
-
---
--- Name: permissions_id_seq; Type: SEQUENCE; Schema: public; Owner: -
---
-
-CREATE SEQUENCE permissions_id_seq
-    START WITH 1
-    INCREMENT BY 1
-    NO MAXVALUE
-    NO MINVALUE
-    CACHE 1;
-
-
---
--- Name: permissions_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: -
---
-
-ALTER SEQUENCE permissions_id_seq OWNED BY permissions.id;
-
-
---
--- Name: schema_migrations; Type: TABLE; Schema: public; Owner: -; Tablespace: 
---
-
-CREATE TABLE schema_migrations (
-    version character varying(255) NOT NULL
-);
-
-
---
--- Name: serializations; Type: TABLE; Schema: public; Owner: -; Tablespace: 
---
-
-CREATE TABLE serializations (
-    id integer NOT NULL,
-    name character varying(255),
-    extension character varying(255),
-    mimetype character varying(255),
-    language_id integer,
-    created_at timestamp without time zone NOT NULL,
-    updated_at timestamp without time zone NOT NULL
-);
-
-
---
--- Name: serializations_id_seq; Type: SEQUENCE; Schema: public; Owner: -
---
-
-CREATE SEQUENCE serializations_id_seq
-    START WITH 1
-    INCREMENT BY 1
-    NO MAXVALUE
-    NO MINVALUE
-    CACHE 1;
-
-
---
--- Name: serializations_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: -
---
-
-ALTER SEQUENCE serializations_id_seq OWNED BY serializations.id;
-
-
---
--- Name: supports; Type: TABLE; Schema: public; Owner: -; Tablespace: 
---
-
-CREATE TABLE supports (
-    id integer NOT NULL,
-    language_id integer,
-    logic_id integer,
-    created_at timestamp without time zone NOT NULL,
-    updated_at timestamp without time zone NOT NULL
-);
-
-
---
--- Name: supports_id_seq; Type: SEQUENCE; Schema: public; Owner: -
---
-
-CREATE SEQUENCE supports_id_seq
-    START WITH 1
-    INCREMENT BY 1
-    NO MAXVALUE
-    NO MINVALUE
-    CACHE 1;
-
-
---
--- Name: supports_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: -
---
-
-ALTER SEQUENCE supports_id_seq OWNED BY supports.id;
-
-
---
--- Name: team_users; Type: TABLE; Schema: public; Owner: -; Tablespace: 
---
-
-CREATE TABLE team_users (
-    id integer NOT NULL,
-    team_id integer NOT NULL,
-    user_id integer NOT NULL,
-    creator_id integer,
-    admin boolean DEFAULT false NOT NULL
-);
-
-
---
--- Name: team_users_id_seq; Type: SEQUENCE; Schema: public; Owner: -
---
-
-CREATE SEQUENCE team_users_id_seq
-    START WITH 1
-    INCREMENT BY 1
-    NO MAXVALUE
-    NO MINVALUE
-    CACHE 1;
-
-
---
--- Name: team_users_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: -
---
-
-ALTER SEQUENCE team_users_id_seq OWNED BY team_users.id;
-
-
---
--- Name: teams; Type: TABLE; Schema: public; Owner: -; Tablespace: 
---
-
-CREATE TABLE teams (
-    id integer NOT NULL,
-    name character varying(255) NOT NULL
-);
-
-
---
--- Name: teams_id_seq; Type: SEQUENCE; Schema: public; Owner: -
---
-
-CREATE SEQUENCE teams_id_seq
-    START WITH 1
-    INCREMENT BY 1
-    NO MAXVALUE
-    NO MINVALUE
-    CACHE 1;
-
-
---
--- Name: teams_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: -
---
-
-ALTER SEQUENCE teams_id_seq OWNED BY teams.id;
-
-
---
--- Name: users; Type: TABLE; Schema: public; Owner: -; Tablespace: 
---
-
-CREATE TABLE users (
-    id integer NOT NULL,
-    email character varying(255),
-    encrypted_password character varying(255),
-    reset_password_token character varying(255),
-    reset_password_sent_at timestamp without time zone,
-    remember_created_at timestamp without time zone,
-    sign_in_count integer DEFAULT 0,
-    current_sign_in_at timestamp without time zone,
-    last_sign_in_at timestamp without time zone,
-    current_sign_in_ip character varying(255),
-    last_sign_in_ip character varying(255),
-    confirmation_token character varying(255),
-    confirmed_at timestamp without time zone,
-    confirmation_sent_at timestamp without time zone,
-    unconfirmed_email character varying(255),
-    failed_attempts integer DEFAULT 0,
-    unlock_token character varying(255),
-    locked_at timestamp without time zone,
-    name character varying(255),
-    admin boolean DEFAULT false NOT NULL,
-    created_at timestamp without time zone NOT NULL,
-    updated_at timestamp without time zone NOT NULL,
-    deleted_at timestamp without time zone
-);
-
-
---
--- Name: users_id_seq; Type: SEQUENCE; Schema: public; Owner: -
---
-
-CREATE SEQUENCE users_id_seq
-    START WITH 1
-    INCREMENT BY 1
-    NO MAXVALUE
-    NO MINVALUE
-    CACHE 1;
-
-
---
--- Name: users_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: -
---
-
-ALTER SEQUENCE users_id_seq OWNED BY users.id;
-
-
---
--- Name: id; Type: DEFAULT; Schema: public; Owner: -
---
-
-ALTER TABLE ONLY axioms ALTER COLUMN id SET DEFAULT nextval('axioms_id_seq'::regclass);
-
-
---
--- Name: id; Type: DEFAULT; Schema: public; Owner: -
---
-
-ALTER TABLE ONLY comments ALTER COLUMN id SET DEFAULT nextval('comments_id_seq'::regclass);
-
-
---
--- Name: id; Type: DEFAULT; Schema: public; Owner: -
---
-
-ALTER TABLE ONLY entities ALTER COLUMN id SET DEFAULT nextval('entities_id_seq'::regclass);
-
-
---
--- Name: id; Type: DEFAULT; Schema: public; Owner: -
---
-
-ALTER TABLE ONLY entity_mappings ALTER COLUMN id SET DEFAULT nextval('entity_mappings_id_seq'::regclass);
-
-
---
--- Name: id; Type: DEFAULT; Schema: public; Owner: -
---
-
-ALTER TABLE ONLY languages ALTER COLUMN id SET DEFAULT nextval('languages_id_seq'::regclass);
-
-
---
--- Name: id; Type: DEFAULT; Schema: public; Owner: -
---
-
-ALTER TABLE ONLY link_versions ALTER COLUMN id SET DEFAULT nextval('link_versions_id_seq'::regclass);
-
-
---
--- Name: id; Type: DEFAULT; Schema: public; Owner: -
---
-
-ALTER TABLE ONLY links ALTER COLUMN id SET DEFAULT nextval('links_id_seq'::regclass);
-
-
---
--- Name: id; Type: DEFAULT; Schema: public; Owner: -
---
-
-ALTER TABLE ONLY logics ALTER COLUMN id SET DEFAULT nextval('logics_id_seq'::regclass);
-
-
---
--- Name: id; Type: DEFAULT; Schema: public; Owner: -
---
-
-ALTER TABLE ONLY metadata ALTER COLUMN id SET DEFAULT nextval('metadata_id_seq'::regclass);
-
-
---
--- Name: id; Type: DEFAULT; Schema: public; Owner: -
---
-
-ALTER TABLE ONLY ontologies ALTER COLUMN id SET DEFAULT nextval('ontologies_id_seq'::regclass);
-
-
---
--- Name: id; Type: DEFAULT; Schema: public; Owner: -
---
-
-ALTER TABLE ONLY ontology_versions ALTER COLUMN id SET DEFAULT nextval('ontology_versions_id_seq'::regclass);
-
-
---
--- Name: id; Type: DEFAULT; Schema: public; Owner: -
---
-
-ALTER TABLE ONLY permissions ALTER COLUMN id SET DEFAULT nextval('permissions_id_seq'::regclass);
-
-
---
--- Name: id; Type: DEFAULT; Schema: public; Owner: -
---
-
-ALTER TABLE ONLY serializations ALTER COLUMN id SET DEFAULT nextval('serializations_id_seq'::regclass);
-
-
---
--- Name: id; Type: DEFAULT; Schema: public; Owner: -
---
-
-ALTER TABLE ONLY supports ALTER COLUMN id SET DEFAULT nextval('supports_id_seq'::regclass);
-
-
---
--- Name: id; Type: DEFAULT; Schema: public; Owner: -
---
-
-ALTER TABLE ONLY team_users ALTER COLUMN id SET DEFAULT nextval('team_users_id_seq'::regclass);
-
-
---
--- Name: id; Type: DEFAULT; Schema: public; Owner: -
---
-
-ALTER TABLE ONLY teams ALTER COLUMN id SET DEFAULT nextval('teams_id_seq'::regclass);
-
-
---
--- Name: id; Type: DEFAULT; Schema: public; Owner: -
---
-
-ALTER TABLE ONLY users ALTER COLUMN id SET DEFAULT nextval('users_id_seq'::regclass);
-
-
---
--- Name: axioms_pkey; Type: CONSTRAINT; Schema: public; Owner: -; Tablespace: 
---
-
-ALTER TABLE ONLY axioms
-    ADD CONSTRAINT axioms_pkey PRIMARY KEY (id);
-
-
---
--- Name: comments_pkey; Type: CONSTRAINT; Schema: public; Owner: -; Tablespace: 
---
-
-ALTER TABLE ONLY comments
-    ADD CONSTRAINT comments_pkey PRIMARY KEY (id);
-
-
---
--- Name: entities_pkey; Type: CONSTRAINT; Schema: public; Owner: -; Tablespace: 
---
-
-ALTER TABLE ONLY entities
-    ADD CONSTRAINT entities_pkey PRIMARY KEY (id);
-
-
---
--- Name: entity_mappings_pkey; Type: CONSTRAINT; Schema: public; Owner: -; Tablespace: 
---
-
-ALTER TABLE ONLY entity_mappings
-    ADD CONSTRAINT entity_mappings_pkey PRIMARY KEY (id);
-
-
---
--- Name: languages_pkey; Type: CONSTRAINT; Schema: public; Owner: -; Tablespace: 
---
-
-ALTER TABLE ONLY languages
-    ADD CONSTRAINT languages_pkey PRIMARY KEY (id);
-
-
---
--- Name: link_versions_pkey; Type: CONSTRAINT; Schema: public; Owner: -; Tablespace: 
---
-
-ALTER TABLE ONLY link_versions
-    ADD CONSTRAINT link_versions_pkey PRIMARY KEY (id);
-
-
---
--- Name: links_pkey; Type: CONSTRAINT; Schema: public; Owner: -; Tablespace: 
---
-
-ALTER TABLE ONLY links
-    ADD CONSTRAINT links_pkey PRIMARY KEY (id);
-
-
---
--- Name: logics_pkey; Type: CONSTRAINT; Schema: public; Owner: -; Tablespace: 
---
-
-ALTER TABLE ONLY logics
-    ADD CONSTRAINT logics_pkey PRIMARY KEY (id);
-
-
---
--- Name: metadata_pkey; Type: CONSTRAINT; Schema: public; Owner: -; Tablespace: 
---
-
-ALTER TABLE ONLY metadata
-    ADD CONSTRAINT metadata_pkey PRIMARY KEY (id);
-
-
---
--- Name: ontologies_pkey; Type: CONSTRAINT; Schema: public; Owner: -; Tablespace: 
---
-
-ALTER TABLE ONLY ontologies
-    ADD CONSTRAINT ontologies_pkey PRIMARY KEY (id);
-
-
---
--- Name: ontology_versions_pkey; Type: CONSTRAINT; Schema: public; Owner: -; Tablespace: 
---
-
-ALTER TABLE ONLY ontology_versions
-    ADD CONSTRAINT ontology_versions_pkey PRIMARY KEY (id);
-
-
---
--- Name: permissions_pkey; Type: CONSTRAINT; Schema: public; Owner: -; Tablespace: 
---
-
-ALTER TABLE ONLY permissions
-    ADD CONSTRAINT permissions_pkey PRIMARY KEY (id);
-
-
---
--- Name: serializations_pkey; Type: CONSTRAINT; Schema: public; Owner: -; Tablespace: 
---
-
-ALTER TABLE ONLY serializations
-    ADD CONSTRAINT serializations_pkey PRIMARY KEY (id);
-
-
---
--- Name: supports_pkey; Type: CONSTRAINT; Schema: public; Owner: -; Tablespace: 
---
-
-ALTER TABLE ONLY supports
-    ADD CONSTRAINT supports_pkey PRIMARY KEY (id);
-
-
---
--- Name: team_users_pkey; Type: CONSTRAINT; Schema: public; Owner: -; Tablespace: 
---
-
-ALTER TABLE ONLY team_users
-    ADD CONSTRAINT team_users_pkey PRIMARY KEY (id);
-
-
---
--- Name: teams_pkey; Type: CONSTRAINT; Schema: public; Owner: -; Tablespace: 
---
-
-ALTER TABLE ONLY teams
-    ADD CONSTRAINT teams_pkey PRIMARY KEY (id);
-
-
---
--- Name: users_pkey; Type: CONSTRAINT; Schema: public; Owner: -; Tablespace: 
---
-
-ALTER TABLE ONLY users
-    ADD CONSTRAINT users_pkey PRIMARY KEY (id);
-
-
---
--- Name: index_axioms_entities_on_axiom_id_and_entity_id; Type: INDEX; Schema: public; Owner: -; Tablespace: 
---
-
-CREATE UNIQUE INDEX index_axioms_entities_on_axiom_id_and_entity_id ON axioms_entities USING btree (axiom_id, entity_id);
-
-
---
--- Name: index_axioms_entities_on_entity_id_and_axiom_id; Type: INDEX; Schema: public; Owner: -; Tablespace: 
---
-
-CREATE INDEX index_axioms_entities_on_entity_id_and_axiom_id ON axioms_entities USING btree (entity_id, axiom_id);
-
-
---
--- Name: index_axioms_on_ontology_id_and_id; Type: INDEX; Schema: public; Owner: -; Tablespace: 
---
-
-CREATE UNIQUE INDEX index_axioms_on_ontology_id_and_id ON axioms USING btree (ontology_id, id);
-
-
---
--- Name: index_axioms_on_ontology_id_and_name; Type: INDEX; Schema: public; Owner: -; Tablespace: 
---
-
-CREATE UNIQUE INDEX index_axioms_on_ontology_id_and_name ON axioms USING btree (ontology_id, name);
-
-
---
--- Name: index_comments_on_commentable_and_id; Type: INDEX; Schema: public; Owner: -; Tablespace: 
---
-
-CREATE INDEX index_comments_on_commentable_and_id ON comments USING btree (commentable_id, commentable_type, id);
-
-
---
--- Name: index_comments_on_user_id; Type: INDEX; Schema: public; Owner: -; Tablespace: 
---
-
-CREATE INDEX index_comments_on_user_id ON comments USING btree (user_id);
-
-
---
--- Name: index_entities_on_ontology_id_and_id; Type: INDEX; Schema: public; Owner: -; Tablespace: 
---
-
-CREATE UNIQUE INDEX index_entities_on_ontology_id_and_id ON entities USING btree (ontology_id, id);
-
-
---
--- Name: index_entities_on_ontology_id_and_kind; Type: INDEX; Schema: public; Owner: -; Tablespace: 
---
-
-CREATE INDEX index_entities_on_ontology_id_and_kind ON entities USING btree (ontology_id, kind);
-
-
---
--- Name: index_entities_on_ontology_id_and_text; Type: INDEX; Schema: public; Owner: -; Tablespace: 
---
-
-CREATE UNIQUE INDEX index_entities_on_ontology_id_and_text ON entities USING btree (ontology_id, text);
-
-
---
--- Name: index_languages_on_name; Type: INDEX; Schema: public; Owner: -; Tablespace: 
---
-
-CREATE UNIQUE INDEX index_languages_on_name ON languages USING btree (name);
-
-
---
--- Name: index_links_on_source_id; Type: INDEX; Schema: public; Owner: -; Tablespace: 
---
-
-CREATE INDEX index_links_on_source_id ON links USING btree (source_id);
-
-
---
--- Name: index_links_on_target_id; Type: INDEX; Schema: public; Owner: -; Tablespace: 
---
-
-CREATE INDEX index_links_on_target_id ON links USING btree (target_id);
-
-
---
--- Name: index_logics_on_name; Type: INDEX; Schema: public; Owner: -; Tablespace: 
---
-
-CREATE UNIQUE INDEX index_logics_on_name ON logics USING btree (name);
-
-
---
--- Name: index_metadata_on_metadatable_id_and_metadatable_type; Type: INDEX; Schema: public; Owner: -; Tablespace: 
---
-
-CREATE INDEX index_metadata_on_metadatable_id_and_metadatable_type ON metadata USING btree (metadatable_id, metadatable_type);
-
-
---
--- Name: index_metadata_on_user_id; Type: INDEX; Schema: public; Owner: -; Tablespace: 
---
-
-CREATE INDEX index_metadata_on_user_id ON metadata USING btree (user_id);
-
-
---
--- Name: index_ontologies_on_language_id; Type: INDEX; Schema: public; Owner: -; Tablespace: 
---
-
-CREATE INDEX index_ontologies_on_language_id ON ontologies USING btree (language_id);
-
-
---
--- Name: index_ontologies_on_state; Type: INDEX; Schema: public; Owner: -; Tablespace: 
---
-
-CREATE INDEX index_ontologies_on_state ON ontologies USING btree (state);
-
-
---
--- Name: index_ontologies_on_uri; Type: INDEX; Schema: public; Owner: -; Tablespace: 
---
-
-CREATE UNIQUE INDEX index_ontologies_on_uri ON ontologies USING btree (uri);
-
-
---
--- Name: index_ontology_versions_on_checksum; Type: INDEX; Schema: public; Owner: -; Tablespace: 
---
-
-CREATE INDEX index_ontology_versions_on_checksum ON ontology_versions USING btree (checksum);
-
-
---
--- Name: index_ontology_versions_on_ontology_id_and_number; Type: INDEX; Schema: public; Owner: -; Tablespace: 
---
-
-CREATE UNIQUE INDEX index_ontology_versions_on_ontology_id_and_number ON ontology_versions USING btree (ontology_id, number);
-
-
---
--- Name: index_ontology_versions_on_user_id; Type: INDEX; Schema: public; Owner: -; Tablespace: 
---
-
-CREATE INDEX index_ontology_versions_on_user_id ON ontology_versions USING btree (user_id);
-
-
---
--- Name: index_permissions_on_creator_id; Type: INDEX; Schema: public; Owner: -; Tablespace: 
---
-
-CREATE INDEX index_permissions_on_creator_id ON permissions USING btree (creator_id);
-
-
---
--- Name: index_permissions_on_item_and_subject; Type: INDEX; Schema: public; Owner: -; Tablespace: 
---
-
-CREATE UNIQUE INDEX index_permissions_on_item_and_subject ON permissions USING btree (item_id, item_type, subject_id, subject_type);
-
-
---
--- Name: index_permissions_on_subject_id_and_subject_type; Type: INDEX; Schema: public; Owner: -; Tablespace: 
---
-
-CREATE INDEX index_permissions_on_subject_id_and_subject_type ON permissions USING btree (subject_id, subject_type);
-
-
---
--- Name: index_supports_on_language_id; Type: INDEX; Schema: public; Owner: -; Tablespace: 
---
-
-CREATE INDEX index_supports_on_language_id ON supports USING btree (language_id);
-
-
---
--- Name: index_supports_on_logic_id; Type: INDEX; Schema: public; Owner: -; Tablespace: 
---
-
-CREATE INDEX index_supports_on_logic_id ON supports USING btree (logic_id);
-
-
---
--- Name: index_team_users_on_creator_id; Type: INDEX; Schema: public; Owner: -; Tablespace: 
---
-
-CREATE INDEX index_team_users_on_creator_id ON team_users USING btree (creator_id);
-
-
---
--- Name: index_team_users_on_team_id_and_user_id; Type: INDEX; Schema: public; Owner: -; Tablespace: 
---
-
-CREATE UNIQUE INDEX index_team_users_on_team_id_and_user_id ON team_users USING btree (team_id, user_id);
-
-
---
--- Name: index_team_users_on_user_id; Type: INDEX; Schema: public; Owner: -; Tablespace: 
---
-
-CREATE INDEX index_team_users_on_user_id ON team_users USING btree (user_id);
-
-
---
--- Name: index_teams_on_name; Type: INDEX; Schema: public; Owner: -; Tablespace: 
---
-
-CREATE UNIQUE INDEX index_teams_on_name ON teams USING btree (name);
-
-
---
--- Name: index_users_on_email; Type: INDEX; Schema: public; Owner: -; Tablespace: 
---
-
-CREATE UNIQUE INDEX index_users_on_email ON users USING btree (email);
-
-
---
--- Name: index_users_on_reset_password_token; Type: INDEX; Schema: public; Owner: -; Tablespace: 
---
-
-CREATE UNIQUE INDEX index_users_on_reset_password_token ON users USING btree (reset_password_token);
-
-
---
--- Name: index_users_on_unlock_token; Type: INDEX; Schema: public; Owner: -; Tablespace: 
---
-
-CREATE UNIQUE INDEX index_users_on_unlock_token ON users USING btree (unlock_token);
-
-
---
--- Name: unique_schema_migrations; Type: INDEX; Schema: public; Owner: -; Tablespace: 
---
-
-CREATE UNIQUE INDEX unique_schema_migrations ON schema_migrations USING btree (version);
-
-
---
--- Name: axioms_entities_axiom_id_fkey; Type: FK CONSTRAINT; Schema: public; Owner: -
---
-
-ALTER TABLE ONLY axioms_entities
-    ADD CONSTRAINT axioms_entities_axiom_id_fkey FOREIGN KEY (axiom_id, ontology_id) REFERENCES axioms(id, ontology_id) ON DELETE CASCADE;
-
-
---
--- Name: axioms_entities_entity_id_fkey; Type: FK CONSTRAINT; Schema: public; Owner: -
---
-
-ALTER TABLE ONLY axioms_entities
-    ADD CONSTRAINT axioms_entities_entity_id_fkey FOREIGN KEY (entity_id, ontology_id) REFERENCES entities(id, ontology_id) ON DELETE CASCADE;
-
-
---
--- Name: axioms_ontology_id_fk; Type: FK CONSTRAINT; Schema: public; Owner: -
---
-
-ALTER TABLE ONLY axioms
-    ADD CONSTRAINT axioms_ontology_id_fk FOREIGN KEY (ontology_id) REFERENCES ontologies(id) ON DELETE CASCADE;
-
-
---
--- Name: comments_user_id_fk; Type: FK CONSTRAINT; Schema: public; Owner: -
---
-
-ALTER TABLE ONLY comments
-    ADD CONSTRAINT comments_user_id_fk FOREIGN KEY (user_id) REFERENCES users(id);
-
-
---
--- Name: entities_ontology_id_fk; Type: FK CONSTRAINT; Schema: public; Owner: -
---
-
-ALTER TABLE ONLY entities
-    ADD CONSTRAINT entities_ontology_id_fk FOREIGN KEY (ontology_id) REFERENCES ontologies(id) ON DELETE CASCADE;
-
-
---
--- Name: links_source_id_fk; Type: FK CONSTRAINT; Schema: public; Owner: -
---
-
-ALTER TABLE ONLY links
-    ADD CONSTRAINT links_source_id_fk FOREIGN KEY (source_id) REFERENCES ontologies(id);
-
-
---
--- Name: links_target_id_fk; Type: FK CONSTRAINT; Schema: public; Owner: -
---
-
-ALTER TABLE ONLY links
-    ADD CONSTRAINT links_target_id_fk FOREIGN KEY (target_id) REFERENCES ontologies(id);
-
-
---
--- Name: metadata_user_id_fk; Type: FK CONSTRAINT; Schema: public; Owner: -
---
-
-ALTER TABLE ONLY metadata
-    ADD CONSTRAINT metadata_user_id_fk FOREIGN KEY (user_id) REFERENCES users(id);
-
-
---
--- Name: ontologies_language_id_fk; Type: FK CONSTRAINT; Schema: public; Owner: -
---
-
-ALTER TABLE ONLY ontologies
-    ADD CONSTRAINT ontologies_language_id_fk FOREIGN KEY (language_id) REFERENCES languages(id);
-
-
---
--- Name: ontology_versions_ontology_id_fk; Type: FK CONSTRAINT; Schema: public; Owner: -
---
-
-ALTER TABLE ONLY ontology_versions
-    ADD CONSTRAINT ontology_versions_ontology_id_fk FOREIGN KEY (ontology_id) REFERENCES ontologies(id) ON DELETE CASCADE;
-
-
---
--- Name: ontology_versions_user_id_fk; Type: FK CONSTRAINT; Schema: public; Owner: -
---
-
-ALTER TABLE ONLY ontology_versions
-    ADD CONSTRAINT ontology_versions_user_id_fk FOREIGN KEY (user_id) REFERENCES users(id);
-
-
---
--- Name: permissions_creator_id_fk; Type: FK CONSTRAINT; Schema: public; Owner: -
---
-
-ALTER TABLE ONLY permissions
-    ADD CONSTRAINT permissions_creator_id_fk FOREIGN KEY (creator_id) REFERENCES users(id) ON DELETE SET NULL;
-
-
---
--- Name: supports_language_id_fk; Type: FK CONSTRAINT; Schema: public; Owner: -
---
-
-ALTER TABLE ONLY supports
-    ADD CONSTRAINT supports_language_id_fk FOREIGN KEY (language_id) REFERENCES languages(id);
-
-
---
--- Name: supports_logic_id_fk; Type: FK CONSTRAINT; Schema: public; Owner: -
---
-
-ALTER TABLE ONLY supports
-    ADD CONSTRAINT supports_logic_id_fk FOREIGN KEY (logic_id) REFERENCES logics(id);
-
-
---
--- Name: team_users_creator_id_fk; Type: FK CONSTRAINT; Schema: public; Owner: -
---
-
-ALTER TABLE ONLY team_users
-    ADD CONSTRAINT team_users_creator_id_fk FOREIGN KEY (creator_id) REFERENCES users(id) ON DELETE SET NULL;
-
-
---
--- Name: team_users_team_id_fk; Type: FK CONSTRAINT; Schema: public; Owner: -
---
-
-ALTER TABLE ONLY team_users
-    ADD CONSTRAINT team_users_team_id_fk FOREIGN KEY (team_id) REFERENCES teams(id) ON DELETE CASCADE;
-
-
---
--- Name: team_users_user_id_fk; Type: FK CONSTRAINT; Schema: public; Owner: -
---
-
-ALTER TABLE ONLY team_users
-    ADD CONSTRAINT team_users_user_id_fk FOREIGN KEY (user_id) REFERENCES users(id) ON DELETE CASCADE;
-
-
---
--- PostgreSQL database dump complete
---
+CREATE TABLE `comments` (
+  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `commentable_id` int(11) NOT NULL,
+  `commentable_type` varchar(255) COLLATE utf8_unicode_ci NOT NULL,
+  `user_id` int(11) NOT NULL,
+  `text` text COLLATE utf8_unicode_ci NOT NULL,
+  `created_at` datetime NOT NULL,
+  `updated_at` datetime NOT NULL,
+  PRIMARY KEY (`id`),
+  KEY `index_comments_on_commentable_and_id` (`commentable_id`,`commentable_type`,`id`),
+  KEY `index_comments_on_user_id` (`user_id`),
+  CONSTRAINT `comments_user_id_fk` FOREIGN KEY (`user_id`) REFERENCES `users` (`id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
+
+CREATE TABLE `entities` (
+  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `ontology_version_id` int(11) NOT NULL,
+  `kind` varchar(255) COLLATE utf8_unicode_ci DEFAULT NULL,
+  `text` text COLLATE utf8_unicode_ci NOT NULL,
+  `name` varchar(255) COLLATE utf8_unicode_ci NOT NULL,
+  `uri` varchar(255) COLLATE utf8_unicode_ci DEFAULT NULL,
+  `range` varchar(255) COLLATE utf8_unicode_ci DEFAULT NULL,
+  `comments_count` int(11) NOT NULL DEFAULT '0',
+  `created_at` datetime NOT NULL,
+  `updated_at` datetime NOT NULL,
+  PRIMARY KEY (`id`),
+  UNIQUE KEY `index_entities_on_ontology_version_id_and_id` (`ontology_version_id`,`id`),
+  KEY `index_entities_on_ontology_version_id_and_kind` (`ontology_version_id`,`kind`),
+  CONSTRAINT `entities_ontology_version_id_fk` FOREIGN KEY (`ontology_version_id`) REFERENCES `ontology_versions` (`id`) ON DELETE CASCADE
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
+
+CREATE TABLE `entity_mappings` (
+  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `link_version_id` int(11) NOT NULL,
+  `source_id` int(11) NOT NULL,
+  `target_id` int(11) NOT NULL,
+  `confidence` int(11) DEFAULT NULL,
+  `kind` varchar(255) COLLATE utf8_unicode_ci DEFAULT NULL,
+  `created_at` datetime NOT NULL,
+  `updated_at` datetime NOT NULL,
+  PRIMARY KEY (`id`),
+  KEY `index_entity_mappings_on_link_version_id` (`link_version_id`),
+  KEY `index_entity_mappings_on_source_id` (`source_id`),
+  KEY `index_entity_mappings_on_target_id` (`target_id`),
+  CONSTRAINT `entity_mappings_target_id_fk` FOREIGN KEY (`target_id`) REFERENCES `entities` (`id`) ON DELETE CASCADE,
+  CONSTRAINT `entity_mappings_link_version_id_fk` FOREIGN KEY (`link_version_id`) REFERENCES `link_versions` (`id`) ON DELETE CASCADE,
+  CONSTRAINT `entity_mappings_source_id_fk` FOREIGN KEY (`source_id`) REFERENCES `entities` (`id`) ON DELETE CASCADE
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
+
+CREATE TABLE `language_adjoints` (
+  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `translation_id` int(11) NOT NULL,
+  `projection_id` int(11) NOT NULL,
+  `iri` varchar(255) COLLATE utf8_unicode_ci DEFAULT NULL,
+  `kind` varchar(255) COLLATE utf8_unicode_ci DEFAULT NULL,
+  `created_at` datetime NOT NULL,
+  `updated_at` datetime NOT NULL,
+  PRIMARY KEY (`id`),
+  KEY `index_language_adjoints_on_translation_id` (`translation_id`),
+  KEY `index_language_adjoints_on_projection_id` (`projection_id`),
+  CONSTRAINT `language_adjoints_projection_id_fk` FOREIGN KEY (`projection_id`) REFERENCES `language_mappings` (`id`) ON DELETE CASCADE,
+  CONSTRAINT `language_adjoints_translation_id_fk` FOREIGN KEY (`translation_id`) REFERENCES `language_mappings` (`id`) ON DELETE CASCADE
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
+
+CREATE TABLE `language_mappings` (
+  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `source_id` int(11) NOT NULL,
+  `target_id` int(11) NOT NULL,
+  `iri` varchar(255) COLLATE utf8_unicode_ci DEFAULT NULL,
+  `kind` varchar(255) COLLATE utf8_unicode_ci DEFAULT NULL,
+  `created_at` datetime NOT NULL,
+  `updated_at` datetime NOT NULL,
+  PRIMARY KEY (`id`),
+  KEY `index_language_mappings_on_source_id` (`source_id`),
+  KEY `index_language_mappings_on_target_id` (`target_id`),
+  CONSTRAINT `language_mappings_target_id_fk` FOREIGN KEY (`target_id`) REFERENCES `languages` (`id`) ON DELETE CASCADE,
+  CONSTRAINT `language_mappings_source_id_fk` FOREIGN KEY (`source_id`) REFERENCES `languages` (`id`) ON DELETE CASCADE
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
+
+CREATE TABLE `languages` (
+  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `name` varchar(255) COLLATE utf8_unicode_ci NOT NULL,
+  `iri` varchar(255) COLLATE utf8_unicode_ci NOT NULL,
+  `description` text COLLATE utf8_unicode_ci,
+  `created_at` datetime NOT NULL,
+  `updated_at` datetime NOT NULL,
+  PRIMARY KEY (`id`),
+  UNIQUE KEY `index_languages_on_name` (`name`),
+  UNIQUE KEY `index_languages_on_iri` (`iri`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
+
+CREATE TABLE `link_versions` (
+  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `link_id` int(11) NOT NULL,
+  `source_id` int(11) NOT NULL,
+  `target_id` int(11) NOT NULL,
+  `version_number` int(11) DEFAULT NULL,
+  `current` tinyint(1) DEFAULT NULL,
+  `proof_status` tinyint(1) DEFAULT NULL,
+  `couse_status` tinyint(1) DEFAULT NULL,
+  `created_at` datetime NOT NULL,
+  `updated_at` datetime NOT NULL,
+  PRIMARY KEY (`id`),
+  KEY `index_link_versions_on_link_id` (`link_id`),
+  KEY `index_link_versions_on_source_id` (`source_id`),
+  KEY `index_link_versions_on_target_id` (`target_id`),
+  CONSTRAINT `link_versions_target_id_fk` FOREIGN KEY (`target_id`) REFERENCES `ontology_versions` (`id`) ON DELETE CASCADE,
+  CONSTRAINT `link_versions_link_id_fk` FOREIGN KEY (`link_id`) REFERENCES `links` (`id`) ON DELETE CASCADE,
+  CONSTRAINT `link_versions_source_id_fk` FOREIGN KEY (`source_id`) REFERENCES `ontology_versions` (`id`) ON DELETE CASCADE
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
+
+CREATE TABLE `links` (
+  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `source_id` int(11) NOT NULL,
+  `target_id` int(11) NOT NULL,
+  `kind` varchar(255) COLLATE utf8_unicode_ci DEFAULT NULL,
+  `created_at` datetime NOT NULL,
+  `updated_at` datetime NOT NULL,
+  PRIMARY KEY (`id`),
+  KEY `index_links_on_source_id` (`source_id`),
+  KEY `index_links_on_target_id` (`target_id`),
+  CONSTRAINT `links_target_id_fk` FOREIGN KEY (`target_id`) REFERENCES `ontologies` (`id`),
+  CONSTRAINT `links_source_id_fk` FOREIGN KEY (`source_id`) REFERENCES `ontologies` (`id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
+
+CREATE TABLE `logic_adjoints` (
+  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `translation_id` int(11) NOT NULL,
+  `projection_id` int(11) NOT NULL,
+  `iri` varchar(255) COLLATE utf8_unicode_ci DEFAULT NULL,
+  `kind` varchar(255) COLLATE utf8_unicode_ci DEFAULT NULL,
+  `created_at` datetime NOT NULL,
+  `updated_at` datetime NOT NULL,
+  PRIMARY KEY (`id`),
+  KEY `index_logic_adjoints_on_translation_id` (`translation_id`),
+  KEY `index_logic_adjoints_on_projection_id` (`projection_id`),
+  CONSTRAINT `logic_adjoints_projection_id_fk` FOREIGN KEY (`projection_id`) REFERENCES `logic_mappings` (`id`) ON DELETE CASCADE,
+  CONSTRAINT `logic_adjoints_translation_id_fk` FOREIGN KEY (`translation_id`) REFERENCES `logic_mappings` (`id`) ON DELETE CASCADE
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
+
+CREATE TABLE `logic_mappings` (
+  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `source_id` int(11) NOT NULL,
+  `target_id` int(11) NOT NULL,
+  `iri` varchar(255) COLLATE utf8_unicode_ci DEFAULT NULL,
+  `kind` varchar(255) COLLATE utf8_unicode_ci DEFAULT NULL,
+  `created_at` datetime NOT NULL,
+  `updated_at` datetime NOT NULL,
+  PRIMARY KEY (`id`),
+  KEY `index_logic_mappings_on_source_id` (`source_id`),
+  KEY `index_logic_mappings_on_target_id` (`target_id`),
+  CONSTRAINT `logic_mappings_target_id_fk` FOREIGN KEY (`target_id`) REFERENCES `logics` (`id`) ON DELETE CASCADE,
+  CONSTRAINT `logic_mappings_source_id_fk` FOREIGN KEY (`source_id`) REFERENCES `logics` (`id`) ON DELETE CASCADE
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
+
+CREATE TABLE `logics` (
+  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `name` varchar(255) COLLATE utf8_unicode_ci NOT NULL,
+  `iri` varchar(255) COLLATE utf8_unicode_ci NOT NULL,
+  `description` text COLLATE utf8_unicode_ci,
+  `created_at` datetime NOT NULL,
+  `updated_at` datetime NOT NULL,
+  PRIMARY KEY (`id`),
+  UNIQUE KEY `index_logics_on_name` (`name`),
+  UNIQUE KEY `index_logics_on_iri` (`iri`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
+
+CREATE TABLE `members` (
+  `ontology_version_id` int(11) NOT NULL,
+  `distributed_ontology_version_id` int(11) NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
+
+CREATE TABLE `metadata` (
+  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `metadatable_id` int(11) DEFAULT NULL,
+  `metadatable_type` varchar(255) COLLATE utf8_unicode_ci DEFAULT NULL,
+  `user_id` int(11) DEFAULT NULL,
+  `key` varchar(255) COLLATE utf8_unicode_ci DEFAULT NULL,
+  `value` varchar(255) COLLATE utf8_unicode_ci DEFAULT NULL,
+  `created_at` datetime NOT NULL,
+  `updated_at` datetime NOT NULL,
+  PRIMARY KEY (`id`),
+  KEY `index_metadata_on_metadatable_id_and_metadatable_type` (`metadatable_id`,`metadatable_type`),
+  KEY `index_metadata_on_user_id` (`user_id`),
+  CONSTRAINT `metadata_user_id_fk` FOREIGN KEY (`user_id`) REFERENCES `users` (`id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
+
+CREATE TABLE `ontologies` (
+  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `language_id` int(11) DEFAULT NULL,
+  `uri` varchar(255) COLLATE utf8_unicode_ci NOT NULL,
+  `state` varchar(255) COLLATE utf8_unicode_ci NOT NULL DEFAULT 'pending',
+  `name` varchar(255) COLLATE utf8_unicode_ci DEFAULT NULL,
+  `description` text COLLATE utf8_unicode_ci,
+  `distributed` tinyint(1) DEFAULT '0',
+  `entities_count` int(11) DEFAULT NULL,
+  `axioms_count` int(11) DEFAULT NULL,
+  `versions_count` int(11) NOT NULL DEFAULT '0',
+  `metadata_count` int(11) NOT NULL DEFAULT '0',
+  `comments_count` int(11) NOT NULL DEFAULT '0',
+  `created_at` datetime NOT NULL,
+  `updated_at` datetime NOT NULL,
+  PRIMARY KEY (`id`),
+  UNIQUE KEY `index_ontologies_on_uri` (`uri`),
+  KEY `index_ontologies_on_state` (`state`),
+  KEY `index_ontologies_on_language_id` (`language_id`),
+  CONSTRAINT `ontologies_language_id_fk` FOREIGN KEY (`language_id`) REFERENCES `languages` (`id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
+
+CREATE TABLE `ontology_versions` (
+  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `user_id` int(11) NOT NULL,
+  `ontology_id` int(11) NOT NULL,
+  `previous_version_id` int(11) DEFAULT NULL,
+  `source_url` varchar(255) COLLATE utf8_unicode_ci DEFAULT NULL,
+  `raw_file` varchar(255) COLLATE utf8_unicode_ci DEFAULT NULL,
+  `xml_file` varchar(255) COLLATE utf8_unicode_ci DEFAULT NULL,
+  `state` varchar(255) COLLATE utf8_unicode_ci DEFAULT 'pending',
+  `last_error` text COLLATE utf8_unicode_ci,
+  `checksum` varchar(255) COLLATE utf8_unicode_ci DEFAULT NULL,
+  `number` int(11) NOT NULL,
+  `created_at` datetime NOT NULL,
+  `updated_at` datetime NOT NULL,
+  PRIMARY KEY (`id`),
+  UNIQUE KEY `index_ontology_versions_on_ontology_id_and_number` (`ontology_id`,`number`),
+  KEY `index_ontology_versions_on_user_id` (`user_id`),
+  KEY `index_ontology_versions_on_checksum` (`checksum`),
+  KEY `index_ontology_versions_on_previous_version_id` (`previous_version_id`),
+  CONSTRAINT `ontology_versions_previous_version_id_fk` FOREIGN KEY (`previous_version_id`) REFERENCES `ontology_versions` (`id`),
+  CONSTRAINT `ontology_versions_ontology_id_fk` FOREIGN KEY (`ontology_id`) REFERENCES `ontologies` (`id`) ON DELETE CASCADE,
+  CONSTRAINT `ontology_versions_user_id_fk` FOREIGN KEY (`user_id`) REFERENCES `users` (`id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
+
+CREATE TABLE `permissions` (
+  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `subject_id` int(11) NOT NULL,
+  `subject_type` varchar(255) COLLATE utf8_unicode_ci NOT NULL,
+  `item_id` int(11) NOT NULL,
+  `item_type` varchar(255) COLLATE utf8_unicode_ci NOT NULL,
+  `creator_id` int(11) DEFAULT NULL,
+  `role` varchar(255) COLLATE utf8_unicode_ci NOT NULL DEFAULT 'editor',
+  `created_at` datetime NOT NULL,
+  `updated_at` datetime NOT NULL,
+  PRIMARY KEY (`id`),
+  UNIQUE KEY `index_permissions_on_item_and_subject` (`item_id`,`item_type`,`subject_id`,`subject_type`),
+  KEY `index_permissions_on_subject_id_and_subject_type` (`subject_id`,`subject_type`),
+  KEY `index_permissions_on_creator_id` (`creator_id`),
+  CONSTRAINT `permissions_creator_id_fk` FOREIGN KEY (`creator_id`) REFERENCES `users` (`id`) ON DELETE SET NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
+
+CREATE TABLE `schema_migrations` (
+  `version` varchar(255) COLLATE utf8_unicode_ci NOT NULL,
+  UNIQUE KEY `unique_schema_migrations` (`version`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
+
+CREATE TABLE `sentence_has_entities` (
+  `sentence_id` int(11) NOT NULL,
+  `entity_id` int(11) NOT NULL,
+  `ontology_version_id` int(11) NOT NULL,
+  UNIQUE KEY `index_sentence_has_entities_on_sentence_id_and_entity_id` (`sentence_id`,`entity_id`),
+  KEY `index_sentence_has_entities_on_entity_id_and_sentence_id` (`entity_id`,`sentence_id`),
+  CONSTRAINT `sentence_has_entities_sentence_id_fk` FOREIGN KEY (`sentence_id`) REFERENCES `sentences` (`id`) ON DELETE CASCADE,
+  CONSTRAINT `sentence_has_entities_entity_id_fk` FOREIGN KEY (`entity_id`) REFERENCES `entities` (`id`) ON DELETE CASCADE
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
+
+CREATE TABLE `sentences` (
+  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `ontology_version_id` int(11) NOT NULL,
+  `name` varchar(255) COLLATE utf8_unicode_ci NOT NULL,
+  `text` text COLLATE utf8_unicode_ci NOT NULL,
+  `range` varchar(255) COLLATE utf8_unicode_ci DEFAULT NULL,
+  `comments_count` int(11) NOT NULL DEFAULT '0',
+  `created_at` datetime NOT NULL,
+  `updated_at` datetime NOT NULL,
+  PRIMARY KEY (`id`),
+  UNIQUE KEY `index_sentences_on_ontology_version_id_and_id` (`ontology_version_id`,`id`),
+  UNIQUE KEY `index_sentences_on_ontology_version_id_and_name` (`ontology_version_id`,`name`),
+  CONSTRAINT `sentences_ontology_version_id_fk` FOREIGN KEY (`ontology_version_id`) REFERENCES `ontology_versions` (`id`) ON DELETE CASCADE
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
+
+CREATE TABLE `serializations` (
+  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `name` varchar(255) COLLATE utf8_unicode_ci DEFAULT NULL,
+  `extension` varchar(255) COLLATE utf8_unicode_ci DEFAULT NULL,
+  `mimetype` varchar(255) COLLATE utf8_unicode_ci DEFAULT NULL,
+  `language_id` int(11) DEFAULT NULL,
+  `created_at` datetime NOT NULL,
+  `updated_at` datetime NOT NULL,
+  PRIMARY KEY (`id`),
+  KEY `index_serializations_on_language_id` (`language_id`),
+  CONSTRAINT `serializations_language_id_fk` FOREIGN KEY (`language_id`) REFERENCES `languages` (`id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
+
+CREATE TABLE `supports` (
+  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `language_id` int(11) DEFAULT NULL,
+  `logic_id` int(11) DEFAULT NULL,
+  `created_at` datetime NOT NULL,
+  `updated_at` datetime NOT NULL,
+  PRIMARY KEY (`id`),
+  KEY `index_supports_on_language_id` (`language_id`),
+  KEY `index_supports_on_logic_id` (`logic_id`),
+  CONSTRAINT `supports_logic_id_fk` FOREIGN KEY (`logic_id`) REFERENCES `logics` (`id`),
+  CONSTRAINT `supports_language_id_fk` FOREIGN KEY (`language_id`) REFERENCES `languages` (`id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
+
+CREATE TABLE `team_users` (
+  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `team_id` int(11) NOT NULL,
+  `user_id` int(11) NOT NULL,
+  `creator_id` int(11) DEFAULT NULL,
+  `admin` tinyint(1) NOT NULL DEFAULT '0',
+  PRIMARY KEY (`id`),
+  UNIQUE KEY `index_team_users_on_team_id_and_user_id` (`team_id`,`user_id`),
+  KEY `index_team_users_on_user_id` (`user_id`),
+  KEY `index_team_users_on_creator_id` (`creator_id`),
+  CONSTRAINT `team_users_creator_id_fk` FOREIGN KEY (`creator_id`) REFERENCES `users` (`id`) ON DELETE SET NULL,
+  CONSTRAINT `team_users_team_id_fk` FOREIGN KEY (`team_id`) REFERENCES `teams` (`id`) ON DELETE CASCADE,
+  CONSTRAINT `team_users_user_id_fk` FOREIGN KEY (`user_id`) REFERENCES `users` (`id`) ON DELETE CASCADE
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
+
+CREATE TABLE `teams` (
+  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `name` varchar(255) COLLATE utf8_unicode_ci NOT NULL,
+  PRIMARY KEY (`id`),
+  UNIQUE KEY `index_teams_on_name` (`name`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
+
+CREATE TABLE `users` (
+  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `email` varchar(255) COLLATE utf8_unicode_ci DEFAULT NULL,
+  `encrypted_password` varchar(255) COLLATE utf8_unicode_ci DEFAULT NULL,
+  `reset_password_token` varchar(255) COLLATE utf8_unicode_ci DEFAULT NULL,
+  `reset_password_sent_at` datetime DEFAULT NULL,
+  `remember_created_at` datetime DEFAULT NULL,
+  `sign_in_count` int(11) DEFAULT '0',
+  `current_sign_in_at` datetime DEFAULT NULL,
+  `last_sign_in_at` datetime DEFAULT NULL,
+  `current_sign_in_ip` varchar(255) COLLATE utf8_unicode_ci DEFAULT NULL,
+  `last_sign_in_ip` varchar(255) COLLATE utf8_unicode_ci DEFAULT NULL,
+  `confirmation_token` varchar(255) COLLATE utf8_unicode_ci DEFAULT NULL,
+  `confirmed_at` datetime DEFAULT NULL,
+  `confirmation_sent_at` datetime DEFAULT NULL,
+  `unconfirmed_email` varchar(255) COLLATE utf8_unicode_ci DEFAULT NULL,
+  `failed_attempts` int(11) DEFAULT '0',
+  `unlock_token` varchar(255) COLLATE utf8_unicode_ci DEFAULT NULL,
+  `locked_at` datetime DEFAULT NULL,
+  `name` varchar(255) COLLATE utf8_unicode_ci DEFAULT NULL,
+  `admin` tinyint(1) NOT NULL DEFAULT '0',
+  `created_at` datetime NOT NULL,
+  `updated_at` datetime NOT NULL,
+  `deleted_at` datetime DEFAULT NULL,
+  PRIMARY KEY (`id`),
+  UNIQUE KEY `index_users_on_email` (`email`),
+  UNIQUE KEY `index_users_on_reset_password_token` (`reset_password_token`),
+  UNIQUE KEY `index_users_on_unlock_token` (`unlock_token`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
 
 INSERT INTO schema_migrations (version) VALUES ('20120000000001');
 
@@ -1303,3 +391,13 @@ INSERT INTO schema_migrations (version) VALUES ('20120416190216');
 INSERT INTO schema_migrations (version) VALUES ('20120416191514');
 
 INSERT INTO schema_migrations (version) VALUES ('20120416192741');
+
+INSERT INTO schema_migrations (version) VALUES ('20120419190000');
+
+INSERT INTO schema_migrations (version) VALUES ('20120424155606');
+
+INSERT INTO schema_migrations (version) VALUES ('20120424155621');
+
+INSERT INTO schema_migrations (version) VALUES ('20120424162211');
+
+INSERT INTO schema_migrations (version) VALUES ('20120424162227');

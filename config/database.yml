@@ -1,14 +1,14 @@
 # PostgreSQL. Versions 8.2 and up are supported.
 #
 development: &config
-  adapter: postgresql
-  encoding: unicode
-  template: template0
+  adapter: mysql2
+  encoding: utf8
   hostname: localhost
   database: ontohub_development
-  username: postgres
-  password: alias
+  username: root
+  password: 
   pool: 5
+  socket: /tmp/mysql.sock
 
   # Connect on a TCP socket. Omitted by default since the client uses a
   # domain socket that doesn't need configuration. Windows does not have

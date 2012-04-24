@@ -1,6 +1,6 @@
-class CreateAxioms < ActiveRecord::Migration
+class CreateSentences < ActiveRecord::Migration
   def change
-    create_table :axioms do |t|
+    create_table :sentences do |t|
       t.references :ontology_version, :null => false
       t.string :name, :null => false
       t.text :text, :null => false
@@ -10,7 +10,7 @@ class CreateAxioms < ActiveRecord::Migration
       t.timestamps :null => false
     end
 
-    change_table :axioms do |t|
+    change_table :sentences do |t|
       t.index [:ontology_version_id, :id], :unique => true
       t.index [:ontology_version_id, :name], :unique => true
       t.foreign_key :ontology_versions, :dependent => :delete
