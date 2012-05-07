@@ -6,7 +6,7 @@ development: &config
   hostname: localhost
   database: ontohub_development
   username: root
-  password: 
+  password: alias
   pool: 5
   socket: /tmp/mysql.sock
 
