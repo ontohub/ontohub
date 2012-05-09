@@ -31,15 +31,13 @@ end
 # Create initial logic configuration.
 Logic.create! \
   name: 'OWL',
-  uri: 'http://purl.net/dol/logics/OWL',
-  extension: 'owl',
-  mimetype: 'application/rdf+xml'
+  iri: 'http://purl.net/dol/logics/OWL',
+  description: 'OWL'
 
 Logic.create! \
   name: 'CommonLogic',
-  uri: 'http://purl.net/dol/logics/CommonLogic',
-  extension: 'clif',
-  mimetype: 'text/plain'
+  iri: 'http://purl.net/dol/logics/CommonLogic',
+  description: 'Common Logic'
 
 # Import ontologies
 Dir["#{Rails.root}/test/fixtures/ontologies/*/*.{clf,clif,owl}"].each do |file|
@@ -53,6 +51,8 @@ Dir["#{Rails.root}/test/fixtures/ontologies/*/*.{clf,clif,owl}"].each do |file|
   v = o.versions.build raw_file: File.open(file)
   v.user       = user
   v.created_at = rand(60).minutes.ago
+  v.number     = 1
+  
   o.save! 
 end
 
