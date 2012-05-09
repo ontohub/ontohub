@@ -46,7 +46,7 @@ Dir["#{Rails.root}/test/fixtures/ontologies/*/*.{clf,clif,owl}"].each do |file|
   basename = File.basename(file)
   
   o = Ontology.new \
-    uri:         "file://db/seeds/#{basename}",
+    iri:         "file://db/seeds/#{basename}",
     name:        basename.split(".")[0].capitalize,
     description: Faker::Lorem.paragraph
   
