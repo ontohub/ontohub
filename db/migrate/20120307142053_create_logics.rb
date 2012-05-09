@@ -2,15 +2,15 @@ class CreateLogics < ActiveRecord::Migration
   def change
     create_table :logics do |t|
       t.string :name, :null => false
-      t.string :iri, :null => false
-      t.text :description
-      
+      t.string :uri
+      t.string :extension
+      t.string :mimetype
+
       t.timestamps :null => false
     end
 
     change_table :logics do |t|
       t.index :name, :unique => true
-      t.index :iri, :unique => true
     end
   end
 end

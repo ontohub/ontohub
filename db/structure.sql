@@ -4,10 +4,23 @@
 
 SET statement_timeout = 0;
 SET client_encoding = 'UTF8';
-SET standard_conforming_strings = off;
+SET standard_conforming_strings = on;
 SET check_function_bodies = false;
 SET client_min_messages = warning;
-SET escape_string_warning = off;
+
+--
+-- Name: plpgsql; Type: EXTENSION; Schema: -; Owner: -
+--
+
+CREATE EXTENSION IF NOT EXISTS plpgsql WITH SCHEMA pg_catalog;
+
+
+--
+-- Name: EXTENSION plpgsql; Type: COMMENT; Schema: -; Owner: -
+--
+
+COMMENT ON EXTENSION plpgsql IS 'PL/pgSQL procedural language';
+
 
 SET search_path = public, pg_catalog;
 
@@ -49,8 +62,8 @@ CREATE TABLE axioms_entities (
 CREATE SEQUENCE axioms_id_seq
     START WITH 1
     INCREMENT BY 1
-    NO MAXVALUE
     NO MINVALUE
+    NO MAXVALUE
     CACHE 1;
 
 
@@ -83,8 +96,8 @@ CREATE TABLE comments (
 CREATE SEQUENCE comments_id_seq
     START WITH 1
     INCREMENT BY 1
-    NO MAXVALUE
     NO MINVALUE
+    NO MAXVALUE
     CACHE 1;
 
 
@@ -120,8 +133,8 @@ CREATE TABLE entities (
 CREATE SEQUENCE entities_id_seq
     START WITH 1
     INCREMENT BY 1
-    NO MAXVALUE
     NO MINVALUE
+    NO MAXVALUE
     CACHE 1;
 
 
@@ -130,108 +143,6 @@ CREATE SEQUENCE entities_id_seq
 --
 
 ALTER SEQUENCE entities_id_seq OWNED BY entities.id;
-
-
---
--- Name: entity_mappings; Type: TABLE; Schema: public; Owner: -; Tablespace: 
---
-
-CREATE TABLE entity_mappings (
-    id integer NOT NULL,
-    source_id integer,
-    target_id integer,
-    confidence integer,
-    kind character varying(255),
-    created_at timestamp without time zone NOT NULL,
-    updated_at timestamp without time zone NOT NULL
-);
-
-
---
--- Name: entity_mappings_id_seq; Type: SEQUENCE; Schema: public; Owner: -
---
-
-CREATE SEQUENCE entity_mappings_id_seq
-    START WITH 1
-    INCREMENT BY 1
-    NO MAXVALUE
-    NO MINVALUE
-    CACHE 1;
-
-
---
--- Name: entity_mappings_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: -
---
-
-ALTER SEQUENCE entity_mappings_id_seq OWNED BY entity_mappings.id;
-
-
---
--- Name: languages; Type: TABLE; Schema: public; Owner: -; Tablespace: 
---
-
-CREATE TABLE languages (
-    id integer NOT NULL,
-    name character varying(255),
-    uri character varying(255),
-    created_at timestamp without time zone NOT NULL,
-    updated_at timestamp without time zone NOT NULL
-);
-
-
---
--- Name: languages_id_seq; Type: SEQUENCE; Schema: public; Owner: -
---
-
-CREATE SEQUENCE languages_id_seq
-    START WITH 1
-    INCREMENT BY 1
-    NO MAXVALUE
-    NO MINVALUE
-    CACHE 1;
-
-
---
--- Name: languages_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: -
---
-
-ALTER SEQUENCE languages_id_seq OWNED BY languages.id;
-
-
---
--- Name: link_versions; Type: TABLE; Schema: public; Owner: -; Tablespace: 
---
-
-CREATE TABLE link_versions (
-    id integer NOT NULL,
-    source_id integer,
-    target_id integer,
-    version_number integer,
-    current boolean,
-    proof_status boolean,
-    couse_status boolean,
-    created_at timestamp without time zone NOT NULL,
-    updated_at timestamp without time zone NOT NULL
-);
-
-
---
--- Name: link_versions_id_seq; Type: SEQUENCE; Schema: public; Owner: -
---
-
-CREATE SEQUENCE link_versions_id_seq
-    START WITH 1
-    INCREMENT BY 1
-    NO MAXVALUE
-    NO MINVALUE
-    CACHE 1;
-
-
---
--- Name: link_versions_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: -
---
-
-ALTER SEQUENCE link_versions_id_seq OWNED BY link_versions.id;
 
 
 --
@@ -255,8 +166,8 @@ CREATE TABLE links (
 CREATE SEQUENCE links_id_seq
     START WITH 1
     INCREMENT BY 1
-    NO MAXVALUE
     NO MINVALUE
+    NO MAXVALUE
     CACHE 1;
 
 
@@ -274,7 +185,9 @@ ALTER SEQUENCE links_id_seq OWNED BY links.id;
 CREATE TABLE logics (
     id integer NOT NULL,
     name character varying(255) NOT NULL,
-    iri character varying(255),
+    uri character varying(255),
+    extension character varying(255),
+    mimetype character varying(255),
     created_at timestamp without time zone NOT NULL,
     updated_at timestamp without time zone NOT NULL
 );
@@ -287,8 +200,8 @@ CREATE TABLE logics (
 CREATE SEQUENCE logics_id_seq
     START WITH 1
     INCREMENT BY 1
-    NO MAXVALUE
     NO MINVALUE
+    NO MAXVALUE
     CACHE 1;
 
 
@@ -322,8 +235,8 @@ CREATE TABLE metadata (
 CREATE SEQUENCE metadata_id_seq
     START WITH 1
     INCREMENT BY 1
-    NO MAXVALUE
     NO MINVALUE
+    NO MAXVALUE
     CACHE 1;
 
 
@@ -340,7 +253,7 @@ ALTER SEQUENCE metadata_id_seq OWNED BY metadata.id;
 
 CREATE TABLE ontologies (
     id integer NOT NULL,
-    language_id integer,
+    logic_id integer,
     uri character varying(255) NOT NULL,
     state character varying(255) DEFAULT 'pending'::character varying NOT NULL,
     name character varying(255),
@@ -362,8 +275,8 @@ CREATE TABLE ontologies (
 CREATE SEQUENCE ontologies_id_seq
     START WITH 1
     INCREMENT BY 1
-    NO MAXVALUE
     NO MINVALUE
+    NO MAXVALUE
     CACHE 1;
 
 
@@ -388,7 +301,6 @@ CREATE TABLE ontology_versions (
     state character varying(255) DEFAULT 'pending'::character varying,
     last_error text,
     checksum character varying(255),
-    number integer NOT NULL,
     created_at timestamp without time zone NOT NULL,
     updated_at timestamp without time zone NOT NULL
 );
@@ -401,8 +313,8 @@ CREATE TABLE ontology_versions (
 CREATE SEQUENCE ontology_versions_id_seq
     START WITH 1
     INCREMENT BY 1
-    NO MAXVALUE
     NO MINVALUE
+    NO MAXVALUE
     CACHE 1;
 
 
@@ -437,8 +349,8 @@ CREATE TABLE permissions (
 CREATE SEQUENCE permissions_id_seq
     START WITH 1
     INCREMENT BY 1
-    NO MAXVALUE
     NO MINVALUE
+    NO MAXVALUE
     CACHE 1;
 
 
@@ -456,72 +368,6 @@ ALTER SEQUENCE permissions_id_seq OWNED BY permissions.id;
 CREATE TABLE schema_migrations (
     version character varying(255) NOT NULL
 );
-
-
---
--- Name: serializations; Type: TABLE; Schema: public; Owner: -; Tablespace: 
---
-
-CREATE TABLE serializations (
-    id integer NOT NULL,
-    name character varying(255),
-    extension character varying(255),
-    mimetype character varying(255),
-    language_id integer,
-    created_at timestamp without time zone NOT NULL,
-    updated_at timestamp without time zone NOT NULL
-);
-
-
---
--- Name: serializations_id_seq; Type: SEQUENCE; Schema: public; Owner: -
---
-
-CREATE SEQUENCE serializations_id_seq
-    START WITH 1
-    INCREMENT BY 1
-    NO MAXVALUE
-    NO MINVALUE
-    CACHE 1;
-
-
---
--- Name: serializations_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: -
---
-
-ALTER SEQUENCE serializations_id_seq OWNED BY serializations.id;
-
-
---
--- Name: supports; Type: TABLE; Schema: public; Owner: -; Tablespace: 
---
-
-CREATE TABLE supports (
-    id integer NOT NULL,
-    language_id integer,
-    logic_id integer,
-    created_at timestamp without time zone NOT NULL,
-    updated_at timestamp without time zone NOT NULL
-);
-
-
---
--- Name: supports_id_seq; Type: SEQUENCE; Schema: public; Owner: -
---
-
-CREATE SEQUENCE supports_id_seq
-    START WITH 1
-    INCREMENT BY 1
-    NO MAXVALUE
-    NO MINVALUE
-    CACHE 1;
-
-
---
--- Name: supports_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: -
---
-
-ALTER SEQUENCE supports_id_seq OWNED BY supports.id;
 
 
 --
@@ -544,8 +390,8 @@ CREATE TABLE team_users (
 CREATE SEQUENCE team_users_id_seq
     START WITH 1
     INCREMENT BY 1
-    NO MAXVALUE
     NO MINVALUE
+    NO MAXVALUE
     CACHE 1;
 
 
@@ -573,8 +419,8 @@ CREATE TABLE teams (
 CREATE SEQUENCE teams_id_seq
     START WITH 1
     INCREMENT BY 1
-    NO MAXVALUE
     NO MINVALUE
+    NO MAXVALUE
     CACHE 1;
 
 
@@ -623,8 +469,8 @@ CREATE TABLE users (
 CREATE SEQUENCE users_id_seq
     START WITH 1
     INCREMENT BY 1
-    NO MAXVALUE
     NO MINVALUE
+    NO MAXVALUE
     CACHE 1;
 
 
@@ -654,27 +500,6 @@ ALTER TABLE ONLY comments ALTER COLUMN id SET DEFAULT nextval('comments_id_seq':
 --
 
 ALTER TABLE ONLY entities ALTER COLUMN id SET DEFAULT nextval('entities_id_seq'::regclass);
-
-
---
--- Name: id; Type: DEFAULT; Schema: public; Owner: -
---
-
-ALTER TABLE ONLY entity_mappings ALTER COLUMN id SET DEFAULT nextval('entity_mappings_id_seq'::regclass);
-
-
---
--- Name: id; Type: DEFAULT; Schema: public; Owner: -
---
-
-ALTER TABLE ONLY languages ALTER COLUMN id SET DEFAULT nextval('languages_id_seq'::regclass);
-
-
---
--- Name: id; Type: DEFAULT; Schema: public; Owner: -
---
-
-ALTER TABLE ONLY link_versions ALTER COLUMN id SET DEFAULT nextval('link_versions_id_seq'::regclass);
 
 
 --
@@ -723,20 +548,6 @@ ALTER TABLE ONLY permissions ALTER COLUMN id SET DEFAULT nextval('permissions_id
 -- Name: id; Type: DEFAULT; Schema: public; Owner: -
 --
 
-ALTER TABLE ONLY serializations ALTER COLUMN id SET DEFAULT nextval('serializations_id_seq'::regclass);
-
-
---
--- Name: id; Type: DEFAULT; Schema: public; Owner: -
---
-
-ALTER TABLE ONLY supports ALTER COLUMN id SET DEFAULT nextval('supports_id_seq'::regclass);
-
-
---
--- Name: id; Type: DEFAULT; Schema: public; Owner: -
---
-
 ALTER TABLE ONLY team_users ALTER COLUMN id SET DEFAULT nextval('team_users_id_seq'::regclass);
 
 
@@ -776,30 +587,6 @@ ALTER TABLE ONLY comments
 
 ALTER TABLE ONLY entities
     ADD CONSTRAINT entities_pkey PRIMARY KEY (id);
-
-
---
--- Name: entity_mappings_pkey; Type: CONSTRAINT; Schema: public; Owner: -; Tablespace: 
---
-
-ALTER TABLE ONLY entity_mappings
-    ADD CONSTRAINT entity_mappings_pkey PRIMARY KEY (id);
-
-
---
--- Name: languages_pkey; Type: CONSTRAINT; Schema: public; Owner: -; Tablespace: 
---
-
-ALTER TABLE ONLY languages
-    ADD CONSTRAINT languages_pkey PRIMARY KEY (id);
-
-
---
--- Name: link_versions_pkey; Type: CONSTRAINT; Schema: public; Owner: -; Tablespace: 
---
-
-ALTER TABLE ONLY link_versions
-    ADD CONSTRAINT link_versions_pkey PRIMARY KEY (id);
 
 
 --
@@ -848,22 +635,6 @@ ALTER TABLE ONLY ontology_versions
 
 ALTER TABLE ONLY permissions
     ADD CONSTRAINT permissions_pkey PRIMARY KEY (id);
-
-
---
--- Name: serializations_pkey; Type: CONSTRAINT; Schema: public; Owner: -; Tablespace: 
---
-
-ALTER TABLE ONLY serializations
-    ADD CONSTRAINT serializations_pkey PRIMARY KEY (id);
-
-
---
--- Name: supports_pkey; Type: CONSTRAINT; Schema: public; Owner: -; Tablespace: 
---
-
-ALTER TABLE ONLY supports
-    ADD CONSTRAINT supports_pkey PRIMARY KEY (id);
 
 
 --
@@ -954,13 +725,6 @@ CREATE UNIQUE INDEX index_entities_on_ontology_id_and_text ON entities USING btr
 
 
 --
--- Name: index_languages_on_name; Type: INDEX; Schema: public; Owner: -; Tablespace: 
---
-
-CREATE UNIQUE INDEX index_languages_on_name ON languages USING btree (name);
-
-
---
 -- Name: index_links_on_source_id; Type: INDEX; Schema: public; Owner: -; Tablespace: 
 --
 
@@ -996,10 +760,10 @@ CREATE INDEX index_metadata_on_user_id ON metadata USING btree (user_id);
 
 
 --
--- Name: index_ontologies_on_language_id; Type: INDEX; Schema: public; Owner: -; Tablespace: 
+-- Name: index_ontologies_on_logic_id; Type: INDEX; Schema: public; Owner: -; Tablespace: 
 --
 
-CREATE INDEX index_ontologies_on_language_id ON ontologies USING btree (language_id);
+CREATE INDEX index_ontologies_on_logic_id ON ontologies USING btree (logic_id);
 
 
 --
@@ -1024,10 +788,10 @@ CREATE INDEX index_ontology_versions_on_checksum ON ontology_versions USING btre
 
 
 --
--- Name: index_ontology_versions_on_ontology_id_and_number; Type: INDEX; Schema: public; Owner: -; Tablespace: 
+-- Name: index_ontology_versions_on_ontology_id; Type: INDEX; Schema: public; Owner: -; Tablespace: 
 --
 
-CREATE UNIQUE INDEX index_ontology_versions_on_ontology_id_and_number ON ontology_versions USING btree (ontology_id, number);
+CREATE INDEX index_ontology_versions_on_ontology_id ON ontology_versions USING btree (ontology_id);
 
 
 --
@@ -1056,20 +820,6 @@ CREATE UNIQUE INDEX index_permissions_on_item_and_subject ON permissions USING b
 --
 
 CREATE INDEX index_permissions_on_subject_id_and_subject_type ON permissions USING btree (subject_id, subject_type);
-
-
---
--- Name: index_supports_on_language_id; Type: INDEX; Schema: public; Owner: -; Tablespace: 
---
-
-CREATE INDEX index_supports_on_language_id ON supports USING btree (language_id);
-
-
---
--- Name: index_supports_on_logic_id; Type: INDEX; Schema: public; Owner: -; Tablespace: 
---
-
-CREATE INDEX index_supports_on_logic_id ON supports USING btree (logic_id);
 
 
 --
@@ -1193,11 +943,11 @@ ALTER TABLE ONLY metadata
 
 
 --
--- Name: ontologies_language_id_fk; Type: FK CONSTRAINT; Schema: public; Owner: -
+-- Name: ontologies_logic_id_fk; Type: FK CONSTRAINT; Schema: public; Owner: -
 --
 
 ALTER TABLE ONLY ontologies
-    ADD CONSTRAINT ontologies_language_id_fk FOREIGN KEY (language_id) REFERENCES languages(id);
+    ADD CONSTRAINT ontologies_logic_id_fk FOREIGN KEY (logic_id) REFERENCES logics(id);
 
 
 --
@@ -1222,22 +972,6 @@ ALTER TABLE ONLY ontology_versions
 
 ALTER TABLE ONLY permissions
     ADD CONSTRAINT permissions_creator_id_fk FOREIGN KEY (creator_id) REFERENCES users(id) ON DELETE SET NULL;
-
-
---
--- Name: supports_language_id_fk; Type: FK CONSTRAINT; Schema: public; Owner: -
---
-
-ALTER TABLE ONLY supports
-    ADD CONSTRAINT supports_language_id_fk FOREIGN KEY (language_id) REFERENCES languages(id);
-
-
---
--- Name: supports_logic_id_fk; Type: FK CONSTRAINT; Schema: public; Owner: -
---
-
-ALTER TABLE ONLY supports
-    ADD CONSTRAINT supports_logic_id_fk FOREIGN KEY (logic_id) REFERENCES logics(id);
 
 
 --
@@ -1268,8 +1002,6 @@ ALTER TABLE ONLY team_users
 -- PostgreSQL database dump complete
 --
 
-INSERT INTO schema_migrations (version) VALUES ('20120000000001');
-
 INSERT INTO schema_migrations (version) VALUES ('20120307103820');
 
 INSERT INTO schema_migrations (version) VALUES ('20120307142053');
@@ -1295,11 +1027,3 @@ INSERT INTO schema_migrations (version) VALUES ('20120308144855');
 INSERT INTO schema_migrations (version) VALUES ('20120308144859');
 
 INSERT INTO schema_migrations (version) VALUES ('20120313131338');
-
-INSERT INTO schema_migrations (version) VALUES ('20120416185310');
-
-INSERT INTO schema_migrations (version) VALUES ('20120416190216');
-
-INSERT INTO schema_migrations (version) VALUES ('20120416191514');
-
-INSERT INTO schema_migrations (version) VALUES ('20120416192741');
