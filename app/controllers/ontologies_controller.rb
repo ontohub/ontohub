@@ -25,7 +25,7 @@ class OntologiesController < InheritedResources::Base
   end
 
   def new
-    @version = build_resource.versions.build
+    @ontology_version = build_resource.ontology_versions.build
   end
 
   def create

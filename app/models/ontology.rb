@@ -8,10 +8,10 @@ class Ontology < ActiveRecord::Base
   include Ontology::Sentences
   include Ontology::Import
   include Ontology::States
-  include Ontology::Versions
+  include Ontology::OntologyVersion
 
   belongs_to :language
-  belongs_to :version
+  belongs_to :ontology_version
   has_many :versions
 
   attr_accessible :uri, :name, :description, :logic_id
