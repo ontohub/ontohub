@@ -1,5 +1,5 @@
 # 
-# Lists entities of a ontology
+# Lists entities of an ontology
 # 
 class EntitiesController < InheritedResources::Base
   
