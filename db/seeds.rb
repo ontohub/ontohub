@@ -54,6 +54,8 @@ Dir["#{Rails.root}/test/fixtures/ontologies/*/*.{clf,clif,owl}"].each do |file|
   v.number     = 1
   
   o.save! 
+  o.ontology_version = v;
+  o.save!
 end
 
 # Add permissions

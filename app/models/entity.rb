@@ -3,7 +3,7 @@ class Entity < ActiveRecord::Base
   include Metadatable
   include Entity::Searching
 
-  belongs_to :ontology
+  belongs_to :ontology_version
   has_and_belongs_to_many :sentences
 
   scope :kind, ->(kind) { where :kind => kind }

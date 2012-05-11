@@ -1,10 +1,6 @@
 module Ontology::Entities
   extend ActiveSupport::Concern
 
-  included do
-    has_many :entities, :extend => Methods
-  end
-
   module Methods
     def update_or_create_from_hash(hash, timestamp = Time.now)
       raise ArgumentError, 'No hash given.' unless hash.is_a? Hash
