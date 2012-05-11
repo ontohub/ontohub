@@ -1,7 +1,7 @@
 class CreateLinkVersions < ActiveRecord::Migration
   def change
     create_table :link_versions do |t|
-	  t.references :link, :null => false
+      t.references :link, :null => false
       t.references :source, :null => false
       t.references :target, :null => false
       t.integer :version_number
@@ -11,14 +11,14 @@ class CreateLinkVersions < ActiveRecord::Migration
 
       t.timestamps :null => false
     end
-	
-	change_table :link_versions do |t|
-	  t.index :link_id
-	  t.index :source_id
-	  t.index :target_id
-	  t.foreign_key :links, :dependent => :delete
-	  t.foreign_key :ontology_versions, :column => :source_id, :dependent => :delete
-	  t.foreign_key :ontology_versions, :column => :target_id, :dependent => :delete
-	end
+    
+    change_table :link_versions do |t|
+      t.index :link_id
+      t.index :source_id
+      t.index :target_id
+      t.foreign_key :links, :dependent => :delete
+      t.foreign_key :ontology_versions, :column => :source_id, :dependent => :delete
+      t.foreign_key :ontology_versions, :column => :target_id, :dependent => :delete
+    end
   end
 end
