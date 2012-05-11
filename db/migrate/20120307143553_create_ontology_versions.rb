@@ -4,6 +4,7 @@ class CreateOntologyVersions < ActiveRecord::Migration
       t.references :user, :null => false
       t.references :ontology, :null => false
       t.references :previous_version
+      t.references :logic
       t.string :source_url
       t.string :raw_file
       t.string :xml_file
