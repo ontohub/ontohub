@@ -6,6 +6,6 @@
       = vf.input :raw_file, :as => :file
       %li - OR -
       = vf.input :source_url, :as => :url
-  = f.inputs :uri, :name, :description
+  = f.inputs :iri, :name, :description
   = f.actions do
     = f.action :submit, :button_html => { :disable_with => t(:wait) }
