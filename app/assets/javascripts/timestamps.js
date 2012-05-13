@@ -1,7 +1,8 @@
 $.fn.relatizeTimestamps = function() {
-  $(this).find(".timestamp").relatizeDate({
-    defaultLanguage: 'en',
-    titleize: true
+  $(this).find(".timestamp").each(function(){
+    var $this = $(this);
+    var time = moment($this.text());
+    $this.text(time.fromNow()).attr("title", time.format("LLLL"));
   });
   return this;
 };
