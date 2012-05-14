@@ -35,6 +35,10 @@ class OntologyVersion < ActiveRecord::Base
     source_url? ? source_url : 'File upload'
   end
   
+  def to_param
+	self.number
+  end
+  
 protected
 
   def raw_file_xor_source_url
