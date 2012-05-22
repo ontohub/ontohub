@@ -4,6 +4,7 @@ class OntologyVersion < ActiveRecord::Base
   include OntologyVersion::Parsing
 
   has_many   :entities
+  has_many   :sentences
   belongs_to :user
   belongs_to :ontology, :counter_cache => :versions_count
   belongs_to :logic
