@@ -2,6 +2,7 @@ class OntologyVersion < ActiveRecord::Base
   include OntologyVersion::Async
   include OntologyVersion::Download
   include OntologyVersion::Parsing
+  include OntologyVersion::Numbers
 
   has_many   :entities
   has_many   :sentences
