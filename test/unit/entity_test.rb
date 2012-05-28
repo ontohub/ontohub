@@ -14,7 +14,7 @@ class EntityTest < ActiveSupport::TestCase
   should have_db_index([:ontology_id, :kind])
   
   should belong_to :ontology
-  should have_and_belong_to_many :axioms
+  should have_and_belong_to_many :sentences
 
   context 'OntologyInstance' do
   	setup do

@@ -1,6 +1,6 @@
 require 'test_helper'
 
-class AxiomTest < ActiveSupport::TestCase
+class SentenceTest < ActiveSupport::TestCase
   context 'Associations' do
     should belong_to :ontology
     should have_and_belong_to_many :entities
@@ -11,24 +11,24 @@ class AxiomTest < ActiveSupport::TestCase
   		@ontology = Factory :ontology
   	end
 
-  	context 'creating Axioms' do
+  	context 'creating Sentences' do
   		setup do
-	  		@axiom_hash = {
+	  		@sentence_hash = {
 	  			'name' => '... (if exists)',
           'range' => 'Examples/Reichel:40.9'
 	  		}
 
-	      @ontology.axioms.update_or_create_from_hash @axiom_hash
+	      @ontology.sentences.update_or_create_from_hash @sentence_hash
   		end
 
   		context 'correct attribute' do
   			setup do
-  				@axiom = @ontology.axioms.first
+  				@sentence = @ontology.sentences.first
   			end
 
   			%w[name range].each do |attr|
   				should "be #{attr}" do
-  					assert_equal @axiom_hash[attr], eval("@axiom.#{attr}")
+  					assert_equal @sentence_hash[attr], eval("@sentence.#{attr}")
   				end
   			end
   		end
