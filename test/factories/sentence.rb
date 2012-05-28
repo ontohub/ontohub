@@ -1,4 +1,3 @@
-
 Factory.sequence :sentence_name do |n|
   "Ax#{n}"
 end
