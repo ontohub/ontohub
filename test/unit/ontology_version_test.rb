@@ -3,9 +3,13 @@ require 'test_helper'
 class OntologyVersionTest < ActiveSupport::TestCase
   should have_db_index(:ontology_id)
   should have_db_index(:user_id)
-  
+  should have_db_index(:logic_id)
+
+  should have_many :entities
+  should have_many :sentences
   should belong_to :user
   should belong_to :ontology
+  should belong_to :logic
   
   context 'Validating OntologyVersion' do
     ['http://example.com/', 'https://example.com/'].each do |val|
