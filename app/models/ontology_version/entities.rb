@@ -1,5 +1,9 @@
-module Ontology::Entities
+module OntologyVersion::Entities
   extend ActiveSupport::Concern
+
+  included do
+    has_many :entities, :extend => Methods
+  end
 
   module Methods
     def update_or_create_from_hash(hash, timestamp = Time.now)

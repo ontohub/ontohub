@@ -3,9 +3,9 @@ class OntologyVersion < ActiveRecord::Base
   include OntologyVersion::Download
   include OntologyVersion::Parsing
   include OntologyVersion::Numbers
+  include OntologyVersion::Sentences
+  include OntologyVersion::Entities
 
-  has_many   :entities
-  has_many   :sentences
   belongs_to :user
   belongs_to :ontology, :counter_cache => :versions_count
   belongs_to :logic
@@ -38,7 +38,7 @@ class OntologyVersion < ActiveRecord::Base
   end
   
   def to_param
-	self.number
+    self.number
   end
   
 protected
