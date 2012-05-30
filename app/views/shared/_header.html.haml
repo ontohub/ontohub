@@ -1,8 +1,7 @@
 %header.navbar.navbar-fixed-top
   .navbar-inner
-    .container
-      = link_to 'Ontohub', :root, :class => 'brand'
-  
-      = render :partial => '/shared/navigation'
-      = render :partial => '/shared/quicksearch'
-      = render :partial => '/shared/session'
+    = link_to 'Ontohub', :root, :class => 'brand'
+
+    = render :partial => '/shared/navigation'
+    = render :partial => '/shared/quicksearch'
+    = render :partial => '/shared/session'

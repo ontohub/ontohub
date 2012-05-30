@@ -1,25 +1,4 @@
-@import compass
-@import variables
 
 header
-  .container
-    width: 100% !important
-    padding: 0em 2em 0em 2em
-  
-  nav
-    display: inline-block
-    ul
-      +inline-block-list-container
-      > li
-        +inline-block-list-item
-        margin-right: 1em
-    > ul > li
-      > ul
-        display: none
-        background: darken($primary-color, 7%)
-        +border-radius(1em)
-        padding: .5em
-      &:hover
-        > ul
-          display: block
-          position: absolute
+  .navbar-inner
+    padding: 0 1em !important

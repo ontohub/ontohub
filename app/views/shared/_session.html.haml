@@ -6,7 +6,7 @@
       %a{:href => edit_user_registration_path}
         Settings
         - if current_user.display_alert?
-          %strong !
+          %strong.badge !
     %li= link_to 'Log out', :destroy_user_session, :method => :delete
   - else
     %li= link_to 'Log in', :new_user_session
