@@ -1,0 +1,1158 @@
+<?xml version="1.0"?>
+
+
+<!DOCTYPE rdf:RDF [
+    <!ENTITY todo "http://example.org/todo#" >
+    <!ENTITY dct "http://purl.org/dc/terms/" >
+    <!ENTITY owl "http://www.w3.org/2002/07/owl#" >
+    <!ENTITY dc "http://purl.org/dc/elements/1.1/" >
+    <!ENTITY xsd "http://www.w3.org/2001/XMLSchema#" >
+    <!ENTITY xml "http://www.w3.org/XML/1998/namespace" >
+    <!ENTITY rdfs "http://www.w3.org/2000/01/rdf-schema#" >
+    <!ENTITY rdf "http://www.w3.org/1999/02/22-rdf-syntax-ns#" >
+    <!ENTITY xsd "http://www.w3.org/2001/XMLSchema-datatypes#" >
+]>
+
+
+<rdf:RDF xmlns="http://purl.net/dol/1.0/rdf#"
+     xml:base="http://purl.net/dol/1.0/rdf"
+     xmlns:dc="http://purl.org/dc/elements/1.1/"
+     xmlns:rdfs="http://www.w3.org/2000/01/rdf-schema#"
+     xmlns:dct="http://purl.org/dc/terms/"
+     xmlns:todo="http://example.org/todo#"
+     xmlns:xsd="http://www.w3.org/2001/XMLSchema#"
+     xmlns:owl="http://www.w3.org/2002/07/owl#"
+     xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#"
+     xmlns:xml="http://www.w3.org/XML/1998/namespace">
+    <owl:Ontology rdf:about="http://purl.net/dol/1.0/rdf#">
+        <owl:versionInfo>1.0</owl:versionInfo>
+        <todo:task>When scaling this ontology implementation up to DOL, look below for annotations marked as &#39;beyond OWL&#39;.  These things can be modeled in FOL.</todo:task>
+        <rdfs:comment>RDF serialization of DOL, implemented as an OWL ontology.  Actually some axioms that we would like to have go beyond OWL.</rdfs:comment>
+    </owl:Ontology>
+    
+
+
+    <!-- 
+    ///////////////////////////////////////////////////////////////////////////////////////
+    //
+    // Annotation properties
+    //
+    ///////////////////////////////////////////////////////////////////////////////////////
+     -->
+
+    <owl:AnnotationProperty rdf:about="&dct;creator"/>
+    <owl:AnnotationProperty rdf:about="http://purl.net/dol/1.0/rdf#strictlyStrongerThan"/>
+    <owl:AnnotationProperty rdf:about="http://purl.net/dol/1.0/rdf#propagatesToAdjoint">
+        <rdfs:comment>This is just for informative purposes: Even though it probably does not go beyond OWL, it doesn&#39;t work for annotation properties in Protégé
+Domain: owl:Class
+Range: xsd:boolean</rdfs:comment>
+        <rdfs:comment>The subject class denotes a kind of mapping that, if it holds for a translation, also holds for the adjoint projection.</rdfs:comment>
+    </owl:AnnotationProperty>
+    <owl:AnnotationProperty rdf:about="&todo;task"/>
+    <owl:AnnotationProperty rdf:about="&dct;date"/>
+    <owl:AnnotationProperty rdf:about="&rdfs;comment"/>
+    <owl:AnnotationProperty rdf:about="&owl;versionInfo"/>
+    <owl:AnnotationProperty rdf:about="http://purl.net/dol/1.0/rdf#supportsEntityKind">
+        <rdfs:comment>This is just for informative purposes: Even though it probably does not go beyond OWL, it doesn&#39;t work for annotation properties in Protégé
+Domain: OntologyLanguage
+Range: owl:Class that rdfs:subClassOf value Entity</rdfs:comment>
+    </owl:AnnotationProperty>
+    <owl:AnnotationProperty rdf:about="http://purl.net/dol/1.0/rdf#entityKindIn">
+        <rdfs:comment>This is just for informative purposes: It doesn&#39;t work for annotation properties
+InverseOf: supportsEntityKind</rdfs:comment>
+    </owl:AnnotationProperty>
+    <owl:AnnotationProperty rdf:about="&dct;source"/>
+    <owl:AnnotationProperty rdf:about="http://purl.net/dol/1.0/rdf#reifiedBy">
+        <rdfs:comment>This is just for informative purposes: It doesn&#39;t work for annotation properties
+InverseOf: reifies</rdfs:comment>
+        <rdfs:comment>The subject property is reified by the object class.</rdfs:comment>
+    </owl:AnnotationProperty>
+    <owl:AnnotationProperty rdf:about="http://purl.net/dol/1.0/rdf#reifies">
+        <rdfs:comment>The subject class reifies the object property.</rdfs:comment>
+        <rdfs:comment>This is just for informative purposes: Even though it probably does not go beyond OWL, it doesn&#39;t work for annotation properties in Protégé
+Domain: owl:Class
+Range: owl:ObjectProperty</rdfs:comment>
+    </owl:AnnotationProperty>
+    <owl:AnnotationProperty rdf:about="&todo;question"/>
+    
+
+
+    <!-- 
+    ///////////////////////////////////////////////////////////////////////////////////////
+    //
+    // Datatypes
+    //
+    ///////////////////////////////////////////////////////////////////////////////////////
+     -->
+
+    
+
+
+    <!-- http://www.w3.org/1999/02/22-rdf-syntax-ns#PlainLiteral -->
+
+    <rdfs:Datatype rdf:about="&rdf;PlainLiteral"/>
+    
+
+
+    <!-- http://www.w3.org/2001/XMLSchema-datatypes#boolean -->
+
+    <rdfs:Datatype rdf:about="&xsd;boolean"/>
+    
+
+
+    <!-- http://www.w3.org/2001/XMLSchema-datatypes#date -->
+
+    <rdfs:Datatype rdf:about="&xsd;date"/>
+    
+
+
+    <!-- http://www.w3.org/2001/XMLSchema-datatypes#string -->
+
+    <rdfs:Datatype rdf:about="&xsd;string"/>
+    
+
+
+    <!-- 
+    ///////////////////////////////////////////////////////////////////////////////////////
+    //
+    // Object Properties
+    //
+    ///////////////////////////////////////////////////////////////////////////////////////
+     -->
+
+    
+
+
+    <!-- http://purl.net/dol/1.0/rdf#adjoint -->
+
+    <owl:ObjectProperty rdf:about="http://purl.net/dol/1.0/rdf#adjoint">
+        <rdfs:range rdf:resource="http://purl.net/dol/1.0/rdf#Projection"/>
+        <rdfs:domain rdf:resource="http://purl.net/dol/1.0/rdf#Translation"/>
+    </owl:ObjectProperty>
+    
+
+
+    <!-- http://purl.net/dol/1.0/rdf#alignmentIn -->
+
+    <owl:ObjectProperty rdf:about="http://purl.net/dol/1.0/rdf#alignmentIn"/>
+    
+
+
+    <!-- http://purl.net/dol/1.0/rdf#compositionOf -->
+
+    <owl:ObjectProperty rdf:about="http://purl.net/dol/1.0/rdf#compositionOf">
+        <rdfs:comment>Range can&#39;t be specified in OWL DL</rdfs:comment>
+        <rdfs:comment>The subject mapping is the composition of the object list of mappings (list item 1 ∘ list item 2 ∘ … ∘ list item n).  All elements of the latter list must be instances of the same class as the subject.  (Enforcing the latter constraint goes beyond OWL.)</rdfs:comment>
+        <todo:question>I don&#39;t think we need subclasses for specific types of mappings, do we?</todo:question>
+        <rdfs:domain rdf:resource="http://purl.net/dol/1.0/rdf#Mapping"/>
+    </owl:ObjectProperty>
+    <owl:Axiom>
+        <dct:date rdf:datatype="&xsd;date">2012-04-30</dct:date>
+        <dct:creator>Christoph Lange</dct:creator>
+        <owl:annotatedTarget>I don&#39;t think we need subclasses for specific types of mappings, do we?</owl:annotatedTarget>
+        <owl:annotatedProperty rdf:resource="&todo;question"/>
+        <owl:annotatedSource rdf:resource="http://purl.net/dol/1.0/rdf#compositionOf"/>
+    </owl:Axiom>
+    
+
+
+    <!-- http://purl.net/dol/1.0/rdf#consequenceTheoreticallyConservativelyExtends -->
+
+    <owl:ObjectProperty rdf:about="http://purl.net/dol/1.0/rdf#consequenceTheoreticallyConservativelyExtends">
+        <rdfs:subPropertyOf rdf:resource="http://purl.net/dol/1.0/rdf#extends"/>
+    </owl:ObjectProperty>
+    
+
+
+    <!-- http://purl.net/dol/1.0/rdf#conservativelyExtends -->
+
+    <owl:ObjectProperty rdf:about="http://purl.net/dol/1.0/rdf#conservativelyExtends">
+        <dct:source>This synonym is inspired by CASL.</dct:source>
+        <owl:equivalentProperty rdf:resource="http://purl.net/dol/1.0/rdf#modelTheoreticallyConservativelyExtends"/>
+    </owl:ObjectProperty>
+    
+
+
+    <!-- http://purl.net/dol/1.0/rdf#definitionallyExtends -->
+
+    <owl:ObjectProperty rdf:about="http://purl.net/dol/1.0/rdf#definitionallyExtends">
+        <rdfs:subPropertyOf rdf:resource="http://purl.net/dol/1.0/rdf#monomorphicallyExtends"/>
+        <strictlyStrongerThan rdf:resource="http://purl.net/dol/1.0/rdf#monomorphicallyExtends"/>
+    </owl:ObjectProperty>
+    
+
+
+    <!-- http://purl.net/dol/1.0/rdf#embeddableInto -->
+
+    <owl:ObjectProperty rdf:about="http://purl.net/dol/1.0/rdf#embeddableInto">
+        <rdf:type rdf:resource="&owl;TransitiveProperty"/>
+        <rdfs:comment>The subject is embeddable into the object logic.</rdfs:comment>
+        <rdfs:subPropertyOf rdf:resource="http://purl.net/dol/1.0/rdf#exactlyMappableTo"/>
+        <rdfs:subPropertyOf rdf:resource="http://purl.net/dol/1.0/rdf#mappableToLogic"/>
+        <rdfs:subPropertyOf rdf:resource="http://purl.net/dol/1.0/rdf#modelBijectivelyMappableTo"/>
+        <rdfs:subPropertyOf rdf:resource="http://purl.net/dol/1.0/rdf#translatableTo"/>
+    </owl:ObjectProperty>
+    
+
+
+    <!-- http://purl.net/dol/1.0/rdf#exactLogicalExpressivity -->
+
+    <owl:ObjectProperty rdf:about="http://purl.net/dol/1.0/rdf#exactLogicalExpressivity">
+        <rdfs:comment>The subject ontology language has exactly the expressivity of the object logic.</rdfs:comment>
+        <rdfs:subPropertyOf rdf:resource="http://purl.net/dol/1.0/rdf#supportsLogic"/>
+    </owl:ObjectProperty>
+    
+
+
+    <!-- http://purl.net/dol/1.0/rdf#exactlyCorrespondingMapping -->
+
+    <owl:ObjectProperty rdf:about="http://purl.net/dol/1.0/rdf#exactlyCorrespondingMapping">
+        <rdfs:comment>The subject ontology language mapping exactly corresponds to the object logic mapping.</rdfs:comment>
+        <rdfs:range rdf:resource="http://purl.net/dol/1.0/rdf#LogicMapping"/>
+        <rdfs:domain rdf:resource="http://purl.net/dol/1.0/rdf#OntologyLanguageMapping"/>
+    </owl:ObjectProperty>
+    
+
+
+    <!-- http://purl.net/dol/1.0/rdf#exactlyMappableTo -->
+
+    <owl:ObjectProperty rdf:about="http://purl.net/dol/1.0/rdf#exactlyMappableTo">
+        <rdf:type rdf:resource="&owl;TransitiveProperty"/>
+        <rdfs:comment>There is an exact mapping from the subject to the object logic.</rdfs:comment>
+        <rdfs:subPropertyOf rdf:resource="http://purl.net/dol/1.0/rdf#weaklyExactlyMappableTo"/>
+    </owl:ObjectProperty>
+    
+
+
+    <!-- http://purl.net/dol/1.0/rdf#extends -->
+
+    <owl:ObjectProperty rdf:about="http://purl.net/dol/1.0/rdf#extends">
+        <todo:question>While the abstract and text syntaxes of DOL attach the &#39;kind of extension&#39; to _one_ ontology, the semantics (CASL reference section 5.2.5) rather suggests that this is a relation between _two_ ontologies (which may or may not be given explicitly in the syntax).  Is it, therefore, OK, to model it like this in RDF?  Maybe we should also provide a semantically equivalent alternative that is more intuitive wrt. the syntax?</todo:question>
+        <rdfs:range rdf:resource="http://purl.net/dol/1.0/rdf#Ontology"/>
+        <rdfs:domain rdf:resource="http://purl.net/dol/1.0/rdf#Ontology"/>
+    </owl:ObjectProperty>
+    <owl:Axiom>
+        <dct:date rdf:datatype="&xsd;date">2011-12-04</dct:date>
+        <owl:annotatedTarget>While the abstract and text syntaxes of DOL attach the &#39;kind of extension&#39; to _one_ ontology, the semantics (CASL reference section 5.2.5) rather suggests that this is a relation between _two_ ontologies (which may or may not be given explicitly in the syntax).  Is it, therefore, OK, to model it like this in RDF?  Maybe we should also provide a semantically equivalent alternative that is more intuitive wrt. the syntax?</owl:annotatedTarget>
+        <dct:creator>Christoph Lange</dct:creator>
+        <owl:annotatedProperty rdf:resource="&todo;question"/>
+        <owl:annotatedSource rdf:resource="http://purl.net/dol/1.0/rdf#extends"/>
+    </owl:Axiom>
+    
+
+
+    <!-- http://purl.net/dol/1.0/rdf#faithfullyMappableTo -->
+
+    <owl:ObjectProperty rdf:about="http://purl.net/dol/1.0/rdf#faithfullyMappableTo">
+        <rdf:type rdf:resource="&owl;TransitiveProperty"/>
+        <rdfs:comment>There is a faithful mapping from the subject to the object logic.</rdfs:comment>
+        <rdfs:subPropertyOf rdf:resource="http://purl.net/dol/1.0/rdf#mappableToLogic"/>
+    </owl:ObjectProperty>
+    
+
+
+    <!-- http://purl.net/dol/1.0/rdf#hasAlignment -->
+
+    <owl:ObjectProperty rdf:about="http://purl.net/dol/1.0/rdf#hasAlignment">
+        <rdfs:comment>The subject is a distributed ontology, in which the object is an alignment between two participating ontologies.</rdfs:comment>
+        <rdfs:range rdf:resource="http://purl.net/dol/1.0/rdf#Alignment"/>
+        <owl:inverseOf rdf:resource="http://purl.net/dol/1.0/rdf#alignmentIn"/>
+        <rdfs:subPropertyOf rdf:resource="http://purl.net/dol/1.0/rdf#hasLink"/>
+    </owl:ObjectProperty>
+    
+
+
+    <!-- http://purl.net/dol/1.0/rdf#hasInterpretation -->
+
+    <owl:ObjectProperty rdf:about="http://purl.net/dol/1.0/rdf#hasInterpretation">
+        <rdfs:comment>The subject is a distributed ontology, in which the object is an interpretation between two participating ontologies.</rdfs:comment>
+        <rdfs:range rdf:resource="http://purl.net/dol/1.0/rdf#Interpretation"/>
+        <rdfs:subPropertyOf rdf:resource="http://purl.net/dol/1.0/rdf#hasLink"/>
+        <owl:inverseOf rdf:resource="http://purl.net/dol/1.0/rdf#interpretationIn"/>
+    </owl:ObjectProperty>
+    
+
+
+    <!-- http://purl.net/dol/1.0/rdf#hasLink -->
+
+    <owl:ObjectProperty rdf:about="http://purl.net/dol/1.0/rdf#hasLink">
+        <rdfs:comment>The subject is a distributed ontology, in which the object is a link between two participating ontologies.</rdfs:comment>
+        <rdfs:range rdf:resource="http://purl.net/dol/1.0/rdf#Link"/>
+        <rdfs:subPropertyOf rdf:resource="http://purl.net/dol/1.0/rdf#hasMember"/>
+    </owl:ObjectProperty>
+    
+
+
+    <!-- http://purl.net/dol/1.0/rdf#hasMember -->
+
+    <owl:ObjectProperty rdf:about="http://purl.net/dol/1.0/rdf#hasMember">
+        <rdfs:domain rdf:resource="http://purl.net/dol/1.0/rdf#DistributedOntology"/>
+        <owl:inverseOf rdf:resource="http://purl.net/dol/1.0/rdf#memberOf"/>
+    </owl:ObjectProperty>
+    
+
+
+    <!-- http://purl.net/dol/1.0/rdf#hasOntology -->
+
+    <owl:ObjectProperty rdf:about="http://purl.net/dol/1.0/rdf#hasOntology">
+        <rdfs:comment>The subject is a distributed ontology, in which the object is a participating heterogeneous ontology.</rdfs:comment>
+        <rdfs:range rdf:resource="http://purl.net/dol/1.0/rdf#Ontology"/>
+        <rdfs:subPropertyOf rdf:resource="http://purl.net/dol/1.0/rdf#hasMember"/>
+    </owl:ObjectProperty>
+    
+
+
+    <!-- http://purl.net/dol/1.0/rdf#impliedExtensionOf -->
+
+    <owl:ObjectProperty rdf:about="http://purl.net/dol/1.0/rdf#impliedExtensionOf">
+        <rdfs:subPropertyOf rdf:resource="http://purl.net/dol/1.0/rdf#definitionallyExtends"/>
+        <strictlyStrongerThan rdf:resource="http://purl.net/dol/1.0/rdf#definitionallyExtends"/>
+    </owl:ObjectProperty>
+    
+
+
+    <!-- http://purl.net/dol/1.0/rdf#interpretationIn -->
+
+    <owl:ObjectProperty rdf:about="http://purl.net/dol/1.0/rdf#interpretationIn"/>
+    
+
+
+    <!-- http://purl.net/dol/1.0/rdf#language -->
+
+    <owl:ObjectProperty rdf:about="http://purl.net/dol/1.0/rdf#language">
+        <rdf:type rdf:resource="&owl;FunctionalProperty"/>
+        <rdfs:comment>the language of an ontology</rdfs:comment>
+        <rdfs:comment>The reasoners in Protégé don&#39;t like us to say the following.  Together with the SubPropertyChain specified for supportsSerialization it would go beyond OWL DL anyway.
+SubPropertyChain: serialization o serializes</rdfs:comment>
+        <rdfs:domain rdf:resource="http://purl.net/dol/1.0/rdf#Ontology"/>
+        <rdfs:range rdf:resource="http://purl.net/dol/1.0/rdf#OntologyLanguage"/>
+    </owl:ObjectProperty>
+    
+
+
+    <!-- http://purl.net/dol/1.0/rdf#linkIn -->
+
+    <owl:ObjectProperty rdf:about="http://purl.net/dol/1.0/rdf#linkIn">
+        <owl:inverseOf rdf:resource="http://purl.net/dol/1.0/rdf#hasLink"/>
+    </owl:ObjectProperty>
+    
+
+
+    <!-- http://purl.net/dol/1.0/rdf#logic -->
+
+    <owl:ObjectProperty rdf:about="http://purl.net/dol/1.0/rdf#logic">
+        <rdf:type rdf:resource="&owl;FunctionalProperty"/>
+        <todo:question>Inside a &#39;logic section&#39; in the abstract syntax, there are also views.  Therefore, do we need another, analogous RDF property for &#39;the logic of a view&#39;?</todo:question>
+        <rdfs:comment>the logic in which an ontology is formalized</rdfs:comment>
+        <rdfs:range rdf:resource="http://purl.net/dol/1.0/rdf#Logic"/>
+        <rdfs:domain rdf:resource="http://purl.net/dol/1.0/rdf#Ontology"/>
+    </owl:ObjectProperty>
+    <owl:Axiom>
+        <dct:date rdf:datatype="&xsd;date">2011-12-04</dct:date>
+        <dct:creator>Christoph Lange</dct:creator>
+        <owl:annotatedTarget>Inside a &#39;logic section&#39; in the abstract syntax, there are also views.  Therefore, do we need another, analogous RDF property for &#39;the logic of a view&#39;?</owl:annotatedTarget>
+        <owl:annotatedProperty rdf:resource="&todo;question"/>
+        <owl:annotatedSource rdf:resource="http://purl.net/dol/1.0/rdf#logic"/>
+    </owl:Axiom>
+    
+
+
+    <!-- http://purl.net/dol/1.0/rdf#mappableFrom -->
+
+    <owl:ObjectProperty rdf:about="http://purl.net/dol/1.0/rdf#mappableFrom">
+        <rdfs:comment>There is a mapping from the object to the subject.</rdfs:comment>
+        <owl:inverseOf rdf:resource="http://purl.net/dol/1.0/rdf#mappableTo"/>
+    </owl:ObjectProperty>
+    
+
+
+    <!-- http://purl.net/dol/1.0/rdf#mappableFromLanguage -->
+
+    <owl:ObjectProperty rdf:about="http://purl.net/dol/1.0/rdf#mappableFromLanguage">
+        <rdfs:comment>There is a mapping from the object ontology language to the subject ontology language.</rdfs:comment>
+    </owl:ObjectProperty>
+    
+
+
+    <!-- http://purl.net/dol/1.0/rdf#mappableFromLogic -->
+
+    <owl:ObjectProperty rdf:about="http://purl.net/dol/1.0/rdf#mappableFromLogic">
+        <rdfs:comment>There is a mapping from the object logic to the subject logic.</rdfs:comment>
+    </owl:ObjectProperty>
+    
+
+
+    <!-- http://purl.net/dol/1.0/rdf#mappableTo -->
+
+    <owl:ObjectProperty rdf:about="http://purl.net/dol/1.0/rdf#mappableTo">
+        <rdf:type rdf:resource="&owl;TransitiveProperty"/>
+        <rdfs:comment>There is a mapping from the subject to the object.</rdfs:comment>
+        <owl:propertyChainAxiom rdf:parseType="Collection">
+            <rdf:Description rdf:about="http://purl.net/dol/1.0/rdf#sourceOfMapping"/>
+            <rdf:Description rdf:about="http://purl.net/dol/1.0/rdf#mapsTo"/>
+        </owl:propertyChainAxiom>
+    </owl:ObjectProperty>
+    
+
+
+    <!-- http://purl.net/dol/1.0/rdf#mappableToLanguage -->
+
+    <owl:ObjectProperty rdf:about="http://purl.net/dol/1.0/rdf#mappableToLanguage">
+        <rdf:type rdf:resource="&owl;TransitiveProperty"/>
+        <rdfs:comment>There is a mapping from the subject ontology language to the object ontology language.</rdfs:comment>
+        <owl:inverseOf rdf:resource="http://purl.net/dol/1.0/rdf#mappableFromLanguage"/>
+        <rdfs:subPropertyOf rdf:resource="http://purl.net/dol/1.0/rdf#mappableTo"/>
+    </owl:ObjectProperty>
+    
+
+
+    <!-- http://purl.net/dol/1.0/rdf#mappableToLogic -->
+
+    <owl:ObjectProperty rdf:about="http://purl.net/dol/1.0/rdf#mappableToLogic">
+        <rdf:type rdf:resource="&owl;TransitiveProperty"/>
+        <rdfs:comment>There is a mapping from the subject logic to the object logic.</rdfs:comment>
+        <owl:inverseOf rdf:resource="http://purl.net/dol/1.0/rdf#mappableFromLogic"/>
+        <rdfs:subPropertyOf rdf:resource="http://purl.net/dol/1.0/rdf#mappableTo"/>
+    </owl:ObjectProperty>
+    
+
+
+    <!-- http://purl.net/dol/1.0/rdf#mapsFrom -->
+
+    <owl:ObjectProperty rdf:about="http://purl.net/dol/1.0/rdf#mapsFrom">
+        <rdf:type rdf:resource="&owl;FunctionalProperty"/>
+        <rdfs:comment>The subject mapping maps from the object into something of the same type as the object.  (Enforcing the latter constraint goes beyond OWL.)</rdfs:comment>
+        <rdfs:domain rdf:resource="http://purl.net/dol/1.0/rdf#Mapping"/>
+        <owl:inverseOf rdf:resource="http://purl.net/dol/1.0/rdf#sourceOfMapping"/>
+    </owl:ObjectProperty>
+    
+
+
+    <!-- http://purl.net/dol/1.0/rdf#mapsTo -->
+
+    <owl:ObjectProperty rdf:about="http://purl.net/dol/1.0/rdf#mapsTo">
+        <rdf:type rdf:resource="&owl;FunctionalProperty"/>
+        <rdfs:comment>The subject mapping maps from something into the object (which is of the same type).  Enforcing the latter constraint goes beyond OWL.</rdfs:comment>
+        <rdfs:domain rdf:resource="http://purl.net/dol/1.0/rdf#Mapping"/>
+    </owl:ObjectProperty>
+    
+
+
+    <!-- http://purl.net/dol/1.0/rdf#memberOf -->
+
+    <owl:ObjectProperty rdf:about="http://purl.net/dol/1.0/rdf#memberOf"/>
+    
+
+
+    <!-- http://purl.net/dol/1.0/rdf#modelBijectivelyMappableTo -->
+
+    <owl:ObjectProperty rdf:about="http://purl.net/dol/1.0/rdf#modelBijectivelyMappableTo">
+        <rdf:type rdf:resource="&owl;TransitiveProperty"/>
+        <todo:question>Do we have a better idea for naming this?  Maybe mappableToWithBijectiveModels?</todo:question>
+        <rdfs:comment>There is a model-bijective mapping from the subject to the object logic.</rdfs:comment>
+        <rdfs:subPropertyOf rdf:resource="http://purl.net/dol/1.0/rdf#modelExpansivelyMappableTo"/>
+        <rdfs:subPropertyOf rdf:resource="http://purl.net/dol/1.0/rdf#weaklyExactlyMappableTo"/>
+    </owl:ObjectProperty>
+    <owl:Axiom>
+        <dct:date rdf:datatype="&xsd;date">2012-04-17</dct:date>
+        <owl:annotatedTarget>Do we have a better idea for naming this?  Maybe mappableToWithBijectiveModels?</owl:annotatedTarget>
+        <dct:creator>Christoph Lange</dct:creator>
+        <owl:annotatedProperty rdf:resource="&todo;question"/>
+        <owl:annotatedSource rdf:resource="http://purl.net/dol/1.0/rdf#modelBijectivelyMappableTo"/>
+    </owl:Axiom>
+    
+
+
+    <!-- http://purl.net/dol/1.0/rdf#modelExpansivelyMappableTo -->
+
+    <owl:ObjectProperty rdf:about="http://purl.net/dol/1.0/rdf#modelExpansivelyMappableTo">
+        <rdf:type rdf:resource="&owl;TransitiveProperty"/>
+        <rdfs:comment>There is a model-expansive mapping from the subject to the object logic.</rdfs:comment>
+        <rdfs:subPropertyOf rdf:resource="http://purl.net/dol/1.0/rdf#faithfullyMappableTo"/>
+    </owl:ObjectProperty>
+    
+
+
+    <!-- http://purl.net/dol/1.0/rdf#modelTheoreticallyConservativelyExtends -->
+
+    <owl:ObjectProperty rdf:about="http://purl.net/dol/1.0/rdf#modelTheoreticallyConservativelyExtends">
+        <strictlyStrongerThan rdf:resource="http://purl.net/dol/1.0/rdf#consequenceTheoreticallyConservativelyExtends"/>
+        <rdfs:subPropertyOf rdf:resource="http://purl.net/dol/1.0/rdf#consequenceTheoreticallyConservativelyExtends"/>
+    </owl:ObjectProperty>
+    
+
+
+    <!-- http://purl.net/dol/1.0/rdf#monomorphicallyExtends -->
+
+    <owl:ObjectProperty rdf:about="http://purl.net/dol/1.0/rdf#monomorphicallyExtends">
+        <rdfs:subPropertyOf rdf:resource="http://purl.net/dol/1.0/rdf#modelTheoreticallyConservativelyExtends"/>
+        <strictlyStrongerThan rdf:resource="http://purl.net/dol/1.0/rdf#modelTheoreticallyConservativelyExtends"/>
+    </owl:ObjectProperty>
+    
+
+
+    <!-- http://purl.net/dol/1.0/rdf#ontologyIn -->
+
+    <owl:ObjectProperty rdf:about="http://purl.net/dol/1.0/rdf#ontologyIn">
+        <owl:inverseOf rdf:resource="http://purl.net/dol/1.0/rdf#hasOntology"/>
+    </owl:ObjectProperty>
+    
+
+
+    <!-- http://purl.net/dol/1.0/rdf#plainlyMappableTo -->
+
+    <owl:ObjectProperty rdf:about="http://purl.net/dol/1.0/rdf#plainlyMappableTo">
+        <rdf:type rdf:resource="&owl;TransitiveProperty"/>
+        <rdfs:comment>There is a plain mapping from the subject to the object logic.</rdfs:comment>
+        <rdfs:subPropertyOf rdf:resource="http://purl.net/dol/1.0/rdf#theoroidallyMappableTo"/>
+    </owl:ObjectProperty>
+    
+
+
+    <!-- http://purl.net/dol/1.0/rdf#profileOf -->
+
+    <owl:ObjectProperty rdf:about="http://purl.net/dol/1.0/rdf#profileOf">
+        <rdfs:comment>The subject is a profile of the object ontology language.  This is a stronger notion than just being a sublanguage.  Supported serializations are shared along this property.</rdfs:comment>
+        <rdfs:subPropertyOf rdf:resource="http://purl.net/dol/1.0/rdf#subLanguageOf"/>
+    </owl:ObjectProperty>
+    
+
+
+    <!-- http://purl.net/dol/1.0/rdf#projectableFrom -->
+
+    <owl:ObjectProperty rdf:about="http://purl.net/dol/1.0/rdf#projectableFrom">
+        <rdfs:comment>There is a projection from the object to the subject.</rdfs:comment>
+        <rdfs:subPropertyOf rdf:resource="http://purl.net/dol/1.0/rdf#mappableFrom"/>
+    </owl:ObjectProperty>
+    
+
+
+    <!-- http://purl.net/dol/1.0/rdf#projectableTo -->
+
+    <owl:ObjectProperty rdf:about="http://purl.net/dol/1.0/rdf#projectableTo">
+        <rdf:type rdf:resource="&owl;TransitiveProperty"/>
+        <rdfs:comment>There is a projection from the subject to the object.</rdfs:comment>
+        <rdfs:subPropertyOf rdf:resource="http://purl.net/dol/1.0/rdf#mappableTo"/>
+        <owl:inverseOf rdf:resource="http://purl.net/dol/1.0/rdf#projectableFrom"/>
+    </owl:ObjectProperty>
+    
+
+
+    <!-- http://purl.net/dol/1.0/rdf#serialization -->
+
+    <owl:ObjectProperty rdf:about="http://purl.net/dol/1.0/rdf#serialization">
+        <rdf:type rdf:resource="&owl;FunctionalProperty"/>
+        <rdfs:comment>the serialization in which an ontology is written</rdfs:comment>
+        <rdfs:domain rdf:resource="http://purl.net/dol/1.0/rdf#Ontology"/>
+        <rdfs:range rdf:resource="http://purl.net/dol/1.0/rdf#Serialization"/>
+    </owl:ObjectProperty>
+    
+
+
+    <!-- http://purl.net/dol/1.0/rdf#serializes -->
+
+    <owl:ObjectProperty rdf:about="http://purl.net/dol/1.0/rdf#serializes">
+        <owl:inverseOf rdf:resource="http://purl.net/dol/1.0/rdf#supportsSerialization"/>
+    </owl:ObjectProperty>
+    
+
+
+    <!-- http://purl.net/dol/1.0/rdf#source -->
+
+    <owl:ObjectProperty rdf:about="http://purl.net/dol/1.0/rdf#source">
+        <rdf:type rdf:resource="&owl;FunctionalProperty"/>
+        <rdfs:comment>the source ontology of a link</rdfs:comment>
+        <rdfs:domain rdf:resource="http://purl.net/dol/1.0/rdf#Link"/>
+        <rdfs:range rdf:resource="http://purl.net/dol/1.0/rdf#Ontology"/>
+    </owl:ObjectProperty>
+    
+
+
+    <!-- http://purl.net/dol/1.0/rdf#sourceOfMapping -->
+
+    <owl:ObjectProperty rdf:about="http://purl.net/dol/1.0/rdf#sourceOfMapping"/>
+    
+
+
+    <!-- http://purl.net/dol/1.0/rdf#specifiesSemanticsOf -->
+
+    <owl:ObjectProperty rdf:about="http://purl.net/dol/1.0/rdf#specifiesSemanticsOf">
+        <owl:inverseOf rdf:resource="http://purl.net/dol/1.0/rdf#supportsLogic"/>
+    </owl:ObjectProperty>
+    
+
+
+    <!-- http://purl.net/dol/1.0/rdf#subLanguageOf -->
+
+    <owl:ObjectProperty rdf:about="http://purl.net/dol/1.0/rdf#subLanguageOf">
+        <rdf:type rdf:resource="&owl;TransitiveProperty"/>
+        <rdfs:comment>The subject is a sublanguage of the object ontology language.  Supported logics are shared along the inverse of this property.</rdfs:comment>
+        <todo:question>Do we need both subLanguageOf and profileOf?  Intuitively I do think so, and I think it&#39;s reasonable to distinguish them via their properties wrt. logic/serialization propagation.</todo:question>
+        <rdfs:subPropertyOf rdf:resource="http://purl.net/dol/1.0/rdf#mappableToLanguage"/>
+        <rdfs:subPropertyOf rdf:resource="http://purl.net/dol/1.0/rdf#translatableTo"/>
+    </owl:ObjectProperty>
+    <owl:Axiom>
+        <dct:date rdf:datatype="&xsd;date">2012-04-17</dct:date>
+        <owl:annotatedTarget>Do we need both subLanguageOf and profileOf?  Intuitively I do think so, and I think it&#39;s reasonable to distinguish them via their properties wrt. logic/serialization propagation.</owl:annotatedTarget>
+        <dct:creator>Christoph Lange</dct:creator>
+        <owl:annotatedProperty rdf:resource="&todo;question"/>
+        <owl:annotatedSource rdf:resource="http://purl.net/dol/1.0/rdf#subLanguageOf"/>
+    </owl:Axiom>
+    
+
+
+    <!-- http://purl.net/dol/1.0/rdf#subLogicOf -->
+
+    <owl:ObjectProperty rdf:about="http://purl.net/dol/1.0/rdf#subLogicOf">
+        <rdf:type rdf:resource="&owl;TransitiveProperty"/>
+        <rdfs:comment>The subject is a sublogic of the object.</rdfs:comment>
+        <rdfs:subPropertyOf rdf:resource="http://purl.net/dol/1.0/rdf#embeddableInto"/>
+        <owl:propertyChainAxiom rdf:parseType="Collection">
+            <rdf:Description>
+                <owl:inverseOf rdf:resource="http://purl.net/dol/1.0/rdf#exactLogicalExpressivity"/>
+            </rdf:Description>
+            <rdf:Description rdf:about="http://purl.net/dol/1.0/rdf#subLanguageOf"/>
+            <rdf:Description rdf:about="http://purl.net/dol/1.0/rdf#exactLogicalExpressivity"/>
+        </owl:propertyChainAxiom>
+    </owl:ObjectProperty>
+    
+
+
+    <!-- http://purl.net/dol/1.0/rdf#supportsLogic -->
+
+    <owl:ObjectProperty rdf:about="http://purl.net/dol/1.0/rdf#supportsLogic">
+        <rdfs:comment>The semantics of [a subset of] the subject ontology language can be specified in terms of the object logic.</rdfs:comment>
+        <rdfs:range rdf:resource="http://purl.net/dol/1.0/rdf#Logic"/>
+        <rdfs:domain rdf:resource="http://purl.net/dol/1.0/rdf#OntologyLanguage"/>
+        <owl:propertyChainAxiom rdf:parseType="Collection">
+            <rdf:Description>
+                <owl:inverseOf rdf:resource="http://purl.net/dol/1.0/rdf#subLanguageOf"/>
+            </rdf:Description>
+            <rdf:Description rdf:about="http://purl.net/dol/1.0/rdf#supportsLogic"/>
+        </owl:propertyChainAxiom>
+        <owl:propertyChainAxiom rdf:parseType="Collection">
+            <rdf:Description rdf:about="http://purl.net/dol/1.0/rdf#supportsLogic"/>
+            <rdf:Description>
+                <owl:inverseOf rdf:resource="http://purl.net/dol/1.0/rdf#subLogicOf"/>
+            </rdf:Description>
+        </owl:propertyChainAxiom>
+    </owl:ObjectProperty>
+    <owl:Annotation>
+        <dct:date rdf:datatype="&xsd;date">2012-04-17</dct:date>
+        <owl:annotatedTarget>On the board we had &#39;inverse subLanguageOf o exactLogicalExpressivity&#39;, but I think we can be more general.</owl:annotatedTarget>
+        <dct:creator>Christoph Lange</dct:creator>
+        <owl:annotatedProperty rdf:resource="&todo;question"/>
+        <owl:annotatedSource>
+            <owl:Axiom>
+                <todo:question>On the board we had &#39;inverse subLanguageOf o exactLogicalExpressivity&#39;, but I think we can be more general.</todo:question>
+                <owl:annotatedSource rdf:resource="http://purl.net/dol/1.0/rdf#supportsLogic"/>
+                <owl:annotatedProperty rdf:resource="&owl;propertyChainAxiom"/>
+                <owl:annotatedTarget rdf:parseType="Collection">
+                    <rdf:Description>
+                        <owl:inverseOf rdf:resource="http://purl.net/dol/1.0/rdf#subLanguageOf"/>
+                    </rdf:Description>
+                    <rdf:Description rdf:about="http://purl.net/dol/1.0/rdf#supportsLogic"/>
+                </owl:annotatedTarget>
+            </owl:Axiom>
+        </owl:annotatedSource>
+    </owl:Annotation>
+    
+
+
+    <!-- http://purl.net/dol/1.0/rdf#supportsSerialization -->
+
+    <owl:ObjectProperty rdf:about="http://purl.net/dol/1.0/rdf#supportsSerialization">
+        <rdf:type rdf:resource="&owl;InverseFunctionalProperty"/>
+        <rdfs:comment>The reasoners in Protégé don&#39;t like us to say the following.  Together with the SubPropertyChain specified for language it would go beyond OWL DL anyway.
+SubPropertyChain: profileOf o supportsSerialization</rdfs:comment>
+        <rdfs:comment>Note that the serialization should be as specific as possible, i.e. one should not say that ``OWL can be serialized in XML&#39;&#39; and ``Common Logic can be serialized in XML&#39;&#39;, but instead ``OWL can be serialized in OWL XML&#39;&#39; and ``Common Logic can be serialized in XCL&#39;&#39;, taking into account that OWL XML and XCL are two different XML languages.</rdfs:comment>
+        <rdfs:comment>Ontologies in the subject ontology language can be serialized in the object serialization.</rdfs:comment>
+        <rdfs:domain rdf:resource="http://purl.net/dol/1.0/rdf#OntologyLanguage"/>
+        <rdfs:range rdf:resource="http://purl.net/dol/1.0/rdf#Serialization"/>
+    </owl:ObjectProperty>
+    
+
+
+    <!-- http://purl.net/dol/1.0/rdf#target -->
+
+    <owl:ObjectProperty rdf:about="http://purl.net/dol/1.0/rdf#target">
+        <rdf:type rdf:resource="&owl;FunctionalProperty"/>
+        <rdfs:comment>the target ontology of a link</rdfs:comment>
+        <rdfs:domain rdf:resource="http://purl.net/dol/1.0/rdf#Link"/>
+        <rdfs:range rdf:resource="http://purl.net/dol/1.0/rdf#Ontology"/>
+    </owl:ObjectProperty>
+    
+
+
+    <!-- http://purl.net/dol/1.0/rdf#theoroidallyMappableTo -->
+
+    <owl:ObjectProperty rdf:about="http://purl.net/dol/1.0/rdf#theoroidallyMappableTo">
+        <rdf:type rdf:resource="&owl;TransitiveProperty"/>
+        <rdfs:comment>There is a theoroidal mapping from the subject to the object logic.</rdfs:comment>
+        <rdfs:subPropertyOf rdf:resource="http://purl.net/dol/1.0/rdf#mappableToLogic"/>
+    </owl:ObjectProperty>
+    
+
+
+    <!-- http://purl.net/dol/1.0/rdf#translatableFrom -->
+
+    <owl:ObjectProperty rdf:about="http://purl.net/dol/1.0/rdf#translatableFrom">
+        <rdfs:comment>There is a translation from the object to the subject.</rdfs:comment>
+        <rdfs:subPropertyOf rdf:resource="http://purl.net/dol/1.0/rdf#mappableFrom"/>
+        <owl:inverseOf rdf:resource="http://purl.net/dol/1.0/rdf#translatableTo"/>
+    </owl:ObjectProperty>
+    
+
+
+    <!-- http://purl.net/dol/1.0/rdf#translatableTo -->
+
+    <owl:ObjectProperty rdf:about="http://purl.net/dol/1.0/rdf#translatableTo">
+        <rdf:type rdf:resource="&owl;TransitiveProperty"/>
+        <rdfs:comment>There is a translation from the subject to the object.</rdfs:comment>
+        <rdfs:subPropertyOf rdf:resource="http://purl.net/dol/1.0/rdf#mappableTo"/>
+    </owl:ObjectProperty>
+    
+
+
+    <!-- http://purl.net/dol/1.0/rdf#weaklyExactlyMappableTo -->
+
+    <owl:ObjectProperty rdf:about="http://purl.net/dol/1.0/rdf#weaklyExactlyMappableTo">
+        <rdf:type rdf:resource="&owl;TransitiveProperty"/>
+        <rdfs:comment>There is a weakly exact mapping from the subject to the object logic.</rdfs:comment>
+        <rdfs:subPropertyOf rdf:resource="http://purl.net/dol/1.0/rdf#mappableToLogic"/>
+    </owl:ObjectProperty>
+    
+
+
+    <!-- 
+    ///////////////////////////////////////////////////////////////////////////////////////
+    //
+    // Data properties
+    //
+    ///////////////////////////////////////////////////////////////////////////////////////
+     -->
+
+    
+
+
+    <!-- http://purl.net/dol/1.0/rdf#altFilenameExtension -->
+
+    <owl:DatatypeProperty rdf:about="http://purl.net/dol/1.0/rdf#altFilenameExtension">
+        <rdfs:comment>an alternative filename extension for a serialization</rdfs:comment>
+        <rdfs:domain rdf:resource="http://purl.net/dol/1.0/rdf#Serialization"/>
+        <rdfs:range rdf:resource="&xsd;string"/>
+    </owl:DatatypeProperty>
+    
+
+
+    <!-- http://purl.net/dol/1.0/rdf#mediaType -->
+
+    <owl:DatatypeProperty rdf:about="http://purl.net/dol/1.0/rdf#mediaType">
+        <rdf:type rdf:resource="&owl;FunctionalProperty"/>
+        <rdfs:comment>the media type (MIME type) of a serialization</rdfs:comment>
+        <rdfs:domain rdf:resource="http://purl.net/dol/1.0/rdf#Serialization"/>
+        <rdfs:range rdf:resource="&xsd;string"/>
+    </owl:DatatypeProperty>
+    
+
+
+    <!-- http://purl.net/dol/1.0/rdf#prefFilenameExtension -->
+
+    <owl:DatatypeProperty rdf:about="http://purl.net/dol/1.0/rdf#prefFilenameExtension">
+        <rdf:type rdf:resource="&owl;FunctionalProperty"/>
+        <rdfs:comment>the preferred filename extension for a serialization</rdfs:comment>
+        <rdfs:domain rdf:resource="http://purl.net/dol/1.0/rdf#Serialization"/>
+        <rdfs:range rdf:resource="&xsd;string"/>
+    </owl:DatatypeProperty>
+    
+
+
+    <!-- 
+    ///////////////////////////////////////////////////////////////////////////////////////
+    //
+    // Classes
+    //
+    ///////////////////////////////////////////////////////////////////////////////////////
+     -->
+
+    
+
+
+    <!-- http://purl.net/dol/1.0/rdf#Alignment -->
+
+    <owl:Class rdf:about="http://purl.net/dol/1.0/rdf#Alignment">
+        <rdfs:subClassOf rdf:resource="http://purl.net/dol/1.0/rdf#Link"/>
+        <owl:disjointWith rdf:resource="http://purl.net/dol/1.0/rdf#Interpretation"/>
+        <rdfs:comment>an alignment between two heterogeneous ontologies in a distributed ontology</rdfs:comment>
+    </owl:Class>
+    
+
+
+    <!-- http://purl.net/dol/1.0/rdf#BasicOntology -->
+
+    <owl:Class rdf:about="http://purl.net/dol/1.0/rdf#BasicOntology">
+        <rdfs:subClassOf rdf:resource="http://purl.net/dol/1.0/rdf#Ontology"/>
+        <rdfs:comment>a basic ontology (in a single language, logic, and serialization)</rdfs:comment>
+    </owl:Class>
+    
+
+
+    <!-- http://purl.net/dol/1.0/rdf#DefaultMapping -->
+
+    <owl:Class rdf:about="http://purl.net/dol/1.0/rdf#DefaultMapping">
+        <rdfs:subClassOf rdf:resource="http://purl.net/dol/1.0/rdf#Mapping"/>
+        <propagatesToAdjoint rdf:datatype="&xsd;boolean">true</propagatesToAdjoint>
+    </owl:Class>
+    
+
+
+    <!-- http://purl.net/dol/1.0/rdf#DistributedOntology -->
+
+    <owl:Class rdf:about="http://purl.net/dol/1.0/rdf#DistributedOntology">
+        <rdfs:subClassOf rdf:resource="http://purl.net/dol/1.0/rdf#Ontology"/>
+        <rdfs:comment>a distributed ontology</rdfs:comment>
+    </owl:Class>
+    
+
+
+    <!-- http://purl.net/dol/1.0/rdf#Embedding -->
+
+    <owl:Class rdf:about="http://purl.net/dol/1.0/rdf#Embedding">
+        <rdfs:subClassOf rdf:resource="http://purl.net/dol/1.0/rdf#ExactMapping"/>
+        <rdfs:subClassOf rdf:resource="http://purl.net/dol/1.0/rdf#LogicMapping"/>
+        <rdfs:subClassOf rdf:resource="http://purl.net/dol/1.0/rdf#ModelBijectiveMapping"/>
+        <rdfs:subClassOf rdf:resource="http://purl.net/dol/1.0/rdf#Translation"/>
+        <reifies rdf:resource="http://purl.net/dol/1.0/rdf#embeddableInto"/>
+    </owl:Class>
+    
+
+
+    <!-- http://purl.net/dol/1.0/rdf#Entity -->
+
+    <owl:Class rdf:about="http://purl.net/dol/1.0/rdf#Entity">
+        <rdfs:comment>an entity in an ontology</rdfs:comment>
+    </owl:Class>
+    
+
+
+    <!-- http://purl.net/dol/1.0/rdf#ExactMapping -->
+
+    <owl:Class rdf:about="http://purl.net/dol/1.0/rdf#ExactMapping">
+        <rdfs:subClassOf rdf:resource="http://purl.net/dol/1.0/rdf#WeaklyExactMapping"/>
+        <propagatesToAdjoint rdf:datatype="&xsd;boolean">true</propagatesToAdjoint>
+        <reifies rdf:resource="http://purl.net/dol/1.0/rdf#exactlyMappableTo"/>
+    </owl:Class>
+    
+
+
+    <!-- http://purl.net/dol/1.0/rdf#FaithfulMapping -->
+
+    <owl:Class rdf:about="http://purl.net/dol/1.0/rdf#FaithfulMapping">
+        <rdfs:subClassOf rdf:resource="http://purl.net/dol/1.0/rdf#Mapping"/>
+        <propagatesToAdjoint rdf:datatype="&xsd;boolean">true</propagatesToAdjoint>
+        <reifies rdf:resource="http://purl.net/dol/1.0/rdf#faithfullyMappableTo"/>
+    </owl:Class>
+    
+
+
+    <!-- http://purl.net/dol/1.0/rdf#Interpretation -->
+
+    <owl:Class rdf:about="http://purl.net/dol/1.0/rdf#Interpretation">
+        <owl:equivalentClass rdf:resource="http://purl.net/dol/1.0/rdf#View"/>
+    </owl:Class>
+    
+
+
+    <!-- http://purl.net/dol/1.0/rdf#Link -->
+
+    <owl:Class rdf:about="http://purl.net/dol/1.0/rdf#Link">
+        <rdfs:subClassOf>
+            <owl:Class>
+                <owl:intersectionOf rdf:parseType="Collection">
+                    <owl:Restriction>
+                        <owl:onProperty rdf:resource="http://purl.net/dol/1.0/rdf#source"/>
+                        <owl:cardinality rdf:datatype="&xsd;nonNegativeInteger">1</owl:cardinality>
+                    </owl:Restriction>
+                    <owl:Restriction>
+                        <owl:onProperty rdf:resource="http://purl.net/dol/1.0/rdf#target"/>
+                        <owl:cardinality rdf:datatype="&xsd;nonNegativeInteger">1</owl:cardinality>
+                    </owl:Restriction>
+                </owl:intersectionOf>
+            </owl:Class>
+        </rdfs:subClassOf>
+        <rdfs:comment>a link between two heterogeneous ontologies in a distributed ontology</rdfs:comment>
+    </owl:Class>
+    
+
+
+    <!-- http://purl.net/dol/1.0/rdf#Logic -->
+
+    <owl:Class rdf:about="http://purl.net/dol/1.0/rdf#Logic">
+        <rdfs:comment>a logic that defines the semantics of an ontology language</rdfs:comment>
+    </owl:Class>
+    
+
+
+    <!-- http://purl.net/dol/1.0/rdf#LogicMapping -->
+
+    <owl:Class rdf:about="http://purl.net/dol/1.0/rdf#LogicMapping">
+        <rdfs:subClassOf rdf:resource="http://purl.net/dol/1.0/rdf#Mapping"/>
+        <owl:disjointWith rdf:resource="http://purl.net/dol/1.0/rdf#OntologyLanguageMapping"/>
+        <propagatesToAdjoint rdf:datatype="&xsd;boolean">true</propagatesToAdjoint>
+        <rdfs:comment>a mapping (translation or projection) between two logics</rdfs:comment>
+    </owl:Class>
+    
+
+
+    <!-- http://purl.net/dol/1.0/rdf#Mapping -->
+
+    <owl:Class rdf:about="http://purl.net/dol/1.0/rdf#Mapping">
+        <rdfs:subClassOf>
+            <owl:Class>
+                <owl:intersectionOf rdf:parseType="Collection">
+                    <owl:Restriction>
+                        <owl:onProperty rdf:resource="http://purl.net/dol/1.0/rdf#mapsFrom"/>
+                        <owl:cardinality rdf:datatype="&xsd;nonNegativeInteger">1</owl:cardinality>
+                    </owl:Restriction>
+                    <owl:Restriction>
+                        <owl:onProperty rdf:resource="http://purl.net/dol/1.0/rdf#mapsTo"/>
+                        <owl:cardinality rdf:datatype="&xsd;nonNegativeInteger">1</owl:cardinality>
+                    </owl:Restriction>
+                </owl:intersectionOf>
+            </owl:Class>
+        </rdfs:subClassOf>
+        <rdfs:comment>a generic mapping (translation or projection)</rdfs:comment>
+        <reifies rdf:resource="http://purl.net/dol/1.0/rdf#mappableTo"/>
+    </owl:Class>
+    <owl:Axiom>
+        <rdfs:comment>Apparently one has to say &#39;owl:Thing&#39; here; omitting it is legal by http://www.w3.org/TR/2009/NOTE-owl2-manchester-syntax-20091027/#Descriptions, but Protégé doesn&#39;t like it</rdfs:comment>
+        <owl:annotatedSource rdf:resource="http://purl.net/dol/1.0/rdf#Mapping"/>
+        <owl:annotatedProperty rdf:resource="&rdfs;subClassOf"/>
+        <owl:annotatedTarget>
+            <owl:Class>
+                <owl:intersectionOf rdf:parseType="Collection">
+                    <owl:Restriction>
+                        <owl:onProperty rdf:resource="http://purl.net/dol/1.0/rdf#mapsFrom"/>
+                        <owl:cardinality rdf:datatype="&xsd;nonNegativeInteger">1</owl:cardinality>
+                    </owl:Restriction>
+                    <owl:Restriction>
+                        <owl:onProperty rdf:resource="http://purl.net/dol/1.0/rdf#mapsTo"/>
+                        <owl:cardinality rdf:datatype="&xsd;nonNegativeInteger">1</owl:cardinality>
+                    </owl:Restriction>
+                </owl:intersectionOf>
+            </owl:Class>
+        </owl:annotatedTarget>
+    </owl:Axiom>
+    
+
+
+    <!-- http://purl.net/dol/1.0/rdf#ModelBijectiveMapping -->
+
+    <owl:Class rdf:about="http://purl.net/dol/1.0/rdf#ModelBijectiveMapping">
+        <rdfs:subClassOf rdf:resource="http://purl.net/dol/1.0/rdf#ModelExpansiveMapping"/>
+        <rdfs:subClassOf rdf:resource="http://purl.net/dol/1.0/rdf#WeaklyExactMapping"/>
+        <propagatesToAdjoint rdf:datatype="&xsd;boolean">true</propagatesToAdjoint>
+        <reifies rdf:resource="http://purl.net/dol/1.0/rdf#modelBijectivelyMappableTo"/>
+    </owl:Class>
+    
+
+
+    <!-- http://purl.net/dol/1.0/rdf#ModelExpansiveMapping -->
+
+    <owl:Class rdf:about="http://purl.net/dol/1.0/rdf#ModelExpansiveMapping">
+        <rdfs:subClassOf rdf:resource="http://purl.net/dol/1.0/rdf#FaithfulMapping"/>
+        <propagatesToAdjoint rdf:datatype="&xsd;boolean">true</propagatesToAdjoint>
+        <reifies rdf:resource="http://purl.net/dol/1.0/rdf#modelExpansivelyMappableTo"/>
+    </owl:Class>
+    
+
+
+    <!-- http://purl.net/dol/1.0/rdf#Ontology -->
+
+    <owl:Class rdf:about="http://purl.net/dol/1.0/rdf#Ontology">
+        <rdfs:comment>an ontology, distributed or basic</rdfs:comment>
+    </owl:Class>
+    
+
+
+    <!-- http://purl.net/dol/1.0/rdf#OntologyLanguage -->
+
+    <owl:Class rdf:about="http://purl.net/dol/1.0/rdf#OntologyLanguage">
+        <rdfs:subClassOf>
+            <owl:Class>
+                <owl:intersectionOf rdf:parseType="Collection">
+                    <owl:Restriction>
+                        <owl:onProperty rdf:resource="http://purl.net/dol/1.0/rdf#supportsLogic"/>
+                        <owl:someValuesFrom rdf:resource="http://purl.net/dol/1.0/rdf#Logic"/>
+                    </owl:Restriction>
+                    <owl:Restriction>
+                        <owl:onProperty rdf:resource="http://purl.net/dol/1.0/rdf#supportsSerialization"/>
+                        <owl:someValuesFrom rdf:resource="http://purl.net/dol/1.0/rdf#Serialization"/>
+                    </owl:Restriction>
+                    <owl:Restriction>
+                        <owl:onProperty rdf:resource="http://purl.net/dol/1.0/rdf#supportsLogic"/>
+                        <owl:allValuesFrom rdf:resource="http://purl.net/dol/1.0/rdf#Logic"/>
+                    </owl:Restriction>
+                    <owl:Restriction>
+                        <owl:onProperty rdf:resource="http://purl.net/dol/1.0/rdf#supportsSerialization"/>
+                        <owl:allValuesFrom rdf:resource="http://purl.net/dol/1.0/rdf#Serialization"/>
+                    </owl:Restriction>
+                </owl:intersectionOf>
+            </owl:Class>
+        </rdfs:subClassOf>
+        <rdfs:comment>an ontology language</rdfs:comment>
+    </owl:Class>
+    
+
+
+    <!-- http://purl.net/dol/1.0/rdf#OntologyLanguageMapping -->
+
+    <owl:Class rdf:about="http://purl.net/dol/1.0/rdf#OntologyLanguageMapping">
+        <rdfs:subClassOf rdf:resource="http://purl.net/dol/1.0/rdf#Mapping"/>
+        <propagatesToAdjoint rdf:datatype="&xsd;boolean">true</propagatesToAdjoint>
+        <rdfs:comment>a mapping (translation or projection) between two ontology languages</rdfs:comment>
+    </owl:Class>
+    
+
+
+    <!-- http://purl.net/dol/1.0/rdf#PlainMapping -->
+
+    <owl:Class rdf:about="http://purl.net/dol/1.0/rdf#PlainMapping">
+        <rdfs:subClassOf rdf:resource="http://purl.net/dol/1.0/rdf#Mapping"/>
+        <owl:disjointWith rdf:resource="http://purl.net/dol/1.0/rdf#TheoroidalMapping"/>
+        <propagatesToAdjoint rdf:datatype="&xsd;boolean">true</propagatesToAdjoint>
+        <reifies rdf:resource="http://purl.net/dol/1.0/rdf#plainlyMappableTo"/>
+    </owl:Class>
+    <owl:Axiom>
+        <rdfs:comment>Protégé 4.2 doesn&#39;t like &#39;Class: Mapping DisjointUnionOf: PlainMapping, TheoroidalMapping&#39;, so we do it this way:</rdfs:comment>
+        <owl:annotatedSource rdf:resource="http://purl.net/dol/1.0/rdf#PlainMapping"/>
+        <owl:annotatedTarget rdf:resource="http://purl.net/dol/1.0/rdf#TheoroidalMapping"/>
+        <owl:annotatedProperty rdf:resource="&owl;disjointWith"/>
+    </owl:Axiom>
+    
+
+
+    <!-- http://purl.net/dol/1.0/rdf#Projection -->
+
+    <owl:Class rdf:about="http://purl.net/dol/1.0/rdf#Projection">
+        <rdfs:subClassOf rdf:resource="http://purl.net/dol/1.0/rdf#Mapping"/>
+        <owl:disjointWith rdf:resource="http://purl.net/dol/1.0/rdf#Translation"/>
+        <rdfs:comment>a generic projection</rdfs:comment>
+        <reifies rdf:resource="http://purl.net/dol/1.0/rdf#projectableTo"/>
+    </owl:Class>
+    
+
+
+    <!-- http://purl.net/dol/1.0/rdf#Sentence -->
+
+    <owl:Class rdf:about="http://purl.net/dol/1.0/rdf#Sentence">
+        <rdfs:comment>a sentence in an ontology</rdfs:comment>
+    </owl:Class>
+    
+
+
+    <!-- http://purl.net/dol/1.0/rdf#Serialization -->
+
+    <owl:Class rdf:about="http://purl.net/dol/1.0/rdf#Serialization">
+        <rdfs:comment>a serialization of an ontology language</rdfs:comment>
+    </owl:Class>
+    
+
+
+    <!-- http://purl.net/dol/1.0/rdf#SubLogic -->
+
+    <owl:Class rdf:about="http://purl.net/dol/1.0/rdf#SubLogic">
+        <rdfs:subClassOf rdf:resource="http://purl.net/dol/1.0/rdf#Embedding"/>
+        <rdfs:comment>&#39;syntactic&#39; embedding</rdfs:comment>
+        <reifies rdf:resource="http://purl.net/dol/1.0/rdf#subLogicOf"/>
+    </owl:Class>
+    
+
+
+    <!-- http://purl.net/dol/1.0/rdf#TheoroidalMapping -->
+
+    <owl:Class rdf:about="http://purl.net/dol/1.0/rdf#TheoroidalMapping">
+        <owl:equivalentClass>
+            <owl:Class>
+                <owl:intersectionOf rdf:parseType="Collection">
+                    <rdf:Description rdf:about="http://purl.net/dol/1.0/rdf#Mapping"/>
+                    <owl:Class>
+                        <owl:complementOf rdf:resource="http://purl.net/dol/1.0/rdf#PlainMapping"/>
+                    </owl:Class>
+                </owl:intersectionOf>
+            </owl:Class>
+        </owl:equivalentClass>
+        <rdfs:subClassOf rdf:resource="http://purl.net/dol/1.0/rdf#Mapping"/>
+        <propagatesToAdjoint rdf:datatype="&xsd;boolean">true</propagatesToAdjoint>
+        <rdfs:comment>orthogonal to WeaklyExactMapping and FaithfulMapping</rdfs:comment>
+        <reifies rdf:resource="http://purl.net/dol/1.0/rdf#theoroidallyMappableTo"/>
+    </owl:Class>
+    <owl:Axiom>
+        <rdfs:comment>Protégé 4.2 doesn&#39;t like &#39;Class: Mapping DisjointUnionOf: PlainMapping, TheoroidalMapping&#39;, so we do it this way:</rdfs:comment>
+        <owl:annotatedSource rdf:resource="http://purl.net/dol/1.0/rdf#PlainMapping"/>
+        <owl:annotatedTarget rdf:resource="http://purl.net/dol/1.0/rdf#TheoroidalMapping"/>
+        <owl:annotatedProperty rdf:resource="&owl;disjointWith"/>
+    </owl:Axiom>
+    
+
+
+    <!-- http://purl.net/dol/1.0/rdf#Translation -->
+
+    <owl:Class rdf:about="http://purl.net/dol/1.0/rdf#Translation">
+        <rdfs:subClassOf rdf:resource="http://purl.net/dol/1.0/rdf#Mapping"/>
+        <rdfs:comment>a generic translation</rdfs:comment>
+        <reifies rdf:resource="http://purl.net/dol/1.0/rdf#translatableTo"/>
+    </owl:Class>
+    
+
+
+    <!-- http://purl.net/dol/1.0/rdf#View -->
+
+    <owl:Class rdf:about="http://purl.net/dol/1.0/rdf#View">
+        <rdfs:subClassOf rdf:resource="http://purl.net/dol/1.0/rdf#Link"/>
+        <rdfs:comment>a view (also called interpretation) between two heterogeneous ontologies in a distributed ontology</rdfs:comment>
+    </owl:Class>
+    
+
+
+    <!-- http://purl.net/dol/1.0/rdf#WeaklyExactMapping -->
+
+    <owl:Class rdf:about="http://purl.net/dol/1.0/rdf#WeaklyExactMapping">
+        <rdfs:subClassOf rdf:resource="http://purl.net/dol/1.0/rdf#Mapping"/>
+        <propagatesToAdjoint rdf:datatype="&xsd;boolean">true</propagatesToAdjoint>
+        <reifies rdf:resource="http://purl.net/dol/1.0/rdf#weaklyExactlyMappableTo"/>
+    </owl:Class>
+    
+
+
+    <!-- http://www.w3.org/2002/07/owl#Thing -->
+
+    <owl:Class rdf:about="&owl;Thing"/>
+    
+
+
+    <!-- 
+    ///////////////////////////////////////////////////////////////////////////////////////
+    //
+    // General axioms
+    //
+    ///////////////////////////////////////////////////////////////////////////////////////
+     -->
+
+    <rdf:Description>
+        <rdf:type rdf:resource="&owl;AllDisjointClasses"/>
+        <owl:members rdf:parseType="Collection">
+            <rdf:Description rdf:about="http://purl.net/dol/1.0/rdf#Alignment"/>
+            <rdf:Description rdf:about="http://purl.net/dol/1.0/rdf#Logic"/>
+            <rdf:Description rdf:about="http://purl.net/dol/1.0/rdf#Mapping"/>
+            <rdf:Description rdf:about="http://purl.net/dol/1.0/rdf#Ontology"/>
+            <rdf:Description rdf:about="http://purl.net/dol/1.0/rdf#OntologyLanguage"/>
+            <rdf:Description rdf:about="http://purl.net/dol/1.0/rdf#Serialization"/>
+        </owl:members>
+    </rdf:Description>
+</rdf:RDF>
+
+
+
+<!-- Generated by the OWL API (version 3.2.3.1824) http://owlapi.sourceforge.net -->
+

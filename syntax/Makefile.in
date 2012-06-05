@@ -1,0 +1,10 @@
+CWM_DEFAULT_ARGS = -quiet
+
+# Translate RDF from Turtle serialization (*.turtle) to RDF/XML serialization (*.rdf)
+# Note about --rdf=d: Eyeball (used in "make test" in ../registry) doesn't like if both the default prefix and some other prefix are bound to the same namespace URI.
+%.rdf: %.turtle
+	cwm --n3 $< --rdf=d $(CWM_DEFAULT_ARGS) > $@
+
+# Local Variables:
+# mode: makefile-gmake
+# End:

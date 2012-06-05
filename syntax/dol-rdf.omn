@@ -1,0 +1,1114 @@
+Prefix: : <http://purl.net/dol/1.0/rdf#>
+Prefix: dc: <http://purl.org/dc/elements/1.1/>
+Prefix: dct: <http://purl.org/dc/terms/>
+Prefix: owl: <http://www.w3.org/2002/07/owl#>
+Prefix: rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#>
+Prefix: xml: <http://www.w3.org/XML/1998/namespace>
+Prefix: xsd: <http://www.w3.org/2001/XMLSchema-datatypes#>
+Prefix: rdfs: <http://www.w3.org/2000/01/rdf-schema#>
+Prefix: todo: <http://example.org/todo#>
+
+
+
+Ontology: <http://purl.net/dol/1.0/rdf#>
+
+
+Annotations: 
+    owl:versionInfo "1.0",
+    rdfs:comment "RDF serialization of DOL, implemented as an OWL ontology.  Actually some axioms that we would like to have go beyond OWL.",
+    todo:task "When scaling this ontology implementation up to DOL, look below for annotations marked as 'beyond OWL'.  These things can be modeled in FOL."
+
+AnnotationProperty: dct:creator
+
+    
+AnnotationProperty: strictlyStrongerThan
+
+    
+AnnotationProperty: propagatesToAdjoint
+
+    Annotations: 
+        rdfs:comment "The subject class denotes a kind of mapping that, if it holds for a translation, also holds for the adjoint projection.",
+        rdfs:comment "This is just for informative purposes: Even though it probably does not go beyond OWL, it doesn't work for annotation properties in Protégé
+Domain: owl:Class
+Range: xsd:boolean"
+    
+    Annotations: 
+        rdfs:comment "The subject class denotes a kind of mapping that, if it holds for a translation, also holds for the adjoint projection.",
+        rdfs:comment "This is just for informative purposes: Even though it probably does not go beyond OWL, it doesn't work for annotation properties in Protégé
+Domain: owl:Class
+Range: xsd:boolean"
+    
+    
+AnnotationProperty: todo:task
+
+    
+AnnotationProperty: dct:date
+
+    
+AnnotationProperty: rdfs:comment
+
+    
+AnnotationProperty: owl:versionInfo
+
+    
+AnnotationProperty: supportsEntityKind
+
+    Annotations: 
+        rdfs:comment "This is just for informative purposes: Even though it probably does not go beyond OWL, it doesn't work for annotation properties in Protégé
+Domain: OntologyLanguage
+Range: owl:Class that rdfs:subClassOf value Entity"
+    
+    Annotations: 
+        rdfs:comment "This is just for informative purposes: Even though it probably does not go beyond OWL, it doesn't work for annotation properties in Protégé
+Domain: OntologyLanguage
+Range: owl:Class that rdfs:subClassOf value Entity"
+    
+    
+AnnotationProperty: entityKindIn
+
+    Annotations: 
+        rdfs:comment "This is just for informative purposes: It doesn't work for annotation properties
+InverseOf: supportsEntityKind"
+    
+    Annotations: 
+        rdfs:comment "This is just for informative purposes: It doesn't work for annotation properties
+InverseOf: supportsEntityKind"
+    
+    
+AnnotationProperty: reifiedBy
+
+    Annotations: 
+        rdfs:comment "The subject property is reified by the object class.",
+        rdfs:comment "This is just for informative purposes: It doesn't work for annotation properties
+InverseOf: reifies"
+    
+    Annotations: 
+        rdfs:comment "The subject property is reified by the object class.",
+        rdfs:comment "This is just for informative purposes: It doesn't work for annotation properties
+InverseOf: reifies"
+    
+    
+AnnotationProperty: dct:source
+
+    
+AnnotationProperty: reifies
+
+    Annotations: 
+        rdfs:comment "The subject class reifies the object property.",
+        rdfs:comment "This is just for informative purposes: Even though it probably does not go beyond OWL, it doesn't work for annotation properties in Protégé
+Domain: owl:Class
+Range: owl:ObjectProperty"
+    
+    Annotations: 
+        rdfs:comment "The subject class reifies the object property.",
+        rdfs:comment "This is just for informative purposes: Even though it probably does not go beyond OWL, it doesn't work for annotation properties in Protégé
+Domain: owl:Class
+Range: owl:ObjectProperty"
+    
+    
+AnnotationProperty: todo:question
+
+    
+Datatype: xsd:string
+
+    
+Datatype: xsd:date
+
+    
+Datatype: rdf:PlainLiteral
+
+    
+Datatype: xsd:boolean
+
+    
+ObjectProperty: embeddableInto
+
+    Annotations: 
+        rdfs:comment "The subject is embeddable into the object logic."
+    
+    SubPropertyOf: 
+        translatableTo,
+        exactlyMappableTo,
+        modelBijectivelyMappableTo,
+        mappableToLogic
+    
+    Characteristics: 
+        Transitive
+    
+    
+ObjectProperty: impliedExtensionOf
+
+    Annotations: 
+        strictlyStrongerThan <http://purl.net/dol/1.0/rdf#definitionallyExtends>
+    
+    SubPropertyOf: 
+        definitionallyExtends
+    
+    
+ObjectProperty: ontologyIn
+
+    InverseOf: 
+        hasOntology
+    
+    
+ObjectProperty: conservativelyExtends
+
+    Annotations: 
+        dct:source "This synonym is inspired by CASL."
+    
+    EquivalentTo: 
+        modelTheoreticallyConservativelyExtends
+    
+    
+ObjectProperty: exactlyCorrespondingMapping
+
+    Annotations: 
+        rdfs:comment "The subject ontology language mapping exactly corresponds to the object logic mapping."
+    
+    Domain: 
+        OntologyLanguageMapping
+    
+    Range: 
+        LogicMapping
+    
+    
+ObjectProperty: translatableFrom
+
+    Annotations: 
+        rdfs:comment "There is a translation from the object to the subject."
+    
+    SubPropertyOf: 
+        mappableFrom
+    
+    InverseOf: 
+        translatableTo
+    
+    
+ObjectProperty: hasMember
+
+    Domain: 
+        DistributedOntology
+    
+    InverseOf: 
+        memberOf
+    
+    
+ObjectProperty: faithfullyMappableTo
+
+    Annotations: 
+        rdfs:comment "There is a faithful mapping from the subject to the object logic."
+    
+    SubPropertyOf: 
+        mappableToLogic
+    
+    Characteristics: 
+        Transitive
+    
+    
+ObjectProperty: mappableToLogic
+
+    Annotations: 
+        rdfs:comment "There is a mapping from the subject logic to the object logic."
+    
+    SubPropertyOf: 
+        mappableTo
+    
+    Characteristics: 
+        Transitive
+    
+    InverseOf: 
+        mappableFromLogic
+    
+    
+ObjectProperty: extends
+
+    Annotations: 
+        
+            Annotations: dct:creator "Christoph Lange", 
+                         dct:date "2011-12-04"^^xsd:date
+        todo:question "While the abstract and text syntaxes of DOL attach the 'kind of extension' to _one_ ontology, the semantics (CASL reference section 5.2.5) rather suggests that this is a relation between _two_ ontologies (which may or may not be given explicitly in the syntax).  Is it, therefore, OK, to model it like this in RDF?  Maybe we should also provide a semantically equivalent alternative that is more intuitive wrt. the syntax?"
+    
+    Domain: 
+        Ontology
+    
+    Range: 
+        Ontology
+    
+    
+ObjectProperty: weaklyExactlyMappableTo
+
+    Annotations: 
+        rdfs:comment "There is a weakly exact mapping from the subject to the object logic."
+    
+    SubPropertyOf: 
+        mappableToLogic
+    
+    Characteristics: 
+        Transitive
+    
+    
+ObjectProperty: subLanguageOf
+
+    Annotations: 
+        rdfs:comment "The subject is a sublanguage of the object ontology language.  Supported logics are shared along the inverse of this property.",
+        
+            Annotations: dct:creator "Christoph Lange", 
+                         dct:date "2012-04-17"^^xsd:date
+        todo:question "Do we need both subLanguageOf and profileOf?  Intuitively I do think so, and I think it's reasonable to distinguish them via their properties wrt. logic/serialization propagation."
+    
+    SubPropertyOf: 
+        translatableTo,
+        mappableToLanguage
+    
+    Characteristics: 
+        Transitive
+    
+    
+ObjectProperty: specifiesSemanticsOf
+
+    InverseOf: 
+        supportsLogic
+    
+    
+ObjectProperty: translatableTo
+
+    Annotations: 
+        rdfs:comment "There is a translation from the subject to the object."
+    
+    SubPropertyOf: 
+        mappableTo
+    
+    Characteristics: 
+        Transitive
+    
+    InverseOf: 
+        translatableFrom
+    
+    
+ObjectProperty: mapsFrom
+
+    Annotations: 
+        rdfs:comment "The subject mapping maps from the object into something of the same type as the object.  (Enforcing the latter constraint goes beyond OWL.)"
+    
+    Characteristics: 
+        Functional
+    
+    Domain: 
+        Mapping
+    
+    InverseOf: 
+        sourceOfMapping
+    
+    
+ObjectProperty: exactlyMappableTo
+
+    Annotations: 
+        rdfs:comment "There is an exact mapping from the subject to the object logic."
+    
+    SubPropertyOf: 
+        weaklyExactlyMappableTo
+    
+    Characteristics: 
+        Transitive
+    
+    
+ObjectProperty: language
+
+    Annotations: 
+        rdfs:comment "The reasoners in Protégé don't like us to say the following.  Together with the SubPropertyChain specified for supportsSerialization it would go beyond OWL DL anyway.
+SubPropertyChain: serialization o serializes",
+        rdfs:comment "the language of an ontology"
+    
+    Characteristics: 
+        Functional
+    
+    Domain: 
+        Ontology
+    
+    Range: 
+        OntologyLanguage
+    
+    
+ObjectProperty: modelBijectivelyMappableTo
+
+    Annotations: 
+        
+            Annotations: dct:creator "Christoph Lange", 
+                         dct:date "2012-04-17"^^xsd:date
+        todo:question "Do we have a better idea for naming this?  Maybe mappableToWithBijectiveModels?",
+        rdfs:comment "There is a model-bijective mapping from the subject to the object logic."
+    
+    SubPropertyOf: 
+        modelExpansivelyMappableTo,
+        weaklyExactlyMappableTo
+    
+    Characteristics: 
+        Transitive
+    
+    
+ObjectProperty: linkIn
+
+    InverseOf: 
+        hasLink
+    
+    
+ObjectProperty: hasOntology
+
+    Annotations: 
+        rdfs:comment "The subject is a distributed ontology, in which the object is a participating heterogeneous ontology."
+    
+    SubPropertyOf: 
+        hasMember
+    
+    Range: 
+        Ontology
+    
+    InverseOf: 
+        ontologyIn
+    
+    
+ObjectProperty: projectableTo
+
+    Annotations: 
+        rdfs:comment "There is a projection from the subject to the object."
+    
+    SubPropertyOf: 
+        mappableTo
+    
+    Characteristics: 
+        Transitive
+    
+    InverseOf: 
+        projectableFrom
+    
+    
+ObjectProperty: target
+
+    Annotations: 
+        rdfs:comment "the target ontology of a link"
+    
+    Characteristics: 
+        Functional
+    
+    Domain: 
+        Link
+    
+    Range: 
+        Ontology
+    
+    
+ObjectProperty: source
+
+    Annotations: 
+        rdfs:comment "the source ontology of a link"
+    
+    Characteristics: 
+        Functional
+    
+    Domain: 
+        Link
+    
+    Range: 
+        Ontology
+    
+    
+ObjectProperty: exactLogicalExpressivity
+
+    Annotations: 
+        rdfs:comment "The subject ontology language has exactly the expressivity of the object logic."
+    
+    SubPropertyOf: 
+        supportsLogic
+    
+    
+ObjectProperty: serializes
+
+    InverseOf: 
+        supportsSerialization
+    
+    
+ObjectProperty: monomorphicallyExtends
+
+    Annotations: 
+        strictlyStrongerThan <http://purl.net/dol/1.0/rdf#modelTheoreticallyConservativelyExtends>
+    
+    SubPropertyOf: 
+        modelTheoreticallyConservativelyExtends
+    
+    
+ObjectProperty: hasInterpretation
+
+    Annotations: 
+        rdfs:comment "The subject is a distributed ontology, in which the object is an interpretation between two participating ontologies."
+    
+    SubPropertyOf: 
+        hasLink
+    
+    Range: 
+        Interpretation
+    
+    InverseOf: 
+        interpretationIn
+    
+    
+ObjectProperty: hasAlignment
+
+    Annotations: 
+        rdfs:comment "The subject is a distributed ontology, in which the object is an alignment between two participating ontologies."
+    
+    SubPropertyOf: 
+        hasLink
+    
+    Range: 
+        Alignment
+    
+    InverseOf: 
+        alignmentIn
+    
+    
+ObjectProperty: memberOf
+
+    InverseOf: 
+        hasMember
+    
+    
+ObjectProperty: modelTheoreticallyConservativelyExtends
+
+    Annotations: 
+        strictlyStrongerThan <http://purl.net/dol/1.0/rdf#consequenceTheoreticallyConservativelyExtends>
+    
+    SubPropertyOf: 
+        consequenceTheoreticallyConservativelyExtends
+    
+    EquivalentTo: 
+        conservativelyExtends
+    
+    
+ObjectProperty: supportsLogic
+
+    Annotations: 
+        rdfs:comment "The semantics of [a subset of] the subject ontology language can be specified in terms of the object logic."
+    
+    SubPropertyChain: 
+        
+            Annotations: 
+                         Annotations: dct:creator "Christoph Lange", 
+                                     dct:date "2012-04-17"^^xsd:date
+                                     
+                                     todo:question "On the board we had 'inverse subLanguageOf o exactLogicalExpressivity', but I think we can be more general."
+         inverse (subLanguageOf) o supportsLogic
+    
+    SubPropertyChain: 
+        supportsLogic o  inverse (subLogicOf)
+    
+    Domain: 
+        OntologyLanguage
+    
+    Range: 
+        Logic
+    
+    InverseOf: 
+        specifiesSemanticsOf
+    
+    
+ObjectProperty: mappableToLanguage
+
+    Annotations: 
+        rdfs:comment "There is a mapping from the subject ontology language to the object ontology language."
+    
+    SubPropertyOf: 
+        mappableTo
+    
+    Characteristics: 
+        Transitive
+    
+    InverseOf: 
+        mappableFromLanguage
+    
+    
+ObjectProperty: alignmentIn
+
+    InverseOf: 
+        hasAlignment
+    
+    
+ObjectProperty: sourceOfMapping
+
+    InverseOf: 
+        mapsFrom
+    
+    
+ObjectProperty: mapsTo
+
+    Annotations: 
+        rdfs:comment "The subject mapping maps from something into the object (which is of the same type).  Enforcing the latter constraint goes beyond OWL."
+    
+    Characteristics: 
+        Functional
+    
+    Domain: 
+        Mapping
+    
+    
+ObjectProperty: subLogicOf
+
+    Annotations: 
+        rdfs:comment "The subject is a sublogic of the object."
+    
+    SubPropertyOf: 
+        embeddableInto
+    
+    SubPropertyChain: 
+         inverse (exactLogicalExpressivity) o subLanguageOf o exactLogicalExpressivity
+    
+    Characteristics: 
+        Transitive
+    
+    
+ObjectProperty: interpretationIn
+
+    InverseOf: 
+        hasInterpretation
+    
+    
+ObjectProperty: mappableFrom
+
+    Annotations: 
+        rdfs:comment "There is a mapping from the object to the subject."
+    
+    InverseOf: 
+        mappableTo
+    
+    
+ObjectProperty: compositionOf
+
+    Annotations: 
+        rdfs:comment "Range can't be specified in OWL DL",
+        
+            Annotations: dct:creator "Christoph Lange", 
+                         dct:date "2012-04-30"^^xsd:date
+        todo:question "I don't think we need subclasses for specific types of mappings, do we?",
+        rdfs:comment "The subject mapping is the composition of the object list of mappings (list item 1 ∘ list item 2 ∘ … ∘ list item n).  All elements of the latter list must be instances of the same class as the subject.  (Enforcing the latter constraint goes beyond OWL.)"
+    
+    Domain: 
+        Mapping
+    
+    
+ObjectProperty: theoroidallyMappableTo
+
+    Annotations: 
+        rdfs:comment "There is a theoroidal mapping from the subject to the object logic."
+    
+    SubPropertyOf: 
+        mappableToLogic
+    
+    Characteristics: 
+        Transitive
+    
+    
+ObjectProperty: logic
+
+    Annotations: 
+        
+            Annotations: dct:creator "Christoph Lange", 
+                         dct:date "2011-12-04"^^xsd:date
+        todo:question "Inside a 'logic section' in the abstract syntax, there are also views.  Therefore, do we need another, analogous RDF property for 'the logic of a view'?",
+        rdfs:comment "the logic in which an ontology is formalized"
+    
+    Characteristics: 
+        Functional
+    
+    Domain: 
+        Ontology
+    
+    Range: 
+        Logic
+    
+    
+ObjectProperty: modelExpansivelyMappableTo
+
+    Annotations: 
+        rdfs:comment "There is a model-expansive mapping from the subject to the object logic."
+    
+    SubPropertyOf: 
+        faithfullyMappableTo
+    
+    Characteristics: 
+        Transitive
+    
+    
+ObjectProperty: mappableFromLogic
+
+    Annotations: 
+        rdfs:comment "There is a mapping from the object logic to the subject logic."
+    
+    InverseOf: 
+        mappableToLogic
+    
+    
+ObjectProperty: consequenceTheoreticallyConservativelyExtends
+
+    SubPropertyOf: 
+        extends
+    
+    
+ObjectProperty: profileOf
+
+    Annotations: 
+        rdfs:comment "The subject is a profile of the object ontology language.  This is a stronger notion than just being a sublanguage.  Supported serializations are shared along this property."
+    
+    SubPropertyOf: 
+        subLanguageOf
+    
+    
+ObjectProperty: mappableFromLanguage
+
+    Annotations: 
+        rdfs:comment "There is a mapping from the object ontology language to the subject ontology language."
+    
+    InverseOf: 
+        mappableToLanguage
+    
+    
+ObjectProperty: serialization
+
+    Annotations: 
+        rdfs:comment "the serialization in which an ontology is written"
+    
+    Characteristics: 
+        Functional
+    
+    Domain: 
+        Ontology
+    
+    Range: 
+        Serialization
+    
+    
+ObjectProperty: mappableTo
+
+    Annotations: 
+        rdfs:comment "There is a mapping from the subject to the object."
+    
+    SubPropertyChain: 
+        sourceOfMapping o mapsTo
+    
+    Characteristics: 
+        Transitive
+    
+    InverseOf: 
+        mappableFrom
+    
+    
+ObjectProperty: hasLink
+
+    Annotations: 
+        rdfs:comment "The subject is a distributed ontology, in which the object is a link between two participating ontologies."
+    
+    SubPropertyOf: 
+        hasMember
+    
+    Range: 
+        Link
+    
+    InverseOf: 
+        linkIn
+    
+    
+ObjectProperty: definitionallyExtends
+
+    Annotations: 
+        strictlyStrongerThan <http://purl.net/dol/1.0/rdf#monomorphicallyExtends>
+    
+    SubPropertyOf: 
+        monomorphicallyExtends
+    
+    
+ObjectProperty: adjoint
+
+    Domain: 
+        Translation
+    
+    Range: 
+        Projection
+    
+    
+ObjectProperty: plainlyMappableTo
+
+    Annotations: 
+        rdfs:comment "There is a plain mapping from the subject to the object logic."
+    
+    SubPropertyOf: 
+        theoroidallyMappableTo
+    
+    Characteristics: 
+        Transitive
+    
+    
+ObjectProperty: supportsSerialization
+
+    Annotations: 
+        rdfs:comment "The reasoners in Protégé don't like us to say the following.  Together with the SubPropertyChain specified for language it would go beyond OWL DL anyway.
+SubPropertyChain: profileOf o supportsSerialization",
+        rdfs:comment "Note that the serialization should be as specific as possible, i.e. one should not say that ``OWL can be serialized in XML'' and ``Common Logic can be serialized in XML'', but instead ``OWL can be serialized in OWL XML'' and ``Common Logic can be serialized in XCL'', taking into account that OWL XML and XCL are two different XML languages.",
+        rdfs:comment "Ontologies in the subject ontology language can be serialized in the object serialization."
+    
+    Characteristics: 
+        InverseFunctional
+    
+    Domain: 
+        OntologyLanguage
+    
+    Range: 
+        Serialization
+    
+    InverseOf: 
+        serializes
+    
+    
+ObjectProperty: projectableFrom
+
+    Annotations: 
+        rdfs:comment "There is a projection from the object to the subject."
+    
+    SubPropertyOf: 
+        mappableFrom
+    
+    InverseOf: 
+        projectableTo
+    
+    
+DataProperty: mediaType
+
+    Annotations: 
+        rdfs:comment "the media type (MIME type) of a serialization"
+    
+    Characteristics: 
+        Functional
+    
+    Domain: 
+        Serialization
+    
+    Range: 
+        xsd:string
+    
+    
+DataProperty: prefFilenameExtension
+
+    Annotations: 
+        rdfs:comment "the preferred filename extension for a serialization"
+    
+    Characteristics: 
+        Functional
+    
+    Domain: 
+        Serialization
+    
+    Range: 
+        xsd:string
+    
+    
+DataProperty: altFilenameExtension
+
+    Annotations: 
+        rdfs:comment "an alternative filename extension for a serialization"
+    
+    Domain: 
+        Serialization
+    
+    Range: 
+        xsd:string
+    
+    
+Class: owl:Thing
+
+    
+Class: WeaklyExactMapping
+
+    Annotations: 
+        propagatesToAdjoint "true"^^xsd:boolean,
+        reifies <http://purl.net/dol/1.0/rdf#weaklyExactlyMappableTo>
+    
+    SubClassOf: 
+        Mapping
+    
+    
+Class: ExactMapping
+
+    Annotations: 
+        propagatesToAdjoint "true"^^xsd:boolean,
+        reifies <http://purl.net/dol/1.0/rdf#exactlyMappableTo>
+    
+    SubClassOf: 
+        WeaklyExactMapping
+    
+    
+Class: DistributedOntology
+
+    Annotations: 
+        rdfs:comment "a distributed ontology"
+    
+    SubClassOf: 
+        Ontology
+    
+    
+Class: ModelExpansiveMapping
+
+    Annotations: 
+        propagatesToAdjoint "true"^^xsd:boolean,
+        reifies <http://purl.net/dol/1.0/rdf#modelExpansivelyMappableTo>
+    
+    SubClassOf: 
+        FaithfulMapping
+    
+    
+Class: Translation
+
+    Annotations: 
+        rdfs:comment "a generic translation",
+        reifies <http://purl.net/dol/1.0/rdf#translatableTo>
+    
+    SubClassOf: 
+        Mapping
+    
+    DisjointWith: 
+        Projection
+    
+    
+Class: SubLogic
+
+    Annotations: 
+        rdfs:comment "'syntactic' embedding",
+        reifies <http://purl.net/dol/1.0/rdf#subLogicOf>
+    
+    SubClassOf: 
+        Embedding
+    
+    
+Class: Sentence
+
+    Annotations: 
+        rdfs:comment "a sentence in an ontology"
+    
+    
+Class: View
+
+    Annotations: 
+        rdfs:comment "a view (also called interpretation) between two heterogeneous ontologies in a distributed ontology"
+    
+    EquivalentTo: 
+        Interpretation
+    
+    SubClassOf: 
+        Link
+    
+    
+Class: Embedding
+
+    Annotations: 
+        reifies <http://purl.net/dol/1.0/rdf#embeddableInto>
+    
+    SubClassOf: 
+        ExactMapping,
+        LogicMapping,
+        Translation,
+        ModelBijectiveMapping
+    
+    
+Class: Ontology
+
+    Annotations: 
+        rdfs:comment "an ontology, distributed or basic"
+    
+    
+Class: Interpretation
+
+    EquivalentTo: 
+        View
+    
+    DisjointWith: 
+        Alignment
+    
+    
+Class: OntologyLanguageMapping
+
+    Annotations: 
+        rdfs:comment "a mapping (translation or projection) between two ontology languages",
+        propagatesToAdjoint "true"^^xsd:boolean
+    
+    SubClassOf: 
+        Mapping
+    
+    DisjointWith: 
+        LogicMapping
+    
+    
+Class: Logic
+
+    Annotations: 
+        rdfs:comment "a logic that defines the semantics of an ontology language"
+    
+    
+Class: TheoroidalMapping
+
+    Annotations: 
+        propagatesToAdjoint "true"^^xsd:boolean,
+        reifies <http://purl.net/dol/1.0/rdf#theoroidallyMappableTo>,
+        rdfs:comment "orthogonal to WeaklyExactMapping and FaithfulMapping"
+    
+    EquivalentTo: 
+        Mapping
+         and (not (PlainMapping))
+    
+    SubClassOf: 
+        Mapping
+    
+    DisjointWith: 
+        PlainMapping,
+        
+            Annotations: rdfs:comment "Protégé 4.2 doesn't like 'Class: Mapping DisjointUnionOf: PlainMapping, TheoroidalMapping', so we do it this way:"
+        PlainMapping
+    
+    
+Class: LogicMapping
+
+    Annotations: 
+        rdfs:comment "a mapping (translation or projection) between two logics",
+        propagatesToAdjoint "true"^^xsd:boolean
+    
+    SubClassOf: 
+        Mapping
+    
+    DisjointWith: 
+        OntologyLanguageMapping
+    
+    
+Class: Entity
+
+    Annotations: 
+        rdfs:comment "an entity in an ontology"
+    
+    
+Class: Projection
+
+    Annotations: 
+        reifies <http://purl.net/dol/1.0/rdf#projectableTo>,
+        rdfs:comment "a generic projection"
+    
+    SubClassOf: 
+        Mapping
+    
+    DisjointWith: 
+        Translation
+    
+    
+Class: BasicOntology
+
+    Annotations: 
+        rdfs:comment "a basic ontology (in a single language, logic, and serialization)"
+    
+    SubClassOf: 
+        Ontology
+    
+    
+Class: FaithfulMapping
+
+    Annotations: 
+        propagatesToAdjoint "true"^^xsd:boolean,
+        reifies <http://purl.net/dol/1.0/rdf#faithfullyMappableTo>
+    
+    SubClassOf: 
+        Mapping
+    
+    
+Class: Mapping
+
+    Annotations: 
+        reifies <http://purl.net/dol/1.0/rdf#mappableTo>,
+        rdfs:comment "a generic mapping (translation or projection)"
+    
+    SubClassOf: 
+        
+            Annotations: rdfs:comment "Apparently one has to say 'owl:Thing' here; omitting it is legal by http://www.w3.org/TR/2009/NOTE-owl2-manchester-syntax-20091027/#Descriptions, but Protégé doesn't like it"
+        (mapsFrom exactly 1 owl:Thing)
+         and (mapsTo exactly 1 owl:Thing)
+    
+    
+Class: DefaultMapping
+    Annotations: 
+        propagatesToAdjoint "true"^^xsd:boolean
+
+    SubClassOf: 
+        Mapping
+    
+    
+Class: PlainMapping
+
+    Annotations: 
+        reifies <http://purl.net/dol/1.0/rdf#plainlyMappableTo>,
+        propagatesToAdjoint "true"^^xsd:boolean
+    
+    SubClassOf: 
+        Mapping
+    
+    DisjointWith: 
+        TheoroidalMapping,
+        
+            Annotations: rdfs:comment "Protégé 4.2 doesn't like 'Class: Mapping DisjointUnionOf: PlainMapping, TheoroidalMapping', so we do it this way:"
+        TheoroidalMapping
+    
+    
+Class: Serialization
+
+    Annotations: 
+        rdfs:comment "a serialization of an ontology language"
+    
+    
+Class: OntologyLanguage
+
+    Annotations: 
+        rdfs:comment "an ontology language"
+    
+    SubClassOf: 
+        (supportsLogic some Logic)
+         and (supportsSerialization some Serialization)
+         and (supportsLogic only Logic)
+         and (supportsSerialization only Serialization)
+    
+    
+Class: Link
+
+    Annotations: 
+        rdfs:comment "a link between two heterogeneous ontologies in a distributed ontology"
+    
+    SubClassOf: 
+        (source exactly 1 owl:Thing)
+         and (target exactly 1 owl:Thing)
+    
+    
+Class: ModelBijectiveMapping
+
+    Annotations: 
+        reifies <http://purl.net/dol/1.0/rdf#modelBijectivelyMappableTo>,
+        propagatesToAdjoint "true"^^xsd:boolean
+    
+    SubClassOf: 
+        WeaklyExactMapping,
+        ModelExpansiveMapping
+    
+    
+Class: Alignment
+
+    Annotations: 
+        rdfs:comment "an alignment between two heterogeneous ontologies in a distributed ontology"
+    
+    SubClassOf: 
+        Link
+    
+    DisjointWith: 
+        Interpretation
+    
+    
+DisjointClasses: 
+    Alignment,Logic,Mapping,Ontology,OntologyLanguage,Serialization
+

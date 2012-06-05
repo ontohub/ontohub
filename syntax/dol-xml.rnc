@@ -1,0 +1,62 @@
+# *********************************************
+# 
+# Relax NG Schema for DOL XML
+# 
+# *********************************************
+
+default namespace = "http://purl.net/dol/1.0/xml"
+
+namespace todo = "http://example.org/todo#"
+namespace dct = "http://purl.org/dc/terms/"
+namespace rdfs = "http://www.w3.org/2000/01/rdf-schema#"
+
+datatypes xs = "http://www.w3.org/2001/XMLSchema-datatypes"
+
+start = distributed-ontology
+
+distributed-ontology = element distributed-ontology {
+  id,
+  attribute base { dol-iri },
+  logic-section*
+}
+
+[rdfs:comment="Almost anything can optionally have an ID, so that it can be referred to.  This is independent from DOL's own base?theory?symbol naming mechanism, as using the latter is recommended but can't be enforced due to compatibility restrictions."]
+id = attribute xml:id { xs:ID }?
+
+dol-iri = xs:anyURI
+
+logic-section = element logic {
+  attribute href { logic },
+  ( ontology | link )* 
+}
+
+logic = xs:anyURI
+
+ontology = element ontology { 
+  id,
+  attribute logic { logic }?,
+  [todo:question [ dct:creator="Christoph Lange" xs:date="2011-12-04" "This way of associating the 'kind of extension' with one ontology, instead of modeling it as a relationship between two ontologies, is closer to the abstract and text syntax, whereas my current RDF implementation takes the 'relationship' point of view.  Which one should the XML syntax prefer?" ]]
+  attribute extension { "implied" | "definitional" | "monomorphic" | "conservative" }?,
+  empty
+}
+
+link = view | alignment
+
+[todo:question [ dct:creator="Christoph Lange" xs:date="2011-12-04" "Do you agree with attributes @from and @to, or would you rather prefer @source and @target?" ]]
+link-relations = (
+  id,
+  attribute from { xs:anyURI },
+  attribute to { xs:anyURI }
+)
+
+view = element view { view-data }
+ | element interpretation { view-data }
+
+view-data = ( link-relations, view-content )
+
+view-content = empty
+
+alignment = element alignment {
+  link-relations,
+  empty
+}

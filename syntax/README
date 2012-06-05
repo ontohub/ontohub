@@ -1,0 +1,14 @@
+This directory holds the implementations of the concrete syntaxes of DOL.  If you are reading this file in the public OntoIOp WebDAV repository, and not in the OntoIOp development Subversion repository, some files may be missing.
+
+DOL XML:
+* dol-xml.rnc: Relax NG schema
+* schemas.xml: assigns the DOL schema to instance documents
+* test.dix: incomplete and semantically incorrect instance document to test the schema
+
+DOL RDF:
+* dol-rdf.omn: primary implementation of the RDF vocabulary, as an OWL ontology (Manchester syntax)
+* dol-rdf.owl: the same, exported to RDF/XML
+
+Ontology language description vocabulary (subset of DOL RDF; generated automatically):
+* onto-vocab.ntriples: all terms needed for describing ontology languages, their logics, and their serializations
+* onto-vocab.rdf: the same, exported to RDF/XML
