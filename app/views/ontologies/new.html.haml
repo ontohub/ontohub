@@ -8,4 +8,4 @@
       = vf.input :source_url, :as => :url
   = f.inputs :uri, :name, :description
   = f.actions do
-    = f.action :submit, :button_html => { :disable_with => t(:wait) }
+    = f.action :submit, :button_html => { 'data-disable-with' => t(:wait) }
