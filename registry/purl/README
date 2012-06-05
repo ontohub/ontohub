@@ -1,0 +1,11 @@
+The material in this directory is for maintaining the persistent URLs (PURLs).
+
+At http://purl.net there is a user group "ontoiop", currently administered by Christoph Lange (user ID "clange").
+
+Use the following scripts for maintenance:
+* sendbatchpurls.pl for batch-uploading (i.e. creating new PURLs)
+* modifybatchpurls.pl for batch-modifying existing PURLs
+
+The following files describe the PURLs to be uploaded/modified:
+* dol-purls.xml – the PURLs relevant for DOL (to be written)
+* purl-batch.rng – the Relax NG grammar of the XML file
