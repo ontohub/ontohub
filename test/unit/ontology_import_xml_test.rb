@@ -23,11 +23,11 @@ class OntologyImportXMLTest < ActiveSupport::TestCase
       end
     end
 
-    context 'axiom count' do
+    context 'sentence count' do
       should 'be correct' do
-        count = @ontology.axioms.count
+        count = @ontology.sentences.count
         assert_equal 1, count
-        assert_equal count, @ontology.axioms_count
+        assert_equal count, @ontology.sentences_count
       end
     end
   end

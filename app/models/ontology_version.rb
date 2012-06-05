@@ -2,8 +2,10 @@ class OntologyVersion < ActiveRecord::Base
   include OntologyVersion::Async
   include OntologyVersion::Download
   include OntologyVersion::Parsing
+  include OntologyVersion::Numbers
+  include OntologyVersion::Sentences
+  include OntologyVersion::Entities
 
-  has_many   :entities
   belongs_to :user
   belongs_to :ontology, :counter_cache => :versions_count
   belongs_to :logic
@@ -33,6 +35,10 @@ class OntologyVersion < ActiveRecord::Base
   
   def source_name
     source_url? ? source_url : 'File upload'
+  end
+  
+  def to_param
+    self.number
   end
   
 protected

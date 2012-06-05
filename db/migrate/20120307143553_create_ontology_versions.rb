@@ -19,6 +19,7 @@ class CreateOntologyVersions < ActiveRecord::Migration
     change_table :ontology_versions do |t|
       t.index :user_id
       t.index [:ontology_id, :number], :unique => true
+      t.index :logic_id
       t.index :checksum
       t.index :previous_version_id
       t.foreign_key :users

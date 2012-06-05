@@ -3,7 +3,7 @@ module Ontology::Import
 
   def import_xml(io)
     entities_count = 0
-    axioms_count   = 0
+    sentences_count   = 0
     now            = Time.now
 
     transaction do
@@ -15,19 +15,19 @@ module Ontology::Import
           entities.update_or_create_from_hash(h, now)
           entities_count += 1
         },
-        axiom:    Proc.new { |h|
-          axioms.update_or_create_from_hash(h, now)
-          axioms_count += 1
+        sentence:    Proc.new { |h|
+          sentences.update_or_create_from_hash(h, now)
+          sentences_count += 1
         }
 
-      # remove outdated axioms and entities
+      # remove outdated sentences and entities
       conditions = ['updated_at < ?', now]
       self.entities.where(conditions).destroy_all
-      self.axioms.where(conditions).delete_all
+      self.sentences.where(conditions).delete_all
       
       # update the counters
       self.entities_count = entities_count
-      self.axioms_count   = axioms_count
+      self.sentences_count   = sentences_count
       
       save!
     end

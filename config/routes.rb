@@ -23,9 +23,12 @@ Ontohub::Application.routes.draw do
 
   resources :ontologies do
     get 'bulk', :on => :collection
-    resources :entities, :only => :index
-    resources :axioms,   :only => :index
     resources :ontology_versions, :only => [:index, :show, :new, :create], :path => 'versions'
+
+	%w( entities sentences ).each do |name|
+	  get "versions/:number/#{name}" => "#{name}#index", :as => "ontology_version_#{name}"
+	end
+
     resources :permissions, :only => [:index, :create, :update, :destroy]
     resources :metadata, :only => [:index, :create, :destroy]
     resources :comments, :only => [:index, :create, :destroy]

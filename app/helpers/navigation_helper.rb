@@ -21,10 +21,11 @@ module NavigationHelper
   end
   
   def ontology_nav(ontology, current_page)
+    version = ontology.versions.current
     pages = [
       [:overview,     ontology],
-      [:axioms,      [ontology, :axioms]],
-      [:entities,    [ontology, :entities]],
+      [:sentences,   [ontology, version, :sentences]],
+      [:entities,    [ontology, version, :entities]],
       [:versions,    [ontology, :ontology_versions]],
       [:metadata,    [ontology, :metadata]],
       [:comments,    [ontology, :comments]]

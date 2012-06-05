@@ -5,6 +5,8 @@ class CreateSentences < ActiveRecord::Migration
       t.string :name, :null => false
       t.text :text, :null => false
       t.string :range
+      t.boolean :is_definition, :null => false, :default => false
+      t.boolean :is_axiom, :null => false, :default => false
       t.integer :comments_count, :null => false, :default => 0
 
       t.timestamps :null => false
