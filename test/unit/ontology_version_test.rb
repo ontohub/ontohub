@@ -94,7 +94,7 @@ class OntologyVersionTest < ActiveSupport::TestCase
       end
     end
 
-    should 'raise no exception if called with remote uri' do
+    should 'raise no exception if called with remote iri' do
       assert_nothing_raised do
         @ontology_version.remote_raw_file_url = 'http://colore.googlecode.com/svn-history/r679/trunk/ontologies/arithmetic/robinson_arithmetic.clif'
         @ontology_version.save!

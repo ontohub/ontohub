@@ -5,7 +5,7 @@ class CreateEntities < ActiveRecord::Migration
       t.string :kind
       t.text :text, :null => false
       t.string :name, :null => false
-      t.string :uri
+      t.string :iri
       t.string :range
       t.integer :comments_count, :null => false, :default => 0
 

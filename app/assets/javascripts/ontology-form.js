@@ -1,18 +1,18 @@
 $(function() {
   
   /**
-   * Copy Source URI from version into URI from ontology
+   * Copy Source URL from version into IRI from ontology
    */
-  var uriField = $("#ontology_uri")
-  var sourceUriField = $("#ontology_versions_attributes_0_source_url")
-  var automatic = uriField.val() == sourceUriField.val();
+  var iriField = $("#ontology_iri")
+  var sourceIriField = $("#ontology_versions_attributes_0_source_url")
+  var automatic = iriField.val() == sourceIriField.val();
   
-  sourceUriField.change(function(){
+  sourceIriField.change(function(){
     if(automatic)
-      uriField.val($(this).val());
+      iriField.val($(this).val());
   });
   
-  uriField.change(function(){
+  iriField.change(function(){
     automatic = $(this).val().length == 0;
   });
   
