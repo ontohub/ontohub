@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- Semantically, this ontology doesn't make sense.  It is just intended to test all aspects of the XML syntax as implemented in dol-xml.rnc -->
+<distributed-ontology
+  xmlns="http://purl.net/dol/1.0/xml"
+  base="http://www.example.org/dol/">
+    <logic href="http://www.example.org/logics/owl">
+        <ontology xml:id="foobar"/>
+        <ontology extension="implied" logic="http://www.example.org/logics/CommonLogic"/>
+        <view from="source-ontology-URI" to="target-ontology-URI"/>
+        <interpretation xml:id="int" from="source-ontology-URI" to="target-ontology-URI"/>
+        <alignment from="source-ontology-URI" to="target-ontology-URI"/>
+    </logic>
+</distributed-ontology>

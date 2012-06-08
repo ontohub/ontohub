@@ -51,6 +51,7 @@ gem 'resque'
 
 # Search engine
 gem 'sunspot_rails', :git => 'git://github.com/digineo/sunspot.git'
+gem 'progress_bar'
 
 gem "faker", "~> 1.0"
 

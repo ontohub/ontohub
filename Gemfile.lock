@@ -83,6 +83,7 @@ GEM
       railties (>= 3.0.0)
     faker (1.0.1)
       i18n (~> 0.4)
+    fattr (2.2.1)
     foreigner (1.1.6)
       activerecord (>= 3.0.0)
     formtastic (2.1.1)
@@ -123,7 +124,6 @@ GEM
     mime-types (1.18)
     mocha (0.10.5)
       metaclass (~> 0.0.1)
-    multi_json (1.1.0)
     multi_json (1.2.0)
     mysql2 (0.3.11)
     net-scp (1.0.4)
@@ -135,10 +135,15 @@ GEM
       net-ssh (>= 1.99.1)
     newrelic_rpm (3.3.3)
     nokogiri (1.5.2)
+    options (2.3.0)
+      fattr
     orm_adapter (0.0.7)
     pg (0.13.2)
     polyglot (0.3.3)
     pr_geohash (1.0.0)
+    progress_bar (0.4.0)
+      highline (~> 1.6.1)
+      options (~> 2.3.0)
     rack (1.4.1)
     rack-cache (1.2)
       rack (>= 0.4)
@@ -241,6 +246,7 @@ DEPENDENCIES
   newrelic_rpm
   nokogiri (~> 1.5.0)
   pg
+  progress_bar
   rails (~> 3.2.2)
   resque
   sass-rails (~> 3.2.3)

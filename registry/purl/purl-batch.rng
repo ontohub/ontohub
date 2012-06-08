@@ -1,0 +1,41 @@
+<grammar xmlns="http://relaxng.org/ns/structure/1.0">
+        <start>
+                <element name="purls">
+                        <oneOrMore>
+                                <element name="purl">
+                                        <attribute name="id"/>
+                                        <attribute name="type"/>
+                                        <optional>
+                                                <element name="maintainers">
+                                                        <interleave>
+                                                                <zeroOrMore>
+                                                                        <element name="uid">
+                                                                                <text/>
+                                                                        </element>
+                                                                </zeroOrMore>
+                                                                <zeroOrMore>
+                                                                        <element name="gid">
+                                                                                <text/>
+                                                                        </element>
+                                                                </zeroOrMore>
+                                                        </interleave>
+                                                </element>                    
+                                        </optional>
+                                        <optional>
+                                                <choice>
+                                                        <element name="target">
+                                                                <attribute name="url"/>
+                                                        </element>
+                                                        <element name="seealso">
+                                                                <attribute name="url"/>
+                                                        </element>
+                                                        <element name="basepurl">
+                                                                <attribute name="path"/>
+                                                        </element>                    
+                                                </choice>
+                                        </optional>
+                                </element>
+                        </oneOrMore>
+                </element>
+        </start>
+</grammar>

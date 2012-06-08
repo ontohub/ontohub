@@ -1,0 +1,9 @@
+# some OWL inference rules, which have been hard-coded here
+
+@prefix owl: <http://www.w3.org/2002/07/owl#> .
+@prefix rdfs: <http://www.w3.org/2000/01/rdf-schema#> .
+@prefix string: <http://www.w3.org/2000/10/swap/string#> .
+
+# TODO figure out how this works
+{ ?p owl:inverseOf ?q }
+=> { ?p rdfs:comment ("foo" "bar")!string:concatenation } .

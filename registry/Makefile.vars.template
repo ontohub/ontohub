@@ -1,0 +1,8 @@
+# Please adapt this file and copy it to Makefile.vars
+DCTERMS = /mnt/data/doc/kwarc/ontologies/dc/dcterms.rdfs
+SKOS = /mnt/data/doc/kwarc/ontologies/skos/skos-core.owl
+OWL = /mnt/data/doc/kwarc/ontologies/owl/owl2.owl
+
+# Local Variables:
+# mode: makefile-gmake
+# End:

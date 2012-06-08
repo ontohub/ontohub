@@ -1,0 +1,2453 @@
+#Processed by Id: cwm.py,v 1.197 2007/12/13 15:38:39 syosi Exp 
+        #    using base file:///mnt/data/svn/agbkb.informatik.uni-bremen.de/I1_OntoSpace/standards/OntoIOp/registry/registry-expanded.ntriples
+        
+#  Notation3 generation by
+#       notation3.py,v 1.200 2007/12/11 21:18:08 syosi Exp
+
+#   Base was: file:///mnt/data/svn/agbkb.informatik.uni-bremen.de/I1_OntoSpace/standards/OntoIOp/registry/registry-expanded.ntriples
+     @prefix : <http://purl.net/dol/1.0/rdf#> .
+    @prefix co: <http://www.w3.org/2004/02/skos/core#> .
+    @prefix owl: <http://www.w3.org/2002/07/owl#> .
+    @prefix sta: <http://purl.net/dol/1.0/standardization#> .
+    
+    <#_g0>     <http://www.w3.org/2000/10/swap/log#forSome> <#_g1>,
+                <#_g2>,
+                <#_g3> .
+    
+    <http://purl.net/dol/entityKinds/CL/Name>     :entityKindIn <http://purl.net/dol/languages/CommonLogic>;
+         <http://www.w3.org/2000/01/rdf-schema#isDefinedBy> <http://purl.net/dol/registry>;
+         <http://www.w3.org/2000/01/rdf-schema#label> "name";
+         <http://www.w3.org/2000/01/rdf-schema#subClassOf> :Entity .
+    
+    <http://purl.net/dol/entityKinds/CL/SequenceMarker>     :entityKindIn <http://purl.net/dol/languages/CommonLogic>;
+         <http://www.w3.org/2000/01/rdf-schema#isDefinedBy> <http://purl.net/dol/registry>;
+         <http://www.w3.org/2000/01/rdf-schema#label> "sequence marker";
+         <http://www.w3.org/2000/01/rdf-schema#subClassOf> :Entity .
+    
+    <http://purl.net/dol/entityKinds/OWL2/AnnotationProperty>     :entityKindIn <http://purl.net/dol/languages/OWL2/DL>,
+                <http://purl.net/dol/languages/OWL2/EL>,
+                <http://purl.net/dol/languages/OWL2/Full>,
+                <http://purl.net/dol/languages/OWL2/QL>,
+                <http://purl.net/dol/languages/OWL2/RL>;
+         <http://purl.org/dc/terms/source> <http://www.w3.org/TR/2009/REC-owl2-syntax-20091027/#Annotation_Properties>;
+         <http://www.w3.org/2000/01/rdf-schema#isDefinedBy> <http://purl.net/dol/registry>;
+         <http://www.w3.org/2000/01/rdf-schema#label> "annotation property";
+         <http://www.w3.org/2000/01/rdf-schema#subClassOf> :Entity;
+         owl:sameAs owl:AnnotationProperty .
+    
+    <http://purl.net/dol/entityKinds/OWL2/Class>     :entityKindIn <http://purl.net/dol/languages/OWL2/DL>,
+                <http://purl.net/dol/languages/OWL2/EL>,
+                <http://purl.net/dol/languages/OWL2/Full>,
+                <http://purl.net/dol/languages/OWL2/QL>,
+                <http://purl.net/dol/languages/OWL2/RL>;
+         <http://purl.org/dc/terms/source> <http://www.w3.org/TR/2009/REC-owl2-syntax-20091027/#Classes>;
+         <http://www.w3.org/2000/01/rdf-schema#isDefinedBy> <http://purl.net/dol/registry>;
+         <http://www.w3.org/2000/01/rdf-schema#label> "class";
+         <http://www.w3.org/2000/01/rdf-schema#subClassOf> :Entity;
+         owl:sameAs owl:Class .
+    
+    <http://purl.net/dol/entityKinds/OWL2/DataProperty>     :entityKindIn <http://purl.net/dol/languages/OWL2/DL>,
+                <http://purl.net/dol/languages/OWL2/EL>,
+                <http://purl.net/dol/languages/OWL2/Full>,
+                <http://purl.net/dol/languages/OWL2/QL>,
+                <http://purl.net/dol/languages/OWL2/RL>;
+         <http://purl.org/dc/terms/source> <http://www.w3.org/TR/2009/REC-owl2-syntax-20091027/#Data_Properties>;
+         <http://www.w3.org/2000/01/rdf-schema#isDefinedBy> <http://purl.net/dol/registry>;
+         <http://www.w3.org/2000/01/rdf-schema#label> "data property";
+         <http://www.w3.org/2000/01/rdf-schema#subClassOf> :Entity;
+         owl:sameAs owl:DatatypeProperty .
+    
+    <http://purl.net/dol/entityKinds/OWL2/Datatype>     :entityKindIn <http://purl.net/dol/languages/OWL2/DL>,
+                <http://purl.net/dol/languages/OWL2/EL>,
+                <http://purl.net/dol/languages/OWL2/Full>,
+                <http://purl.net/dol/languages/OWL2/QL>,
+                <http://purl.net/dol/languages/OWL2/RL>;
+         <http://purl.org/dc/terms/source> <http://www.w3.org/TR/2009/REC-owl2-syntax-20091027/#Datatypes>;
+         <http://www.w3.org/2000/01/rdf-schema#isDefinedBy> <http://purl.net/dol/registry>;
+         <http://www.w3.org/2000/01/rdf-schema#label> "annotation property";
+         <http://www.w3.org/2000/01/rdf-schema#subClassOf> :Entity;
+         owl:sameAs <http://www.w3.org/2000/01/rdf-schema#Datatype> .
+    
+    <http://purl.net/dol/entityKinds/OWL2/NamedIndividual>     :entityKindIn <http://purl.net/dol/languages/OWL2/DL>,
+                <http://purl.net/dol/languages/OWL2/EL>,
+                <http://purl.net/dol/languages/OWL2/Full>,
+                <http://purl.net/dol/languages/OWL2/QL>,
+                <http://purl.net/dol/languages/OWL2/RL>;
+         <http://purl.org/dc/terms/source> <http://www.w3.org/TR/2009/REC-owl2-syntax-20091027/#Named_Individuals>;
+         <http://www.w3.org/2000/01/rdf-schema#isDefinedBy> <http://purl.net/dol/registry>;
+         <http://www.w3.org/2000/01/rdf-schema#label> "named individual";
+         <http://www.w3.org/2000/01/rdf-schema#subClassOf> :Entity;
+         owl:sameAs owl:NamedIndividual .
+    
+    <http://purl.net/dol/entityKinds/OWL2/ObjectProperty>     :entityKindIn <http://purl.net/dol/languages/OWL2/DL>,
+                <http://purl.net/dol/languages/OWL2/EL>,
+                <http://purl.net/dol/languages/OWL2/Full>,
+                <http://purl.net/dol/languages/OWL2/QL>,
+                <http://purl.net/dol/languages/OWL2/RL>;
+         <http://purl.org/dc/terms/source> <http://www.w3.org/TR/2009/REC-owl2-syntax-20091027/#Object_Properties>;
+         <http://www.w3.org/2000/01/rdf-schema#isDefinedBy> <http://purl.net/dol/registry>;
+         <http://www.w3.org/2000/01/rdf-schema#label> "object property";
+         <http://www.w3.org/2000/01/rdf-schema#subClassOf> :Entity;
+         owl:sameAs owl:ObjectProperty .
+    
+    <http://purl.net/dol/languages/CASL>     <http://www.w3.org/1999/02/22-rdf-syntax-ns#type> :OntologyLanguage,
+                <#_g1>;
+         :exactLogicalExpressivity <http://purl.net/dol/logics/SubPCFOLeq>;
+         :mappableFrom <http://purl.net/dol/languages/CommonLogic>,
+                <http://purl.net/dol/languages/SATLIB>;
+         :mappableFromLanguage <http://purl.net/dol/languages/CommonLogic>;
+         :mappableTo <http://purl.net/dol/languages/THF0>;
+         :mappableToLanguage <http://purl.net/dol/languages/THF0>;
+         :supportsLogic <http://purl.net/dol/logics/CommonLogic>,
+                <http://purl.net/dol/logics/CommonLogic/WithoutSequences>,
+                <http://purl.net/dol/logics/DDLOWL>,
+                <http://purl.net/dol/logics/DLLiteR>,
+                <http://purl.net/dol/logics/ECoFOLeq>,
+                <http://purl.net/dol/logics/ECoOWL>,
+                <http://purl.net/dol/logics/ELplusplus>,
+                <http://purl.net/dol/logics/F-logic>,
+                <http://purl.net/dol/logics/FOLeq>,
+                <http://purl.net/dol/logics/FOLeqms>,
+                <http://purl.net/dol/logics/OBOOWL>,
+                <http://purl.net/dol/logics/OWL2/Full>,
+                <http://purl.net/dol/logics/OWL2/RL>,
+                <http://purl.net/dol/logics/Propositional>,
+                <http://purl.net/dol/logics/RDF>,
+                <http://purl.net/dol/logics/RDF/Simple>,
+                <http://purl.net/dol/logics/RDFS>,
+                <http://purl.net/dol/logics/RelationalSchema>,
+                <http://purl.net/dol/logics/SROIQ>,
+                <http://purl.net/dol/logics/SubPCFOLeq>;
+         :translatableFrom <http://purl.net/dol/languages/CommonLogic>,
+                <http://purl.net/dol/languages/SATLIB>;
+         :translatableTo <http://purl.net/dol/languages/THF0>;
+         <http://purl.org/dc/terms/source> <http://www.informatik.uni-bremen.de/cofi/wiki/index.php/CASL>;
+         <http://www.w3.org/2000/01/rdf-schema#comment> "Common Algebraic Specification Language";
+         <http://www.w3.org/2000/01/rdf-schema#isDefinedBy> <http://purl.net/dol/registry>;
+         <http://www.w3.org/2000/01/rdf-schema#label> "CASL" .
+    
+    <http://purl.net/dol/languages/CommonLogic>     <http://www.w3.org/1999/02/22-rdf-syntax-ns#type> :OntologyLanguage,
+                <#_g1>;
+         :exactLogicalExpressivity <http://purl.net/dol/logics/CommonLogic>;
+         :mappableFrom <http://purl.net/dol/languages/OWL2/DL>,
+                <http://purl.net/dol/languages/SATLIB>,
+                <http://purl.net/dol/languages/TPTP>;
+         :mappableFromLanguage <http://purl.net/dol/languages/OWL2/DL>,
+                <http://purl.net/dol/languages/SATLIB>,
+                <http://purl.net/dol/languages/TPTP>;
+         :mappableTo <http://purl.net/dol/languages/CASL>;
+         :mappableToLanguage <http://purl.net/dol/languages/CASL>;
+         :sourceOfMapping <http://purl.net/dol/translations/CommonLogicToCASL>;
+         :supportsEntityKind <http://purl.net/dol/entityKinds/CL/Name>,
+                <http://purl.net/dol/entityKinds/CL/SequenceMarker>;
+         :supportsLogic <http://purl.net/dol/logics/CommonLogic>,
+                <http://purl.net/dol/logics/CommonLogic/WithoutSequences>,
+                <http://purl.net/dol/logics/DDLOWL>,
+                <http://purl.net/dol/logics/DLLiteR>,
+                <http://purl.net/dol/logics/ECoOWL>,
+                <http://purl.net/dol/logics/ELplusplus>,
+                <http://purl.net/dol/logics/F-logic>,
+                <http://purl.net/dol/logics/FOLeq>,
+                <http://purl.net/dol/logics/OBOOWL>,
+                <http://purl.net/dol/logics/OWL2/Full>,
+                <http://purl.net/dol/logics/OWL2/RL>,
+                <http://purl.net/dol/logics/Propositional>,
+                <http://purl.net/dol/logics/RDF>,
+                <http://purl.net/dol/logics/RDF/Simple>,
+                <http://purl.net/dol/logics/RDFS>,
+                <http://purl.net/dol/logics/SROIQ>;
+         :supportsSerialization <http://purl.net/dol/serializations/CommonLogic/CGIF>,
+                <http://purl.net/dol/serializations/CommonLogic/CLIF>,
+                <http://purl.net/dol/serializations/CommonLogic/XCL>;
+         :translatableFrom <http://purl.net/dol/languages/OWL2/DL>,
+                <http://purl.net/dol/languages/SATLIB>,
+                <http://purl.net/dol/languages/TPTP>;
+         :translatableTo <http://purl.net/dol/languages/CASL>;
+         sta:standardizationStatus sta:ISOStandard;
+         <http://www.w3.org/2000/01/rdf-schema#comment> "Common Logic (ISO/IEC 24707)";
+         <http://www.w3.org/2000/01/rdf-schema#isDefinedBy> <http://purl.net/dol/registry>;
+         <http://www.w3.org/2000/01/rdf-schema#label> "Common Logic" .
+    
+    <http://purl.net/dol/languages/F-logic>     <http://www.w3.org/1999/02/22-rdf-syntax-ns#type> :OntologyLanguage,
+                <#_g1>;
+         :exactLogicalExpressivity <http://purl.net/dol/logics/F-logic>;
+         :mappableFrom <http://purl.net/dol/languages/OWL2/DL>,
+                <http://purl.net/dol/languages/TPTP>;
+         :mappableFromLanguage <http://purl.net/dol/languages/OWL2/DL>,
+                <http://purl.net/dol/languages/TPTP>;
+         :mappableTo <http://purl.net/dol/languages/TPTP>;
+         :mappableToLanguage <http://purl.net/dol/languages/TPTP>;
+         :supportsLogic <http://purl.net/dol/logics/DDLOWL>,
+                <http://purl.net/dol/logics/DLLiteR>,
+                <http://purl.net/dol/logics/ECoOWL>,
+                <http://purl.net/dol/logics/ELplusplus>,
+                <http://purl.net/dol/logics/F-logic>,
+                <http://purl.net/dol/logics/FOLeq>,
+                <http://purl.net/dol/logics/OBOOWL>,
+                <http://purl.net/dol/logics/OWL2/Full>,
+                <http://purl.net/dol/logics/OWL2/RL>,
+                <http://purl.net/dol/logics/Propositional>,
+                <http://purl.net/dol/logics/RDF>,
+                <http://purl.net/dol/logics/RDF/Simple>,
+                <http://purl.net/dol/logics/RDFS>,
+                <http://purl.net/dol/logics/SROIQ>;
+         :translatableFrom <http://purl.net/dol/languages/OWL2/DL>,
+                <http://purl.net/dol/languages/TPTP>;
+         :translatableTo <http://purl.net/dol/languages/TPTP>;
+         sta:standardizationStatus sta:AcademicLiterature;
+         <http://www.w3.org/2000/01/rdf-schema#isDefinedBy> <http://purl.net/dol/registry>;
+         <http://www.w3.org/2000/01/rdf-schema#label> "F-logic" .
+    
+    <http://purl.net/dol/languages/OBO/1.3>     <http://www.w3.org/1999/02/22-rdf-syntax-ns#type> :OntologyLanguage,
+                <#_g1>;
+         :supportsLogic <http://purl.net/dol/logics/ELplusplus>,
+                <#_g2>;
+         <http://purl.org/dc/terms/source> <http://www.geneontology.org/GO.format.obo-1_3.shtml>;
+         <http://www.w3.org/2000/01/rdf-schema#comment> "Open Biomedical Ontologies (OBO) 1.3";
+         <http://www.w3.org/2000/01/rdf-schema#isDefinedBy> <http://purl.net/dol/registry>;
+         <http://www.w3.org/2000/01/rdf-schema#label> "OBO 1.3" .
+    
+    <http://purl.net/dol/languages/OBO/1.4>     <http://www.w3.org/1999/02/22-rdf-syntax-ns#type> :OntologyLanguage,
+                <#_g1>;
+         :supportsLogic  [
+         ];
+         <http://purl.org/dc/terms/source> <http://www.geneontology.org/GO.format.obo-1_4.shtml>;
+         <http://www.w3.org/2000/01/rdf-schema#comment> "Open Biomedical Ontologies (OBO) 1.4";
+         <http://www.w3.org/2000/01/rdf-schema#isDefinedBy> <http://purl.net/dol/registry>;
+         <http://www.w3.org/2000/01/rdf-schema#label> "OBO 1.4" .
+    
+    <http://purl.net/dol/languages/OWL2/DL>     <http://www.w3.org/1999/02/22-rdf-syntax-ns#type> :OntologyLanguage,
+                <#_g1>;
+         :exactLogicalExpressivity <http://purl.net/dol/logics/SROIQ>;
+         :mappableFrom <http://purl.net/dol/languages/OWL2/EL>,
+                <http://purl.net/dol/languages/OWL2/QL>,
+                <http://purl.net/dol/languages/OWL2/RL>,
+                <http://purl.net/dol/languages/RDF>,
+                <http://purl.net/dol/languages/SATLIB>;
+         :mappableFromLanguage <http://purl.net/dol/languages/OWL2/EL>,
+                <http://purl.net/dol/languages/OWL2/QL>,
+                <http://purl.net/dol/languages/OWL2/RL>,
+                <http://purl.net/dol/languages/RDF>,
+                <http://purl.net/dol/languages/SATLIB>;
+         :mappableTo <http://purl.net/dol/languages/CommonLogic>,
+                <http://purl.net/dol/languages/F-logic>,
+                <http://purl.net/dol/languages/OWL2/Full>,
+                <http://purl.net/dol/languages/TPTP>;
+         :mappableToLanguage <http://purl.net/dol/languages/CommonLogic>,
+                <http://purl.net/dol/languages/F-logic>,
+                <http://purl.net/dol/languages/OWL2/Full>,
+                <http://purl.net/dol/languages/TPTP>;
+         :profileOf <http://purl.net/dol/languages/OWL2/Full>;
+         :subLanguageOf <http://purl.net/dol/languages/OWL2/Full>;
+         :supportsEntityKind <http://purl.net/dol/entityKinds/OWL2/AnnotationProperty>,
+                <http://purl.net/dol/entityKinds/OWL2/Class>,
+                <http://purl.net/dol/entityKinds/OWL2/DataProperty>,
+                <http://purl.net/dol/entityKinds/OWL2/Datatype>,
+                <http://purl.net/dol/entityKinds/OWL2/NamedIndividual>,
+                <http://purl.net/dol/entityKinds/OWL2/ObjectProperty>;
+         :supportsLogic <http://purl.net/dol/logics/DDLOWL>,
+                <http://purl.net/dol/logics/DLLiteR>,
+                <http://purl.net/dol/logics/ECoOWL>,
+                <http://purl.net/dol/logics/ELplusplus>,
+                <http://purl.net/dol/logics/OBOOWL>,
+                <http://purl.net/dol/logics/OWL2/RL>,
+                <http://purl.net/dol/logics/Propositional>,
+                <http://purl.net/dol/logics/RDF>,
+                <http://purl.net/dol/logics/RDF/Simple>,
+                <http://purl.net/dol/logics/SROIQ>;
+         :supportsSerialization <http://purl.net/dol/serializations/OWL2/Manchester>,
+                <http://purl.net/dol/serializations/OWL2/XML>,
+                <http://purl.net/dol/serializations/RDF/Turtle>,
+                <http://purl.net/dol/serializations/RDF/XML>;
+         :translatableFrom <http://purl.net/dol/languages/OWL2/EL>,
+                <http://purl.net/dol/languages/OWL2/QL>,
+                <http://purl.net/dol/languages/OWL2/RL>,
+                <http://purl.net/dol/languages/RDF>,
+                <http://purl.net/dol/languages/SATLIB>;
+         :translatableTo <http://purl.net/dol/languages/CommonLogic>,
+                <http://purl.net/dol/languages/F-logic>,
+                <http://purl.net/dol/languages/OWL2/Full>,
+                <http://purl.net/dol/languages/TPTP>;
+         sta:standardizationStatus sta:W3CRecommendation;
+         <http://purl.org/dc/terms/source> <http://www.w3.org/TR/2009/REC-owl2-overview-20091027/>;
+         <http://www.w3.org/2000/01/rdf-schema#comment> "OWL 2 Web Ontology Language, Description Logic semantics (W3C Recommendation)";
+         <http://www.w3.org/2000/01/rdf-schema#isDefinedBy> <http://purl.net/dol/registry>;
+         <http://www.w3.org/2000/01/rdf-schema#label> "OWL 2 DL";
+         owl:sameAs <http://latin.omdoc.org/logics/syntax?OWL2DL> .
+    
+    <http://purl.net/dol/languages/OWL2/EL>     <http://www.w3.org/1999/02/22-rdf-syntax-ns#type> :OntologyLanguage,
+                <#_g1>;
+         :exactLogicalExpressivity <http://purl.net/dol/logics/ELplusplus>;
+         :mappableTo <http://purl.net/dol/languages/OWL2/DL>;
+         :mappableToLanguage <http://purl.net/dol/languages/OWL2/DL>;
+         :profileOf <http://purl.net/dol/languages/OWL2/DL>;
+         :subLanguageOf <http://purl.net/dol/languages/OWL2/DL>;
+         :supportsEntityKind <http://purl.net/dol/entityKinds/OWL2/AnnotationProperty>,
+                <http://purl.net/dol/entityKinds/OWL2/Class>,
+                <http://purl.net/dol/entityKinds/OWL2/DataProperty>,
+                <http://purl.net/dol/entityKinds/OWL2/Datatype>,
+                <http://purl.net/dol/entityKinds/OWL2/NamedIndividual>,
+                <http://purl.net/dol/entityKinds/OWL2/ObjectProperty>;
+         :supportsLogic <http://purl.net/dol/logics/ELplusplus>;
+         :supportsSerialization <http://purl.net/dol/serializations/OWL2/Manchester>,
+                <http://purl.net/dol/serializations/OWL2/XML>,
+                <http://purl.net/dol/serializations/RDF/Turtle>,
+                <http://purl.net/dol/serializations/RDF/XML>;
+         :translatableTo <http://purl.net/dol/languages/OWL2/DL>;
+         sta:standardizationStatus sta:W3CRecommendation;
+         <http://purl.org/dc/terms/source> <http://www.w3.org/TR/2009/REC-owl2-profiles-20091027/#OWL_2_EL>;
+         <http://www.w3.org/2000/01/rdf-schema#comment> "OWL 2 Web Ontology Language, EL Profile (W3C Recommendation)";
+         <http://www.w3.org/2000/01/rdf-schema#isDefinedBy> <http://purl.net/dol/registry>;
+         <http://www.w3.org/2000/01/rdf-schema#label> "OWL 2 EL";
+         owl:sameAs <http://latin.omdoc.org/logics/syntax?OWL2EL> .
+    
+    <http://purl.net/dol/languages/OWL2/Full>     <http://www.w3.org/1999/02/22-rdf-syntax-ns#type> :OntologyLanguage,
+                <#_g1>;
+         :exactLogicalExpressivity <http://purl.net/dol/logics/OWL2/Full>;
+         :mappableFrom <http://purl.net/dol/languages/OWL2/DL>;
+         :mappableFromLanguage <http://purl.net/dol/languages/OWL2/DL>;
+         :mappableTo <http://purl.net/dol/languages/TPTP>;
+         :mappableToLanguage <http://purl.net/dol/languages/TPTP>;
+         :supportsEntityKind <http://purl.net/dol/entityKinds/OWL2/AnnotationProperty>,
+                <http://purl.net/dol/entityKinds/OWL2/Class>,
+                <http://purl.net/dol/entityKinds/OWL2/DataProperty>,
+                <http://purl.net/dol/entityKinds/OWL2/Datatype>,
+                <http://purl.net/dol/entityKinds/OWL2/NamedIndividual>,
+                <http://purl.net/dol/entityKinds/OWL2/ObjectProperty>;
+         :supportsLogic <http://purl.net/dol/logics/DDLOWL>,
+                <http://purl.net/dol/logics/DLLiteR>,
+                <http://purl.net/dol/logics/ECoOWL>,
+                <http://purl.net/dol/logics/ELplusplus>,
+                <http://purl.net/dol/logics/OBOOWL>,
+                <http://purl.net/dol/logics/OWL2/Full>,
+                <http://purl.net/dol/logics/OWL2/RL>,
+                <http://purl.net/dol/logics/Propositional>,
+                <http://purl.net/dol/logics/RDF>,
+                <http://purl.net/dol/logics/RDF/Simple>,
+                <http://purl.net/dol/logics/RDFS>,
+                <http://purl.net/dol/logics/SROIQ>;
+         :supportsSerialization <http://purl.net/dol/serializations/OWL2/Manchester>,
+                <http://purl.net/dol/serializations/OWL2/XML>,
+                <http://purl.net/dol/serializations/RDF/Turtle>,
+                <http://purl.net/dol/serializations/RDF/XML>;
+         :translatableFrom <http://purl.net/dol/languages/OWL2/DL>;
+         :translatableTo <http://purl.net/dol/languages/TPTP>;
+         sta:standardizationStatus sta:W3CRecommendation;
+         <http://purl.org/dc/terms/source> <http://www.w3.org/TR/owl2-rdf-based-semantics/>;
+         <http://www.w3.org/2000/01/rdf-schema#comment> "OWL 2 Web Ontology Language, RDF semantics (W3C Recommendation)";
+         <http://www.w3.org/2000/01/rdf-schema#isDefinedBy> <http://purl.net/dol/registry>;
+         <http://www.w3.org/2000/01/rdf-schema#label> "OWL 2 Full";
+         owl:sameAs <http://latin.omdoc.org/logics/syntax?OWL2Full> .
+    
+    <http://purl.net/dol/languages/OWL2/QL>     <http://www.w3.org/1999/02/22-rdf-syntax-ns#type> :OntologyLanguage,
+                <#_g1>;
+         :exactLogicalExpressivity <http://purl.net/dol/logics/DLLiteR>;
+         :mappableTo <http://purl.net/dol/languages/OWL2/DL>;
+         :mappableToLanguage <http://purl.net/dol/languages/OWL2/DL>;
+         :profileOf <http://purl.net/dol/languages/OWL2/DL>;
+         :subLanguageOf <http://purl.net/dol/languages/OWL2/DL>;
+         :supportsEntityKind <http://purl.net/dol/entityKinds/OWL2/AnnotationProperty>,
+                <http://purl.net/dol/entityKinds/OWL2/Class>,
+                <http://purl.net/dol/entityKinds/OWL2/DataProperty>,
+                <http://purl.net/dol/entityKinds/OWL2/Datatype>,
+                <http://purl.net/dol/entityKinds/OWL2/NamedIndividual>,
+                <http://purl.net/dol/entityKinds/OWL2/ObjectProperty>;
+         :supportsLogic <http://purl.net/dol/logics/DLLiteR>;
+         :supportsSerialization <http://purl.net/dol/serializations/OWL2/Manchester>,
+                <http://purl.net/dol/serializations/OWL2/XML>,
+                <http://purl.net/dol/serializations/RDF/Turtle>,
+                <http://purl.net/dol/serializations/RDF/XML>;
+         :translatableTo <http://purl.net/dol/languages/OWL2/DL>;
+         sta:standardizationStatus sta:W3CRecommendation;
+         <http://purl.org/dc/terms/source> <http://www.w3.org/TR/2009/REC-owl2-profiles-20091027/#OWL_2_QL>;
+         <http://www.w3.org/2000/01/rdf-schema#comment> "OWL 2 Web Ontology Language, QL Profile (W3C Recommendation)";
+         <http://www.w3.org/2000/01/rdf-schema#isDefinedBy> <http://purl.net/dol/registry>;
+         <http://www.w3.org/2000/01/rdf-schema#label> "OWL 2 QL";
+         owl:sameAs <http://latin.omdoc.org/logics/syntax?OWL2QL> .
+    
+    <http://purl.net/dol/languages/OWL2/RL>     <http://www.w3.org/1999/02/22-rdf-syntax-ns#type> :OntologyLanguage,
+                <#_g1>;
+         :exactLogicalExpressivity <http://purl.net/dol/logics/OWL2/RL>;
+         :mappableTo <http://purl.net/dol/languages/OWL2/DL>;
+         :mappableToLanguage <http://purl.net/dol/languages/OWL2/DL>;
+         :profileOf <http://purl.net/dol/languages/OWL2/DL>;
+         :subLanguageOf <http://purl.net/dol/languages/OWL2/DL>;
+         :supportsEntityKind <http://purl.net/dol/entityKinds/OWL2/AnnotationProperty>,
+                <http://purl.net/dol/entityKinds/OWL2/Class>,
+                <http://purl.net/dol/entityKinds/OWL2/DataProperty>,
+                <http://purl.net/dol/entityKinds/OWL2/Datatype>,
+                <http://purl.net/dol/entityKinds/OWL2/NamedIndividual>,
+                <http://purl.net/dol/entityKinds/OWL2/ObjectProperty>;
+         :supportsLogic <http://purl.net/dol/logics/OWL2/RL>;
+         :supportsSerialization <http://purl.net/dol/serializations/OWL2/Manchester>,
+                <http://purl.net/dol/serializations/OWL2/XML>,
+                <http://purl.net/dol/serializations/RDF/Turtle>,
+                <http://purl.net/dol/serializations/RDF/XML>;
+         :translatableTo <http://purl.net/dol/languages/OWL2/DL>;
+         sta:standardizationStatus sta:W3CRecommendation;
+         <http://purl.org/dc/terms/source> <http://www.w3.org/TR/2009/REC-owl2-profiles-20091027/#OWL_2_RL>;
+         <http://www.w3.org/2000/01/rdf-schema#comment> "OWL 2 Web Ontology Language, RL Profile (W3C Recommendation)";
+         <http://www.w3.org/2000/01/rdf-schema#isDefinedBy> <http://purl.net/dol/registry>;
+         <http://www.w3.org/2000/01/rdf-schema#label> "OWL 2 RL";
+         owl:sameAs <http://latin.omdoc.org/logics/syntax?OWL2RL> .
+    
+    <http://purl.net/dol/languages/RDF>     <http://www.w3.org/1999/02/22-rdf-syntax-ns#type> :OntologyLanguage,
+                <#_g1>;
+         :exactLogicalExpressivity <http://purl.net/dol/logics/RDF>;
+         :mappableTo <http://purl.net/dol/languages/OWL2/DL>,
+                <http://purl.net/dol/languages/TPTP>;
+         :mappableToLanguage <http://purl.net/dol/languages/OWL2/DL>,
+                <http://purl.net/dol/languages/TPTP>;
+         :supportsLogic <http://purl.net/dol/logics/RDF>,
+                <http://purl.net/dol/logics/RDF/Simple>;
+         :supportsSerialization <http://purl.net/dol/serializations/RDF/Turtle>,
+                <http://purl.net/dol/serializations/RDF/XML>;
+         :translatableTo <http://purl.net/dol/languages/OWL2/DL>,
+                <http://purl.net/dol/languages/TPTP>;
+         sta:standardizationStatus sta:W3CRecommendation;
+         <http://purl.org/dc/terms/source> <http://www.w3.org/TR/2004/REC-rdf-concepts-20040210/>;
+         <http://www.w3.org/2000/01/rdf-schema#comment> "Resource Description Framework (W3C Recommendation)";
+         <http://www.w3.org/2000/01/rdf-schema#isDefinedBy> <http://purl.net/dol/registry>;
+         <http://www.w3.org/2000/01/rdf-schema#label> "RDF" .
+    
+    <http://purl.net/dol/languages/SATLIB>     <http://www.w3.org/1999/02/22-rdf-syntax-ns#type> :OntologyLanguage,
+                <#_g1>;
+         :exactLogicalExpressivity <http://purl.net/dol/logics/Propositional>;
+         :mappableFrom <http://purl.net/dol/languages/SATLIB>;
+         :mappableFromLanguage <http://purl.net/dol/languages/SATLIB>;
+         :mappableTo <http://purl.net/dol/languages/CASL>,
+                <http://purl.net/dol/languages/CommonLogic>,
+                <http://purl.net/dol/languages/OWL2/DL>,
+                <http://purl.net/dol/languages/SATLIB>,
+                <http://purl.net/dol/languages/TPTP>;
+         :mappableToLanguage <http://purl.net/dol/languages/CommonLogic>,
+                <http://purl.net/dol/languages/OWL2/DL>,
+                <http://purl.net/dol/languages/SATLIB>,
+                <http://purl.net/dol/languages/TPTP>;
+         :sourceOfMapping <http://purl.net/dol/translations/SATLIBtoCASL>;
+         :supportsLogic <http://purl.net/dol/logics/Propositional>;
+         :translatableFrom <http://purl.net/dol/languages/SATLIB>;
+         :translatableTo <http://purl.net/dol/languages/CASL>,
+                <http://purl.net/dol/languages/CommonLogic>,
+                <http://purl.net/dol/languages/OWL2/DL>,
+                <http://purl.net/dol/languages/SATLIB>,
+                <http://purl.net/dol/languages/TPTP>;
+         <http://purl.org/dc/terms/source> <http://www.satlib.org/>;
+         <http://www.w3.org/2000/01/rdf-schema#isDefinedBy> <http://purl.net/dol/registry>;
+         <http://www.w3.org/2000/01/rdf-schema#label> "SATLIB" .
+    
+    <http://purl.net/dol/languages/THF0>     <http://www.w3.org/1999/02/22-rdf-syntax-ns#type> :OntologyLanguage,
+                <#_g1>;
+         :exactLogicalExpressivity <http://purl.net/dol/logics/ChurchSimpleTypeTheory>;
+         :mappableFrom <http://purl.net/dol/languages/CASL>;
+         :mappableFromLanguage <http://purl.net/dol/languages/CASL>;
+         :supportsLogic <http://purl.net/dol/logics/ChurchSimpleTypeTheory>,
+                <http://purl.net/dol/logics/CommonLogic>,
+                <http://purl.net/dol/logics/CommonLogic/WithoutSequences>,
+                <http://purl.net/dol/logics/DDLOWL>,
+                <http://purl.net/dol/logics/DLLiteR>,
+                <http://purl.net/dol/logics/ECoFOLeq>,
+                <http://purl.net/dol/logics/ECoOWL>,
+                <http://purl.net/dol/logics/ELplusplus>,
+                <http://purl.net/dol/logics/F-logic>,
+                <http://purl.net/dol/logics/FOLeq>,
+                <http://purl.net/dol/logics/FOLeqms>,
+                <http://purl.net/dol/logics/OBOOWL>,
+                <http://purl.net/dol/logics/OWL2/Full>,
+                <http://purl.net/dol/logics/OWL2/RL>,
+                <http://purl.net/dol/logics/Propositional>,
+                <http://purl.net/dol/logics/RDF>,
+                <http://purl.net/dol/logics/RDF/Simple>,
+                <http://purl.net/dol/logics/RDFS>,
+                <http://purl.net/dol/logics/RelationalSchema>,
+                <http://purl.net/dol/logics/SROIQ>,
+                <http://purl.net/dol/logics/SubPCFOLeq>;
+         :translatableFrom <http://purl.net/dol/languages/CASL>;
+         <http://www.w3.org/2000/01/rdf-schema#isDefinedBy> <http://purl.net/dol/registry>;
+         <http://www.w3.org/2000/01/rdf-schema#label> "THF0";
+         owl:sameAs <http://latin.omdoc.org/logics/tptp?THF0> .
+    
+    <http://purl.net/dol/languages/TPTP>     <http://www.w3.org/1999/02/22-rdf-syntax-ns#type> :OntologyLanguage,
+                <#_g1>;
+         :exactLogicalExpressivity <http://purl.net/dol/logics/FOLeq>;
+         :mappableFrom <http://purl.net/dol/languages/F-logic>,
+                <http://purl.net/dol/languages/OWL2/DL>,
+                <http://purl.net/dol/languages/OWL2/Full>,
+                <http://purl.net/dol/languages/RDF>,
+                <http://purl.net/dol/languages/SATLIB>;
+         :mappableFromLanguage <http://purl.net/dol/languages/F-logic>,
+                <http://purl.net/dol/languages/OWL2/DL>,
+                <http://purl.net/dol/languages/OWL2/Full>,
+                <http://purl.net/dol/languages/RDF>,
+                <http://purl.net/dol/languages/SATLIB>;
+         :mappableTo <http://purl.net/dol/languages/CommonLogic>,
+                <http://purl.net/dol/languages/F-logic>;
+         :mappableToLanguage <http://purl.net/dol/languages/CommonLogic>,
+                <http://purl.net/dol/languages/F-logic>;
+         :supportsLogic <http://purl.net/dol/logics/DDLOWL>,
+                <http://purl.net/dol/logics/DLLiteR>,
+                <http://purl.net/dol/logics/ECoOWL>,
+                <http://purl.net/dol/logics/ELplusplus>,
+                <http://purl.net/dol/logics/F-logic>,
+                <http://purl.net/dol/logics/FOLeq>,
+                <http://purl.net/dol/logics/OBOOWL>,
+                <http://purl.net/dol/logics/OWL2/Full>,
+                <http://purl.net/dol/logics/OWL2/RL>,
+                <http://purl.net/dol/logics/Propositional>,
+                <http://purl.net/dol/logics/RDF>,
+                <http://purl.net/dol/logics/RDF/Simple>,
+                <http://purl.net/dol/logics/RDFS>,
+                <http://purl.net/dol/logics/SROIQ>;
+         :translatableFrom <http://purl.net/dol/languages/F-logic>,
+                <http://purl.net/dol/languages/OWL2/DL>,
+                <http://purl.net/dol/languages/OWL2/Full>,
+                <http://purl.net/dol/languages/RDF>,
+                <http://purl.net/dol/languages/SATLIB>;
+         :translatableTo <http://purl.net/dol/languages/CommonLogic>,
+                <http://purl.net/dol/languages/F-logic>;
+         <http://purl.org/dc/terms/source> <http://www.cs.miami.edu/~tptp/>;
+         <http://www.w3.org/2000/01/rdf-schema#isDefinedBy> <http://purl.net/dol/registry>;
+         <http://www.w3.org/2000/01/rdf-schema#label> "TPTP" .
+    
+    <http://purl.net/dol/logics/ChurchSimpleTypeTheory>     <http://www.w3.org/1999/02/22-rdf-syntax-ns#type> :Logic;
+         :exactlyMappableTo <http://purl.net/dol/logics/SubPCFOLeq>;
+         :faithfullyMappableTo <http://purl.net/dol/logics/SubPCFOLeq>;
+         :mappableFrom <http://purl.net/dol/logics/SubPCFOLeq>;
+         :mappableFromLogic <http://purl.net/dol/logics/SubPCFOLeq>;
+         :mappableTo <http://purl.net/dol/logics/SubPCFOLeq>;
+         :mappableToLogic <http://purl.net/dol/logics/SubPCFOLeq>;
+         :modelBijectivelyMappableTo <http://purl.net/dol/logics/SubPCFOLeq>;
+         :modelExpansivelyMappableTo <http://purl.net/dol/logics/SubPCFOLeq>;
+         :sourceOfMapping <http://purl.net/dol/projections/ChurchSimpleTypeTheoryToSubPCFOLeq>;
+         :specifiesSemanticsOf <http://purl.net/dol/languages/THF0>;
+         :theoroidallyMappableTo <http://purl.net/dol/logics/SubPCFOLeq>;
+         :translatableFrom <http://purl.net/dol/logics/SubPCFOLeq>;
+         :weaklyExactlyMappableTo <http://purl.net/dol/logics/SubPCFOLeq>;
+         <http://www.w3.org/2000/01/rdf-schema#isDefinedBy> <http://purl.net/dol/registry>;
+         <http://www.w3.org/2000/01/rdf-schema#label> "Church Simple Type Theory";
+         owl:sameAs <http://latin.omdoc.org/logics/syntax?FOLEQ> .
+    
+    <http://purl.net/dol/logics/CommonLogic>     <http://www.w3.org/1999/02/22-rdf-syntax-ns#type> :Logic;
+         :embeddableInto <http://purl.net/dol/logics/SubPCFOLeq>;
+         :exactlyMappableTo <http://purl.net/dol/logics/SubPCFOLeq>;
+         :faithfullyMappableTo <http://purl.net/dol/logics/SubPCFOLeq>;
+         :mappableFrom <http://purl.net/dol/logics/CommonLogic/WithoutSequences>,
+                <http://purl.net/dol/logics/FOLeq>,
+                <http://purl.net/dol/logics/Propositional>,
+                <http://purl.net/dol/logics/SROIQ>;
+         :mappableFromLogic <http://purl.net/dol/logics/CommonLogic/WithoutSequences>,
+                <http://purl.net/dol/logics/FOLeq>,
+                <http://purl.net/dol/logics/Propositional>,
+                <http://purl.net/dol/logics/SROIQ>;
+         :mappableTo <http://purl.net/dol/logics/SubPCFOLeq>;
+         :mappableToLogic <http://purl.net/dol/logics/SubPCFOLeq>;
+         :modelBijectivelyMappableTo <http://purl.net/dol/logics/SubPCFOLeq>;
+         :modelExpansivelyMappableTo <http://purl.net/dol/logics/SubPCFOLeq>;
+         :sourceOfMapping <http://purl.net/dol/translations/CommonLogicToSubPCFOLeq>;
+         :specifiesSemanticsOf <http://purl.net/dol/languages/CASL>,
+                <http://purl.net/dol/languages/CommonLogic>,
+                <http://purl.net/dol/languages/THF0>;
+         :subLogicOf <http://purl.net/dol/logics/SubPCFOLeq>;
+         :theoroidallyMappableTo <http://purl.net/dol/logics/SubPCFOLeq>;
+         :translatableFrom <http://purl.net/dol/logics/CommonLogic/WithoutSequences>,
+                <http://purl.net/dol/logics/FOLeq>,
+                <http://purl.net/dol/logics/Propositional>,
+                <http://purl.net/dol/logics/SROIQ>;
+         :translatableTo <http://purl.net/dol/logics/SubPCFOLeq>;
+         :weaklyExactlyMappableTo <http://purl.net/dol/logics/SubPCFOLeq>;
+         sta:standardizationStatus sta:ISOStandard;
+         <http://www.w3.org/2000/01/rdf-schema#comment> "Common Logic (ISO/IEC 24707)";
+         <http://www.w3.org/2000/01/rdf-schema#isDefinedBy> <http://purl.net/dol/registry>;
+         <http://www.w3.org/2000/01/rdf-schema#label> "Common Logic";
+         owl:sameAs <http://latin.omdoc.org/logics/syntax?CL> .
+    
+    <http://purl.net/dol/logics/CommonLogic/WithoutSequences>     <http://www.w3.org/1999/02/22-rdf-syntax-ns#type> :Logic;
+         :embeddableInto <http://purl.net/dol/logics/CommonLogic>,
+                <http://purl.net/dol/logics/FOLeq>;
+         :exactlyMappableTo <http://purl.net/dol/logics/CommonLogic>,
+                <http://purl.net/dol/logics/FOLeq>;
+         :faithfullyMappableTo <http://purl.net/dol/logics/CommonLogic>,
+                <http://purl.net/dol/logics/FOLeq>;
+         :mappableFrom <http://purl.net/dol/logics/FOLeq>;
+         :mappableFromLogic <http://purl.net/dol/logics/FOLeq>;
+         :mappableTo <http://purl.net/dol/logics/CommonLogic>,
+                <http://purl.net/dol/logics/FOLeq>;
+         :mappableToLogic <http://purl.net/dol/logics/CommonLogic>,
+                <http://purl.net/dol/logics/FOLeq>;
+         :modelBijectivelyMappableTo <http://purl.net/dol/logics/CommonLogic>,
+                <http://purl.net/dol/logics/FOLeq>;
+         :modelExpansivelyMappableTo <http://purl.net/dol/logics/CommonLogic>,
+                <http://purl.net/dol/logics/FOLeq>;
+         :plainlyMappableTo <http://purl.net/dol/logics/CommonLogic>,
+                <http://purl.net/dol/logics/FOLeq>;
+         :sourceOfMapping <http://purl.net/dol/translations/CLWithoutSequencesToCommonLogic>,
+                <http://purl.net/dol/translations/CLWithoutSequencesToFOLeq>;
+         :specifiesSemanticsOf <http://purl.net/dol/languages/CASL>,
+                <http://purl.net/dol/languages/CommonLogic>,
+                <http://purl.net/dol/languages/THF0>;
+         :subLogicOf <http://purl.net/dol/logics/CommonLogic>;
+         :theoroidallyMappableTo <http://purl.net/dol/logics/CommonLogic>,
+                <http://purl.net/dol/logics/FOLeq>;
+         :translatableFrom <http://purl.net/dol/logics/FOLeq>;
+         :translatableTo <http://purl.net/dol/logics/CommonLogic>,
+                <http://purl.net/dol/logics/FOLeq>;
+         :weaklyExactlyMappableTo <http://purl.net/dol/logics/CommonLogic>,
+                <http://purl.net/dol/logics/FOLeq>;
+         <http://www.w3.org/2000/01/rdf-schema#comment> "Common Logic, restricted to sentences without sequence markers";
+         <http://www.w3.org/2000/01/rdf-schema#isDefinedBy> <http://purl.net/dol/registry>;
+         <http://www.w3.org/2000/01/rdf-schema#label> "CL⁻";
+         co:altLabel "Common Logic without sequences"@en;
+         co:prefLabel "CL⁻"@en .
+    
+    <http://purl.net/dol/logics/DDLOWL>     <http://www.w3.org/1999/02/22-rdf-syntax-ns#type> :Logic;
+         :embeddableInto <http://purl.net/dol/logics/ECoOWL>;
+         :exactlyMappableTo <http://purl.net/dol/logics/ECoOWL>;
+         :faithfullyMappableTo <http://purl.net/dol/logics/ECoOWL>;
+         :mappableFrom <http://purl.net/dol/logics/SROIQ>;
+         :mappableFromLogic <http://purl.net/dol/logics/SROIQ>;
+         :mappableTo <http://purl.net/dol/logics/ECoOWL>;
+         :mappableToLogic <http://purl.net/dol/logics/ECoOWL>;
+         :modelBijectivelyMappableTo <http://purl.net/dol/logics/ECoOWL>;
+         :modelExpansivelyMappableTo <http://purl.net/dol/logics/ECoOWL>;
+         :plainlyMappableTo <http://purl.net/dol/logics/ECoOWL>;
+         :sourceOfMapping <http://purl.net/dol/translations/DDLOWLtoECoOWL>;
+         :specifiesSemanticsOf <http://purl.net/dol/languages/CASL>,
+                <http://purl.net/dol/languages/CommonLogic>,
+                <http://purl.net/dol/languages/F-logic>,
+                <http://purl.net/dol/languages/OWL2/DL>,
+                <http://purl.net/dol/languages/OWL2/Full>,
+                <http://purl.net/dol/languages/THF0>,
+                <http://purl.net/dol/languages/TPTP>;
+         :subLogicOf <http://purl.net/dol/logics/ECoOWL>;
+         :theoroidallyMappableTo <http://purl.net/dol/logics/ECoOWL>;
+         :translatableFrom <http://purl.net/dol/logics/SROIQ>;
+         :translatableTo <http://purl.net/dol/logics/ECoOWL>;
+         :weaklyExactlyMappableTo <http://purl.net/dol/logics/ECoOWL>;
+         <http://www.w3.org/2000/01/rdf-schema#isDefinedBy> <http://purl.net/dol/registry>;
+         <http://www.w3.org/2000/01/rdf-schema#label> "DDL^{OWL}" .
+    
+    <http://purl.net/dol/logics/DLLiteR>     <http://www.w3.org/1999/02/22-rdf-syntax-ns#type> :Logic;
+         :embeddableInto <http://purl.net/dol/logics/SROIQ>;
+         :exactlyMappableTo <http://purl.net/dol/logics/SROIQ>;
+         :faithfullyMappableTo <http://purl.net/dol/logics/SROIQ>;
+         :mappableFrom <http://purl.net/dol/logics/SROIQ>;
+         :mappableFromLogic <http://purl.net/dol/logics/SROIQ>;
+         :mappableTo <http://purl.net/dol/logics/SROIQ>;
+         :mappableToLogic <http://purl.net/dol/logics/SROIQ>;
+         :modelBijectivelyMappableTo <http://purl.net/dol/logics/SROIQ>;
+         :modelExpansivelyMappableTo <http://purl.net/dol/logics/SROIQ>;
+         :plainlyMappableTo <http://purl.net/dol/logics/SROIQ>;
+         :sourceOfMapping <http://purl.net/dol/translations/DLLiteRtoSROIQ>;
+         :specifiesSemanticsOf <http://purl.net/dol/languages/CASL>,
+                <http://purl.net/dol/languages/CommonLogic>,
+                <http://purl.net/dol/languages/F-logic>,
+                <http://purl.net/dol/languages/OWL2/DL>,
+                <http://purl.net/dol/languages/OWL2/Full>,
+                <http://purl.net/dol/languages/OWL2/QL>,
+                <http://purl.net/dol/languages/THF0>,
+                <http://purl.net/dol/languages/TPTP>;
+         :subLogicOf <http://purl.net/dol/logics/SROIQ>;
+         :theoroidallyMappableTo <http://purl.net/dol/logics/SROIQ>;
+         :translatableTo <http://purl.net/dol/logics/SROIQ>;
+         :weaklyExactlyMappableTo <http://purl.net/dol/logics/SROIQ>;
+         sta:standardizationStatus sta:AcademicLiterature;
+         <http://www.w3.org/2000/01/rdf-schema#isDefinedBy> <http://purl.net/dol/registry>;
+         <http://www.w3.org/2000/01/rdf-schema#label> "DL-Lite_R" .
+    
+    <http://purl.net/dol/logics/ECoFOLeq>     <http://www.w3.org/1999/02/22-rdf-syntax-ns#type> :Logic;
+         :embeddableInto <http://purl.net/dol/logics/FOLeqms>;
+         :exactlyMappableTo <http://purl.net/dol/logics/ECoOWL>,
+                <http://purl.net/dol/logics/FOLeqms>;
+         :faithfullyMappableTo <http://purl.net/dol/logics/ECoOWL>,
+                <http://purl.net/dol/logics/FOLeqms>;
+         :mappableFrom <http://purl.net/dol/logics/ECoOWL>,
+                <http://purl.net/dol/logics/FOLeq>;
+         :mappableFromLogic <http://purl.net/dol/logics/ECoOWL>,
+                <http://purl.net/dol/logics/FOLeq>;
+         :mappableTo <http://purl.net/dol/logics/ECoOWL>,
+                <http://purl.net/dol/logics/FOLeqms>;
+         :mappableToLogic <http://purl.net/dol/logics/ECoOWL>,
+                <http://purl.net/dol/logics/FOLeqms>;
+         :modelBijectivelyMappableTo <http://purl.net/dol/logics/ECoOWL>,
+                <http://purl.net/dol/logics/FOLeqms>;
+         :modelExpansivelyMappableTo <http://purl.net/dol/logics/ECoOWL>,
+                <http://purl.net/dol/logics/FOLeqms>;
+         :plainlyMappableTo <http://purl.net/dol/logics/ECoOWL>,
+                <http://purl.net/dol/logics/FOLeqms>;
+         :sourceOfMapping <http://purl.net/dol/projections/ECoFOLeqToECoOWL>,
+                <http://purl.net/dol/translations/ECoFOLeqToFOLeqms>;
+         :specifiesSemanticsOf <http://purl.net/dol/languages/CASL>,
+                <http://purl.net/dol/languages/THF0>;
+         :subLogicOf <http://purl.net/dol/logics/FOLeqms>;
+         :theoroidallyMappableTo <http://purl.net/dol/logics/ECoOWL>,
+                <http://purl.net/dol/logics/FOLeqms>;
+         :translatableFrom <http://purl.net/dol/logics/ECoOWL>,
+                <http://purl.net/dol/logics/FOLeq>;
+         :translatableTo <http://purl.net/dol/logics/FOLeqms>;
+         :weaklyExactlyMappableTo <http://purl.net/dol/logics/ECoOWL>,
+                <http://purl.net/dol/logics/FOLeqms>;
+         <http://www.w3.org/2000/01/rdf-schema#isDefinedBy> <http://purl.net/dol/registry>;
+         <http://www.w3.org/2000/01/rdf-schema#label> "E-Connections^{FOLeq}" .
+    
+    <http://purl.net/dol/logics/ECoOWL>     <http://www.w3.org/1999/02/22-rdf-syntax-ns#type> :Logic;
+         :embeddableInto <http://purl.net/dol/logics/ECoFOLeq>,
+                <http://purl.net/dol/logics/SROIQ>;
+         :exactlyMappableTo <http://purl.net/dol/logics/ECoFOLeq>,
+                <http://purl.net/dol/logics/SROIQ>;
+         :faithfullyMappableTo <http://purl.net/dol/logics/ECoFOLeq>,
+                <http://purl.net/dol/logics/SROIQ>;
+         :mappableFrom <http://purl.net/dol/logics/DDLOWL>,
+                <http://purl.net/dol/logics/ECoFOLeq>;
+         :mappableFromLogic <http://purl.net/dol/logics/DDLOWL>,
+                <http://purl.net/dol/logics/ECoFOLeq>;
+         :mappableTo <http://purl.net/dol/logics/ECoFOLeq>,
+                <http://purl.net/dol/logics/SROIQ>;
+         :mappableToLogic <http://purl.net/dol/logics/ECoFOLeq>,
+                <http://purl.net/dol/logics/SROIQ>;
+         :modelBijectivelyMappableTo <http://purl.net/dol/logics/ECoFOLeq>,
+                <http://purl.net/dol/logics/SROIQ>;
+         :modelExpansivelyMappableTo <http://purl.net/dol/logics/ECoFOLeq>,
+                <http://purl.net/dol/logics/SROIQ>;
+         :plainlyMappableTo <http://purl.net/dol/logics/ECoFOLeq>;
+         :sourceOfMapping <http://purl.net/dol/translations/ECoOWLtoECoFOLeq>,
+                <http://purl.net/dol/translations/ECoOWLtoSROIQ>;
+         :specifiesSemanticsOf <http://purl.net/dol/languages/CASL>,
+                <http://purl.net/dol/languages/CommonLogic>,
+                <http://purl.net/dol/languages/F-logic>,
+                <http://purl.net/dol/languages/OWL2/DL>,
+                <http://purl.net/dol/languages/OWL2/Full>,
+                <http://purl.net/dol/languages/THF0>,
+                <http://purl.net/dol/languages/TPTP>;
+         :subLogicOf <http://purl.net/dol/logics/ECoFOLeq>,
+                <http://purl.net/dol/logics/SROIQ>;
+         :theoroidallyMappableTo <http://purl.net/dol/logics/ECoFOLeq>,
+                <http://purl.net/dol/logics/SROIQ>;
+         :translatableFrom <http://purl.net/dol/logics/DDLOWL>;
+         :translatableTo <http://purl.net/dol/logics/ECoFOLeq>,
+                <http://purl.net/dol/logics/SROIQ>;
+         :weaklyExactlyMappableTo <http://purl.net/dol/logics/ECoFOLeq>,
+                <http://purl.net/dol/logics/SROIQ>;
+         <http://www.w3.org/2000/01/rdf-schema#isDefinedBy> <http://purl.net/dol/registry>;
+         <http://www.w3.org/2000/01/rdf-schema#label> "E-Connections^{OWL}" .
+    
+    <http://purl.net/dol/logics/ELplusplus>     <http://www.w3.org/1999/02/22-rdf-syntax-ns#type> :Logic;
+         :embeddableInto <http://purl.net/dol/logics/SROIQ>,
+                <#_g2>;
+         :exactlyMappableTo <http://purl.net/dol/logics/SROIQ>,
+                <#_g2>;
+         :faithfullyMappableTo <http://purl.net/dol/logics/SROIQ>,
+                <#_g2>;
+         :mappableFrom <http://purl.net/dol/logics/SROIQ>;
+         :mappableFromLogic <http://purl.net/dol/logics/SROIQ>;
+         :mappableTo <http://purl.net/dol/logics/OBOOWL>,
+                <http://purl.net/dol/logics/SROIQ>,
+                <#_g2>;
+         :mappableToLogic <http://purl.net/dol/logics/OBOOWL>,
+                <http://purl.net/dol/logics/SROIQ>,
+                <#_g2>;
+         :modelBijectivelyMappableTo <http://purl.net/dol/logics/SROIQ>,
+                <#_g2>;
+         :modelExpansivelyMappableTo <http://purl.net/dol/logics/SROIQ>,
+                <#_g2>;
+         :plainlyMappableTo <http://purl.net/dol/logics/OBOOWL>,
+                <http://purl.net/dol/logics/SROIQ>;
+         :sourceOfMapping <http://purl.net/dol/translations/ELplusplusToOBOOWL>,
+                <http://purl.net/dol/translations/ELplusplusToSROIQ>;
+         :specifiesSemanticsOf <http://purl.net/dol/languages/CASL>,
+                <http://purl.net/dol/languages/CommonLogic>,
+                <http://purl.net/dol/languages/F-logic>,
+                <http://purl.net/dol/languages/OBO/1.3>,
+                <http://purl.net/dol/languages/OWL2/DL>,
+                <http://purl.net/dol/languages/OWL2/EL>,
+                <http://purl.net/dol/languages/OWL2/Full>,
+                <http://purl.net/dol/languages/THF0>,
+                <http://purl.net/dol/languages/TPTP>;
+         :subLogicOf <http://purl.net/dol/logics/SROIQ>,
+                <#_g2>;
+         :theoroidallyMappableTo <http://purl.net/dol/logics/OBOOWL>,
+                <http://purl.net/dol/logics/SROIQ>;
+         :translatableTo <http://purl.net/dol/logics/OBOOWL>,
+                <http://purl.net/dol/logics/SROIQ>,
+                <#_g2>;
+         :weaklyExactlyMappableTo <http://purl.net/dol/logics/SROIQ>,
+                <#_g2>;
+         sta:standardizationStatus sta:AcademicLiterature;
+         <http://purl.org/dc/terms/source> <http://lat.inf.tu-dresden.de/research/papers/2005/BaaderBrandtLutz-IJCAI-05.pdf>,
+                <http://www.webont.org/owled/2008dc/papers/owled2008dc_paper_3.pdf>;
+         <http://www.w3.org/2000/01/rdf-schema#isDefinedBy> <http://purl.net/dol/registry>;
+         <http://www.w3.org/2000/01/rdf-schema#label> "EL⁺⁺" .
+    
+    <http://purl.net/dol/logics/F-logic>     <http://www.w3.org/1999/02/22-rdf-syntax-ns#type> :Logic;
+         :embeddableInto <http://purl.net/dol/logics/FOLeq>;
+         :exactlyMappableTo <http://purl.net/dol/logics/FOLeq>;
+         :faithfullyMappableTo <http://purl.net/dol/logics/FOLeq>;
+         :mappableFrom <http://purl.net/dol/logics/FOLeq>,
+                <http://purl.net/dol/logics/SROIQ>;
+         :mappableFromLogic <http://purl.net/dol/logics/FOLeq>,
+                <http://purl.net/dol/logics/SROIQ>;
+         :mappableTo <http://purl.net/dol/logics/FOLeq>;
+         :mappableToLogic <http://purl.net/dol/logics/FOLeq>;
+         :modelBijectivelyMappableTo <http://purl.net/dol/logics/FOLeq>;
+         :modelExpansivelyMappableTo <http://purl.net/dol/logics/FOLeq>;
+         :sourceOfMapping <http://purl.net/dol/translations/F-logicToFOLeq>;
+         :specifiesSemanticsOf <http://purl.net/dol/languages/CASL>,
+                <http://purl.net/dol/languages/CommonLogic>,
+                <http://purl.net/dol/languages/F-logic>,
+                <http://purl.net/dol/languages/THF0>,
+                <http://purl.net/dol/languages/TPTP>;
+         :subLogicOf <http://purl.net/dol/logics/FOLeq>;
+         :theoroidallyMappableTo <http://purl.net/dol/logics/FOLeq>;
+         :translatableFrom <http://purl.net/dol/logics/FOLeq>,
+                <http://purl.net/dol/logics/SROIQ>;
+         :translatableTo <http://purl.net/dol/logics/FOLeq>;
+         :weaklyExactlyMappableTo <http://purl.net/dol/logics/FOLeq>;
+         sta:standardizationStatus sta:AcademicLiterature;
+         <http://www.w3.org/2000/01/rdf-schema#isDefinedBy> <http://purl.net/dol/registry>;
+         <http://www.w3.org/2000/01/rdf-schema#label> "F-logic" .
+    
+    <http://purl.net/dol/logics/FOL>     <http://www.w3.org/1999/02/22-rdf-syntax-ns#type> :Logic;
+         <http://www.w3.org/2000/01/rdf-schema#comment> "first-order logic (without equality)";
+         <http://www.w3.org/2000/01/rdf-schema#isDefinedBy> <http://purl.net/dol/registry>;
+         <http://www.w3.org/2000/01/rdf-schema#label> "first-order logic";
+         owl:sameAs <http://latin.omdoc.org/logics/syntax?FOLEQ>;
+         co:altLabel "FOL"@en,
+                "first-order logic (without equality)"@en;
+         co:prefLabel "first-order logic"@en .
+    
+    <http://purl.net/dol/logics/FOLeq>     <http://www.w3.org/1999/02/22-rdf-syntax-ns#type> :Logic;
+         :embeddableInto <http://purl.net/dol/logics/ECoFOLeq>,
+                <http://purl.net/dol/logics/F-logic>,
+                <http://purl.net/dol/logics/FOLeqms>;
+         :exactlyMappableTo <http://purl.net/dol/logics/CommonLogic>,
+                <http://purl.net/dol/logics/ECoFOLeq>,
+                <http://purl.net/dol/logics/F-logic>,
+                <http://purl.net/dol/logics/FOLeqms>,
+                <http://purl.net/dol/logics/SROIQ>;
+         :faithfullyMappableTo <http://purl.net/dol/logics/CommonLogic>,
+                <http://purl.net/dol/logics/CommonLogic/WithoutSequences>,
+                <http://purl.net/dol/logics/ECoFOLeq>,
+                <http://purl.net/dol/logics/F-logic>,
+                <http://purl.net/dol/logics/FOLeqms>,
+                <http://purl.net/dol/logics/SROIQ>;
+         :mappableFrom <http://purl.net/dol/logics/CommonLogic/WithoutSequences>,
+                <http://purl.net/dol/logics/F-logic>,
+                <http://purl.net/dol/logics/FOLeqms>,
+                <http://purl.net/dol/logics/OWL2/Full>,
+                <http://purl.net/dol/logics/Propositional>,
+                <http://purl.net/dol/logics/RDF>,
+                <http://purl.net/dol/logics/RDF/Simple>,
+                <http://purl.net/dol/logics/RDFS>,
+                <http://purl.net/dol/logics/SROIQ>;
+         :mappableFromLogic <http://purl.net/dol/logics/CommonLogic/WithoutSequences>,
+                <http://purl.net/dol/logics/F-logic>,
+                <http://purl.net/dol/logics/FOLeqms>,
+                <http://purl.net/dol/logics/OWL2/Full>,
+                <http://purl.net/dol/logics/Propositional>,
+                <http://purl.net/dol/logics/RDF>,
+                <http://purl.net/dol/logics/RDF/Simple>,
+                <http://purl.net/dol/logics/RDFS>,
+                <http://purl.net/dol/logics/SROIQ>;
+         :mappableTo <http://purl.net/dol/logics/CommonLogic>,
+                <http://purl.net/dol/logics/CommonLogic/WithoutSequences>,
+                <http://purl.net/dol/logics/ECoFOLeq>,
+                <http://purl.net/dol/logics/F-logic>,
+                <http://purl.net/dol/logics/FOLeqms>,
+                <http://purl.net/dol/logics/SROIQ>;
+         :mappableToLogic <http://purl.net/dol/logics/CommonLogic>,
+                <http://purl.net/dol/logics/CommonLogic/WithoutSequences>,
+                <http://purl.net/dol/logics/ECoFOLeq>,
+                <http://purl.net/dol/logics/F-logic>,
+                <http://purl.net/dol/logics/FOLeqms>,
+                <http://purl.net/dol/logics/SROIQ>;
+         :modelBijectivelyMappableTo <http://purl.net/dol/logics/ECoFOLeq>,
+                <http://purl.net/dol/logics/F-logic>,
+                <http://purl.net/dol/logics/FOLeqms>,
+                <http://purl.net/dol/logics/SROIQ>;
+         :modelExpansivelyMappableTo <http://purl.net/dol/logics/CommonLogic>,
+                <http://purl.net/dol/logics/CommonLogic/WithoutSequences>,
+                <http://purl.net/dol/logics/ECoFOLeq>,
+                <http://purl.net/dol/logics/F-logic>,
+                <http://purl.net/dol/logics/FOLeqms>,
+                <http://purl.net/dol/logics/SROIQ>;
+         :plainlyMappableTo <http://purl.net/dol/logics/CommonLogic>,
+                <http://purl.net/dol/logics/CommonLogic/WithoutSequences>,
+                <http://purl.net/dol/logics/ECoFOLeq>,
+                <http://purl.net/dol/logics/F-logic>,
+                <http://purl.net/dol/logics/FOLeqms>,
+                <http://purl.net/dol/logics/SROIQ>;
+         :sourceOfMapping <http://purl.net/dol/projections/FOLeqToSROIQ>,
+                <http://purl.net/dol/translations/FOLeqToCLWithoutSequences>,
+                <http://purl.net/dol/translations/FOLeqToCommonLogic>,
+                <http://purl.net/dol/translations/FOLeqToECoFOLeq>,
+                <http://purl.net/dol/translations/FOLeqToF-logic>,
+                <http://purl.net/dol/translations/FOLeqToFOLeqms>;
+         :specifiesSemanticsOf <http://purl.net/dol/languages/CASL>,
+                <http://purl.net/dol/languages/CommonLogic>,
+                <http://purl.net/dol/languages/F-logic>,
+                <http://purl.net/dol/languages/THF0>,
+                <http://purl.net/dol/languages/TPTP>;
+         :subLogicOf <http://purl.net/dol/logics/ECoFOLeq>,
+                <http://purl.net/dol/logics/F-logic>,
+                <http://purl.net/dol/logics/FOLeqms>;
+         :theoroidallyMappableTo <http://purl.net/dol/logics/CommonLogic>,
+                <http://purl.net/dol/logics/CommonLogic/WithoutSequences>,
+                <http://purl.net/dol/logics/ECoFOLeq>,
+                <http://purl.net/dol/logics/F-logic>,
+                <http://purl.net/dol/logics/FOLeqms>,
+                <http://purl.net/dol/logics/SROIQ>;
+         :translatableFrom <http://purl.net/dol/logics/CommonLogic/WithoutSequences>,
+                <http://purl.net/dol/logics/F-logic>,
+                <http://purl.net/dol/logics/FOLeqms>,
+                <http://purl.net/dol/logics/OWL2/Full>,
+                <http://purl.net/dol/logics/Propositional>,
+                <http://purl.net/dol/logics/RDF>,
+                <http://purl.net/dol/logics/RDF/Simple>,
+                <http://purl.net/dol/logics/RDFS>,
+                <http://purl.net/dol/logics/SROIQ>;
+         :translatableTo <http://purl.net/dol/logics/CommonLogic>,
+                <http://purl.net/dol/logics/CommonLogic/WithoutSequences>,
+                <http://purl.net/dol/logics/ECoFOLeq>,
+                <http://purl.net/dol/logics/F-logic>,
+                <http://purl.net/dol/logics/FOLeqms>;
+         :weaklyExactlyMappableTo <http://purl.net/dol/logics/CommonLogic>,
+                <http://purl.net/dol/logics/ECoFOLeq>,
+                <http://purl.net/dol/logics/F-logic>,
+                <http://purl.net/dol/logics/FOLeqms>,
+                <http://purl.net/dol/logics/SROIQ>;
+         <http://www.w3.org/2000/01/rdf-schema#comment> "first-order logic with equality";
+         <http://www.w3.org/2000/01/rdf-schema#isDefinedBy> <http://purl.net/dol/registry>;
+         <http://www.w3.org/2000/01/rdf-schema#label> "first-order logic with equality";
+         owl:sameAs <http://latin.omdoc.org/logics/syntax?FOLEQ>;
+         co:altLabel "FOL⁼"@en;
+         co:prefLabel "first-order logic with equality"@en .
+    
+    <http://purl.net/dol/logics/FOLeqms>     <http://www.w3.org/1999/02/22-rdf-syntax-ns#type> :Logic;
+         :embeddableInto <http://purl.net/dol/logics/FOLeq>,
+                <http://purl.net/dol/logics/SubPCFOLeq>;
+         :exactlyMappableTo <http://purl.net/dol/logics/FOLeq>,
+                <http://purl.net/dol/logics/Propositional>,
+                <http://purl.net/dol/logics/SubPCFOLeq>;
+         :faithfullyMappableTo <http://purl.net/dol/logics/FOLeq>,
+                <http://purl.net/dol/logics/Propositional>,
+                <http://purl.net/dol/logics/SubPCFOLeq>;
+         :mappableFrom <http://purl.net/dol/logics/ECoFOLeq>,
+                <http://purl.net/dol/logics/FOLeq>,
+                <http://purl.net/dol/logics/Propositional>,
+                <http://purl.net/dol/logics/RelationalSchema>,
+                <http://purl.net/dol/logics/SubPCFOLeq>;
+         :mappableFromLogic <http://purl.net/dol/logics/ECoFOLeq>,
+                <http://purl.net/dol/logics/FOLeq>,
+                <http://purl.net/dol/logics/Propositional>,
+                <http://purl.net/dol/logics/RelationalSchema>,
+                <http://purl.net/dol/logics/SubPCFOLeq>;
+         :mappableTo <http://purl.net/dol/logics/FOLeq>,
+                <http://purl.net/dol/logics/Propositional>,
+                <http://purl.net/dol/logics/SubPCFOLeq>;
+         :mappableToLogic <http://purl.net/dol/logics/FOLeq>,
+                <http://purl.net/dol/logics/Propositional>,
+                <http://purl.net/dol/logics/SubPCFOLeq>;
+         :modelBijectivelyMappableTo <http://purl.net/dol/logics/FOLeq>,
+                <http://purl.net/dol/logics/Propositional>,
+                <http://purl.net/dol/logics/SubPCFOLeq>;
+         :modelExpansivelyMappableTo <http://purl.net/dol/logics/FOLeq>,
+                <http://purl.net/dol/logics/Propositional>,
+                <http://purl.net/dol/logics/SubPCFOLeq>;
+         :plainlyMappableTo <http://purl.net/dol/logics/Propositional>,
+                <http://purl.net/dol/logics/SubPCFOLeq>;
+         :sourceOfMapping <http://purl.net/dol/projections/FOLeqmsToPropositional>,
+                <http://purl.net/dol/translations/FOLeqmsToFOLeq>,
+                <http://purl.net/dol/translations/FOLeqmsToSubPCFOLeq>;
+         :specifiesSemanticsOf <http://purl.net/dol/languages/CASL>,
+                <http://purl.net/dol/languages/THF0>;
+         :subLogicOf <http://purl.net/dol/logics/SubPCFOLeq>;
+         :theoroidallyMappableTo <http://purl.net/dol/logics/FOLeq>,
+                <http://purl.net/dol/logics/Propositional>,
+                <http://purl.net/dol/logics/SubPCFOLeq>;
+         :translatableFrom <http://purl.net/dol/logics/ECoFOLeq>,
+                <http://purl.net/dol/logics/FOLeq>,
+                <http://purl.net/dol/logics/Propositional>,
+                <http://purl.net/dol/logics/RelationalSchema>;
+         :translatableTo <http://purl.net/dol/logics/FOLeq>,
+                <http://purl.net/dol/logics/SubPCFOLeq>;
+         :weaklyExactlyMappableTo <http://purl.net/dol/logics/FOLeq>,
+                <http://purl.net/dol/logics/Propositional>,
+                <http://purl.net/dol/logics/SubPCFOLeq>;
+         <http://www.w3.org/2000/01/rdf-schema#isDefinedBy> <http://purl.net/dol/registry>;
+         <http://www.w3.org/2000/01/rdf-schema#label> "many-sorted first-order logic with equality";
+         owl:sameAs <http://latin.omdoc.org/logics/syntax?SFOLEQ>;
+         co:altLabel "many-sorted FOL with equality"@en;
+         co:prefLabel "many-sorted first-order logic with equality"@en .
+    
+    <http://purl.net/dol/logics/OBOOWL>     <http://www.w3.org/1999/02/22-rdf-syntax-ns#type> :Logic;
+         :embeddableInto <http://purl.net/dol/logics/SROIQ>;
+         :exactlyMappableTo <http://purl.net/dol/logics/SROIQ>;
+         :faithfullyMappableTo <http://purl.net/dol/logics/SROIQ>;
+         :mappableFrom <http://purl.net/dol/logics/ELplusplus>;
+         :mappableFromLogic <http://purl.net/dol/logics/ELplusplus>;
+         :mappableTo <http://purl.net/dol/logics/SROIQ>;
+         :mappableToLogic <http://purl.net/dol/logics/SROIQ>;
+         :modelBijectivelyMappableTo <http://purl.net/dol/logics/SROIQ>;
+         :modelExpansivelyMappableTo <http://purl.net/dol/logics/SROIQ>;
+         :plainlyMappableTo <http://purl.net/dol/logics/SROIQ>;
+         :sourceOfMapping <http://purl.net/dol/translations/OBOOWLtoSROIQ>;
+         :specifiesSemanticsOf <http://purl.net/dol/languages/CASL>,
+                <http://purl.net/dol/languages/CommonLogic>,
+                <http://purl.net/dol/languages/F-logic>,
+                <http://purl.net/dol/languages/OWL2/DL>,
+                <http://purl.net/dol/languages/OWL2/Full>,
+                <http://purl.net/dol/languages/THF0>,
+                <http://purl.net/dol/languages/TPTP>;
+         :subLogicOf <http://purl.net/dol/logics/SROIQ>;
+         :theoroidallyMappableTo <http://purl.net/dol/logics/SROIQ>;
+         :translatableFrom <http://purl.net/dol/logics/ELplusplus>;
+         :translatableTo <http://purl.net/dol/logics/SROIQ>;
+         :weaklyExactlyMappableTo <http://purl.net/dol/logics/SROIQ>;
+         <http://www.w3.org/2000/01/rdf-schema#isDefinedBy> <http://purl.net/dol/registry>;
+         <http://www.w3.org/2000/01/rdf-schema#label> "OBO^{OWL}" .
+    
+    <http://purl.net/dol/logics/OWL2/Full>     <http://www.w3.org/1999/02/22-rdf-syntax-ns#type> :Logic;
+         :embeddableInto <http://purl.net/dol/logics/FOLeq>;
+         :exactlyMappableTo <http://purl.net/dol/logics/FOLeq>,
+                <http://purl.net/dol/logics/RDFS>;
+         :faithfullyMappableTo <http://purl.net/dol/logics/FOLeq>,
+                <http://purl.net/dol/logics/RDFS>;
+         :mappableFrom <http://purl.net/dol/logics/RDFS>,
+                <http://purl.net/dol/logics/SROIQ>;
+         :mappableFromLogic <http://purl.net/dol/logics/RDFS>,
+                <http://purl.net/dol/logics/SROIQ>;
+         :mappableTo <http://purl.net/dol/logics/FOLeq>,
+                <http://purl.net/dol/logics/RDFS>;
+         :mappableToLogic <http://purl.net/dol/logics/FOLeq>,
+                <http://purl.net/dol/logics/RDFS>;
+         :modelBijectivelyMappableTo <http://purl.net/dol/logics/FOLeq>,
+                <http://purl.net/dol/logics/RDFS>;
+         :modelExpansivelyMappableTo <http://purl.net/dol/logics/FOLeq>,
+                <http://purl.net/dol/logics/RDFS>;
+         :plainlyMappableTo <http://purl.net/dol/logics/RDFS>;
+         :sourceOfMapping <http://purl.net/dol/projections/OWL2FullToRDFS>,
+                <http://purl.net/dol/translations/OWL2FullToFOLeq>;
+         :specifiesSemanticsOf <http://purl.net/dol/languages/CASL>,
+                <http://purl.net/dol/languages/CommonLogic>,
+                <http://purl.net/dol/languages/F-logic>,
+                <http://purl.net/dol/languages/OWL2/Full>,
+                <http://purl.net/dol/languages/THF0>,
+                <http://purl.net/dol/languages/TPTP>;
+         :subLogicOf <http://purl.net/dol/logics/FOLeq>;
+         :theoroidallyMappableTo <http://purl.net/dol/logics/FOLeq>,
+                <http://purl.net/dol/logics/RDFS>;
+         :translatableFrom <http://purl.net/dol/logics/RDFS>,
+                <http://purl.net/dol/logics/SROIQ>;
+         :translatableTo <http://purl.net/dol/logics/FOLeq>;
+         :weaklyExactlyMappableTo <http://purl.net/dol/logics/FOLeq>,
+                <http://purl.net/dol/logics/RDFS>;
+         sta:standardizationStatus sta:W3CRecommendation;
+         <http://purl.org/dc/terms/source> <http://www.w3.org/TR/owl2-rdf-based-semantics/>;
+         <http://www.w3.org/2000/01/rdf-schema#isDefinedBy> <http://purl.net/dol/registry>;
+         <http://www.w3.org/2000/01/rdf-schema#label> "OWL 2 Full" .
+    
+    <http://purl.net/dol/logics/OWL2/RL>     <http://www.w3.org/1999/02/22-rdf-syntax-ns#type> :Logic;
+         :embeddableInto <http://purl.net/dol/logics/SROIQ>;
+         :exactlyMappableTo <http://purl.net/dol/logics/SROIQ>;
+         :faithfullyMappableTo <http://purl.net/dol/logics/SROIQ>;
+         :mappableFrom <http://purl.net/dol/logics/SROIQ>;
+         :mappableFromLogic <http://purl.net/dol/logics/SROIQ>;
+         :mappableTo <http://purl.net/dol/logics/SROIQ>;
+         :mappableToLogic <http://purl.net/dol/logics/SROIQ>;
+         :modelBijectivelyMappableTo <http://purl.net/dol/logics/SROIQ>;
+         :modelExpansivelyMappableTo <http://purl.net/dol/logics/SROIQ>;
+         :plainlyMappableTo <http://purl.net/dol/logics/SROIQ>;
+         :sourceOfMapping <http://purl.net/dol/translations/OWL2RLtoSROIQ>;
+         :specifiesSemanticsOf <http://purl.net/dol/languages/CASL>,
+                <http://purl.net/dol/languages/CommonLogic>,
+                <http://purl.net/dol/languages/F-logic>,
+                <http://purl.net/dol/languages/OWL2/DL>,
+                <http://purl.net/dol/languages/OWL2/Full>,
+                <http://purl.net/dol/languages/OWL2/RL>,
+                <http://purl.net/dol/languages/THF0>,
+                <http://purl.net/dol/languages/TPTP>;
+         :subLogicOf <http://purl.net/dol/logics/SROIQ>;
+         :theoroidallyMappableTo <http://purl.net/dol/logics/SROIQ>;
+         :translatableTo <http://purl.net/dol/logics/SROIQ>;
+         :weaklyExactlyMappableTo <http://purl.net/dol/logics/SROIQ>;
+         sta:standardizationStatus sta:W3CRecommendation;
+         <http://www.w3.org/2000/01/rdf-schema#isDefinedBy> <http://purl.net/dol/registry>;
+         <http://www.w3.org/2000/01/rdf-schema#label> "OWL 2 RL" .
+    
+    <http://purl.net/dol/logics/Propositional>     <http://www.w3.org/1999/02/22-rdf-syntax-ns#type> :Logic;
+         :embeddableInto <http://purl.net/dol/logics/FOLeqms>;
+         :exactlyMappableTo <http://purl.net/dol/logics/CommonLogic>,
+                <http://purl.net/dol/logics/FOLeq>,
+                <http://purl.net/dol/logics/FOLeqms>,
+                <http://purl.net/dol/logics/SROIQ>;
+         :faithfullyMappableTo <http://purl.net/dol/logics/CommonLogic>,
+                <http://purl.net/dol/logics/FOLeq>,
+                <http://purl.net/dol/logics/FOLeqms>,
+                <http://purl.net/dol/logics/SROIQ>;
+         :mappableFrom <http://purl.net/dol/logics/FOLeqms>,
+                <http://purl.net/dol/logics/Propositional>;
+         :mappableFromLogic <http://purl.net/dol/logics/FOLeqms>,
+                <http://purl.net/dol/logics/Propositional>;
+         :mappableTo <http://purl.net/dol/logics/CommonLogic>,
+                <http://purl.net/dol/logics/FOLeq>,
+                <http://purl.net/dol/logics/FOLeqms>,
+                <http://purl.net/dol/logics/Propositional>,
+                <http://purl.net/dol/logics/SROIQ>;
+         :mappableToLogic <http://purl.net/dol/logics/CommonLogic>,
+                <http://purl.net/dol/logics/FOLeq>,
+                <http://purl.net/dol/logics/FOLeqms>,
+                <http://purl.net/dol/logics/Propositional>,
+                <http://purl.net/dol/logics/SROIQ>;
+         :modelBijectivelyMappableTo <http://purl.net/dol/logics/FOLeqms>;
+         :modelExpansivelyMappableTo <http://purl.net/dol/logics/CommonLogic>,
+                <http://purl.net/dol/logics/FOLeq>,
+                <http://purl.net/dol/logics/FOLeqms>,
+                <http://purl.net/dol/logics/SROIQ>;
+         :plainlyMappableTo <http://purl.net/dol/logics/CommonLogic>,
+                <http://purl.net/dol/logics/FOLeq>,
+                <http://purl.net/dol/logics/FOLeqms>,
+                <http://purl.net/dol/logics/Propositional>,
+                <http://purl.net/dol/logics/SROIQ>;
+         :sourceOfMapping <http://purl.net/dol/translations/PropositionalToCommonLogic>,
+                <http://purl.net/dol/translations/PropositionalToFOLeq>,
+                <http://purl.net/dol/translations/PropositionalToFOLeqms>,
+                <http://purl.net/dol/translations/PropositionalToPropositionalCNF>,
+                <http://purl.net/dol/translations/PropositionalToSROIQ>;
+         :specifiesSemanticsOf <http://purl.net/dol/languages/CASL>,
+                <http://purl.net/dol/languages/CommonLogic>,
+                <http://purl.net/dol/languages/F-logic>,
+                <http://purl.net/dol/languages/OWL2/DL>,
+                <http://purl.net/dol/languages/OWL2/Full>,
+                <http://purl.net/dol/languages/SATLIB>,
+                <http://purl.net/dol/languages/THF0>,
+                <http://purl.net/dol/languages/TPTP>;
+         :subLogicOf <http://purl.net/dol/logics/FOLeqms>;
+         :theoroidallyMappableTo <http://purl.net/dol/logics/CommonLogic>,
+                <http://purl.net/dol/logics/FOLeq>,
+                <http://purl.net/dol/logics/FOLeqms>,
+                <http://purl.net/dol/logics/Propositional>,
+                <http://purl.net/dol/logics/SROIQ>;
+         :translatableFrom <http://purl.net/dol/logics/Propositional>;
+         :translatableTo <http://purl.net/dol/logics/CommonLogic>,
+                <http://purl.net/dol/logics/FOLeq>,
+                <http://purl.net/dol/logics/FOLeqms>,
+                <http://purl.net/dol/logics/Propositional>,
+                <http://purl.net/dol/logics/SROIQ>;
+         :weaklyExactlyMappableTo <http://purl.net/dol/logics/CommonLogic>,
+                <http://purl.net/dol/logics/FOLeq>,
+                <http://purl.net/dol/logics/FOLeqms>,
+                <http://purl.net/dol/logics/SROIQ>;
+         <http://www.w3.org/2000/01/rdf-schema#isDefinedBy> <http://purl.net/dol/registry>;
+         <http://www.w3.org/2000/01/rdf-schema#label> "propositional logic";
+         owl:sameAs <http://latin.omdoc.org/logics/syntax?PL> .
+    
+    <http://purl.net/dol/logics/RDF>     <http://www.w3.org/1999/02/22-rdf-syntax-ns#type> :Logic;
+         :embeddableInto <http://purl.net/dol/logics/FOLeq>,
+                <http://purl.net/dol/logics/RDFS>;
+         :exactlyMappableTo <http://purl.net/dol/logics/FOLeq>,
+                <http://purl.net/dol/logics/RDF/Simple>,
+                <http://purl.net/dol/logics/RDFS>,
+                <http://purl.net/dol/logics/SROIQ>;
+         :faithfullyMappableTo <http://purl.net/dol/logics/FOLeq>,
+                <http://purl.net/dol/logics/RDF/Simple>,
+                <http://purl.net/dol/logics/RDFS>,
+                <http://purl.net/dol/logics/SROIQ>;
+         :mappableFrom <http://purl.net/dol/logics/RDF/Simple>,
+                <http://purl.net/dol/logics/RDFS>;
+         :mappableFromLogic <http://purl.net/dol/logics/RDF/Simple>,
+                <http://purl.net/dol/logics/RDFS>;
+         :mappableTo <http://purl.net/dol/logics/FOLeq>,
+                <http://purl.net/dol/logics/RDF/Simple>,
+                <http://purl.net/dol/logics/RDFS>,
+                <http://purl.net/dol/logics/SROIQ>;
+         :mappableToLogic <http://purl.net/dol/logics/FOLeq>,
+                <http://purl.net/dol/logics/RDF/Simple>,
+                <http://purl.net/dol/logics/RDFS>,
+                <http://purl.net/dol/logics/SROIQ>;
+         :modelBijectivelyMappableTo <http://purl.net/dol/logics/FOLeq>,
+                <http://purl.net/dol/logics/RDF/Simple>,
+                <http://purl.net/dol/logics/RDFS>;
+         :modelExpansivelyMappableTo <http://purl.net/dol/logics/FOLeq>,
+                <http://purl.net/dol/logics/RDF/Simple>,
+                <http://purl.net/dol/logics/RDFS>,
+                <http://purl.net/dol/logics/SROIQ>;
+         :plainlyMappableTo <http://purl.net/dol/logics/RDF/Simple>,
+                <http://purl.net/dol/logics/RDFS>,
+                <http://purl.net/dol/logics/SROIQ>;
+         :sourceOfMapping <http://purl.net/dol/projections/RDFtoSimpleRDF>,
+                <http://purl.net/dol/translations/RDFtoFOLeq>,
+                <http://purl.net/dol/translations/RDFtoRDFS>,
+                <http://purl.net/dol/translations/RDFtoSROIQ>;
+         :specifiesSemanticsOf <http://purl.net/dol/languages/CASL>,
+                <http://purl.net/dol/languages/CommonLogic>,
+                <http://purl.net/dol/languages/F-logic>,
+                <http://purl.net/dol/languages/OWL2/DL>,
+                <http://purl.net/dol/languages/OWL2/Full>,
+                <http://purl.net/dol/languages/RDF>,
+                <http://purl.net/dol/languages/THF0>,
+                <http://purl.net/dol/languages/TPTP>;
+         :subLogicOf <http://purl.net/dol/logics/FOLeq>,
+                <http://purl.net/dol/logics/RDFS>;
+         :theoroidallyMappableTo <http://purl.net/dol/logics/FOLeq>,
+                <http://purl.net/dol/logics/RDF/Simple>,
+                <http://purl.net/dol/logics/RDFS>,
+                <http://purl.net/dol/logics/SROIQ>;
+         :translatableFrom <http://purl.net/dol/logics/RDF/Simple>;
+         :translatableTo <http://purl.net/dol/logics/FOLeq>,
+                <http://purl.net/dol/logics/RDFS>,
+                <http://purl.net/dol/logics/SROIQ>;
+         :weaklyExactlyMappableTo <http://purl.net/dol/logics/FOLeq>,
+                <http://purl.net/dol/logics/RDF/Simple>,
+                <http://purl.net/dol/logics/RDFS>,
+                <http://purl.net/dol/logics/SROIQ>;
+         sta:standardizationStatus sta:W3CRecommendation;
+         <http://www.w3.org/2000/01/rdf-schema#comment> "RDF Resource Description Framework (W3C Recommendation)";
+         <http://www.w3.org/2000/01/rdf-schema#isDefinedBy> <http://purl.net/dol/registry>;
+         <http://www.w3.org/2000/01/rdf-schema#label> "RDF" .
+    
+    <http://purl.net/dol/logics/RDF/Simple>     <http://www.w3.org/1999/02/22-rdf-syntax-ns#type> :Logic;
+         :embeddableInto <http://purl.net/dol/logics/FOLeq>,
+                <http://purl.net/dol/logics/RDF>;
+         :exactlyMappableTo <http://purl.net/dol/logics/FOLeq>,
+                <http://purl.net/dol/logics/RDF>,
+                <http://purl.net/dol/logics/SROIQ>;
+         :faithfullyMappableTo <http://purl.net/dol/logics/FOLeq>,
+                <http://purl.net/dol/logics/RDF>,
+                <http://purl.net/dol/logics/SROIQ>;
+         :mappableFrom <http://purl.net/dol/logics/RDF>;
+         :mappableFromLogic <http://purl.net/dol/logics/RDF>;
+         :mappableTo <http://purl.net/dol/logics/FOLeq>,
+                <http://purl.net/dol/logics/RDF>,
+                <http://purl.net/dol/logics/SROIQ>;
+         :mappableToLogic <http://purl.net/dol/logics/FOLeq>,
+                <http://purl.net/dol/logics/RDF>,
+                <http://purl.net/dol/logics/SROIQ>;
+         :modelBijectivelyMappableTo <http://purl.net/dol/logics/FOLeq>,
+                <http://purl.net/dol/logics/RDF>;
+         :modelExpansivelyMappableTo <http://purl.net/dol/logics/FOLeq>,
+                <http://purl.net/dol/logics/RDF>,
+                <http://purl.net/dol/logics/SROIQ>;
+         :plainlyMappableTo <http://purl.net/dol/logics/FOLeq>,
+                <http://purl.net/dol/logics/RDF>,
+                <http://purl.net/dol/logics/SROIQ>;
+         :sourceOfMapping <http://purl.net/dol/translations/SimpleRDFtoFOLeq>,
+                <http://purl.net/dol/translations/SimpleRDFtoRDF>,
+                <http://purl.net/dol/translations/SimpleRDFtoSROIQ>;
+         :specifiesSemanticsOf <http://purl.net/dol/languages/CASL>,
+                <http://purl.net/dol/languages/CommonLogic>,
+                <http://purl.net/dol/languages/F-logic>,
+                <http://purl.net/dol/languages/OWL2/DL>,
+                <http://purl.net/dol/languages/OWL2/Full>,
+                <http://purl.net/dol/languages/RDF>,
+                <http://purl.net/dol/languages/THF0>,
+                <http://purl.net/dol/languages/TPTP>;
+         :subLogicOf <http://purl.net/dol/logics/FOLeq>,
+                <http://purl.net/dol/logics/RDF>;
+         :theoroidallyMappableTo <http://purl.net/dol/logics/FOLeq>,
+                <http://purl.net/dol/logics/RDF>,
+                <http://purl.net/dol/logics/SROIQ>;
+         :translatableTo <http://purl.net/dol/logics/FOLeq>,
+                <http://purl.net/dol/logics/RDF>,
+                <http://purl.net/dol/logics/SROIQ>;
+         :weaklyExactlyMappableTo <http://purl.net/dol/logics/FOLeq>,
+                <http://purl.net/dol/logics/RDF>,
+                <http://purl.net/dol/logics/SROIQ>;
+         sta:standardizationStatus sta:W3CRecommendation;
+         <http://purl.org/dc/terms/source> <http://www.w3.org/TR/2004/REC-rdf-mt-20040210/#interp>;
+         <http://www.w3.org/2000/01/rdf-schema#comment> "Simple interpretations of RDF graphs";
+         <http://www.w3.org/2000/01/rdf-schema#isDefinedBy> <http://purl.net/dol/registry>;
+         <http://www.w3.org/2000/01/rdf-schema#label> "simple RDF" .
+    
+    <http://purl.net/dol/logics/RDFS>     <http://www.w3.org/1999/02/22-rdf-syntax-ns#type> :Logic;
+         :embeddableInto <http://purl.net/dol/logics/FOLeq>,
+                <http://purl.net/dol/logics/OWL2/Full>;
+         :exactlyMappableTo <http://purl.net/dol/logics/FOLeq>,
+                <http://purl.net/dol/logics/OWL2/Full>,
+                <http://purl.net/dol/logics/RDF>;
+         :faithfullyMappableTo <http://purl.net/dol/logics/FOLeq>,
+                <http://purl.net/dol/logics/OWL2/Full>,
+                <http://purl.net/dol/logics/RDF>;
+         :mappableFrom <http://purl.net/dol/logics/OWL2/Full>,
+                <http://purl.net/dol/logics/RDF>;
+         :mappableFromLogic <http://purl.net/dol/logics/OWL2/Full>,
+                <http://purl.net/dol/logics/RDF>;
+         :mappableTo <http://purl.net/dol/logics/FOLeq>,
+                <http://purl.net/dol/logics/OWL2/Full>,
+                <http://purl.net/dol/logics/RDF>;
+         :mappableToLogic <http://purl.net/dol/logics/FOLeq>,
+                <http://purl.net/dol/logics/OWL2/Full>,
+                <http://purl.net/dol/logics/RDF>;
+         :modelBijectivelyMappableTo <http://purl.net/dol/logics/FOLeq>,
+                <http://purl.net/dol/logics/OWL2/Full>,
+                <http://purl.net/dol/logics/RDF>;
+         :modelExpansivelyMappableTo <http://purl.net/dol/logics/FOLeq>,
+                <http://purl.net/dol/logics/OWL2/Full>,
+                <http://purl.net/dol/logics/RDF>;
+         :plainlyMappableTo <http://purl.net/dol/logics/OWL2/Full>,
+                <http://purl.net/dol/logics/RDF>;
+         :sourceOfMapping <http://purl.net/dol/projections/RDFStoRDF>,
+                <http://purl.net/dol/translations/RDFStoFOLeq>,
+                <http://purl.net/dol/translations/RDFStoOWL2Full>;
+         :specifiesSemanticsOf <http://purl.net/dol/languages/CASL>,
+                <http://purl.net/dol/languages/CommonLogic>,
+                <http://purl.net/dol/languages/F-logic>,
+                <http://purl.net/dol/languages/OWL2/Full>,
+                <http://purl.net/dol/languages/THF0>,
+                <http://purl.net/dol/languages/TPTP>;
+         :subLogicOf <http://purl.net/dol/logics/FOLeq>,
+                <http://purl.net/dol/logics/OWL2/Full>;
+         :theoroidallyMappableTo <http://purl.net/dol/logics/FOLeq>,
+                <http://purl.net/dol/logics/OWL2/Full>,
+                <http://purl.net/dol/logics/RDF>;
+         :translatableFrom <http://purl.net/dol/logics/RDF>;
+         :translatableTo <http://purl.net/dol/logics/FOLeq>,
+                <http://purl.net/dol/logics/OWL2/Full>;
+         :weaklyExactlyMappableTo <http://purl.net/dol/logics/FOLeq>,
+                <http://purl.net/dol/logics/OWL2/Full>,
+                <http://purl.net/dol/logics/RDF>;
+         sta:standardizationStatus sta:W3CRecommendation;
+         <http://www.w3.org/2000/01/rdf-schema#comment> "RDF Vocabulary Description Language (a.k.a. 'RDF Schema'; W3C Recommendation)";
+         <http://www.w3.org/2000/01/rdf-schema#isDefinedBy> <http://purl.net/dol/registry>;
+         <http://www.w3.org/2000/01/rdf-schema#label> "RDFS" .
+    
+    <http://purl.net/dol/logics/RelationalSchema>     <http://www.w3.org/1999/02/22-rdf-syntax-ns#type> :Logic;
+         :embeddableInto <http://purl.net/dol/logics/FOLeqms>;
+         :exactlyMappableTo <http://purl.net/dol/logics/FOLeqms>;
+         :faithfullyMappableTo <http://purl.net/dol/logics/FOLeqms>;
+         :mappableTo <http://purl.net/dol/logics/FOLeqms>;
+         :mappableToLogic <http://purl.net/dol/logics/FOLeqms>;
+         :modelBijectivelyMappableTo <http://purl.net/dol/logics/FOLeqms>;
+         :modelExpansivelyMappableTo <http://purl.net/dol/logics/FOLeqms>;
+         :sourceOfMapping <http://purl.net/dol/translations/RelationalSchemaToFOLeqms>;
+         :specifiesSemanticsOf <http://purl.net/dol/languages/CASL>,
+                <http://purl.net/dol/languages/THF0>;
+         :subLogicOf <http://purl.net/dol/logics/FOLeqms>;
+         :theoroidallyMappableTo <http://purl.net/dol/logics/FOLeqms>;
+         :translatableTo <http://purl.net/dol/logics/FOLeqms>;
+         :weaklyExactlyMappableTo <http://purl.net/dol/logics/FOLeqms>;
+         <http://www.w3.org/2000/01/rdf-schema#isDefinedBy> <http://purl.net/dol/registry>;
+         <http://www.w3.org/2000/01/rdf-schema#label> "relational database schema" .
+    
+    <http://purl.net/dol/logics/SROIQ>     <http://www.w3.org/1999/02/22-rdf-syntax-ns#type> :Logic;
+         :embeddableInto <http://purl.net/dol/logics/DDLOWL>,
+                <http://purl.net/dol/logics/OWL2/Full>;
+         :exactlyMappableTo <http://purl.net/dol/logics/CommonLogic>,
+                <http://purl.net/dol/logics/DDLOWL>,
+                <http://purl.net/dol/logics/DLLiteR>,
+                <http://purl.net/dol/logics/ELplusplus>,
+                <http://purl.net/dol/logics/FOLeq>,
+                <http://purl.net/dol/logics/OWL2/Full>,
+                <http://purl.net/dol/logics/OWL2/RL>;
+         :faithfullyMappableTo <http://purl.net/dol/logics/CommonLogic>,
+                <http://purl.net/dol/logics/DDLOWL>,
+                <http://purl.net/dol/logics/DLLiteR>,
+                <http://purl.net/dol/logics/ELplusplus>,
+                <http://purl.net/dol/logics/F-logic>,
+                <http://purl.net/dol/logics/FOLeq>,
+                <http://purl.net/dol/logics/OWL2/Full>,
+                <http://purl.net/dol/logics/OWL2/RL>;
+         :mappableFrom <http://purl.net/dol/logics/DLLiteR>,
+                <http://purl.net/dol/logics/ECoOWL>,
+                <http://purl.net/dol/logics/ELplusplus>,
+                <http://purl.net/dol/logics/FOLeq>,
+                <http://purl.net/dol/logics/OBOOWL>,
+                <http://purl.net/dol/logics/OWL2/RL>,
+                <http://purl.net/dol/logics/Propositional>,
+                <http://purl.net/dol/logics/RDF>,
+                <http://purl.net/dol/logics/RDF/Simple>;
+         :mappableFromLogic <http://purl.net/dol/logics/DLLiteR>,
+                <http://purl.net/dol/logics/ECoOWL>,
+                <http://purl.net/dol/logics/ELplusplus>,
+                <http://purl.net/dol/logics/FOLeq>,
+                <http://purl.net/dol/logics/OBOOWL>,
+                <http://purl.net/dol/logics/OWL2/RL>,
+                <http://purl.net/dol/logics/Propositional>,
+                <http://purl.net/dol/logics/RDF>,
+                <http://purl.net/dol/logics/RDF/Simple>;
+         :mappableTo <http://purl.net/dol/logics/CommonLogic>,
+                <http://purl.net/dol/logics/DDLOWL>,
+                <http://purl.net/dol/logics/DLLiteR>,
+                <http://purl.net/dol/logics/ELplusplus>,
+                <http://purl.net/dol/logics/F-logic>,
+                <http://purl.net/dol/logics/FOLeq>,
+                <http://purl.net/dol/logics/OWL2/Full>,
+                <http://purl.net/dol/logics/OWL2/RL>;
+         :mappableToLogic <http://purl.net/dol/logics/CommonLogic>,
+                <http://purl.net/dol/logics/DDLOWL>,
+                <http://purl.net/dol/logics/DLLiteR>,
+                <http://purl.net/dol/logics/ELplusplus>,
+                <http://purl.net/dol/logics/F-logic>,
+                <http://purl.net/dol/logics/FOLeq>,
+                <http://purl.net/dol/logics/OWL2/Full>,
+                <http://purl.net/dol/logics/OWL2/RL>;
+         :modelBijectivelyMappableTo <http://purl.net/dol/logics/CommonLogic>,
+                <http://purl.net/dol/logics/DDLOWL>,
+                <http://purl.net/dol/logics/DLLiteR>,
+                <http://purl.net/dol/logics/ELplusplus>,
+                <http://purl.net/dol/logics/FOLeq>,
+                <http://purl.net/dol/logics/OWL2/Full>,
+                <http://purl.net/dol/logics/OWL2/RL>;
+         :modelExpansivelyMappableTo <http://purl.net/dol/logics/CommonLogic>,
+                <http://purl.net/dol/logics/DDLOWL>,
+                <http://purl.net/dol/logics/DLLiteR>,
+                <http://purl.net/dol/logics/ELplusplus>,
+                <http://purl.net/dol/logics/F-logic>,
+                <http://purl.net/dol/logics/FOLeq>,
+                <http://purl.net/dol/logics/OWL2/Full>,
+                <http://purl.net/dol/logics/OWL2/RL>;
+         :plainlyMappableTo <http://purl.net/dol/logics/CommonLogic>,
+                <http://purl.net/dol/logics/DDLOWL>,
+                <http://purl.net/dol/logics/DLLiteR>,
+                <http://purl.net/dol/logics/ELplusplus>,
+                <http://purl.net/dol/logics/F-logic>,
+                <http://purl.net/dol/logics/FOLeq>,
+                <http://purl.net/dol/logics/OWL2/Full>,
+                <http://purl.net/dol/logics/OWL2/RL>;
+         :sourceOfMapping <http://purl.net/dol/projections/SROIQtoDLLiteR>,
+                <http://purl.net/dol/projections/SROIQtoELplusplus>,
+                <http://purl.net/dol/projections/SROIQtoOWL2RL>,
+                <http://purl.net/dol/translations/SROIQtoCommonLogic>,
+                <http://purl.net/dol/translations/SROIQtoDDLOWL>,
+                <http://purl.net/dol/translations/SROIQtoF-logic>,
+                <http://purl.net/dol/translations/SROIQtoFOLeq>,
+                <http://purl.net/dol/translations/SROIQtoOWL2Full>;
+         :specifiesSemanticsOf <http://purl.net/dol/languages/CASL>,
+                <http://purl.net/dol/languages/CommonLogic>,
+                <http://purl.net/dol/languages/F-logic>,
+                <http://purl.net/dol/languages/OWL2/DL>,
+                <http://purl.net/dol/languages/OWL2/Full>,
+                <http://purl.net/dol/languages/THF0>,
+                <http://purl.net/dol/languages/TPTP>;
+         :subLogicOf <http://purl.net/dol/logics/DDLOWL>,
+                <http://purl.net/dol/logics/OWL2/Full>;
+         :theoroidallyMappableTo <http://purl.net/dol/logics/CommonLogic>,
+                <http://purl.net/dol/logics/DDLOWL>,
+                <http://purl.net/dol/logics/DLLiteR>,
+                <http://purl.net/dol/logics/ELplusplus>,
+                <http://purl.net/dol/logics/F-logic>,
+                <http://purl.net/dol/logics/FOLeq>,
+                <http://purl.net/dol/logics/OWL2/Full>,
+                <http://purl.net/dol/logics/OWL2/RL>;
+         :translatableFrom <http://purl.net/dol/logics/DLLiteR>,
+                <http://purl.net/dol/logics/ECoOWL>,
+                <http://purl.net/dol/logics/ELplusplus>,
+                <http://purl.net/dol/logics/OBOOWL>,
+                <http://purl.net/dol/logics/OWL2/RL>,
+                <http://purl.net/dol/logics/Propositional>,
+                <http://purl.net/dol/logics/RDF>,
+                <http://purl.net/dol/logics/RDF/Simple>;
+         :translatableTo <http://purl.net/dol/logics/CommonLogic>,
+                <http://purl.net/dol/logics/DDLOWL>,
+                <http://purl.net/dol/logics/F-logic>,
+                <http://purl.net/dol/logics/FOLeq>,
+                <http://purl.net/dol/logics/OWL2/Full>;
+         :weaklyExactlyMappableTo <http://purl.net/dol/logics/CommonLogic>,
+                <http://purl.net/dol/logics/DDLOWL>,
+                <http://purl.net/dol/logics/DLLiteR>,
+                <http://purl.net/dol/logics/ELplusplus>,
+                <http://purl.net/dol/logics/FOLeq>,
+                <http://purl.net/dol/logics/OWL2/Full>,
+                <http://purl.net/dol/logics/OWL2/RL>;
+         sta:standardizationStatus sta:AcademicLiterature;
+         <http://www.w3.org/2000/01/rdf-schema#comment> "SROIQ, the logic of OWL 2 Web Ontology Language DL (W3C Recommendation)";
+         <http://www.w3.org/2000/01/rdf-schema#isDefinedBy> <http://purl.net/dol/registry>;
+         <http://www.w3.org/2000/01/rdf-schema#label> "SROIQ" .
+    
+    <http://purl.net/dol/logics/SubPCFOLeq>     <http://www.w3.org/1999/02/22-rdf-syntax-ns#type> :Logic;
+         :embeddableInto <http://purl.net/dol/logics/ChurchSimpleTypeTheory>;
+         :exactlyMappableTo <http://purl.net/dol/logics/ChurchSimpleTypeTheory>,
+                <http://purl.net/dol/logics/FOLeqms>;
+         :faithfullyMappableTo <http://purl.net/dol/logics/ChurchSimpleTypeTheory>,
+                <http://purl.net/dol/logics/FOLeqms>;
+         :mappableFrom <http://purl.net/dol/logics/ChurchSimpleTypeTheory>,
+                <http://purl.net/dol/logics/CommonLogic>,
+                <http://purl.net/dol/logics/FOLeqms>;
+         :mappableFromLogic <http://purl.net/dol/logics/ChurchSimpleTypeTheory>,
+                <http://purl.net/dol/logics/CommonLogic>,
+                <http://purl.net/dol/logics/FOLeqms>;
+         :mappableTo <http://purl.net/dol/logics/ChurchSimpleTypeTheory>,
+                <http://purl.net/dol/logics/FOLeqms>;
+         :mappableToLogic <http://purl.net/dol/logics/ChurchSimpleTypeTheory>,
+                <http://purl.net/dol/logics/FOLeqms>;
+         :modelBijectivelyMappableTo <http://purl.net/dol/logics/ChurchSimpleTypeTheory>,
+                <http://purl.net/dol/logics/FOLeqms>;
+         :modelExpansivelyMappableTo <http://purl.net/dol/logics/ChurchSimpleTypeTheory>,
+                <http://purl.net/dol/logics/FOLeqms>;
+         :plainlyMappableTo <http://purl.net/dol/logics/FOLeqms>;
+         :sourceOfMapping <http://purl.net/dol/projections/SubPCFOLeqToFOLeqms>,
+                <http://purl.net/dol/translations/SubPCFOLeqToChurchSimpleTypeTheory>;
+         :specifiesSemanticsOf <http://purl.net/dol/languages/CASL>,
+                <http://purl.net/dol/languages/THF0>;
+         :subLogicOf <http://purl.net/dol/logics/ChurchSimpleTypeTheory>;
+         :theoroidallyMappableTo <http://purl.net/dol/logics/ChurchSimpleTypeTheory>,
+                <http://purl.net/dol/logics/FOLeqms>;
+         :translatableFrom <http://purl.net/dol/logics/CommonLogic>,
+                <http://purl.net/dol/logics/FOLeqms>;
+         :translatableTo <http://purl.net/dol/logics/ChurchSimpleTypeTheory>;
+         :weaklyExactlyMappableTo <http://purl.net/dol/logics/ChurchSimpleTypeTheory>,
+                <http://purl.net/dol/logics/FOLeqms>;
+         <http://www.w3.org/2000/01/rdf-schema#comment> "";
+         <http://www.w3.org/2000/01/rdf-schema#isDefinedBy> <http://purl.net/dol/registry>;
+         <http://www.w3.org/2000/01/rdf-schema#label> "SubPCFOL⁼" .
+    
+    <http://purl.net/dol/projections/ChurchSimpleTypeTheoryToSubPCFOLeq>     <http://www.w3.org/1999/02/22-rdf-syntax-ns#type> :ExactMapping,
+                :FaithfulMapping,
+                :LogicMapping,
+                :Mapping,
+                :ModelBijectiveMapping,
+                :ModelExpansiveMapping,
+                :TheoroidalMapping,
+                :WeaklyExactMapping,
+                <#_g3>;
+         :mapsFrom <http://purl.net/dol/logics/ChurchSimpleTypeTheory>;
+         :mapsTo <http://purl.net/dol/logics/SubPCFOLeq>;
+         <http://www.w3.org/2000/01/rdf-schema#isDefinedBy> <http://purl.net/dol/registry>;
+         <http://www.w3.org/2000/01/rdf-schema#label> "Church Simple Type Theory→SubPCFOL⁼ projection" .
+    
+    <http://purl.net/dol/projections/ECoFOLeqToECoOWL>     <http://www.w3.org/1999/02/22-rdf-syntax-ns#type> :ExactMapping,
+                :FaithfulMapping,
+                :LogicMapping,
+                :Mapping,
+                :ModelBijectiveMapping,
+                :ModelExpansiveMapping,
+                :PlainMapping,
+                :WeaklyExactMapping,
+                <#_g3>;
+         :mapsFrom <http://purl.net/dol/logics/ECoFOLeq>;
+         :mapsTo <http://purl.net/dol/logics/ECoOWL>;
+         <http://www.w3.org/2000/01/rdf-schema#isDefinedBy> <http://purl.net/dol/registry>;
+         <http://www.w3.org/2000/01/rdf-schema#label> "E-Connections^{FOL⁼}→E-Connections^{OWL} projection" .
+    
+    <http://purl.net/dol/projections/FOLeqToSROIQ>     <http://www.w3.org/1999/02/22-rdf-syntax-ns#type> :ExactMapping,
+                :FaithfulMapping,
+                :LogicMapping,
+                :Mapping,
+                :ModelBijectiveMapping,
+                :ModelExpansiveMapping,
+                :PlainMapping,
+                :WeaklyExactMapping,
+                <#_g3>;
+         :mapsFrom <http://purl.net/dol/logics/FOLeq>;
+         :mapsTo <http://purl.net/dol/logics/SROIQ>;
+         <http://www.w3.org/2000/01/rdf-schema#isDefinedBy> <http://purl.net/dol/registry>;
+         <http://www.w3.org/2000/01/rdf-schema#label> "FOL⁼→SROIQ projection" .
+    
+    <http://purl.net/dol/projections/FOLeqmsToPropositional>     <http://www.w3.org/1999/02/22-rdf-syntax-ns#type> :ExactMapping,
+                :FaithfulMapping,
+                :LogicMapping,
+                :Mapping,
+                :ModelBijectiveMapping,
+                :ModelExpansiveMapping,
+                :PlainMapping,
+                :WeaklyExactMapping,
+                <#_g3>;
+         :mapsFrom <http://purl.net/dol/logics/FOLeqms>;
+         :mapsTo <http://purl.net/dol/logics/Propositional>;
+         <http://www.w3.org/2000/01/rdf-schema#isDefinedBy> <http://purl.net/dol/registry>;
+         <http://www.w3.org/2000/01/rdf-schema#label> "many-sorted FOL⁼→propositional logic projection" .
+    
+    <http://purl.net/dol/projections/OWL2FullToRDFS>     <http://www.w3.org/1999/02/22-rdf-syntax-ns#type> :ExactMapping,
+                :FaithfulMapping,
+                :LogicMapping,
+                :Mapping,
+                :ModelBijectiveMapping,
+                :ModelExpansiveMapping,
+                :PlainMapping,
+                :WeaklyExactMapping,
+                <#_g3>;
+         :mapsFrom <http://purl.net/dol/logics/OWL2/Full>;
+         :mapsTo <http://purl.net/dol/logics/RDFS>;
+         <http://www.w3.org/2000/01/rdf-schema#isDefinedBy> <http://purl.net/dol/registry>;
+         <http://www.w3.org/2000/01/rdf-schema#label> "OWL 2 Full→RDFS projection" .
+    
+    <http://purl.net/dol/projections/RDFStoRDF>     <http://www.w3.org/1999/02/22-rdf-syntax-ns#type> :ExactMapping,
+                :FaithfulMapping,
+                :LogicMapping,
+                :Mapping,
+                :ModelBijectiveMapping,
+                :ModelExpansiveMapping,
+                :PlainMapping,
+                :WeaklyExactMapping,
+                <#_g3>;
+         :mapsFrom <http://purl.net/dol/logics/RDFS>;
+         :mapsTo <http://purl.net/dol/logics/RDF>;
+         <http://www.w3.org/2000/01/rdf-schema#isDefinedBy> <http://purl.net/dol/registry>;
+         <http://www.w3.org/2000/01/rdf-schema#label> "RDFS→RDF projection" .
+    
+    <http://purl.net/dol/projections/RDFtoSimpleRDF>     <http://www.w3.org/1999/02/22-rdf-syntax-ns#type> :ExactMapping,
+                :FaithfulMapping,
+                :LogicMapping,
+                :Mapping,
+                :ModelBijectiveMapping,
+                :ModelExpansiveMapping,
+                :PlainMapping,
+                :WeaklyExactMapping,
+                <#_g3>;
+         :mapsFrom <http://purl.net/dol/logics/RDF>;
+         :mapsTo <http://purl.net/dol/logics/RDF/Simple>;
+         <http://www.w3.org/2000/01/rdf-schema#isDefinedBy> <http://purl.net/dol/registry>;
+         <http://www.w3.org/2000/01/rdf-schema#label> "RDF→simple RDF projection" .
+    
+    <http://purl.net/dol/projections/SROIQtoDLLiteR>     <http://www.w3.org/1999/02/22-rdf-syntax-ns#type> :ExactMapping,
+                :FaithfulMapping,
+                :LogicMapping,
+                :Mapping,
+                :ModelBijectiveMapping,
+                :ModelExpansiveMapping,
+                :PlainMapping,
+                :WeaklyExactMapping,
+                <#_g3>;
+         :mapsFrom <http://purl.net/dol/logics/SROIQ>;
+         :mapsTo <http://purl.net/dol/logics/DLLiteR>;
+         <http://www.w3.org/2000/01/rdf-schema#isDefinedBy> <http://purl.net/dol/registry>;
+         <http://www.w3.org/2000/01/rdf-schema#label> "SROIQ→DL-Lite_R projection" .
+    
+    <http://purl.net/dol/projections/SROIQtoELplusplus>     <http://www.w3.org/1999/02/22-rdf-syntax-ns#type> :ExactMapping,
+                :FaithfulMapping,
+                :LogicMapping,
+                :Mapping,
+                :ModelBijectiveMapping,
+                :ModelExpansiveMapping,
+                :PlainMapping,
+                :WeaklyExactMapping,
+                <#_g3>;
+         :mapsFrom <http://purl.net/dol/logics/SROIQ>;
+         :mapsTo <http://purl.net/dol/logics/ELplusplus>;
+         <http://www.w3.org/2000/01/rdf-schema#isDefinedBy> <http://purl.net/dol/registry>;
+         <http://www.w3.org/2000/01/rdf-schema#label> "SROIQ→EL⁺⁺ projection" .
+    
+    <http://purl.net/dol/projections/SROIQtoOWL2RL>     <http://www.w3.org/1999/02/22-rdf-syntax-ns#type> :ExactMapping,
+                :FaithfulMapping,
+                :LogicMapping,
+                :Mapping,
+                :ModelBijectiveMapping,
+                :ModelExpansiveMapping,
+                :PlainMapping,
+                :WeaklyExactMapping,
+                <#_g3>;
+         :mapsFrom <http://purl.net/dol/logics/SROIQ>;
+         :mapsTo <http://purl.net/dol/logics/OWL2/RL>;
+         <http://www.w3.org/2000/01/rdf-schema#isDefinedBy> <http://purl.net/dol/registry>;
+         <http://www.w3.org/2000/01/rdf-schema#label> "SROIQ→OWL 2 RL projection" .
+    
+    <http://purl.net/dol/projections/SubPCFOLeqToFOLeqms>     <http://www.w3.org/1999/02/22-rdf-syntax-ns#type> :ExactMapping,
+                :FaithfulMapping,
+                :LogicMapping,
+                :Mapping,
+                :ModelBijectiveMapping,
+                :ModelExpansiveMapping,
+                :PlainMapping,
+                :WeaklyExactMapping,
+                <#_g3>;
+         :mapsFrom <http://purl.net/dol/logics/SubPCFOLeq>;
+         :mapsTo <http://purl.net/dol/logics/FOLeqms>;
+         <http://www.w3.org/2000/01/rdf-schema#isDefinedBy> <http://purl.net/dol/registry>;
+         <http://www.w3.org/2000/01/rdf-schema#label> "SubPCFOL⁼→many-sorted FOL⁼ translation" .
+    
+    <http://purl.net/dol/registry>     <http://www.w3.org/2000/01/rdf-schema#comment> "the registry of logics, ontology languages, serializations, translations, and projections that conform with the Distributed Ontology Language (DOL) specified in ISO WD 17347 OntoIOp (Ontology Integration and Interoperability)";
+         <http://www.w3.org/2000/01/rdf-schema#label> "OntoIOp registry";
+         <http://www.w3.org/2000/01/rdf-schema#seeAlso> <http://ontolog.cim3.net/cgi-bin/wiki.pl?OntoIOp> .
+    
+    <http://purl.net/dol/serializations/CommonLogic/CGIF>     <http://www.w3.org/1999/02/22-rdf-syntax-ns#type> :Serialization;
+         :serializes <http://purl.net/dol/languages/CommonLogic>;
+         sta:standardizationStatus sta:ISOStandard;
+         <http://www.w3.org/2000/01/rdf-schema#isDefinedBy> <http://purl.net/dol/registry>;
+         <http://www.w3.org/2000/01/rdf-schema#label> "CGIF";
+         owl:sameAs <http://purl.org/xcl/1.0/#dialect-cgif>;
+         co:altLabel "Conceptual Graph Interchange Format"@en;
+         co:prefLabel "CGIF"@en .
+    
+    <http://purl.net/dol/serializations/CommonLogic/CLIF>     <http://www.w3.org/1999/02/22-rdf-syntax-ns#type> :Serialization;
+         :altFilenameExtension "clf";
+         :prefFilenameExtension "clif";
+         :serializes <http://purl.net/dol/languages/CommonLogic>;
+         sta:standardizationStatus sta:ISOStandard;
+         <http://www.w3.org/2000/01/rdf-schema#isDefinedBy> <http://purl.net/dol/registry>;
+         <http://www.w3.org/2000/01/rdf-schema#label> "CLIF";
+         owl:sameAs <http://purl.org/xcl/1.0/#dialect-clif>;
+         co:altLabel "Common Logic Interchange Format"@en;
+         co:prefLabel "CLIF"@en .
+    
+    <http://purl.net/dol/serializations/CommonLogic/XCL>     <http://www.w3.org/1999/02/22-rdf-syntax-ns#type> :Serialization;
+         :prefFilenameExtension "xcl";
+         :serializes <http://purl.net/dol/languages/CommonLogic>;
+         sta:standardizationStatus sta:ISOStandard;
+         <http://www.w3.org/2000/01/rdf-schema#isDefinedBy> <http://purl.net/dol/registry>;
+         <http://www.w3.org/2000/01/rdf-schema#label> "CLIF";
+         owl:sameAs <http://purl.org/xcl/1.0/#dialect-xcl>;
+         co:altLabel "Common Logic Interchange Format"@en;
+         co:prefLabel "CLIF"@en .
+    
+    <http://purl.net/dol/serializations/OWL2/Manchester>     <http://www.w3.org/1999/02/22-rdf-syntax-ns#type> :Serialization;
+         :mediaType "text/owl-manchester";
+         :prefFilenameExtension "omn";
+         :serializes <http://purl.net/dol/languages/OWL2/DL>,
+                <http://purl.net/dol/languages/OWL2/EL>,
+                <http://purl.net/dol/languages/OWL2/Full>,
+                <http://purl.net/dol/languages/OWL2/QL>,
+                <http://purl.net/dol/languages/OWL2/RL>;
+         sta:standardizationStatus sta:W3CWorkingGroupNote;
+         <http://purl.org/dc/terms/source> <http://www.w3.org/TR/2009/NOTE-owl2-manchester-syntax-20091027/>;
+         <http://www.w3.org/2000/01/rdf-schema#isDefinedBy> <http://purl.net/dol/registry>;
+         <http://www.w3.org/2000/01/rdf-schema#label> "OWL Manchester Syntax" .
+    
+    <http://purl.net/dol/serializations/OWL2/XML>     <http://www.w3.org/1999/02/22-rdf-syntax-ns#type> :Serialization;
+         :mediaType "application/owl+xml";
+         :prefFilenameExtension "owx";
+         :serializes <http://purl.net/dol/languages/OWL2/DL>,
+                <http://purl.net/dol/languages/OWL2/EL>,
+                <http://purl.net/dol/languages/OWL2/Full>,
+                <http://purl.net/dol/languages/OWL2/QL>,
+                <http://purl.net/dol/languages/OWL2/RL>;
+         sta:standardizationStatus sta:W3CRecommendation;
+         <http://purl.org/dc/terms/source> <http://www.w3.org/TR/2009/REC-owl2-xml-serialization-20091027/>;
+         <http://www.w3.org/2000/01/rdf-schema#isDefinedBy> <http://purl.net/dol/registry>;
+         <http://www.w3.org/2000/01/rdf-schema#label> "OWL XML Serialization" .
+    
+    <http://purl.net/dol/serializations/RDF/Turtle>     <http://www.w3.org/1999/02/22-rdf-syntax-ns#type> :Serialization;
+         :altFilenameExtension "ttl";
+         :mediaType "text/turtle";
+         :prefFilenameExtension "turtle";
+         :serializes <http://purl.net/dol/languages/OWL2/DL>,
+                <http://purl.net/dol/languages/OWL2/EL>,
+                <http://purl.net/dol/languages/OWL2/Full>,
+                <http://purl.net/dol/languages/OWL2/QL>,
+                <http://purl.net/dol/languages/OWL2/RL>,
+                <http://purl.net/dol/languages/RDF>;
+         sta:standardizationStatus sta:W3CTeamSubmission;
+         <http://purl.org/dc/terms/source> <http://www.w3.org/TeamSubmission/turtle/>;
+         <http://www.w3.org/2000/01/rdf-schema#comment> "Terse RDF Triple Language";
+         <http://www.w3.org/2000/01/rdf-schema#isDefinedBy> <http://purl.net/dol/registry>;
+         <http://www.w3.org/2000/01/rdf-schema#label> "Turtle" .
+    
+    <http://purl.net/dol/serializations/RDF/XML>     <http://www.w3.org/1999/02/22-rdf-syntax-ns#type> :Serialization;
+         :mediaType "application/rdf+xml";
+         :prefFilenameExtension "rdf";
+         :serializes <http://purl.net/dol/languages/OWL2/DL>,
+                <http://purl.net/dol/languages/OWL2/EL>,
+                <http://purl.net/dol/languages/OWL2/Full>,
+                <http://purl.net/dol/languages/OWL2/QL>,
+                <http://purl.net/dol/languages/OWL2/RL>,
+                <http://purl.net/dol/languages/RDF>;
+         sta:standardizationStatus sta:W3CRecommendation;
+         <http://purl.org/dc/terms/source> <http://www.w3.org/TR/2004/REC-rdf-syntax-grammar-20040210/>;
+         <http://www.w3.org/2000/01/rdf-schema#isDefinedBy> <http://purl.net/dol/registry>;
+         <http://www.w3.org/2000/01/rdf-schema#label> "RDF/XML Syntax" .
+    
+    <http://purl.net/dol/translations/CLWithoutSequencesToCommonLogic>     <http://www.w3.org/1999/02/22-rdf-syntax-ns#type> :DefaultMapping,
+                :Embedding,
+                :ExactMapping,
+                :FaithfulMapping,
+                :LogicMapping,
+                :Mapping,
+                :ModelBijectiveMapping,
+                :ModelExpansiveMapping,
+                :PlainMapping,
+                :SubLogic,
+                :Translation,
+                :WeaklyExactMapping,
+                <#_g3>;
+         :mapsFrom <http://purl.net/dol/logics/CommonLogic/WithoutSequences>;
+         :mapsTo <http://purl.net/dol/logics/CommonLogic>;
+         <http://www.w3.org/2000/01/rdf-schema#isDefinedBy> <http://purl.net/dol/registry>;
+         <http://www.w3.org/2000/01/rdf-schema#label> "CL⁻→Common Logic translation" .
+    
+    <http://purl.net/dol/translations/CLWithoutSequencesToFOLeq>     <http://www.w3.org/1999/02/22-rdf-syntax-ns#type> :DefaultMapping,
+                :Embedding,
+                :ExactMapping,
+                :FaithfulMapping,
+                :LogicMapping,
+                :Mapping,
+                :ModelBijectiveMapping,
+                :ModelExpansiveMapping,
+                :PlainMapping,
+                :Translation,
+                :WeaklyExactMapping,
+                <#_g3>;
+         :mapsFrom <http://purl.net/dol/logics/CommonLogic/WithoutSequences>;
+         :mapsTo <http://purl.net/dol/logics/FOLeq>;
+         <http://www.w3.org/2000/01/rdf-schema#isDefinedBy> <http://purl.net/dol/registry>;
+         <http://www.w3.org/2000/01/rdf-schema#label> "CL⁻→FOL⁼ translation" .
+    
+    <http://purl.net/dol/translations/CommonLogicToCASL>     <http://www.w3.org/1999/02/22-rdf-syntax-ns#type> :Mapping,
+                :OntologyLanguageMapping,
+                :Translation,
+                <#_g3>;
+         :mapsFrom <http://purl.net/dol/languages/CommonLogic>;
+         :mapsTo <http://purl.net/dol/languages/CASL>;
+         <http://www.w3.org/2000/01/rdf-schema#isDefinedBy> <http://purl.net/dol/registry>;
+         <http://www.w3.org/2000/01/rdf-schema#label> "Common Logic→CASL" .
+    
+    <http://purl.net/dol/translations/CommonLogicToSubPCFOLeq>     <http://www.w3.org/1999/02/22-rdf-syntax-ns#type> :DefaultMapping,
+                :Embedding,
+                :ExactMapping,
+                :FaithfulMapping,
+                :LogicMapping,
+                :Mapping,
+                :ModelBijectiveMapping,
+                :ModelExpansiveMapping,
+                :SubLogic,
+                :TheoroidalMapping,
+                :Translation,
+                :WeaklyExactMapping,
+                <#_g3>;
+         :mapsFrom <http://purl.net/dol/logics/CommonLogic>;
+         :mapsTo <http://purl.net/dol/logics/SubPCFOLeq>;
+         <http://www.w3.org/2000/01/rdf-schema#isDefinedBy> <http://purl.net/dol/registry>;
+         <http://www.w3.org/2000/01/rdf-schema#label> "Common Logic→SubPCFOL⁼ translation" .
+    
+    <http://purl.net/dol/translations/DDLOWLtoECoOWL>     <http://www.w3.org/1999/02/22-rdf-syntax-ns#type> :DefaultMapping,
+                :Embedding,
+                :ExactMapping,
+                :FaithfulMapping,
+                :LogicMapping,
+                :Mapping,
+                :ModelBijectiveMapping,
+                :ModelExpansiveMapping,
+                :PlainMapping,
+                :SubLogic,
+                :Translation,
+                :WeaklyExactMapping,
+                <#_g3>;
+         :mapsFrom <http://purl.net/dol/logics/DDLOWL>;
+         :mapsTo <http://purl.net/dol/logics/ECoOWL>;
+         <http://www.w3.org/2000/01/rdf-schema#isDefinedBy> <http://purl.net/dol/registry>;
+         <http://www.w3.org/2000/01/rdf-schema#label> "DDL^{OWL}→E-Connections^{OWL} translation" .
+    
+    <http://purl.net/dol/translations/DLLiteRtoSROIQ>     <http://www.w3.org/1999/02/22-rdf-syntax-ns#type> :DefaultMapping,
+                :Embedding,
+                :ExactMapping,
+                :FaithfulMapping,
+                :LogicMapping,
+                :Mapping,
+                :ModelBijectiveMapping,
+                :ModelExpansiveMapping,
+                :PlainMapping,
+                :SubLogic,
+                :Translation,
+                :WeaklyExactMapping,
+                <#_g3>;
+         :adjoint <http://purl.net/dol/projections/SROIQtoDLLiteR>;
+         :mapsFrom <http://purl.net/dol/logics/DLLiteR>;
+         :mapsTo <http://purl.net/dol/logics/SROIQ>;
+         <http://www.w3.org/2000/01/rdf-schema#isDefinedBy> <http://purl.net/dol/registry>;
+         <http://www.w3.org/2000/01/rdf-schema#label> "DL-Lite_R→SROIQ translation" .
+    
+    <http://purl.net/dol/translations/ECoFOLeqToFOLeqms>     <http://www.w3.org/1999/02/22-rdf-syntax-ns#type> :DefaultMapping,
+                :Embedding,
+                :ExactMapping,
+                :FaithfulMapping,
+                :LogicMapping,
+                :Mapping,
+                :ModelBijectiveMapping,
+                :ModelExpansiveMapping,
+                :PlainMapping,
+                :SubLogic,
+                :Translation,
+                :WeaklyExactMapping,
+                <#_g3>;
+         :mapsFrom <http://purl.net/dol/logics/ECoFOLeq>;
+         :mapsTo <http://purl.net/dol/logics/FOLeqms>;
+         <http://www.w3.org/2000/01/rdf-schema#isDefinedBy> <http://purl.net/dol/registry>;
+         <http://www.w3.org/2000/01/rdf-schema#label> "E-Connections^{FOL⁼}→many-sorted FOL⁼ translation" .
+    
+    <http://purl.net/dol/translations/ECoOWLtoECoFOLeq>     <http://www.w3.org/1999/02/22-rdf-syntax-ns#type> :DefaultMapping,
+                :Embedding,
+                :ExactMapping,
+                :FaithfulMapping,
+                :LogicMapping,
+                :Mapping,
+                :ModelBijectiveMapping,
+                :ModelExpansiveMapping,
+                :PlainMapping,
+                :SubLogic,
+                :Translation,
+                :WeaklyExactMapping,
+                <#_g3>;
+         :adjoint <http://purl.net/dol/projections/ECoFOLeqToECoOWL>;
+         :mapsFrom <http://purl.net/dol/logics/ECoOWL>;
+         :mapsTo <http://purl.net/dol/logics/ECoFOLeq>;
+         <http://www.w3.org/2000/01/rdf-schema#isDefinedBy> <http://purl.net/dol/registry>;
+         <http://www.w3.org/2000/01/rdf-schema#label> "E-Connections^{OWL}→E-Connections^{FOL⁼} translation" .
+    
+    <http://purl.net/dol/translations/ECoOWLtoSROIQ>     <http://www.w3.org/1999/02/22-rdf-syntax-ns#type> :DefaultMapping,
+                :Embedding,
+                :ExactMapping,
+                :FaithfulMapping,
+                :LogicMapping,
+                :Mapping,
+                :ModelBijectiveMapping,
+                :ModelExpansiveMapping,
+                :SubLogic,
+                :TheoroidalMapping,
+                :Translation,
+                :WeaklyExactMapping,
+                <#_g3>;
+         :mapsFrom <http://purl.net/dol/logics/ECoOWL>;
+         :mapsTo <http://purl.net/dol/logics/SROIQ>;
+         <http://www.w3.org/2000/01/rdf-schema#isDefinedBy> <http://purl.net/dol/registry>;
+         <http://www.w3.org/2000/01/rdf-schema#label> "E-Connections^{OWL}→SROIQ translation" .
+    
+    <http://purl.net/dol/translations/ELplusplusToOBOOWL>     <http://www.w3.org/1999/02/22-rdf-syntax-ns#type> :DefaultMapping,
+                :LogicMapping,
+                :Mapping,
+                :PlainMapping,
+                :Translation,
+                <#_g3>;
+         :mapsFrom <http://purl.net/dol/logics/ELplusplus>;
+         :mapsTo <http://purl.net/dol/logics/OBOOWL>;
+         <http://www.w3.org/2000/01/rdf-schema#isDefinedBy> <http://purl.net/dol/registry>;
+         <http://www.w3.org/2000/01/rdf-schema#label> "EL⁺⁺→OBO^{OWL} translation" .
+    
+    <http://purl.net/dol/translations/ELplusplusToSROIQ>     <http://www.w3.org/1999/02/22-rdf-syntax-ns#type> :DefaultMapping,
+                :Embedding,
+                :ExactMapping,
+                :FaithfulMapping,
+                :LogicMapping,
+                :Mapping,
+                :ModelBijectiveMapping,
+                :ModelExpansiveMapping,
+                :PlainMapping,
+                :SubLogic,
+                :Translation,
+                :WeaklyExactMapping,
+                <#_g3>;
+         :adjoint <http://purl.net/dol/projections/SROIQtoELplusplus>;
+         :mapsFrom <http://purl.net/dol/logics/ELplusplus>;
+         :mapsTo <http://purl.net/dol/logics/SROIQ>;
+         <http://www.w3.org/2000/01/rdf-schema#isDefinedBy> <http://purl.net/dol/registry>;
+         <http://www.w3.org/2000/01/rdf-schema#label> "EL⁺⁺→SROIQ translation" .
+    
+    <http://purl.net/dol/translations/F-logicToFOLeq>     <http://www.w3.org/1999/02/22-rdf-syntax-ns#type> :DefaultMapping,
+                :Embedding,
+                :ExactMapping,
+                :FaithfulMapping,
+                :LogicMapping,
+                :Mapping,
+                :ModelBijectiveMapping,
+                :ModelExpansiveMapping,
+                :SubLogic,
+                :TheoroidalMapping,
+                :Translation,
+                :WeaklyExactMapping,
+                <#_g3>;
+         :mapsFrom <http://purl.net/dol/logics/F-logic>;
+         :mapsTo <http://purl.net/dol/logics/FOLeq>;
+         <http://www.w3.org/2000/01/rdf-schema#isDefinedBy> <http://purl.net/dol/registry>;
+         <http://www.w3.org/2000/01/rdf-schema#label> "F-logic→FOL⁼ translation" .
+    
+    <http://purl.net/dol/translations/FOLeqToCLWithoutSequences>     <http://www.w3.org/1999/02/22-rdf-syntax-ns#type> :DefaultMapping,
+                :FaithfulMapping,
+                :LogicMapping,
+                :Mapping,
+                :ModelExpansiveMapping,
+                :PlainMapping,
+                :Translation,
+                <#_g3>;
+         :mapsFrom <http://purl.net/dol/logics/FOLeq>;
+         :mapsTo <http://purl.net/dol/logics/CommonLogic/WithoutSequences>;
+         <http://www.w3.org/2000/01/rdf-schema#isDefinedBy> <http://purl.net/dol/registry>;
+         <http://www.w3.org/2000/01/rdf-schema#label> "FOL⁼→CL⁻ translation" .
+    
+    <http://purl.net/dol/translations/FOLeqToCommonLogic>     <http://www.w3.org/1999/02/22-rdf-syntax-ns#type> :DefaultMapping,
+                :ExactMapping,
+                :FaithfulMapping,
+                :LogicMapping,
+                :Mapping,
+                :ModelExpansiveMapping,
+                :PlainMapping,
+                :Translation,
+                :WeaklyExactMapping,
+                <#_g3>;
+         :mapsFrom <http://purl.net/dol/logics/FOLeq>;
+         :mapsTo <http://purl.net/dol/logics/CommonLogic>;
+         <http://www.w3.org/2000/01/rdf-schema#isDefinedBy> <http://purl.net/dol/registry>;
+         <http://www.w3.org/2000/01/rdf-schema#label> "FOL⁼→Common Logic translation" .
+    
+    <http://purl.net/dol/translations/FOLeqToECoFOLeq>     <http://www.w3.org/1999/02/22-rdf-syntax-ns#type> :DefaultMapping,
+                :Embedding,
+                :ExactMapping,
+                :FaithfulMapping,
+                :LogicMapping,
+                :Mapping,
+                :ModelBijectiveMapping,
+                :ModelExpansiveMapping,
+                :PlainMapping,
+                :SubLogic,
+                :Translation,
+                :WeaklyExactMapping,
+                <#_g3>;
+         :mapsFrom <http://purl.net/dol/logics/FOLeq>;
+         :mapsTo <http://purl.net/dol/logics/ECoFOLeq>;
+         <http://www.w3.org/2000/01/rdf-schema#isDefinedBy> <http://purl.net/dol/registry>;
+         <http://www.w3.org/2000/01/rdf-schema#label> "FOL⁼→E-Connections^{FOL⁼} translation" .
+    
+    <http://purl.net/dol/translations/FOLeqToF-logic>     <http://www.w3.org/1999/02/22-rdf-syntax-ns#type> :DefaultMapping,
+                :Embedding,
+                :ExactMapping,
+                :FaithfulMapping,
+                :LogicMapping,
+                :Mapping,
+                :ModelBijectiveMapping,
+                :ModelExpansiveMapping,
+                :PlainMapping,
+                :SubLogic,
+                :Translation,
+                :WeaklyExactMapping,
+                <#_g3>;
+         :mapsFrom <http://purl.net/dol/logics/FOLeq>;
+         :mapsTo <http://purl.net/dol/logics/F-logic>;
+         <http://www.w3.org/2000/01/rdf-schema#isDefinedBy> <http://purl.net/dol/registry>;
+         <http://www.w3.org/2000/01/rdf-schema#label> "FOL⁼→F-logic translation" .
+    
+    <http://purl.net/dol/translations/FOLeqToFOLeqms>     <http://www.w3.org/1999/02/22-rdf-syntax-ns#type> :DefaultMapping,
+                :Embedding,
+                :ExactMapping,
+                :FaithfulMapping,
+                :LogicMapping,
+                :Mapping,
+                :ModelBijectiveMapping,
+                :ModelExpansiveMapping,
+                :PlainMapping,
+                :SubLogic,
+                :Translation,
+                :WeaklyExactMapping,
+                <#_g3>;
+         :mapsFrom <http://purl.net/dol/logics/FOLeq>;
+         :mapsTo <http://purl.net/dol/logics/FOLeqms>;
+         <http://www.w3.org/2000/01/rdf-schema#isDefinedBy> <http://purl.net/dol/registry>;
+         <http://www.w3.org/2000/01/rdf-schema#label> "FOL⁼→many-sorted FOL⁼ translation" .
+    
+    <http://purl.net/dol/translations/FOLeqmsToFOLeq>     <http://www.w3.org/1999/02/22-rdf-syntax-ns#type> :DefaultMapping,
+                :Embedding,
+                :ExactMapping,
+                :FaithfulMapping,
+                :LogicMapping,
+                :Mapping,
+                :ModelBijectiveMapping,
+                :ModelExpansiveMapping,
+                :TheoroidalMapping,
+                :Translation,
+                :WeaklyExactMapping,
+                <#_g3>;
+         :mapsFrom <http://purl.net/dol/logics/FOLeqms>;
+         :mapsTo <http://purl.net/dol/logics/FOLeq>;
+         <http://www.w3.org/2000/01/rdf-schema#isDefinedBy> <http://purl.net/dol/registry>;
+         <http://www.w3.org/2000/01/rdf-schema#label> "FOL⁼→many-sorted FOL⁼ translation" .
+    
+    <http://purl.net/dol/translations/FOLeqmsToSubPCFOLeq>     <http://www.w3.org/1999/02/22-rdf-syntax-ns#type> :DefaultMapping,
+                :Embedding,
+                :ExactMapping,
+                :FaithfulMapping,
+                :LogicMapping,
+                :Mapping,
+                :ModelBijectiveMapping,
+                :ModelExpansiveMapping,
+                :PlainMapping,
+                :SubLogic,
+                :Translation,
+                :WeaklyExactMapping,
+                <#_g3>;
+         :adjoint <http://purl.net/dol/projections/SubPCFOLeqToFOLeqms>;
+         :mapsFrom <http://purl.net/dol/logics/FOLeqms>;
+         :mapsTo <http://purl.net/dol/logics/SubPCFOLeq>;
+         <http://www.w3.org/2000/01/rdf-schema#isDefinedBy> <http://purl.net/dol/registry>;
+         <http://www.w3.org/2000/01/rdf-schema#label> "many-sorted FOL⁼→SubPCFOL⁼ translation" .
+    
+    <http://purl.net/dol/translations/OBOOWLtoSROIQ>     <http://www.w3.org/1999/02/22-rdf-syntax-ns#type> :DefaultMapping,
+                :Embedding,
+                :ExactMapping,
+                :FaithfulMapping,
+                :LogicMapping,
+                :Mapping,
+                :ModelBijectiveMapping,
+                :ModelExpansiveMapping,
+                :PlainMapping,
+                :SubLogic,
+                :Translation,
+                :WeaklyExactMapping,
+                <#_g3>;
+         :mapsFrom <http://purl.net/dol/logics/OBOOWL>;
+         :mapsTo <http://purl.net/dol/logics/SROIQ>;
+         <http://www.w3.org/2000/01/rdf-schema#isDefinedBy> <http://purl.net/dol/registry>;
+         <http://www.w3.org/2000/01/rdf-schema#label> "OBO^{OWL}→SROIQ translation" .
+    
+    <http://purl.net/dol/translations/OWL2FullToFOLeq>     <http://www.w3.org/1999/02/22-rdf-syntax-ns#type> :DefaultMapping,
+                :Embedding,
+                :ExactMapping,
+                :FaithfulMapping,
+                :LogicMapping,
+                :Mapping,
+                :ModelBijectiveMapping,
+                :ModelExpansiveMapping,
+                :SubLogic,
+                :TheoroidalMapping,
+                :Translation,
+                :WeaklyExactMapping,
+                <#_g3>;
+         :mapsFrom <http://purl.net/dol/logics/OWL2/Full>;
+         :mapsTo <http://purl.net/dol/logics/FOLeq>;
+         <http://www.w3.org/2000/01/rdf-schema#isDefinedBy> <http://purl.net/dol/registry>;
+         <http://www.w3.org/2000/01/rdf-schema#label> "OWL 2 Full→FOL⁼ translation" .
+    
+    <http://purl.net/dol/translations/OWL2RLtoSROIQ>     <http://www.w3.org/1999/02/22-rdf-syntax-ns#type> :DefaultMapping,
+                :Embedding,
+                :ExactMapping,
+                :FaithfulMapping,
+                :LogicMapping,
+                :Mapping,
+                :ModelBijectiveMapping,
+                :ModelExpansiveMapping,
+                :PlainMapping,
+                :SubLogic,
+                :Translation,
+                :WeaklyExactMapping,
+                <#_g3>;
+         :adjoint <http://purl.net/dol/projections/SROIQtoOWL2RL>;
+         :mapsFrom <http://purl.net/dol/logics/OWL2/RL>;
+         :mapsTo <http://purl.net/dol/logics/SROIQ>;
+         <http://www.w3.org/2000/01/rdf-schema#isDefinedBy> <http://purl.net/dol/registry>;
+         <http://www.w3.org/2000/01/rdf-schema#label> "OWL 2 RL→SROIQ translation" .
+    
+    <http://purl.net/dol/translations/PropositionalToCommonLogic>     <http://www.w3.org/1999/02/22-rdf-syntax-ns#type> :DefaultMapping,
+                :ExactMapping,
+                :FaithfulMapping,
+                :LogicMapping,
+                :Mapping,
+                :ModelExpansiveMapping,
+                :PlainMapping,
+                :Translation,
+                :WeaklyExactMapping,
+                <#_g3>;
+         :mapsFrom <http://purl.net/dol/logics/Propositional>;
+         :mapsTo <http://purl.net/dol/logics/CommonLogic>;
+         <http://www.w3.org/2000/01/rdf-schema#isDefinedBy> <http://purl.net/dol/registry>;
+         <http://www.w3.org/2000/01/rdf-schema#label> "propositional logic→Common Logic translation" .
+    
+    <http://purl.net/dol/translations/PropositionalToFOLeq>     <http://www.w3.org/1999/02/22-rdf-syntax-ns#type> :DefaultMapping,
+                :ExactMapping,
+                :FaithfulMapping,
+                :LogicMapping,
+                :Mapping,
+                :ModelExpansiveMapping,
+                :PlainMapping,
+                :Translation,
+                :WeaklyExactMapping,
+                <#_g3>;
+         :mapsFrom <http://purl.net/dol/logics/Propositional>;
+         :mapsTo <http://purl.net/dol/logics/FOLeq>;
+         <http://www.w3.org/2000/01/rdf-schema#isDefinedBy> <http://purl.net/dol/registry>;
+         <http://www.w3.org/2000/01/rdf-schema#label> "propositional logic→FOL⁼ translation" .
+    
+    <http://purl.net/dol/translations/PropositionalToFOLeqms>     <http://www.w3.org/1999/02/22-rdf-syntax-ns#type> :DefaultMapping,
+                :Embedding,
+                :ExactMapping,
+                :FaithfulMapping,
+                :LogicMapping,
+                :Mapping,
+                :ModelBijectiveMapping,
+                :ModelExpansiveMapping,
+                :PlainMapping,
+                :SubLogic,
+                :Translation,
+                :WeaklyExactMapping,
+                <#_g3>;
+         :adjoint <http://purl.net/dol/projections/FOLeqmsToPropositional>;
+         :mapsFrom <http://purl.net/dol/logics/Propositional>;
+         :mapsTo <http://purl.net/dol/logics/FOLeqms>;
+         <http://www.w3.org/2000/01/rdf-schema#isDefinedBy> <http://purl.net/dol/registry>;
+         <http://www.w3.org/2000/01/rdf-schema#label> "propositional logic→many-sorted FOL⁼ translation" .
+    
+    <http://purl.net/dol/translations/PropositionalToPropositionalCNF>     <http://www.w3.org/1999/02/22-rdf-syntax-ns#type> :DefaultMapping,
+                :LogicMapping,
+                :Mapping,
+                :PlainMapping,
+                :Translation,
+                <#_g3>;
+         :mapsFrom <http://purl.net/dol/logics/Propositional>;
+         :mapsTo <http://purl.net/dol/logics/Propositional>;
+         <http://www.w3.org/2000/01/rdf-schema#comment> "translation from propositional logic to propositional logic in Conjunctive Normal Form (CNF)";
+         <http://www.w3.org/2000/01/rdf-schema#isDefinedBy> <http://purl.net/dol/registry>;
+         <http://www.w3.org/2000/01/rdf-schema#label> "propositional logic to CNF" .
+    
+    <http://purl.net/dol/translations/PropositionalToSROIQ>     <http://www.w3.org/1999/02/22-rdf-syntax-ns#type> :ExactMapping,
+                :FaithfulMapping,
+                :LogicMapping,
+                :Mapping,
+                :ModelExpansiveMapping,
+                :PlainMapping,
+                :Translation,
+                :WeaklyExactMapping,
+                <#_g3>;
+         :mapsFrom <http://purl.net/dol/logics/Propositional>;
+         :mapsTo <http://purl.net/dol/logics/SROIQ>;
+         <http://www.w3.org/2000/01/rdf-schema#comment> "Note that this is not a default mapping; for details see: Till Mossakowski, Oliver Kutz, Christoph Lange. Three Semantics for the Core of the Distributed Ontology Language; in 7th International Conference on Formal Ontology in Information Systems (FOIS), 2012-07-24/2012-07-27 in Graz, Austria; 2012 (http://interop.cim3.net/file/pub/OntoIOp/Publications/FOIS_2012/paper.pdf).";
+         <http://www.w3.org/2000/01/rdf-schema#isDefinedBy> <http://purl.net/dol/registry>;
+         <http://www.w3.org/2000/01/rdf-schema#label> "propositional logic→SROIQ translation" .
+    
+    <http://purl.net/dol/translations/RDFStoFOLeq>     <http://www.w3.org/1999/02/22-rdf-syntax-ns#type> :DefaultMapping,
+                :Embedding,
+                :ExactMapping,
+                :FaithfulMapping,
+                :LogicMapping,
+                :Mapping,
+                :ModelBijectiveMapping,
+                :ModelExpansiveMapping,
+                :SubLogic,
+                :TheoroidalMapping,
+                :Translation,
+                :WeaklyExactMapping,
+                <#_g3>;
+         :mapsFrom <http://purl.net/dol/logics/RDFS>;
+         :mapsTo <http://purl.net/dol/logics/FOLeq>;
+         <http://www.w3.org/2000/01/rdf-schema#isDefinedBy> <http://purl.net/dol/registry>;
+         <http://www.w3.org/2000/01/rdf-schema#label> "RDFS→FOL⁼ translation" .
+    
+    <http://purl.net/dol/translations/RDFStoOWL2Full>     <http://www.w3.org/1999/02/22-rdf-syntax-ns#type> :DefaultMapping,
+                :Embedding,
+                :ExactMapping,
+                :FaithfulMapping,
+                :LogicMapping,
+                :Mapping,
+                :ModelBijectiveMapping,
+                :ModelExpansiveMapping,
+                :PlainMapping,
+                :SubLogic,
+                :Translation,
+                :WeaklyExactMapping,
+                <#_g3>;
+         :adjoint <http://purl.net/dol/projections/OWL2FullToRDFS>;
+         :mapsFrom <http://purl.net/dol/logics/RDFS>;
+         :mapsTo <http://purl.net/dol/logics/OWL2/Full>;
+         <http://www.w3.org/2000/01/rdf-schema#isDefinedBy> <http://purl.net/dol/registry>;
+         <http://www.w3.org/2000/01/rdf-schema#label> "RDFS→OWL 2 Full translation" .
+    
+    <http://purl.net/dol/translations/RDFtoFOLeq>     <http://www.w3.org/1999/02/22-rdf-syntax-ns#type> :DefaultMapping,
+                :Embedding,
+                :ExactMapping,
+                :FaithfulMapping,
+                :LogicMapping,
+                :Mapping,
+                :ModelBijectiveMapping,
+                :ModelExpansiveMapping,
+                :SubLogic,
+                :TheoroidalMapping,
+                :Translation,
+                :WeaklyExactMapping,
+                <#_g3>;
+         :mapsFrom <http://purl.net/dol/logics/RDF>;
+         :mapsTo <http://purl.net/dol/logics/FOLeq>;
+         <http://www.w3.org/2000/01/rdf-schema#isDefinedBy> <http://purl.net/dol/registry>;
+         <http://www.w3.org/2000/01/rdf-schema#label> "RDF→FOL⁼ translation" .
+    
+    <http://purl.net/dol/translations/RDFtoRDFS>     <http://www.w3.org/1999/02/22-rdf-syntax-ns#type> :DefaultMapping,
+                :Embedding,
+                :ExactMapping,
+                :FaithfulMapping,
+                :LogicMapping,
+                :Mapping,
+                :ModelBijectiveMapping,
+                :ModelExpansiveMapping,
+                :PlainMapping,
+                :SubLogic,
+                :Translation,
+                :WeaklyExactMapping,
+                <#_g3>;
+         :adjoint <http://purl.net/dol/projections/RDFStoRDF>;
+         :mapsFrom <http://purl.net/dol/logics/RDF>;
+         :mapsTo <http://purl.net/dol/logics/RDFS>;
+         <http://www.w3.org/2000/01/rdf-schema#isDefinedBy> <http://purl.net/dol/registry>;
+         <http://www.w3.org/2000/01/rdf-schema#label> "RDF→RDFS translation" .
+    
+    <http://purl.net/dol/translations/RDFtoSROIQ>     <http://www.w3.org/1999/02/22-rdf-syntax-ns#type> :DefaultMapping,
+                :ExactMapping,
+                :FaithfulMapping,
+                :LogicMapping,
+                :Mapping,
+                :ModelExpansiveMapping,
+                :PlainMapping,
+                :Translation,
+                :WeaklyExactMapping,
+                <#_g3>;
+         :mapsFrom <http://purl.net/dol/logics/RDF>;
+         :mapsTo <http://purl.net/dol/logics/SROIQ>;
+         <http://www.w3.org/2000/01/rdf-schema#isDefinedBy> <http://purl.net/dol/registry>;
+         <http://www.w3.org/2000/01/rdf-schema#label> "RDF→SROIQ translation" .
+    
+    <http://purl.net/dol/translations/RelationalSchemaToFOLeqms>     <http://www.w3.org/1999/02/22-rdf-syntax-ns#type> :DefaultMapping,
+                :Embedding,
+                :ExactMapping,
+                :FaithfulMapping,
+                :LogicMapping,
+                :Mapping,
+                :ModelBijectiveMapping,
+                :ModelExpansiveMapping,
+                :SubLogic,
+                :TheoroidalMapping,
+                :Translation,
+                :WeaklyExactMapping,
+                <#_g3>;
+         :mapsFrom <http://purl.net/dol/logics/RelationalSchema>;
+         :mapsTo <http://purl.net/dol/logics/FOLeqms>;
+         <http://www.w3.org/2000/01/rdf-schema#isDefinedBy> <http://purl.net/dol/registry>;
+         <http://www.w3.org/2000/01/rdf-schema#label> "relational database schema→many-sorted FOL⁼ translation" .
+    
+    <http://purl.net/dol/translations/SATLIBtoCASL>     <http://www.w3.org/1999/02/22-rdf-syntax-ns#type> :Mapping,
+                :OntologyLanguageMapping,
+                :Translation,
+                <#_g3>;
+         :mapsFrom <http://purl.net/dol/languages/SATLIB>;
+         :mapsTo <http://purl.net/dol/languages/CASL>;
+         <http://www.w3.org/2000/01/rdf-schema#isDefinedBy> <http://purl.net/dol/registry>;
+         <http://www.w3.org/2000/01/rdf-schema#label> "SATLIB→CASL" .
+    
+    <http://purl.net/dol/translations/SROIQtoCommonLogic>     <http://www.w3.org/1999/02/22-rdf-syntax-ns#type> :DefaultMapping,
+                :ExactMapping,
+                :FaithfulMapping,
+                :LogicMapping,
+                :Mapping,
+                :ModelBijectiveMapping,
+                :ModelExpansiveMapping,
+                :PlainMapping,
+                :Translation,
+                :WeaklyExactMapping,
+                <#_g3>;
+         :mapsFrom <http://purl.net/dol/logics/SROIQ>;
+         :mapsTo <http://purl.net/dol/logics/CommonLogic>;
+         <http://www.w3.org/2000/01/rdf-schema#isDefinedBy> <http://purl.net/dol/registry>;
+         <http://www.w3.org/2000/01/rdf-schema#label> "SROIQ→Common Logic translation" .
+    
+    <http://purl.net/dol/translations/SROIQtoDDLOWL>     <http://www.w3.org/1999/02/22-rdf-syntax-ns#type> :DefaultMapping,
+                :Embedding,
+                :ExactMapping,
+                :FaithfulMapping,
+                :LogicMapping,
+                :Mapping,
+                :ModelBijectiveMapping,
+                :ModelExpansiveMapping,
+                :PlainMapping,
+                :SubLogic,
+                :Translation,
+                :WeaklyExactMapping,
+                <#_g3>;
+         :mapsFrom <http://purl.net/dol/logics/SROIQ>;
+         :mapsTo <http://purl.net/dol/logics/DDLOWL>;
+         <http://www.w3.org/2000/01/rdf-schema#isDefinedBy> <http://purl.net/dol/registry>;
+         <http://www.w3.org/2000/01/rdf-schema#label> "SROIQ→DDL^{OWL} translation" .
+    
+    <http://purl.net/dol/translations/SROIQtoF-logic>     <http://www.w3.org/1999/02/22-rdf-syntax-ns#type> :DefaultMapping,
+                :FaithfulMapping,
+                :LogicMapping,
+                :Mapping,
+                :ModelExpansiveMapping,
+                :PlainMapping,
+                :Translation,
+                <#_g3>;
+         :mapsFrom <http://purl.net/dol/logics/SROIQ>;
+         :mapsTo <http://purl.net/dol/logics/F-logic>;
+         <http://www.w3.org/2000/01/rdf-schema#isDefinedBy> <http://purl.net/dol/registry>;
+         <http://www.w3.org/2000/01/rdf-schema#label> "SROIQ→F-logic translation" .
+    
+    <http://purl.net/dol/translations/SROIQtoFOLeq>     <http://www.w3.org/1999/02/22-rdf-syntax-ns#type> :DefaultMapping,
+                :ExactMapping,
+                :FaithfulMapping,
+                :LogicMapping,
+                :Mapping,
+                :ModelBijectiveMapping,
+                :ModelExpansiveMapping,
+                :PlainMapping,
+                :Translation,
+                :WeaklyExactMapping,
+                <#_g3>;
+         :adjoint <http://purl.net/dol/projections/FOLeqToSROIQ>;
+         :mapsFrom <http://purl.net/dol/logics/SROIQ>;
+         :mapsTo <http://purl.net/dol/logics/FOLeq>;
+         <http://www.w3.org/2000/01/rdf-schema#isDefinedBy> <http://purl.net/dol/registry>;
+         <http://www.w3.org/2000/01/rdf-schema#label> "SROIQ→FOL⁼ translation" .
+    
+    <http://purl.net/dol/translations/SROIQtoOWL2Full>     <http://www.w3.org/1999/02/22-rdf-syntax-ns#type> :DefaultMapping,
+                :ExactMapping,
+                :FaithfulMapping,
+                :LogicMapping,
+                :Mapping,
+                :ModelExpansiveMapping,
+                :PlainMapping,
+                :Translation,
+                :WeaklyExactMapping,
+                <#_g3>;
+         :mapsFrom <http://purl.net/dol/logics/SROIQ>;
+         :mapsTo <http://purl.net/dol/logics/OWL2/Full>;
+         <http://www.w3.org/2000/01/rdf-schema#isDefinedBy> <http://purl.net/dol/registry>;
+         <http://www.w3.org/2000/01/rdf-schema#label> "SROIQ→OWL2Full translation" .
+    
+    <http://purl.net/dol/translations/SimpleRDFtoFOLeq>     <http://www.w3.org/1999/02/22-rdf-syntax-ns#type> :DefaultMapping,
+                :Embedding,
+                :ExactMapping,
+                :FaithfulMapping,
+                :LogicMapping,
+                :Mapping,
+                :ModelBijectiveMapping,
+                :ModelExpansiveMapping,
+                :PlainMapping,
+                :SubLogic,
+                :Translation,
+                :WeaklyExactMapping,
+                <#_g3>;
+         :mapsFrom <http://purl.net/dol/logics/RDF/Simple>;
+         :mapsTo <http://purl.net/dol/logics/FOLeq>;
+         <http://www.w3.org/2000/01/rdf-schema#isDefinedBy> <http://purl.net/dol/registry>;
+         <http://www.w3.org/2000/01/rdf-schema#label> "simple RDF→FOL⁼ translation" .
+    
+    <http://purl.net/dol/translations/SimpleRDFtoRDF>     <http://www.w3.org/1999/02/22-rdf-syntax-ns#type> :DefaultMapping,
+                :Embedding,
+                :ExactMapping,
+                :FaithfulMapping,
+                :LogicMapping,
+                :Mapping,
+                :ModelBijectiveMapping,
+                :ModelExpansiveMapping,
+                :PlainMapping,
+                :SubLogic,
+                :Translation,
+                :WeaklyExactMapping,
+                <#_g3>;
+         :adjoint <http://purl.net/dol/projections/RDFtoSimpleRDF>;
+         :mapsFrom <http://purl.net/dol/logics/RDF/Simple>;
+         :mapsTo <http://purl.net/dol/logics/RDF>;
+         <http://www.w3.org/2000/01/rdf-schema#isDefinedBy> <http://purl.net/dol/registry>;
+         <http://www.w3.org/2000/01/rdf-schema#label> "simple RDF→RDF translation" .
+    
+    <http://purl.net/dol/translations/SimpleRDFtoSROIQ>     <http://www.w3.org/1999/02/22-rdf-syntax-ns#type> :DefaultMapping,
+                :ExactMapping,
+                :FaithfulMapping,
+                :LogicMapping,
+                :Mapping,
+                :ModelExpansiveMapping,
+                :PlainMapping,
+                :Translation,
+                :WeaklyExactMapping,
+                <#_g3>;
+         :mapsFrom <http://purl.net/dol/logics/RDF/Simple>;
+         :mapsTo <http://purl.net/dol/logics/SROIQ>;
+         <http://www.w3.org/2000/01/rdf-schema#isDefinedBy> <http://purl.net/dol/registry>;
+         <http://www.w3.org/2000/01/rdf-schema#label> "simple RDF→SROIQ translation" .
+    
+    <http://purl.net/dol/translations/SubPCFOLeqToChurchSimpleTypeTheory>     <http://www.w3.org/1999/02/22-rdf-syntax-ns#type> :DefaultMapping,
+                :Embedding,
+                :ExactMapping,
+                :FaithfulMapping,
+                :LogicMapping,
+                :Mapping,
+                :ModelBijectiveMapping,
+                :ModelExpansiveMapping,
+                :SubLogic,
+                :TheoroidalMapping,
+                :Translation,
+                :WeaklyExactMapping,
+                <#_g3>;
+         :adjoint <http://purl.net/dol/projections/ChurchSimpleTypeTheoryToSubPCFOLeq>;
+         :mapsFrom <http://purl.net/dol/logics/SubPCFOLeq>;
+         :mapsTo <http://purl.net/dol/logics/ChurchSimpleTypeTheory>;
+         <http://www.w3.org/2000/01/rdf-schema#isDefinedBy> <http://purl.net/dol/registry>;
+         <http://www.w3.org/2000/01/rdf-schema#label> "SubPCFOL⁼→Church Simple Type Theory translation" .
+    
+#ENDS
