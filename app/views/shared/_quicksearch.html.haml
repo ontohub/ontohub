@@ -1,3 +1,3 @@
 = form_tag :search, :method => :get, :id => 'quicksearch' do
-  = text_field_tag :q, nil, :placeholder => 'Search for entities'
-  = submit_tag 'Search', :name => nil #, :disable_with => 'Searching ...'
+  = text_field_tag :q, nil, :placeholder => 'Entity\'s uri or name'
+  = submit_tag 'Search entities', :name => nil #, :disable_with => 'Searching ...'

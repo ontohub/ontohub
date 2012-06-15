@@ -1,6 +1,6 @@
 = ontology_nav resource, :edit
 
 = semantic_form_for resource do |f|
-  = f.inputs :iri, :logic, :name, :description
+  = f.inputs :iri, :name, :description
   = f.actions do
     = f.action :submit, :button_html => { :disable_with => t(:wait) }
