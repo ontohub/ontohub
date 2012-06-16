@@ -2,6 +2,18 @@ require 'integration_test_helper'
 
 class OntologyTest < ActionController::IntegrationTest
 
+  def sign_in_as(user, password)
+    user = User.create(:password => password, :password_confirmation => password, :email => user)
+    user.confirmed_at = Time.now 
+    user.save!
+    visit '/'
+    click_link_or_button('Log in')
+    fill_in 'Email', :with => user.email
+    fill_in 'Password', :with => password
+    click_link_or_button('Sign in')
+    user      
+  end 
+
   def list_ontologies()
     visit '/ontologies'
     assert page.has_content?('Ontologies')
@@ -19,16 +31,15 @@ class OntologyTest < ActionController::IntegrationTest
     assert !piz ^ page.has_content?('Pizza')
   end
 
-  def visit_ontology(name)
+  def visit_ontology_tab(name, list)
     click_link name
-    assert page.has_content?('Overview')
-    assert page.has_content?('URI')
-    assert page.has_content?('Name')
-    assert page.has_content?('Language')
-    assert page.has_content?('Owner')
-    assert page.has_content?('Created')
-    assert page.has_content?('Updated')
-    assert page.has_content?('Hets status')
+    list.each do |item|
+      assert page.has_content?(item)
+    end
+  end
+
+  def visit_ontology(name)
+    visit_ontology_tab(name, ['Overview', 'URI', 'Name', 'Language', 'Owner', 'Created', 'Updated', 'Hets status'])
   end
 
   test "listing ontologies" do
@@ -43,6 +54,11 @@ class OntologyTest < ActionController::IntegrationTest
   test "visiting ontologies as unkown user" do
     list_ontologies()
     visit_ontology("Cat")
+    visit_ontology_tab("Sentences", ["Name", "Text"])
+    visit_ontology_tab("Entities", ["Text", "Kind", "Name", "URI", "Range"])
+    visit_ontology_tab("Versions", ["Created", "Source", "Uploaded by", "State", "Error"])
+    visit_ontology_tab("Metadata", ["Key", "Value", "Last editor", "Updated"])
+    visit_ontology_tab("Comments", [])
 
     # Check specific fields
     assert page.has_content?('Comments')
