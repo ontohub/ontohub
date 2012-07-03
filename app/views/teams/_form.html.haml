@@ -2,4 +2,4 @@
   = f.inputs do
     = f.input :name, :required => true
   = f.actions do
-    = f.action :submit, :button_html => { :disable_with => t(:wait) }
+    = f.action :submit, :button_html => { 'data-disable-with' => t(:wait) }

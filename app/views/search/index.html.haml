@@ -2,7 +2,7 @@
 
 = form_tag :search, :method => :get do
   = text_field_tag :q, @query, :placeholder => 'Search for entities'
-  = submit_tag 'Search', :name => nil #, :disable_with => 'Searching ...'
+  = submit_tag 'Search', :name => nil #, 'data-disable-with' => 'Searching ...'
   %button.help{:title => t('search.help') } ?
 
 %p

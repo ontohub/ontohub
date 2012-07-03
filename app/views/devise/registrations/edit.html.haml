@@ -13,7 +13,7 @@
     = f.input :current_password, :required => true, :hint => "we need your current password to confirm your changes"
   
   = f.actions do
-    = f.action :submit, :label => 'Update', :button_html => { :disable_with => t(:wait) }
+    = f.action :submit, :label => 'Update', :button_html => { 'data-disable-with' => t(:wait) }
 
 %h3 Cancel my account
 

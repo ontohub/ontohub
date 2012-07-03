@@ -10,4 +10,4 @@
     = f.input :remember_me, :as => :boolean if devise_mapping.rememberable?
   
   = f.actions do
-    = f.action :submit, :label => 'Log in', :button_html => { :disable_with => t(:wait) }
+    = f.action :submit, :label => 'Log in', :button_html => { 'data-disable-with' => t(:wait) }

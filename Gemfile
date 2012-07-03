@@ -13,6 +13,7 @@ group :assets do
   gem 'coffee-rails', '~> 3.2.1'
   gem 'compass',      '~> 0.12.1'
   gem 'jquery-ui-rails'
+  gem 'momentjs-rails'
 
   gem 'therubyracer'
   gem 'uglifier', '>= 1.0.3'
@@ -33,7 +34,7 @@ gem 'has_scope'
 gem 'nokogiri', '~> 1.5.0'
 
 # Authentication
-gem 'devise', '~> 2.0.0'
+gem 'devise', '~> 2.0'
 
 # Authorization
 gem 'cancan', '~> 1.6.7'

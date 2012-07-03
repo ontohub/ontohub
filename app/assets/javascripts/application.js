@@ -16,5 +16,9 @@
 //= require bootstrap-tooltip
 
 // ----------------------------------------------
+// Other Plugins
+//= require moment
+
+// ----------------------------------------------
 // Application
 //= require_tree .

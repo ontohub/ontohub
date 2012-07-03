@@ -6,6 +6,6 @@
     = f.input :email, :required => false, :input_html => {:required => true, :autofocus => true}
   
   = f.actions do
-    = f.action :submit, :label => "Resend confirmation instructions", :button_html => { :disable_with => t(:wait) }
+    = f.action :submit, :label => "Resend confirmation instructions", :button_html => { 'data-disable-with' => t(:wait) }
 
 = render "links"
