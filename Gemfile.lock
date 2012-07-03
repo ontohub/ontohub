@@ -86,8 +86,13 @@ GEM
       i18n (~> 0.4)
     foreigner (1.1.6)
       activerecord (>= 3.0.0)
-    formtastic (2.1.1)
-      actionpack (~> 3.0)
+    formtastic (2.2.1)
+      actionpack (>= 3.0)
+    formtastic-plus-bootstrap (1.0.3)
+      bootstrap-sass (~> 2.0.3)
+      formtastic (~> 2.2)
+      railties (>= 3.1.0)
+      sass-rails
     fssm (0.2.9)
     god (0.12.1)
     haml (3.1.4)
@@ -228,7 +233,8 @@ DEPENDENCIES
   factory_girl_rails (~> 1.7.0)
   faker (~> 1.0)
   foreigner
-  formtastic (~> 2.1.1)
+  formtastic (~> 2.2)
+  formtastic-plus-bootstrap
   god
   haml-rails
   has_scope
