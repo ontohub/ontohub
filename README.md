@@ -72,14 +72,14 @@ now enable the module an restart apache2:
 
 ### Tomcat with Solr
 
-    apt-get install tomcat6
+    apt-get install tomcat6 tomcat6-admin
     
     cd /root/
-    version=3.5.0
+    version=3.6.0
     wget http://apache.openmirror.de/lucene/solr/$version/apache-solr-$version.tgz
     tar xzf apache-solr-$version.tgz
     sudo cp apache-solr-$version/dist/apache-solr-solrj-$version.jar /var/lib/tomcat6/webapps/solr.war
-    ln -s /srv/http/ontohub.orgizm.net/current/solr/conf ./var/lib/tomcat6/solr/
+    ln -s /srv/http/ontohub.org/current/solr/conf /var/lib/tomcat6/webapps/solr/
 
 The war-Package should be automatically loaded.
 
