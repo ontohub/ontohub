@@ -72,5 +72,5 @@ end
 
 group :production do
   gem 'god'
-  gem 'newrelic_rpm'
+  #gem 'newrelic_rpm'
 end
