@@ -199,6 +199,8 @@ GEM
     rsolr (1.0.7)
       builder (>= 2.1.2)
     rubyzip (0.9.8)
+    rvm-capistrano (1.2.2)
+      capistrano (>= 2.0.0)
     sass (3.1.15)
     sass-rails (3.2.5)
       railties (~> 3.2.0)
@@ -275,6 +277,7 @@ DEPENDENCIES
   progress_bar
   rails (~> 3.2.2)
   resque
+  rvm-capistrano
   sass-rails (~> 3.2.3)
   shoulda
   shoulda-context
