@@ -276,6 +276,7 @@ DEPENDENCIES
   pg
   progress_bar
   rails (~> 3.2.2)
+  redis-namespace
   resque
   rvm-capistrano
   sass-rails (~> 3.2.3)
