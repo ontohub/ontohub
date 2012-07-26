@@ -48,6 +48,7 @@ gem 'carrierwave', "~> 0.6.1"
 
 # Async jobs
 gem 'resque'
+gem 'redis-namespace'
 
 # Search engine
 gem 'sunspot_rails', :git => 'git://github.com/digineo/sunspot.git'
@@ -68,6 +69,7 @@ end
 
 group :development do
   gem 'capistrano'
+  gem 'rvm-capistrano'
   # pre-packaged Solr distribution for use in development
   gem 'sunspot_solr', :git => 'git://github.com/digineo/sunspot.git'
 end
