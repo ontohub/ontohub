@@ -153,7 +153,6 @@ GEM
     options (2.3.0)
       fattr
     orm_adapter (0.0.7)
-    pg (0.13.2)
     polyglot (0.3.3)
     pr_geohash (1.0.0)
     progress_bar (0.4.0)
@@ -273,7 +272,6 @@ DEPENDENCIES
   mysql2 (~> 0.3.0)
   newrelic_rpm
   nokogiri (~> 1.5.0)
-  pg
   progress_bar
   rails (~> 3.2.2)
   redis-namespace

@@ -19,7 +19,7 @@ db/*.sqlite3*
 *~
 
 # Ignore log files
-log/*.log
+/log
 *.log
 
 # Ignore temporary files
