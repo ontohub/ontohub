@@ -24,5 +24,4 @@ $(function() {
     setInterval(updateStatus, 5000);
   }
 
-  $('aside .info .error .help').tipsy({gravity:'s'});
 });

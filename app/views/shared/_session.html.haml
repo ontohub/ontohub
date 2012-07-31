@@ -1,12 +1,13 @@
-#session
+%ul#session.nav.pull-right
   - if user_signed_in?
-    = link_to "Logged in as #{current_user}", current_user
-    = link_to 'My Teams', :teams
-    %a{:href => edit_user_registration_path}
-      Settings
-      - if current_user.display_alert?
-        %strong !
-    = link_to 'Log out', :destroy_user_session, :method => :delete
+    %li= link_to "Logged in as #{current_user}", current_user
+    %li= link_to 'My Teams', :teams
+    %li
+      %a{:href => edit_user_registration_path}
+        Settings
+        - if current_user.display_alert?
+          %strong.badge !
+    %li= link_to 'Log out', :destroy_user_session, :method => :delete
   - else
-    = link_to 'Log in', :new_user_session
-    = link_to 'Register', :new_user_registration
+    %li= link_to 'Log in', :new_user_session
+    %li= link_to 'Register', :new_user_registration
