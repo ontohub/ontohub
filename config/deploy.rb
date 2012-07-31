@@ -1,18 +1,18 @@
 require 'bundler/capistrano'
 
 # RVM
-$:.unshift(File.expand_path('./lib', ENV['rvm_path']))
-require 'rvm/capistrano'
+require "rvm/capistrano"
+set :rvm_type, :system
 set :rvm_ruby_string, '1.9.3@ontohub'
 
-hostname = 'ontohub.orgizm.net'
+hostname = 'ontohub.org'
 
 set :application, 'ontohub'
 set :scm, :git
 set :repository, "git@github.com:#{application}/#{application}.git"
 set :deploy_to, "/srv/http/#{hostname}"
 
-set :user, application
+set :user, 'ontohub'
 set :use_sudo, false
 set :deploy_via, :remote_cache
 

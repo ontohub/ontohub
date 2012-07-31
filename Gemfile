@@ -1,4 +1,4 @@
-source 'http://rubygems.org'
+source 'https://rubygems.org'
 
 gem 'rails', '~> 3.2.2'
 gem 'pg'
@@ -67,11 +67,12 @@ end
 
 group :development do
   gem 'capistrano'
+  gem 'rvm-capistrano'
   # pre-packaged Solr distribution for use in development
   gem 'sunspot_solr', :git => 'git://github.com/digineo/sunspot.git'
 end
 
 group :production do
   gem 'god'
-  gem 'newrelic_rpm'
+  #gem 'newrelic_rpm'
 end

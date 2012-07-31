@@ -23,18 +23,21 @@ Initial developers are [Julian Kornberger][5] and [Henning Müller][6].
 Installation
 ------------
 
-These commands should work on Ubuntu 11.10. First of all you need a root shell.
+These commands should work on Ubuntu 12.04. First of all you need a root shell.
 
 ### RVM with Ruby 1.9.3
 
 Installation of [RVM](https://rvm.beginrescueend.com/ "Ruby Version Manager"):
 
-    bash -s stable < <(curl -s https://raw.github.com/wayneeseguin/rvm/master/binscripts/rvm-installer)
-    source ~/.bash_profile
-    apt-get install build-essential openssl libreadline6 libreadline6-dev curl git-core zlib1g zlib1g-dev libssl-dev libyaml-dev libsqlite3-0 libsqlite3-dev sqlite3 libxml2-dev libxslt-dev autoconf libc6-dev ncurses-dev automake libtool bison subversion
-    rvm install 1.9.3
+    apt-get install -y build-essential openssl libreadline6 libreadline6-dev curl git-core zlib1g zlib1g-dev libssl-dev libyaml-dev libsqlite3-0 libsqlite3-dev sqlite3 libxml2-dev libxslt-dev autoconf libc6-dev ncurses-dev automake libtool bison subversion
+    curl -L https://get.rvm.io | bash -s stable --ruby
+
+If you have a desktop installation, you should "run command as a login shell" to
+source rvm automatically as explained in https://rvm.io/integration/gnome-terminal/ .
 
 ### Apache2 with passenger
+
+HttpServer is only required in the production environment.
 
 #### Installation
 
@@ -72,31 +75,45 @@ now enable the module an restart apache2:
 
 ### Tomcat with Solr
 
-    apt-get install tomcat6
+Tomcat with Solr is only required in the production environment.
+
+    apt-get install tomcat6 tomcat6-admin
     
     cd /root/
-    version=3.5.0
+    version=3.6.0
     wget http://apache.openmirror.de/lucene/solr/$version/apache-solr-$version.tgz
     tar xzf apache-solr-$version.tgz
     sudo cp apache-solr-$version/dist/apache-solr-solrj-$version.jar /var/lib/tomcat6/webapps/solr.war
-    ln -s /srv/http/ontohub.orgizm.net/current/solr/conf ./var/lib/tomcat6/solr/
+    ln -s /srv/http/ontohub.org/current/solr/conf /var/lib/tomcat6/webapps/solr/
 
 The war-Package should be automatically loaded.
 
-### PostgreSQL
+### SQL SERVER
 
-    apt-get install postgresql
+There are currently two possible sql servers. For the master branch, one needs
+PostgreSQL; and for the new-model branch, MySQL.
+
+#### PostgreSQL
+
+    apt-get -y install postgresql
+
+#### MySQL
+
+The installation will prompt you for a password three times and you are expected
+to press «enter» with an empty password field.
+
+    apt-get -y install mysql-server libmysqlclient-dev
 
 ### Redis
 
-    apt-get install redis-server
+    apt-get -y install redis-server
 
 ### hets
 
     apt-add-repository ppa:hets/hets
-    apt-add-repository "deb http://archive.canonical.com/ubuntu lucid partner"
+    apt-add-repository "deb http://archive.canonical.com/ubuntu precise partner"
     apt-get update
-    apt-get install hets-core subversion
+    apt-get -y install hets-core subversion
 
 If you need the latest nightly build, just update hets (assure you have a
 working internet connection):
@@ -131,9 +148,29 @@ from uploads.
 Development
 -----------
 
-### Installation
+This part should be done with your own user (not as root).
 
-    git clone git@github.com/digineo/ontohub.git
+### Clone with pushing permission
+
+You need to create an SSH-key and upload it to your Github account and then be
+added to the project by a project administrator.
+
+    git clone git@github.com:ontohub/ontohub.git
+
+### Clone without pushing permission
+
+You do not need to be a project member. Just clone it!
+
+    git clone git://github.com/ontohub/ontohub.git
+
+### Add yourself to the RVM group
+
+    sudo adduser $USER rvm
+
+### Installation in Local Machine
+
+Login in again and run the following commands.
+
     cd ontohub
     bundle install
 
