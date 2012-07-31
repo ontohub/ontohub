@@ -12,6 +12,7 @@ set :deploy_to, "/srv/http/#{hostname}"
 set :user, application
 set :use_sudo, false
 set :deploy_via, :remote_cache
+set :god_port, 17166
 
 # RVM
 require "rvm/capistrano"
