@@ -29,12 +29,12 @@ team = Team.create! \
 end
 
 # Create initial logic configuration.
-Logic.create! \
+Language.create! \
   name: 'OWL',
   iri: 'http://purl.net/dol/logics/OWL',
   description: 'OWL'
 
-Logic.create! \
+Language.create! \
   name: 'CommonLogic',
   iri: 'http://purl.net/dol/logics/CommonLogic',
   description: 'Common Logic'

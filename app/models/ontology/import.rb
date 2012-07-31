@@ -2,20 +2,20 @@ module Ontology::Import
 	extend ActiveSupport::Concern
 
   def import_xml(io)
-    entities_count = 0
-    sentences_count   = 0
-    now            = Time.now
+    entities_count  = 0
+    sentences_count = 0
+    now             = Time.now
 
     transaction do
       OntologyParser.parse io,
         ontology: Proc.new { |h| 
-          self.logic = Logic.find_or_create_by_name h['logic']
+          self.language = Language.find_or_create_by_name h['logic']
         },
         symbol:   Proc.new { |h|
           entities.update_or_create_from_hash(h, now)
           entities_count += 1
         },
-        sentence:    Proc.new { |h|
+        sentence: Proc.new { |h|
           sentences.update_or_create_from_hash(h, now)
           sentences_count += 1
         }

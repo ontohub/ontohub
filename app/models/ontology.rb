@@ -11,7 +11,6 @@ class Ontology < ActiveRecord::Base
   include Ontology::Versions
 
   belongs_to :language
-  belongs_to :ontology_version
 
   attr_accessible :iri, :name, :description, :logic_id
 
