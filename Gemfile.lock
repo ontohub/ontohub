@@ -65,6 +65,7 @@ GEM
       activesupport (>= 3.2.0)
     childprocess (0.3.2)
       ffi (~> 1.0.6)
+    choice (0.1.6)
     chunky_png (1.2.5)
     coffee-rails (3.2.2)
       coffee-script (>= 2.2.0)
@@ -175,6 +176,11 @@ GEM
       activesupport (= 3.2.3)
       bundler (~> 1.0)
       railties (= 3.2.3)
+    rails-erd (1.0.0)
+      activerecord (>= 3.0)
+      activesupport (>= 3.0)
+      choice (~> 0.1.6)
+      ruby-graphviz (~> 1.0.4)
     railties (3.2.3)
       actionpack (= 3.2.3)
       activesupport (= 3.2.3)
@@ -197,6 +203,7 @@ GEM
       vegas (~> 0.1.2)
     rsolr (1.0.7)
       builder (>= 2.1.2)
+    ruby-graphviz (1.0.8)
     rubyzip (0.9.8)
     rvm-capistrano (1.2.2)
       capistrano (>= 2.0.0)
@@ -274,6 +281,7 @@ DEPENDENCIES
   nokogiri (~> 1.5.0)
   progress_bar
   rails (~> 3.2.2)
+  rails-erd
   redis-namespace
   resque
   rvm-capistrano
