@@ -5,6 +5,7 @@ class OntologyVersion < ActiveRecord::Base
   include OntologyVersion::Numbers
   include OntologyVersion::Sentences
   include OntologyVersion::Entities
+  include OntologyVersion::Import
 
   belongs_to :user
   belongs_to :ontology, :counter_cache => :versions_count

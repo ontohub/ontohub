@@ -9,12 +9,12 @@ module OntologyVersion::Parsing
   def parse
     raise ArgumentError.new('No raw_file set.') unless raw_file?
 
-    do_or_set_failed do
-      condition = ['checksum = ? and id != ?', self.checksum, self.id]
-      if OntologyVersion.where(condition).any?
-        raise Exception.new('Another file with same checksum already exists.')
-      end
-    end
+#   do_or_set_failed do
+#     condition = ['checksum = ? and id != ?', self.checksum, self.id]
+#     if OntologyVersion.where(condition).any?
+#       raise Exception.new('Another file with same checksum already exists.')
+#     end
+#   end
 
     update_state! :processing
 
@@ -26,7 +26,7 @@ module OntologyVersion::Parsing
 
       File.delete(@path)
 
-      self.ontology.import_latest_version
+      self.import_xml_from_file(self.xml_file.current_path)
     end
 
     update_state! :done

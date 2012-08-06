@@ -14,4 +14,8 @@ class Entity < ActiveRecord::Base
     select('kind, count(*) AS count').group(:kind).order('count DESC, kind').all
   end
 
+  def ontology_id
+    ontology.id
+  end
+
 end
