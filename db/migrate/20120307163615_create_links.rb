@@ -3,8 +3,11 @@ class CreateLinks < ActiveRecord::Migration
     create_table :links do |t|
       t.references :source, :null => false
       t.references :target, :null => false
-      t.string :kind
-
+      t.string :kind # roughly corresponds to DGLinkType constructor and LinkKind in Hets
+      t.boolean :theorem, :default => false # definition or theorem link?
+      t.boolean :local, :default => false # local or global link? corresponds to Scope in Hets. Local links may arise in development graph proofs
+      t.boolean :auxiliary, :default => false # true for component signature morphisms which are coded as links here, 
+            # see FreeOrCofreeDefLink (here the link is the inclusion of the intermediate node into the source) or HidingFreeOrCofreeThm in Hets
       t.timestamps :null => false
     end
 

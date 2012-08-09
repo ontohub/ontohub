@@ -11,7 +11,7 @@ class CreateOntologyVersions < ActiveRecord::Migration
       t.string :state, :default => 'pending'
       t.text :last_error
       t.string :checksum
-      t.integer :number, :null => false
+      t.integer :number, :null => false # is this the version number? maybe change into string (e.g. "1.0")
 
       t.timestamps :null => false
     end

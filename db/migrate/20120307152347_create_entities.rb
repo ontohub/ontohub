@@ -1,3 +1,6 @@
+
+# globally replace "entity" with "symbol"
+
 class CreateEntities < ActiveRecord::Migration
   def change
     create_table :entities do |t|

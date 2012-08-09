@@ -4,10 +4,12 @@ class CreateLinkVersions < ActiveRecord::Migration
       t.references :link, :null => false
       t.references :source, :null => false
       t.references :target, :null => false
+      t.references :aux_link #  corresponds to GMorphism in HidingFreeOrCofreeThm in Hets
       t.integer :version_number
       t.boolean :current
-      t.boolean :proof_status
-      t.boolean :couse_status
+      t.boolean :proof_status, :default => false
+      t.string :required_cons_status, :default => "none" 
+      t.string :proven_cons_status, :default => "none"
 
       t.timestamps :null => false
     end
