@@ -1,6 +1,6 @@
 require 'test_helper'
 
-class TranslationTest < ActiveSupport::TestCase
+class ResourceTest < ActiveSupport::TestCase
   # test "the truth" do
   #   assert true
   # end

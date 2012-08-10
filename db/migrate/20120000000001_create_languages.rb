@@ -3,7 +3,9 @@ class CreateLanguages < ActiveRecord::Migration
     create_table :languages do |t|
       t.string :name, :null => false
       t.string :iri, :null => false
-      t.text :description
+      t.text :description # in registry: comment
+      t.string :standardization_status
+      t.string :defined_by
 
       t.timestamps :null => false
     end

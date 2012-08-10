@@ -3,6 +3,7 @@ class CreateSupports < ActiveRecord::Migration
     create_table :supports do |t|
       t.references :language
       t.references :logic
+      t.boolean :exact # is expressiveness of language exactly captured by logic?
 
       t.timestamps
     end

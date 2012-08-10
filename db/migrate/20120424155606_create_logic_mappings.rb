@@ -5,7 +5,13 @@ class CreateLogicMappings < ActiveRecord::Migration
       t.references :target, :null => false
       t.string :iri
       t.string :kind
-
+      t.string :standardization_status
+      t.string :defined_by
+      t.boolean :default # is a default mapping
+      t.boolean :projection # or translation
+      t.string :faithfulness
+      t.string :theoroidalness
+      
       t.timestamps :null => false
     end
     
