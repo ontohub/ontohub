@@ -22,6 +22,7 @@ class CreateOntologies < ActiveRecord::Migration
       t.index :state
       t.index :language_id
       t.index :logic_id
+      t.foreign_key :logics
       t.foreign_key :languages
     end
   end
