@@ -1,4 +1,6 @@
 class Language < ActiveRecord::Base
+  include Resourcable
+
   has_many :supports
   has_many :ontologies
   has_many :serializations
