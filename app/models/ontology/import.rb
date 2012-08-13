@@ -27,9 +27,14 @@ module Ontology::Import
             raise "more than one ontology found" if ontologies_count > 1
             ontology = self
           end
-          
-          ontology.language = Language.find_or_create_by_name_and_iri h['logic'], 'http://purl.net/dol/language/' + h['logic']
-          ontology.logic    = Logic.find_or_create_by_name_and_iri h['logic'], 'http://purl.net/dol/logics/' + h['logic']
+
+          if h['language']
+            ontology.language = Language.find_or_create_by_name_and_iri h['language'], 'http://purl.net/dol/language/' + h['language']
+          end
+          if h['logic']
+            ontology.logic = Logic.find_or_create_by_name_and_iri h['logic'], 'http://purl.net/dol/logics/' + h['logic']
+          end
+
           ontology.entities_count  = 0
           ontology.sentences_count = 0
         },

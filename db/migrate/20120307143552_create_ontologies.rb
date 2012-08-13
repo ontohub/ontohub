@@ -1,7 +1,7 @@
 class CreateOntologies < ActiveRecord::Migration
   def change
     create_table :ontologies do |t|
-      t.string :type, null: false, limit: 50
+      t.string :type, default: 'SingleOntology', null: false, limit: 50
       t.references :language
       t.references :logic
       t.references :ontology_version
