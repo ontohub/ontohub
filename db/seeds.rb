@@ -28,17 +28,6 @@ team = Team.create! \
   team.users << user if i < 2
 end
 
-# Create initial logic configuration.
-Logic.create! \
-  name: 'OWL',
-  iri: 'http://purl.net/dol/logics/OWL',
-  description: 'OWL'
-
-Logic.create! \
-  name: 'CommonLogic',
-  iri: 'http://purl.net/dol/logics/CommonLogic',
-  description: 'Common Logic'
-
 # Import ontologies
 Dir["#{Rails.root}/test/fixtures/ontologies/*/*.{clf,clif,owl}"].each do |file|
   basename = File.basename(file)

@@ -28,8 +28,8 @@ module Ontology::Import
             ontology = self
           end
           
-          ontology.language = Language.find_or_create_by_name h['logic']
-          ontology.logic    = Logic.find_or_create_by_name h['logic']
+          ontology.language = Language.find_or_create_by_name_and_iri h['logic'], 'http://purl.net/dol/language/' + h['logic']
+          ontology.logic    = Logic.find_or_create_by_name_and_iri h['logic'], 'http://purl.net/dol/logics/' + h['logic']
           ontology.entities_count  = 0
           ontology.sentences_count = 0
         },
