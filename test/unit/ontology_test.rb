@@ -2,14 +2,18 @@ require 'test_helper'
 
 class OntologyTest < ActiveSupport::TestCase
   should belong_to :language
+  should belong_to :logic
   should belong_to :ontology_version
-  should have_many :ontology_versions
+  should have_many :versions
   should have_many :comments
+  should have_many :sentences
+  should have_many :entities
   
   should have_db_index(:iri).unique(true)
   should have_db_index(:state)
   should have_db_index(:language_id)
-  
+  should have_db_index(:logic_id)
+
   should_strip_attributes :name, :iri
   should_not_strip_attributes :description
 

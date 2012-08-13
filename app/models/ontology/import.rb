@@ -9,7 +9,7 @@ module Ontology::Import
     transaction do
       OntologyParser.parse io,
         ontology: Proc.new { |h| 
-          self.language = Language.find_or_create_by_name h['logic']
+          self.logic = Logic.find_or_create_by_name h['logic']
         },
         symbol:   Proc.new { |h|
           entities.update_or_create_from_hash(h, now)

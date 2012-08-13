@@ -1,4 +1,4 @@
-module OntologyVersion::Sentences
+module Ontology::Sentences
   extend ActiveSupport::Concern
 
   included do
@@ -16,9 +16,9 @@ module OntologyVersion::Sentences
       e.save!
 
       execute_sql "DELETE FROM entities_sentences WHERE sentence_id=#{e.id}"
-      execute_sql "INSERT INTO entities_sentences (sentence_id, entity_id, ontology_version_id)
-                  SELECT #{e.id}, id, ontology_version_id FROM entities WHERE
-                  ontology_version_id=#{@association.owner.id} AND text IN (?)",
+      execute_sql "INSERT INTO entities_sentences (sentence_id, entity_id, ontology_id)
+                  SELECT #{e.id}, id, ontology_id FROM entities WHERE
+                  ontology_id=#{@association.owner.id} AND text IN (?)",
                   hash['symbols']
 
       e

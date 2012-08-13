@@ -3,13 +3,9 @@ class OntologyVersion < ActiveRecord::Base
   include OntologyVersion::Download
   include OntologyVersion::Parsing
   include OntologyVersion::Numbers
-  include OntologyVersion::Sentences
-  include OntologyVersion::Entities
-  include OntologyVersion::Import
 
   belongs_to :user
   belongs_to :ontology, :counter_cache => :versions_count
-  belongs_to :logic
 
   mount_uploader :raw_file, OntologyUploader
   mount_uploader :xml_file, OntologyUploader
@@ -19,7 +15,7 @@ class OntologyVersion < ActiveRecord::Base
   before_validation :set_checksum
 
   validate :raw_file_xor_source_url, :on => :create
-# validate :raw_file_size_maximum
+#  validate :raw_file_size_maximum
 
   validates_format_of :source_url,
     :with => URI::regexp(ALLOWED_URI_SCHEMAS), :if => :source_url?

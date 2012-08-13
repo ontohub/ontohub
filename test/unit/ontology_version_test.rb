@@ -1,18 +1,14 @@
 require 'test_helper'
 
 class OntologyVersionTest < ActiveSupport::TestCase
+  should belong_to :user
+  should belong_to :ontology
+
   should have_db_index([:ontology_id, :number])
   should have_db_index(:user_id)
-  should have_db_index(:logic_id)
   should have_db_index(:previous_version_id)
   should have_db_index(:checksum)
 
-  should have_many :entities
-  should have_many :sentences
-  should belong_to :user
-  should belong_to :ontology
-  should belong_to :logic
-  
   context 'Validating OntologyVersion' do
     ['http://example.com/', 'https://example.com/'].each do |val|
       should allow_value(val).for :source_url

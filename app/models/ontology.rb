@@ -6,10 +6,14 @@ class Ontology < ActiveRecord::Base
   include Metadatable
 
   # Ontology Model Includes
+  include Ontology::Import
   include Ontology::States
   include Ontology::Versions
+  include Ontology::Entities
+  include Ontology::Sentences
 
   belongs_to :language
+  belongs_to :logic
 
   attr_accessible :iri, :name, :description, :logic_id
 
