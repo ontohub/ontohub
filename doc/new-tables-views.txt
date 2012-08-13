@@ -1,5 +1,10 @@
 Ontohub: new tables and views
 
+crucial prerequisites:
+* read in Ontohub registry (RDF) #62
+* read in DGXML (produced by Hets) #55
+* display graphs (e.g. via graphviz) #63
+
 existing tables
 ---------------
 ontologies
