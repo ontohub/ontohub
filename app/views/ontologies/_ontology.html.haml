@@ -5,7 +5,7 @@
     
     - if ontology.entities_count
       %li= link_to pluralize(ontology.entities_count, 'Entity'), [ontology, :entities]
-      %li= link_to pluralize(ontology.axioms_count, 'Axiom'), [ontology, :axioms]
+      %li= link_to pluralize(ontology.sentences_count, 'Sentence'), [ontology, :sentences]
     
     - else
       %li= ontology.state
