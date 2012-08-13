@@ -6,6 +6,7 @@ class Ontology < ActiveRecord::Base
   include Metadatable
 
   # Ontology Model Includes
+  include Ontology::Import
   include Ontology::States
   include Ontology::Versions
 

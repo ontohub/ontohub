@@ -5,4 +5,5 @@ class Sentence < ActiveRecord::Base
   has_and_belongs_to_many :entities
   
   delegate :ontology, :to => :ontology_version
+  
 end
