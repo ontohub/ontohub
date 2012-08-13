@@ -3,6 +3,7 @@ class CreateLinks < ActiveRecord::Migration
     create_table :links do |t|
       t.references :source, :null => false
       t.references :target, :null => false
+      t.references :logic_mapping # for heterogeneous links. nil means identity = homogeneous link
       t.string :kind # roughly corresponds to DGLinkType constructor and LinkKind in Hets
       t.boolean :theorem, :default => false # definition or theorem link?
       t.boolean :local, :default => false # local or global link? corresponds to Scope in Hets. Local links may arise in development graph proofs
