@@ -1,0 +1,64 @@
+Ontohub: new tables and views
+
+existing tables
+---------------
+ontologies
+* show local theory by default, button for showing flattened theory
+* translate ontology to different language
+* for distributed ontologies, show members
+* divide sentence numbers into axioms, theorems and goals
+* adding new axioms + goals
+* check consistency (via Hets)
+* union of n ontologies
+* filter by logic/language
+* class graph (see Bioportal)
+ontology_versions
+links
+* CRUD + ownership
+* show ontology graph, say, up to three links from the current ontology (larger diameters may be input by the user). Use graphviz/svg
+* check conservativity (via Hets)
+link_versions
+sentences
+* show proof status and basic_proofs
+* for goals, add prove + disprove buttons (via Hets)
+metadata
+permissions
+users
+entities
+entity_mappings
+entities_sentences_table
+teams
+team_users
+comments
+
+new tables
+----------
+logics
+* CRUD + ownership + supports relation
+logic_mappings
+* CRUD + ownership + logic_adjoints
+* show logic graph (and interesting subgraphs)
+languages
+* CRUD + ownership + supports relation
+language_mappings
+* CRUD + ownership + language_adjoints
+* show language graph (and interesting subgraphs)
+serializations
+* CRUD + onwership
+basic_proofs
+* show, including uses sentences
+structured_proofs
+* show, including parts
+
+structured_proof_parts
+* see structured_proofs
+used_sentences
+* see basic_proofs
+logic_adjoints
+* see logic_mappings
+language_adjoints
+* see language_mappings
+supports
+* see logics + languages
+members
+* see ontologies
