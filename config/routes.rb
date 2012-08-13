@@ -22,12 +22,14 @@ Ontohub::Application.routes.draw do
   end
 
   resources :ontologies do
+    resources :entities, :only => :index
+    resources :sentences, :only => :index
     get 'bulk', :on => :collection
     resources :ontology_versions, :only => [:index, :show, :new, :create], :path => 'versions'
 
-	%w( entities sentences ).each do |name|
-	  get "versions/:number/#{name}" => "#{name}#index", :as => "ontology_version_#{name}"
-	end
+#	%w( entities sentences ).each do |name|
+#	  get "versions/:number/#{name}" => "#{name}#index", :as => "ontology_version_#{name}"
+#	end
 
     resources :permissions, :only => [:index, :create, :update, :destroy]
     resources :metadata, :only => [:index, :create, :destroy]

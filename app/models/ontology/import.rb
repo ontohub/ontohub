@@ -28,7 +28,8 @@ module Ontology::Import
             ontology = self
           end
           
-          ontology.logic = Logic.find_or_create_by_name h['logic']
+          ontology.language = Language.find_or_create_by_name h['logic']
+          ontology.logic    = Logic.find_or_create_by_name h['logic']
           ontology.entities_count  = 0
           ontology.sentences_count = 0
         },
