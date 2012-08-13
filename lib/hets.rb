@@ -35,9 +35,9 @@ module Hets
   def self.parse(input_file)
     config = Config.new
     Rails.logger.debug "#{config.path} -o sym.xml -v2 '#{input_file}'"
-    status = `#{config.path} -o sym.xml -v2 '#{input_file}' 2>&1`
+    status = `#{config.path} -o xml -v2 '#{input_file}' 2>&1`
     status = status.split("\n").last
-Rails.logger.debug status
+    Rails.logger.debug status
     if $?.exitstatus != 0 or status.starts_with? '*** Error'
       raise HetsError.new(status)
     end
