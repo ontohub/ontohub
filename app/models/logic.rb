@@ -1,7 +1,7 @@
 class Logic < ActiveRecord::Base
   include Resourcable
 
-  has_many :ontology_versions
+  has_many :ontologies
   has_many :supports
 
   attr_accessible :name, :iri, :description

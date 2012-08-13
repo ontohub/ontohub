@@ -1,0 +1,3 @@
+class SimpleOntology < Ontology
+  
+end

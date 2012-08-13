@@ -2,32 +2,51 @@ module Ontology::Import
 	extend ActiveSupport::Concern
 
   def import_xml(io)
-    entities_count  = 0
-    sentences_count = 0
-    now             = Time.now
+    now = Time.now
 
     transaction do
+      
+      root             = nil
+      ontology         = nil
+      ontologies_count = 0
+      
       OntologyParser.parse io,
-        ontology: Proc.new { |h| 
-          self.logic = Logic.find_or_create_by_name h['logic']
+        root: Proc.new { |h|
+          root = h
+        },
+        ontology: Proc.new { |h|
+          ontologies_count += 1
+          
+          if distributed?
+            name = h['name']
+            name = "file://#{root['filename']}##{name}" unless name.include?('://')
+            
+            ontology = SingleOntology.find_or_initialize_by_iri name
+            ontology.save! unless ontology.persisted?
+          else
+            raise "more than one ontology found" if ontologies_count > 1
+            ontology = self
+          end
+          
+          ontology.logic = Logic.find_or_create_by_name h['logic']
+          ontology.entities_count  = 0
+          ontology.sentences_count = 0
+        },
+        ontology_end: Proc.new {
+          # remove outdated sentences and entities
+          conditions = ['updated_at < ?', now]
+          ontology.entities.where(conditions).destroy_all
+          ontology.sentences.where(conditions).delete_all
+          ontology.save!
         },
         symbol:   Proc.new { |h|
-          entities.update_or_create_from_hash(h, now)
-          entities_count += 1
+          ontology.entities.update_or_create_from_hash(h, now)
+          ontology.entities_count += 1
         },
-        sentence: Proc.new { |h|
-          sentences.update_or_create_from_hash(h, now)
-          sentences_count += 1
+        axiom: Proc.new { |h|
+          ontology.sentences.update_or_create_from_hash(h, now)
+          ontology.sentences_count += 1
         }
-
-      # remove outdated sentences and entities
-      conditions = ['updated_at < ?', now]
-      self.entities.where(conditions).destroy_all
-      self.sentences.where(conditions).delete_all
-      
-      # update the counters
-      self.entities_count = entities_count
-      self.sentences_count   = sentences_count
       
       save!
     end

@@ -14,7 +14,7 @@ module Ontology::Sentences
       e.updated_at = timestamp
 
       e.save!
-
+      
       execute_sql "DELETE FROM entities_sentences WHERE sentence_id=#{e.id}"
       execute_sql "INSERT INTO entities_sentences (sentence_id, entity_id, ontology_id)
                   SELECT #{e.id}, id, ontology_id FROM entities WHERE

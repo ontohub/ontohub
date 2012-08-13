@@ -1,6 +1,7 @@
 class CreateOntologies < ActiveRecord::Migration
   def change
     create_table :ontologies do |t|
+      t.string :type, null: false, limit: 50
       t.references :language
       t.references :logic
       t.references :ontology_version
@@ -8,7 +9,6 @@ class CreateOntologies < ActiveRecord::Migration
       t.string :state, :default => 'pending', :null => false
       t.string :name
       t.text :description
-      t.boolean :distributed, :default => false
       t.boolean :auxiliary, :default => false
       
       t.integer :entities_count, :sentences_count
@@ -18,6 +18,7 @@ class CreateOntologies < ActiveRecord::Migration
     end
 
     change_table :ontologies do |t|
+      t.index :type
       t.index :iri, :unique => true
       t.index :state
       t.index :language_id

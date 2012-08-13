@@ -1,0 +1,3 @@
+class SingleOntology < Ontology
+  
+end
