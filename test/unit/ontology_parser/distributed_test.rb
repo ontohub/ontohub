@@ -4,7 +4,7 @@ class OntologyParser::ComplexTest < ActiveSupport::TestCase
   
   context "OntologyParser" do
     
-    context 'parsing complex XML' do
+    context 'parsing distributed XML' do
       setup do
         @ontologies = []
         @symbols    = []

@@ -1,7 +1,8 @@
 class CreateOntologies < ActiveRecord::Migration
   def change
     create_table :ontologies do |t|
-      t.string :type, default: 'SingleOntology', null: false, limit: 50
+      t.string :type, null: false, limit: 50, default: 'SingleOntology'
+      t.references :parent
       t.references :language
       t.references :logic
       t.references :ontology_version
@@ -23,6 +24,7 @@ class CreateOntologies < ActiveRecord::Migration
       t.index :state
       t.index :language_id
       t.index :logic_id
+      t.foreign_key :ontologies, column: :parent_id
       t.foreign_key :logics
       t.foreign_key :languages
     end

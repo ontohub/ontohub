@@ -18,11 +18,13 @@ module Ontology::Import
           ontologies_count += 1
           
           if distributed?
+            # generate IRI for sub-ontology
             name = h['name']
             name = "file://#{root['filename']}##{name}" unless name.include?('://')
             
-            ontology = SingleOntology.find_or_initialize_by_iri name
-            ontology.save! unless ontology.persisted?
+            # find or create sub-ontology by IRI
+            ontology   = self.children.find_by_iri name
+            ontology ||= SingleOntology.create!({iri: name, parent: self}, without_protection: true)
           else
             raise "more than one ontology found" if ontologies_count > 1
             ontology = self

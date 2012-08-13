@@ -4,7 +4,7 @@ class OntologyParser::SimpleTest < ActiveSupport::TestCase
   
   context "OntologyParser" do
     
-    context 'parsing simple' do
+    context 'parsing single' do
       setup do
         @ontologies = []
         @symbols    = []
