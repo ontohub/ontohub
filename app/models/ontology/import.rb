@@ -65,7 +65,7 @@ module Ontology::Import
             target = "file://#{root['filename']}##{target}" unless target.include?('://')
             source_onto  = Ontology.find_by_iri source
             target_onto  = Ontology.find_by_iri target
-            linktype = h['Type']
+            linktype = h['type']
             raise "link type missing" if linktype.nil?
             kind = if linktype.include? "Free" then "free"
                    elsif linktype.include? "Cofree" then "cofree"
@@ -77,7 +77,7 @@ module Ontology::Import
             proven = linktype.include? "Proven" 
             local = linktype.include? "Local"
             inclusion = linktype.include? "Inc"
-            gmorphism = h['GMorphism']['name']
+            gmorphism = h['morphism']
             raise "gmorphism missing" if gmorphism.nil?
             gmorphism = 'http://purl.net/dol/translations/' + gmorphism unless gmorphism.include?('://')
             logic_mapping = LogicMapping.find_by_iri gmorphism
