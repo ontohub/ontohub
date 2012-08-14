@@ -7,7 +7,7 @@ class OntologiesControllerTest < ActionController::TestCase
   
   context 'Ontology Instance' do
     setup do
-      @ontology = Factory :ontology
+      @ontology = Factory :single_ontology
       @user     = Factory :user
       
       2.times { Factory :entity, :ontology => @ontology }
