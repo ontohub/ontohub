@@ -13,8 +13,8 @@ class SentenceTest < ActiveSupport::TestCase
 
     should have_db_column('text').of_type(:text)
 
-    should have_db_index([:ontology_id, :text]).unique(true)
-    should have_db_index([:ontology_id, :kind])
+    should have_db_index([:ontology_id, :id]).unique(true)
+    should have_db_index([:ontology_id, :name]).unique(true)
   end
 
   context 'Associations' do
