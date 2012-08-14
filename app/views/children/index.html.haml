@@ -1,0 +1,8 @@
+= ontology_nav @ontology, :children
+
+%table
+  %thead
+    %th Name
+    %th Entities
+    %th Sentences
+  = render partial: 'child', collection: collection

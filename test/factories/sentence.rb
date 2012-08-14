@@ -4,7 +4,7 @@ end
 
 FactoryGirl.define do
   factory :sentence do
-    association :ontology_version, :factory => :ontology_version_with_file
+    association :ontology, :factory => :single_ontology
     name { Factory.next :sentence_name }
     text { Faker::Lorem.sentence }
   end

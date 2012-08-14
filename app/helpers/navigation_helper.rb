@@ -21,10 +21,17 @@ module NavigationHelper
   end
   
   def ontology_nav(ontology, current_page)
-    pages = [
-      [:overview,     ontology],
-      [:sentences,   [ontology, :sentences]],
-      [:entities,    [ontology, :entities]],
+    
+    pages = [[:overview,ontology]]
+    
+    if ontology.distributed?
+      pages << [:children,    [ontology, :children]]
+    else
+      pages << [:sentences,   [ontology, :sentences]]
+      pages << [:entities,    [ontology, :entities]]
+    end
+    
+    pages += [
       [:versions,    [ontology, :ontology_versions]],
       [:metadata,    [ontology, :metadata]],
       [:comments,    [ontology, :comments]]

@@ -19,6 +19,9 @@ module OntologyParser
     SYMBOL   = 'Symbol'
     AXIOM    = 'Axiom'
     LINK     = 'DGLink'
+    TEXT     = 'Text'
+    TYPE     = 'Type'
+    MORPHISM = 'GMorphism'
     
     # the callback function is called for each Symbol tag
     def initialize(callbacks)
@@ -27,6 +30,7 @@ module OntologyParser
       @current_ontology = nil
       @current_symbol   = nil
       @current_axiom    = nil
+      @current_link     = nil
     end
     
     # a tag
@@ -43,11 +47,10 @@ module OntologyParser
         when AXIOM
           @current_axiom = Hash[*[attributes]]
           @current_axiom['symbols'] = []
-          @current_axiom['text']    = ''
         when LINK
           @current_link = Hash[*[attributes]]
-        else
-          # NOTHING
+        when MORPHISM
+          @current_link['morphism'] = Hash[*[attributes]]['name'] if @current_link
       end
     end
     
@@ -56,8 +59,10 @@ module OntologyParser
       case @path.last
         when SYMBOL
           @current_symbol['text'] << text if @current_symbol
-        when AXIOM
-          @current_axiom['text'] << text if @current_axiom
+        when TEXT
+          @current_axiom['text'] = text if @current_axiom
+        when TYPE
+          @current_link['type'] = text if @current_link
       end
     end
     

@@ -78,7 +78,7 @@ class OntologiesControllerTest < ActionController::TestCase
           context 'without format' do
             setup do
               post :create, :ontology => {
-                uri: 'fooo',
+                iri: 'fooo',
                 versions_attributes: [{
                   source_url: ''
                 }],
@@ -93,7 +93,7 @@ class OntologiesControllerTest < ActionController::TestCase
           context 'with format :json' do
             setup do
               post :create, :format => :json, :ontology => {
-                uri: 'fooo',
+                iri: 'fooo',
                 versions_attributes: [{
                   source_url: ''
                 }],
@@ -110,7 +110,7 @@ class OntologiesControllerTest < ActionController::TestCase
               OntologyVersion.any_instance.expects(:parse_async).once
               
               post :create, :ontology => {
-                uri: 'http://example.com/dummy.ontology',
+                iri: 'http://example.com/dummy.ontology',
                 versions_attributes: [{
                   source_url: 'http://example.com/dummy.ontology'
                 }],
@@ -126,7 +126,7 @@ class OntologiesControllerTest < ActionController::TestCase
               OntologyVersion.any_instance.expects(:parse_async).once
               
               post :create, :format => :json, :ontology => {
-                uri: 'http://example.com/dummy.ontology',
+                iri: 'http://example.com/dummy.ontology',
                 versions_attributes: [{
                   source_url: 'http://example.com/dummy.ontology'
                 }],

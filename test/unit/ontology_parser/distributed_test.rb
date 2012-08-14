@@ -22,7 +22,7 @@ class OntologyParser::ComplexTest < ActiveSupport::TestCase
       end
       
       should 'found all symbols' do
-        assert_equal 3, @symbols.count
+        assert_equal 2, @symbols.count
       end
       
       should 'found all axioms' do
@@ -44,6 +44,14 @@ class OntologyParser::ComplexTest < ActiveSupport::TestCase
         
         should 'have correct target' do
           assert_equal "sp__T", @link['target']
+        end
+        
+        should 'have correct type' do
+          assert_equal "GlobalDefInc", @link['type']
+        end
+        
+        should 'have correct morphism' do
+          assert_equal "id_CASL.SubPCSOL=E", @link['morphism']
         end
       end
       

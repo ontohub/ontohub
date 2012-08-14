@@ -5,7 +5,6 @@ class HetsTest < ActiveSupport::TestCase
     context path do
       setup do
         assert_nothing_raised do
-          p path
           @xml_path = Hets.parse "test/fixtures/ontologies/#{path}"
         end
       end

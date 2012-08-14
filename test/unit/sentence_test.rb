@@ -1,14 +1,30 @@
 require 'test_helper'
 
 class SentenceTest < ActiveSupport::TestCase
+
+  context 'Migrations' do
+    %w( ontology_id comments_count ).each do |column|
+      should have_db_column(column).of_type(:integer)
+    end   
+  
+    %w( name range ).each do |column|
+      should have_db_column(column).of_type(:string)
+    end
+
+    should have_db_column('text').of_type(:text)
+
+    should have_db_index([:ontology_id, :id]).unique(true)
+    should have_db_index([:ontology_id, :name]).unique(true)
+  end
+
   context 'Associations' do
-    should belong_to :ontology_version
+    should belong_to :ontology
     should have_and_belong_to_many :entities
   end
 
   context 'OntologyInstance' do
   	setup do
-  		@ontology_version = Factory :ontology_version
+  		@ontology = Factory :single_ontology
   	end
 
   	context 'creating Sentences' do
@@ -18,12 +34,12 @@ class SentenceTest < ActiveSupport::TestCase
           'range' => 'Examples/Reichel:40.9'
 	  		}
 
-	      @ontology_version.sentences.update_or_create_from_hash @sentence_hash
+	      @ontology.sentences.update_or_create_from_hash @sentence_hash
   		end
 
   		context 'correct attribute' do
   			setup do
-  				@sentence = @ontology_version.sentences.first
+  				@sentence = @ontology.sentences.first
   			end
 
   			%w[name range].each do |attr|

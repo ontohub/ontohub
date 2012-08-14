@@ -1,15 +1,15 @@
 <?xml version='1.0' ?>
-<DGraph filename="/home/till/CASL/Hets-lib/./test/test1.casl" libname="test/test1" nextlinkid="0">
+<DGraph filename="/home/till/CASL/Hets-lib/test/test1.casl" libname="test/test1" nextlinkid="0">
   <DGNode name="sp" logic="CASL" refname="sp" relxpath="/">
     <Declarations>
-      <Symbol kind="sort" name="s" range="/home/till/CASL/Hets-lib/./test/test1.casl:2.8">sort s</Symbol>
-      <Symbol kind="op" name="f" range="/home/till/CASL/Hets-lib/./test/test1.casl:3.6">op f : s -&gt; s</Symbol>
+      <Symbol kind="sort" name="s" range="/home/till/CASL/Hets-lib/test/test1.casl:2.8">sort s</Symbol>
+      <Symbol kind="op" name="f" range="/home/till/CASL/Hets-lib/test/test1.casl:3.6">op f : s -&gt; s</Symbol>
     </Declarations>
     <Axioms>
-      <Axiom name="Ax1" range="/home/till/CASL/Hets-lib/./test/test1.casl:3.8-4.25">
+      <Axiom name="Ax1" range="/home/till/CASL/Hets-lib/test/test1.casl:3.8-4.25">
         <Text>forall x : s . f(x) = x %(Ax1)%</Text>
-        <Symbol kind="op" name="f" range="/home/till/CASL/Hets-lib/./test/test1.casl:4.18">op f : s -&gt; s</Symbol>
-        <Symbol kind="sort" name="s" range="/home/till/CASL/Hets-lib/./test/test1.casl:3.11">sort s</Symbol>
+        <Symbol kind="op" name="f" range="/home/till/CASL/Hets-lib/test/test1.casl:4.18">op f : s -&gt; s</Symbol>
+        <Symbol kind="sort" name="s" range="/home/till/CASL/Hets-lib/test/test1.casl:3.11">sort s</Symbol>
       </Axiom>
     </Axioms>
   </DGNode>
