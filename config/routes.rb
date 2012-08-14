@@ -22,6 +22,7 @@ Ontohub::Application.routes.draw do
   end
 
   resources :ontologies do
+    resources :children, :only => :index
     resources :entities, :only => :index
     resources :sentences, :only => :index
     get 'bulk', :on => :collection

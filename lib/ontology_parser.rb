@@ -19,6 +19,7 @@ module OntologyParser
     SYMBOL   = 'Symbol'
     AXIOM    = 'Axiom'
     LINK     = 'DGLink'
+    TEXT     = 'Text'
     
     # the callback function is called for each Symbol tag
     def initialize(callbacks)
@@ -43,7 +44,6 @@ module OntologyParser
         when AXIOM
           @current_axiom = Hash[*[attributes]]
           @current_axiom['symbols'] = []
-          @current_axiom['text']    = ''
         when LINK
           @current_link = Hash[*[attributes]]
         else
@@ -56,8 +56,8 @@ module OntologyParser
       case @path.last
         when SYMBOL
           @current_symbol['text'] << text if @current_symbol
-        when AXIOM
-          @current_axiom['text'] << text if @current_axiom
+        when TEXT
+          @current_axiom['text'] = text if @current_axiom
       end
     end
     
