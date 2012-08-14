@@ -25,6 +25,7 @@ db/*.sqlite3*
 # Ignore temporary files
 tmp/**/*
 tmp/*
+*.orig
 
 # Ignore packaged assets and uploads
 /public/assets
