@@ -2,25 +2,22 @@ require 'test_helper'
 
 class SentencesControllerTest < ActionController::TestCase
   
-  should route(:get, "/ontologies/id/versions/number/sentences").to(
+  should route(:get, "/ontologies/id/sentences").to(
     :controller => :sentences,
     :action => :index,
-    :ontology_id => 'id',
-    :number => 'number'
+    :ontology_id => 'id'
   )
   
   context 'Ontology Instance' do
     setup do
       @sentence = Factory :sentence
-      @version  = @sentence.ontology_version
       @ontology = @sentence.ontology
     end
     
     context 'on GET to index' do
       setup do
         get :index,
-          :ontology_id => @ontology.to_param,
-          :number      => @version.number
+          :ontology_id => @ontology.to_param
       end
       
       should respond_with :success
