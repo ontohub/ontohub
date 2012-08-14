@@ -8,6 +8,11 @@
 %h2
   = link_to resource, resource, 'data-type' => resource.class
 
+- if resource.respond_to?(:parent) && resource.parent
+  %p
+    belongs to
+    = fancy_link resource.parent
+
 %nav.ui-tabs.ui-widget.static
   %ul{:class => 'ui-tabs-nav ui-helper-reset ui-helper-clearfix ui-widget-header ui-corner-all'}
     - pages.each do |page, path, count|

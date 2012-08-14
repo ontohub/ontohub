@@ -29,10 +29,12 @@ team = Team.create! \
 end
 
 # Import ontologies
-Dir["#{Rails.root}/test/fixtures/ontologies/*/*.{clf,clif,owl}"].each do |file|
+Dir["#{Rails.root}/test/fixtures/ontologies/*/*.{casl,clf,clif,owl}"].each do |file|
   basename = File.basename(file)
   
-  o = SingleOntology.new \
+  clazz = basename.ends_with?('.casl') ? DistributedOntology : SingleOntology
+  
+  o = clazz.new \
     iri:         "file://db/seeds/#{basename}",
     name:        basename.split(".")[0].capitalize,
     description: Faker::Lorem.paragraph
