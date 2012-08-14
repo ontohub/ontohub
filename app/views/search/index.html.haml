@@ -1,8 +1,8 @@
 %h2= @page_title = 'Entities'
 
 = form_tag :search, :method => :get do
-  = text_field_tag :q, @query, :placeholder => 'Entity\'s uri or name'
-  = submit_tag 'Search entities', :name => nil, :disable_with => 'Searching entities...'
+  = text_field_tag :q, @query, :placeholder => 'Search for entities'
+  = submit_tag 'Search entities', :name => nil #, 'data-disable-with' => 'Searching ...'
   %button.help{:title => t('search.help') } ?
 
 %p

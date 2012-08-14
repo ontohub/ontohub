@@ -1,4 +1,3 @@
-@import compass
 
 $width: 700px
 
@@ -8,6 +7,12 @@ $remaining-color: #333
 
 form#bulkupload
   width: $width
+  
+  .start input[type=submit]
+    @extend .btn-primary
+  
+  .stop input[type=submit]
+    @extend .btn-danger
   
   textarea
     width: $width
@@ -60,6 +65,7 @@ form#bulkupload
     margin-top: .5em
     font-size: .8em
   
+  // TODO migrate to bootstrap
   .ui-progressbar
     height: 22px
     margin: .5em 0em

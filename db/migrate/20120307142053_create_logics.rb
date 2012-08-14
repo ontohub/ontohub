@@ -6,13 +6,11 @@ class CreateLogics < ActiveRecord::Migration
       t.text :description # in registry: comment
       t.string :standardization_status
       t.string :defined_by
-      
       t.timestamps :null => false
     end
 
     change_table :logics do |t|
       t.index :name, :unique => true
-      t.index :iri, :unique => true
     end
   end
 end

@@ -10,11 +10,6 @@ $(function(){
     if(timeout){
       window.clearTimeout(timeout);
       timeout = null;
-      
-      $(this).append("<button>×</button>").click(function(){
-        this.disabled = true;
-        close($(this).closest(".flash"));
-      })
     }
   })
   

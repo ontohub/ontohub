@@ -11,4 +11,4 @@
     = f.input :password_confirmation, :required => true
   
   = f.actions do
-    = f.action :submit, :label => 'Create Account', :button_html => { :disable_with => t(:wait) }
+    = f.action :submit, :label => 'Create Account', :button_html => { 'data-disable-with' => t(:wait) }
