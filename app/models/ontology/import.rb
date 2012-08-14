@@ -57,6 +57,7 @@ module Ontology::Import
           ontology.sentences_count += 1
         },
         link: Proc.new { |h|
+=begin
             name = h['name'] # maybe nil, in this case, we need to generate a name
             source = h['source']
             target = h['target']
@@ -84,8 +85,8 @@ module Ontology::Import
             link = Link.create!({iri: name, ontology: self, source: source_onto, target: target_onto,
                                  kind: kind, theorem: theorem, proven: proven, local: local,
                                  inclusion: inclusion, logic_mapping: logic_mapping }, without_protection: true)
+=end
           }
-      
       save!
     end
   end
