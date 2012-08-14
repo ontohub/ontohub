@@ -1,7 +1,7 @@
 class CreateLinks < ActiveRecord::Migration
   def change
     create_table :links do |t|
-      t.string iri, :default => nil
+      t.string :iri, :default => nil
       t.references :source, :null => false
       t.references :target, :null => false
       t.references :logic_mapping # for heterogeneous links. nil means identity = homogeneous link
