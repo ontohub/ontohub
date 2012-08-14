@@ -22,7 +22,7 @@ class OntologyParser::ComplexTest < ActiveSupport::TestCase
       end
       
       should 'found all symbols' do
-        assert_equal 3, @symbols.count
+        assert_equal 2, @symbols.count
       end
       
       should 'found all axioms' do
