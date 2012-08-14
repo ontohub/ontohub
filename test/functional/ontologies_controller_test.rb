@@ -68,7 +68,7 @@ class OntologiesControllerTest < ActionController::TestCase
         end
         
         should respond_with :success
-        should assign_to :version
+        should assign_to :ontology_version
         should render_template :new
       end
       

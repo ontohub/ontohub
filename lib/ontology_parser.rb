@@ -90,7 +90,7 @@ module OntologyParser
           callback(:axiom, @current_axiom)
           @current_axiom = nil
         when LINK
-          # return the current axiom
+          # return the current link
           callback(:link, @current_link)
           @current_link = nil
       end
