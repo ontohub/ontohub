@@ -21,7 +21,7 @@ class OntologiesController < InheritedResources::Base
   end
 
   def show
-    show! { @grouped_kinds = resource.entities.grouped_by_kind }
+    show! { @groups = resource.entities.grouped_by_kind }
   end
 
   def new

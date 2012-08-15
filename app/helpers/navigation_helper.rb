@@ -3,13 +3,18 @@ module NavigationHelper
 
   def ontology_nav(ontology, current_page)
 
-    @grouped_kinds = ontology.entities.grouped_by_kind
+    @groups = ontology.entities.grouped_by_kind
+    if (current_page == :entities)
+      @kind = @groups.first
+    else
+      @kind = :symbols
+    end
     pages = []
     
     if ontology.distributed?
       pages << [:children,  [ontology, :children]]
     else
-      pages << [:symbols,   [ontology, :entities]] if @grouped_kinds.blank?
+      pages << [:symbols,   [ontology, :entities]] if @groups.blank?
       pages << [:sentences, [ontology, :sentences]]
     end
 

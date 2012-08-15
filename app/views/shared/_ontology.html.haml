@@ -19,7 +19,7 @@
       %li= link_to 'View permissions', [resource, :permissions]
     -if can? :edit, resource
       %li.divider
-      %li= link_to 'Add versions', [resource, :ontology_versions] #TODO correct symbol
+      %li= link_to 'Add versions', [:new, resource, :ontology_version] #TODO correct symbol
     %li= link_to 'Browse versions', [resource, :ontology_versions]
     -if can? :edit, resource
       %li.divider
@@ -31,9 +31,9 @@
 
 %nav
   %ul.nav.nav-tabs
-    - if !@grouped_kinds.nil?
-      - @grouped_kinds.each do |group|
-        %li{:class => (group == @grouped_kinds.first && current_page == :symbols ? 'active' : nil)}
+    - if !@groups.nil?
+      - @groups.each do |group|
+        %li{:class => (group.kind == @kind ? 'active' : nil)}
           %a{:href => ontology_entities_path(resource, :kind => group.kind)}
             = group.count.to_i == 1 ? group.kind : group.kind.pluralize
             %span.badge{:style => group.count.to_i==0 && 'display:none'}= group.count
