@@ -14,7 +14,7 @@ module OntologyHelper
       link = ' ('
       link << link_to('error',
         ontology_ontology_versions_path(resource),
-        :'original-title' => version.last_error,
+        :'data-original-title' => version.last_error,
         class: 'help'
       )
       link << ')'

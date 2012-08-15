@@ -115,6 +115,9 @@ to press «enter» with an empty password field.
     apt-get update
     apt-get -y install hets-core subversion
 
+    cd /lib/x86_64-linux-gnu/
+    ln -s libpng12.so.0 libpng14.so.14
+
 If you need the latest nightly build, just update hets (assure you have a
 working internet connection):
 
