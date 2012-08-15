@@ -23,7 +23,7 @@ class OntologyTest < ActionController::IntegrationTest
   end
 
   def filter_ontologies(cat, gen, piz, query)
-    fill_in 'Ontology\'s uri or name', :with => query
+    fill_in 'Ontology\'s iri or name', :with => query
     click_button 'Search ontology'
     assert page.has_content?('Ontologies')
     assert !cat ^ page.has_content?('Cat')
@@ -39,7 +39,7 @@ class OntologyTest < ActionController::IntegrationTest
   end
 
   def visit_ontology(name)
-    visit_ontology_tab(name, ['Overview', 'URI', 'Name', 'Language', 'Owner', 'Created', 'Updated', 'Hets status'])
+    visit_ontology_tab(name, ['Overview', 'Sentences', 'Entities', 'Versions', 'Metadata', 'Comments', 'URI', 'Name', 'Language', 'Logic', 'Owner', 'Created', 'Updated', 'Hets status'])
   end
 
   test "listing ontologies" do
