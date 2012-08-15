@@ -1,20 +1,14 @@
-@import compass/css3
-@import variables
 
 .comments
-  .actions
-    display: inline-block
-    vertical-align: middle
+  ul.actions
+    float: right
   
   > ol > li
     +border-radius(.5em)
     padding: .5em
     margin-bottom: .5em
     
-    background: $even-color
-    
-    &:nth-of-type(odd)
-      background: $odd-color
+    background: $tableBackgroundAccent
   
   form.formtastic
     margin-left: 2.5em

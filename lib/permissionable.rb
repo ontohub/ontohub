@@ -20,7 +20,7 @@ module Permissionable
     return true if user.admin? rescue nil
 
     # Retrieve direct user permissions.
-    @perms = Permission.item(self).subject(user).all
+    @perms = self.permissions.subject(user).all
 
     # Retrieve permissions through team.
     user.teams.each do |team|

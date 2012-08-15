@@ -11,7 +11,7 @@ class CreateOntologies < ActiveRecord::Migration
       t.string :name
       t.text :description
       t.boolean :auxiliary, :default => false
-      
+     
       t.integer :entities_count, :sentences_count
       t.integer :versions_count, :metadata_count, :comments_count, :null => false, :default => 0
       

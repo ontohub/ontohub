@@ -1,6 +1,5 @@
 require 'bundler/capistrano'
 
-
 hostname = 'staging.ontohub.org'
 
 set :application, 'ontohub'
@@ -9,7 +8,7 @@ set :repository, "git@github.com:#{application}/#{application}.git"
 set :branch,     "new-model"
 set :deploy_to, "/srv/http/#{hostname}"
 
-set :user, application
+set :user, 'ontohub'
 set :use_sudo, false
 set :deploy_via, :remote_cache
 set :god_port, 17166

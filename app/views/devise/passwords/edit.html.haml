@@ -8,6 +8,6 @@
     = f.input :password_confirmation, :label => 'Confirm new password', :required => false, :input_html => {:required => true}
   
   = f.actions do
-    = f.action :submit, :label => "Change my password", :button_html => { :disable_with => t(:wait) }
+    = f.action :submit, :label => "Change my password", :button_html => { 'data-disable-with' => t(:wait) }
 
 = render "links"

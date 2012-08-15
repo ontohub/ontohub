@@ -1,5 +1,3 @@
-@import compass
-@import variables
 
 ol.latest
   +no-bullet
@@ -9,19 +7,19 @@ ol.latest
   > li
     margin-bottom: .5em
     padding: .5em
-    background: $even-color
+    background: $tableBackground
     +border-radius(.5em)
     
     &:nth-of-type(odd)
-      background: $odd-color
+      background: $tableBackgroundAccent
     
     &:hover
-      background: $hover-color
+      background: $tableBackgroundHover
     
     .text
       margin-top: .5em
       padding-top: .5em
-      border-top: 1px dashed #ccc
+      border-top: 1px dashed $tableBorder
       font-size: .8em
       a
         margin-left: .5em
