@@ -38,6 +38,10 @@ class OntologyParser::ComplexTest < ActiveSupport::TestCase
           @link = @links.first
         end
         
+        should 'have correct linkid' do
+          assert_equal "0", @link['linkid']
+        end
+        
         should 'have correct source' do
           assert_equal "sp__E1", @link['source']
         end

@@ -11,6 +11,7 @@ class Ontology < ActiveRecord::Base
   include Ontology::Versions
   include Ontology::Entities
   include Ontology::Sentences
+  include Ontology::Links
   include Ontology::Distributed
 
   belongs_to :language
