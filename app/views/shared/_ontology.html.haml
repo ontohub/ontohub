@@ -19,7 +19,8 @@
       %li= link_to 'View permissions', [resource, :permissions]
     -if can? :edit, resource
       %li.divider
-      %li= link_to 'Add versions', [:new, resource, :ontology_version] #TODO correct symbol
+      %li= link_to 'Upload new version from my computer', new_ontology_ontology_version_path(resource, :from => 'http-client')
+      %li= link_to 'Import new version from other website', new_ontology_ontology_version_path(resource, :from => 'http-server')
     %li= link_to 'Browse versions', [resource, :ontology_versions]
     -if can? :edit, resource
       %li.divider
