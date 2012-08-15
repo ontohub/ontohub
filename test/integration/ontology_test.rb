@@ -23,7 +23,7 @@ class OntologyTest < ActionController::IntegrationTest
   end
 
   def filter_ontologies(cat, gen, piz, query)
-    fill_in 'Ontology\'s iri or name', :with => query
+    fill_in 'Ontology iri or name', :with => query
     click_button 'Search ontology'
     assert page.has_content?('Ontologies')
     assert !cat ^ page.has_content?('Cat')
