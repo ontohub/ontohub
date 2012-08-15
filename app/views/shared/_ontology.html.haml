@@ -38,7 +38,7 @@
   %ul.nav.nav-tabs
     - if !@grouped_kinds.nil?
       - @grouped_kinds.each do |group|
-        %li{:class => (group == @grouped_kinds.first && current_page == :entities ? 'active' : nil)}
+        %li{:class => (group == @grouped_kinds.first && current_page == :symbols ? 'active' : nil)}
           %a{:href => ontology_entities_path(resource, :kind => group.kind)}
             = group.count.to_i == 1 ? group.kind : group.kind.pluralize
             %span.badge{:style => group.count.to_i==0 && 'display:none'}= group.count
