@@ -32,10 +32,10 @@ module Ontology::Import
           end
 
           if h['language']
-            ontology.language = Language.find_or_create_by_name_and_iri h['language'], 'http://purl.net/dol/language/' + h['language']
+            ontology.language = Language.find_or_create_by_name_and_iri! h['language'], 'http://purl.net/dol/language/' + h['language']
           end
           if h['logic']
-            ontology.logic = Logic.find_or_create_by_name_and_iri h['logic'], 'http://purl.net/dol/logics/' + h['logic']
+            ontology.logic = Logic.find_or_create_by_name_and_iri! h['logic'], 'http://purl.net/dol/logics/' + h['logic']
           end
 
           ontology.entities_count  = 0
