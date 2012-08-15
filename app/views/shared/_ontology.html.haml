@@ -1,17 +1,12 @@
-- if can? :edit, resource
-  %ul.actions.pull-right
-    - additional_actions.each do |action_link|
-      %li= action_link
-    %li= link_to 'Edit', [:edit, resource]
-    %li= link_to 'Delete', resource, :confirm => 'Really delete?', :method => :delete
-
-
 //  = link_to resource, resource#, 'data-type' => resource.class
-%div.btn-group
-  %a.btn.dropdown-toggle{'href' => '#', 'data-toggle' => 'dropdown'}
-    %span= resource
-    %small
-      = "#{resource.language}/#{resource.logic}"
+
+%h2{'style' => 'display: inline-block'}
+  %span= resource
+  %small
+    = "#{resource.language}/#{resource.logic}"
+
+%div.btn-group{'style' => 'display: inline-block'}
+  %a.btn.btn-mini.dropdown-toggle{'href' => '#', 'data-toggle' => 'dropdown'}
     %span.caret
   %ul.dropdown-menu
     -if can? :edit, resource
