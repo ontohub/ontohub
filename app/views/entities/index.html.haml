@@ -1,10 +1,4 @@
 = ontology_nav @ontology, :entities
 
-- if params[:kind]
-  %p
-    of kind
-    %strong= params[:kind]
-    (#{link_to 'show all', collection_path})
-
 = pagination do
   = render :partial => 'list'

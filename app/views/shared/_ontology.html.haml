@@ -1,0 +1,51 @@
+- if can? :edit, resource
+  %ul.actions.pull-right
+    - additional_actions.each do |action_link|
+      %li= action_link
+    %li= link_to 'Edit', [:edit, resource]
+    %li= link_to 'Delete', resource, :confirm => 'Really delete?', :method => :delete
+
+
+//  = link_to resource, resource#, 'data-type' => resource.class
+%div.btn-group
+  %a.btn.dropdown-toggle{'href' => '#', 'data-toggle' => 'dropdown'}
+    %span= resource
+    %small
+      = "#{resource.language}/#{resource.logic}"
+    %span.caret
+  %ul.dropdown-menu
+    -if can? :edit, resource
+      %li= link_to 'Rename', [:edit, resource]
+      %li.divider
+    %li= link_to 'View symbols/sentences', [resource]
+    %li= link_to 'View comments', [resource, :comments]
+    %li= link_to 'View metadata', [resource, :metadata]
+    -if can? :permissions, resource
+      %li= link_to 'View permissions', [resource, :permissions]
+    -if can? :edit, resource
+      %li.divider
+      %li= link_to 'Add versions', [resource, :ontology_versions] #TODO correct symbol
+    %li= link_to 'Browse versions', [resource, :ontology_versions]
+    -if can? :edit, resource
+      %li.divider
+      %li= link_to 'Delete', resource, :confirm => 'Do you really want to delete this ontology?', :method => :delete
+%script= '$().dropdown()'
+
+%div= link_to resource.iri, download_path(resource)
+%div= resource.description
+
+%nav
+  %ul.nav.nav-tabs
+    - if !@grouped_kinds.nil?
+      - @grouped_kinds.each do |group|
+        %li{:class => (group == @grouped_kinds.first && current_page == :entities ? 'active' : nil)}
+          %a{:href => ontology_entities_path(resource, :kind => group.kind)}
+            = group.count.to_i == 1 ? group.kind : group.kind.pluralize
+            %span.badge{:style => group.count.to_i==0 && 'display:none'}= group.count
+    - pages.each do |page, path, count|
+      %li{:class => (page==current_page ? 'active' : nil)}
+        %a{:href => url_for(path)}
+          = page.to_s.capitalize
+          - if count # hide counter if empty
+            %span.badge{:style => count==0 && 'display:none'}= count
+
