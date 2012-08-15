@@ -22,13 +22,13 @@ module NavigationHelper
   
   def ontology_nav(ontology, current_page)
     
-    pages = [[:overview,ontology]]
+    pages = [[:overview, ontology]]
     
     if ontology.distributed?
-      pages << [:children,    [ontology, :children]]
+      pages << [:children,  [ontology, :children]]
     else
-      pages << [:sentences,   [ontology, :sentences]]
-      pages << [:entities,    [ontology, :entities]]
+      pages << [:sentences, [ontology, :sentences]]
+      pages << [:symbols,   [ontology, :entities]]
     end
     
     pages += [

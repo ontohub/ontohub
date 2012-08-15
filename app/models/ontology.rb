@@ -35,5 +35,13 @@ class Ontology < ActiveRecord::Base
   def title
     name? ? iri : nil
   end
+
+  def symbols
+    entities
+  end
+
+  def symbols_count
+    entities_count
+  end
   
 end
