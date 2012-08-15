@@ -1,7 +1,8 @@
 class CreateLinks < ActiveRecord::Migration
   def change
     create_table :links do |t|
-      t.string :iri, :default => nil
+      t.string :iri, :null => false
+      t.references :ontology, :null => false
       t.references :source, :null => false
       t.references :target, :null => false
       t.references :logic_mapping # for heterogeneous links. nil means identity = homogeneous link
@@ -16,8 +17,10 @@ class CreateLinks < ActiveRecord::Migration
     end
 
     change_table :links do |t|
+      t.index :ontology_id
       t.index :source_id
       t.index :target_id
+      t.foreign_key :ontologies, :dependent => :delete
       t.foreign_key :ontologies, :column => :source_id
       t.foreign_key :ontologies, :column => :target_id
       t.foreign_key :links, :column => :parent_id

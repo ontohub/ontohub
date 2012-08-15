@@ -1,11 +1,11 @@
 # Hets environment. The first matching item in the lists is used.
 hets_path:
   - /usr/lib/hets/hets
-  - ~/uni/awe/Hets/hets
+  - ~/dev/hets/hets
   - /opt/local/bin/hets
 hets_lib:
   - /usr/lib/hets/hets-lib
-  - ~/uni/awe/Hets-lib
+  - ~/dev/hets/lib
 hets_owl_tools:
   - /usr/lib/hets/hets-owl-tools
-  - ~/uni/awe/Hets/OWL2
+  - ~/dev/hets/OWL2
