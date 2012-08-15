@@ -5,10 +5,10 @@
   = submit_tag 'Search entities', :name => nil #, 'data-disable-with' => 'Searching ...'
   %button.help{:title => t('search.help') } ?
 
-%p
-  %strong= pluralize @group.matches, "Entity"
-  = @max_groups > @groups.size ? 'found in' : 'found, displaying the first'
-  %strong= pluralize @groups.size, "Ontology"
-
-%ol.searchResult
-  = render :partial => 'group', :collection => @groups
+-if @query
+  %p
+    %strong= pluralize @group.matches, "Entity"
+    = @max_groups > @groups.size ? 'found in' : 'found, displaying the first'
+    %strong= pluralize @groups.size, "Ontology"
+  %ol.searchResult
+    = render :partial => 'group', :collection => @groups
