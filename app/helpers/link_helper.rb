@@ -1,8 +1,11 @@
 module LinkHelper
   
   def fancy_link(resource)
+    clazz = resource.class
+    clazz = 'Ontology' if clazz.to_s.include?('Ontology')
+    
     link_to resource, resource,
-      'data-type' => resource.class,
+      'data-type' => clazz.to_s,
       :title      => resource.respond_to?(:title) ? resource.title : nil
   end
   
