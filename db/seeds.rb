@@ -12,6 +12,8 @@ user = User.create!({
   :password => 'foobar'
 }, :as => :admin)
 
+user.confirm!
+
 # Create Team
 team = Team.create! \
   :name       => 'Lorem Ipsum',
@@ -23,6 +25,8 @@ team = Team.create! \
     :email    => "#{name}@example.com",
     :name     => name,
     :password => 'foobar'
+
+  user.confirm!
   
   # add two users to the first team
   team.users << user if i < 2
