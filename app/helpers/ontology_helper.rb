@@ -26,6 +26,7 @@ module OntologyHelper
   end
 
   def download_path(resource)
+    return nil if resource.versions.done.empty?
     ontology_ontology_version_path(resource, resource.versions.done.latest.first)
   end
   
