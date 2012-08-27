@@ -2,19 +2,18 @@
 module NavigationHelper
 
   def ontology_nav(ontology, current_page)
+    @entities = ontology.entities.grouped_by_kind
+    @entities.push Entity.new(:kind => "Symbol", :count => 0) if @entities.empty?
 
-    @groups = ontology.entities.grouped_by_kind
-    if (current_page == :entities)
-      @kind = @groups.first
-    else
-      @kind = :symbols
-    end
+    @active_kind = nil
+    @active_kind = @entities.first.kind if current_page == :entities
+    @active_kind = params[:kind] if params[:kind]
+
     pages = []
     
     if ontology.distributed?
       pages << [:children,  [ontology, :children]]
     else
-      pages << [:symbols,   [ontology, :entities]] if @groups.blank?
       pages << [:sentences, [ontology, :sentences]]
     end
 
