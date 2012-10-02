@@ -78,6 +78,7 @@ group :development do
   # pre-packaged Solr distribution for use in development
   gem 'sunspot_solr', :git => 'git://github.com/digineo/sunspot.git'
   gem "rails-erd"
+  gem 'quiet_assets'
 end
 
 group :production do
