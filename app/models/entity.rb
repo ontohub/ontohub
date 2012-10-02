@@ -8,8 +8,10 @@ class Entity < ActiveRecord::Base
 
   scope :kind, ->(kind) { where :kind => kind }
 
-  def self.grouped_by_kind
-    select('kind, count(*) AS count').group(:kind).order('count DESC, kind').all
+  def self.groups_by_kind
+    groups = select('kind, count(*) AS count').group(:kind).order('count DESC, kind').all
+    groups << Struct.new(:kind, :count).new("Symbol",0) if groups.empty?
+    groups
   end
 
 end

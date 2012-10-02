@@ -18,9 +18,7 @@ Ontohub::Application.routes.draw do
   constraints auth_resque do
     mount Resque::Server, :at => "/admin/resque"
   end
-
-  match "/ontologies/:id" => redirect('/ontologies/%{id}/entities')
-
+  
   resources :ontologies do
     resources :children, :only => :index
     resources :entities, :only => :index

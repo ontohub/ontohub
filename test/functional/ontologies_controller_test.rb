@@ -40,12 +40,27 @@ class OntologiesControllerTest < ActionController::TestCase
     
     context 'on GET to show' do
       setup do
-        get :show, :id => @ontology.to_param
+        Entity.delete_all
       end
       
-      should respond_with :success
-      should assign_to :grouped_kinds
-      should render_template :show
+      context 'without entities' do
+        setup do
+          get :show, :id => @ontology.to_param
+        end
+        
+        should respond_with :redirect
+        should redirect_to("entities"){  ontology_entities_path(@ontology, :kind => 'Symbol') }
+      end
+      
+      context 'with entity of kind Class' do
+        setup do
+          entity = FactoryGirl.create :entity, :ontology => @ontology, :kind => 'Class'
+          get :show, :id => @ontology.to_param
+        end
+        
+        should respond_with :redirect
+        should redirect_to("entities"){  ontology_entities_path(@ontology, :kind => 'Class') }
+      end
     end
     
     context 'signed in' do

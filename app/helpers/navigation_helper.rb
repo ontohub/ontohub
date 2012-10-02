@@ -2,8 +2,7 @@
 module NavigationHelper
 
   def ontology_nav(ontology, current_page)
-    @entities = ontology.entities.grouped_by_kind
-    @entities.push Entity.new(:kind => "Symbol", :count => 0) if @entities.empty?
+    @entities = ontology.entities.groups_by_kind
 
     @active_kind = nil
     @active_kind = @entities.first.kind if current_page == :entities

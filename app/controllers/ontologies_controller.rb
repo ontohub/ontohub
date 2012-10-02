@@ -20,10 +20,6 @@ class OntologiesController < InheritedResources::Base
     end
   end
 
-  def show
-    show! { @groups = resource.entities.grouped_by_kind }
-  end
-
   def new
     @ontology_version = build_resource.versions.build
   end
@@ -32,6 +28,10 @@ class OntologiesController < InheritedResources::Base
     @version = build_resource.versions.first
     @version.user = current_user
     super
+  end
+  
+  def show
+    redirect_to ontology_entities_path(resource, :kind => resource.entities.groups_by_kind.first.kind)
   end
 
 end
