@@ -1,6 +1,8 @@
 require 'integration_test_helper' 
 
-class OntologyTest < ActionController::IntegrationTest
+class VisitOntologyTest < ActionController::IntegrationTest
+
+=begin
 
   def sign_in_as(user, password)
     user = User.create(:password => password, :password_confirmation => password, :email => user)
@@ -34,12 +36,12 @@ class OntologyTest < ActionController::IntegrationTest
   def visit_ontology_tab(name, list)
     click_link name
     list.each do |item|
-      assert page.has_content?(item)
+      assert page.has_content?(item), "missing content '#{item}'"
     end
   end
 
   def visit_ontology(name)
-    visit_ontology_tab(name, ['Overview', 'Sentences', 'Entities', 'Versions', 'Metadata', 'Comments', 'URI', 'Name', 'Language', 'Logic', 'Owner', 'Created', 'Updated', 'Hets status'])
+    visit_ontology_tab(name, ['Symbols', 'Children', 'Entities', 'Versions', 'Metadata', 'Comments', 'URI', 'Name', 'Language', 'Logic', 'Owner', 'Created', 'Updated', 'Hets status'])
   end
 
   test "listing ontologies" do
@@ -51,8 +53,14 @@ class OntologyTest < ActionController::IntegrationTest
     filter_ontologies(false, true,  true,  'owl')
   end
 
-  test "visiting ontologies as unkown user" do
-    list_ontologies()
+  test "visiting a single ontology" do
+    FactoryGirl.create :single_ontology, :name => 'Cat'
+    
+    visit '/ontologies'
+    
+    assert page.has_content?('Ontologies')
+    assert page.has_content?('Cat')
+    
     visit_ontology("Cat")
     visit_ontology_tab("Sentences", ["Name", "Text"])
     visit_ontology_tab("Entities", ["Text", "Kind", "Name", "URI", "Range"])
@@ -76,4 +84,7 @@ class OntologyTest < ActionController::IntegrationTest
   end
 
   #check 'Exclusive'
+  
+=end
+  
 end
