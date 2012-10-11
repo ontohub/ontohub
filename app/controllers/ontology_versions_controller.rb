@@ -2,7 +2,7 @@
 # Displays versions of a ontology
 # 
 class OntologyVersionsController < InheritedResources::Base
-  defaults :collection_name => :versions
+  defaults :collection_name => :versions, :finder => :find_by_number!
   actions :index, :show, :new, :create
   belongs_to :ontology
   respond_to :json, :xml
@@ -11,25 +11,11 @@ class OntologyVersionsController < InheritedResources::Base
 
   # TODO Needs testing !!!
   def show
-    o = resource.ontology
+    file = resource.raw_file
     
-    path = resource.raw_file.current_path
-    
-    name = o.to_s.parameterize
-    name = File.basename(path) if name.blank?
-
-    if o.logic
-      mime = o.logic.mimetype if o.logic
-      
-      ext = o.logic.extension
-      name << ".#{ext}" unless ext.blank?
-    end
-    
-    mime ||= 'text/plain' if mime.blank?
-
-    send_file path, type: mime, filename: name
-  rescue Errno::ENOENT, NoMethodError
-    redirect_to collection_path, flash: { error: 'The cake is a lie.' }
+    send_file file.current_path, filename: file.identifier
+  rescue Errno::ENOENT, NoMethodError => e
+    redirect_to collection_path, flash: { error: "The file was not found: #{e.message}" }
   end
 
   def new

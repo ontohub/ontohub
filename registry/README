@@ -1,0 +1,14 @@
+This directory holds a preliminary implementation of the OntoIOp registry, comprising non-exhaustive descriptions of the following things conforming with DOL:
+
+* logics
+* ontology languages
+* serializations of ontology languages
+* logic translations (a.k.a. "ontology language translations")
+
+The registry is implemented as an RDF dataset, using the ontology language description vocabulary found in ../syntax.
+
+If you are reading this file in the public OntoIOp WebDAV repository, and not in the OntoIOp development Subversion repository, some files may be missing.
+
+* registry.turtle: the primary implementation (Turtle syntax)
+* registry.rdf: the same exported to RDF/XML
+* registry-expanded.turtle: an expanded version of the original dataset, after applying the inference rules

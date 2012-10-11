@@ -1,0 +1,876 @@
+# DOL/OntoIOp namespaces
+@prefix dol:   <http://purl.net/dol/1.0/rdf#> .
+@prefix log:   <http://purl.net/dol/logics/> .
+@prefix lang:  <http://purl.net/dol/languages/> .
+@prefix trans: <http://purl.net/dol/translations/> .
+@prefix proj:  <http://purl.net/dol/projections/> .
+@prefix kind:  <http://purl.net/dol/entityKinds/> .
+@prefix ser:   <http://purl.net/dol/serializations/> .
+@prefix stand: <http://purl.net/dol/1.0/standardization#> .
+@prefix reg:   <http://purl.net/dol/registry> .
+
+# Subdirectories of the above (as Turtle doesn't support CURIEs)
+@prefix logCL:    <http://purl.net/dol/logics/CommonLogic/> .
+@prefix logOWL2:  <http://purl.net/dol/logics/OWL2/> .
+@prefix logRDF:   <http://purl.net/dol/logics/RDF/> .
+@prefix serCL:    <http://purl.net/dol/serializations/CommonLogic/> .
+@prefix serOWL2:  <http://purl.net/dol/serializations/OWL2/> .
+@prefix serRDF:   <http://purl.net/dol/serializations/RDF/> .
+@prefix langOBO:  <http://purl.net/dol/languages/OBO/> .
+@prefix langOWL2: <http://purl.net/dol/languages/OWL2/> .
+@prefix kindOWL2: <http://purl.net/dol/entityKinds/OWL2/> .
+@prefix kindCL:   <http://purl.net/dol/entityKinds/CL/> .
+
+# Cross-linked datasets
+@prefix latinTPTP:   <http://latin.omdoc.org/logics/tptp?> .
+@prefix latinSyntax: <http://latin.omdoc.org/logics/syntax?> .
+
+# Other non-annotation namespaces
+@prefix owl: <http://www.w3.org/2002/07/owl#> .
+
+# Labels
+@prefix rdfs: <http://www.w3.org/2000/01/rdf-schema#> .
+@prefix skos: <http://www.w3.org/2004/02/skos/core#> .
+
+# Annotations and comments
+@prefix dct:  <http://purl.org/dc/terms/> .
+@prefix rdf:  <http://www.w3.org/1999/02/22-rdf-syntax-ns#> .
+@prefix todo: <http://example.org/todo#> .
+@prefix xsd:  <http://www.w3.org/2001/XMLSchema-datatypes#> .
+
+# TODO specify DOL feature: reference something on language side; if it doesn't exist in language-land, then use corresponding logic-land stuff
+
+reg: rdfs:label "OntoIOp registry" ;
+  rdfs:comment "the registry of logics, ontology languages, serializations, translations, and projections that conform with the Distributed Ontology Language (DOL) specified in ISO WD 17347 OntoIOp (Ontology Integration and Interoperability)" ;
+  rdfs:seeAlso <http://ontolog.cim3.net/cgi-bin/wiki.pl?OntoIOp> .
+
+## Logics
+
+log:CommonLogic a dol:Logic ;
+  rdfs:label "Common Logic" ;
+  rdfs:comment "Common Logic (ISO/IEC 24707)" ;
+  owl:sameAs latinSyntax:CL ;
+  todo:question [
+    dct:creator "Christoph Lange" ;
+    dct:date "2012-04-27"^^xsd:date ;
+    rdf:value "There is also latinSyntax:BaseCL; I wonder whether it is useful for us." ] ;
+  stand:standardizationStatus stand:ISOStandard ;
+  rdfs:isDefinedBy reg: .
+
+logCL:WithoutSequences a dol:Logic ;
+  rdfs:label "CL⁻" ;
+  rdfs:comment "Common Logic, restricted to sentences without sequence markers" ;
+  skos:prefLabel "CL⁻"@en ;
+  skos:altLabel "Common Logic without sequences"@en ;
+  rdfs:isDefinedBy reg: .
+
+log:SubPCFOLeq a dol:Logic ;
+  todo:task [
+    dct:creator "Christoph Lange" ;
+    dct:date "2012-04-17"^^xsd:date ;
+    rdf:value "The rdfs:label may need improvement; the rdfs:comment needs to be written; what is the stand:standardizationStatus?" ] ;
+  rdfs:label "SubPCFOL⁼" ;
+  rdfs:comment "" ;
+  todo:task [
+    dct:creator "Christoph Lange" ;
+    dct:date "2012-04-27"^^xsd:date ;
+    rdf:value "No idea what LATIN logic we should link this to" ] ;
+  rdfs:isDefinedBy reg: .
+
+log:SROIQ a dol:Logic ;
+  rdfs:label "SROIQ" ;
+  rdfs:comment "SROIQ, the logic of OWL 2 Web Ontology Language DL (W3C Recommendation)" ;
+  stand:standardizationStatus stand:AcademicLiterature ;
+  rdfs:isDefinedBy reg: .
+
+log:Propositional a dol:Logic ;
+  todo:question [
+    dct:creator "Christoph Lange" ;
+    dct:date "2012-03-20"^^xsd:date ;
+    rdf:value "Do we want to call it 'Propositional', or 'Prop'?" ] ;
+  rdfs:label "propositional logic" ;
+  owl:sameAs latinSyntax:PL ;
+  todo:question [
+    dct:creator "Christoph Lange" ;
+    dct:date "2012-04-27"^^xsd:date ;
+    rdf:value "Is latinSyntax:PL the right thing to link to?" ] ;
+  rdfs:isDefinedBy reg: .
+
+log:RDF a dol:Logic ;
+  rdfs:label "RDF" ;
+  rdfs:comment "RDF Resource Description Framework (W3C Recommendation)" ;
+  stand:standardizationStatus stand:W3CRecommendation ;
+  rdfs:isDefinedBy reg: .
+
+log:RDFS a dol:Logic ;
+  rdfs:label "RDFS" ;
+  rdfs:comment "RDF Vocabulary Description Language (a.k.a. 'RDF Schema'; W3C Recommendation)" ;
+  stand:standardizationStatus stand:W3CRecommendation ;
+  rdfs:isDefinedBy reg: .
+
+log:FOLeq a dol:Logic ;
+  todo:question [
+    dct:creator "Christoph Lange" ;
+    dct:date "2012-03-21"^^xsd:date ;
+    rdf:value "Which label do we prefer?" ] ;
+  rdfs:label "first-order logic with equality" ;
+  rdfs:comment "first-order logic with equality" ;
+  skos:prefLabel "first-order logic with equality"@en ;
+  skos:altLabel "FOL⁼"@en ;
+  owl:sameAs latinSyntax:FOLEQ ;
+  rdfs:isDefinedBy reg: .
+
+log:FOL a dol:Logic ;
+  todo:question [
+    dct:creator "Christoph Lange" ;
+    dct:date "2012-04-17"^^xsd:date ;
+    rdf:value "Which label do we prefer?" ] ;
+  rdfs:label "first-order logic" ;
+  rdfs:comment "first-order logic (without equality)" ;
+  skos:prefLabel "first-order logic"@en ;
+  skos:altLabel "first-order logic (without equality)"@en ;
+  skos:altLabel "FOL"@en ;
+  owl:sameAs latinSyntax:FOLEQ ;
+  rdfs:isDefinedBy reg: .
+
+log:ELplusplus a dol:Logic ;
+  rdfs:label "EL⁺⁺" ;
+  dct:source <http://lat.inf.tu-dresden.de/research/papers/2005/BaaderBrandtLutz-IJCAI-05.pdf>, <http://www.webont.org/owled/2008dc/papers/owled2008dc_paper_3.pdf> ;
+  stand:standardizationStatus stand:AcademicLiterature ;
+  rdfs:isDefinedBy reg: .
+
+log:DLLiteR a dol:Logic ;
+  rdfs:label "DL-Lite_R" ;
+  stand:standardizationStatus stand:AcademicLiterature ;
+  rdfs:isDefinedBy reg: .
+
+logOWL2:RL a dol:Logic ;
+  rdfs:label "OWL 2 RL" ;
+  stand:standardizationStatus stand:W3CRecommendation ;
+  rdfs:isDefinedBy reg: .
+
+[ a owl:Annotation ;
+  owl:annotatedSource logOWL2:RL ;
+  owl:annotatedProperty stand:standardizationStatus ;
+  owl:annotatedTarget stand:AcademicLiterature ;
+  todo:question [
+    dct:creator "Christoph Lange" ;
+    dct:date "2012-04-17"^^xsd:date ;
+    rdf:value "Or should we say W3CRecommendation?  The OWL 2 Profiles recommendation does not really much about the logic behind OWL 2 RL." ] ;
+  rdfs:isDefinedBy reg: ] .
+
+logRDF:Simple a dol:Logic ;
+  rdfs:label "simple RDF" ;
+  rdfs:comment "Simple interpretations of RDF graphs" ;
+  dct:source <http://www.w3.org/TR/2004/REC-rdf-mt-20040210/#interp> ;
+  stand:standardizationStatus stand:W3CRecommendation ;
+  rdfs:isDefinedBy reg: .
+
+logOWL2:Full a dol:Logic ;
+  rdfs:label "OWL 2 Full" ;
+  dct:source <http://www.w3.org/TR/owl2-rdf-based-semantics/> ;
+  stand:standardizationStatus stand:W3CRecommendation ;
+  rdfs:isDefinedBy reg: .
+
+log:OBOOWL a dol:Logic ;
+  rdfs:label "OBO^{OWL}" ;
+  rdfs:isDefinedBy reg: .
+
+log:DDLOWL a dol:Logic ;
+  rdfs:label "DDL^{OWL}" ;
+  rdfs:isDefinedBy reg: .
+
+log:ECoOWL a dol:Logic ;
+  rdfs:label "E-Connections^{OWL}" ;
+  rdfs:isDefinedBy reg: .
+
+log:ECoFOLeq a dol:Logic ;
+  rdfs:label "E-Connections^{FOLeq}" ;
+  rdfs:isDefinedBy reg: .
+
+log:RelationalSchema a dol:Logic ;
+  todo:task [
+    dct:creator "Christoph Lange" ;
+    dct:date "2012-04-10"^^xsd:date ;
+    rdf:value "Maybe add some version of SQL as a language that supports this logic." ] ;
+  rdfs:label "relational database schema" ;
+  rdfs:isDefinedBy reg: .
+
+log:F-logic a dol:Logic ;
+  rdfs:label "F-logic" ;
+  stand:standardizationStatus stand:AcademicLiterature ;
+  rdfs:isDefinedBy reg: .
+
+log:FOLeqms a dol:Logic ;
+  todo:question [
+    dct:creator "Christoph Lange" ;
+    dct:date "2012-03-21"^^xsd:date ;
+    rdf:value "Which label do we prefer?" ] ;
+  rdfs:label "many-sorted first-order logic with equality" ;
+  skos:prefLabel "many-sorted first-order logic with equality"@en ;
+  skos:altLabel "many-sorted FOL with equality"@en ;
+  owl:sameAs latinSyntax:SFOLEQ ;
+  todo:question [
+    dct:creator "Christoph Lange" ;
+    dct:date "2012-04-27"^^xsd:date ;
+    rdf:value "Is latinSyntax:SFOLEQ the right thing to link to?" ] ;
+  rdfs:isDefinedBy reg: .
+
+log:ChurchSimpleTypeTheory a dol:Logic ;
+  owl:sameAs latinSyntax:FOLEQ ;
+
+  rdfs:label "Church Simple Type Theory" ;
+  rdfs:isDefinedBy reg: .
+
+## Logic translations
+
+## Template for further translations
+# 
+# trans:to a dol: ;
+#   rdfs:label "→ translation" ;
+#   dol:translatesFromLogic log: ;
+#   dol:translatesToLogic log: ;
+#   rdfs:isDefinedBy reg: .
+
+trans:PropositionalToPropositionalCNF a dol:LogicMapping, dol:Translation, dol:PlainMapping, dol:DefaultMapping ;
+  todo:question [
+    dct:creator "Christoph Lange" ;
+    dct:date "2012-04-17"^^xsd:date ;
+    rdf:value "Should we introduce a more specific type for this kind of translations?" ] ;
+  rdfs:label "propositional logic to CNF" ;
+  rdfs:comment "translation from propositional logic to propositional logic in Conjunctive Normal Form (CNF)" ;
+  dol:mapsFrom log:Propositional ;
+  dol:mapsTo log:Propositional ;
+  rdfs:isDefinedBy reg: .
+
+trans:SimpleRDFtoRDF a dol:SubLogic, dol:PlainMapping, dol:DefaultMapping ;
+  rdfs:label "simple RDF→RDF translation" ;
+  dol:mapsFrom logRDF:Simple ;
+  dol:mapsTo log:RDF ;
+  dol:adjoint proj:RDFtoSimpleRDF ;
+  rdfs:isDefinedBy reg: .
+
+trans:RDFtoRDFS a dol:SubLogic, dol:PlainMapping, dol:DefaultMapping ;
+  rdfs:label "RDF→RDFS translation" ;
+  dol:mapsFrom log:RDF ;
+  dol:mapsTo log:RDFS ;
+  dol:adjoint proj:RDFStoRDF ;
+  rdfs:isDefinedBy reg: .
+
+trans:RDFStoOWL2Full a dol:SubLogic, dol:PlainMapping, dol:DefaultMapping ;
+  rdfs:label "RDFS→OWL 2 Full translation" ;
+  dol:mapsFrom log:RDFS ;
+  dol:mapsTo logOWL2:Full ;
+  dol:adjoint proj:OWL2FullToRDFS ;
+  rdfs:isDefinedBy reg: .
+
+trans:SimpleRDFtoFOLeq a dol:SubLogic, dol:PlainMapping, dol:DefaultMapping ;
+  rdfs:label "simple RDF→FOL⁼ translation" ;
+  dol:mapsFrom logRDF:Simple ;
+  dol:mapsTo log:FOLeq ;
+  rdfs:isDefinedBy reg: .
+
+trans:ELplusplusToSROIQ a dol:SubLogic, dol:PlainMapping, dol:DefaultMapping ;
+  rdfs:label "EL⁺⁺→SROIQ translation" ;
+  dol:mapsFrom log:ELplusplus ;
+  dol:mapsTo log:SROIQ ;
+  dol:adjoint proj:SROIQtoELplusplus ;
+  rdfs:isDefinedBy reg: .
+
+trans:DLLiteRtoSROIQ a dol:SubLogic, dol:PlainMapping, dol:DefaultMapping ;
+  rdfs:label "DL-Lite_R→SROIQ translation" ;
+  dol:mapsFrom log:DLLiteR ;
+  dol:mapsTo log:SROIQ ;
+  dol:adjoint proj:SROIQtoDLLiteR ;
+  rdfs:isDefinedBy reg: .
+
+trans:OWL2RLtoSROIQ a dol:SubLogic, dol:PlainMapping, dol:DefaultMapping ;
+  rdfs:label "OWL 2 RL→SROIQ translation" ;
+  dol:mapsFrom logOWL2:RL ;
+  dol:mapsTo log:SROIQ ;
+  dol:adjoint proj:SROIQtoOWL2RL ;
+  rdfs:isDefinedBy reg: .
+
+trans:ELplusplusToOBOOWL a dol:LogicMapping, dol:Translation, dol:PlainMapping, dol:DefaultMapping ;
+  todo:task [
+    dct:creator "Christoph Lange" ;
+    dct:date "2012-04-17"^^xsd:date ;
+    rdf:value "Find out what kind of translation this is.  We need it to say that OBO^{OWL} is between EL⁺⁺ and SROIQ in expressivity." ] ;
+  rdfs:label "EL⁺⁺→OBO^{OWL} translation" ;
+  dol:mapsFrom log:ELplusplus ;
+  dol:mapsTo log:OBOOWL ;
+  rdfs:isDefinedBy reg: .
+
+trans:OBOOWLtoSROIQ a dol:SubLogic, dol:PlainMapping, dol:DefaultMapping ;
+  rdfs:label "OBO^{OWL}→SROIQ translation" ;
+  dol:mapsFrom log:OBOOWL ;
+  dol:mapsTo log:SROIQ ;
+  rdfs:isDefinedBy reg: .
+
+trans:SROIQtoDDLOWL a dol:SubLogic, dol:PlainMapping, dol:DefaultMapping ;
+  rdfs:label "SROIQ→DDL^{OWL} translation" ;
+  dol:mapsFrom log:SROIQ ;
+  dol:mapsTo log:DDLOWL ;
+  rdfs:isDefinedBy reg: .
+
+trans:DDLOWLtoECoOWL a dol:SubLogic, dol:PlainMapping, dol:DefaultMapping ;
+  rdfs:label "DDL^{OWL}→E-Connections^{OWL} translation" ;
+  dol:mapsFrom log:DDLOWL ;
+  dol:mapsTo log:ECoOWL ;
+  rdfs:isDefinedBy reg: .
+
+trans:ECoOWLtoECoFOLeq a dol:SubLogic, dol:PlainMapping, dol:DefaultMapping ;
+  rdfs:label "E-Connections^{OWL}→E-Connections^{FOL⁼} translation" ;
+  dol:mapsFrom log:ECoOWL ;
+  dol:mapsTo log:ECoFOLeq ;
+  dol:adjoint proj:ECoFOLeqToECoOWL ;
+  rdfs:isDefinedBy reg: .
+
+trans:FOLeqToECoFOLeq a dol:SubLogic, dol:PlainMapping, dol:DefaultMapping ;
+  rdfs:label "FOL⁼→E-Connections^{FOL⁼} translation" ;
+  dol:mapsFrom log:FOLeq ;
+  dol:mapsTo log:ECoFOLeq ;
+  rdfs:isDefinedBy reg: .
+
+trans:ECoFOLeqToFOLeqms a dol:SubLogic, dol:PlainMapping, dol:DefaultMapping ;
+  rdfs:label "E-Connections^{FOL⁼}→many-sorted FOL⁼ translation" ;
+  dol:mapsFrom log:ECoFOLeq ;
+  dol:mapsTo log:FOLeqms ;
+  rdfs:isDefinedBy reg: .
+
+trans:FOLeqToF-logic a dol:SubLogic, dol:PlainMapping, dol:DefaultMapping ;
+  rdfs:label "FOL⁼→F-logic translation" ;
+  dol:mapsFrom log:FOLeq ;
+  dol:mapsTo log:F-logic ;
+  rdfs:isDefinedBy reg: .
+
+trans:FOLeqToFOLeqms a dol:SubLogic, dol:PlainMapping, dol:DefaultMapping ;
+  rdfs:label "FOL⁼→many-sorted FOL⁼ translation" ;
+  dol:mapsFrom log:FOLeq ;
+  dol:mapsTo log:FOLeqms ;
+  rdfs:isDefinedBy reg: .
+
+trans:FOLeqmsToSubPCFOLeq a dol:SubLogic, dol:PlainMapping, dol:DefaultMapping ;
+  rdfs:label "many-sorted FOL⁼→SubPCFOL⁼ translation" ;
+  dol:mapsFrom log:FOLeqms ;
+  dol:mapsTo log:SubPCFOLeq ;
+  dol:adjoint proj:SubPCFOLeqToFOLeqms ;
+  rdfs:isDefinedBy reg: .
+
+trans:SimpleRDFtoSROIQ a dol:ExactMapping, dol:ModelExpansiveMapping, dol:PlainMapping, dol:Translation, dol:LogicMapping, dol:DefaultMapping ;
+  rdfs:label "simple RDF→SROIQ translation" ;
+  dol:mapsFrom logRDF:Simple ;
+  dol:mapsTo log:SROIQ ;
+  rdfs:isDefinedBy reg: .
+
+trans:RDFtoSROIQ a dol:ExactMapping, dol:ModelExpansiveMapping, dol:PlainMapping, dol:Translation, dol:LogicMapping, dol:DefaultMapping ;
+  rdfs:label "RDF→SROIQ translation" ;
+  dol:mapsFrom log:RDF ;
+  dol:mapsTo log:SROIQ ;
+  rdfs:isDefinedBy reg: .
+
+trans:SROIQtoOWL2Full a dol:ExactMapping, dol:ModelExpansiveMapping, dol:PlainMapping, dol:Translation, dol:LogicMapping, dol:DefaultMapping ;
+  rdfs:label "SROIQ→OWL2Full translation" ;
+  dol:mapsFrom log:SROIQ ;
+  dol:mapsTo logOWL2:Full ;
+  rdfs:isDefinedBy reg: .
+
+trans:PropositionalToSROIQ a dol:ExactMapping, dol:ModelExpansiveMapping, dol:PlainMapping, dol:Translation, dol:LogicMapping ;
+  rdfs:label "propositional logic→SROIQ translation" ;
+  rdfs:comment "Note that this is not a default mapping; for details see: Till Mossakowski, Oliver Kutz, Christoph Lange. Three Semantics for the Core of the Distributed Ontology Language; in 7th International Conference on Formal Ontology in Information Systems (FOIS), 2012-07-24/2012-07-27 in Graz, Austria; 2012 (http://interop.cim3.net/file/pub/OntoIOp/Publications/FOIS_2012/paper.pdf)." ;
+  dol:mapsFrom log:Propositional ;
+  dol:mapsTo log:SROIQ ;
+  rdfs:isDefinedBy reg: .
+
+trans:PropositionalToFOLeq a dol:ExactMapping, dol:ModelExpansiveMapping, dol:PlainMapping, dol:Translation, dol:LogicMapping, dol:DefaultMapping ;
+  todo:task [
+    dct:creator "Christoph Lange" ;
+    dct:date "2012-04-27"^^xsd:date ;
+    rdf:value "If this is just the composition of trans:PropositionalToSROIQ and trans:SROIQtoFOLeq, remove it from the explicit graph." ] ;
+  rdfs:label "propositional logic→FOL⁼ translation" ;
+  dol:mapsFrom log:Propositional ;
+  dol:mapsTo log:FOLeq ;
+  rdfs:isDefinedBy reg: .
+
+trans:PropositionalToFOLeqms a dol:SubLogic, dol:PlainMapping, dol:DefaultMapping ;
+  rdfs:label "propositional logic→many-sorted FOL⁼ translation" ;
+  dol:mapsFrom log:Propositional ;
+  dol:mapsTo log:FOLeqms ;
+  dol:adjoint proj:FOLeqmsToPropositional ;
+  rdfs:isDefinedBy reg: .
+
+trans:PropositionalToCommonLogic a dol:ExactMapping, dol:ModelExpansiveMapping, dol:PlainMapping, dol:Translation, dol:LogicMapping, dol:DefaultMapping ;
+  rdfs:label "propositional logic→Common Logic translation" ;
+  dol:mapsFrom log:Propositional ;
+  dol:mapsTo log:CommonLogic ;
+  rdfs:isDefinedBy reg: .
+
+trans:FOLeqToCommonLogic a dol:ExactMapping, dol:ModelExpansiveMapping, dol:PlainMapping, dol:Translation, dol:LogicMapping, dol:DefaultMapping ;
+  rdfs:label "FOL⁼→Common Logic translation" ;
+  dol:mapsFrom log:FOLeq ;
+  dol:mapsTo log:CommonLogic ;
+  rdfs:isDefinedBy reg: .
+
+trans:FOLeqToCLWithoutSequences a dol:ModelExpansiveMapping, dol:PlainMapping, dol:Translation, dol:LogicMapping, dol:DefaultMapping ;
+  rdfs:label "FOL⁼→CL⁻ translation" ;
+  dol:mapsFrom log:FOLeq ;
+  dol:mapsTo logCL:WithoutSequences ;
+  rdfs:isDefinedBy reg: .
+
+trans:CLWithoutSequencesToFOLeq a dol:Embedding, dol:PlainMapping, dol:DefaultMapping ;
+  rdfs:label "CL⁻→FOL⁼ translation" ;
+  dol:mapsFrom logCL:WithoutSequences ;
+  dol:mapsTo log:FOLeq ;
+  rdfs:isDefinedBy reg: .
+
+trans:CLWithoutSequencesToCommonLogic a dol:SubLogic, dol:PlainMapping, dol:DefaultMapping ;
+  rdfs:label "CL⁻→Common Logic translation" ;
+  dol:mapsFrom logCL:WithoutSequences ;
+  dol:mapsTo log:CommonLogic ;
+  rdfs:isDefinedBy reg: .
+
+trans:RDFtoFOLeq a dol:SubLogic, dol:TheoroidalMapping, dol:DefaultMapping ;
+  rdfs:label "RDF→FOL⁼ translation" ;
+  dol:mapsFrom log:RDF ;
+  dol:mapsTo log:FOLeq ;
+  rdfs:isDefinedBy reg: .
+
+trans:RDFStoFOLeq a dol:SubLogic, dol:TheoroidalMapping, dol:DefaultMapping ;
+  rdfs:label "RDFS→FOL⁼ translation" ;
+  dol:mapsFrom log:RDFS ;
+  dol:mapsTo log:FOLeq ;
+  rdfs:isDefinedBy reg: .
+
+trans:OWL2FullToFOLeq a dol:SubLogic, dol:TheoroidalMapping, dol:DefaultMapping ;
+  rdfs:label "OWL 2 Full→FOL⁼ translation" ;
+  dol:mapsFrom logOWL2:Full ;
+  dol:mapsTo log:FOLeq ;
+  rdfs:isDefinedBy reg: .
+
+trans:ECoOWLtoSROIQ a dol:SubLogic, dol:TheoroidalMapping, dol:DefaultMapping ;
+  rdfs:label "E-Connections^{OWL}→SROIQ translation" ;
+  dol:mapsFrom log:ECoOWL ;
+  dol:mapsTo log:SROIQ ;
+  rdfs:isDefinedBy reg: .
+
+trans:F-logicToFOLeq a dol:SubLogic, dol:TheoroidalMapping, dol:DefaultMapping ;
+  rdfs:label "F-logic→FOL⁼ translation" ;
+  dol:mapsFrom log:F-logic ;
+  dol:mapsTo log:FOLeq ;
+  rdfs:isDefinedBy reg: .
+
+trans:FOLeqmsToFOLeq a dol:Embedding, dol:TheoroidalMapping, dol:DefaultMapping ;
+  rdfs:label "FOL⁼→many-sorted FOL⁼ translation" ;
+  dol:mapsFrom log:FOLeqms ;
+  dol:mapsTo log:FOLeq ;
+  rdfs:isDefinedBy reg: .
+
+trans:RelationalSchemaToFOLeqms a dol:SubLogic, dol:TheoroidalMapping, dol:DefaultMapping ;
+  rdfs:label "relational database schema→many-sorted FOL⁼ translation" ;
+  dol:mapsFrom log:RelationalSchema ;
+  dol:mapsTo log:FOLeqms ;
+  rdfs:isDefinedBy reg: .
+
+trans:SROIQtoFOLeq a dol:LogicMapping, dol:Translation, dol:ModelBijectiveMapping, dol:ExactMapping, dol:PlainMapping, dol:DefaultMapping ;
+  rdfs:label "SROIQ→FOL⁼ translation" ;
+  dol:mapsFrom log:SROIQ ;
+  dol:mapsTo log:FOLeq ;
+  dol:adjoint proj:FOLeqToSROIQ ;
+  rdfs:isDefinedBy reg: .
+
+trans:SROIQtoCommonLogic a dol:LogicMapping, dol:Translation, dol:ModelBijectiveMapping, dol:ExactMapping, dol:PlainMapping, dol:DefaultMapping ;
+  rdfs:label "SROIQ→Common Logic translation" ;
+  dol:mapsFrom log:SROIQ ;
+  dol:mapsTo log:CommonLogic ;
+  rdfs:isDefinedBy reg: .
+
+trans:SROIQtoF-logic a dol:LogicMapping, dol:Translation, dol:ModelExpansiveMapping, dol:PlainMapping, dol:DefaultMapping ;
+  rdfs:label "SROIQ→F-logic translation" ;
+  dol:mapsFrom log:SROIQ ;
+  dol:mapsTo log:F-logic ;
+  rdfs:isDefinedBy reg: .
+
+trans:CommonLogicToSubPCFOLeq a dol:SubLogic, dol:TheoroidalMapping, dol:DefaultMapping ;
+  rdfs:label "Common Logic→SubPCFOL⁼ translation" ;
+  dol:mapsFrom log:CommonLogic ;
+  dol:mapsTo log:SubPCFOLeq ;
+  rdfs:isDefinedBy reg: .
+
+trans:SubPCFOLeqToChurchSimpleTypeTheory a dol:SubLogic, dol:TheoroidalMapping, dol:DefaultMapping ;
+  rdfs:label "SubPCFOL⁼→Church Simple Type Theory translation" ;
+  dol:mapsFrom log:SubPCFOLeq ;
+  dol:mapsTo log:ChurchSimpleTypeTheory ;
+  dol:adjoint proj:ChurchSimpleTypeTheoryToSubPCFOLeq ;
+  rdfs:isDefinedBy reg: .
+
+## Logic projections (most of these are adjoint to logic translations, whose properties they inherit)
+
+proj:FOLeqToSROIQ
+  rdfs:label "FOL⁼→SROIQ projection" ;
+  rdfs:isDefinedBy reg: .
+
+proj:FOLeqmsToPropositional
+  rdfs:label "many-sorted FOL⁼→propositional logic projection" ;
+  rdfs:isDefinedBy reg: .
+
+proj:ECoFOLeqToECoOWL
+  rdfs:label "E-Connections^{FOL⁼}→E-Connections^{OWL} projection" ;
+  rdfs:isDefinedBy reg: .
+
+proj:SubPCFOLeqToFOLeqms
+  rdfs:label "SubPCFOL⁼→many-sorted FOL⁼ translation" ;
+  rdfs:isDefinedBy reg: .
+
+proj:SROIQtoELplusplus
+  rdfs:label "SROIQ→EL⁺⁺ projection" ;
+  rdfs:isDefinedBy reg: .
+
+proj:SROIQtoDLLiteR
+  rdfs:label "SROIQ→DL-Lite_R projection" ;
+  rdfs:isDefinedBy reg: .
+
+proj:SROIQtoOWL2RL
+  rdfs:label "SROIQ→OWL 2 RL projection" ;
+  rdfs:isDefinedBy reg: .
+
+proj:OWL2FullToRDFS
+  rdfs:label "OWL 2 Full→RDFS projection" ;
+  rdfs:isDefinedBy reg: .
+
+proj:RDFStoRDF
+  rdfs:label "RDFS→RDF projection" ;
+  rdfs:isDefinedBy reg: .
+
+proj:RDFtoSimpleRDF
+  rdfs:label "RDF→simple RDF projection" ;
+  rdfs:isDefinedBy reg: .
+
+proj:ChurchSimpleTypeTheoryToSubPCFOLeq 
+  rdfs:label "Church Simple Type Theory→SubPCFOL⁼ projection" ;
+  rdfs:isDefinedBy reg: .
+
+## Languages
+
+lang:CASL a dol:OntologyLanguage ;
+  rdfs:label "CASL" ;
+  rdfs:comment "Common Algebraic Specification Language" ;
+  dol:exactLogicalExpressivity log:SubPCFOLeq ;
+  dol:supportsLogic log:Propositional ;
+  dct:source <http://www.informatik.uni-bremen.de/cofi/wiki/index.php/CASL> ;
+  todo:question [
+    dct:creator "Christoph Lange" ;
+    dct:date "2012-04-17"^^xsd:date ;
+    rdf:value "How should we name the 'standardization status'?" ], [
+    dct:creator "Christoph Lange" ;
+    dct:date "2012-04-27"^^xsd:date ;
+    rdf:value "No idea what LATIN language we should link this to" ] ;
+  rdfs:isDefinedBy reg: .
+
+lang:F-logic a dol:OntologyLanguage ;
+  rdfs:label "F-logic" ;
+  dol:exactLogicalExpressivity log:F-logic ;
+  stand:standardizationStatus stand:AcademicLiterature ;
+  rdfs:isDefinedBy reg: .
+
+# "." is allowed in PN_LOCAL in Turtle, but cwm doesn't like it, so we give the full IRI here
+<http://purl.net/dol/languages/OBO/1.3> a dol:OntologyLanguage ;
+  rdfs:label "OBO 1.3" ;
+  rdfs:comment "Open Biomedical Ontologies (OBO) 1.3" ;
+  dol:supportsLogic _:OBO13Logic ;
+  dct:source <http://www.geneontology.org/GO.format.obo-1_3.shtml> ;
+  rdfs:isDefinedBy reg: .
+
+_:OBO13Logic a dol:Logic ;
+  rdfs:comment "the unknown logic supported by OBO 1.3" ;
+  dol:translatableToLogic log:FOLeq ;
+  rdfs:isDefinedBy reg: .
+
+[ a owl:Annotation ;
+  owl:annotatedSource _:OBO13Logic ;
+  owl:annotatedProperty dol:translatableToLogic ;
+  owl:annotatedTarget log:FOLeq ;
+  rdfs:comment "We are not sure if this is a sublogic." ;
+  rdfs:isDefinedBy reg: ] .
+
+log:ELplusplus dol:subLogicOf _:OBO13Logic ;
+  rdfs:isDefinedBy reg: .
+
+# "." is allowed in PN_LOCAL in Turtle, but cwm doesn't like it, so we give the full IRI here
+<http://purl.net/dol/languages/OBO/1.4> a dol:OntologyLanguage ;
+  rdfs:label "OBO 1.4" ;
+  rdfs:comment "Open Biomedical Ontologies (OBO) 1.4" ;
+  dol:supportsLogic _:OBO14Logic ;
+  dct:source <http://www.geneontology.org/GO.format.obo-1_4.shtml> ;
+  rdfs:isDefinedBy reg: .
+
+_:OBO14Logic a dol:Logic ;
+  rdfs:comment "the unknown logic supported by OBO 1.4" ;
+  dol:translatableToLogic log:FOLeq ;
+  rdfs:isDefinedBy reg: .
+
+[ a owl:Annotation ;
+  owl:annotatedSource _:OBO14Logic ;
+  owl:annotatedProperty dol:translatableToLogic ;
+  owl:annotatedTarget log:FOLeq ;
+  rdfs:comment "We are not sure if this is a sublogic." ;
+  rdfs:isDefinedBy reg: ] .
+
+_:OBOOWLtoOBO14Logic a dol:SubLogic ;
+  rdfs:label "OBO^{OWL}→the logic of OBO 1.4" ;
+  dol:translatesFromLogic log:OBOOWL ;
+  dol:translatesToLogic _:OBO14Logic ;
+  rdfs:isDefinedBy reg: .
+
+langOWL2:Full a dol:OntologyLanguage ;
+  rdfs:label "OWL 2 Full" ;
+  rdfs:comment "OWL 2 Web Ontology Language, RDF semantics (W3C Recommendation)" ;
+  dol:exactLogicalExpressivity logOWL2:Full ;
+  dol:supportsSerialization serOWL2:Manchester, serOWL2:XML, serRDF:Turtle, serRDF:XML ;
+  dol:supportsEntityKind kindOWL2:NamedIndividual, kindOWL2:Class, kindOWL2:DataProperty, kindOWL2:ObjectProperty, kindOWL2:AnnotationProperty, kindOWL2:Datatype ;
+  owl:sameAs latinSyntax:OWL2Full ;
+  dct:source <http://www.w3.org/TR/owl2-rdf-based-semantics/> ;
+  stand:standardizationStatus stand:W3CRecommendation ;
+  rdfs:isDefinedBy reg: .
+
+langOWL2:DL a dol:OntologyLanguage ;
+  rdfs:label "OWL 2 DL" ;
+  rdfs:comment "OWL 2 Web Ontology Language, Description Logic semantics (W3C Recommendation)" ;
+  dol:exactLogicalExpressivity log:SROIQ ;
+  dol:profileOf langOWL2:Full ;
+  owl:sameAs latinSyntax:OWL2DL ;
+  dct:source <http://www.w3.org/TR/2009/REC-owl2-overview-20091027/> ;
+  stand:standardizationStatus stand:W3CRecommendation ;
+  rdfs:isDefinedBy reg: .
+
+langOWL2:EL a dol:OntologyLanguage ;
+  rdfs:label "OWL 2 EL" ;
+  rdfs:comment "OWL 2 Web Ontology Language, EL Profile (W3C Recommendation)" ;
+  dol:exactLogicalExpressivity log:ELplusplus ;
+  dol:profileOf langOWL2:DL ;
+  owl:sameAs latinSyntax:OWL2EL ;
+  dct:source <http://www.w3.org/TR/2009/REC-owl2-profiles-20091027/#OWL_2_EL> ;
+  stand:standardizationStatus stand:W3CRecommendation ;
+  rdfs:isDefinedBy reg: .
+
+langOWL2:QL a dol:OntologyLanguage ;
+  rdfs:label "OWL 2 QL" ;
+  rdfs:comment "OWL 2 Web Ontology Language, QL Profile (W3C Recommendation)" ;
+  dol:exactLogicalExpressivity log:DLLiteR ;
+  dol:profileOf langOWL2:DL ;
+  owl:sameAs latinSyntax:OWL2QL ;
+  dct:source <http://www.w3.org/TR/2009/REC-owl2-profiles-20091027/#OWL_2_QL> ;
+  stand:standardizationStatus stand:W3CRecommendation ;
+  rdfs:isDefinedBy reg: .
+
+langOWL2:RL a dol:OntologyLanguage ;
+  rdfs:label "OWL 2 RL" ;
+  rdfs:comment "OWL 2 Web Ontology Language, RL Profile (W3C Recommendation)" ;
+  dol:exactLogicalExpressivity logOWL2:RL ;
+  dol:profileOf langOWL2:DL ;
+  owl:sameAs latinSyntax:OWL2RL ;
+  dct:source <http://www.w3.org/TR/2009/REC-owl2-profiles-20091027/#OWL_2_RL> ;
+  stand:standardizationStatus stand:W3CRecommendation ;
+  rdfs:isDefinedBy reg: .
+
+lang:RDF a dol:OntologyLanguage ;
+  rdfs:label "RDF" ;
+  rdfs:comment "Resource Description Framework (W3C Recommendation)" ;
+  dol:exactLogicalExpressivity log:RDF ;
+  dol:supportsSerialization serRDF:Turtle, serRDF:XML ;
+  dct:source <http://www.w3.org/TR/2004/REC-rdf-concepts-20040210/> ;
+  stand:standardizationStatus stand:W3CRecommendation ;
+  rdfs:isDefinedBy reg: .
+
+lang:SATLIB a dol:OntologyLanguage ;
+  rdfs:label "SATLIB" ;
+  dol:exactLogicalExpressivity log:Propositional ;
+  dct:source <http://www.satlib.org/> ;
+  rdfs:isDefinedBy reg: .
+
+lang:TPTP a dol:OntologyLanguage ;
+  rdfs:label "TPTP" ;
+  dol:exactLogicalExpressivity log:FOLeq ;
+  dct:source <http://www.cs.miami.edu/~tptp/> ;
+  rdfs:isDefinedBy reg: .
+
+lang:THF0 a dol:OntologyLanguage ;
+  rdfs:label "THF0" ;
+  dol:exactLogicalExpressivity log:ChurchSimpleTypeTheory ;
+  owl:sameAs latinTPTP:THF0 ; 
+  todo:question [
+    dct:creator "Christoph Lange" ;
+    dct:date "2012-04-27"^^xsd:date ;
+    rdf:value "The namespace latinTPTP: looks strange to me; all the other logics and ontology languages are in latinSyntax: instead.  So is this link right?" ] ;
+  rdfs:isDefinedBy reg: .
+
+lang:CommonLogic a dol:OntologyLanguage ;
+  rdfs:label "Common Logic" ;
+  rdfs:comment "Common Logic (ISO/IEC 24707)" ;
+  dol:exactLogicalExpressivity log:CommonLogic ;
+  dol:supportsLogic log:Propositional ;
+  dol:supportsSerialization serCL:CGIF, serCL:CLIF, serCL:XCL ;
+  dol:supportsEntityKind kindCL:Name, kindCL:SequenceMarker ;
+  stand:standardizationStatus stand:ISOStandard ;
+  rdfs:isDefinedBy reg: .
+
+## Kinds (of entities, for now)
+
+kindOWL2:NamedIndividual rdfs:subClassOf dol:Entity ;
+  rdfs:label "named individual" ;
+  owl:sameAs owl:NamedIndividual ;
+  dct:source <http://www.w3.org/TR/2009/REC-owl2-syntax-20091027/#Named_Individuals> ;
+  rdfs:isDefinedBy reg: .
+
+kindOWL2:Class rdfs:subClassOf dol:Entity ;
+  rdfs:label "class" ;
+  owl:sameAs owl:Class ;
+  dct:source <http://www.w3.org/TR/2009/REC-owl2-syntax-20091027/#Classes> ;
+  rdfs:isDefinedBy reg: .
+
+kindOWL2:DataProperty rdfs:subClassOf dol:Entity ;
+  rdfs:label "data property" ;
+  owl:sameAs owl:DatatypeProperty ;
+  dct:source <http://www.w3.org/TR/2009/REC-owl2-syntax-20091027/#Data_Properties> ;
+  rdfs:isDefinedBy reg: .
+
+kindOWL2:ObjectProperty rdfs:subClassOf dol:Entity ;
+  rdfs:label "object property" ;
+  owl:sameAs owl:ObjectProperty ;
+  dct:source <http://www.w3.org/TR/2009/REC-owl2-syntax-20091027/#Object_Properties> ;
+  rdfs:isDefinedBy reg: .
+
+kindOWL2:AnnotationProperty rdfs:subClassOf dol:Entity ;
+  rdfs:label "annotation property" ;
+  owl:sameAs owl:AnnotationProperty ;
+  dct:source <http://www.w3.org/TR/2009/REC-owl2-syntax-20091027/#Annotation_Properties> ;
+  rdfs:isDefinedBy reg: .
+
+kindOWL2:Datatype rdfs:subClassOf dol:Entity ;
+  rdfs:label "annotation property" ;
+  owl:sameAs rdfs:Datatype ;
+  dct:source <http://www.w3.org/TR/2009/REC-owl2-syntax-20091027/#Datatypes> ;
+  rdfs:isDefinedBy reg: .
+
+kindCL:Name rdfs:subClassOf dol:Entity ;
+  rdfs:label "name" ;
+  rdfs:isDefinedBy reg: .
+
+kindCL:SequenceMarker rdfs:subClassOf dol:Entity ;
+  rdfs:label "sequence marker" ;
+  rdfs:isDefinedBy reg: .
+
+## Serializations
+
+serRDF:Turtle a dol:Serialization ;
+  rdfs:label "Turtle" ;
+  rdfs:comment "Terse RDF Triple Language" ;
+  dol:prefFilenameExtension "turtle" ;
+  dol:altFilenameExtension "ttl" ;
+  dol:mediaType "text/turtle" ;
+  dct:source <http://www.w3.org/TeamSubmission/turtle/> ;
+  stand:standardizationStatus stand:W3CTeamSubmission ;
+  rdfs:isDefinedBy reg: .
+
+serRDF:XML a dol:Serialization ;
+  rdfs:label "RDF/XML Syntax" ;
+  dol:prefFilenameExtension "rdf" ;
+  dol:mediaType "application/rdf+xml" ;
+  dct:source <http://www.w3.org/TR/2004/REC-rdf-syntax-grammar-20040210/> ;
+  stand:standardizationStatus stand:W3CRecommendation ;
+  rdfs:isDefinedBy reg: .
+
+serOWL2:Manchester a dol:Serialization ;
+  rdfs:label "OWL Manchester Syntax" ;
+  dol:prefFilenameExtension "omn" ;
+  dol:mediaType "text/owl-manchester" ;
+  dct:source <http://www.w3.org/TR/2009/NOTE-owl2-manchester-syntax-20091027/> ;
+  stand:standardizationStatus stand:W3CWorkingGroupNote ;
+  rdfs:isDefinedBy reg: .
+
+serOWL2:XML a dol:Serialization ;
+  rdfs:label "OWL XML Serialization" ;
+  dol:prefFilenameExtension "owx" ;
+  dol:mediaType "application/owl+xml" ;
+  dct:source <http://www.w3.org/TR/2009/REC-owl2-xml-serialization-20091027/> ;
+  stand:standardizationStatus stand:W3CRecommendation ;
+  rdfs:isDefinedBy reg: .
+
+serCL:CLIF a dol:Serialization ;
+  owl:sameAs <http://purl.org/xcl/1.0/#dialect-clif> ;
+  rdfs:label "CLIF" ;
+  skos:prefLabel "CLIF"@en ;
+  skos:altLabel "Common Logic Interchange Format"@en ;
+  dol:prefFilenameExtension "clif" ;
+  dol:altFilenameExtension "clf" ;
+  stand:standardizationStatus stand:ISOStandard ;
+  rdfs:isDefinedBy reg: .
+
+[ a owl:Annotation ;
+  owl:annotatedSource serCL:CLIF ;
+  owl:annotatedProperty owl:sameAs ;
+  owl:annotatedTarget <http://purl.org/xcl/1.0/#dialect-clif> ;
+  rdfs:comment "Note: We are not using the latter IRIs in the first place, as all you get when dereferencing them is a language specification written in HTML." ;
+  rdfs:isDefinedBy reg: ] .
+
+[ a owl:Annotation ;
+  owl:annotatedSource serCL:CLIF ;
+  owl:annotatedProperty dol:prefFilenameExtension ;
+  owl:annotatedTarget "clif" ;
+  stand:standardizationStatus stand:Unofficial ;
+  rdfs:isDefinedBy reg: ] .
+
+[ a owl:Annotation ;
+  owl:annotatedSource serCL:CLIF ;
+  owl:annotatedProperty dol:altFilenameExtension ;
+  owl:annotatedTarget "clf" ;
+  stand:standardizationStatus stand:Unofficial ;
+  rdfs:isDefinedBy reg: ] .
+
+serCL:CGIF a dol:Serialization ;
+  owl:sameAs <http://purl.org/xcl/1.0/#dialect-cgif> ;
+  rdfs:label "CGIF" ;
+  skos:prefLabel "CGIF"@en ;
+  skos:altLabel "Conceptual Graph Interchange Format"@en ;
+  stand:standardizationStatus stand:ISOStandard ;
+  rdfs:isDefinedBy reg: .
+
+serCL:XCL a dol:Serialization ;
+  owl:sameAs <http://purl.org/xcl/1.0/#dialect-xcl> ;
+  rdfs:label "CLIF" ;
+  skos:prefLabel "CLIF"@en ;
+  skos:altLabel "Common Logic Interchange Format"@en ;
+  dol:prefFilenameExtension "xcl" ;
+  stand:standardizationStatus stand:ISOStandard ;
+  rdfs:isDefinedBy reg: .
+
+[ a owl:Annotation ;
+  owl:annotatedSource serCL:XCL ;
+  owl:annotatedProperty dol:prefFilenameExtension ;
+  owl:annotatedTarget "xcl" ;
+  stand:standardizationStatus stand:Unofficial ;
+  rdfs:isDefinedBy reg: ] .
+
+serCL:XCL a dol:Serialization ;
+  owl:sameAs <http://purl.org/xcl/1.0/#dialect-xcl> ;
+  rdfs:label "CLIF" ;
+  skos:prefLabel "CLIF"@en ;
+  skos:altLabel "Common Logic Interchange Format"@en ;
+  dol:prefFilenameExtension "xcl" ;
+  stand:standardizationStatus stand:ISOStandard ;
+  rdfs:isDefinedBy reg: .
+
+## Ontology language translations (unless inferred from logic translations)
+
+trans:SATLIBtoCASL a dol:Translation, dol:OntologyLanguageMapping ;
+  rdfs:label "SATLIB→CASL" ;
+  dol:mapsFrom lang:SATLIB ;
+  dol:mapsTo lang:CASL ;
+  rdfs:isDefinedBy reg: .
+
+trans:CommonLogicToCASL a dol:Translation, dol:OntologyLanguageMapping ;
+  rdfs:label "Common Logic→CASL" ;
+  dol:mapsFrom lang:CommonLogic ;
+  dol:mapsTo lang:CASL ;
+  rdfs:isDefinedBy reg: .
+
+# TODO some more language translations not backed by logic translations (e.g. OBO)

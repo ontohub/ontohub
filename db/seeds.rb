@@ -12,6 +12,8 @@ user = User.create!({
   :password => 'foobar'
 }, :as => :admin)
 
+user.confirm!
+
 # Create Team
 team = Team.create! \
   :name       => 'Lorem Ipsum',
@@ -23,37 +25,32 @@ team = Team.create! \
     :email    => "#{name}@example.com",
     :name     => name,
     :password => 'foobar'
+
+  user.confirm!
   
   # add two users to the first team
   team.users << user if i < 2
 end
 
-# Create initial logic configuration.
-Logic.create! \
-  name: 'OWL',
-  uri: 'http://purl.net/dol/logics/OWL',
-  extension: 'owl',
-  mimetype: 'application/rdf+xml'
-
-Logic.create! \
-  name: 'CommonLogic',
-  uri: 'http://purl.net/dol/logics/CommonLogic',
-  extension: 'clif',
-  mimetype: 'text/plain'
-
 # Import ontologies
-Dir["#{Rails.root}/test/fixtures/ontologies/*/*.{clf,clif,owl}"].each do |file|
+Dir["#{Rails.root}/test/fixtures/ontologies/*/*.{casl,clf,clif,owl}"].each do |file|
   basename = File.basename(file)
   
-  o = Ontology.new \
-    uri:         "file://db/seeds/#{basename}",
+  clazz = basename.ends_with?('.casl') ? DistributedOntology : SingleOntology
+  
+  o = clazz.new \
+    iri:         "file://db/seeds/#{basename}",
     name:        basename.split(".")[0].capitalize,
     description: Faker::Lorem.paragraph
-  
+
   v = o.versions.build raw_file: File.open(file)
   v.user       = user
   v.created_at = rand(60).minutes.ago
+  v.number     = 1
+  
   o.save! 
+  o.ontology_version = v;
+  o.save!
 end
 
 # Add permissions

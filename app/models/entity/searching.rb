@@ -23,7 +23,7 @@ module Entity::Searching
         kind = kind[1]
         term.sub!(KIND_PATTERN, '')
       end
-      
+
       search :include => [:ontology] do
         
         # search for text

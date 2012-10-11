@@ -14,23 +14,32 @@ module OntologyParser
   # Listener for the SAX Parser
   class Listener < Nokogiri::XML::SAX::Document
     
-    ROOT   = 'Ontology'
-    SYMBOL = 'Symbol'
-    AXIOM  = 'Axiom'
+    ROOT     = 'DGraph'
+    ONTOLOGY = 'DGNode'
+    SYMBOL   = 'Symbol'
+    AXIOM    = 'Axiom'
+    LINK     = 'DGLink'
+    TEXT     = 'Text'
+    TYPE     = 'Type'
+    MORPHISM = 'GMorphism'
     
     # the callback function is called for each Symbol tag
     def initialize(callbacks)
-      @callbacks = callbacks
-      @current_tag    = nil
-      @current_symbol = nil
-      @current_axiom  = nil
+      @callbacks        = callbacks
+      @path             = []
+      @current_ontology = nil
+      @current_symbol   = nil
+      @current_axiom    = nil
+      @current_link     = nil
     end
     
     # a tag
     def start_element(name, attributes)
-      @current_tag = name
+      @path << name
       case name
         when ROOT
+          callback(:root, Hash[*[attributes]])
+        when ONTOLOGY
           callback(:ontology, Hash[*[attributes]])
         when SYMBOL
           @current_symbol = Hash[*[attributes]]
@@ -38,22 +47,36 @@ module OntologyParser
         when AXIOM
           @current_axiom = Hash[*[attributes]]
           @current_axiom['symbols'] = []
-        else
-          # NOTHING
+        when LINK
+          @current_link = Hash[*[attributes]]
+        when MORPHISM
+          @current_link['morphism'] = Hash[*[attributes]]['name'] if @current_link
       end
     end
     
     # a text node
     def characters(text)
-      if @current_tag == SYMBOL
-        @current_symbol['text'] << text
+      case @path.last
+        when SYMBOL
+          @current_symbol['text'] << text if @current_symbol
+        when TEXT
+          @current_axiom['text'] = text if @current_axiom
+        when TYPE
+          @current_link['type'] = text if @current_link
       end
     end
     
     # closing tag
     def end_element(name)
+      @path.pop
+      
       case name
+        when ONTOLOGY
+          callback(:ontology_end, @current_ontology)
+          @current_ontology = nil
         when SYMBOL
+          return if @path.last == 'Hidden'
+          
           if @current_axiom
             # add to current axiom
             @current_axiom['symbols'] << @current_symbol['text']
@@ -63,11 +86,14 @@ module OntologyParser
           end
           @current_symbol = nil
         when AXIOM
+          # return the current axiom
           callback(:axiom, @current_axiom)
           @current_axiom = nil
+        when LINK
+          # return the current link
+          callback(:link, @current_link)
+          @current_link = nil
       end
-      
-      @current_tag = nil
     end
     
     # error handler for parsing problems

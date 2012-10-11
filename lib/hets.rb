@@ -9,7 +9,10 @@ module Hets
 
       @path = first_which_exists yaml['hets_path']
 
-      raise ArgumentError.new('Wrong hets path.') unless @path
+      raise HetsError, 'Could not find hets' unless @path
+      
+      version = `#{@path} -V`
+      raise ArgumentError, "Your version of hets is too old" if version.include?("2011")
 
       yaml.each_pair do |key, value|
         ENV[key.upcase] = first_which_exists value if key != 'hets_path'
@@ -31,10 +34,10 @@ module Hets
   # Runs hets with input_file and returns XML output file path.
   def self.parse(input_file)
     config = Config.new
-
-    status = `#{config.path} -o sym.xml -v2 #{input_file} 2>&1`
+    Rails.logger.debug "#{config.path} -o sym.xml -v2 '#{input_file}'"
+    status = `#{config.path} -o xml -v2 '#{input_file}' 2>&1`
     status = status.split("\n").last
-
+    Rails.logger.debug status
     if $?.exitstatus != 0 or status.starts_with? '*** Error'
       raise HetsError.new(status)
     end

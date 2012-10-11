@@ -1,11 +1,11 @@
 class CreateLogics < ActiveRecord::Migration
   def change
     create_table :logics do |t|
-      t.string :name, :null => false
-      t.string :uri
-      t.string :extension
-      t.string :mimetype
-
+      t.string :name, :null => false # e.g. RDF, CL- (in registry: label)
+      t.string :iri, :null => false
+      t.text :description # in registry: comment
+      t.string :standardization_status
+      t.string :defined_by
       t.timestamps :null => false
     end
 

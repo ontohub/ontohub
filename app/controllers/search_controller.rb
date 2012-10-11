@@ -6,10 +6,14 @@ class SearchController < ApplicationController
   def index
     @query      = params[:q]
     @max_groups = 100
-    
-    @search = Entity.search_with_ontologies(@query, @max_groups)
-    @group  = @search.group(:ontology_id_str)
-    @groups = @group.groups
+
+    if @query.blank?
+      @query = nil
+    else
+      @search = Entity.search_with_ontologies(@query, @max_groups)
+      @group  = @search.group(:ontology_id_str)
+      @groups = @group.groups
+    end
   end
   
 end

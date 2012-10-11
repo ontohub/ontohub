@@ -18,12 +18,18 @@ Ontohub::Application.routes.draw do
   constraints auth_resque do
     mount Resque::Server, :at => "/admin/resque"
   end
-
+  
   resources :ontologies do
-    get 'bulk', :on => :collection
+    resources :children, :only => :index
     resources :entities, :only => :index
-    resources :axioms,   :only => :index
+    resources :sentences, :only => :index
+    get 'bulk', :on => :collection
     resources :ontology_versions, :only => [:index, :show, :new, :create], :path => 'versions'
+
+#	%w( entities sentences ).each do |name|
+#	  get "versions/:number/#{name}" => "#{name}#index", :as => "ontology_version_#{name}"
+#	end
+
     resources :permissions, :only => [:index, :create, :update, :destroy]
     resources :metadata, :only => [:index, :create, :destroy]
     resources :comments, :only => [:index, :create, :destroy]

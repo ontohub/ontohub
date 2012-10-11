@@ -11,7 +11,7 @@ module Ontology::Entities
 
       e = find_or_initialize_by_text(hash['text'])
 
-      e.ontology   = @association.owner
+      e.ontology = @association.owner
       e.name       = hash['name']
       e.range      = hash['range']
       e.kind       = hash['kind']

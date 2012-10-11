@@ -1,12 +1,16 @@
 %table.info
   %tr
     %td URI
-    %td= resource.uri
+    %td= resource.iri
   
   %tr
     %td Name
     %td= resource.name?? resource.name : '-'
   
+  %tr
+    %td Language
+    %td= resource.language
+
   %tr
     %td Logic
     %td= resource.logic

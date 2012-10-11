@@ -1,14 +1,14 @@
-%h2= @page_title = 'Entity Search'
+%h2= @page_title = 'Symbols'
 
 = form_tag :search, :method => :get do
-  = text_field_tag :q, @query, :placeholder => 'Search for entities'
-  = submit_tag 'Search', :name => nil #, 'data-disable-with' => 'Searching ...'
+  = text_field_tag :q, @query, :placeholder => 'Symbol text'
+  = submit_tag 'Search symbols', :name => nil #, 'data-disable-with' => 'Searching ...'
   %button.help{:title => t('search.help') } ?
 
-%p
-  %strong= pluralize @group.matches, "Entity"
-  = @max_groups > @groups.size ? 'found in' : 'found, displaying the first'
-  %strong= pluralize @groups.size, "Ontology"
-
-%ol.searchResult
-  = render :partial => 'group', :collection => @groups
+-if @query
+  %p
+    %strong= pluralize @group.matches, 'Symbol'
+    = @max_groups > @groups.size ? 'found in' : 'found, displaying the first'
+    %strong= pluralize @groups.size, 'Ontology'
+  %ol.searchResult
+    = render :partial => 'group', :collection => @groups

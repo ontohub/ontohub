@@ -10,7 +10,7 @@ class OntologiesController < InheritedResources::Base
   load_and_authorize_resource :except => [:index, :show]
 
   respond_to :json
-  
+
   def index
     super do |format|
       format.html do
@@ -19,19 +19,29 @@ class OntologiesController < InheritedResources::Base
       end
     end
   end
-  
-  def show
-    show! { @grouped_kinds = resource.entities.grouped_by_kind }
-  end
 
   def new
-    @version = build_resource.versions.build
+    @ontology_version = build_resource.versions.build
   end
 
   def create
     @version = build_resource.versions.first
     @version.user = current_user
     super
+  end
+  
+  def show
+    redirect_to ontology_entities_path(resource, :kind => resource.entities.groups_by_kind.first.kind)
+  end
+  
+  protected
+  
+  def build_resource
+    return @ontology if @ontology
+    
+    type  = (params[:ontology] || {}).delete(:type)
+    clazz = type=='DistributedOntology' ? DistributedOntology : SingleOntology
+    @ontology = clazz.new params[:ontology]
   end
 
 end

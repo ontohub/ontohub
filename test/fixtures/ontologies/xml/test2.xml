@@ -1,0 +1,43 @@
+<?xml version='1.0' ?>
+<DGraph filename="/home/till/CASL/Hets-lib/./test/test2.casl" libname="test/test2" nextlinkid="3">
+  <DGNode name="sp__E1" logic="CASL" refname="sp" relxpath="/Extension/Spec[1]">
+    <Declarations>
+      <Symbol kind="sort" name="s" range="/home/till/CASL/Hets-lib/./test/test2.casl:2.8">sort s</Symbol>
+      <Symbol kind="op" name="f" range="/home/till/CASL/Hets-lib/./test/test2.casl:3.6">op f : s -&gt; s</Symbol>
+    </Declarations>
+    <Axioms>
+      <Axiom name="Ax1" range="/home/till/CASL/Hets-lib/./test/test2.casl:3.8-4.25">
+        <Text>forall x : s . f(x) = x %(Ax1)%</Text>
+        <Symbol kind="op" name="f" range="/home/till/CASL/Hets-lib/./test/test2.casl:4.18">op f : s -&gt; s</Symbol>
+        <Symbol kind="sort" name="s" range="/home/till/CASL/Hets-lib/./test/test2.casl:3.11">sort s</Symbol>
+      </Axiom>
+    </Axioms>
+  </DGNode>
+  <DGNode name="sp__T" logic="CASL" refname="sp" relxpath="/Extension/Spec[2]/Translation">
+    <Axioms>
+      <Axiom name="Ax1" range="/home/till/CASL/Hets-lib/./test/test2.casl:3.8-6.25">
+        <Text>. exists x : s . f(x) = x %(Ax1)%</Text>
+        <Symbol kind="op" name="f" range="/home/till/CASL/Hets-lib/./test/test2.casl:6.18">op f : s -&gt; s</Symbol>
+        <Symbol kind="sort" name="s" range="/home/till/CASL/Hets-lib/./test/test2.casl:3.11">sort s</Symbol>
+      </Axiom>
+    </Axioms>
+  </DGNode>
+  <DGNode name="sp" logic="CASL" refname="sp" relxpath="/Extension/Spec[2]" />
+  <DGNode name="sp1" logic="CASL" refname="sp1" relxpath="/">
+    <Hidden>
+      <Symbol range="/home/till/CASL/Hets-lib/./test/test2.casl:3.6">op f : s -&gt; s</Symbol>
+    </Hidden>
+  </DGNode>
+  <DGLink source="sp__E1" target="sp__T" linkid="0">
+    <Type>GlobalDefInc</Type>
+    <GMorphism name="id_CASL.SubPCSOL=E" />
+  </DGLink>
+  <DGLink source="sp__T" target="sp" linkid="1">
+    <Type>GlobalDefInc</Type>
+    <GMorphism name="id_CASL.SubPCSOL=E" />
+  </DGLink>
+  <DGLink source="sp" target="sp1" linkid="2">
+    <Type>HidingDefInc</Type>
+    <GMorphism name="id_CASL.SubPCSOL=E" />
+  </DGLink>
+</DGraph>

@@ -1,7 +1,5 @@
-= ontology_nav resource, :overview
+= ontology_nav @ontology, :entities
 
-%aside
-  = render :partial => 'info'
-  = render :partial => 'kinds' if @grouped_kinds.any?
+= pagination do
+  = render :partial => 'entities/index'
 
-= simple_format resource.description

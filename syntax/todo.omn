@@ -1,0 +1,8 @@
+Prefix: :     <http://example.org/todo#>
+
+Ontology: <http://example.org/todo#>
+  Annotations: rdfs:comment "A pseudo-ontology with some annotation vocabulary for tasks and questions.  These annotation properties are used in some ontologies here, and we declare them so that validators don't complain.",
+               owl:versionInfo "1.0"
+  
+  AnnotationProperty: task
+  AnnotationProperty: question

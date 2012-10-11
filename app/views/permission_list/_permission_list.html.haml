@@ -1,4 +1,4 @@
-.permissionList{ permission_list.to_data.merge('data-uri' => url_for(permission_list.collection_path)) }
+.permissionList{ permission_list.to_data.merge('data-iri' => url_for(permission_list.collection_path)) }
   
   %ul
     = render :collection => permission_list.collection, :partial => permission_list.permission_path, :locals => {:permission_list => permission_list}

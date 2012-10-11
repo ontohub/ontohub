@@ -1,15 +1,17 @@
 %li
   %ul.stats
-    - if ontology.logic
-      %li= ontology.logic
+    - if ontology.distributed?
+      %li= link_to pluralize(ontology.children.count, 'Ontology'), [ontology, :children]
+    - if ontology.language
+      %li= ontology.language
     
     - if ontology.entities_count
-      %li= link_to pluralize(ontology.entities_count, 'Entity'), [ontology, :entities]
-      %li= link_to pluralize(ontology.axioms_count, 'Axiom'), [ontology, :axioms]
+      %li= link_to pluralize(ontology.entities_count, 'Symbol'), [ontology, :entities]
+      %li= link_to pluralize(ontology.sentences_count, 'Sentence'), [ontology, :sentences]
     
     - else
       %li= ontology.state
   
   %h3= link_to highlight(ontology.to_s, @search), ontology
   
-  %p= highlight(ontology.uri.to_s, @search)
+  %p= highlight(ontology.iri.to_s, @search)

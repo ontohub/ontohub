@@ -1,12 +1,14 @@
 require 'test_helper'
 
 class OntologyVersionTest < ActiveSupport::TestCase
-  should have_db_index(:ontology_id)
-  should have_db_index(:user_id)
-  
   should belong_to :user
   should belong_to :ontology
-  
+
+  should have_db_index([:ontology_id, :number])
+  should have_db_index(:user_id)
+  should have_db_index(:previous_version_id)
+  should have_db_index(:checksum)
+
   context 'Validating OntologyVersion' do
     ['http://example.com/', 'https://example.com/'].each do |val|
       should allow_value(val).for :source_url
@@ -88,9 +90,9 @@ class OntologyVersionTest < ActiveSupport::TestCase
       end
     end
 
-    should 'raise no exception if called with remote uri' do
+    should 'raise no exception if called with remote iri' do
       assert_nothing_raised do
-        @ontology_version.remote_raw_file_url = 'http://colore.googlecode.com/svn/trunk/ontologies/arithmetic/robinson_arithmetic.clif'
+        @ontology_version.remote_raw_file_url = 'http://colore.googlecode.com/svn-history/r679/trunk/ontologies/arithmetic/robinson_arithmetic.clif'
         @ontology_version.save!
         @ontology_version.parse
       end
@@ -98,7 +100,7 @@ class OntologyVersionTest < ActiveSupport::TestCase
 
     should 'raise exception if called with unsupported remote file' do
       assert_raise Hets::HetsError do
-        @ontology_version.remote_raw_file_url = 'http://colore.googlecode.com/svn/trunk/ontologies/algebra/module.clif'
+        @ontology_version.remote_raw_file_url = 'http://colore.googlecode.com/svn-history/r679/trunk/ontologies/algebra/module.clif'
         @ontology_version.save!
         @ontology_version.parse
       end

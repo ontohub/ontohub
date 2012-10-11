@@ -1,11 +1,18 @@
-Factory.sequence :uri do |n|
+Factory.sequence :iri do |n|
   "gopher://host/ontology/#{n}"
 end
 
 FactoryGirl.define do
   factory :ontology do
-    uri { Factory.next :uri }
+    iri { Factory.next :iri }
     name { Faker::Name.name }
     description { Faker::Lorem.paragraph }
+    
+    factory :single_ontology, class: SingleOntology do
+    end
+    
+    factory :distributed_ontology, class: DistributedOntology do
+    end
+    
   end
 end

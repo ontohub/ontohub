@@ -1,7 +1,7 @@
 source 'https://rubygems.org'
 
 gem 'rails', '~> 3.2.2'
-gem 'pg'
+gem 'mysql2', '~> 0.3.0'
 gem 'foreigner'
 
 
@@ -45,14 +45,19 @@ gem 'kaminari'
 # Strip spaces in attributes
 gem "strip_attributes", "~> 1.0"
 
+# For distributed ontologies
+gem 'acts_as_tree'
+
 # Manage uploads
 gem 'carrierwave', "~> 0.6.1"
 
 # Async jobs
 gem 'resque'
+gem 'redis-namespace'
 
 # Search engine
 gem 'sunspot_rails', :git => 'git://github.com/digineo/sunspot.git'
+gem 'progress_bar'
 
 gem "faker", "~> 1.0"
 
@@ -63,6 +68,8 @@ group :test do
   gem 'shoulda-context'
   gem "shoulda_routing_macros", "~> 0.1.2"
   gem "factory_girl_rails", "~> 1.7.0"
+  gem "capybara"
+  gem "launchy"
 end
 
 group :development do
@@ -70,6 +77,8 @@ group :development do
   gem 'rvm-capistrano'
   # pre-packaged Solr distribution for use in development
   gem 'sunspot_solr', :git => 'git://github.com/digineo/sunspot.git'
+  gem "rails-erd"
+  gem 'quiet_assets'
 end
 
 group :production do

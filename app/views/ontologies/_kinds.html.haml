@@ -1,6 +1,6 @@
-%h4 Entities in this ontology
+%h4 Symbols in this ontology
 %table.info
-  - @grouped_kinds.each do |entity|
+  - @groups.each do |group|
     %tr
-      %td.numeric= entity.count
-      %td= link_to (entity.count.to_i == 1 ? entity.kind : entity.kind.pluralize), ontology_entities_path(resource, :kind => entity.kind)
+      %td.numeric= group.count
+      %td= link_to (group.count.to_i == 1 ? group.kind : group.kind.pluralize), ontology_entities_path(resource, :kind => group.kind)

@@ -1,0 +1,63 @@
+<?xml version="1.0" encoding="ISO-8859-1"?>
+<!-- TODO This is the sample file from http://code.google.com/p/persistenturls/wiki/PURLBatchUploadingVersionOne.
+     It needs to be adapted to DOL. -->
+<purls>
+        <!-- Type 301.  Moved Permanently to a target URL -->
+        <purl id="/tld/subdomain/test301" type="301">
+                <maintainers>
+                        <uid>uche</uid>
+                </maintainers>
+                <target url="http://example.com/test301target/"/>
+        </purl>
+        <!-- Type 302.  Simple redirection to a target URL -->
+        <purl id="/tld/subdomain/test302" type="302">
+                <maintainers>
+                        <uid>uche</uid>
+                </maintainers>
+                <target url="http://example.com/test302target/"/>
+        </purl>
+        <!-- Type 303.  See Also URL -->
+        <purl id="/tld/subdomain/test303/" type="303">
+                <maintainers>
+                        <uid>uche</uid>
+                </maintainers>
+                <seealso url="http://example.com/see/also/some/more.xml"/>
+        </purl>
+        <!-- Type 307.  Temporary redirect to a target URL -->
+        <purl id="/tld/subdomain/test307" type="307">
+                <maintainers>
+                        <uid>uche</uid>
+                </maintainers>
+                <target url="http://example.com/test307target/"/>
+        </purl>
+        <!-- Type 404.  Temporarily gone -->
+        <purl id="/tld/subdomain/test404" type="404">
+                <maintainers>
+                        <uid>uche</uid>
+                </maintainers>
+        </purl>
+        <!-- Type 410.  Permanently gone -->
+        <purl id="/tld/subdomain/test410" type="410">
+                <maintainers>
+                        <uid>uche</uid>
+                </maintainers>
+        </purl>
+        <!-- Type clone.  Clone an existing PURL -->
+        <purl id="/tld/subdomain/testClone" type="clone">
+                <basepurl path="/NET/an/old/PURL"/>
+        </purl>
+        <!-- Type chain.  Chain an existing PURL -->
+        <purl id="/tld/subdomain/testChain" type="chain">
+                <maintainers>
+                        <uid>uche</uid>
+                </maintainers>
+                <basepurl path="/NET/an/old/PURL"/>
+        </purl>
+        <!-- Type partial.  Partial-redirect PURL -->
+        <purl id="/tld/subdomain/testPartial" type="partial">
+                <maintainers>
+                        <uid>uche</uid>
+                </maintainers>
+                <target url="http://example.com/testPartialtarget/"/>
+        </purl>
+</purls>

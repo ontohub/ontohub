@@ -7,7 +7,7 @@ class OntologiesControllerTest < ActionController::TestCase
   
   context 'Ontology Instance' do
     setup do
-      @ontology = Factory :ontology
+      @ontology = Factory :single_ontology
       @user     = Factory :user
       
       2.times { Factory :entity, :ontology => @ontology }
@@ -40,12 +40,27 @@ class OntologiesControllerTest < ActionController::TestCase
     
     context 'on GET to show' do
       setup do
-        get :show, :id => @ontology.to_param
+        Entity.delete_all
       end
       
-      should respond_with :success
-      should assign_to :grouped_kinds
-      should render_template :show
+      context 'without entities' do
+        setup do
+          get :show, :id => @ontology.to_param
+        end
+        
+        should respond_with :redirect
+        should redirect_to("entities"){  ontology_entities_path(@ontology, :kind => 'Symbol') }
+      end
+      
+      context 'with entity of kind Class' do
+        setup do
+          entity = FactoryGirl.create :entity, :ontology => @ontology, :kind => 'Class'
+          get :show, :id => @ontology.to_param
+        end
+        
+        should respond_with :redirect
+        should redirect_to("entities"){  ontology_entities_path(@ontology, :kind => 'Class') }
+      end
     end
     
     context 'signed in' do
@@ -68,7 +83,7 @@ class OntologiesControllerTest < ActionController::TestCase
         end
         
         should respond_with :success
-        should assign_to :version
+        should assign_to :ontology_version
         should render_template :new
       end
       
@@ -78,7 +93,7 @@ class OntologiesControllerTest < ActionController::TestCase
           context 'without format' do
             setup do
               post :create, :ontology => {
-                uri: 'fooo',
+                iri: 'fooo',
                 versions_attributes: [{
                   source_url: ''
                 }],
@@ -93,7 +108,7 @@ class OntologiesControllerTest < ActionController::TestCase
           context 'with format :json' do
             setup do
               post :create, :format => :json, :ontology => {
-                uri: 'fooo',
+                iri: 'fooo',
                 versions_attributes: [{
                   source_url: ''
                 }],
@@ -110,7 +125,7 @@ class OntologiesControllerTest < ActionController::TestCase
               OntologyVersion.any_instance.expects(:parse_async).once
               
               post :create, :ontology => {
-                uri: 'http://example.com/dummy.ontology',
+                iri: 'http://example.com/dummy.ontology',
                 versions_attributes: [{
                   source_url: 'http://example.com/dummy.ontology'
                 }],
@@ -126,7 +141,7 @@ class OntologiesControllerTest < ActionController::TestCase
               OntologyVersion.any_instance.expects(:parse_async).once
               
               post :create, :format => :json, :ontology => {
-                uri: 'http://example.com/dummy.ontology',
+                iri: 'http://example.com/dummy.ontology',
                 versions_attributes: [{
                   source_url: 'http://example.com/dummy.ontology'
                 }],

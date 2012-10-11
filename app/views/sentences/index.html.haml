@@ -1,0 +1,10 @@
+= ontology_nav @ontology, :sentences
+
+= pagination do
+  %table.sentences
+    %thead
+      %tr
+        %th Name
+        %th Text
+    %tbody
+      = render collection

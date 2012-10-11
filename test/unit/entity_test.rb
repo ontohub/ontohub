@@ -1,24 +1,31 @@
 require 'test_helper'
 
 class EntityTest < ActiveSupport::TestCase
+
+  context 'Migrations' do
+    %w( ontology_id comments_count ).each do |column|
+      should have_db_column(column).of_type(:integer)
+    end
   
-  %w( ontology_id comments_count ).each do |column|
-    should have_db_column(:comments_count).of_type(:integer)
-  end
-  
-  %w( kind name uri range ).each do |column|
-    should have_db_column(column).of_type(:string)
+    %w( kind name iri range ).each do |column|
+      should have_db_column(column).of_type(:string)
+    end
+
+    should have_db_column('text').of_type(:text)
+
+    should have_db_index([:ontology_id, :id]).unique(true)
+    should have_db_index([:ontology_id, :text]).unique(true)
+    should have_db_index([:ontology_id, :kind])
   end
 
-  should have_db_index([:ontology_id, :text]).unique(true)
-  should have_db_index([:ontology_id, :kind])
-  
-  should belong_to :ontology
-  should have_and_belong_to_many :axioms
+  context 'Associations' do
+    should belong_to :ontology
+    should have_and_belong_to_many :sentences
+  end
 
   context 'OntologyInstance' do
   	setup do
-  		@ontology = Factory :ontology
+  		@ontology = Factory :single_ontology
   	end
 
   	context 'creating Entities' do
