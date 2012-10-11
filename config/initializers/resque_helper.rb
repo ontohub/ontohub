@@ -7,6 +7,3 @@ class ActiveRecord::Base
     Resque.enqueue(self.class, id, method, *args)
   end
 end
-
-# namespace for multiple instances of ontohub
-Resque.redis.namespace = 'staging'

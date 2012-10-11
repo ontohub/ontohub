@@ -1,17 +1,16 @@
 require 'bundler/capistrano'
 
-hostname = 'staging.ontohub.org'
+hostname = 'ontohub.org'
 
 set :application, 'ontohub'
 set :scm, :git
 set :repository, "git@github.com:#{application}/#{application}.git"
-set :branch,     "new-model"
+set :branch,     "master"
 set :deploy_to, "/srv/http/#{hostname}"
 
 set :user, 'ontohub'
 set :use_sudo, false
 set :deploy_via, :remote_cache
-set :god_port, 17166
 
 # RVM
 require "rvm/capistrano"

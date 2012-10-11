@@ -2,7 +2,7 @@ production:
   solr:
     hostname: localhost
     port: 8080
-    path: /solr_staging
+    path: /solr
     log_level: WARNING
 
 development:
