@@ -33,5 +33,15 @@ class OntologiesController < InheritedResources::Base
   def show
     redirect_to ontology_entities_path(resource, :kind => resource.entities.groups_by_kind.first.kind)
   end
+  
+  protected
+  
+  def build_resource
+    return @ontology if @ontology
+    
+    type  = (params[:ontology] || {}).delete(:type)
+    clazz = type=='DistributedOntology' ? DistributedOntology : SingleOntology
+    @ontology = clazz.new params[:ontology]
+  end
 
 end

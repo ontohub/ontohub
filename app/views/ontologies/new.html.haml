@@ -1,6 +1,8 @@
 %h2= @page_title = "Create an ontology"
 
 = semantic_form_for resource do |f|
+  = f.inputs do
+    = f.input :type, :as => :radio, :collection => {"Distributed" => "DistributedOntology", "Single" => "SingleOntology"}
   = f.semantic_fields_for :versions, resource.versions.first do |vf|
     = f.inputs do
       = vf.input :raw_file, :as => :file
