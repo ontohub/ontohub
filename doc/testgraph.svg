@@ -1,0 +1,206 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg width="148pt" height="706pt" viewBox="0.00 0.00 148.00 706.00" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+<g id="graph1" class="graph" transform="scale(1 1) rotate(0) translate(4 702)">
+<title>Basic/Numbers</title>
+<polygon fill="white" stroke="white" points="-4,5 -4,-702 145,-702 145,5 -4,5"/>
+
+<g type="UnprovenConsInternal" id="0" class="node"><title>0</title>
+<a xlink:href="/705425354?theory=0">
+<ellipse fill="red" stroke="black" cx="72" cy="-694" rx="7" ry="3.5"/>
+</a>
+</g>
+
+<g type="ProvenConsInternal" id="1" class="node"><title>1</title>
+<a xlink:href="/705425354?theory=1">
+<ellipse fill="#00ff00" stroke="black" cx="72" cy="-636" rx="7" ry="3.5"/>
+</a>
+</g>
+
+<g type="GlobalDef Mono" id="0" class="edge"><title>0-&gt;1</title>
+<a xlink:href="/705425354?edge=0" xlink:title="Mono?">
+<path fill="none" stroke="black" d="M72,-690.194C72,-681.015 72,-657.471 72,-644.644"/>
+<polygon fill="black" stroke="black" points="73.7501,-644.595 72,-639.595 70.2501,-644.595 73.7501,-644.595"/>
+</a>
+<a xlink:href="/705425354?edge=0" xlink:title="Mono?">
+<text text-anchor="middle" x="87" y="-662.5" font-family="Helvetica,sans-Serif" font-size="10.00">Mono?</text>
+</a>
+</g>
+
+<g type="Proven" id="2" class="node"><title>2</title>
+<a xlink:href="/705425354?theory=2" xlink:title="Nat">
+<ellipse fill="yellow" stroke="black" cx="72" cy="-576" rx="27" ry="18"/>
+<text text-anchor="middle" x="72" y="-573.2" font-family="Helvetica,sans-Serif" font-size="12.00">Nat</text>
+</a>
+</g>
+
+<g type="GlobalDef" id="1" class="edge"><title>1-&gt;2</title>
+<a xlink:href="/705425354?edge=1">
+<path fill="none" stroke="black" d="M68.7371,-632.774C65.8807,-626.371 64.7791,-611.558 65.4324,-598.669"/>
+<polygon fill="black" stroke="black" points="67.1793,-598.773 65.7853,-593.662 63.688,-598.527 67.1793,-598.773"/>
+</a>
+</g>
+
+<g type="GlobalUnprovenThm" id="2" class="edge"><title>2-&gt;1</title>
+<a xlink:href="/705425354?edge=2">
+<path fill="none" stroke="red" d="M78.2147,-593.662C79.2447,-604.887 78.7883,-618.903 76.8455,-627.655"/>
+<polygon fill="red" stroke="red" points="75.0678,-627.48 75.2629,-632.774 78.4117,-628.514 75.0678,-627.48"/>
+</a>
+</g>
+
+<g type="ProvenConsInternal" id="3" class="node"><title>3</title>
+<a xlink:href="/705425354?theory=3">
+<ellipse fill="#00ff00" stroke="black" cx="72" cy="-504" rx="7" ry="3.5"/>
+</a>
+</g>
+
+<g type="GlobalDef Mono" id="3" class="edge"><title>2-&gt;3</title>
+<a xlink:href="/705425354?edge=3" xlink:title="Mono?">
+<path fill="none" stroke="black" d="M72,-557.831C72,-543.49 72,-524.098 72,-512.931"/>
+<polygon fill="black" stroke="black" points="73.7501,-512.657 72,-507.657 70.2501,-512.657 73.7501,-512.657"/>
+</a>
+<a xlink:href="/705425354?edge=3" xlink:title="Mono?">
+<text text-anchor="middle" x="87" y="-530.5" font-family="Helvetica,sans-Serif" font-size="10.00">Mono?</text>
+</a>
+</g>
+
+<g type="UnprovenConsInternal" id="4" class="node"><title>4</title>
+<a xlink:href="/705425354?theory=4">
+<ellipse fill="red" stroke="black" cx="72" cy="-446" rx="7" ry="3.5"/>
+</a>
+</g>
+
+<g type="GlobalDef Def" id="4" class="edge"><title>3-&gt;4</title>
+<a xlink:href="/705425354?edge=4" xlink:title="Def?">
+<path fill="none" stroke="black" d="M72,-500.194C72,-491.015 72,-467.471 72,-454.644"/>
+<polygon fill="black" stroke="black" points="73.7501,-454.595 72,-449.595 70.2501,-454.595 73.7501,-454.595"/>
+</a>
+<a xlink:href="/705425354?edge=4" xlink:title="Def?">
+<text text-anchor="middle" x="83" y="-472.5" font-family="Helvetica,sans-Serif" font-size="10.00">Def?</text>
+</a>
+</g>
+
+<g type="Proven" id="5" class="node"><title>5</title>
+<a xlink:href="/705425354?theory=5" xlink:title="Int">
+<ellipse fill="yellow" stroke="black" cx="72" cy="-386" rx="27" ry="18"/>
+<text text-anchor="middle" x="72" y="-383.2" font-family="Helvetica,sans-Serif" font-size="12.00">Int</text>
+</a>
+</g>
+
+<g type="GlobalDef" id="5" class="edge"><title>4-&gt;5</title>
+<a xlink:href="/705425354?edge=5">
+<path fill="none" stroke="black" d="M68.7371,-442.774C65.8807,-436.371 64.7791,-421.558 65.4324,-408.669"/>
+<polygon fill="black" stroke="black" points="67.1793,-408.773 65.7853,-403.662 63.688,-408.527 67.1793,-408.773"/>
+</a>
+</g>
+
+<g type="GlobalUnprovenThm" id="6" class="edge"><title>5-&gt;4</title>
+<a xlink:href="/705425354?edge=6">
+<path fill="none" stroke="red" d="M78.2147,-403.662C79.2447,-414.887 78.7883,-428.903 76.8455,-437.655"/>
+<polygon fill="red" stroke="red" points="75.0678,-437.48 75.2629,-442.774 78.4117,-438.514 75.0678,-437.48"/>
+</a>
+</g>
+
+<g type="ProvenConsInternal" id="6" class="node"><title>6</title>
+<a xlink:href="/705425354?theory=6">
+<ellipse fill="#00ff00" stroke="black" cx="72" cy="-314" rx="7" ry="3.5"/>
+</a>
+</g>
+
+<g type="GlobalDef Mono" id="7" class="edge"><title>5-&gt;6</title>
+<a xlink:href="/705425354?edge=7" xlink:title="Mono?">
+<path fill="none" stroke="black" d="M72,-367.831C72,-353.49 72,-334.098 72,-322.931"/>
+<polygon fill="black" stroke="black" points="73.7501,-322.657 72,-317.657 70.2501,-322.657 73.7501,-322.657"/>
+</a>
+<a xlink:href="/705425354?edge=7" xlink:title="Mono?">
+<text text-anchor="middle" x="87" y="-340.5" font-family="Helvetica,sans-Serif" font-size="10.00">Mono?</text>
+</a>
+</g>
+
+<g type="UnprovenConsInternal" id="7" class="node"><title>7</title>
+<a xlink:href="/705425354?theory=7">
+<ellipse fill="red" stroke="black" cx="72" cy="-256" rx="7" ry="3.5"/>
+</a>
+</g>
+
+<g type="GlobalDef Def" id="8" class="edge"><title>6-&gt;7</title>
+<a xlink:href="/705425354?edge=8" xlink:title="Def?">
+<path fill="none" stroke="black" d="M72,-310.194C72,-301.015 72,-277.471 72,-264.644"/>
+<polygon fill="black" stroke="black" points="73.7501,-264.595 72,-259.595 70.2501,-264.595 73.7501,-264.595"/>
+</a>
+<a xlink:href="/705425354?edge=8" xlink:title="Def?">
+<text text-anchor="middle" x="83" y="-282.5" font-family="Helvetica,sans-Serif" font-size="10.00">Def?</text>
+</a>
+</g>
+
+<g type="Proven" id="8" class="node"><title>8</title>
+<a xlink:href="/705425354?theory=8" xlink:title="Rat">
+<ellipse fill="yellow" stroke="black" cx="72" cy="-196" rx="27" ry="18"/>
+<text text-anchor="middle" x="72" y="-193.2" font-family="Helvetica,sans-Serif" font-size="12.00">Rat</text>
+</a>
+</g>
+
+<g type="GlobalDef" id="9" class="edge"><title>7-&gt;8</title>
+<a xlink:href="/705425354?edge=9">
+<path fill="none" stroke="black" d="M68.7371,-252.774C65.8807,-246.371 64.7791,-231.558 65.4324,-218.669"/>
+<polygon fill="black" stroke="black" points="67.1793,-218.773 65.7853,-213.662 63.688,-218.527 67.1793,-218.773"/>
+</a>
+</g>
+
+<g type="GlobalUnprovenThm" id="10" class="edge"><title>8-&gt;7</title>
+<a xlink:href="/705425354?edge=10">
+<path fill="none" stroke="red" d="M78.2147,-213.662C79.2447,-224.887 78.7883,-238.903 76.8455,-247.655"/>
+<polygon fill="red" stroke="red" points="75.0678,-247.48 75.2629,-252.774 78.4117,-248.514 75.0678,-247.48"/>
+</a>
+</g>
+
+<g type="ProvenConsInternal" id="9" class="node"><title>9</title>
+<a xlink:href="/705425354?theory=9">
+<ellipse fill="#00ff00" stroke="black" cx="50" cy="-136" rx="7" ry="3.5"/>
+</a>
+</g>
+
+<g type="GlobalDef" id="11" class="edge"><title>8-&gt;9</title>
+<a xlink:href="/705425354?edge=11">
+<path fill="none" stroke="black" d="M65.5183,-178.323C61.4037,-167.101 56.2684,-153.096 53.0607,-144.347"/>
+<polygon fill="black" stroke="black" points="54.7033,-143.744 51.339,-139.652 51.4173,-144.949 54.7033,-143.744"/>
+</a>
+</g>
+
+<g type="LocallyEmptyHasIngoingHidingLink" id="11" class="node"><title>11</title>
+<a xlink:href="/705425354?theory=11" xlink:title="DecimalFraction">
+<ellipse fill="#00ff00" stroke="black" cx="70" cy="-18" rx="69.7653" ry="18"/>
+<text text-anchor="middle" x="70" y="-15.2" font-family="Helvetica,sans-Serif" font-size="12.00">DecimalFraction</text>
+</a>
+</g>
+
+<g type="GlobalProvenThm(static analysis) Def" id="14" class="edge"><title>8-&gt;11</title>
+<a xlink:href="/705425354?edge=14" xlink:title="Def?">
+<path fill="none" stroke="orange" d="M71.9921,-177.617C71.953,-150.547 71.7724,-98.3694 71,-54 70.9296,-49.9561 70.8309,-45.6572 70.7228,-41.4905"/>
+<polygon fill="orange" stroke="orange" points="72.4673,-41.2631 70.5821,-36.3125 68.9686,-41.3582 72.4673,-41.2631"/>
+</a>
+<a xlink:href="/705425354?edge=14" xlink:title="Def?">
+<text text-anchor="middle" x="82" y="-104.5" font-family="Helvetica,sans-Serif" font-size="10.00">Def?</text>
+</a>
+</g>
+
+<g type="ProvenConsInternal" id="10" class="node"><title>10</title>
+<a xlink:href="/705425354?theory=10">
+<ellipse fill="#00ff00" stroke="black" cx="50" cy="-78" rx="7" ry="3.5"/>
+</a>
+</g>
+
+<g type="GlobalDef" id="12" class="edge"><title>9-&gt;10</title>
+<a xlink:href="/705425354?edge=12">
+<path fill="none" stroke="black" d="M50,-132.194C50,-123.015 50,-99.4711 50,-86.6444"/>
+<polygon fill="black" stroke="black" points="51.7501,-86.5953 50,-81.5953 48.2501,-86.5953 51.7501,-86.5953"/>
+</a>
+</g>
+
+<g type="HidingDef" id="13" class="edge"><title>10-&gt;11</title>
+<a xlink:href="/705425354?edge=13">
+<path fill="none" stroke="blue" d="M51.1912,-74.4264C53.3738,-67.8785 58.177,-53.469 62.383,-40.8511"/>
+<polygon fill="blue" stroke="blue" points="64.0978,-41.2404 64.0188,-35.9436 60.7774,-40.1336 64.0978,-41.2404"/>
+</a>
+</g>
+</g>
+</svg>
