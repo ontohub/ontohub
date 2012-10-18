@@ -7,6 +7,7 @@ set :scm, :git
 set :repository, "git@github.com:#{application}/#{application}.git"
 set :branch,     "master"
 set :deploy_to, "/srv/http/#{hostname}"
+set :shared_children, %w( public/uploads log tmp/pids )
 
 set :user, 'ontohub'
 set :use_sudo, false

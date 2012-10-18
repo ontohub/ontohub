@@ -5,11 +5,6 @@ namespace :deploy do
     run "touch #{current_path}/tmp/restart.txt"
   end
   
-  desc "Symlink shared configs and folders on each release."
-  task :symlink_shared, :roles => :app, :except => { :no_release => true } do
-    run "ln -nfs #{shared_path}/uploads #{release_path}/public/uploads"
-  end
-  
   desc "Moves and replaces the secret-token if missing in shared directory"
   task :symlink_secret, :roles => :app, :except => { :no_release => true } do 
     filename       = 'secret_token.rb'
@@ -35,6 +30,5 @@ after "deploy:cold" do
   puts "an anonymous hook!"
 end
 
-after "deploy:update", "deploy:symlink_shared"
 after "deploy:update", "deploy:symlink_secret"
 after :deploy, "deploy:cleanup"
