@@ -1,0 +1,2 @@
+$ ->
+  $(".permissionList").permissionList()
