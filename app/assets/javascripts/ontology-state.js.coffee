@@ -1,9 +1,9 @@
 $ ->
   lastStatus = "pending"
-  lastStatus = "downloading"  if $("aside .info .downloading").length > 0
-  lastStatus = "processing"  if $("aside .info .processing").length > 0
+  lastStatus = "downloading"  if $(".downloading").length > 0
+  lastStatus = "processing"  if $(".processing").length > 0
   updateStatus = ->
     $.getJSON document.location.pathname + ".json", (data) ->
-      location.reload()  unless lastStatus is data.state
+      window.location = location.href.split("?")[0] unless lastStatus is data.state
   
-  setInterval updateStatus, 5000  if $("aside .info").find(".pending, .downloading, .processing").length > 0
+  setInterval updateStatus, 5000  if $("#status").find(".pending, .downloading, .processing").length > 0

@@ -34,7 +34,7 @@ module Hets
   # Runs hets with input_file and returns XML output file path.
   def self.parse(input_file)
     config = Config.new
-    Rails.logger.debug "#{config.path} -o sym.xml -v2 '#{input_file}'"
+    Rails.logger.debug "#{config.path} -o xml -v2 '#{input_file}'"
     status = `#{config.path} -o xml -v2 '#{input_file}' 2>&1`
     status = status.split("\n").last
     Rails.logger.debug status

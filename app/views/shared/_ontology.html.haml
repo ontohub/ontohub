@@ -4,6 +4,9 @@
   %span= resource
   %small
     = "#{resource.language}/#{resource.logic}"
+  - if resource.state != 'done'
+    %small#status
+      = status resource
 
 %div.btn-group{'style' => 'display: inline-block'}
   %a.btn.btn-mini.dropdown-toggle{'href' => '#', 'data-toggle' => 'dropdown'}
