@@ -429,43 +429,43 @@ trans:CLWithoutSequencesToCommonLogic a dol:SubLogic, dol:PlainMapping, dol:Defa
   dol:mapsTo log:CommonLogic ;
   rdfs:isDefinedBy reg: .
 
-trans:RDFtoFOLeq a dol:SubLogic, dol:TheoroidalMapping, dol:DefaultMapping ;
+trans:RDFtoFOLeq a dol:SubLogic, dol:SimpleTheoroidalMapping, dol:DefaultMapping ;
   rdfs:label "RDF→FOL⁼ translation" ;
   dol:mapsFrom log:RDF ;
   dol:mapsTo log:FOLeq ;
   rdfs:isDefinedBy reg: .
 
-trans:RDFStoFOLeq a dol:SubLogic, dol:TheoroidalMapping, dol:DefaultMapping ;
+trans:RDFStoFOLeq a dol:SubLogic, dol:SimpleTheoroidalMapping, dol:DefaultMapping ;
   rdfs:label "RDFS→FOL⁼ translation" ;
   dol:mapsFrom log:RDFS ;
   dol:mapsTo log:FOLeq ;
   rdfs:isDefinedBy reg: .
 
-trans:OWL2FullToFOLeq a dol:SubLogic, dol:TheoroidalMapping, dol:DefaultMapping ;
+trans:OWL2FullToFOLeq a dol:SubLogic, dol:SimpleTheoroidalMapping, dol:DefaultMapping ;
   rdfs:label "OWL 2 Full→FOL⁼ translation" ;
   dol:mapsFrom logOWL2:Full ;
   dol:mapsTo log:FOLeq ;
   rdfs:isDefinedBy reg: .
 
-trans:ECoOWLtoSROIQ a dol:SubLogic, dol:TheoroidalMapping, dol:DefaultMapping ;
+trans:ECoOWLtoSROIQ a dol:SubLogic, dol:SimpleTheoroidalMapping, dol:DefaultMapping ;
   rdfs:label "E-Connections^{OWL}→SROIQ translation" ;
   dol:mapsFrom log:ECoOWL ;
   dol:mapsTo log:SROIQ ;
   rdfs:isDefinedBy reg: .
 
-trans:F-logicToFOLeq a dol:SubLogic, dol:TheoroidalMapping, dol:DefaultMapping ;
+trans:F-logicToFOLeq a dol:SubLogic, dol:SimpleTheoroidalMapping, dol:DefaultMapping ;
   rdfs:label "F-logic→FOL⁼ translation" ;
   dol:mapsFrom log:F-logic ;
   dol:mapsTo log:FOLeq ;
   rdfs:isDefinedBy reg: .
 
-trans:FOLeqmsToFOLeq a dol:Embedding, dol:TheoroidalMapping, dol:DefaultMapping ;
+trans:FOLeqmsToFOLeq a dol:Embedding, dol:SimpleTheoroidalMapping, dol:DefaultMapping ;
   rdfs:label "FOL⁼→many-sorted FOL⁼ translation" ;
   dol:mapsFrom log:FOLeqms ;
   dol:mapsTo log:FOLeq ;
   rdfs:isDefinedBy reg: .
 
-trans:RelationalSchemaToFOLeqms a dol:SubLogic, dol:TheoroidalMapping, dol:DefaultMapping ;
+trans:RelationalSchemaToFOLeqms a dol:SubLogic, dol:SimpleTheoroidalMapping, dol:DefaultMapping ;
   rdfs:label "relational database schema→many-sorted FOL⁼ translation" ;
   dol:mapsFrom log:RelationalSchema ;
   dol:mapsTo log:FOLeqms ;
@@ -490,13 +490,13 @@ trans:SROIQtoF-logic a dol:LogicMapping, dol:Translation, dol:ModelExpansiveMapp
   dol:mapsTo log:F-logic ;
   rdfs:isDefinedBy reg: .
 
-trans:CommonLogicToSubPCFOLeq a dol:SubLogic, dol:TheoroidalMapping, dol:DefaultMapping ;
+trans:CommonLogicToSubPCFOLeq a dol:SubLogic, dol:SimpleTheoroidalMapping, dol:DefaultMapping ;
   rdfs:label "Common Logic→SubPCFOL⁼ translation" ;
   dol:mapsFrom log:CommonLogic ;
   dol:mapsTo log:SubPCFOLeq ;
   rdfs:isDefinedBy reg: .
 
-trans:SubPCFOLeqToChurchSimpleTypeTheory a dol:SubLogic, dol:TheoroidalMapping, dol:DefaultMapping ;
+trans:SubPCFOLeqToChurchSimpleTypeTheory a dol:SubLogic, dol:SimpleTheoroidalMapping, dol:DefaultMapping ;
   rdfs:label "SubPCFOL⁼→Church Simple Type Theory translation" ;
   dol:mapsFrom log:SubPCFOLeq ;
   dol:mapsTo log:ChurchSimpleTypeTheory ;
@@ -802,6 +802,7 @@ serCL:CLIF a dol:Serialization ;
   skos:altLabel "Common Logic Interchange Format"@en ;
   dol:prefFilenameExtension "clif" ;
   dol:altFilenameExtension "clf" ;
+  rdfs:comment "dol:mediaType is being worked on; see https://github.com/gruninger/Common-Logic/issues/38" ;
   stand:standardizationStatus stand:ISOStandard ;
   rdfs:isDefinedBy reg: .
 
@@ -831,6 +832,7 @@ serCL:CGIF a dol:Serialization ;
   rdfs:label "CGIF" ;
   skos:prefLabel "CGIF"@en ;
   skos:altLabel "Conceptual Graph Interchange Format"@en ;
+  rdfs:comment "dol:mediaType is being worked on; see https://github.com/gruninger/Common-Logic/issues/38" ;
   stand:standardizationStatus stand:ISOStandard ;
   rdfs:isDefinedBy reg: .
 
@@ -840,6 +842,7 @@ serCL:XCL a dol:Serialization ;
   skos:prefLabel "CLIF"@en ;
   skos:altLabel "Common Logic Interchange Format"@en ;
   dol:prefFilenameExtension "xcl" ;
+  rdfs:comment "dol:mediaType is being worked on; see https://github.com/gruninger/Common-Logic/issues/38" ;
   stand:standardizationStatus stand:ISOStandard ;
   rdfs:isDefinedBy reg: .
 

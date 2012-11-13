@@ -602,8 +602,8 @@
     </dol:OntologyLanguageMapping>
 
     <dol:DefaultMapping rdf:about="http://purl.net/dol/translations/CommonLogicToSubPCFOLeq">
+        <rdf:type rdf:resource="http://purl.net/dol/1.0/rdf#SimpleTheoroidalMapping"/>
         <rdf:type rdf:resource="http://purl.net/dol/1.0/rdf#SubLogic"/>
-        <rdf:type rdf:resource="http://purl.net/dol/1.0/rdf#TheoroidalMapping"/>
         <dol:mapsFrom rdf:resource="http://purl.net/dol/logics/CommonLogic"/>
         <dol:mapsTo rdf:resource="http://purl.net/dol/logics/SubPCFOLeq"/>
         <rdfs:isDefinedBy rdf:resource="http://purl.net/dol/registry"/>
@@ -649,8 +649,8 @@
     </dol:DefaultMapping>
 
     <dol:DefaultMapping rdf:about="http://purl.net/dol/translations/ECoOWLtoSROIQ">
+        <rdf:type rdf:resource="http://purl.net/dol/1.0/rdf#SimpleTheoroidalMapping"/>
         <rdf:type rdf:resource="http://purl.net/dol/1.0/rdf#SubLogic"/>
-        <rdf:type rdf:resource="http://purl.net/dol/1.0/rdf#TheoroidalMapping"/>
         <dol:mapsFrom rdf:resource="http://purl.net/dol/logics/ECoOWL"/>
         <dol:mapsTo rdf:resource="http://purl.net/dol/logics/SROIQ"/>
         <rdfs:isDefinedBy rdf:resource="http://purl.net/dol/registry"/>
@@ -683,8 +683,8 @@
     </dol:DefaultMapping>
 
     <dol:DefaultMapping rdf:about="http://purl.net/dol/translations/F-logicToFOLeq">
+        <rdf:type rdf:resource="http://purl.net/dol/1.0/rdf#SimpleTheoroidalMapping"/>
         <rdf:type rdf:resource="http://purl.net/dol/1.0/rdf#SubLogic"/>
-        <rdf:type rdf:resource="http://purl.net/dol/1.0/rdf#TheoroidalMapping"/>
         <dol:mapsFrom rdf:resource="http://purl.net/dol/logics/F-logic"/>
         <dol:mapsTo rdf:resource="http://purl.net/dol/logics/FOLeq"/>
         <rdfs:isDefinedBy rdf:resource="http://purl.net/dol/registry"/>
@@ -743,7 +743,7 @@
 
     <dol:DefaultMapping rdf:about="http://purl.net/dol/translations/FOLeqmsToFOLeq">
         <rdf:type rdf:resource="http://purl.net/dol/1.0/rdf#Embedding"/>
-        <rdf:type rdf:resource="http://purl.net/dol/1.0/rdf#TheoroidalMapping"/>
+        <rdf:type rdf:resource="http://purl.net/dol/1.0/rdf#SimpleTheoroidalMapping"/>
         <dol:mapsFrom rdf:resource="http://purl.net/dol/logics/FOLeqms"/>
         <dol:mapsTo rdf:resource="http://purl.net/dol/logics/FOLeq"/>
         <rdfs:isDefinedBy rdf:resource="http://purl.net/dol/registry"/>
@@ -770,8 +770,8 @@
     </dol:DefaultMapping>
 
     <dol:DefaultMapping rdf:about="http://purl.net/dol/translations/OWL2FullToFOLeq">
+        <rdf:type rdf:resource="http://purl.net/dol/1.0/rdf#SimpleTheoroidalMapping"/>
         <rdf:type rdf:resource="http://purl.net/dol/1.0/rdf#SubLogic"/>
-        <rdf:type rdf:resource="http://purl.net/dol/1.0/rdf#TheoroidalMapping"/>
         <dol:mapsFrom rdf:resource="http://purl.net/dol/logics/OWL2/Full"/>
         <dol:mapsTo rdf:resource="http://purl.net/dol/logics/FOLeq"/>
         <rdfs:isDefinedBy rdf:resource="http://purl.net/dol/registry"/>
@@ -856,8 +856,8 @@
     </dol:ExactMapping>
 
     <dol:DefaultMapping rdf:about="http://purl.net/dol/translations/RDFStoFOLeq">
+        <rdf:type rdf:resource="http://purl.net/dol/1.0/rdf#SimpleTheoroidalMapping"/>
         <rdf:type rdf:resource="http://purl.net/dol/1.0/rdf#SubLogic"/>
-        <rdf:type rdf:resource="http://purl.net/dol/1.0/rdf#TheoroidalMapping"/>
         <dol:mapsFrom rdf:resource="http://purl.net/dol/logics/RDFS"/>
         <dol:mapsTo rdf:resource="http://purl.net/dol/logics/FOLeq"/>
         <rdfs:isDefinedBy rdf:resource="http://purl.net/dol/registry"/>
@@ -875,8 +875,8 @@
     </dol:DefaultMapping>
 
     <dol:DefaultMapping rdf:about="http://purl.net/dol/translations/RDFtoFOLeq">
+        <rdf:type rdf:resource="http://purl.net/dol/1.0/rdf#SimpleTheoroidalMapping"/>
         <rdf:type rdf:resource="http://purl.net/dol/1.0/rdf#SubLogic"/>
-        <rdf:type rdf:resource="http://purl.net/dol/1.0/rdf#TheoroidalMapping"/>
         <dol:mapsFrom rdf:resource="http://purl.net/dol/logics/RDF"/>
         <dol:mapsTo rdf:resource="http://purl.net/dol/logics/FOLeq"/>
         <rdfs:isDefinedBy rdf:resource="http://purl.net/dol/registry"/>
@@ -906,8 +906,8 @@
     </dol:DefaultMapping>
 
     <dol:DefaultMapping rdf:about="http://purl.net/dol/translations/RelationalSchemaToFOLeqms">
+        <rdf:type rdf:resource="http://purl.net/dol/1.0/rdf#SimpleTheoroidalMapping"/>
         <rdf:type rdf:resource="http://purl.net/dol/1.0/rdf#SubLogic"/>
-        <rdf:type rdf:resource="http://purl.net/dol/1.0/rdf#TheoroidalMapping"/>
         <dol:mapsFrom rdf:resource="http://purl.net/dol/logics/RelationalSchema"/>
         <dol:mapsTo rdf:resource="http://purl.net/dol/logics/FOLeqms"/>
         <rdfs:isDefinedBy rdf:resource="http://purl.net/dol/registry"/>
@@ -1011,8 +1011,8 @@
     </dol:DefaultMapping>
 
     <dol:DefaultMapping rdf:about="http://purl.net/dol/translations/SubPCFOLeqToChurchSimpleTypeTheory">
+        <rdf:type rdf:resource="http://purl.net/dol/1.0/rdf#SimpleTheoroidalMapping"/>
         <rdf:type rdf:resource="http://purl.net/dol/1.0/rdf#SubLogic"/>
-        <rdf:type rdf:resource="http://purl.net/dol/1.0/rdf#TheoroidalMapping"/>
         <dol:adjoint rdf:resource="http://purl.net/dol/projections/ChurchSimpleTypeTheoryToSubPCFOLeq"/>
         <dol:mapsFrom rdf:resource="http://purl.net/dol/logics/SubPCFOLeq"/>
         <dol:mapsTo rdf:resource="http://purl.net/dol/logics/ChurchSimpleTypeTheory"/>
