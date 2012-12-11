@@ -1,0 +1,27 @@
+language: ruby
+
+rvm:
+  - 1.9.3
+  - ruby-2.0.0-preview1
+  - rbx-19mode
+
+branches:
+  only:
+    - master
+
+services:
+  - redis-server
+
+notifications:
+  email: false
+
+script:
+  - bundle exec rake test
+
+before_script:
+  - psql -c 'create database ontohub_test;' -U postgres
+  - sudo apt-add-repository -y ppa:hets/hets
+  - sudo apt-add-repository -y "deb http://archive.canonical.com/ubuntu precise partner"
+  - sudo apt-get update
+  - sudo apt-get install hets-core subversion
+  - sudo hets -update
