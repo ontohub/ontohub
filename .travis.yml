@@ -16,7 +16,14 @@ notifications:
   email: false
 
 script:
-  - RAILS_ENV=test bundle exec rake db:migrate test
+  - bundle exec rake test
 
 before_script:
   - psql -c 'create database ontohub_test;' -U postgres
+  - apt-add-repository ppa:hets/hets
+  - apt-add-repository "deb http://archive.canonical.com/ubuntu precise partner"
+  - apt-get update
+  - apt-get -y install hets-core subversion
+  - cd /lib/x86_64-linux-gnu/
+  - ln -s libpng12.so.0 libpng14.so.14
+  - hets -update
