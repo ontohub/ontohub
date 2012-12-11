@@ -1,0 +1,19 @@
+language: ruby
+
+rvm:
+  - 1.9.3
+  - 2.0.0-preview2
+  - rbx-19mode
+
+branches:
+  only:
+    - master
+
+services:
+  - redis-server
+
+script:
+  - RAILS_ENV=test bundle exec rake db:migrate test
+
+before_script:
+  - psql -c 'create database ontohub_test;' -U postgres
