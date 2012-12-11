@@ -25,6 +25,8 @@ Lange][3] of the [AG Bernd Krieg-Brückner][4].
 
 Initial developers are [Julian Kornberger][5] and [Henning Müller][6].
 
+[![Build Status](https://travis-ci.org/ontohub/ontohub.png)](https://travis-ci.org/ontohub/ontohub)
+
 Installation
 ------------
 

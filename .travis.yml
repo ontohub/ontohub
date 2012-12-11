@@ -12,6 +12,9 @@ branches:
 services:
   - redis-server
 
+notifications:
+  email: false
+
 script:
   - RAILS_ENV=test bundle exec rake db:migrate test
 
