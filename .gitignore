@@ -34,3 +34,13 @@ tmp/*
 # Ignore folder attribute files
 .DS_Store
 
+# Ignore temporary LaTeX files
+*.aux
+*.bbl
+*.blg
+*.log
+*.nav
+*.out
+*.snm
+*.toc
+*~
