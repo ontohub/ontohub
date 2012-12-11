@@ -49,7 +49,7 @@
 
 %% Note: If title has linebreaks, you must use a short title without 
 %%       linebreaks, otherwise you'll get funny LaTeX errors.
-\title{OntoHub-Perspektivtag}
+\title{OntoHub Perspectives}
 
 %% Note about linebreaks applies here as well.
 \author{The Ontohub team}
@@ -65,23 +65,23 @@
 \maketitle
 
 \begin{frame}
-\frametitle{Zeitplan}
+\frametitle{Time plan}
 \begin{tabular}{|l|p{9cm}|}\hline
-10h & Vorstellung / Begrüßung / Motivation / Know-How\\\hline
-10.30h & Vorstellung von Ontohub und Hintergrund (OntoIOp ISO-Standard, OOR community, Hets community)\\\hline
-11h & Ontohub.org Webportal-Demo\\\hline
-11.30h & Ontohub-Architektur und -Datenmodell\\\hline
-13h & Essen\\\hline
-14h & Ziele\\\hline
-14.30h & Motivation / Know-How / Arbeitsbereiche aufteilen\\\hline
-15h & Arbeitsweise (regelmäßige Treffen, Programmiersessions, github, issue tracker)\\\hline
-15.30h & Fragen zu Entwicklungsumgebung aufsetzen\\\hline
-ca. 16h & Ende\\\hline
+10h & Intro / Motivation / Know-How\\\hline
+10.30h & Ontohub and its background (OntoIOp ISO standard, OOR community, Hets community)\\\hline
+11h & Ontohub.org web portal demo\\\hline
+11.30h & Ontohub architecture and data model\\\hline
+13h & Lunch\\\hline
+14h & Aims\\\hline
+14.30h & Motivation / Know-How / Work areas\\\hline
+15h & Organisation (regular meetings, programming sessions, github, issue tracker)\\\hline
+15.30h & Setup of development environment\\\hline
+ca. 16h & End\\\hline
 \end{tabular}
 \end{frame}
 
 \begin{frame}
-\frametitle{Ontologien}
+\frametitle{Ontologies}
 \begin{itemize}
 \item 
 \item 
@@ -92,7 +92,7 @@ ca. 16h & Ende\\\hline
 \begin{frame}
 \frametitle{Ontology Integration and Interoperability (OntoIOp)}
 \begin{itemize}
-\item ISO Standard 17347 (derzeit: working draft)
+\item ISO Standard 17347 (currently: working draft)
 \item Distributed Ontology Language (DOL)
 \begin{itemize}
 \item OWL (Web Ontology Language)
@@ -102,23 +102,23 @@ ca. 16h & Ende\\\hline
 \item UML (Unified Modeling Language)
 \item \ldots
 \end{itemize}
-\item Community von 10-15 Experten
-\item 14-tägig Telefonkonferenzen
+\item Community of 10-15 experts
+\item bi-weekly Skype conferences
 \end{itemize}
 \end{frame}
 
 \begin{frame}
 \frametitle{Heterogeneous Tool Set (Hets)}
 \begin{itemize}
-\item Logik-Backend für OntoHub
-\item Kann alle Sprachen parsen und analysieren
-\item Schnittstelle zu ca.\ 15 Beweiswerkzeugen
+\item Logic backend for OntoHub
+\item can parse an analyse all involved languages
+\item interface to about 15 proof tools
 \item \url{http://www.dfki.de/cps/hets}
 \end{itemize}
 \end{frame}
 
 \begin{frame}
-\frametitle{Ontohub-Architektur und -Datenmodell}
+\frametitle{Ontohub architecture and data model}
 \begin{itemize}
 \item 
 \item 
@@ -127,33 +127,36 @@ ca. 16h & Ende\\\hline
 \end{frame}
 
 \begin{frame}
-\frametitle{OntoHub-Ziele}
+\frametitle{OntoHub aims}
 \begin{itemize}
-\item Funktionalität sicherstellen (Tests schreiben)
-\item CRUD-Funktionalität für Logiken, Translations, \ldots
+\item Keep functionality through tests
+\item CRUD functionality for logics, translations, \ldots
 \begin{itemize}
-\item Logik-Graphen aus RDF-Registry einlesen
+\item read in logic graph from RDF registry
 \end{itemize}
-\item Graphen-Darstellung von Ontologien+Links und Logikgraphen
+\item display graph of ontologies and links (and logic graph)
+\begin{itemize}
+\item use graphviz / dot
+\end{itemize}
 \item Reasoning
-\item Git-Backend (Richtung verteilte Entwicklung)
-\item langfirstiges Ziel: OOR-Architektur 
+\item Git backend (distributed development of ontologies)
+\item long-term goal: OOR architecture
 \end{itemize}
 \end{frame}
 
 
 \begin{frame}
-\frametitle{Git-Backend}
+\frametitle{Git backend}
 \begin{itemize}
-\item Neues Repository-Model, das gleichzeitig Namespace für Ontologien darstellt  
-\item unterliegend Git- oder svn-Repositories
-\item Berechtigungen werden nicht mehr pro Ontologie, sondern pro Repository vergeben
-\item Nur Inhalte im "master"-Branch berücksichtigen 
+\item New Rails model ``repository'', which simultaneously provides namespace for ontologies
+\item underlying git or svn repositories
+\item permissions per repository (not per ontology)
+\item only contents of master branch is displayed in Ontohub
 \end{itemize}
 \end{frame}
 
 \begin{frame}
-\frametitle{Arbeitsweise}
+\frametitle{Organisation}
 \begin{itemize}
 \item 
 \item 
