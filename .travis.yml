@@ -2,7 +2,7 @@ language: ruby
 
 rvm:
   - 1.9.3
-  - 2.0.0-preview2
+  - ruby-2.0.0-preview2
   - rbx-19mode
 
 branches:
