@@ -11,7 +11,12 @@ applications such as web services, expert systems, or search engines. Therefor,
 ontologies are typically developed in teams. Ontohub wants to make this
 step as convenient as possible.
 
-Ontohub aims at satisfying a subset of the requirements for an Open Ontology Repository (OOR) and is being developed in close donnection with the Distributed Ontology Language, which is part of the emerging Ontology Integration and Interoperability standard (OntoIOp, ISO Working Draft 17347).  For more information from this perspective, see [the Ontohub page in the Ontolog wiki](http://ontolog.cim3.net/cgi-bin/wiki.pl?Ontohub).
+Ontohub aims at satisfying a subset of the requirements for an Open Ontology
+Repository (OOR) and is being developed in close donnection with the Distributed
+Ontology Language, which is part of the emerging Ontology Integration and
+Interoperability standard (OntoIOp, ISO Working Draft 17347).  For more
+information from this perspective, see [the Ontohub page in the Ontolog
+wiki](http://ontolog.cim3.net/cgi-bin/wiki.pl?Ontohub).
 
 This application started at the compact course [agile web development][0] given
 by [Carsten Bormann][1] at the University of Bremen in March, 2012. The
@@ -37,7 +42,8 @@ source rvm automatically as explained in https://rvm.io/integration/gnome-termin
 
 ### Apache2 with passenger
 
-HttpServer is only required in the production environment.
+A dedicated HTTP server is only required for the production environment. (Skip
+this section, if you are preparing your development setup.)
 
 #### Installation
 
@@ -47,11 +53,13 @@ HttpServer is only required in the production environment.
 
 #### Passenger Configuration
 
-Depending on the installed ruby and passenger version you need to create a `/etc/apache2/mods-available/passenger.load` with the LoadModule directive:
+Depending on the installed ruby and passenger version you need to create a
+`/etc/apache2/mods-available/passenger.load` with the LoadModule directive:
 
     LoadModule passenger_module /usr/local/rvm/gems/ruby-1.9.3-p<version>/gems/passenger-<version>/ext/apache2/mod_passenger.so
 
-and a `/etc/apache2/mods-available/passenger.conf` with the global passenger configuration:
+and a `/etc/apache2/mods-available/passenger.conf` with the global passenger
+configuration:
 
     PassengerRoot /usr/local/rvm/gems/ruby-1.9.3-p<version>/gems/passenger-<version>
     PassengerRuby /usr/local/rvm/wrappers/ruby-1.9.3-p<version>/ruby
@@ -64,10 +72,10 @@ now enable the module an restart apache2:
 #### Virtual Host Configuration
 
     <VirtualHost *:80>
-      ServerName ontohub.orgizm.net
-      DocumentRoot /srv/http/ontohub.orgizm.net/current/public
+      ServerName ontohub.org
+      DocumentRoot /srv/http/ontohub.org/current/public
 
-      <Directory /srv/http/ontohub.orgizm.net/public>
+      <Directory /srv/http/ontohub.org/public>
         AllowOverride all 
         Options -MultiViews
       </Directory>
@@ -88,10 +96,10 @@ Tomcat with Solr is only required in the production environment.
 
 The war-Package should be automatically loaded.
 
-### SQL SERVER
+### SQL Server
 
-There are currently two possible sql servers. For the master branch, one needs
-PostgreSQL; and for the new-model branch, MySQL.
+The master branch is (and should be) database independent. We are using
+PostgreSQL in production and development.
 
 #### PostgreSQL
 
@@ -99,12 +107,18 @@ PostgreSQL; and for the new-model branch, MySQL.
 
 #### MySQL
 
+You probably do not need this but we used MySQL in the new-model branch once and
+these instructions are given for completeness. MariaDB has been tested, too.
+
 The installation will prompt you for a password three times and you are expected
 to press «enter» with an empty password field.
 
     apt-get -y install mysql-server libmysqlclient-dev
 
 ### Redis
+
+Redis is a key-value store, in our setup used by resque to provide object
+persistence between Rails and asynchronous jobs.
 
     apt-get -y install redis-server
 
@@ -134,8 +148,8 @@ Configuration
 
 ### Hets environment variables
 
-Hets environment variables and the extensions of files allowed for upload are
-to be set in `config/hets.yml`.
+The Hets installation path and environment variables are to be set in
+`config/hets.yml`. For ubuntu, it should be no change required.
 
 ### Allowed URI schemas
 
@@ -155,8 +169,9 @@ This part should be done with your own user (not as root).
 
 ### Clone with pushing permission
 
-You need to create an SSH-key and upload it to your Github account and then be
-added to the project by a project administrator.
+You need to create an SSH key pair (if you do not already have one) and upload
+it to your Github account and then be added to the project by a project
+administrator.
 
     git clone git@github.com:ontohub/ontohub.git
 
@@ -170,9 +185,9 @@ You do not need to be a project member. Just clone it!
 
     sudo adduser $USER rvm
 
-### Installation in Local Machine
+You have to re-login to apply your group membership.
 
-Login in again and run the following commands.
+### Installation of gem dependencies
 
     cd ontohub
     bundle install
@@ -202,7 +217,8 @@ stop it by pressing `CTRL+C`.
     rails s
 
 Now you can log in as *admin@example.com* with password *foobar*.
-*Alice, Bob, Carol, Dave, Ted* @example.com can also be used.
+*Alice, Bob, Carol, Dave, Ted* @example.com can also be used (with the same
+password).
 
 ### Stopping Solr and Resque
 
@@ -214,7 +230,8 @@ resque:work`. Solr is to be stopped as follows:
 License
 -------
 
-Copyright © 2012 [Universität Bremen](http://www.uni-bremen.de/), released under the [GNU AGPL 3.0](http://www.gnu.org/licenses/agpl-3.0.html) license.
+Copyright © 2012 [Universität Bremen](http://www.uni-bremen.de/), released under
+the [GNU AGPL 3.0](http://www.gnu.org/licenses/agpl-3.0.html) license.
 
 
 [0]: http://www.tzi.org/~cabo/awe12
