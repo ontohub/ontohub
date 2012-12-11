@@ -24,5 +24,4 @@ before_script:
   - sudo apt-add-repository -y "deb http://archive.canonical.com/ubuntu precise partner"
   - sudo apt-get update
   - sudo apt-get install hets-core subversion
-  - sudo ln -s /lib/x86_64-linux-gnu/libpng12.so.0 /lib/x86_64-linux-gnu/libpng14.so.14
   - sudo hets -update
