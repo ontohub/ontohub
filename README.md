@@ -144,7 +144,9 @@ Configuration
 
 ### Change secret token
 
-    rake secret > config/initializers/secret_token.rb
+    rake secret
+
+... and save it into `config/initializers/secret_token.rb`.
 
 ### Hets environment variables
 
