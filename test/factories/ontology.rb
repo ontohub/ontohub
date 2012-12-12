@@ -1,10 +1,12 @@
-Factory.sequence :iri do |n|
-  "gopher://host/ontology/#{n}"
-end
 
 FactoryGirl.define do
+  
+  sequence :iri do |n|
+    "gopher://host/ontology/#{n}"
+  end
+  
   factory :ontology do
-    iri { Factory.next :iri }
+    iri { FactoryGirl.generate :iri }
     name { Faker::Name.name }
     description { Faker::Lorem.paragraph }
     

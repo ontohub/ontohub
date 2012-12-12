@@ -14,7 +14,7 @@ class Admin::TeamsControllerTest < ActionController::TestCase
     
     context 'signed in as normal user' do
       setup do
-        sign_in Factory :user
+        sign_in FactoryGirl.create :user
         get :index
       end
       
@@ -24,7 +24,7 @@ class Admin::TeamsControllerTest < ActionController::TestCase
 
     context 'signed in as admin user' do
       setup do
-        sign_in Factory :admin
+        sign_in FactoryGirl.create :admin
         get :index
       end
       

@@ -20,7 +20,7 @@ class TeamTest < ActiveSupport::TestCase
   
   context 'team instance' do
     setup do
-      @team = Factory :team
+      @team = FactoryGirl.create :team
     end
     
     should 'have to_s' do

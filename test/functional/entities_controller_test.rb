@@ -6,7 +6,7 @@ class EntitiesControllerTest < ActionController::TestCase
   
   context 'Ontology Instance' do
     setup do
-      @ontology = Factory :ontology
+      @ontology = FactoryGirl.create :ontology
     end
     
     context 'on GET to index' do

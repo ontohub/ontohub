@@ -7,8 +7,8 @@ class AutocompleteControllerTest < ActionController::TestCase
   context 'users and teams' do
     setup do
       @term = 'foo'
-      @user = Factory :user, :name => "#{@term}user"
-      @team = Factory :team, :name => "#{@term}team"
+      @user = FactoryGirl.create :user, :name => "#{@term}user"
+      @team = FactoryGirl.create :team, :name => "#{@term}team"
     end
     
     context 'on GET to index' do

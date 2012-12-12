@@ -4,15 +4,15 @@ class AutocompleteTest < ActiveSupport::TestCase
   
   context 'for users and teams' do
     setup do
-      @foo    = Factory :user, :name => 'foo'
-      @foobar = Factory :user, :name => 'foobar'
+      @foo    = FactoryGirl.create :user, :name => 'foo'
+      @foobar = FactoryGirl.create :user, :name => 'foobar'
       
-      @team_bars = Factory :team, :name => 'special bars'
-      @team_faker = Factory :team, :name => 'faker'
+      @team_bars = FactoryGirl.create :team, :name => 'special bars'
+      @team_faker = FactoryGirl.create :team, :name => 'faker'
       
       # should never be found
-      Factory :user, :name => 'xxyyzz'
-      Factory :team, :name => 'aabbbccc'
+      FactoryGirl.create :user, :name => 'xxyyzz'
+      FactoryGirl.create :team, :name => 'aabbbccc'
     end
     
     context 'searching for user' do
@@ -99,7 +99,7 @@ class AutocompleteTest < ActiveSupport::TestCase
   
   context 'autocomplete with exclusion' do
     setup do
-      @users = 5.times.map{|i| Factory :user, :name => "foo#{i}" }
+      @users = 5.times.map{|i| FactoryGirl.create :user, :name => "foo#{i}" }
       
       ac = Autocomplete.new
       ac.add_scope("User", @users.shift(2).map(&:id))

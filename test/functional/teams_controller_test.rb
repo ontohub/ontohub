@@ -17,7 +17,7 @@ class TeamsControllerTest < ActionController::TestCase
   
   context 'signed in' do
     setup do
-      @user = Factory :user
+      @user = FactoryGirl.create :user
       sign_in @user
     end
     
@@ -42,7 +42,7 @@ class TeamsControllerTest < ActionController::TestCase
     
     context 'with teams' do 
       setup do
-        @team = Factory :team,
+        @team = FactoryGirl.create :team,
           :admin_user => @user
       end
       
@@ -86,7 +86,7 @@ class TeamsControllerTest < ActionController::TestCase
         
         context 'by non-admin' do
           setup do
-            @member = Factory :user
+            @member = FactoryGirl.create :user
             @team.users << @member
             sign_in @member
             delete :destroy, :id => @team.id

@@ -14,7 +14,7 @@ class UserTest < ActiveSupport::TestCase
   context 'User instance' do
     setup do
       @mails_sent = ActionMailer::Base.deliveries.size
-      @user = Factory :user
+      @user = FactoryGirl.create :user
     end
     
     should 'sent email' do
@@ -55,7 +55,7 @@ class UserTest < ActiveSupport::TestCase
   
   context 'Admin instance' do
     setup do
-      @admins = 2.times.map{ Factory :admin }
+      @admins = 2.times.map{ FactoryGirl.create :admin }
     end
     
     should 'destroy one admin' do

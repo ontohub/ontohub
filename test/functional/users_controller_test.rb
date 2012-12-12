@@ -6,7 +6,7 @@ class UsersControllerTest < ActionController::TestCase
   
   context 'User Instance' do
     setup do
-      @user = Factory :user
+      @user = FactoryGirl.create :user
     end
     
     context 'without data' do
@@ -26,8 +26,8 @@ class UsersControllerTest < ActionController::TestCase
       setup do
         OntologyVersion.any_instance.expects(:parse_async).once
         
-        Factory :comment, :user => @user
-        Factory :ontology_version_with_file, :user => @user
+        FactoryGirl.create :comment, :user => @user
+        FactoryGirl.create :ontology_version_with_file, :user => @user
       end
       context 'on GET to show' do
         setup do

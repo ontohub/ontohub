@@ -8,9 +8,9 @@ class TeamUsersControllerTest < ActionController::TestCase
   
   context 'teams' do
     setup do
-      @admin = Factory :user # team admin
-      @user  = Factory :user
-      @team  = Factory :team,
+      @admin = FactoryGirl.create :user # team admin
+      @user  = FactoryGirl.create :user
+      @team  = FactoryGirl.create :team,
         :admin_user => @admin
     end
     

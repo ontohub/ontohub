@@ -18,7 +18,7 @@ class HomeControllerTest < ActionController::TestCase
     
     context 'signed in' do
       setup do
-        sign_in Factory :user
+        sign_in FactoryGirl.create :user
         get :show
       end
       

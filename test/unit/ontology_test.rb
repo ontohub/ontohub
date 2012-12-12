@@ -29,7 +29,7 @@ class OntologyTest < ActiveSupport::TestCase
   
   context 'ontology instance' do
     setup do
-      @ontology = Factory :ontology
+      @ontology = FactoryGirl.create :ontology
     end
     
     context 'with name' do
@@ -56,7 +56,7 @@ class OntologyTest < ActiveSupport::TestCase
     setup do
       OntologyVersion.any_instance.expects(:parse_async).once
       
-      @user       = Factory :user
+      @user       = FactoryGirl.create :user
       @source_url = 'http://colore.googlecode.com/svn/trunk/ontologies/arithmetic/robinson_arithmetic.clif'
       @ontology   = Ontology.new \
         :iri => 'http://example.com/ontology',

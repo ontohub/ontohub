@@ -67,7 +67,7 @@ group :test do
   gem 'shoulda-matchers'
   gem 'shoulda-context'
   gem "shoulda_routing_macros", "~> 0.1.2"
-  gem "factory_girl_rails", "~> 1.7.0"
+  gem "factory_girl_rails"
   gem "capybara"
   gem "launchy"
 end

@@ -7,10 +7,10 @@ class OntologiesControllerTest < ActionController::TestCase
   
   context 'Ontology Instance' do
     setup do
-      @ontology = Factory :single_ontology
-      @user     = Factory :user
+      @ontology = FactoryGirl.create :single_ontology
+      @user     = FactoryGirl.create :user
       
-      2.times { Factory :entity, :ontology => @ontology }
+      2.times { FactoryGirl.create :entity, :ontology => @ontology }
     end
     
     context 'on GET to index' do

@@ -9,10 +9,10 @@ class TeamUserTest < ActiveSupport::TestCase
 
   context 'team with admin and user' do
     setup do
-      @team_admin = Factory :user # admin in team
-      @team_user  = Factory :user # non-admin in team
+      @team_admin = FactoryGirl.create :user # admin in team
+      @team_user  = FactoryGirl.create :user # non-admin in team
       
-      @admin_user  = Factory :team_user, :user => @team_admin
+      @admin_user  = FactoryGirl.create :team_user, :user => @team_admin
       @team        = @admin_user.team
       
       @team.users << @team_user

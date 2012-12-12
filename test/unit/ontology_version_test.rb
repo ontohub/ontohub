@@ -21,7 +21,7 @@ class OntologyVersionTest < ActiveSupport::TestCase
   
   context 'Creating OntologyVersion' do
     setup do
-      @ontology = Factory :ontology
+      @ontology = FactoryGirl.create :ontology
       @version  = @ontology.versions.build
     end
     
@@ -72,7 +72,7 @@ class OntologyVersionTest < ActiveSupport::TestCase
   context 'Parsing' do
     setup do
       OntologyVersion.any_instance.expects(:parse_async).once
-      @ontology_version = Factory.build :ontology_version
+      @ontology_version = FactoryGirl.build :ontology_version
       @pizza_owl = 'test/fixtures/ontologies/owl/pizza.owl'
     end
 

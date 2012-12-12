@@ -7,7 +7,7 @@ class OntologyImportXMLTest < ActiveSupport::TestCase
 
   context 'Import single Ontology' do
     setup do
-      @ontology = Factory :single_ontology
+      @ontology = FactoryGirl.create :single_ontology
       @ontology.import_xml_from_file fixture_file('test1.xml')
     end
 
@@ -34,7 +34,7 @@ class OntologyImportXMLTest < ActiveSupport::TestCase
   
   context 'Import distributed Ontology' do
     setup do
-      @ontology = Factory :distributed_ontology
+      @ontology = FactoryGirl.create :distributed_ontology
       @ontology.import_xml_from_file fixture_file('test2.xml')
     end
     

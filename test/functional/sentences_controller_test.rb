@@ -10,7 +10,7 @@ class SentencesControllerTest < ActionController::TestCase
   
   context 'Ontology Instance' do
     setup do
-      @sentence = Factory :sentence
+      @sentence = FactoryGirl.create :sentence
       @ontology = @sentence.ontology
     end
     

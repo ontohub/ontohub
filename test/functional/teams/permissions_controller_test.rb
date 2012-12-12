@@ -6,8 +6,8 @@ class Teams::PermissionsControllerTest < ActionController::TestCase
   
   context 'team' do
     setup do
-      @team = Factory :team
-      Factory :permission, :subject => @team
+      @team = FactoryGirl.create :team
+      FactoryGirl.create :permission, :subject => @team
     end
     
     context 'on GET to index' do
@@ -23,7 +23,7 @@ class Teams::PermissionsControllerTest < ActionController::TestCase
       
       context 'signed in as normal user' do
         setup do
-          sign_in Factory :user
+          sign_in FactoryGirl.create :user
           get :index, :team_id => @team.to_param
         end
         

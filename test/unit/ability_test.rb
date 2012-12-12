@@ -4,12 +4,12 @@ class AbilityTest < ActiveSupport::TestCase
   
   context 'Ontology' do
     setup do
-      @owner  = Factory :user # owner
-      @editor = Factory :user # editor
-      @user   = Factory :user # regular user
+      @owner  = FactoryGirl.create :user # owner
+      @editor = FactoryGirl.create :user # editor
+      @user   = FactoryGirl.create :user # regular user
       
-      @item = Factory(:permission, subject: @owner, role: 'owner').item
-      Factory(:permission, subject: @editor, role: 'editor', item: @item)
+      @item = FactoryGirl.create(:permission, subject: @owner, role: 'owner').item
+      FactoryGirl.create(:permission, subject: @editor, role: 'editor', item: @item)
     end
 
     context 'owner' do
@@ -31,7 +31,7 @@ class AbilityTest < ActiveSupport::TestCase
 
       should 'not be allowed on other: edit, update, destroy, permissions' do
         [:edit, :update, :destroy, :permissions].each do |perm|
-          assert @ability.cannot?(perm, Factory(:ontology))
+          assert @ability.cannot?(perm, FactoryGirl.create(:ontology))
         end
       end
     end
@@ -57,20 +57,20 @@ class AbilityTest < ActiveSupport::TestCase
 
   context 'Team' do
     setup do
-      @user = Factory :user
-      @other = Factory :user
+      @user = FactoryGirl.create :user
+      @other = FactoryGirl.create :user
       @ability = Ability.new(@user)
 
-      @memberteam = Factory(:team_user, user: @other).team
+      @memberteam = FactoryGirl.create(:team_user, user: @other).team
       @memberteam.users << @user
 
-      @otherteam = Factory(:team_user, user: @other).team
+      @otherteam = FactoryGirl.create(:team_user, user: @other).team
     end
 
     context 'admin' do
       should 'be allowed: edit, update, destroy' do
         [:edit, :update, :destroy].each do |perm|
-          assert @ability.can?(perm, Factory(:team_user, user: @user).team)
+          assert @ability.can?(perm, FactoryGirl.create(:team_user, user: @user).team)
         end
       end
     end
@@ -98,7 +98,7 @@ class AbilityTest < ActiveSupport::TestCase
   
   context 'Comment' do
     setup do
-      @comment = Factory :comment
+      @comment = FactoryGirl.create :comment
     end
     
     context 'author' do
@@ -111,13 +111,13 @@ class AbilityTest < ActiveSupport::TestCase
       end
       
       should 'not be allowed to destroy others comment' do
-        assert @ability.cannot?(:destroy, Factory(:comment))
+        assert @ability.cannot?(:destroy, FactoryGirl.create(:comment))
       end
     end
     
     context 'admin' do
       setup do
-        @ability = Ability.new(Factory :admin)
+        @ability = Ability.new(FactoryGirl.create :admin)
       end
       should 'destroy others comment' do
         assert @ability.can?(:destroy, @comment)
@@ -126,8 +126,8 @@ class AbilityTest < ActiveSupport::TestCase
     
     context 'comments ontology owner' do
       setup do
-        @owner = Factory :user
-        Factory(:permission, subject: @owner, role: 'owner', item: @comment.commentable)
+        @owner = FactoryGirl.create :user
+        FactoryGirl.create(:permission, subject: @owner, role: 'owner', item: @comment.commentable)
         
         @ability = Ability.new(@owner)
       end
@@ -139,8 +139,8 @@ class AbilityTest < ActiveSupport::TestCase
     
     context 'comments ontology editor' do
       setup do
-        @owner = Factory :user
-        Factory(:permission, subject: @owner, role: 'editor', item: @comment.commentable)
+        @owner = FactoryGirl.create :user
+        FactoryGirl.create(:permission, subject: @owner, role: 'editor', item: @comment.commentable)
         
         @ability = Ability.new(@owner)
       end

@@ -7,8 +7,8 @@ class PermissionsControllerTest < ActionController::TestCase
   
   context 'permissions' do
     setup do
-      @ontology = Factory :ontology
-      @user     = Factory :user
+      @ontology = FactoryGirl.create :ontology
+      @user     = FactoryGirl.create :user
     end
     
     context 'on GET to index' do

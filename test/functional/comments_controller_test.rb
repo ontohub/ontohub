@@ -7,8 +7,8 @@ class CommentsControllerTest < ActionController::TestCase
   
   context 'ontology' do
     setup do
-      @ontology = Factory :ontology
-      @user     = Factory :user
+      @ontology = FactoryGirl.create :ontology
+      @user     = FactoryGirl.create :user
     end
     
     context 'not signed in' do
@@ -25,7 +25,7 @@ class CommentsControllerTest < ActionController::TestCase
         
         context 'with comment' do
           setup do
-            @comment = Factory :comment, :commentable => @ontology
+            @comment = FactoryGirl.create :comment, :commentable => @ontology
             get :index, :ontology_id => @ontology.to_param
           end
           
@@ -53,7 +53,7 @@ class CommentsControllerTest < ActionController::TestCase
         
         context 'with comment' do
           setup do
-            @comment = Factory :comment, :commentable => @ontology
+            @comment = FactoryGirl.create :comment, :commentable => @ontology
             get :index, :ontology_id => @ontology.to_param
           end
           
@@ -63,7 +63,7 @@ class CommentsControllerTest < ActionController::TestCase
         
         context 'on POST to delete' do
           setup do
-            @comment = Factory :comment, :commentable => @ontology, :user => @user
+            @comment = FactoryGirl.create :comment, :commentable => @ontology, :user => @user
             xhr :delete, :destroy, :ontology_id => @ontology.to_param, :id => @comment.id
           end
           

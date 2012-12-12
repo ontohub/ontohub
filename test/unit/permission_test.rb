@@ -16,12 +16,12 @@ class PermissionTest < ActiveSupport::TestCase
   
   context 'Ontology' do
     setup do
-      @ontology = Factory :ontology
+      @ontology = FactoryGirl.create :ontology
     end
 
     context 'admin user' do
       setup do
-        @admin = Factory :admin
+        @admin = FactoryGirl.create :admin
       end
 
       should 'have owner and editor permissions' do
@@ -32,7 +32,7 @@ class PermissionTest < ActiveSupport::TestCase
 
     context 'owner user' do
       setup do
-        @permission = Factory :permission, item: @ontology
+        @permission = FactoryGirl.create :permission, item: @ontology
       end
 
       should 'have owner and editor permissions' do
@@ -43,7 +43,7 @@ class PermissionTest < ActiveSupport::TestCase
 
     context 'editor user' do
       setup do
-        @permission = Factory :permission, item: @ontology, role: 'editor'
+        @permission = FactoryGirl.create :permission, item: @ontology, role: 'editor'
       end
 
       should 'have editor permission' do
@@ -53,8 +53,8 @@ class PermissionTest < ActiveSupport::TestCase
 
     context 'team user' do
       setup do
-        @team_user = Factory :team_user
-        @permission = Factory :permission, item: @ontology, subject: @team_user.team
+        @team_user = FactoryGirl.create :team_user
+        @permission = FactoryGirl.create :permission, item: @ontology, subject: @team_user.team
       end
 
       should 'have owner and editor permissions' do
@@ -72,7 +72,7 @@ class PermissionTest < ActiveSupport::TestCase
 
     context 'editor' do
       setup do
-        @permission = Factory :permission, item: @ontology, role: 'editor'
+        @permission = FactoryGirl.create :permission, item: @ontology, role: 'editor'
       end
 
       should 'not have owner permission' do
@@ -82,8 +82,8 @@ class PermissionTest < ActiveSupport::TestCase
 
     context 'user on other team' do
       setup do
-        @team_user = Factory :team_user
-        @permission = Factory :permission, item: @ontology
+        @team_user = FactoryGirl.create :team_user
+        @permission = FactoryGirl.create :permission, item: @ontology
       end
 
       should 'not have owner and editor permissions' do
@@ -94,7 +94,7 @@ class PermissionTest < ActiveSupport::TestCase
 
     context 'some user' do
       setup do
-        @user = Factory :user
+        @user = FactoryGirl.create :user
       end
 
       should 'not have permissions without ontology having permissions' do

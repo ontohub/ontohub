@@ -6,7 +6,7 @@ class DistributedOntologyTest < ActiveSupport::TestCase
   
   context 'distributed ontology instance' do
     setup do
-      @ontology = Factory :distributed_ontology, iri: 'http://example.com/foo'
+      @ontology = FactoryGirl.create :distributed_ontology, iri: 'http://example.com/foo'
     end
     
     should 'generate sub iri' do

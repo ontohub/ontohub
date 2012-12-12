@@ -25,7 +25,7 @@ class EntityTest < ActiveSupport::TestCase
 
   context 'OntologyInstance' do
   	setup do
-  		@ontology = Factory :single_ontology
+  		@ontology = FactoryGirl.create :single_ontology
   	end
 
   	context 'creating Entities' do
