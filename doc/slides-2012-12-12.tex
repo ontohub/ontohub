@@ -83,9 +83,25 @@ ca. 16h & End\\\hline
 \begin{frame}
 \frametitle{Ontologies}
 \begin{itemize}
-\item 
-\item 
-\item 
+\item Ontology = shared (formal) conceptualisation (of a domain)
+\item Example: Pizza ontology 
+\begin{itemize}
+\item using Web Ontology Language OWL
+\item tool for editing OWL ontologies: Protégé \url{http://protege.stanford.edu/}
+\end{itemize}
+\end{itemize}
+\end{frame}
+
+\begin{frame}
+\frametitle{Applications of Ontologies}
+\begin{itemize}
+\item Medicin (Snomed)
+\item Biology, Biochemistry (molecules \ldots)
+\item Semantic Web
+\begin{itemize}
+\item Semantic Mediawiki
+\item schema.org
+\end{itemize}
 \end{itemize}
 \end{frame}
 
@@ -140,6 +156,7 @@ ca. 16h & End\\\hline
 \begin{itemize}
 \item Logic backend for OntoHub
 \item can parse and analyse all involved languages
+\item implements logic translations
 \item interface to about 15 proof tools
 \item anchored in algebraic specification community\\ (WADT, CoFI, IFIP WG 1.3) 
 \item \url{http://www.dfki.de/cps/hets}
@@ -150,15 +167,21 @@ ca. 16h & End\\\hline
 \begin{frame}
 \frametitle{OntoHub mission}
 \begin{itemize}
-\item provide a repository for \emph{heterogeneous} ontologies
-\item generalise Bioportal and OOR to heterogeneous ontologies
-\item provide a repository for OntoIOp/DOL
-\item provide a web-frontend for Hets
+\item \emphc{generalise} Bioportal and OOR\\
+ $\Rightarrow$ provide a repository for \emphc{heterogeneous} ontologies
+\item provide a \emphc{repository for OntoIOp/DOL}
+\item provide a \emphc{web-frontend for Hets}
 \end{itemize}
 \end{frame}
 
 \begin{frame}
-\frametitle{Ontohub architecture and data model}
+\frametitle{Ontohub architecture}
+\vspace{-1cm}
+\includegraphics[width=0.8\textwidth]{architecture/ontohub-oor-architecture.png}
+\end{frame}
+
+\begin{frame}
+\frametitle{Ontohub data model}
 \includegraphics[width=\textwidth]{DBVisualization.png}
 \end{frame}
 
@@ -166,17 +189,54 @@ ca. 16h & End\\\hline
 \frametitle{OntoHub short-term and long-term goals}
 \begin{itemize}
 \item Keep functionality through tests
-\item CRUD functionality for logics, translations, \ldots
-\begin{itemize}
-\item read in logic graph from RDF registry
-\end{itemize}
+\item CRUD functionality not only for ontologies, but also for logics,
+  translations, \ldots
 \item display graph of ontologies and links (and logic graph)
-\begin{itemize}
-\item use graphviz / dot
-\end{itemize}
-\item Reasoning
+\item Reasoning (provide Hets GUI)
 \item Git backend (distributed development of ontologies)
 \item long-term goal: OOR architecture
+\end{itemize}
+\end{frame}
+
+\begin{frame}
+\frametitle{Tests}
+Test-driven development:\\
+\emphc{No line of code without test}
+\begin{itemize}
+\item Fixtures: provide data for tests
+\item Unit tests: test single methods of models
+\item Functional tests: test controller actions
+\item Integration tests: test sessions (sequences of actions)
+\end{itemize}
+\end{frame}
+
+\begin{frame}
+\frametitle{CRUD functionality for logics etc.}
+\begin{itemize}
+\item re-use existing functionality for ontologies
+\item transfer this to links, logics, logic mappings,
+languages,
+language mappings, and
+serializations
+\item involve further tables like supports
+\item display lists of these things: see display of graphs
+\item read in logic graph from OntoIOp registry (RDF)
+\end{itemize}
+\end{frame}
+
+\begin{frame}
+\frametitle{OntoIOp registry}
+\vspace{-1cm}
+\includegraphics[width=0.9\textwidth]{DOL-ontograph-layers-TKE.pdf}
+\end{frame}
+
+\begin{frame}
+\frametitle{display of graphs}
+\begin{itemize}
+\item use graphviz / dot to generate svg from graph
+\item html and javascript can be embedded to svg
+\item use this to realise menus for nodes and links
+\item long-term goal: re-use Bioportal's fancy display
 \end{itemize}
 \end{frame}
 
@@ -224,30 +284,6 @@ Evtl. NoSQL (MongoDB, CouchDB)
 
 
 
-\begin{frame}
-\frametitle{}
-\begin{itemize}
-\item 
-\item 
-\item 
-\end{itemize}
-\end{frame}
-\begin{frame}
-\frametitle{}
-\begin{itemize}
-\item 
-\item 
-\item 
-\end{itemize}
-\end{frame}
-\begin{frame}
-\frametitle{}
-\begin{itemize}
-\item 
-\item 
-\item 
-\end{itemize}
-\end{frame}
 \begin{frame}
 \frametitle{}
 \begin{itemize}
