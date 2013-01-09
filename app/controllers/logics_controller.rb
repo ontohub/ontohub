@@ -22,5 +22,13 @@ class LogicsController < InheritedResources::Base
     @logic.user = current_user
     super
   end
+  
+  def show
+    super do |format|
+      format.html do
+        @supports = resource.supports.all
+      end
+    end
+  end
 
 end
