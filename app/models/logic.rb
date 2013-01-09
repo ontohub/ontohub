@@ -4,6 +4,8 @@ class Logic < ActiveRecord::Base
 
   has_many :ontologies
   has_many :supports
+  
+  belongs_to :user
 
   attr_accessible :name, :iri, :description
 

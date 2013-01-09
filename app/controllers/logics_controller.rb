@@ -1,5 +1,5 @@
 # 
-# Controller for ontologies
+# Controller for Logics
 # 
 class LogicsController < InheritedResources::Base
 
@@ -19,7 +19,7 @@ class LogicsController < InheritedResources::Base
   end
 
   def create
-    @version.user = current_user
+    @logic.user = current_user
     super
   end
 
