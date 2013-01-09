@@ -18,6 +18,15 @@ class Ability
       end
       can [:new, :create, :bulk], Ontology
       
+      # Logics
+      can [:edit, :update], Logic do |subject|
+        subject.permission?(:editor, user)
+      end
+      can [:destroy, :permissions], Logic do |subject|
+        subject.permission?(:owner, user)
+      end
+      can [:new, :create], Logic
+      
       # Team permissions
       can [:create, :show, :index], Team
       can [:edit, :update, :destroy], Team do |subject|

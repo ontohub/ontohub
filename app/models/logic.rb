@@ -1,5 +1,6 @@
 class Logic < ActiveRecord::Base
   include Resourcable
+  include Permissionable
 
   has_many :ontologies
   has_many :supports
