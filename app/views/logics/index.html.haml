@@ -1,0 +1,14 @@
+%h2= @page_title = 'Logics'
+
+%p
+  = pluralize(collection.count, resource_class.to_s)
+  found
+
+= pagination do
+  %table
+    %thead
+      %th Name
+      %th IRI
+      %th 
+    %tbody
+      = render collection
