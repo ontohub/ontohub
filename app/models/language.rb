@@ -1,9 +1,12 @@
 class Language < ActiveRecord::Base
   include Resourcable
+  include Permissionable
 
   has_many :supports
   has_many :ontologies
   has_many :serializations
+  
+  belongs_to :user
 
   attr_accessible :name, :iri, :description
 
