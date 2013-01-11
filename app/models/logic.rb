@@ -7,7 +7,7 @@ class Logic < ActiveRecord::Base
   
   belongs_to :user
 
-  attr_accessible :name, :iri, :description
+  attr_accessible :name, :iri, :description, :standardization_status, :defined_by
 
   validates_presence_of :name
   validates_uniqueness_of :name, if: :name_changed?

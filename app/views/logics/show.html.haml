@@ -1,6 +1,21 @@
 - @page_title = resource
 %h2= link_to resource, resource, 'data-type' => resource_class
 
-%p.description= resource.description
+- if can? :update, Logic
+  %ul.actions.pull-right
+    %li= link_to 'Edit Logic', :edit_logic
+    - if can? :delete, Logic
+      %li= link_to 'Delete Logic', :logic, :confirm => 'Are you sure?', :method => :delete
+
+%p.definedBy 
+  defined by
+  = resource.defined_by
+%p.standardStatus 
+  standardization-status: 
+  = resource.standardization_status
+
+%p.description
+  %h3 Description
+  = resource.description
 
 = render :partial => "supports"
