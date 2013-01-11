@@ -1,4 +1,4 @@
-Ontohub
+Ontohub [![Build Status](https://travis-ci.org/ontohub/ontohub.png)](https://travis-ci.org/ontohub/ontohub) [![Code Climate](https://codeclimate.com/badge.png)](https://codeclimate.com/github/ontohub/ontohub)
 =======
 
 A web-based repository for distributed ontologies.
@@ -24,8 +24,6 @@ concept and assignment came from [Till Mossakowski][2] and [Christoph
 Lange][3] of the [AG Bernd Krieg-Brückner][4].
 
 Initial developers are [Julian Kornberger][5] and [Henning Müller][6].
-
-[![Build Status](https://travis-ci.org/ontohub/ontohub.png)](https://travis-ci.org/ontohub/ontohub)
 
 Installation
 ------------
