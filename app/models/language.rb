@@ -8,7 +8,7 @@ class Language < ActiveRecord::Base
   
   belongs_to :user
 
-  attr_accessible :name, :iri, :description
+  attr_accessible :name, :iri, :description, :standardization_status, :defined_by
 
   validates :name, length: { minimum: 1 }
 
