@@ -47,6 +47,7 @@ module OntologyParser
         when AXIOM
           @current_axiom = Hash[*[attributes]]
           @current_axiom['symbols'] = []
+          @current_axiom['text'] = ''
         when LINK
           @current_link = Hash[*[attributes]]
         when MORPHISM
@@ -60,8 +61,8 @@ module OntologyParser
         when SYMBOL
           @current_symbol['text'] << text if @current_symbol
         when TEXT
-          @current_axiom['text'] = text if @current_axiom
-        when TYPE
+          @current_axiom['text'] << text if @current_axiom
+        when TYPE # there is no other use of TYPE in this code
           @current_link['type'] = text if @current_link
       end
     end
@@ -97,6 +98,7 @@ module OntologyParser
     end
     
     # error handler for parsing problems
+    # this exception is not being used so far
     def error(string)
       raise ParseException, 'cannot parse: ' + string
     end

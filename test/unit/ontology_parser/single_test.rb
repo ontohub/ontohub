@@ -39,7 +39,7 @@ class OntologyParser::SimpleTest < ActiveSupport::TestCase
           "name"    => "Ax1",
           "range"   => "/home/till/CASL/Hets-lib/test/test1.casl:3.8-4.25",
           "symbols" => ["op f : s -> s", "sort s"],
-          "text"    => "forall x : s . f(x) = x %(Ax1)%"
+          "text"    => "forall x : <s . >f(x) = x %(Ax1)%>"
         }], @axioms
       end
     end
