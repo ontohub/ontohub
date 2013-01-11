@@ -9,8 +9,6 @@ class OntologiesController < InheritedResources::Base
 
   load_and_authorize_resource :except => [:index, :show]
 
-  respond_to :json
-
   def index
     super do |format|
       format.html do

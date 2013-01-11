@@ -1,0 +1,18 @@
+%h2= @page_title = 'Languages'
+
+- if can? :create, Language
+  %ul.actions.pull-right
+    %li= link_to 'Create Language', :new_language
+
+%p
+  = pluralize(collection.count, resource_class.to_s)
+  found
+
+= pagination do
+  %table
+    %thead
+      %th Name
+      %th IRI
+      %th 
+    %tbody
+      = render collection
