@@ -9,6 +9,14 @@ class LanguagesController < InheritedResources::Base
 
   load_and_authorize_resource :except => [:index, :show]
 
+  def search
+    respond_to do |format|
+      format.json do
+        @languages = Language.all.map(&:name)
+      end
+    end
+  end
+
   def index
     super do |format|
       format.html do

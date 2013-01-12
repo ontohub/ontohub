@@ -34,3 +34,6 @@ en:
       help: Enter at least three characters to search for users or teams.
   search:
     help: "Enter all words that must be included in the entities. You can search a special kind by adding a 'kind:<value>'"
+  support:
+    placeholder: Support an new logic
+    help: Enter at least three characters to search for a logic or language

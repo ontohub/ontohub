@@ -1,7 +1,12 @@
-%h3 Supported Languages
-%ol.latest
-  - @supports.each do |support|
-    %li
-      supports
-      = fancy_link support.logic
+.languages
+  %h3 Supported Languages
+  %ol.latest
+    - @supports.each do |support|
+      %li
+        supports
+        = fancy_link support.logic
       
+%form.add
+  = text_field_tag :name, nil, :class => 'autocomplete logics', :placeholder => t('support.placeholder')
+  %button.help{:title => t('support.help') } ?
+ 

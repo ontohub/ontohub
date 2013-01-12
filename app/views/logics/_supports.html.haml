@@ -5,3 +5,8 @@
       supports
       = fancy_link support.language
       
+= raw @languages
+%form.add
+  = text_field_tag :name, nil, :class => 'autocomplete languages', :placeholder => t('support.placeholder')
+  %button.help{:title => t('support.help') } ?
+      
