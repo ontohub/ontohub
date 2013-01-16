@@ -153,6 +153,7 @@ GEM
     momentjs-rails (1.7.0)
       railties (~> 3.1)
     multi_json (1.5.0)
+    mysql (2.8.1)
     net-scp (1.0.4)
       net-ssh (>= 1.99.1)
     net-sftp (2.0.5)
@@ -295,6 +296,7 @@ DEPENDENCIES
   launchy
   mocha
   momentjs-rails
+  mysql (~> 2.8.1)
   nokogiri (~> 1.5.0)
   pg
   progress_bar

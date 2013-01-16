@@ -2,6 +2,7 @@ source 'https://rubygems.org'
 
 gem 'rails', '~> 3.2.2'
 gem 'pg'
+gem 'mysql', '~> 2.8.1'
 gem 'foreigner'
 
 
