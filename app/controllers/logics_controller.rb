@@ -12,7 +12,7 @@ class LogicsController < InheritedResources::Base
   def search
     respond_to do |format|
       format.json do
-        @logics = Logic.all.map(&:name)
+        @logics = Logic.where("name LIKE ?", "%" << params[:term] << "%").map(&:name)
       end
     end
   end

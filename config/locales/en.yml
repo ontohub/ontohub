@@ -35,5 +35,9 @@ en:
   search:
     help: "Enter all words that must be included in the entities. You can search a special kind by adding a 'kind:<value>'"
   support:
-    placeholder: Support an new logic
-    help: Enter at least three characters to search for a logic or language
+    placeholder: 
+      language: Support an new logic
+      logic: Support an new language
+    help: 
+      language: Enter characters to search for a logic
+      logic: Enter characters to search for a language
