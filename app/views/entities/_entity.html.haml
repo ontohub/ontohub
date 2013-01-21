@@ -1,3 +1,4 @@
 %tr
-  - for key in %w(text kind name iri range)
-    %td= entity.send(key)
+  %td= owl_name_stripper(entity.name)
+  %td= entity.text
+
