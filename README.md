@@ -1,4 +1,5 @@
-Ontohub [![Build Status](https://travis-ci.org/ontohub/ontohub.png)](https://travis-ci.org/ontohub/ontohub) [![Code Climate](https://codeclimate.com/badge.png)](https://codeclimate.com/github/ontohub/ontohub)
+Ontohub [![Build Status](https://travis-ci.org/ontohub/ontohub.png)](https://travis-ci.org/ontohub/ontohub) [![Code Climate](https://codeclimate.com/badge.png)](https://codeclimate.com/github/ontohub/ontohub) [rubydoc.info](http://rubydoc.info/github/ontohub/ontohub/frames)
+
 =======
 
 A web-based repository for distributed ontologies.
