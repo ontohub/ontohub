@@ -203,6 +203,15 @@ GEM
       rdoc (~> 3.4)
       thor (>= 0.14.6, < 2.0)
     rake (10.0.3)
+    rdf (0.3.11.1)
+      addressable (>= 2.2.6)
+    rdf-n3 (0.3.8)
+      rdf (>= 0.3.11)
+    rdf-rdfxml (0.3.9)
+      rdf (>= 0.3.11)
+      rdf-xsd (>= 0.3.8)
+    rdf-xsd (0.3.8)
+      rdf (>= 0.3.4)
     rdoc (3.12)
       json (~> 1.4)
     redis (3.0.2)
@@ -303,6 +312,9 @@ DEPENDENCIES
   quiet_assets
   rails (~> 3.2.2)
   rails-erd
+  rdf
+  rdf-n3
+  rdf-rdfxml
   redis-namespace
   resque
   rvm-capistrano
