@@ -108,64 +108,27 @@ end
 # Language Section
 #
 # Author: Daniel Couto Vale <danielvale@uni-bremen.de>
-# Source: The Distributed Otology Language (DOL): use cases, syntax and extensibility
-#
-# Logics:
-# * Common Logic
-# * OWL2-DL
-# * OWL2-RL
-# * OWL2-QL
-# * OWL2-EL
-# * RDFS
-# * RDF
-language = Language.new({
-  :name        => "Common Logic",
-  :iri         => "http://ontohub.org/lang/cl",
-  :description => "Common Logic Language"
-})
-language.save!
+# Source: The registry ontology
+languageIris = relinv[typeIri][languageTypeIri]
+languageIris.each do |languageIri|
+  print "\nLANGUAGE "
+  print languageIri
+  print "\n"
+  languageName = reldir[labelIri][languageIri] != nil ? reldir[labelIri][languageIri][0] : languageIri;
+  languageDesc = reldir[commentIri][languageIri] != nil ? reldir[commentIri][languageIri][0] : "";
+  languageDefi = reldir[isDefinedByIri][languageIri] != nil ? reldir[isDefinedByIri][languageIri][0] : "";
+  language = Language.new({
+    :iri => languageIri,
+    :name => languageName,
+    :description => languageDesc,
+    :defined_by => languageDefi
+  })
+  language.save!
+end
 
-language = Language.new({
-  :name        => "OWL2-DL",
-  :iri         => "http://ontohub.org/lang/owl2-dl",
-  :description => "OWL2 DL"
-})
-language.save!
 
-language = Language.new({
-  :name        => "OWL2-RL",
-  :iri         => "http://ontohub.org/lang/owl2-rl",
-  :description => "OWL2 RL"
-})
-language.save!
 
-language = Language.new({
-  :name        => "OWL2-QL",
-  :iri         => "http://ontohub.org/lang/owl2-ql",
-  :description => "OWL2 QL"
-})
-language.save!
 
-language = Language.new({
-  :name        => "OWL2-EL",
-  :iri         => "http://ontohub.org/lang/owl2-el",
-  :description => "OWL2 EL"
-})
-language.save!
-
-language = Language.new({
-  :name        => "RDFS",
-  :iri         => "http://ontohub.org/lang/rdfs",
-  :description => "RDFS"
-})
-language.save!
-
-language = Language.new({
-  :name        => "RDF",
-  :iri         => "http://ontohub.org/lang/rdf",
-  :description => "RDF"
-})
-language.save!
 
 # Import ontologies
 Dir["#{Rails.root}/test/fixtures/ontologies/*/*.{casl,clf,clif,owl}"].each do |file|
