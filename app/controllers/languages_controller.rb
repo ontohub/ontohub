@@ -12,7 +12,7 @@ class LanguagesController < InheritedResources::Base
   def search
     respond_to do |format|
       format.json do
-        @languages = Language.all.map(&:name)
+        @languages = Language.where("name LIKE ?", "%" << params[:term] << "%").map(&:name)
       end
     end
   end

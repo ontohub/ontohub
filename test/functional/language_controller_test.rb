@@ -1,33 +1,33 @@
 require 'test_helper'
 
-class LogicsControllerTest < ActionController::TestCase
+class LanguagesControllerTest < ActionController::TestCase
   setup do
     @user = FactoryGirl.create :user
-    @logic = FactoryGirl.create :logic, :user => @user
+    @language = FactoryGirl.create :language, :user => @user
   end
   
   context 'on GET to show' do
     context 'not signed in' do
       setup do
-        get :show, :id => @logic.to_param
+        get :show, :id => @language.to_param
       end
       
       should respond_with :success
-      should assign_to :logic
+      should assign_to :language
       should assign_to :supports
 #      should assign_to :translatables
       should render_template :show
       should_not set_the_flash
     end
     
-    context 'signed in as Logic-Owner' do
+    context 'signed in as Language-Owner' do
       setup do
         sign_in @user
-        get :show, :id => @logic.to_param
+        get :show, :id => @language.to_param
       end
       
       should respond_with :success
-      should assign_to :logic
+      should assign_to :language
       should assign_to :supports
 #      should assign_to :translatables
       should render_template :show
@@ -41,7 +41,7 @@ class LogicsControllerTest < ActionController::TestCase
     end
     
     should respond_with :success
-    should assign_to :logics
+    should assign_to :languages
     should render_template :index
     should_not set_the_flash
   end
@@ -49,15 +49,15 @@ class LogicsControllerTest < ActionController::TestCase
   context 'on POST to create' do
     setup do
       sign_in @user
-      @logic2 = FactoryGirl.build(:logic)
-      post :create, :logic => {
-        :name =>  @logic2.name,
-        :iri => @logic2.iri
+      @language2 = FactoryGirl.build(:language)
+      post :create, :language => {
+        :name =>  @language2.name,
+        :iri => @language2.iri
       }
     end
     
     should "create the record" do
-      assert_equal @logic2.name, Logic.find_by_name(@logic2.name).name
+      assert_equal @language2.name, Language.find_by_name(@language2.name).name
     end
     
     should respond_with :redirect
@@ -68,22 +68,22 @@ class LogicsControllerTest < ActionController::TestCase
   context 'on POST to update' do
     context 'signed in' do
       setup do
-        @logic.permissions.create! \
+        @language.permissions.create! \
             :role    => 'owner',
             :subject => @user
         sign_in @user
-        @oldname = @logic.name
-        post :update, :id => @logic.id, :logic => {
+        @oldname = @language.name
+        post :update, :id => @language.id, :language => {
           :name => "test3"
         }
       end
   
       should "not leave the record" do
-        assert !Logic.find_by_name(@oldname)
+        assert !Language.find_by_name(@oldname)
       end
       
       should "change the record" do
-        assert Logic.find_by_name("test3")
+        assert Language.find_by_name("test3")
       end
       
       should respond_with :redirect
@@ -92,21 +92,21 @@ class LogicsControllerTest < ActionController::TestCase
     
     context 'not signed in' do
       setup do
-        @logic.permissions.create! \
+        @language.permissions.create! \
             :role    => 'owner',
             :subject => @user
-        @oldname = @logic.name
-        post :update, :id => @logic.id, :logic => {
+        @oldname = @language.name
+        post :update, :id => @language.id, :language => {
           :name => "test3"
         }
       end
   
       should "leave the record" do
-        assert Logic.find_by_name(@oldname)
+        assert Language.find_by_name(@oldname)
       end
       
       should "not change the record" do
-        assert !Logic.find_by_name("test3")
+        assert !Language.find_by_name("test3")
       end
       
       should respond_with :redirect
@@ -116,18 +116,18 @@ class LogicsControllerTest < ActionController::TestCase
     context 'not permitted' do
       setup do
         sign_in @user
-        @oldname = @logic.name
-        post :update, :id => @logic.id, :logic => {
+        @oldname = @language.name
+        post :update, :id => @language.id, :language => {
           :name => "test3"
         }
       end
   
       should "leave the record" do
-        assert Logic.find_by_name(@oldname)
+        assert Language.find_by_name(@oldname)
       end
       
       should "not change the record" do
-        assert !Logic.find_by_name("test3")
+        assert !Language.find_by_name("test3")
       end
       
       should respond_with :redirect
@@ -136,18 +136,18 @@ class LogicsControllerTest < ActionController::TestCase
     
   end
   
-    context 'on POST to DELETE' do
+  context 'on POST to DELETE' do
     context 'signed in' do
       setup do
-        @logic.permissions.create! \
+        @language.permissions.create! \
             :role    => 'owner',
             :subject => @user
         sign_in @user
-        delete :destroy, :id => @logic.id
+        delete :destroy, :id => @language.id
       end
   
       should "not leave the record" do
-        assert !Logic.find_by_name(@logic.name)
+        assert !Language.find_by_name(@language.name)
       end
       
       should respond_with :redirect
@@ -156,14 +156,14 @@ class LogicsControllerTest < ActionController::TestCase
     
     context 'not signed in' do
       setup do
-        @logic.permissions.create! \
+        @language.permissions.create! \
             :role    => 'owner',
             :subject => @user
-        delete :destroy, :id => @logic.id
+        delete :destroy, :id => @language.id
       end
   
       should "leave the record" do
-        assert Logic.find_by_name(@logic.name)
+        assert Language.find_by_name(@language.name)
       end
       
      should respond_with :redirect
@@ -173,11 +173,11 @@ class LogicsControllerTest < ActionController::TestCase
     context 'not permitted' do
       setup do
         sign_in @user
-        delete :destroy, :id => @logic.id
+        delete :destroy, :id => @language.id
       end
   
       should "leave the record" do
-        assert Logic.find_by_name(@logic.name)
+        assert Language.find_by_name(@language.name)
       end
       
       should respond_with :redirect
