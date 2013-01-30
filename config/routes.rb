@@ -10,11 +10,11 @@ Ontohub::Application.routes.draw do
   resources :users, :only => :show
   resources :logics do
     get 'search', :on => :collection
-    post 'addLanguage', :on => :member
+    post 'add_language', :on => :member
   end
   resources :languages do
     get 'search', :on => :collection
-    post 'addLogic', :on => :member
+    post 'add_logic', :on => :member
   end
   
   namespace :admin do

@@ -17,7 +17,7 @@ class LanguagesController < InheritedResources::Base
     end
   end
   
-  def addLogic
+  def add_logic
     resource.addLogic(Logic.find_by_name(params[:name]))
     respond_to do |format|
       format.html {redirect_to :action => 'show'}
