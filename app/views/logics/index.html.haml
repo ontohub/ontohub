@@ -1,0 +1,18 @@
+%h2= @page_title = 'Logics'
+
+- if can? :create, Logic
+  %ul.actions.pull-right
+    %li= link_to 'Create Logic', :new_logic
+
+%p
+  = pluralize(collection.count, resource_class.to_s)
+  found
+
+= pagination do
+  %table
+    %thead
+      %th Name
+      %th IRI
+      %th 
+    %tbody
+      = render collection

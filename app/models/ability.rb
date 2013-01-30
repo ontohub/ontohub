@@ -27,6 +27,15 @@ class Ability
       end
       can [:new, :create], Logic
       
+      # Languages
+      can [:edit, :update], Language do |subject|
+        subject.permission?(:editor, user)
+      end
+      can [:destroy, :permissions], Language do |subject|
+        subject.permission?(:owner, user)
+      end
+      can [:new, :create], Language
+      
       # Team permissions
       can [:create, :show, :index], Team
       can [:edit, :update, :destroy], Team do |subject|

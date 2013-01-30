@@ -1,4 +1,5 @@
 class Support < ActiveRecord::Base
-  belongs_to :logics
-  belongs_to :languages
+  belongs_to :logic
+  belongs_to :language
+  
 end

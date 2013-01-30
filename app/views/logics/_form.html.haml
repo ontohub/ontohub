@@ -1,0 +1,10 @@
+= semantic_form_for resource do |f|
+  = f.inputs do
+    = f.input :name
+    = f.input :iri, as: :url
+    = f.input :standardization_status
+    = f.input :defined_by
+    = f.input :description
+    //= f.input :extension
+    //= f.input :mimetype, input_html: { pattern: '[0-9a-z+-]+/[0-9a-z+-]+' }
+  = f.actions

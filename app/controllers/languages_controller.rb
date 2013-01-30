@@ -1,33 +1,29 @@
 # 
-# Controller for Logics
+# Controller for Languages
 # 
-class LogicsController < InheritedResources::Base
+class LanguagesController < InheritedResources::Base
 
   respond_to :json, :xml
   has_pagination
   has_scope :search
 
   load_and_authorize_resource :except => [:index, :show]
-  
+
   def search
     respond_to do |format|
       format.json do
-        #language = Language.find(params[:id])
-        @logics = Logic.where("name LIKE ?", "%" << params[:term] << "%").map(&:name)
-        #language.supports.each do |support|
-        #  @logics.delete support
-        #end
+        @languages = Language.where("name LIKE ?", "%" << params[:term] << "%").map(&:name)
       end
     end
   end
   
-  def addLanguage
-    resource.addLanguage(Language.find_by_name(params[:name]))
+  def addLogic
+    resource.addLogic(Logic.find_by_name(params[:name]))
     respond_to do |format|
       format.html {redirect_to :action => 'show'}
     end
   end
-  
+
   def index
     super do |format|
       format.html do
@@ -38,7 +34,7 @@ class LogicsController < InheritedResources::Base
   end
 
   def create
-    @logic.user = current_user
+    @language.user = current_user
     super
   end
   
