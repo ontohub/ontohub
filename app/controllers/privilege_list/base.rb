@@ -36,15 +36,15 @@ class PrivilegeList::Base < InheritedResources::Base
     raise NotImplementedError
   end
   
-  helper_method :permission_list
-  def permission_list
+  helper_method :relation_list
+  def relation_list
     raise NotImplementedError
     # you need to override this method with something like:
-    # @permission_list ||= PermissionList.new ...
+    # @relation_list ||= RelationList.new ...
   end
   
   def render_resource
-    render :partial => resource, :locals => {:permission_list => permission_list}
+    render :partial => resource, :locals => {:relation_list => relation_list}
   end
   
   def power_error(exception)

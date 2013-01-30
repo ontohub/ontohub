@@ -25,7 +25,7 @@ en:
       metadatum:
         key: URI
         value: Value
-  permission_list:
+  relation_list:
     team_user:
       placeholder: Add users to your team
       help: Enter at least three characters or complete e-mail addresses to start searching.

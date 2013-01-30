@@ -27,7 +27,6 @@
     -if can? :edit, resource
       %li.divider
       %li= link_to 'Delete', resource, :confirm => 'Do you really want to delete this ontology?', :method => :delete
-%script= '$().dropdown()'
 
 %div= link_to resource.iri, download_path(resource) if download_path(resource)
 %div= resource.description

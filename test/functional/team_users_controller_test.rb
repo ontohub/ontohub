@@ -21,7 +21,7 @@ class TeamUsersControllerTest < ActionController::TestCase
           get :index, :team_id => @team.to_param
         end
         
-        should render_template 'permission_list/_permission_list'
+        should render_template 'relation_list/_relation_list'
         should render_template :index
         should respond_with :success
       end
