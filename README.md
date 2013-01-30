@@ -25,6 +25,9 @@ Lange][3] of the [AG Bernd Krieg-Brückner][4].
 
 Initial developers are [Julian Kornberger][5] and [Henning Müller][6].
 
+Documentation generated with yard is to be found on
+[rubydoc.info](http://rubydoc.info/github/ontohub/ontohub/frames).
+
 Installation
 ------------
 
