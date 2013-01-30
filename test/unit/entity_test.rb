@@ -7,7 +7,7 @@ class EntityTest < ActiveSupport::TestCase
       should have_db_column(column).of_type(:integer)
     end
   
-    %w( kind name iri range ).each do |column|
+    %w( kind name iri range fragment_name ).each do |column|
       should have_db_column(column).of_type(:string)
     end
 
@@ -28,7 +28,7 @@ class EntityTest < ActiveSupport::TestCase
   		@ontology = FactoryGirl.create :single_ontology
   	end
 
-  	context 'creating Entities' do
+  	context 'creating CommonLogic Entities' do
   		setup do
 	  		@entity_hash = {
 	  			'name' => 'nat',
@@ -40,7 +40,7 @@ class EntityTest < ActiveSupport::TestCase
 	      @ontology.entities.update_or_create_from_hash @entity_hash
   		end
 
-  		context 'correct attribute' do
+  		context 'attributes' do
   			setup do
   				@entity = @ontology.entities.first
   			end
@@ -49,8 +49,22 @@ class EntityTest < ActiveSupport::TestCase
   				should "be #{attr}" do
   					assert_equal @entity_hash[attr], eval("@entity.#{attr}")
   				end
-  			end
-  		end
+  			end       
+        
+        should "have fragment_name nil" do
+          assert_nil @entity.fragment_name
+        end
+      end
   	end
+    
+    context 'creating OWL2 Entities' do
+      setup do
+        @entity = FactoryGirl.create :entity_with_fragment
+      end
+      
+      should "have fragment_name attribute set" do
+        assert_equal "Fragment", @entity.fragment_name
+      end
+    end
   end
 end
