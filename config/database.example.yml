@@ -1,8 +1,13 @@
-# PostgreSQL. Versions 8.2 and up are supported.
+# Database Configuration
+# 
+# PostgreSQL Versions 8.2 is supported.
+# MySQL is NOT supported.
+#
+# Author: Daniel Couto Vale <danielvale@uni-bremen.de>
 #
 development: &config
   adapter: postgresql
-  encoding: unicode
+  encoding: utf8
   template: template0
   hostname: localhost
   database: ontohub_development
