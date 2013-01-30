@@ -6,7 +6,7 @@
       = fancy_link support.language
       
 = raw @languages
-%form.add
+%form.add{ :controller => resource, :language_id => resource.id, :action => logic_path + '/addLanguage', :method => 'post', "data-remote" => 'true' }
   = text_field_tag :name, nil, :class => 'autocomplete languages', :placeholder => t('support.placeholder.logic')
   %button.help{:title => t('support.help.logic') } ?
       

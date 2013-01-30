@@ -3,6 +3,7 @@ class Language < ActiveRecord::Base
   include Permissionable
 
   has_many :supports
+  has_many :language_adjoints
   has_many :ontologies
   has_many :serializations
   
@@ -18,5 +19,11 @@ class Language < ActiveRecord::Base
 
   def to_s
     name
+  end
+  
+  def addLogic(logic)
+    sup = self.supports.new
+    sup.logic = logic
+    sup.save!
   end
 end

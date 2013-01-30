@@ -12,8 +12,19 @@ class LogicsController < InheritedResources::Base
   def search
     respond_to do |format|
       format.json do
+        #language = Language.find(params[:id])
         @logics = Logic.where("name LIKE ?", "%" << params[:term] << "%").map(&:name)
+        #language.supports.each do |support|
+        #  @logics.delete support
+        #end
       end
+    end
+  end
+  
+  def addLanguage
+    resource.addLanguage(Language.find_by_name(params[:name]))
+    respond_to do |format|
+      format.html {redirect_to :action => 'show'}
     end
   end
   
