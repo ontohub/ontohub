@@ -32,6 +32,104 @@ team = Team.create! \
   team.users << user if i < 2
 end
 
+
+
+
+
+# Registry ontology
+#
+#
+require 'rdf'
+require 'rdf/rdfxml'
+require 'rdf/ntriples'
+
+statements = nil
+RDF::RDFXML::Reader.open("registry/registry.rdf") do |reader|
+  statements = reader.statements.to_a
+end && 0
+
+# Map relations
+reldir = Hash.new(nil)
+relinv = Hash.new(nil)
+statements.each do |statement|
+  a = "#{statement[0]}"
+  b = "#{statement[1]}"
+  c = "#{statement[2]}"
+  if reldir[b] == nil
+    reldir[b] = Hash.new
+    relinv[b] = Hash.new
+  end
+  if reldir[b][a] == nil
+    reldir[b][a] = Array.new
+  end
+  reldir[b][a].push c
+  if relinv[b][c] == nil
+    relinv[b][c] = Array.new
+  end
+  relinv[b][c].push a
+end
+
+typeIri = 'http://www.w3.org/1999/02/22-rdf-syntax-ns#type'
+labelIri = 'http://www.w3.org/2000/01/rdf-schema#label'
+commentIri = 'http://www.w3.org/2000/01/rdf-schema#comment'
+isDefinedByIri = 'http://www.w3.org/2000/01/rdf-schema#isDefinedBy'
+logicTypeIri = 'http://purl.net/dol/1.0/rdf#Logic'
+languageTypeIri = 'http://purl.net/dol/1.0/rdf#OntologyLanguage'
+
+
+
+
+
+# Logic Section
+#
+# Author: Daniel Couto Vale <danielvale@uni-bremen.de>
+# Source: The registry ontology
+logicIris = relinv[typeIri][logicTypeIri]
+logicIris.each do |logicIri|
+  print "\nLOGIC "
+  print logicIri
+  print "\n"
+  logicName = reldir[labelIri][logicIri] != nil ? reldir[labelIri][logicIri][0] : logicIri;
+  logicDesc = reldir[commentIri][logicIri] != nil ? reldir[commentIri][logicIri][0] : logicIri;
+  logicDefi = reldir[isDefinedByIri][logicIri] != nil ? reldir[isDefinedByIri][logicIri][0] : logicIri;
+  logic = Logic.new({
+    :iri => logicIri,
+    :name => logicName,
+    :description => logicDesc,
+    :defined_by => logicDefi
+  })
+  logic.save!
+end
+
+
+
+
+
+# Language Section
+#
+# Author: Daniel Couto Vale <danielvale@uni-bremen.de>
+# Source: The registry ontology
+languageIris = relinv[typeIri][languageTypeIri]
+languageIris.each do |languageIri|
+  print "\nLANGUAGE "
+  print languageIri
+  print "\n"
+  languageName = reldir[labelIri][languageIri] != nil ? reldir[labelIri][languageIri][0] : languageIri;
+  languageDesc = reldir[commentIri][languageIri] != nil ? reldir[commentIri][languageIri][0] : "";
+  languageDefi = reldir[isDefinedByIri][languageIri] != nil ? reldir[isDefinedByIri][languageIri][0] : "";
+  language = Language.new({
+    :iri => languageIri,
+    :name => languageName,
+    :description => languageDesc,
+    :defined_by => languageDefi
+  })
+  language.save!
+end
+
+
+
+
+
 # Import ontologies
 Dir["#{Rails.root}/test/fixtures/ontologies/*/*.{casl,clf,clif,owl}"].each do |file|
   basename = File.basename(file)
