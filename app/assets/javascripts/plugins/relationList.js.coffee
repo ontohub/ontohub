@@ -1,4 +1,4 @@
-$.widget "ui.permissionList",
+$.widget "ui.relationList",
   _create: ->
     self = this
     element = @element
@@ -21,7 +21,7 @@ $.widget "ui.permissionList",
     element.on "submit", "form.add", (event) ->
       event.preventDefault()
     
-    # Removal of permissions
+    # Removal of relations
     element.on "click", "a[rel=delete]", ->
       li = $(this).closest("li")
       return  unless confirm("really delete?")
@@ -74,7 +74,7 @@ $.widget "ui.permissionList",
         # hide form
         form.remove()
     
-    # Permission removal succeeded
+    # Removal of related object succeeded
     element.on "ajax:success", "ul", (event, data) ->
       target = $(event.target)
       li = target.closest("li")
@@ -119,7 +119,7 @@ $.widget "ui.permissionList",
     params[@model + "[" + @association + "_id]"] = ui.item.id
     params[@model + "[" + @association + "_type]"] = ui.item.type  if @polymorphic
     
-    # Create the permission
+    # Create the relation
     $.post @element.data("uri"), params, (data) ->
       data = $(data).hide()
       list.append data

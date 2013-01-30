@@ -1,4 +1,4 @@
-%li{'data-id' => team_user.user_id, 'data-admin' => (team_user.admin ? 1 : 0), 'data-iri' => url_for([team_user.team, team_user]) }
+%li{'data-id' => team_user.user_id, 'data-admin' => (team_user.admin ? 1 : 0), 'data-uri' => url_for([team_user.team, team_user]) }
   
   .functions
     = link_to 'edit',   '#', rel: :edit

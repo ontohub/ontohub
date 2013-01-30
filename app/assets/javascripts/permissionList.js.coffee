@@ -1,2 +1,2 @@
 $ ->
-  $(".permissionList").permissionList()
+  $(".relationList").relationList()
