@@ -1,4 +1,3 @@
-
 FactoryGirl.define do
   sequence :entity_text do |n|
     "http://host/ontology/#{n}"
@@ -15,7 +14,7 @@ FactoryGirl.define do
     name { Faker::Name.name }
 
     factory :entity_with_fragment do
-      text "http://example.com/resource#Fragment"
+      text "Class <http://example.com/resource#Fragment>"
     end
   end
 end

@@ -2,6 +2,7 @@
   %thead
     %tr
       %th Text
-      %th Name
+      - unless collection.first and collection.first.fragment_name
+        %th Name
   %tbody
     = render collection

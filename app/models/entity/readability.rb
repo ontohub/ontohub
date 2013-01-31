@@ -6,6 +6,7 @@ module Entity::Readability
     
     def strip_fragment
       self.fragment_name = URI.parse(text_contains_iri).fragment
+      save!
     end
     
     def text_contains_iri

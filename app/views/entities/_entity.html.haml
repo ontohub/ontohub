@@ -1,4 +1,5 @@
 %tr
   %td
-    =highlighted_fragment(entity)
-  %td=#owl_stripper(entity.name)
+    = text_with_highlighted_fragment entity
+  - unless entity.fragment_name
+    %td= entity.name
