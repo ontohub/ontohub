@@ -1,16 +1,16 @@
 # 
-# Helper-Class for rendering a permission list
+# Helper-Class for rendering a list of relations
 # 
-class PermissionList
+class RelationList
   
   attr_reader :model, :collection_path, :collection, :scope, :association
   
   # 
-  # first argument: restful path to the permissions collection
+  # first argument: restful path to the collection of related objects
   # second argument: options hash that may contain the following elements:
   # 
   # :scope       => scope for the autocompleter
-  # :model       => class that represents the permissions
+  # :model       => class that represents the relation
   # :association => name of the activerecord-association
   # :collection  => collection of all permissions
   def initialize(collection_path, options)
@@ -44,14 +44,14 @@ class PermissionList
   
   # path for rendering a PermissionsList instance
   def to_partial_path
-    'permission_list/permission_list'
+    'relation_list/relation_list'
   end
   
   def form_path
     partial_path :form
   end
   
-  def permission_path
+  def relation_partial_path
     partial_path model_underscore
   end
   
@@ -65,7 +65,7 @@ class PermissionList
   end
   
   def t(key)
-    I18n.t(key, :scope => "permission_list.#{model_underscore}" )
+    I18n.t(key, :scope => "relation_list.#{model_underscore}" )
   end
   
   def to_data

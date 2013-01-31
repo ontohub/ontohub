@@ -7,8 +7,8 @@ class TeamUsersController < PrivilegeList::Base
   
   protected
   
-  def permission_list
-    @permission_list ||= PermissionList.new [parent, :team_users],
+  def relation_list
+    @relation_list ||= RelationList.new [parent, :team_users],
       :model       => TeamUser,
       :collection  => collection,
       :association => :user,
