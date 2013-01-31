@@ -88,3 +88,8 @@ group :production do
   gem 'god'
   #gem 'newrelic_rpm'
 end
+
+group :documentation do
+  gem 'yard'
+  gem 'redcarpet'
+end

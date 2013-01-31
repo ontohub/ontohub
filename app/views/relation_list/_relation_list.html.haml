@@ -1,0 +1,10 @@
+.relationList{ relation_list.to_data.merge('data-uri' => url_for(relation_list.collection_path)) }
+  
+  %ul
+    = render :collection => relation_list.collection, :partial => relation_list.relation_partial_path, :locals => {:relation_list => relation_list}
+  
+  = render :partial => relation_list.form_path
+  
+  %form.add
+    = text_field_tag :name, nil, :class => 'autocomplete', :placeholder => relation_list.t(:placeholder)
+    %button.help{:title => relation_list.t(:help) } ?

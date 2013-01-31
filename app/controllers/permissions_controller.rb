@@ -7,8 +7,8 @@ class PermissionsController < PrivilegeList::Base
   
   protected
   
-  def permission_list
-    @permission_list ||= PermissionList.new [parent, :permissions],
+  def relation_list
+    @relation_list ||= RelationList.new [parent, :permissions],
       :model       => Permission,
       :collection  => collection,
       :association => :subject,

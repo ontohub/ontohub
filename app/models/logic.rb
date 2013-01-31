@@ -12,6 +12,9 @@ class Logic < ActiveRecord::Base
   include Resourcable
   include Permissionable
 
+  STAND_STATUS = %w( AcademicLiterature ISOStandard Unofficial W3CRecommendation W3CTeamSubmission W3CWorkingGroupNote )
+  DEFINED_BY = %w( registry )
+  
   has_many :ontologies
   has_many :supports
 
