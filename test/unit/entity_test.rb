@@ -7,7 +7,7 @@ class EntityTest < ActiveSupport::TestCase
       should have_db_column(column).of_type(:integer)
     end
   
-    %w( kind name iri range fragment_name ).each do |column|
+    %w( kind name iri range display_name ).each do |column|
       should have_db_column(column).of_type(:string)
     end
 
@@ -51,8 +51,8 @@ class EntityTest < ActiveSupport::TestCase
   				end
   			end       
         
-        should "have fragment_name nil" do
-          assert_nil @entity.fragment_name
+        should "have display_name nil" do
+          assert_nil @entity.display_name
         end
       end
   	end
@@ -62,8 +62,16 @@ class EntityTest < ActiveSupport::TestCase
         @entity = FactoryGirl.create :entity_with_fragment
       end
       
-      should "have fragment_name attribute set" do
-        assert_equal "Fragment", @entity.fragment_name
+      should "have fragment as display_name" do
+        assert_equal "Fragment", @entity.display_name
+      end
+      
+      setup do
+        @entity = FactoryGirl.create :entity_without_fragment
+      end
+      
+      should "have last path segment as display_name" do
+        assert_equal "resource", @entity.display_name
       end
     end
   end

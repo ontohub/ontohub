@@ -2,10 +2,12 @@ module Entity::Readability
   extend ActiveSupport::Concern
   
   included do
-    after_create :strip_fragment, if: :text_contains_iri
+    after_create :set_display_name, if: :text_contains_iri
     
-    def strip_fragment
-      self.fragment_name = URI.parse(text_contains_iri).fragment
+    def set_display_name
+      uri = URI.parse(text_contains_iri)
+      resource = uri.path.split("/").last
+      self.display_name = uri.fragment or resource
       save!
     end
     

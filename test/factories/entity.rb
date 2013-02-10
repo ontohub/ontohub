@@ -16,5 +16,9 @@ FactoryGirl.define do
     factory :entity_with_fragment do
       text "Class <http://example.com/resource#Fragment>"
     end
+    
+    factory :entity_without_fragment do
+      text "Class <http://example.com/resource>"
+    end
   end
 end
