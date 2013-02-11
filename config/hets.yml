@@ -4,10 +4,13 @@ hets_path:
   - ~/dev/hets/hets
   - /opt/local/bin/hets
   - ~/code/hets/hets
+  - ~/ontohub/Hets/hets
 hets_lib:
   - /usr/lib/hets/hets-lib
   - ~/dev/hets/lib
+  - ~/ontohub/Hets/lib
 hets_owl_tools:
   - /usr/lib/hets/hets-owl-tools
   - ~/dev/hets/OWL2
   - ~/code/hets/OWL2
+  - ~/ontohub/Hets/OWL2

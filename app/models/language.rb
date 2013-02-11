@@ -1,6 +1,7 @@
 class Language < ActiveRecord::Base
   include Resourcable
   include Permissionable
+  include Common::Scopes
 
   has_many :supports
   has_many :language_adjoints
@@ -16,6 +17,10 @@ class Language < ActiveRecord::Base
   validates :iri, length: { minimum: 1 }
   validates_uniqueness_of :iri, if: :iri_changed?
   validates_format_of :iri, with: URI::regexp(ALLOWED_URI_SCHEMAS)
+
+  scope :autocomplete_search, ->(query) {
+    where("name LIKE ?", "%" << query << "%")
+  }
 
   def to_s
     name

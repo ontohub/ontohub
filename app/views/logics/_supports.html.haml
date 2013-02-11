@@ -1,12 +1,2 @@
 %h3 Supported Languages
-%ol.latest
-  - @supports.each do |support|
-    %li
-      supports
-      = fancy_link support.language
-      
-= raw @languages
-%form.add{ :controller => resource, :language_id => resource.id, :action => logic_path + '/add_language', :method => 'post', "data-remote" => 'true' }
-  = text_field_tag :name, nil, :class => 'autocomplete languages', :placeholder => t('support.placeholder.logic')
-  %button.help{:title => t('support.help.logic') } ?
-      
+= render @relation_list

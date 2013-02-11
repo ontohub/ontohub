@@ -186,4 +186,21 @@ class LogicsControllerTest < ActionController::TestCase
     
   end
   
+  context 'add Language to Logic' do
+    setup do
+      @language = FactoryGirl.create(:Language)
+      sign_in @user
+      post :add_language, :id => @logic.id,:name => @language.name
+    end
+#    @logic.supports.each do |sup|
+#        contains = false
+#        if sup.language == @language
+#          contains = true
+#        end
+#    end
+#    should "add the Languagesupport" do
+#      assert contains
+#    end
+  end
+  
 end

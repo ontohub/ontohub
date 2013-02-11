@@ -9,12 +9,10 @@ Ontohub::Application.routes.draw do
   devise_for :users, :controllers => { :registrations => "users/registrations" }
   resources :users, :only => :show
   resources :logics do
-    get 'search', :on => :collection
-    post 'add_language', :on => :member
+    resources :supports, :only => [:create, :update, :destroy]
   end
   resources :languages do
-    get 'search', :on => :collection
-    post 'add_logic', :on => :member
+    resources :supports, :only => [:create, :update, :destroy]
   end
   
   namespace :admin do
