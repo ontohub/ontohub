@@ -1,13 +1,28 @@
+#
+# A named logic in the field of Logics.
+#
+# Examples:
+# * Classical Logic
+# * Common Logic
+# * Description Logic
+# * First-Order Logic
+# * Modal Logic
+#
 class Logic < ActiveRecord::Base
   include Resourcable
   include Permissionable
-  
+
   STAND_STATUS = %w( AcademicLiterature ISOStandard Unofficial W3CRecommendation W3CTeamSubmission W3CWorkingGroupNote )
   DEFINED_BY = %w( registry )
   
   has_many :ontologies
   has_many :supports
-  
+
+  # The creator of this logic in the system
+  # The logic creator
+  # * is not necessarily an owner nor an editor
+  # * may be a current or former user of the system
+  # * may be the original logician or anyone else
   belongs_to :user
 
   attr_accessible :name, :iri, :description, :standardization_status, :defined_by
