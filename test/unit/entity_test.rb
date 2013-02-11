@@ -57,21 +57,25 @@ class EntityTest < ActiveSupport::TestCase
       end
   	end
     
-    context 'creating OWL2 Entities' do
-      setup do
-        @entity = FactoryGirl.create :entity_with_fragment
+    context 'When creating OWL2 Entities' do
+      context 'with fragment in URI, the display_name attribute' do
+        setup do
+          @entity = FactoryGirl.create :entity_with_fragment
+        end
+        
+        should 'be the fragment' do
+          assert_equal "Fragment", @entity.display_name
+        end
       end
       
-      should "have fragment as display_name" do
-        assert_equal "Fragment", @entity.display_name
-      end
-      
-      setup do
-        @entity = FactoryGirl.create :entity_without_fragment
-      end
-      
-      should "have last path segment as display_name" do
-        assert_equal "resource", @entity.display_name
+      context 'without fragment in URI, the display_name attribute' do
+        setup do
+          @entity = FactoryGirl.create :entity_without_fragment
+        end
+        
+        should 'be the last path segment' do
+          assert_equal "resource", @entity.display_name
+        end
       end
     end
   end

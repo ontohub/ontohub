@@ -6,8 +6,7 @@ module Entity::Readability
     
     def set_display_name
       uri = URI.parse(text_contains_iri)
-      resource = uri.path.split("/").last
-      self.display_name = uri.fragment or resource
+      self.display_name = uri.fragment || uri.path.split("/").last
       save!
     end
     
