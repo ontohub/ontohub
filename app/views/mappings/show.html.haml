@@ -1,11 +1,15 @@
 - @page_title = resource
-%h2= link_to resource, resource, 'data-type' => resource_class
+%h2= link_to resource, [parent,resource], 'data-type' => resource_class
+Maps from 
+= fancy_link resource.source
+to
+= fancy_link resource.target
 
 - if can? :update, LogicMapping
   %ul.actions.pull-right
-    %li= link_to 'Edit mapping', :edit_logic_mapping
+    %li= link_to 'Edit mapping', "/logics/#{parent.id}/logic_mappings/#{resource.id}/edit"#[parent,:logic_mapping]
     - if can? :delete, Logic
-      %li= link_to 'Delete mapping', :logic_mapping, :confirm => 'Are you sure?', :method => :delete
+      %li= link_to 'Delete mapping', [parent,:logic_mapping], :confirm => 'Are you sure?', :method => :delete
 
 %p.definedBy 
   defined by

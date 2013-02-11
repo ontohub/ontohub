@@ -4,9 +4,17 @@ module LinkHelper
     clazz = resource.class
     clazz = 'Ontology' if clazz.to_s.include?('Ontology')
     
-    link_to resource, resource,
-      'data-type' => clazz.to_s,
-      :title      => resource.respond_to?(:title) ? resource.title : nil
+    unless resource.is_a? Array then
+      link_to resource, resource,
+        'data-type' => clazz.to_s,
+        :title      => resource.respond_to?(:title) ? resource.title : nil
+    else
+      
+      name = yield resource.last      
+      link_to name, resource,
+        'data-type' => clazz.to_s,
+        :title      => resource.last.respond_to?(:title) ? resource.last.title : nil
+    end
   end
   
   def counter_link(url, counter, subject)

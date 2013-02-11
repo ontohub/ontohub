@@ -27,6 +27,24 @@ class Ability
       end
       can [:new, :create], Logic
       
+      # LogicMappings
+      can [:edit, :update], LogicMapping do |subject|
+        subject.permission?(:editor, user)
+      end
+      can [:destroy, :permissions], LogicMapping do |subject|
+        subject.permission?(:owner, user)
+      end
+      can [:new, :create], LogicMapping
+      
+      # LogicMappings
+      can [:edit, :update], LanguageMapping do |subject|
+        subject.permission?(:editor, user)
+      end
+      can [:destroy, :permissions], LanguageMapping do |subject|
+        subject.permission?(:owner, user)
+      end
+      can [:new, :create], LanguageMapping
+      
       # Languages
       can [:edit, :update], Language do |subject|
         subject.permission?(:editor, user)

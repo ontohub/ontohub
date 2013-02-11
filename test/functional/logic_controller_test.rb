@@ -68,9 +68,9 @@ class LogicsControllerTest < ActionController::TestCase
   context 'on POST to update' do
     context 'signed in' do
       setup do
-        @logic.permissions.create! \
-            :role    => 'owner',
-            :subject => @user
+#        @logic.permissions.create! \
+#            :role    => 'owner',
+#            :subject => @user
         sign_in @user
         @oldname = @logic.name
         post :update, :id => @logic.id, :logic => {
@@ -92,9 +92,9 @@ class LogicsControllerTest < ActionController::TestCase
     
     context 'not signed in' do
       setup do
-        @logic.permissions.create! \
-            :role    => 'owner',
-            :subject => @user
+#        @logic.permissions.create! \
+#            :role    => 'owner',
+#            :subject => @user
         @oldname = @logic.name
         post :update, :id => @logic.id, :logic => {
           :name => "test3"
@@ -115,7 +115,8 @@ class LogicsControllerTest < ActionController::TestCase
     
     context 'not permitted' do
       setup do
-        sign_in @user
+        @user2 = FactoryGirl.create :user
+        sign_in @user2
         @oldname = @logic.name
         post :update, :id => @logic.id, :logic => {
           :name => "test3"
@@ -139,9 +140,9 @@ class LogicsControllerTest < ActionController::TestCase
     context 'on POST to DELETE' do
     context 'signed in' do
       setup do
-        @logic.permissions.create! \
-            :role    => 'owner',
-            :subject => @user
+#        @logic.permissions.create! \
+#            :role    => 'owner',
+#            :subject => @user
         sign_in @user
         delete :destroy, :id => @logic.id
       end
@@ -156,9 +157,9 @@ class LogicsControllerTest < ActionController::TestCase
     
     context 'not signed in' do
       setup do
-        @logic.permissions.create! \
-            :role    => 'owner',
-            :subject => @user
+#        @logic.permissions.create! \
+#            :role    => 'owner',
+#            :subject => @user
         delete :destroy, :id => @logic.id
       end
   
@@ -172,7 +173,8 @@ class LogicsControllerTest < ActionController::TestCase
     
     context 'not permitted' do
       setup do
-        sign_in @user
+        @user2 = FactoryGirl.create :user
+        sign_in @user2
         delete :destroy, :id => @logic.id
       end
   

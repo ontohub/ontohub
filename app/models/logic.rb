@@ -17,6 +17,7 @@ class Logic < ActiveRecord::Base
   
   has_many :ontologies
   has_many :supports
+  has_many :logic_mappings, :foreign_key => :source_id
 
   # The creator of this logic in the system
   # The logic creator
@@ -34,6 +35,8 @@ class Logic < ActiveRecord::Base
   validates_uniqueness_of :iri, if: :iri_changed?
   #validates_format_of :iri, with: URI::regexp(ALLOWED_URI_SCHEMAS)
 
+  after_create :add_permission
+  
   def to_s
     name
   end
@@ -42,6 +45,19 @@ class Logic < ActiveRecord::Base
     sup = self.supports.new
     sup.language = language
     sup.save!
+  end
+  
+  def mappings_from
+    LogicMapping.find_all_by_source_id self.id
+  end
+  
+  def mappings_to
+    LogicMapping.find_all_by_target_id self.id
+  end
+  
+private
+  def add_permission
+    permissions.create! :subject => self.user, :role => 'owner' if self.user
   end
   
 end
