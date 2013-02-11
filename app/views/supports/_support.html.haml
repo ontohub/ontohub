@@ -1,0 +1,9 @@
+%li{'data-id' => support.language_id, 'data-exact' => support.exact, 'data-uri' => url_for([support.logic, support]) }
+  
+  .functions
+    = link_to 'edit',   '#', rel: :edit
+    = link_to 'delete', '#', rel: :delete
+  
+  = support.language
+  
+  = support.exact ? "(exact)" : "(not exact)" 

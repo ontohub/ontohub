@@ -1,0 +1,22 @@
+- @page_title = resource
+%h2= link_to resource, resource, 'data-type' => resource_class
+
+- if can? :update, LogicMapping
+  %ul.actions.pull-right
+    %li= link_to 'Edit mapping', :edit_logic_mapping
+    - if can? :delete, Logic
+      %li= link_to 'Delete mapping', :logic_mapping, :confirm => 'Are you sure?', :method => :delete
+
+%p.definedBy 
+  defined by
+  = resource.defined_by
+%p.standardStatus 
+  standardization-status: 
+  = resource.standardization_status
+
+%p.faithfulness
+  %h3 Faithfulness
+  = resource.faithfulness
+%p.theoroidalness
+  %h3 Theoroidalness
+  = resource.theoroidalness

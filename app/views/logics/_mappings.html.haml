@@ -1,0 +1,8 @@
+%h3 Mappings
+%ol.latest
+  - @mappings.each do |mapping|
+    %li
+      can be mapped
+      = fancy_link [resource,mapping]
+- if can? :update, Logic
+  = link_to 'Add Mapping', "create_logic_mapping"  
