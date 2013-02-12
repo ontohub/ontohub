@@ -2,7 +2,17 @@
   %thead
     %tr
       %th Text
-      - unless collection and collection.first.display_name
+      - unless collection.first.display_name
         %th Name
   %tbody
     = render collection
+
+-# consider dropping the _entity_partial and render everything here
+
+-#  %tbody
+-#    - collection.each do |entity|
+-#      %tr
+-#        %td
+-#          = entity.display_name or entity.text
+-#      - unless entity.display_name
+-#        %td= entity.name
