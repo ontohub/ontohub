@@ -5,7 +5,7 @@ class MappingsController < InheritedResources::Base
   
   def edit
     edit!
-    @logic = resource.source
+    @source = resource.source
   end
   
 end

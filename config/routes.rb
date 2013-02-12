@@ -16,7 +16,7 @@ Ontohub::Application.routes.draw do
   resources :languages do
     get 'search', :on => :collection
     post 'add_logic', :on => :member
-    resource :language_mappings
+    resources :language_mappings
   end
   
   namespace :admin do

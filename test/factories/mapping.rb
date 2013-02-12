@@ -4,4 +4,9 @@ FactoryGirl.define do
     iri { FactoryGirl.generate :iri }
     
   end
+  
+  factory :language_mapping do
+    iri { FactoryGirl.generate :iri }
+    
+  end
 end

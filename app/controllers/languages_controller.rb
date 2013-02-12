@@ -42,6 +42,8 @@ class LanguagesController < InheritedResources::Base
     super do |format|
       format.html do
         @supports = resource.supports.all
+        @mappings_from = resource.mappings_from
+        @mappings_to = resource.mappings_to
       end
     end
   end

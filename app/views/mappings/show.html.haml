@@ -5,11 +5,11 @@ Maps from
 to
 = fancy_link resource.target
 
-- if can? :update, LogicMapping
+- if can? :update, resource.class
   %ul.actions.pull-right
-    %li= link_to 'Edit mapping', "/logics/#{parent.id}/logic_mappings/#{resource.id}/edit"#[parent,:logic_mapping]
-    - if can? :delete, Logic
-      %li= link_to 'Delete mapping', [parent,:logic_mapping], :confirm => 'Are you sure?', :method => :delete
+    %li= link_to 'Edit mapping', "/#{parent.class.name.underscore}s/#{parent.id}/#{resource.class.name.underscore}s/#{resource.id}/edit"#[parent,:logic_mapping]
+    - if can? :delete, resource.class
+      %li= link_to 'Delete mapping', [parent,resource.class], :confirm => 'Are you sure?', :method => :delete
 
 %p.definedBy 
   defined by
@@ -18,9 +18,11 @@ to
   standardization-status: 
   = resource.standardization_status
 
-%p.faithfulness
-  %h3 Faithfulness
-  = resource.faithfulness
-%p.theoroidalness
-  %h3 Theoroidalness
-  = resource.theoroidalness
+= if resource.has_attribute? :faithfulness
+  %p.faithfulness
+    %h3 Faithfulness
+    = resource.faithfulness
+= if resource.has_attribute? :theoroidalness
+  %p.theoroidalness
+    %h3 Theoroidalness
+    = resource.theoroidalness

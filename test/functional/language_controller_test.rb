@@ -68,9 +68,6 @@ class LanguagesControllerTest < ActionController::TestCase
   context 'on POST to update' do
     context 'signed in' do
       setup do
-        @language.permissions.create! \
-            :role    => 'owner',
-            :subject => @user
         sign_in @user
         @oldname = @language.name
         post :update, :id => @language.id, :language => {
@@ -92,9 +89,6 @@ class LanguagesControllerTest < ActionController::TestCase
     
     context 'not signed in' do
       setup do
-        @language.permissions.create! \
-            :role    => 'owner',
-            :subject => @user
         @oldname = @language.name
         post :update, :id => @language.id, :language => {
           :name => "test3"
@@ -115,7 +109,8 @@ class LanguagesControllerTest < ActionController::TestCase
     
     context 'not permitted' do
       setup do
-        sign_in @user
+        @user2 = FactoryGirl.create :user
+        sign_in @user2
         @oldname = @language.name
         post :update, :id => @language.id, :language => {
           :name => "test3"
@@ -139,9 +134,6 @@ class LanguagesControllerTest < ActionController::TestCase
   context 'on POST to DELETE' do
     context 'signed in' do
       setup do
-        @language.permissions.create! \
-            :role    => 'owner',
-            :subject => @user
         sign_in @user
         delete :destroy, :id => @language.id
       end
@@ -156,9 +148,6 @@ class LanguagesControllerTest < ActionController::TestCase
     
     context 'not signed in' do
       setup do
-        @language.permissions.create! \
-            :role    => 'owner',
-            :subject => @user
         delete :destroy, :id => @language.id
       end
   
@@ -172,7 +161,8 @@ class LanguagesControllerTest < ActionController::TestCase
     
     context 'not permitted' do
       setup do
-        sign_in @user
+        @user2 = FactoryGirl.create :user
+        sign_in @user2
         delete :destroy, :id => @language.id
       end
   
