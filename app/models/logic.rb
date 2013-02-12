@@ -41,7 +41,7 @@ class Logic < ActiveRecord::Base
     name
   end
   
-  def addLanguage(language)
+  def add_language(language)
     sup = self.supports.new
     sup.language = language
     sup.save!

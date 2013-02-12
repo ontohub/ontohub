@@ -22,7 +22,7 @@ class LogicsController < InheritedResources::Base
   end
   
   def add_language
-    resource.addLanguage(Language.find_by_name(params[:name]))
+    resource.add_language(Language.find_by_name(params[:name]))
     respond_to do |format|
       format.html {redirect_to :action => 'show'}
     end
