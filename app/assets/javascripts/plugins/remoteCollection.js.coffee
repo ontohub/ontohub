@@ -8,7 +8,6 @@ $.widget "ui.remoteCollection",
     self = this
     element = @element
     options = @options
-    form = element.find("form")
     collection = element.find(options.collectionTag).first()
     
     # Element created successfully
@@ -19,11 +18,11 @@ $.widget "ui.remoteCollection",
       newElement = newElement.relatizeTimestamps()  if $.fn.relatizeTimestamps
       newElement.appendTo(collection).hide().fadeIn "slow"
       self.updateCounter +1
-      options.success form
+      options.success self.form()
     
     # Element NOT created, render the returned form
     element.on "ajax:error", "form", (xhr, status, error) ->
-      $(this).replaceWith status.responseText
+      self.form().replaceWith status.responseText
     
     # Element deleted
     element.on "ajax:success", "a[data-method=delete]", ->
@@ -35,6 +34,9 @@ $.widget "ui.remoteCollection",
         e.remove()
       
       self.updateCounter -1
+  
+  form: ->
+    @element.find("form")
   
   # Updates a <span>-counter in the active ui-tab navigation
   updateCounter: (change) ->
