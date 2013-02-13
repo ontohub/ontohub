@@ -190,8 +190,9 @@ You do not need to be a project member. Just clone it!
 
 You have to re-login to apply your group membership.
 
-### Installation of gem dependencies
+### Installation of dependencies
 
+    sudo apt-get install libqtwebkit-dev
     cd ontohub
     bundle install
 

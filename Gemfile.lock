@@ -65,6 +65,9 @@ GEM
       rack-test (>= 0.5.4)
       selenium-webdriver (~> 2.0)
       xpath (~> 0.1.4)
+    capybara-webkit (0.13.0)
+      capybara (>= 1.0.0, < 1.2)
+      json
     carrierwave (0.6.2)
       activemodel (>= 3.2.0)
       activesupport (>= 3.2.0)
@@ -83,6 +86,7 @@ GEM
       chunky_png (~> 1.2)
       fssm (>= 0.2.7)
       sass (~> 3.1)
+    database_cleaner (0.9.1)
     devise (2.2.3)
       bcrypt-ruby (~> 3.0)
       orm_adapter (~> 0.1)
@@ -280,9 +284,11 @@ DEPENDENCIES
   cancan (~> 1.6.7)
   capistrano
   capybara
+  capybara-webkit
   carrierwave (~> 0.6.1)
   coffee-rails (~> 3.2.1)
   compass (~> 0.12.1)
+  database_cleaner
   devise (~> 2.0)
   factory_girl_rails
   faker (~> 1.0)
