@@ -15,14 +15,15 @@ $.widget "ui.relationList",
         self.autocompleteSource request, response
       select: (event, ui) ->
         self.autocompleteSelect event, ui
-    ).data("autocomplete")._renderItem = @autocompleteIcon
+    ).data("uiAutocomplete")._renderItem = @autocompleteIcon
     
     # Never submit the autocompletion form
     element.on "submit", "form.add", (event) ->
       event.preventDefault()
     
     # Removal of relations
-    element.on "click", "a[rel=delete]", ->
+    element.on "click", "a[rel=delete]", (event) ->
+      event.preventDefault()
       li = $(this).closest("li")
       return  unless confirm("really delete?")
       $.ajax
