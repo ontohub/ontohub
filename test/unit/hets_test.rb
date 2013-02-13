@@ -16,7 +16,8 @@ class HetsTest < ActiveSupport::TestCase
       should 'have generated importable output' do
         assert_nothing_raised do
           ontology = FactoryGirl.create :ontology
-          ontology.import_xml_from_file @xml_path
+          user = FactoryGirl.create :user
+          ontology.import_xml_from_file @xml_path, user
           `git checkout #{@xml_path} 2>/dev/null`
         end
       end

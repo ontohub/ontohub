@@ -8,7 +8,7 @@ class LogicMapping < ActiveRecord::Base
   belongs_to :source, class_name: 'Logic'
   belongs_to :target, class_name: 'Logic'
   belongs_to :user
-  attr_accessible :source_id, :target_id, :source, :target, :iri, :standardization_status, :defined_by, :default, :projection, :faithfulness, :theoroidalness
+  attr_accessible :source_id, :target_id, :source, :target, :iri, :standardization_status, :defined_by, :default, :projection, :faithfulness, :theoroidalness, :user
   
   after_create :add_permission
   
