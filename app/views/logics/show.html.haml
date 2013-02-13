@@ -8,15 +8,16 @@
       %li= link_to 'Delete Logic', :logic, :confirm => 'Are you sure?', :method => :delete
 
 %p.definedBy 
-  defined by
+  %h5 Defined by:
   = resource.defined_by
 %p.standardStatus 
-  standardization-status: 
+  %h5 Standardization-status: 
   = resource.standardization_status
 
 %p.description
-  %h3 Description
+  %h5 Description
   = resource.description
 
 = render :partial => "mappings"
-= link_to "supports", [resource, :supports]
+
+= render :partial => "supports"

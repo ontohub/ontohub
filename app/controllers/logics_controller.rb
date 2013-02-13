@@ -28,6 +28,11 @@ class LogicsController < InheritedResources::Base
       format.html do
         @mappings_from = resource.mappings_from
         @mappings_to = resource.mappings_to
+        @relation_list ||= RelationList.new [resource, :supports],
+          :model       => Support,
+          :collection  => resource.supports,
+          :association => :language,
+          :scope       => [Language]
       end
     end
   end
@@ -36,6 +41,14 @@ class LogicsController < InheritedResources::Base
   
   def authorize_parent
     #not needed
+  end
+  
+  def relation_list
+    @relation_list ||= RelationList.new [parent, :supports],
+          :model       => Support,
+          :collection  => parent.supports,
+          :association => :language,
+          :scope       => [Language]
   end
   
 end

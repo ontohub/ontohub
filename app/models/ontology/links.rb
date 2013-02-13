@@ -38,6 +38,7 @@ module Ontology::Links
       logic_mapping ||= LogicMapping.create! \
         source: source.logic,
         target: target.logic,
+        iri: link_iri,
         user: user
       
       # finally, create or update the link

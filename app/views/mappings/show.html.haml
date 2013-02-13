@@ -1,9 +1,5 @@
 - @page_title = resource
 %h2= link_to resource, [parent,resource], 'data-type' => resource_class
-Maps from 
-= fancy_link resource.source
-to
-= fancy_link resource.target
 
 - if can? :update, resource.class
   %ul.actions.pull-right
@@ -11,18 +7,23 @@ to
     - if can? :delete, resource.class
       %li= link_to 'Delete mapping', [parent,resource.class], :confirm => 'Are you sure?', :method => :delete
 
+%h5 Maps 
+= fancy_link resource.source 
+to
+= fancy_link resource.target
+
 %p.definedBy 
-  defined by
+  %h5 Defined by: 
   = resource.defined_by
 %p.standardStatus 
-  standardization-status: 
+  %h5 Standardization-status: 
   = resource.standardization_status
 
-= if resource.has_attribute? :faithfulness
+- if resource.has_attribute? :faithfulness
   %p.faithfulness
-    %h3 Faithfulness
+    %h5 Faithfulness
     = resource.faithfulness
-= if resource.has_attribute? :theoroidalness
+- if resource.has_attribute? :theoroidalness
   %p.theoroidalness
-    %h3 Theoroidalness
+    %h5 Theoroidalness
     = resource.theoroidalness
