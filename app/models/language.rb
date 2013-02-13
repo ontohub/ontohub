@@ -1,6 +1,7 @@
 class Language < ActiveRecord::Base
   include Resourcable
   include Permissionable
+  include Common::Scopes
 
   has_many :supports
   has_many :language_adjoints
@@ -20,6 +21,10 @@ class Language < ActiveRecord::Base
 
   after_create :add_permission
   
+  scope :autocomplete_search, ->(query) {
+    where("name LIKE ?", "%" << query << "%")
+  }
+
   def to_s
     name
   end

@@ -1,36 +1,22 @@
-class SupportsController < InheritedResources::Base
+# 
+# Controller for Supports
+# 
+class SupportsController < PrivilegeList::Base
   
-  def create
-    build_resource.logic = Logic.find(params[:logic_id])
-    build_resource.save!
-    respond_to do |format|
-      format.html { render_resource }
-    end
-  end
-  
-  def update
-    resource.update_attributes! *resource_params
-    respond_to do |format|
-      format.html { render_resource }
-    end
-  end
-  
-  def destroy
-    resource.destroy
-    head :ok
-  end
+  belongs_to :logic
   
   protected
   
-  helper_method :relation_list
-  def relation_list
-    raise NotImplementedError
-    # you need to override this method with something like:
-    # @relation_list ||= RelationList.new ...
+  def authorize_parent
+    #not needet! but has to be implemented for PrivilegeList
   end
   
-  def render_resource
-    render :partial => resource, :locals => {:relation_list => relation_list}
+  def relation_list
+    @relation_list ||= RelationList.new [parent, :supports],
+          :model       => Support,
+          :collection  => parent.supports,
+          :association => :language,
+          :scope       => [Language]
   end
   
 end
