@@ -1,4 +1,4 @@
-= semantic_form_for [parent, resource] do |f|
+= semantic_form_for resource do |f|
   = f.inputs do
     = f.input :iri, as: :url
     = f.input :standardization_status, :as => :select, :collection => LogicMapping::STAND_STATUS, :include_blank => false

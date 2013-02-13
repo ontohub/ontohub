@@ -43,12 +43,4 @@ class LogicsController < InheritedResources::Base
     #not needed
   end
   
-  def relation_list
-    @relation_list ||= RelationList.new [parent, :supports],
-          :model       => Support,
-          :collection  => parent.supports,
-          :association => :language,
-          :scope       => [Language]
-  end
-  
 end

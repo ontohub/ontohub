@@ -2,7 +2,7 @@ require 'test_helper'
 
 class LogicMappingsControllerTest < ActionController::TestCase
   
-  should_map_nested_resources :logics, :logic_mappings,
+  should_map_resources :logic_mappings,
     :except => [:index]
   
   context 'Logic Mappings:' do

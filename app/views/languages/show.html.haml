@@ -8,15 +8,16 @@
       %li= link_to 'Delete Language', :language, :confirm => 'Are you sure?', :method => :delete
 
 %p.definedBy 
-  defined by
+  %h5 Defined by:
   = resource.defined_by
 %p.standardStatus 
-  standardization-status: 
+  %h5 Standardization-status: 
   = resource.standardization_status
 
 %p.description
   %h3 Description
   = resource.description
+  
 = render :partial => "supports"
 
 = render :partial => "mappings"

@@ -2,7 +2,7 @@ require 'test_helper'
 
 class LanguageMappingsControllerTest < ActionController::TestCase
   
-  should_map_nested_resources :languages, :language_mappings,
+  should_map_resources :language_mappings,
     :except => [:index]
   
   context 'language Mappings:' do

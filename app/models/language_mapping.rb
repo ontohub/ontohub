@@ -14,8 +14,10 @@ class LanguageMapping < ActiveRecord::Base
   
   after_create :add_permission
   
+  validates_presence_of :target, :source, :iri
+  
   def to_s
-    "#{source} => #{target}"
+    "#{iri}: #{source} => #{target}"
   end
   
 private

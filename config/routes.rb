@@ -8,15 +8,18 @@ Ontohub::Application.routes.draw do
 
   devise_for :users, :controllers => { :registrations => "users/registrations" }
   resources :users, :only => :show
+  
   resources :logics do
-    resources :logic_mappings
-    resources :supports, :only => [:create, :update, :destroy, :index]
-  end
-  resources :languages do
-    resources :language_mappings
     resources :supports, :only => [:create, :update, :destroy, :index]
   end
   
+  resources :languages do
+    resources :supports, :only => [:create, :update, :destroy, :index]
+  end
+  
+  resources :language_mappings
+  resources :logic_mappings
+
   namespace :admin do
     resources :teams, :only => :index
     resources :users

@@ -3,10 +3,10 @@
   - @mappings_from.each do |mapping|
     %li
       can be mapped to
-      = fancy_link [resource,mapping] {|e| e.target}
+      = fancy_link mapping {|e| e.to_s}
   - @mappings_to.each do |mapping|
     %li
       can be mapped from
-      = fancy_link [mapping.source,mapping] {|e| e.source}
+      = fancy_link mapping {|e| e.to_s}
 - if can? :update, Language
-  = link_to 'Add Mapping', new_language_language_mapping_path(resource)
+  = link_to 'Add Mapping', new_language_mapping_path
