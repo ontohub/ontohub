@@ -1,4 +1,8 @@
-# A triple store
+require 'rdf'
+require 'rdf/rdfxml'
+require 'rdf/ntriples'
+
+# A triple store of relational statements (Subject, Predicate, Object)
 #
 # Author: Daniel Couto Vale <danielvale@uni-bremen.de>
 #
@@ -13,27 +17,32 @@ class TripleStore
   # A map (subject x predicate) -> object
   @objectMap
 
-  # Constructs a triple store from an rdf file
+  # Constructs a statement store from an rdf file
   #
   # path_name - the path name of the rdf file to load
   #
-  def load(path_name)
+  def self.load(path_name)
+    statements = []
+    RDF::RDFXML::Reader.open(path_name) do |reader|
+      statements = reader.statements.to_a
+    end && 0
+    return TripleStore.new statements
   end
 
   # Constructor
   #
-  # triples - a list of triples
+  # statements - a list of statements
   #
-  def initialize(triples)
+  def initialize(statements)
     @subjectMap = Hash.new
     @predicateMap = Hash.new
     @objectMap = Hash.new
-    triples.each do |triple|
+    statements.each do |statement|
 
-      # Read triple components
-      subject = triple[0].to_s
-      predicate = triple[1].to_s
-      object = triple[2].to_s
+      # Read statement components
+      subject = statement[0].to_s
+      predicate = statement[1].to_s
+      object = statement[2].to_s
 
       # Map subject
       if @subjectMap[predicate] == nil
@@ -97,7 +106,7 @@ class TripleStore
   # Returns a list with all objects for a given subject-predicate pair
   #
   # subject - a domain
-  # predicate = a relation
+  # predicate - a relation
   #
   def objects(subject, predicate)
     if @objectMap[subject] == nil
