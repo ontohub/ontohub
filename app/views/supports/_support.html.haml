@@ -1,4 +1,4 @@
-%li{'data-id' => support.id }
+%li{'data-id' => support.logic_id, 'data-uri' => url_for([support.logic, support]) }
   
   .functions
     = link_to 'edit',   '#', rel: :edit
@@ -6,4 +6,5 @@
   
   = support
   
-  (#{support.exact})
+  - if support.exact
+    (exact) 

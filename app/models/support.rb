@@ -4,4 +4,8 @@ class Support < ActiveRecord::Base
   
   attr_accessible :exact, :logic_id, :language_id
   
+  
+  def to_s
+    "#{self.logic.name} => #{self.language.name}"
+  end
 end

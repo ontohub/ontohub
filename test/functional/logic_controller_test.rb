@@ -14,8 +14,6 @@ class LogicsControllerTest < ActionController::TestCase
       
       should respond_with :success
       should assign_to :logic
-      should assign_to :supports
-#      should assign_to :translatables
       should render_template :show
       should_not set_the_flash
     end
@@ -28,8 +26,6 @@ class LogicsControllerTest < ActionController::TestCase
       
       should respond_with :success
       should assign_to :logic
-      should assign_to :supports
-#      should assign_to :translatables
       should render_template :show
       should_not set_the_flash
     end

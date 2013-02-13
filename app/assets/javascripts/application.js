@@ -4,8 +4,8 @@
 //= require jquery
 //= require jquery.ui.autocomplete
 //= require jquery.ui.progressbar
-//= require jquery.effects.fade
-//= require jquery.effects.highlight
+//= require jquery.ui.effect-fade
+//= require jquery.ui.effect-highlight
 //= require jquery_ujs
 
 // ----------------------------------------------

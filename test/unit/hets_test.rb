@@ -17,7 +17,7 @@ class HetsTest < ActiveSupport::TestCase
         assert_nothing_raised do
           ontology = FactoryGirl.create :ontology
           ontology.import_xml_from_file @xml_path
-          `rm -f #{@xml_path}`
+          `git checkout #{@xml_path} 2>/dev/null`
         end
       end
     end
