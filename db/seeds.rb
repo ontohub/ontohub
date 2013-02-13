@@ -36,25 +36,6 @@ end
 
 
 
-# Registry ontology
-#
-#
-store = TripleStore.load "registry/registry.rdf"
-logicReader = LogicPopulation.new store
-logicReader.list.each do |logic|
-  logic.user = user
-  logic.save!
-end
-langReader = LanguagePopulation.new store
-langReader.list.each do |lang|
-  lang.user = user
-  lang.save!
-end
-
-
-
-
-
 # Import ontologies
 Dir["#{Rails.root}/test/fixtures/ontologies/*/*.{casl,clf,clif,owl}"].each do |file|
   basename = File.basename(file)
