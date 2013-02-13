@@ -1,7 +1,7 @@
 # 
 # Controller for Logics
 # 
-class LogicsController < PrivilegeList::Base
+class LogicsController < InheritedResources::Base
 
   respond_to :json, :xml
   has_pagination
@@ -23,30 +23,10 @@ class LogicsController < PrivilegeList::Base
     super
   end
   
-  def show
-    super do |format|
-      format.html do
-        @relation_list ||= RelationList.new [resource, :supports],
-          :model       => Support,
-          :collection  => resource.supports,
-          :association => :language,
-          :scope       => [Language]
-      end
-    end
-  end
-  
   protected
-  
-  def relation_list
-    @relation_list ||= RelationList.new [resource, :supports],
-          :model       => Support,
-          :collection  => resource.supports,
-          :association => :language,
-          :scope       => [Language]
-  end
   
   def authorize_parent
     #not needed
   end
-
+  
 end

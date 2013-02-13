@@ -1,0 +1,3 @@
+= form_for :support, :method => :put, :remote => true, :html => {:class => 'editTemplate'} do |f|
+  = f.select :exact, :id  => "exact"
+  = submit_tag "save"

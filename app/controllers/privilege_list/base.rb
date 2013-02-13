@@ -7,7 +7,6 @@ class PrivilegeList::Base < InheritedResources::Base
   actions :index, :create, :update, :destroy, :show
   respond_to :json, :xml
   rescue_from Permission::PowerVaccuumError, :with => :power_error
-  #has_pagination
 
   before_filter :authorize_parent
   

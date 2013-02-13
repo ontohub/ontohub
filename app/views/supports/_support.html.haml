@@ -1,0 +1,9 @@
+%li{'data-id' => support.id }
+  
+  .functions
+    = link_to 'edit',   '#', rel: :edit
+    = link_to 'delete', '#', rel: :delete
+  
+  = support
+  
+  (#{support.exact})
