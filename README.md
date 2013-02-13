@@ -7,7 +7,7 @@ An ontology is a formal, logic-based description of the concepts and
 relationships that are of interest to an agent (user or service) or to a
 community of agents. The conceptual model of an ontology reflects a consensus,
 and the implementation of an ontology is often used to support a variety of
-applications such as web services, expert systems, or search engines. Therefor,
+applications such as web services, expert systems, or search engines. Therefore,
 ontologies are typically developed in teams. Ontohub wants to make this
 step as convenient as possible.
 
