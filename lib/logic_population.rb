@@ -6,9 +6,6 @@
 #
 class LogicPopulation
 
-  # A triple store with logics
-  @store
-
   def initialize(store)
     @store = store
   end

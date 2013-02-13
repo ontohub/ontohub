@@ -6,9 +6,6 @@ require 'test_helper'
 #
 class TripleStoreTest < ActiveSupport::TestCase
 
-  # The triple store
-  @store
-
   context 'Empty Triple List:' do
     setup do
       @store = TripleStore.new []
