@@ -2,10 +2,18 @@
   %thead
     %tr
       %th Text
-      - unless collection.first.display_name
+      - if @show_name_column 
         %th Name
   %tbody
-    = render collection
+    - collection.each do |entity|
+      %tr
+        - if @has_name_column
+          %td= entity.text
+          %td= entity.name
+        - else
+          %td= entity.display_name or name_highlighter(entity)
+        
+
 
 -# consider dropping the _entity_partial and render everything here
 
