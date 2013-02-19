@@ -8,6 +8,10 @@ class OntologyVersionTest < ActiveSupport::TestCase
   should have_db_index(:user_id)
   should have_db_index(:previous_version_id)
   should have_db_index(:checksum)
+  
+  setup do
+    @user = FactoryGirl.create :user
+  end
 
   context 'Validating OntologyVersion' do
     ['http://example.com/', 'https://example.com/'].each do |val|

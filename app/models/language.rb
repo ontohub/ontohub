@@ -1,6 +1,10 @@
 class Language < ActiveRecord::Base
   include Resourcable
   include Permissionable
+  include Common::Scopes
+  
+  STAND_STATUS = %w( AcademicLiterature ISOStandard Unofficial W3CRecommendation W3CTeamSubmission W3CWorkingGroupNote )
+  DEFINED_BY = %w( registry )
 
   has_many :supports
   has_many :language_adjoints
@@ -20,6 +24,10 @@ class Language < ActiveRecord::Base
 
   after_create :add_permission
   
+  scope :autocomplete_search, ->(query) {
+    where("name LIKE ?", "%" << query << "%")
+  }
+
   def to_s
     name
   end

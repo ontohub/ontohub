@@ -71,7 +71,11 @@ group :test do
   gem 'shoulda-context'
   gem "shoulda_routing_macros", "~> 0.1.2"
   gem "factory_girl_rails"
+  
+  # Required for integration tests
   gem "capybara"
+  gem "capybara-webkit"
+  gem 'database_cleaner'
   gem "launchy"
 end
 

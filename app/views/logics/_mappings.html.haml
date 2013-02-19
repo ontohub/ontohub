@@ -1,12 +1,10 @@
-%h3 Mappings
+%h4 Mappings
 %ol.latest
   - @mappings_from.each do |mapping|
-    %li
-      can be mapped to
-      = fancy_link [resource,mapping] {|e| e.target}
+    %li= fancy_link [resource,mapping] {|e| e.to_s}
   - @mappings_to.each do |mapping|
-    %li
-      can be mapped from
-      = fancy_link [mapping.source,mapping] {|e| e.source}
+    %li= fancy_link [mapping.source,mapping] {|e| e.to_s}
+      
 - if can? :update, Logic
-  = link_to 'Add Mapping', new_logic_logic_mapping_path(resource)
+  %ul.actions
+    %li= link_to 'Add Mapping', new_logic_mapping_path

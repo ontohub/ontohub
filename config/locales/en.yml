@@ -32,6 +32,9 @@ en:
     permission:
       placeholder: Add teams or users
       help: Enter at least three characters to search for users or teams.
+    support:
+      placeholder: Add a supported language
+      help: Enter at least three characters to search for languages
   search:
     help: "Enter all words that must be included in the entities. You can search a special kind by adding a 'kind:<value>'"
   support:

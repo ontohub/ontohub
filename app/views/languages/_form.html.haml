@@ -2,9 +2,7 @@
   = f.inputs do
     = f.input :name
     = f.input :iri, as: :url
-    = f.input :standardization_status
-    = f.input :defined_by
+    = f.input :standardization_status, :as => :select, :collection => Language::STAND_STATUS, :include_blank => false
+    = f.input :defined_by, :as => :select, :collection => Language::DEFINED_BY, :include_blank => false
     = f.input :description
-    //= f.input :extension
-    //= f.input :mimetype, input_html: { pattern: '[0-9a-z+-]+/[0-9a-z+-]+' }
   = f.actions
