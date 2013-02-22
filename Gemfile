@@ -23,8 +23,7 @@ gem 'haml-rails'
 gem 'jquery-rails'
 
 # Fancy Forms
-gem 'formtastic', '~> 2.2'
-gem 'formtastic-plus-bootstrap'
+gem 'simple_form'
 
 # Inherited Resources
 gem 'inherited_resources'

@@ -1,13 +1,12 @@
 %h2= @page_title = 'Log in'
 
-= render "links"
+= simple_form_for resource, :url => session_path(resource_name), html: { class: 'form-horizontal' } do |f|
+  
+  = f.input :email,    :required => false, :input_html => {:required => true, :autofocus => true}
+  = f.input :password, :required => false, :input_html => {:required => true}
+  = f.input :remember_me, :as => :boolean, label: false, inline_label: true if devise_mapping.rememberable?
+  
+  .form-actions
+    = f.button :submit, 'Log in', disable_with: t(:wait), class: 'btn-primary'
 
-= semantic_form_for resource, :url => session_path(resource_name) do |f|
-  
-  = f.inputs do
-    = f.input :email,    :required => false, :input_html => {:required => true, :autofocus => true}
-    = f.input :password, :required => false, :input_html => {:required => true}
-    = f.input :remember_me, :as => :boolean if devise_mapping.rememberable?
-  
-  = f.actions do
-    = f.action :submit, :label => 'Log in', :button_html => { 'data-disable-with' => t(:wait) }
+= render "links"

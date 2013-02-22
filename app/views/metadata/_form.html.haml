@@ -1,6 +1,5 @@
-= semantic_form_for [parent, request.post? ? resource : Metadatum.new], remote: true do |f|
-  = f.inputs do
-    = f.input :key, required: true, :as => :url
-    = f.input :value, required: true
-  = f.actions do
-    = f.action :submit, :button_html => { 'data-disable-with' => t(:wait) }
+= simple_form_for [parent, request.post? ? resource : Metadatum.new], remote: true do |f|
+  
+  = f.input :key,   required: false, input_html: {required: true}, :as => :url
+  = f.input :value, required: false, input_html: {required: true}
+  = f.button :submit, disable_with: t(:wait)
