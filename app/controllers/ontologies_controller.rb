@@ -31,7 +31,14 @@ class OntologiesController < InheritedResources::Base
   end
   
   def show
-    redirect_to ontology_entities_path(resource, :kind => resource.entities.groups_by_kind.first.kind)
+    respond_to do |format|
+      format.html do
+        redirect_to ontology_entities_path(resource, :kind => resource.entities.groups_by_kind.first.kind)
+      end
+      format.json do
+        respond_with resource
+      end
+    end
   end
   
   protected

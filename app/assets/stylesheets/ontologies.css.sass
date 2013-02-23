@@ -32,16 +32,18 @@ ul.ontologies
         &:last-child
           border: 0px
 
-span.state
-  font-weight: bold
-
+#ontology-state
+  span
+    font-weight: bold
+  
   &.pending, &.downloading, &.processing
+    span
     color: #999
 
-  &.done
+  &.done span
     color: #090
 
-  &.failed
+  &.failed span
     color: #900
 
 img.spinner
