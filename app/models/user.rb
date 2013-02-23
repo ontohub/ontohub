@@ -16,10 +16,10 @@ class User < ActiveRecord::Base
   
   scope :admin, where(:admin => true)
   
-  scope :email_search, ->(query) { where "email LIKE ?", "%" << query << "%" }
+  scope :email_search, ->(query) { where "email #{connection.ilike_operator} ?", "%" << query << "%" }
   
   scope :autocomplete_search, ->(query) {
-    where("name LIKE ? OR email LIKE ?", "%" << query << "%", query)
+    where("name #{connection.ilike_operator} ? OR email #{connection.ilike_operator} ?", "%" << query << "%", query)
   }
   
   before_destroy :check_remaining_admins
