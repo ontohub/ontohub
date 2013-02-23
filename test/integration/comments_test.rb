@@ -62,7 +62,7 @@ class CommentsTest < ActionController::IntegrationTest
     end
     
     # is the comment deleted?
-    assert page.has_css?('.comments > ol > li', :wait_to_disappear => true)
+    assert page.has_no_css?('.comments > ol > li')
   end
   
 end
