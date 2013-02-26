@@ -32,12 +32,20 @@ module Hets
   end
 
   # Runs hets with input_file and returns XML output file path.
-  def self.parse(input_file)
+  def self.parse(input_file, output_path = '')
     config = Config.new
-    Rails.logger.debug "#{config.path} -o xml -v2 '#{input_file}'"
-    status = `#{config.path} -o xml -v2 '#{input_file}' 2>&1`
+
+    output_path = "-O \"#{output_path}\"" unless output_path.blank?
+
+    command = "#{config.path} -o xml -v2 #{output_path} '#{input_file}' 2>&1"
+
+    Rails.logger.debug command
+
+    status = `#{command}`
     status = status.split("\n").last
+
     Rails.logger.debug status
+
     if $?.exitstatus != 0 or status.starts_with? '*** Error'
       raise HetsError.new(status)
     end

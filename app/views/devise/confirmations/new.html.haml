@@ -1,11 +1,10 @@
 %h2= @page_title = 'Resend confirmation instructions'
 
-= semantic_form_for resource, :url => confirmation_path(resource_name) do |f|
+= simple_form_for resource, :url => confirmation_path(resource_name), html: { class: 'form-horizontal' } do |f|
   
-  = f.inputs do
-    = f.input :email, :required => false, :input_html => {:required => true, :autofocus => true}
+  = f.input :email, :required => false, :input_html => {:required => true, :autofocus => true}
   
-  = f.actions do
-    = f.action :submit, :label => "Resend confirmation instructions", :button_html => { 'data-disable-with' => t(:wait) }
+  .form-actions
+    = f.button :submit, "Resend confirmation instructions", disable_with: t(:wait), class: 'btn-primary'
 
 = render "links"

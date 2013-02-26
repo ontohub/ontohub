@@ -43,6 +43,15 @@ class OntologiesControllerTest < ActionController::TestCase
         Entity.delete_all
       end
       
+      context 'with format json' do
+        setup do
+          get :show, :id => @ontology.to_param, :format => :json
+        end
+        
+        should respond_with :success
+        should respond_with_content_type :json
+      end
+      
       context 'without entities' do
         setup do
           get :show, :id => @ontology.to_param

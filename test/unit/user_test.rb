@@ -8,8 +8,9 @@ class UserTest < ActiveSupport::TestCase
   should have_many :teams
   should have_many :permissions
   
-  should_strip_attributes :name, :email
-  should_not_strip_attributes :password
+  should strip_attribute :name
+  should strip_attribute :email
+  should_not strip_attribute :password
   
   context 'User instance' do
     setup do
