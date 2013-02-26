@@ -7,7 +7,7 @@ An ontology is a formal, logic-based description of the concepts and
 relationships that are of interest to an agent (user or service) or to a
 community of agents. The conceptual model of an ontology reflects a consensus,
 and the implementation of an ontology is often used to support a variety of
-applications such as web services, expert systems, or search engines. Therefor,
+applications such as web services, expert systems, or search engines. Therefore,
 ontologies are typically developed in teams. Ontohub wants to make this
 step as convenient as possible.
 
@@ -190,8 +190,9 @@ You do not need to be a project member. Just clone it!
 
 You have to re-login to apply your group membership.
 
-### Installation of gem dependencies
+### Installation of dependencies
 
+    sudo apt-get install libqtwebkit-dev
     cd ontohub
     bundle install
 

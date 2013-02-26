@@ -10,7 +10,7 @@ class SessionTest < ActionController::IntegrationTest
     within "#new_user" do
       fill_in 'E-Mail',   :with => 'foobar@example.com'
       fill_in 'Name',     :with => 'Foo Bar'
-      fill_in 'Password', :with => 'simple-password'
+      fill_in 'user_password', :with => 'simple-password'
       fill_in 'Password confirmation', :with => 'simple-password'
       click_on 'Create Account'
     end

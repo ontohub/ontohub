@@ -1,13 +1,18 @@
 %h2= @page_title = "Create an ontology"
 
-= semantic_form_for resource do |f|
-  = f.inputs do
-    = f.input :type, :as => :radio, :collection => {"Distributed" => "DistributedOntology", "Single" => "SingleOntology"}
-  = f.semantic_fields_for :versions, resource.versions.first do |vf|
-    = f.inputs do
+= simple_form_for resource, html: { class: 'form-horizontal' } do |f|
+  
+  = f.input :type, :as => :radio_buttons, :collection => {"Distributed" => "DistributedOntology", "Single" => "SingleOntology"}
+  
+  .well
+    = f.simple_fields_for :versions, resource.versions.first do |vf|
       = vf.input :raw_file, :as => :file
-      %li - OR -
+      \- OR -
       = vf.input :source_url, :as => :url
-  = f.inputs :iri, :name, :description
-  = f.actions do
-    = f.action :submit, :button_html => { 'data-disable-with' => t(:wait) }
+  
+  = f.input :iri
+  = f.input :name
+  = f.input :description, input_html: { class: 'span8' }
+  
+  .form-actions
+    = f.button :submit, disable_with: t(:wait), class: 'btn-primary'

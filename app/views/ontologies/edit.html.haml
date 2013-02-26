@@ -1,6 +1,8 @@
 = ontology_nav resource, :edit
 
-= semantic_form_for resource do |f|
-  = f.inputs :iri, :name, :description
-  = f.actions do
-    = f.action :submit, :button_html => { 'data-disable-with' => t(:wait) }
+= simple_form_for resource do |f|
+  = f.input :iri
+  = f.input :name
+  = f.input :description
+  
+  = f.button :submit, disable_with: t(:wait)

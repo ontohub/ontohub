@@ -1,4 +1,4 @@
-$.widget "ui.permissionList",
+$.widget "ui.relationList",
   _create: ->
     self = this
     element = @element
@@ -15,14 +15,15 @@ $.widget "ui.permissionList",
         self.autocompleteSource request, response
       select: (event, ui) ->
         self.autocompleteSelect event, ui
-    ).data("autocomplete")._renderItem = @autocompleteIcon
+    ).data("uiAutocomplete")._renderItem = @autocompleteIcon
     
     # Never submit the autocompletion form
     element.on "submit", "form.add", (event) ->
       event.preventDefault()
     
-    # Removal of permissions
-    element.on "click", "a[rel=delete]", ->
+    # Removal of relations
+    element.on "click", "a[rel=delete]", (event) ->
+      event.preventDefault()
       li = $(this).closest("li")
       return  unless confirm("really delete?")
       $.ajax
@@ -74,7 +75,7 @@ $.widget "ui.permissionList",
         # hide form
         form.remove()
     
-    # Permission removal succeeded
+    # Removal of related object succeeded
     element.on "ajax:success", "ul", (event, data) ->
       target = $(event.target)
       li = target.closest("li")
@@ -119,7 +120,7 @@ $.widget "ui.permissionList",
     params[@model + "[" + @association + "_id]"] = ui.item.id
     params[@model + "[" + @association + "_type]"] = ui.item.type  if @polymorphic
     
-    # Create the permission
+    # Create the relation
     $.post @element.data("uri"), params, (data) ->
       data = $(data).hide()
       list.append data
@@ -129,7 +130,7 @@ $.widget "ui.permissionList",
     false
   
   autocompleteIcon: (ul, item) ->
-    $("<li></li>").data("item.autocomplete", item).append("<a data-type='" + item.type + "'>" + item.label + "</a>").appendTo ul
+    $("<li></li>").data("ui-autocomplete-item", item).append("<a data-type='" + item.type + "'>" + item.label + "</a>").appendTo ul
   
   # camelCase to under_score
   toUnderscore: (value) ->

@@ -25,7 +25,7 @@ class Ontology < ActiveRecord::Base
   
   strip_attributes :only => [:name, :iri]
 
-  scope :search, ->(query) { where "iri LIKE :term OR name LIKE :term", :term => "%" << query << "%" }
+  scope :search, ->(query) { where "iri #{connection.ilike_operator} :term OR name #{connection.ilike_operator} :term", :term => "%" << query << "%" }
 
   def to_s
     name? ? name : iri

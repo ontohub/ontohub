@@ -7,12 +7,17 @@ branches:
   only:
     - master
     - CRUD
+    - display_of_classes
 
 services:
   - redis-server
 
 notifications:
   email: false
+
+before_install:
+  - "export DISPLAY=:99.0"
+  - "sh -e /etc/init.d/xvfb start"
 
 script:
   - bundle exec rake test

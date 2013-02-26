@@ -23,8 +23,7 @@ gem 'haml-rails'
 gem 'jquery-rails'
 
 # Fancy Forms
-gem 'formtastic', '~> 2.2'
-gem 'formtastic-plus-bootstrap'
+gem 'simple_form'
 
 # Inherited Resources
 gem 'inherited_resources'
@@ -49,7 +48,7 @@ gem "strip_attributes", "~> 1.0"
 gem 'acts_as_tree'
 
 # Manage uploads
-gem 'carrierwave', "~> 0.6.1"
+gem 'carrierwave', "~> 0.8.0"
 
 # Async jobs
 gem 'resque'
@@ -68,7 +67,11 @@ group :test do
   gem 'shoulda-context'
   gem "shoulda_routing_macros", "~> 0.1.2"
   gem "factory_girl_rails"
+  
+  # Required for integration tests
   gem "capybara"
+  gem "capybara-webkit"
+  gem 'database_cleaner'
   gem "launchy"
 end
 
