@@ -12,7 +12,7 @@ class LogicMapping < ActiveRecord::Base
   belongs_to :source, class_name: 'Logic'
   belongs_to :target, class_name: 'Logic'
   belongs_to :user
-  attr_accessible :source_id, :target_id, :source, :target, :iri, :standardization_status, :defined_by, :default, :projection, :faithfulness, :theoroidalness, :user
+  attr_accessible :source_id, :target_id, :source, :target, :iri, :standardization_status, :defined_by, :default, :projection, :faithfulness, :theoroidalness, :exactness, :user
   
   validates_presence_of :target, :source, :iri
   

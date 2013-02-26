@@ -23,13 +23,14 @@ class LogicMappingPopulation
     default_iri = 'http://purl.net/dol/1.0/rdf#DefaultMapping'
     maps_from_iri = 'http://purl.net/dol/1.0/rdf#mapsFrom'
     maps_to_iri = 'http://purl.net/dol/1.0/rdf#mapsFrom'
+    status_iri = 'http://purl.net/dol/1.0/standardization#standardizationStatus'
     faithfulness_iris = [
       'http://purl.net/dol/1.0/rdf#UnfaithfulMapping',
       'http://purl.net/dol/1.0/rdf#FaithfulMapping',
       'http://purl.net/dol/1.0/rdf#ModelExpansiveMapping',
-      'http://purl.net/dol/1.0/rdf#ModelBijective',
+      'http://purl.net/dol/1.0/rdf#ModelBijectiveMapping',
       'http://purl.net/dol/1.0/rdf#EmbeddingMapping',
-      'http://purl.net/dol/1.0/rdf#SublogicMapping'
+      'http://purl.net/dol/1.0/rdf#SubLogic'
     ]
     theoroidalness_iris = [
       'http://purl.net/dol/1.0/rdf#PlainMapping',
@@ -82,10 +83,10 @@ class LogicMappingPopulation
         :target => mapping_target,
         :default => default,
         :faithfulness => FAITHFULNESSES[faithfulness_i],
-        :theoroidalness => THEOROIDALNESSES[theoroidalness_i]#,
-        #:exactness => EXACTNESSES[exactness_i]
+        :theoroidalness => THEOROIDALNESSES[theoroidalness_i],
+        :exactness => EXACTNESSES[exactness_i]
       })
-            mappings.push(mapping);
+      mappings.push(mapping);
     end
     return mappings;
   end
