@@ -9,15 +9,7 @@ class PrivilegeList::Base < InheritedResources::Base
   rescue_from Permission::PowerVaccuumError, :with => :power_error
 
   before_filter :authorize_parent
-  
-  def show
-    super
-  end
-  
-  def index
-    super
-  end
-  
+
   def create
     build_resource.creator = current_user if build_resource.respond_to? :creator
     build_resource.save!
@@ -36,10 +28,6 @@ class PrivilegeList::Base < InheritedResources::Base
   def destroy
     resource.destroy
     head :ok
-  end
-  
-  def page
-    super
   end
   
   protected

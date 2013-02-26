@@ -1,11 +1,10 @@
-FAITHFULNESSES = %w( not_faithful faithful model_expansive model_bijective embedding sublogic )
-THEOROIDALNESSES = %w( plain simple_theoroidal theoroidal generalized )
-EXACTNESSES = %w( not_exact weakly_mono_exact weakly_exact exact )
-
 class LogicMapping < ActiveRecord::Base
   include Resourcable
   include Permissionable
-  
+
+  FAITHFULNESSES = %w( not_faithful faithful model_expansive model_bijective embedding sublogic )
+  THEOROIDALNESSES = %w( plain simple_theoroidal theoroidal generalized )
+  EXACTNESSES = %w( not_exact weakly_mono_exact weakly_exact exact )
   STAND_STATUS = %w( AcademicLiterature ISOStandard Unofficial W3CRecommendation W3CTeamSubmission W3CWorkingGroupNote )
   DEFINED_BY = %w( registry )
   

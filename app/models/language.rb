@@ -39,11 +39,11 @@ class Language < ActiveRecord::Base
   end
   
     def mappings_from
-    LanguageMapping.find_all_by_source_id self.id
+    LanguageMapping.where source_id: self.id
   end
   
   def mappings_to
-    LanguageMapping.find_all_by_target_id self.id
+    LanguageMapping.where(target_id: self.id)
   end
   
 private
