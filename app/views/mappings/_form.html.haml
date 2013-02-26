@@ -6,6 +6,8 @@
   = f.input :projection if resource.has_attribute? :projection
   = f.input :faithfulness, :as => :select, :collection => LogicMapping::FAITHFULNESSES, :include_blank => false if resource.has_attribute? :faithfulness
   = f.input :theoroidalness, :as => :select, :collection => LogicMapping::THEOROIDALNESSES, :include_blank => false if resource.has_attribute? :theoroidalness
+  = f.input :exactness, :as => :select, :collection => LogicMapping::EXACTNESSES, :include_blank => false if resource.has_attribute? :exactness
+
   = f.input :source
   = f.input :target
   .form-actions
