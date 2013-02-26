@@ -130,7 +130,7 @@ $.widget "ui.relationList",
     false
   
   autocompleteIcon: (ul, item) ->
-    $("<li></li>").data("item.autocomplete", item).append("<a data-type='" + item.type + "'>" + item.label + "</a>").appendTo ul
+    $("<li></li>").data("ui-autocomplete-item", item).append("<a data-type='" + item.type + "'>" + item.label + "</a>").appendTo ul
   
   # camelCase to under_score
   toUnderscore: (value) ->
