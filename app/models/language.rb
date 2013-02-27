@@ -25,7 +25,7 @@ class Language < ActiveRecord::Base
   after_create :add_permission
   
   scope :autocomplete_search, ->(query) {
-    where("name LIKE ?", "%" << query << "%")
+    where("name #{connection.ilike_operator} ?", "%" << query << "%")
   }
 
   def to_s
