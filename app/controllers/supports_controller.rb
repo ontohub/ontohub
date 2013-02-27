@@ -3,7 +3,7 @@
 # 
 class SupportsController < PrivilegeList::Base
   
-  nested_belongs_to :logic
+  belongs_to :logic, :language, :polymorphic => true
   
   protected
   
