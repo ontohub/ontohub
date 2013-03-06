@@ -11,5 +11,9 @@ class LanguageMappingsController < MappingsController
     @language_mapping.user = current_user
     super
   end
+
+  def show
+    @adjoints = resource.adjoints
+  end
   
 end

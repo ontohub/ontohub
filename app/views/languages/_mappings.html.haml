@@ -1,12 +1,9 @@
 %h3 Mappings
 %ol.latest
   - @mappings_from.each do |mapping|
-    %li
-      can be mapped to
-      = fancy_link mapping {|e| e.to_s}
+    %li= fancy_link(mapping) {|e| e.to_s}
   - @mappings_to.each do |mapping|
-    %li
-      can be mapped from
-      = fancy_link mapping {|e| e.to_s}
+    %li= fancy_link(mapping) {|e| e.to_s}
+
 - if can? :update, Language
   = link_to 'Add Mapping', new_language_mapping_path

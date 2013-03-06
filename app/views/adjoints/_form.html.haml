@@ -1,0 +1,7 @@
+= simple_form_for resource, html: { class: 'form-horizontal' } do |f|
+  = f.input :iri, as: :url
+
+  = f.association :translation
+  = f.association :projection
+  .form-actions
+    = f.button :submit, class: 'btn-primary'

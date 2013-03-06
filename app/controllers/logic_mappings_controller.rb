@@ -11,5 +11,9 @@ class LogicMappingsController < MappingsController
     @logic_mapping.user = current_user
     super
   end
-  
+
+  def show
+    @adjoints = resource.adjoints
+  end
+
 end

@@ -1,9 +1,9 @@
 %h4 Mappings
 %ol.latest
   - @mappings_from.each do |mapping|
-    %li= fancy_link [resource,mapping] {|e| e.to_s}
+    %li= fancy_link(mapping) {|e| e.to_s}
   - @mappings_to.each do |mapping|
-    %li= fancy_link [mapping.source,mapping] {|e| e.to_s}
+    %li= fancy_link(mapping) {|e| e.to_s}
       
 - if can? :update, Logic
   %ul.actions

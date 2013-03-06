@@ -11,16 +11,21 @@ class LogicMapping < ActiveRecord::Base
   belongs_to :source, class_name: 'Logic'
   belongs_to :target, class_name: 'Logic'
   belongs_to :user
+  has_many :logic_adjoints, :foreign_key => :translation_id
   attr_accessible :source_id, :target_id, :source, :target, :iri, :standardization_status, :defined_by, :default, :projection, :faithfulness, :theoroidalness, :exactness, :user
-  
+
   validates_presence_of :target, :source, :iri
-  
+
   after_create :add_permission
-  
+
   def to_s
     "#{iri}: #{source} => #{target}"
   end
-  
+
+  def adjoints
+    LogicAdjoint.where("projection_id = ? OR translation_id = ?", self.id, self.id)
+  end
+
 private
 
   def add_permission

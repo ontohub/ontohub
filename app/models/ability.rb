@@ -36,7 +36,7 @@ class Ability
       end
       can [:new, :create], LogicMapping
       
-      # LogicMappings
+      # LanguageMappings
       can [:edit, :update], LanguageMapping do |subject|
         subject.permission?(:editor, user)
       end
@@ -44,6 +44,24 @@ class Ability
         subject.permission?(:owner, user)
       end
       can [:new, :create], LanguageMapping
+
+      # LogicAdjoints
+      can [:edit, :update], LogicAdjoint do |subject|
+        subject.permission?(:editor, user)
+      end
+      can [:destroy, :permissions], LogicAdjoint do |subject|
+        subject.permission?(:owner, user)
+      end
+      can [:new, :create], LogicAdjoint
+
+      # LanguageAdjoints
+      can [:edit, :update], LanguageAdjoint do |subject|
+        subject.permission?(:editor, user)
+      end
+      can [:destroy, :permissions], LanguageAdjoint do |subject|
+        subject.permission?(:owner, user)
+      end
+      can [:new, :create], LanguageAdjoint
       
       # Languages
       can [:edit, :update], Language do |subject|

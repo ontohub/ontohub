@@ -82,9 +82,9 @@ class LogicMappingPopulation
         :source => mapping_source,
         :target => mapping_target,
         :default => default,
-        :faithfulness => FAITHFULNESSES[faithfulness_i],
-        :theoroidalness => THEOROIDALNESSES[theoroidalness_i],
-        :exactness => EXACTNESSES[exactness_i]
+        :faithfulness => LogicMapping::FAITHFULNESSES[faithfulness_i],
+        :theoroidalness => LogicMapping::THEOROIDALNESSES[theoroidalness_i],
+        :exactness => LogicMapping::EXACTNESSES[exactness_i]
       })
       mappings.push(mapping);
     end

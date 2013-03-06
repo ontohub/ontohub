@@ -8,7 +8,7 @@
   = f.input :theoroidalness, :as => :select, :collection => LogicMapping::THEOROIDALNESSES, :include_blank => false if resource.has_attribute? :theoroidalness
   = f.input :exactness, :as => :select, :collection => LogicMapping::EXACTNESSES, :include_blank => false if resource.has_attribute? :exactness
 
-  = f.input :source
-  = f.input :target
+  = f.association :source
+  = f.association :target
   .form-actions
     = f.button :submit, class: 'btn-primary'
