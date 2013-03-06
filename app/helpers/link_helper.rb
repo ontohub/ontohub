@@ -5,12 +5,24 @@ module LinkHelper
     clazz = 'Ontology' if clazz.to_s.include?('Ontology')
     
     unless resource.is_a? Array then
-      link_to resource, resource,
+
+      if block_given?
+        name = yield resource
+      else
+        name = resource
+      end
+
+      link_to name, resource,
         'data-type' => clazz.to_s,
         :title      => resource.respond_to?(:title) ? resource.title : nil
     else
-      
-      name = yield resource.last      
+
+      if block_given?
+        name = yield resource
+      else
+        name = resource
+      end
+
       link_to name, resource,
         'data-type' => clazz.to_s,
         :title      => resource.last.respond_to?(:title) ? resource.last.title : nil
