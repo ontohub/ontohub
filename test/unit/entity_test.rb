@@ -54,18 +54,27 @@ class EntityTest < ActiveSupport::TestCase
         should "have display_name nil" do
           assert_nil @entity.display_name
         end
+
+        should "have iri nil" do
+          assert_nil @entity.iri
+        end
       end
   	end
     
     context 'When creating OWL2 Entities' do
-      context 'with fragment in URI, the display_name attribute' do
+      context 'with fragment in URI' do
         setup do
           @entity = FactoryGirl.create :entity_with_fragment
         end
         
-        should 'be the fragment' do
+        should 'display_name attribute be the fragment'  do
           assert_equal "Fragment", @entity.display_name
         end
+
+        should 'iri be set'  do
+          assert_equal "http://example.com/resource#Fragment", @entity.iri
+        end
+ 
       end
       
       context 'without fragment in URI, the display_name attribute' do

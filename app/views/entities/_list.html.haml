@@ -7,20 +7,11 @@
   %tbody
     - collection.each do |entity|
       %tr
-        - if @has_name_column
+        - if @show_name_column
           %td= entity.text
           %td= entity.name
         - else
-          %td= entity.display_name or name_highlighter(entity)
-        
-
-
--# consider dropping the _entity_partial and render everything here
-
--#  %tbody
--#    - collection.each do |entity|
--#      %tr
--#        %td
--#          = entity.display_name or entity.text
--#      - unless entity.display_name
--#        %td= entity.name
+          - if entity.display_name
+            %td= iri_tooltip(entity, entity.display_name)
+          - else 
+            %td= name_highlighter(entity)

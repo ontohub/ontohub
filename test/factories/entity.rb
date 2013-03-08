@@ -20,5 +20,9 @@ FactoryGirl.define do
     factory :entity_without_fragment do
       text "Class <http://example.com/resource>"
     end
+
+    factory :entity_without_iri do
+      text "foo"
+    end
   end
 end
