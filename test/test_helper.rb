@@ -18,9 +18,9 @@ class ActionController::TestCase
 end
 
 # for strip_attributes
-require "strip_attributes/shoulda"
+require "strip_attributes/matchers"
 class Test::Unit::TestCase
-  extend StripAttributes::Shoulda::Macros
+  extend StripAttributes::Matchers
 end
 
 # disable sunspot during tests

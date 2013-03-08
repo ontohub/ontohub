@@ -12,6 +12,14 @@ GIT
     sunspot_solr (2.0.0.pre.111215)
       escape (~> 0.0.4)
 
+GIT
+  remote: git://github.com/josevalim/inherited_resources.git
+  revision: 820e4f6bb904b113e20b379d4052b41d321958e8
+  specs:
+    inherited_resources (1.3.1)
+      has_scope (~> 0.5.0)
+      responders (~> 0.9)
+
 GEM
   remote: https://rubygems.org/
   specs:
@@ -44,10 +52,10 @@ GEM
       multi_json (~> 1.0)
     acts_as_tree (1.2.0)
       activerecord (>= 3.0.0)
-    addressable (2.3.2)
+    addressable (2.3.3)
     arel (3.0.2)
     bcrypt-ruby (3.0.1)
-    bootstrap-sass (2.2.2.0)
+    bootstrap-sass (2.3.0.1)
       sass (~> 3.2)
     bourne (1.1.2)
       mocha (= 0.10.5)
@@ -59,30 +67,30 @@ GEM
       net-sftp (>= 2.0.0)
       net-ssh (>= 2.0.14)
       net-ssh-gateway (>= 1.1.0)
-    capybara (1.1.2)
+    capybara (2.0.2)
       mime-types (>= 1.16)
       nokogiri (>= 1.3.3)
       rack (>= 1.0.0)
       rack-test (>= 0.5.4)
       selenium-webdriver (~> 2.0)
-      xpath (~> 0.1.4)
-    capybara-webkit (0.13.0)
-      capybara (>= 1.0.0, < 1.2)
+      xpath (~> 1.0.0)
+    capybara-webkit (0.14.2)
+      capybara (~> 2.0, >= 2.0.2)
       json
-    carrierwave (0.6.2)
+    carrierwave (0.8.0)
       activemodel (>= 3.2.0)
       activesupport (>= 3.2.0)
-    childprocess (0.3.5)
-      ffi (~> 1.0, >= 1.0.6)
+    childprocess (0.3.8)
+      ffi (~> 1.0, >= 1.0.11)
     choice (0.1.6)
-    chunky_png (1.2.6)
+    chunky_png (1.2.7)
     coffee-rails (3.2.2)
       coffee-script (>= 2.2.0)
       railties (~> 3.2.0)
     coffee-script (2.2.0)
       coffee-script-source
       execjs
-    coffee-script-source (1.3.3)
+    coffee-script-source (1.4.0)
     compass (0.12.2)
       chunky_png (~> 1.2)
       fssm (>= 0.2.7)
@@ -99,37 +107,28 @@ GEM
       multi_json (~> 1.0)
     factory_girl (4.2.0)
       activesupport (>= 3.0.0)
-    factory_girl_rails (4.2.0)
+    factory_girl_rails (4.2.1)
       factory_girl (~> 4.2.0)
       railties (>= 3.0.0)
-    faker (1.0.1)
-      i18n (~> 0.4)
+    faker (1.1.2)
+      i18n (~> 0.5)
     fattr (2.2.1)
-    ffi (1.1.5)
-    foreigner (1.2.1)
+    ffi (1.4.0)
+    foreigner (1.3.0)
       activerecord (>= 3.0.0)
-    formtastic (2.2.1)
-      actionpack (>= 3.0)
-    formtastic-plus-bootstrap (1.1.5)
-      bootstrap-sass (~> 2.2.2)
-      formtastic (~> 2.2)
-      railties (>= 3.1.0)
-      sass-rails
-    fssm (0.2.9)
-    god (0.12.1)
-    haml (3.1.7)
-    haml-rails (0.3.5)
+    fssm (0.2.10)
+    god (0.13.1)
+    haml (4.0.0)
+      tilt
+    haml-rails (0.4)
       actionpack (>= 3.1, < 4.1)
       activesupport (>= 3.1, < 4.1)
-      haml (~> 3.1)
+      haml (>= 3.1, < 4.1)
       railties (>= 3.1, < 4.1)
     has_scope (0.5.1)
     highline (1.6.15)
     hike (1.2.1)
     i18n (0.6.1)
-    inherited_resources (1.3.1)
-      has_scope (~> 0.5.0)
-      responders (~> 0.6)
     journey (1.0.4)
     jquery-rails (2.2.1)
       railties (>= 3.0, < 5.0)
@@ -138,15 +137,12 @@ GEM
       jquery-rails
       railties (>= 3.1.0)
     json (1.7.7)
-    kaminari (0.13.0)
+    kaminari (0.14.1)
       actionpack (>= 3.0.0)
       activesupport (>= 3.0.0)
-      railties (>= 3.0.0)
-    launchy (2.1.2)
+    launchy (2.2.0)
       addressable (~> 2.3)
     libv8 (3.11.8.13)
-    libwebsocket (0.1.5)
-      addressable
     mail (2.4.4)
       i18n (>= 0.4.0)
       mime-types (~> 1.16)
@@ -157,7 +153,7 @@ GEM
       metaclass (~> 0.0.1)
     momentjs-rails (1.7.2)
       railties (~> 3.1)
-    multi_json (1.5.1)
+    multi_json (1.6.1)
     net-scp (1.1.0)
       net-ssh (>= 2.6.5)
     net-sftp (2.1.1)
@@ -175,8 +171,8 @@ GEM
     progress_bar (0.4.0)
       highline (~> 1.6.1)
       options (~> 2.3.0)
-    quiet_assets (1.0.1)
-      railties (~> 3.1)
+    quiet_assets (1.0.2)
+      railties (>= 3.1, < 5.0)
     rack (1.4.5)
     rack-cache (1.2)
       rack (>= 0.4)
@@ -194,7 +190,7 @@ GEM
       activesupport (= 3.2.12)
       bundler (~> 1.0)
       railties (= 3.2.12)
-    rails-erd (1.0.0)
+    rails-erd (1.1.0)
       activerecord (>= 3.0)
       activesupport (>= 3.0)
       choice (~> 0.1.6)
@@ -214,7 +210,7 @@ GEM
     redis-namespace (1.2.1)
       redis (~> 3.0.0)
     ref (1.0.2)
-    responders (0.9.2)
+    responders (0.9.3)
       railties (~> 3.1)
     resque (1.23.0)
       multi_json (~> 1.0)
@@ -227,34 +223,37 @@ GEM
     rubyzip (0.9.9)
     rvm-capistrano (1.2.7)
       capistrano (>= 2.0.0)
-    sass (3.2.5)
+    sass (3.2.6)
     sass-rails (3.2.6)
       railties (~> 3.2.0)
       sass (>= 3.1.10)
       tilt (~> 1.3)
-    selenium-webdriver (2.25.0)
+    selenium-webdriver (2.30.0)
       childprocess (>= 0.2.5)
-      libwebsocket (~> 0.1.3)
       multi_json (~> 1.0)
       rubyzip
+      websocket (~> 1.0.4)
     shoulda (3.3.2)
       shoulda-context (~> 1.0.1)
       shoulda-matchers (~> 1.4.1)
-    shoulda-context (1.0.1)
+    shoulda-context (1.0.2)
     shoulda-matchers (1.4.2)
       activesupport (>= 3.0.0)
       bourne (~> 1.1.2)
     shoulda_routing_macros (0.1.2)
-    sinatra (1.3.3)
-      rack (~> 1.3, >= 1.3.6)
-      rack-protection (~> 1.2)
+    simple_form (2.0.4)
+      actionpack (~> 3.0)
+      activemodel (~> 3.0)
+    sinatra (1.3.4)
+      rack (~> 1.4)
+      rack-protection (~> 1.3)
       tilt (~> 1.3, >= 1.3.3)
     sprockets (2.2.2)
       hike (~> 1.2)
       multi_json (~> 1.0)
       rack (~> 1.0)
       tilt (~> 1.1, != 1.3.0)
-    strip_attributes (1.1.0)
+    strip_attributes (1.3.0)
       activemodel (~> 3.0)
     therubyracer (0.11.3)
       libv8 (~> 3.11.8.12)
@@ -265,16 +264,17 @@ GEM
       polyglot
       polyglot (>= 0.3.1)
     tzinfo (0.3.35)
-    uglifier (1.2.7)
+    uglifier (1.3.0)
       execjs (>= 0.3.0)
-      multi_json (~> 1.3)
+      multi_json (~> 1.0, >= 1.0.2)
     vegas (0.1.11)
       rack (>= 1.0.0)
     warden (1.2.1)
       rack (>= 1.0)
-    xpath (0.1.4)
+    websocket (1.0.7)
+    xpath (1.0.0)
       nokogiri (~> 1.3)
-    yard (0.8.3)
+    yard (0.8.4.1)
 
 PLATFORMS
   ruby
@@ -286,7 +286,7 @@ DEPENDENCIES
   capistrano
   capybara
   capybara-webkit
-  carrierwave (~> 0.6.1)
+  carrierwave (~> 0.8.0)
   coffee-rails (~> 3.2.1)
   compass (~> 0.12.1)
   database_cleaner
@@ -294,12 +294,10 @@ DEPENDENCIES
   factory_girl_rails
   faker (~> 1.0)
   foreigner
-  formtastic (~> 2.2)
-  formtastic-plus-bootstrap
   god
   haml-rails
   has_scope
-  inherited_resources
+  inherited_resources!
   jquery-rails
   jquery-ui-rails
   kaminari
@@ -321,6 +319,7 @@ DEPENDENCIES
   shoulda-context
   shoulda-matchers
   shoulda_routing_macros (~> 0.1.2)
+  simple_form
   strip_attributes (~> 1.0)
   sunspot_rails!
   sunspot_solr!

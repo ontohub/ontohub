@@ -14,8 +14,9 @@ class OntologyTest < ActiveSupport::TestCase
   should have_db_index(:language_id)
   should have_db_index(:logic_id)
 
-  should_strip_attributes :name, :iri
-  should_not_strip_attributes :description
+  should strip_attribute :name
+  should strip_attribute :iri
+  should_not strip_attribute :description
 
   context 'Validations' do
     ['http://example.com/', 'https://example.com/', 'file://path/to/file'].each do |val|

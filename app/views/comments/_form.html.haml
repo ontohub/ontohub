@@ -1,4 +1,3 @@
-= semantic_form_for [parent, request.post? ? resource : Comment.new], remote: true do |f|
-  = f.inputs :text
-  = f.actions do
-    = f.action :submit, :button_html => { 'data-disable-with' => t(:wait) }
+= simple_form_for [parent, request.post? ? resource : Comment.new], remote: true do |f|
+  = f.input :text
+  = f.button :submit, disable_with: t(:wait)

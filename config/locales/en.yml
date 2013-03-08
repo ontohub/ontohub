@@ -2,29 +2,7 @@
 # See https://github.com/svenfuchs/rails-i18n/tree/master/rails%2Flocale for starting points.
 
 en:
-  wait: 'Please wait..'
-  formtastic:
-    labels:
-      user:
-        email: E-Mail
-      ontology:
-        uri: URI
-      ontology_version:
-        raw_file: Source File
-        source_url: Source URL
-      logic:
-        uri: URI
-        extension: File extension
-        mimetype: MIME-Type
-    hints:
-      ontology_version:
-        source_url: Please enter the URL to import the ontology from.
-    placeholders:
-      comment:
-        text: Write a new comment
-      metadatum:
-        key: URI
-        value: Value
+  wait: 'Please wait …'
   relation_list:
     team_user:
       placeholder: Add users to your team

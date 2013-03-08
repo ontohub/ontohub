@@ -5,7 +5,7 @@
   %small
     = "#{resource.language}/#{resource.logic}"
   - if resource.state != 'done'
-    %small#status
+    %small#ontology-state{ class: resource.state, 'data-uri' => url_for(resource) }
       = status resource
 
 %div.btn-group{'style' => 'display: inline-block'}

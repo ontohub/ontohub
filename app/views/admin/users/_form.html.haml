@@ -1,4 +1,7 @@
-= semantic_form_for resource, :url => resource_path do |f|
+= simple_form_for resource, :url => resource_path, html: { class: 'form-horizontal' } do |f|
   = hidden_field_tag :back_url, params[:back_url] || request.referer
-  = f.inputs :email, :name, :admin
-  = f.actions
+  = f.input :email
+  = f.input :name
+  = f.input :admin
+  .form-actions
+    = f.button :submit, class: 'btn-primary'

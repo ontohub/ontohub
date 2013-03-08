@@ -1,13 +1,12 @@
 %h2- @page_title = 'Change your password'
 
-= semantic_form_for resource, :url => password_path(resource_name), :method => :put do |f|
+= simple_form_for resource, :url => password_path(resource_name), :method => :put, html: { class: 'form-horizontal' } do |f|
   = f.hidden_field :reset_password_token
   
-  = f.inputs do
-    = f.input :password,              :label => 'New password',         :required => false, :input_html => {:required => true, :autofocus => true}
-    = f.input :password_confirmation, :label => 'Confirm new password', :required => false, :input_html => {:required => true}
+  = f.input :password,              :label => 'New password',         :required => false, :input_html => {:required => true, :autofocus => true}
+  = f.input :password_confirmation, :label => 'Confirm new password', :required => false, :input_html => {:required => true}
   
-  = f.actions do
-    = f.action :submit, :label => "Change my password", :button_html => { 'data-disable-with' => t(:wait) }
+  .form-actions
+    = f.button :submit, "Change my password", disable_with: t(:wait), class: 'btn-primary'
 
 = render "links"

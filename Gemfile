@@ -23,11 +23,10 @@ gem 'haml-rails'
 gem 'jquery-rails'
 
 # Fancy Forms
-gem 'formtastic', '~> 2.2'
-gem 'formtastic-plus-bootstrap'
+gem 'simple_form'
 
 # Inherited Resources
-gem 'inherited_resources'
+gem 'inherited_resources', git: 'git://github.com/josevalim/inherited_resources.git'
 gem 'has_scope'
 
 # XML Parser
@@ -49,7 +48,7 @@ gem "strip_attributes", "~> 1.0"
 gem 'acts_as_tree'
 
 # Manage uploads
-gem 'carrierwave', "~> 0.6.1"
+gem 'carrierwave', "~> 0.8.0"
 
 # Async jobs
 gem 'resque'

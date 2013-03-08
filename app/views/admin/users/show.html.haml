@@ -3,7 +3,7 @@
 %ul.actions
   %li= link_to 'List users', collection_path
 
-%dl
+%dl.dl-horizontal
   - for attr in resource_class.attribute_names
     %dt= attr
     %dd

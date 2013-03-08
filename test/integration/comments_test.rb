@@ -27,7 +27,7 @@ class CommentsTest < ActionController::IntegrationTest
     end
     
     # is the text too short?
-    assert_equal "is too short (minimum is 10 characters)", find(".inline-errors").text
+    assert_equal "is too short (minimum is 10 characters)", find(".help-inline").text
     
     within '#new_comment' do
       # fill in the autocomplete input
@@ -62,7 +62,7 @@ class CommentsTest < ActionController::IntegrationTest
     end
     
     # is the comment deleted?
-    assert page.has_css?('.comments > ol > li', :wait_to_disappear => true)
+    assert page.has_no_css?('.comments > ol > li')
   end
   
 end
