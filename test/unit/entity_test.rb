@@ -64,7 +64,13 @@ class EntityTest < ActiveSupport::TestCase
     context 'When creating OWL2 Entities' do
       context 'with fragment in URI' do
         setup do
-          @entity = FactoryGirl.create :entity_with_fragment
+          @entity_hash = {
+            'text' => 'Class <http://example.com/resource#Fragment>',
+            'name' => '<http://example.com/resource#Fragment>'
+          }
+
+	        @ontology.entities.update_or_create_from_hash @entity_hash
+  				@entity = @ontology.entities.first
         end
         
         should 'display_name attribute be the fragment'  do
@@ -74,16 +80,42 @@ class EntityTest < ActiveSupport::TestCase
         should 'iri be set'  do
           assert_equal "http://example.com/resource#Fragment", @entity.iri
         end
- 
       end
       
       context 'without fragment in URI, the display_name attribute' do
         setup do
-          @entity = FactoryGirl.create :entity_without_fragment
+          @entity_hash = {
+            'text' => 'Class <http://example.com/resource>',
+            'name' => '<http://example.com/resource>'
+          }
+
+	        @ontology.entities.update_or_create_from_hash @entity_hash
+  				@entity = @ontology.entities.first
         end
         
         should 'be the last path segment' do
           assert_equal "resource", @entity.display_name
+        end
+      end
+    end
+
+    context 'When creating hypothetical entity' do
+      context 'where text contains name but name does not match an IRI' do
+        context 'display_name and iri' do
+          setup do
+            @entity_hash = {
+              'text' => 'sort s <http://example.com/some_resource>',
+              'name' => 's'
+            }
+
+            @ontology.entities.update_or_create_from_hash @entity_hash
+            @entity = @ontology.entities.first
+          end
+
+          should 'be nil' do
+            assert_equal nil, @entity.display_name
+            assert_equal nil, @entity.iri
+          end
         end
       end
     end

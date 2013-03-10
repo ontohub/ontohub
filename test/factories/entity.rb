@@ -12,17 +12,5 @@ FactoryGirl.define do
     text { FactoryGirl.generate :entity_text }
     kind { FactoryGirl.generate :entity_kind }
     name { Faker::Name.name }
-
-    factory :entity_with_fragment do
-      text "Class <http://example.com/resource#Fragment>"
-    end
-    
-    factory :entity_without_fragment do
-      text "Class <http://example.com/resource>"
-    end
-
-    factory :entity_without_iri do
-      text "foo"
-    end
   end
 end
