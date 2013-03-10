@@ -88,7 +88,6 @@ class EntityDisplayTest < ActionController::IntegrationTest
             assert_equal find('span.entity_tooltip').text, @entity.display_name
           end
           should 'be iri' do
-            save_and_open_page
             tooltip_title = find('span.entity_tooltip')[:'data-original-title']
             assert_equal tooltip_title, @entity.iri
           end
