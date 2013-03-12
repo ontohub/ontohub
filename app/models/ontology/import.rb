@@ -53,8 +53,10 @@ module Ontology::Import
           ontology.entities_count += 1
         },
         axiom: Proc.new { |h|
-          ontology.sentences.update_or_create_from_hash(h, now)
-          ontology.sentences_count += 1
+          if ontology.entities.where(:text => h[:text]).empty?
+            ontology.sentences.update_or_create_from_hash(h, now)
+            ontology.sentences_count += 1
+          end
         },
         link: Proc.new { |h|
           self.links.update_or_create_from_hash(h, now)
