@@ -8,7 +8,7 @@ branches:
   only:
     - master
     - CRUD
-    - display_of_classes
+    - display_of_symbols
 
 services:
   - redis-server
