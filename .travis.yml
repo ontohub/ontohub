@@ -28,6 +28,6 @@ before_script:
   - sudo apt-add-repository -y ppa:hets/hets
   - sudo apt-add-repository -y "deb http://archive.canonical.com/ubuntu precise partner"
   - sudo apt-get update
-  - sudo apt-get install hets-core subversion
+  - sudo apt-get install hets-core subversion udrawgraph
   - sudo hets -update
   - bundle exec rake db:migrate || true
