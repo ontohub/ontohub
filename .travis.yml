@@ -27,7 +27,7 @@ before_script:
   - psql -c 'create database ontohub_test;' -U postgres
   - sudo apt-add-repository -y ppa:hets/hets
   - sudo apt-add-repository -y "deb http://archive.canonical.com/ubuntu precise partner"
-  - sudo apt-add-repository -y "deb http://archive.canonical.com/ubuntu precise-updates universe"
+  - sudo apt-add-repository -y "deb http://archive.ubuntu.com/ubuntu precise-updates universe"
   - sudo apt-get update
   - sudo apt-get install hets-core subversion
   - sudo hets -update
