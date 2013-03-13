@@ -29,7 +29,7 @@ gem 'jquery-rails'
 gem 'simple_form'
 
 # Inherited Resources
-gem 'inherited_resources'
+gem 'inherited_resources', git: 'git://github.com/josevalim/inherited_resources.git'
 gem 'has_scope'
 
 # XML Parser
