@@ -28,6 +28,7 @@ class LanguagesController < InheritedResources::Base
       format.html do
         @mappings_from = resource.mappings_from
         @mappings_to = resource.mappings_to
+        @serializations = resource.serializations
         @relation_list ||= RelationList.new [resource, :supports],
           :model       => Support,
           :collection  => resource.supports,

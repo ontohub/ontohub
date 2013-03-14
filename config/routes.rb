@@ -23,6 +23,8 @@ Ontohub::Application.routes.draw do
   resources :language_adjoints
   resources :logic_adjoints
 
+  resources :serializations
+
   namespace :admin do
     resources :teams, :only => :index
     resources :users

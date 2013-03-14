@@ -71,6 +71,9 @@ class Ability
         subject.permission?(:owner, user)
       end
       can [:new, :create], Language
+
+      # Serializations
+      can [:new, :create, :destroy, :edit, :update], Serialization
       
       # Team permissions
       can [:create, :show, :index], Team

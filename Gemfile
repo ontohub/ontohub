@@ -61,7 +61,7 @@ gem 'redis-namespace'
 gem 'sunspot_rails', :git => 'git://github.com/digineo/sunspot.git'
 gem 'progress_bar'
 
-gem "faker", "~> 1.0"
+gem "faker", "~> 1.1.2"
 
 group :test do
   gem 'mocha'
