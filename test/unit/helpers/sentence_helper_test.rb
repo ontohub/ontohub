@@ -2,7 +2,7 @@ require 'test_helper'
 
 class SentenceHelperTest < ActionView::TestCase
 
-  context 'Sentence display' 
+  context 'Sentence display' do
     setup do
       @sentence = FactoryGirl.create(:sentence)
       @sentence.name = 'aaaa'
@@ -11,5 +11,6 @@ class SentenceHelperTest < ActionView::TestCase
     should 'remove redundant name from text' do
       assert_equal 'fasdfiasdf', text_stripper(@sentence)
     end
+  end
   
 end
