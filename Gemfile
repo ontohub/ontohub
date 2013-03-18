@@ -61,6 +61,10 @@ gem 'redis-namespace'
 gem 'sunspot_rails', :git => 'git://github.com/digineo/sunspot.git'
 gem 'progress_bar'
 
+# Graph visualization
+gem 'ruby-graphviz', "~> 1.0.8"
+
+# Fake-inputs for tests and seeds
 gem "faker", "~> 1.1.2"
 
 group :test do

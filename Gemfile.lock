@@ -330,6 +330,7 @@ DEPENDENCIES
   redcarpet
   redis-namespace
   resque
+  ruby-graphviz (~> 1.0.8)
   rvm-capistrano
   sass-rails (~> 3.2.3)
   shoulda
