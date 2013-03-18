@@ -26,7 +26,7 @@ class OntologyImportXMLTest < ActiveSupport::TestCase
     context 'sentence count' do
       should 'be correct' do
         count = @ontology.sentences.count
-        assert_equal 2, count
+        assert_equal 1, count
         assert_equal count, @ontology.sentences_count
       end
     end

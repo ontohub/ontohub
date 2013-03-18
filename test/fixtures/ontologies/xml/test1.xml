@@ -11,9 +11,6 @@
         <Symbol kind="op" name="f" range="/home/till/CASL/Hets-lib/test/test1.casl:4.18">op f : s -&gt; s</Symbol>
         <Symbol kind="sort" name="s" range="/home/till/CASL/Hets-lib/test/test1.casl:3.11">sort s</Symbol>
       </Axiom>
-      <Axiom name="Ax2"> 
-        <Text>sort s</Text>
-      </Axiom>
     </Axioms>
   </DGNode>
 </DGraph>
