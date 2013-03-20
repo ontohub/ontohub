@@ -7,7 +7,7 @@ class EntityTest < ActiveSupport::TestCase
       should have_db_column(column).of_type(:integer)
     end
   
-    %w( kind name iri range ).each do |column|
+    %w( kind name iri range display_name ).each do |column|
       should have_db_column(column).of_type(:string)
     end
 
@@ -28,7 +28,7 @@ class EntityTest < ActiveSupport::TestCase
   		@ontology = FactoryGirl.create :single_ontology
   	end
 
-  	context 'creating Entities' do
+  	context 'creating CommonLogic Entities' do
   		setup do
 	  		@entity_hash = {
 	  			'name' => 'nat',
@@ -40,7 +40,7 @@ class EntityTest < ActiveSupport::TestCase
 	      @ontology.entities.update_or_create_from_hash @entity_hash
   		end
 
-  		context 'correct attribute' do
+  		context 'attributes' do
   			setup do
   				@entity = @ontology.entities.first
   			end
@@ -49,8 +49,75 @@ class EntityTest < ActiveSupport::TestCase
   				should "be #{attr}" do
   					assert_equal @entity_hash[attr], eval("@entity.#{attr}")
   				end
-  			end
-  		end
+  			end       
+        
+        should "have display_name nil" do
+          assert_nil @entity.display_name
+        end
+
+        should "have iri nil" do
+          assert_nil @entity.iri
+        end
+      end
   	end
+    
+    context 'When creating OWL2 Entities' do
+      context 'with fragment in URI' do
+        setup do
+          @entity_hash = {
+            'text' => 'Class <http://example.com/resource#Fragment>',
+            'name' => '<http://example.com/resource#Fragment>'
+          }
+
+	        @ontology.entities.update_or_create_from_hash @entity_hash
+  				@entity = @ontology.entities.first
+        end
+        
+        should 'display_name attribute be the fragment'  do
+          assert_equal "Fragment", @entity.display_name
+        end
+
+        should 'iri be set'  do
+          assert_equal "http://example.com/resource#Fragment", @entity.iri
+        end
+      end
+      
+      context 'without fragment in URI, the display_name attribute' do
+        setup do
+          @entity_hash = {
+            'text' => 'Class <http://example.com/resource>',
+            'name' => '<http://example.com/resource>'
+          }
+
+	        @ontology.entities.update_or_create_from_hash @entity_hash
+  				@entity = @ontology.entities.first
+        end
+        
+        should 'be the last path segment' do
+          assert_equal "resource", @entity.display_name
+        end
+      end
+    end
+
+    context 'When creating hypothetical entity' do
+      context 'where text contains name but name does not match an IRI' do
+        context 'display_name and iri' do
+          setup do
+            @entity_hash = {
+              'text' => 'sort s <http://example.com/some_resource>',
+              'name' => 's'
+            }
+
+            @ontology.entities.update_or_create_from_hash @entity_hash
+            @entity = @ontology.entities.first
+          end
+
+          should 'be nil' do
+            assert_equal nil, @entity.display_name
+            assert_equal nil, @entity.iri
+          end
+        end
+      end
+    end
   end
 end
