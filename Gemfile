@@ -70,8 +70,6 @@ gem "faker", "~> 1.1.2"
 group :test do
   gem 'mocha'
   gem 'shoulda'
-  gem 'shoulda-matchers'
-  gem 'shoulda-context'
   gem "shoulda_routing_macros", "~> 0.1.2"
   gem "factory_girl_rails"
   
