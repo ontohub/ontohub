@@ -1,2 +1,2 @@
 #!/usr/bin/env bash
-rvm --create use ruby-2.0.0-p0@ontohub
+rvm --create use ruby-1.9.3-p392@ontohub
