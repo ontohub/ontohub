@@ -11,8 +11,8 @@ en:
       placeholder: Add teams or users
       help: Enter at least three characters to search for users or teams.
     support:
-      placeholder: Add a supported language
-      help: Enter at least three characters to search for languages
+      placeholder: 'Add a support'
+      help: Enter at least three characters to search for a support
   search:
     help: "Enter all words that must be included in the entities. You can search a special kind by adding a 'kind:<value>'"
   support:
