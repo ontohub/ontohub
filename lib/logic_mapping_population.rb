@@ -22,7 +22,7 @@ class LogicMappingPopulation
     mapping_type_iri = 'http://purl.net/dol/1.0/rdf#LogicMapping'
     default_iri = 'http://purl.net/dol/1.0/rdf#DefaultMapping'
     maps_from_iri = 'http://purl.net/dol/1.0/rdf#mapsFrom'
-    maps_to_iri = 'http://purl.net/dol/1.0/rdf#mapsFrom'
+    maps_to_iri = 'http://purl.net/dol/1.0/rdf#mapsTo'
     status_iri = 'http://purl.net/dol/1.0/standardization#standardizationStatus'
     faithfulness_iris = [
       'http://purl.net/dol/1.0/rdf#UnfaithfulMapping',
