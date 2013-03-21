@@ -1,0 +1,4 @@
+%h3 Ontologies using this logic
+%ol.latest
+  - @ontologies.each do |ontology|
+    %li= fancy_link(ontology)

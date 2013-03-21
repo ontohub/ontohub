@@ -28,6 +28,7 @@ class LogicsController < InheritedResources::Base
       format.html do
         @mappings_from = resource.mappings_from
         @mappings_to = resource.mappings_to
+        @ontologies = resource.ontologies
         @relation_list ||= RelationList.new [resource, :supports],
           :model       => Support,
           :collection  => resource.supports,
