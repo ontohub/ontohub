@@ -11,7 +11,9 @@ class SentenceTest < ActiveSupport::TestCase
       should have_db_column(column).of_type(:string)
     end
 
-    should have_db_column('text').of_type(:text)
+    %w( text display_text ).each do |column|
+      should have_db_column(column).of_type(:text)
+    end
 
     should have_db_index([:ontology_id, :id]).unique(true)
     should have_db_index([:ontology_id, :name]).unique(true)
@@ -49,6 +51,24 @@ class SentenceTest < ActiveSupport::TestCase
   			end
   		end
   	end
+
+#   context 'OWL2 sentences' do
+#     setup do
+#       @sentence = FactoryGirl.build :sentence
+#       3.times do
+#         @sentence.ontology.entities << FactoryGirl.build(:entity_owl2)
+#       end
+#       @sentence.text = @sentence.entities.map(&:iri).map { |x| "<#{x}> " }.join.strip
+#       @sentence.save!
+#     end
+
+#     should 'not contain entitys iri' do
+#       p @sentence.entities
+#       @sentence.entities.each do |x|
+#         assert !(@sentence.text.include? x.iri)
+#       end
+#     end
+#   end
   end
 
 end
