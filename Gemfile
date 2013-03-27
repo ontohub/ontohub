@@ -1,6 +1,6 @@
 source 'https://rubygems.org'
 
-gem 'rails', '~> 3.2.2'
+gem 'rails', '~> 3.2.13'
 gem 'pg'
 gem 'mysql', '~> 2.8.1'
 gem 'foreigner'
@@ -15,6 +15,7 @@ group :assets do
   gem 'bootstrap-sass'
   gem 'coffee-rails', '~> 3.2.1'
   gem 'compass',      '~> 0.12.1'
+  gem 'jquery-rails'
   gem 'jquery-ui-rails'
   gem 'momentjs-rails'
 
@@ -23,13 +24,12 @@ group :assets do
 end
 
 gem 'haml-rails'
-gem 'jquery-rails'
 
 # Fancy Forms
 gem 'simple_form'
 
 # Inherited Resources
-gem 'inherited_resources', git: 'git://github.com/josevalim/inherited_resources.git'
+gem 'inherited_resources', '~> 1.4.0'
 gem 'has_scope'
 
 # XML Parser
@@ -70,8 +70,6 @@ gem "faker", "~> 1.1.2"
 group :test do
   gem 'mocha'
   gem 'shoulda'
-  gem 'shoulda-matchers'
-  gem 'shoulda-context'
   gem "shoulda_routing_macros", "~> 0.1.2"
   gem "factory_girl_rails"
   

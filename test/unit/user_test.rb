@@ -18,8 +18,8 @@ class UserTest < ActiveSupport::TestCase
       @user = FactoryGirl.create :user
     end
     
-    should 'sent email' do
-      assert_equal @mails_sent+1, ActionMailer::Base.deliveries.size
+    should 'not send email to *@example.com' do
+      assert_equal @mails_sent, ActionMailer::Base.deliveries.size
     end
     
     should 'have email' do
@@ -52,6 +52,19 @@ class UserTest < ActiveSupport::TestCase
       end
     end
     
+  end
+
+  context 'Another user instance' do
+    setup do
+      @mails_sent = ActionMailer::Base.deliveries.size
+      @user = FactoryGirl.build :user
+      @user.email = 'user@noexample.com'
+      @user.save!
+    end
+    
+    should 'send email' do
+      assert_equal @mails_sent+1, ActionMailer::Base.deliveries.size
+    end
   end
   
   context 'Admin instance' do
