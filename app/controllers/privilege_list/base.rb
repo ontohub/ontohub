@@ -4,14 +4,14 @@
 # 
 class PrivilegeList::Base < InheritedResources::Base
   
-  actions :index, :create, :update, :destroy
+  actions :index, :create, :update, :destroy, :show
   respond_to :json, :xml
   rescue_from Permission::PowerVaccuumError, :with => :power_error
-  
+
   before_filter :authorize_parent
-  
+
   def create
-    build_resource.creator = current_user
+    build_resource.creator = current_user if build_resource.respond_to? :creator
     build_resource.save!
     respond_to do |format|
       format.html { render_resource }

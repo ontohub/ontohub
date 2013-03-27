@@ -11,7 +11,7 @@ module Ontology::Links
       proxy_association.owner.iri_for_child(*args)
     end
     
-    def update_or_create_from_hash(hash, timestamp = Time.now)
+    def update_or_create_from_hash(hash, user, timestamp = Time.now)
       raise ArgumentError, 'No hash given.' unless hash.is_a? Hash
 
       # hash['name'] # maybe nil, in this case, we need to generate a name
@@ -37,7 +37,9 @@ module Ontology::Links
       logic_mapping   = LogicMapping.find_by_iri gmorphism
       logic_mapping ||= LogicMapping.create! \
         source: source.logic,
-        target: target.logic
+        target: target.logic,
+        iri: link_iri,
+        user: user
       
       # finally, create or update the link
       link = find_or_initialize_by_iri(link_iri)

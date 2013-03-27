@@ -18,6 +18,63 @@ class Ability
       end
       can [:new, :create, :bulk], Ontology
       
+      # Logics
+      can [:edit, :update], Logic do |subject|
+        subject.permission?(:editor, user)
+      end
+      can [:destroy, :permissions], Logic do |subject|
+        subject.permission?(:owner, user)
+      end
+      can [:new, :create], Logic
+      
+      # LogicMappings
+      can [:edit, :update], LogicMapping do |subject|
+        subject.permission?(:editor, user)
+      end
+      can [:destroy, :permissions], LogicMapping do |subject|
+        subject.permission?(:owner, user)
+      end
+      can [:new, :create], LogicMapping
+      
+      # LanguageMappings
+      can [:edit, :update], LanguageMapping do |subject|
+        subject.permission?(:editor, user)
+      end
+      can [:destroy, :permissions], LanguageMapping do |subject|
+        subject.permission?(:owner, user)
+      end
+      can [:new, :create], LanguageMapping
+
+      # LogicAdjoints
+      can [:edit, :update], LogicAdjoint do |subject|
+        subject.permission?(:editor, user)
+      end
+      can [:destroy, :permissions], LogicAdjoint do |subject|
+        subject.permission?(:owner, user)
+      end
+      can [:new, :create], LogicAdjoint
+
+      # LanguageAdjoints
+      can [:edit, :update], LanguageAdjoint do |subject|
+        subject.permission?(:editor, user)
+      end
+      can [:destroy, :permissions], LanguageAdjoint do |subject|
+        subject.permission?(:owner, user)
+      end
+      can [:new, :create], LanguageAdjoint
+      
+      # Languages
+      can [:edit, :update], Language do |subject|
+        subject.permission?(:editor, user)
+      end
+      can [:destroy, :permissions], Language do |subject|
+        subject.permission?(:owner, user)
+      end
+      can [:new, :create], Language
+
+      # Serializations
+      can [:new, :create, :destroy, :edit, :update], Serialization
+      
       # Team permissions
       can [:create, :show, :index], Team
       can [:edit, :update, :destroy], Team do |subject|

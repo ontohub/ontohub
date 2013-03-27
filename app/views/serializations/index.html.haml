@@ -1,0 +1,10 @@
+%h2= @page_title = 'Serializations'
+
+%p
+  = pluralize(collection.count, resource_class.to_s)
+  found
+
+= pagination do
+  %table
+    %tbody
+      = render collection

@@ -1,0 +1,13 @@
+- @page_title = resource
+%h2= link_to resource, resource, 'data-type' => resource_class
+
+- if can? :update, resource.class
+  %ul.actions.pull-right
+    %li= link_to 'Edit adjoint', edit_resource_path
+    - if can? :delete, resource.class
+      %li= link_to 'Delete adjoint', resource, :confirm => 'Are you sure?', :method => :delete
+
+%h5 translates
+= fancy_link resource.translation
+to
+= fancy_link resource.projection

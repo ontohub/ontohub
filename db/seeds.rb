@@ -73,3 +73,4 @@ Ontology.first.permissions.create! \
   c.save!
 end
 
+Rake::Task['registry:import'].invoke

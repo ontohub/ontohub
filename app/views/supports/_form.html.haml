@@ -1,0 +1,4 @@
+= form_for :support, :method => :put, :remote => true, :html => {:class => 'editTemplate'} do |f|
+  = f.label "exact: "
+  = f.check_box :exact, :id => "true"
+  = submit_tag "save"
