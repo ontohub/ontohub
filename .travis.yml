@@ -8,7 +8,7 @@ branches:
   only:
     - master
     - CRUD
-    - display_of_classes
+    - display_of_symbols
 
 services:
   - redis-server
@@ -27,6 +27,7 @@ before_script:
   - psql -c 'create database ontohub_test;' -U postgres
   - sudo apt-add-repository -y ppa:hets/hets
   - sudo apt-add-repository -y "deb http://archive.canonical.com/ubuntu precise partner"
+  - sudo apt-add-repository -y "deb http://archive.ubuntu.com/ubuntu precise-updates main restricted universe multiverse"
   - sudo apt-get update
   - sudo apt-get install ia32-libs libsane libgphoto2-2 hets-core subversion udrawgraph
   - sudo hets -update
