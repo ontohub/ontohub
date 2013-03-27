@@ -32,10 +32,6 @@ team = Team.create! \
   team.users << user if i < 2
 end
 
-
-
-
-
 # Import ontologies
 Dir["#{Rails.root}/test/fixtures/ontologies/*/*.{casl,clf,clif,owl}"].each do |file|
   basename = File.basename(file)
@@ -77,3 +73,4 @@ Ontology.first.permissions.create! \
   c.save!
 end
 
+Rake::Task['registry:import'].invoke
