@@ -22,6 +22,9 @@ end
 
 gem 'haml-rails'
 
+# Project configuration
+gem 'rails_config'
+
 # Fancy Forms
 gem 'simple_form'
 
@@ -84,7 +87,7 @@ end
 
 group :production do
   gem 'god'
-  #gem 'newrelic_rpm'
+  gem 'exception_notification', '~> 2.6.1'
 end
 
 group :documentation do
