@@ -52,23 +52,24 @@ class SentenceTest < ActiveSupport::TestCase
   		end
   	end
 
-#   context 'OWL2 sentences' do
-#     setup do
-#       @sentence = FactoryGirl.build :sentence
-#       3.times do
-#         @sentence.ontology.entities << FactoryGirl.build(:entity_owl2)
-#       end
-#       @sentence.text = @sentence.entities.map(&:iri).map { |x| "<#{x}> " }.join.strip
-#       @sentence.save!
-#     end
+  	context 'OWL2 sentences' do
+      setup do
+        @ontology = FactoryGirl.create :single_ontology
+        @ontology.import_xml_from_file Rails.root + 'test/fixtures/ontologies/xml/generations.xml'
+        @sentence = @ontology.sentences.first
+      end
 
-#     should 'not contain entitys iri' do
-#       p @sentence.entities
-#       @sentence.entities.each do |x|
-#         assert !(@sentence.text.include? x.iri)
-#       end
-#     end
-#   end
+      should 'have display_text set' do
+        assert_not_nil @sentence.display_text
+      end
+
+
+      should "not contain entities' iris" do
+        @sentence.entities.each do |x|
+          assert !(@sentence.text.include? x.iri)
+        end
+      end
+    end
   end
 
 end
