@@ -1,7 +1,6 @@
-
 FactoryGirl.define do
   sequence :entity_text do |n|
-    "scheme://host/ontology/#{n}"
+    "http://host/ontology/#{n}"
   end
   
   sequence :entity_kind do |n|

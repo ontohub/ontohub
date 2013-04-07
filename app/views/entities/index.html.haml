@@ -1,4 +1,7 @@
 = ontology_nav @ontology, :entities
 
 = pagination do
-  = render :partial => 'list'
+  - unless collection.blank?
+    = render :partial => 'list'
+  - else
+    %h3 No entities found

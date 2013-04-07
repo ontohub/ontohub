@@ -5,7 +5,6 @@ module Ontology::Import
     now = Time.now
 
     transaction do
-      
       root             = nil
       ontology         = nil
       link             = nil
@@ -68,6 +67,9 @@ module Ontology::Import
   end
 
   def import_latest_version
-    import_xml_from_file versions.last.xml_file.current_path
+    unless versions.last.nil?
+      puts path = versions.last.xml_file.current_path
+      import_xml_from_file path
+    end
   end
 end
