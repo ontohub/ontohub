@@ -67,9 +67,8 @@ module Ontology::Import
   end
 
   def import_latest_version
-    unless versions.last.nil?
-      puts path = versions.last.xml_file.current_path
-      import_xml_from_file path
-    end
+    return if versions.last.nil?
+    return if versions.last.xml_file.nil?
+    import_xml_from_file versions.last.xml_file.current_path
   end
 end
