@@ -24,9 +24,10 @@ class LogicsController < InheritedResources::Base
   end
   
   def show
+    @depth = params[:depth].nil? ? 3 : params[:depth].to_i
     super do |format|
       format.html do
-        @graph = resource.generate_graph
+        @graph = resource.generate_graph(@depth)
         @mappings_from = resource.mappings_from
         @mappings_to = resource.mappings_to
         @ontologies = resource.ontologies

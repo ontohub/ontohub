@@ -24,7 +24,4 @@
 
 = render :partial => "ontologies"
     
-%script(type="text/javascript") 
-  =raw "var graph = " + @graph.to_json
-%div#infovis
-
+= render :partial => "graph"
