@@ -26,6 +26,7 @@ class LogicsController < InheritedResources::Base
   def show
     super do |format|
       format.html do
+        @graph = resource.generate_graph
         @mappings_from = resource.mappings_from
         @mappings_to = resource.mappings_to
         @ontologies = resource.ontologies
