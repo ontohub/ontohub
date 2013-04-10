@@ -1,0 +1,8 @@
+%footer
+  %ul
+    - Settings.footer.each do |entry|
+      %li>
+        - if entry.href
+          = link_to entry.text, entry.href
+        - else
+          = entry.text
