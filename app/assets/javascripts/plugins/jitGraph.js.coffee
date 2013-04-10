@@ -1,3 +1,5 @@
+return unless $("#infovis")[0]
+
 ht = new $jit.Hypertree(
   
   #id of the visualization container  
@@ -62,7 +64,7 @@ ht = new $jit.Hypertree(
     html += "</ul>"
     $jit.id("infoviscontext").innerHTML = html
 )
-$(document).ready ->
+$ ->
   ht.loadJSON graph
   
   #compute positions and plot.  
