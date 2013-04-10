@@ -49,6 +49,23 @@ var ht = new $jit.Hypertree({
           var w = domElement.offsetWidth;  
           style.left = (left - w / 2) + 'px';  
       },  
+      onComplete: function(){	        
+	      //Build the right column relations list.  
+	      //This is done by collecting the information (stored in the data property)   
+	      //for all the nodes adjacent to the centered node.  
+	      var node = ht.graph.getClosestNodeToOrigin("current");  
+	      var html = "<h4>" + node.name + "</h4><b>Connections:</b>";  
+	      html += "<ul>";  
+	      node.eachAdjacency(function(adj){  
+	          var child = adj.nodeTo;  
+	          if (child.data) {  
+	              var url = child.data.url;  
+	              html += "<li>" + child.name + " " + "<div class=\"relation\">(relation: " + url + ")</div></li>";  
+	          }  
+	      });  
+	      html += "</ul>";  
+	      $jit.id('infoviscontext').innerHTML = html;  
+  	  	}  
     });  
 
 $(document).ready(function () {

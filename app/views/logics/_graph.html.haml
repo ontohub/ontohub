@@ -14,5 +14,11 @@ from
 = fancy_link resource
 
 %script(type="text/javascript") 
-  =raw "var graph = " + @graph.to_json  
-%div#infovis
+  =raw "var graph = " + @graph.to_json 
+%div.row
+  %div.span12
+    %div.row
+      %div.span6 
+        %div#infovis
+      %div.span3
+        %div#infoviscontext
