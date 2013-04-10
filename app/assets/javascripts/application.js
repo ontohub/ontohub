@@ -18,7 +18,7 @@
 // ----------------------------------------------
 // Other Plugins
 //= require moment
-//= require jit.js
+//= require jit
 
 // ----------------------------------------------
 // Application
