@@ -3,7 +3,7 @@ var ht = new $jit.Hypertree({
       injectInto: 'infovis',  
       //canvas width and height  
       width: 500,  
-      height: 500,  
+      height: 350,  
       //Change node and edge styles such as  
       //color, width and dimensions.  
       Node: {  

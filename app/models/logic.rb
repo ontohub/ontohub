@@ -62,13 +62,18 @@ class Logic < ActiveRecord::Base
   
   def generate_graph(depth = 3)
     children = Array.new
-    self.logic_mappings.each do |mapping|
+    self.mappings_from.each do |mapping|
       children << mapping.target.generate_graph(depth - 1)
     end unless depth < 1
+    
+    self.mappings_to.each do |mapping|
+      children << mapping.source.generate_graph(depth - 1)
+    end unless depth < 1
+    
     return {
         id: self.id,
         name:self.name, 
-        children:children, 
+        children:children.uniq, 
         data:{band:"",relation:"root"}
       }
   end
