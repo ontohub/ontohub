@@ -63,10 +63,9 @@ class SentenceTest < ActiveSupport::TestCase
         assert_not_nil @sentence.display_text
       end
 
-
       should "not contain entities' iris" do
         @sentence.entities.each do |x|
-          assert !(@sentence.text.include? x.iri)
+          assert !(@sentence.display_text.include? x.iri)
         end
       end
     end

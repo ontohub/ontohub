@@ -21,6 +21,8 @@ module Ontology::Sentences
                   ontology_id=#{@association.owner.id} AND text IN (?)",
                   hash['symbols']
 
+      e.set_display_text!
+
       e
     end
   end
