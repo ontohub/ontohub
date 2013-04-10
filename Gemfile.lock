@@ -53,6 +53,12 @@ GEM
       mocha (~> 0.13.2)
     builder (3.0.4)
     cancan (1.6.9)
+    capistrano (2.14.2)
+      highline
+      net-scp (>= 1.0.0)
+      net-sftp (>= 2.0.0)
+      net-ssh (>= 2.0.14)
+      net-ssh-gateway (>= 1.1.0)
     capybara (2.0.3)
       mime-types (>= 1.16)
       nokogiri (>= 1.3.3)
@@ -146,6 +152,13 @@ GEM
       railties (>= 3.1)
     mono_logger (1.0.0)
     multi_json (1.7.2)
+    net-scp (1.1.0)
+      net-ssh (>= 2.6.5)
+    net-sftp (2.1.1)
+      net-ssh (>= 2.6.5)
+    net-ssh (2.6.6)
+    net-ssh-gateway (1.2.0)
+      net-ssh (>= 2.6.5)
     nokogiri (1.5.9)
     options (2.3.0)
       fattr
@@ -209,6 +222,8 @@ GEM
       builder (>= 2.1.2)
     ruby-graphviz (1.0.8)
     rubyzip (0.9.9)
+    rvm-capistrano (1.2.7)
+      capistrano (>= 2.0.0)
     sass (3.2.7)
     sass-rails (3.2.6)
       railties (~> 3.2.0)
@@ -269,6 +284,7 @@ DEPENDENCIES
   acts_as_tree
   bootstrap-sass
   cancan (~> 1.6.7)
+  capistrano
   capybara
   capybara-webkit
   carrierwave (~> 0.8.0)
@@ -300,6 +316,7 @@ DEPENDENCIES
   redcarpet
   redis-namespace
   resque
+  rvm-capistrano
   sass-rails (~> 3.2.3)
   shoulda
   shoulda_routing_macros (~> 0.1.2)

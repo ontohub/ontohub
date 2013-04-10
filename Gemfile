@@ -77,6 +77,8 @@ group :test do
 end
 
 group :development do
+  gem 'capistrano'
+  gem 'rvm-capistrano'
   # pre-packaged Solr distribution for use in development
   gem 'sunspot_solr', :git => 'git://github.com/digineo/sunspot.git'
   gem "rails-erd"
