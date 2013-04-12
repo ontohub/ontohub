@@ -1,4 +1,12 @@
 GIT
+  remote: git://github.com/digineo/bootstrap-sass.git
+  revision: 5a67304a90ac8e30e408f0553811eba65ed0096f
+  branch: v2.3.1.0-with_javascript_fixes
+  specs:
+    bootstrap-sass (2.3.1.0)
+      sass (~> 3.2)
+
+GIT
   remote: git://github.com/digineo/sunspot.git
   revision: 122f7c60207b9539903f06a66ce35a01cb1bf481
   specs:
@@ -46,10 +54,8 @@ GEM
       activerecord (>= 3.0.0)
     addressable (2.3.3)
     arel (3.0.2)
-    backports (3.1.1)
+    backports (3.3.0)
     bcrypt-ruby (3.0.1)
-    bootstrap-sass (2.3.1.0)
-      sass (~> 3.2)
     bourne (1.4.0)
       mocha (~> 0.13.2)
     builder (3.0.4)
@@ -60,7 +66,7 @@ GEM
       net-sftp (>= 2.0.0)
       net-ssh (>= 2.0.14)
       net-ssh-gateway (>= 1.1.0)
-    capybara (2.0.2)
+    capybara (2.0.3)
       mime-types (>= 1.16)
       nokogiri (>= 1.3.3)
       rack (>= 1.0.0)
@@ -96,6 +102,8 @@ GEM
       warden (~> 1.2.1)
     erubis (2.7.0)
     escape (0.0.4)
+    exception_notification (2.6.1)
+      actionmailer (>= 3.0.4)
     execjs (1.4.0)
       multi_json (~> 1.0)
     factory_girl (4.2.0)
@@ -106,12 +114,12 @@ GEM
     faker (1.1.2)
       i18n (~> 0.5)
     fattr (2.2.1)
-    ffi (1.4.0)
+    ffi (1.6.0)
     foreigner (1.4.0)
       activerecord (>= 3.0.0)
     fssm (0.2.10)
     god (0.13.2)
-    haml (4.0.0)
+    haml (4.0.1)
       tilt
     haml-rails (0.4)
       actionpack (>= 3.1, < 4.1)
@@ -149,8 +157,8 @@ GEM
       metaclass (~> 0.0.1)
     momentjs-rails (2.0.0.1)
       railties (>= 3.1)
-    multi_json (1.7.1)
-    mysql (2.8.1)
+    mono_logger (1.0.0)
+    multi_json (1.7.2)
     net-scp (1.1.0)
       net-ssh (>= 2.6.5)
     net-sftp (2.1.1)
@@ -158,11 +166,11 @@ GEM
     net-ssh (2.6.6)
     net-ssh-gateway (1.2.0)
       net-ssh (>= 2.6.5)
-    nokogiri (1.5.8)
+    nokogiri (1.5.9)
     options (2.3.0)
       fattr
     orm_adapter (0.4.0)
-    pg (0.14.1)
+    pg (0.15.0)
     polyglot (0.3.3)
     pr_geohash (1.0.0)
     progress_bar (1.0.0)
@@ -192,6 +200,8 @@ GEM
       activesupport (>= 3.0)
       choice (~> 0.1.6)
       ruby-graphviz (~> 1.0.4)
+    rails_config (0.3.2)
+      activesupport (>= 3.0)
     railties (3.2.13)
       actionpack (= 3.2.13)
       activesupport (= 3.2.13)
@@ -199,8 +209,8 @@ GEM
       rake (>= 0.8.7)
       rdoc (~> 3.4)
       thor (>= 0.14.6, < 2.0)
-    rake (10.0.3)
-    rdf (1.0.3)
+    rake (10.0.4)
+    rdf (1.0.4)
       addressable (>= 2.2)
     rdf-n3 (1.0.0)
       rdf (>= 1.0)
@@ -217,12 +227,13 @@ GEM
     redis (3.0.3)
     redis-namespace (1.2.1)
       redis (~> 3.0.0)
-    ref (1.0.3)
+    ref (1.0.4)
     responders (0.9.3)
       railties (~> 3.1)
-    resque (1.23.1)
+    resque (1.24.1)
+      mono_logger (~> 1.0)
       multi_json (~> 1.0)
-      redis-namespace (~> 1.0)
+      redis-namespace (~> 1.2)
       sinatra (>= 0.9.2)
       vegas (~> 0.1.2)
     rsolr (1.0.8)
@@ -245,7 +256,7 @@ GEM
       shoulda-context (~> 1.0, >= 1.0.1)
       shoulda-matchers (~> 1.0, >= 1.4.1)
     shoulda-context (1.0.2)
-    shoulda-matchers (1.5.2)
+    shoulda-matchers (1.5.4)
       activesupport (>= 3.0.0)
       bourne (~> 1.3)
     shoulda_routing_macros (0.1.2)
@@ -261,12 +272,12 @@ GEM
       multi_json (~> 1.0)
       rack (~> 1.0)
       tilt (~> 1.1, != 1.3.0)
-    strip_attributes (1.4.1)
-      activemodel (~> 3.0)
+    strip_attributes (1.4.2)
+      activemodel (>= 3.0, < 5.0)
     therubyracer (0.11.4)
       libv8 (~> 3.11.8.12)
       ref
-    thor (0.17.0)
+    thor (0.18.0)
     tilt (1.3.6)
     treetop (1.4.12)
       polyglot
@@ -289,7 +300,7 @@ PLATFORMS
 
 DEPENDENCIES
   acts_as_tree
-  bootstrap-sass
+  bootstrap-sass (~> 2.3.1)!
   cancan (~> 1.6.7)
   capistrano
   capybara
@@ -299,6 +310,7 @@ DEPENDENCIES
   compass (~> 0.12.1)
   database_cleaner
   devise (~> 2.0)
+  exception_notification (~> 2.6.1)
   factory_girl_rails
   faker (~> 1.1.2)
   foreigner
@@ -312,7 +324,6 @@ DEPENDENCIES
   launchy
   mocha
   momentjs-rails
-  mysql (~> 2.8.1)
   nokogiri (~> 1.5.0)
   pg
   progress_bar
@@ -320,6 +331,7 @@ DEPENDENCIES
   rack-protection
   rails (~> 3.2.13)
   rails-erd
+  rails_config
   rdf
   rdf-n3
   rdf-rdfxml
