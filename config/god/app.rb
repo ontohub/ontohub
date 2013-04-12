@@ -8,7 +8,7 @@ num_workers.times do |num|
     w.name          = "resque-#{num}"
     w.group         = 'resque'
     w.interval      = 30.seconds
-    w.start         = "QUEUE=* rake resque:work"
+    w.start         = "QUEUE=* nice rake resque:work"
     w.start_grace   = 10.seconds
     
     # Restart if memory gets too high
