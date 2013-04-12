@@ -9,7 +9,7 @@ gem 'foreigner'
 # in production environments by default.
 group :assets do
   gem 'sass-rails',   '~> 3.2.3'
-  gem 'bootstrap-sass'
+  gem 'bootstrap-sass', "~> 2.3.1", git: "git://github.com/digineo/bootstrap-sass.git", branch: 'v2.3.1.0-with_javascript_fixes'
   gem 'coffee-rails', '~> 3.2.1'
   gem 'compass',      '~> 0.12.1'
   gem 'jquery-rails'

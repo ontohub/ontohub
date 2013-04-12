@@ -1,4 +1,12 @@
 GIT
+  remote: git://github.com/digineo/bootstrap-sass.git
+  revision: 5a67304a90ac8e30e408f0553811eba65ed0096f
+  branch: v2.3.1.0-with_javascript_fixes
+  specs:
+    bootstrap-sass (2.3.1.0)
+      sass (~> 3.2)
+
+GIT
   remote: git://github.com/digineo/sunspot.git
   revision: 122f7c60207b9539903f06a66ce35a01cb1bf481
   specs:
@@ -47,8 +55,6 @@ GEM
     addressable (2.3.3)
     arel (3.0.2)
     bcrypt-ruby (3.0.1)
-    bootstrap-sass (2.3.1.0)
-      sass (~> 3.2)
     bourne (1.4.0)
       mocha (~> 0.13.2)
     builder (3.0.4)
@@ -282,7 +288,7 @@ PLATFORMS
 
 DEPENDENCIES
   acts_as_tree
-  bootstrap-sass
+  bootstrap-sass (~> 2.3.1)!
   cancan (~> 1.6.7)
   capistrano
   capybara
