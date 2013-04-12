@@ -108,7 +108,7 @@ $ ->
           type: "POST"
           url: self.uri
           data:
-            "ontology[uri]": uri
+            "ontology[iri]": uri
             "ontology[versions_attributes][0][source_url]": uri
           format: "json"
         ).success(->
