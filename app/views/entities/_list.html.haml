@@ -9,7 +9,7 @@
     - collection.each do |entity|
       %tr
         %td
-          - unless false #entity.oops_responses.empty?
+          - unless entity.oops_responses.empty?
             = link_to "javascript:$('.pitfall#entity_" + entity.id.to_s + "').toggle();void(0)" do
               %i.icon-warning-sign
               = entity.oops_responses.count
