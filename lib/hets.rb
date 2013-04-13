@@ -41,7 +41,8 @@ module Hets
 
     Rails.logger.debug command
 
-    status = `#{command}`
+    # nice runs the process with lower scheduling priority
+    status = `nice #{command}`
     status = status.split("\n").last
 
     Rails.logger.debug status
