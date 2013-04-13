@@ -11,7 +11,12 @@
         %td
           - if entity.oops_responses.any?
             = link_to "javascript:$('.pitfall#entity_" + entity.id.to_s + "').toggle();void(0)" do
-              %i.icon-warning-sign
+              - if entity.oops_responses.first.element_type == "Pitfall"
+                %i.icon-bolt
+              - if entity.oops_responses.first.element_type == "Suggestion"
+                %i.icon-lightbulb 
+              - if entity.oops_responses.first.element_type == "Warning"
+                %i.icon-warning-sign 
               = entity.oops_responses.count
         - if @show_name_column
           %td= entity.text
