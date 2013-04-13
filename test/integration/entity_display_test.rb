@@ -55,7 +55,7 @@ class EntityDisplayTest < ActionController::IntegrationTest
             @entity.text = 'Foo'
             @entity.name = 'Foo'
             @entity.save!
-
+            
             visit ontology_entities_path(@entity.ontology)
           end
 
