@@ -30,6 +30,12 @@ class OntologyVersionsController < InheritedResources::Base
     end
   end
 
+  def oops
+    resource.build_request.save!
+    flash[:notice] = "Your request is send to OOPS!" 
+    redirect_to :back
+  end
+  
 protected
 
   def check_changeable
