@@ -6,7 +6,7 @@ class OntologyVersion < ActiveRecord::Base
 
   belongs_to :user
   belongs_to :ontology, :counter_cache => :versions_count
-  has_one :oops_request
+  has_one :request, class_name: 'OopsRequest'
 
   mount_uploader :raw_file, OntologyUploader
   mount_uploader :xml_file, OntologyUploader
