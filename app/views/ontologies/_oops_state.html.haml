@@ -1,0 +1,10 @@
+%p
+  - if req = resource.versions.current.try(:request)
+    OOPS State: #{req.state}
+    - if %( pending processing ).include?(req.state)
+      = link_to "javascript:document.location.reload()", class: 'btn', 'data-disable-with' => '...' do
+        %i.icon-refresh
+    - else
+      (#{req.responses.count} Responses)
+  - else
+    = link_to 'Test with OOPS!', oops_ontology_ontology_version_path(resource, resource.versions.current), method: 'post', class: 'btn'
