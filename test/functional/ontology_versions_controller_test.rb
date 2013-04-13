@@ -31,17 +31,30 @@ class OntologyVersionsControllerTest < ActionController::TestCase
           post :oops, :ontology_id => @ontology.to_param, :id => @version.number
         end
         
-        should set_the_flash.to(/send to OOPS/i)
+        should respond_with :success
+        should set_the_flash.to(/Your request is send to OOPS!/i)
       end
 
       context 'send second request' do
-        setup do
-          post :oops, :ontology_id => @ontology.to_param, :id => @version.number
-          post :oops, :ontology_id => @ontology.to_param, :id => @version.number
+        context 'while pending, processing or done'
+          setup do
+            @myrequest = FactoryGirl.create :oops_request, state: :pending
+            post :oops, :ontology_id => @ontology.to_param, ontology_version: @version, :id => @version.number
+          end
+        
+          should respond_with :success
+          should set_the_flash.to(/Already send to OOPS/i)
         end
         
-        should set_the_flash.to(/send to OOPS/i)
-      end
+        context 'when failed' do
+          setup do
+            post :oops, :ontology_id => @ontology.to_param, :id => @version.number
+            @myresponse = FactoryGirl.create :oops_request, ontology_version: @version, state: :failed
+          end
+          
+          should respond_with :success
+          should set_the_flash.to(/Your request is send to OOPS!/i)
+        end
 
     end
   end
