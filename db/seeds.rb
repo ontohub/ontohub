@@ -77,7 +77,7 @@ end
 Ontology.find_each do |o|
   if [true,false].sample
     ov = o.versions.latest.first
-    req = ov.build_request state: 'done'
+    req = ov.build_request({state: 'done'}, without_protection: true)
     rand(1..7).times do |n|
       req.responses.build \
         name: Faker::Name.name + n.to_s,

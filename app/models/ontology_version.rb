@@ -1,5 +1,5 @@
 class OntologyVersion < ActiveRecord::Base
-  include OntologyVersion::Async
+  include OntologyVersion::States
   include OntologyVersion::Download
   include OntologyVersion::Parsing
   include OntologyVersion::Numbers
