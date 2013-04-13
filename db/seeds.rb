@@ -75,13 +75,15 @@ end
 
 # Add OOPS! requests and responses
 Ontology.find_each do |o|
-  ov = o.versions.latest.first
-  req = ov.build_request state: 'done'
-  rand(1..7).times do |n|
-    req.responses.build \
-      name: Faker::Name.name + n.to_s,
-      description: Faker::Lorem.paragraph,
-      element_type: %w(Pitfall Warning Suggestion).sample
+  if rand(0,1)
+    ov = o.versions.latest.first
+    req = ov.build_request state: 'done'
+    rand(1..7).times do |n|
+      req.responses.build \
+        name: Faker::Name.name + n.to_s,
+        description: Faker::Lorem.paragraph,
+        element_type: %w(Pitfall Warning Suggestion).sample
+    end
+    ov.save!
   end
-  ov.save!
 end
