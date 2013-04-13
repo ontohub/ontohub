@@ -295,7 +295,7 @@ GEM
       rack (>= 1.0.0)
     warden (1.2.1)
       rack (>= 1.0)
-    webmock (1.10.2)
+    webmock (1.9.3)
       addressable (>= 2.2.7)
       crack (>= 0.3.2)
     websocket (1.0.7)
@@ -360,5 +360,5 @@ DEPENDENCIES
   therubyracer
   uglifier (>= 1.0.3)
   vcr
-  webmock (~> 1.10.0)
+  webmock (~> 1.9.0)
   yard

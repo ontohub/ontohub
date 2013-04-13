@@ -1,6 +1,0 @@
-class Oops::Parser
-  
-  
-  
-  
-end

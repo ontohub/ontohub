@@ -62,7 +62,7 @@ gem "rest-client"
 
 # Recording of HTTP Requests
 gem "vcr"
-gem "webmock", '~> 1.10.0'
+gem "webmock", '~> 1.9.0'
 
 # Async jobs
 gem 'resque'

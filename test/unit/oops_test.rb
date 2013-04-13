@@ -16,18 +16,52 @@ class OopsTest < ActiveSupport::TestCase
     
     context 'with valid url' do
       setup do
-        do_request :valid, "http://sweet.jpl.nasa.gov/1.1/sunrealm.owl"
+        @result = do_request :valid, "http://sweet.jpl.nasa.gov/1.1/sunrealm.owl"
       end
       
-      should 'return body' do
-        puts @response
+      should 'return a list' do
+        assert_equal 5, @result.count
       end
     end
   end
   
+  context 'parsing a oops response' do
+    setup do
+      @result = Oops::Response.parse File.read("#{Rails.root}/test/fixtures/oops/sunrealm.xml")
+    end
+    
+    should 'return correct amount of elements' do
+      assert_equal 5, @result.count
+    end
+    
+    context 'first element responded' do
+      setup do
+        @element = @result.first
+      end
+      
+      should 'have correct type' do
+        assert_equal 'Pitfall', @element.type
+      end
+      
+      should 'have correct name' do
+        assert_equal 'Creating unconnected ontology elements', @element.name
+      end
+      
+      should 'have correct code' do
+        assert_equal 'P04', @element.code
+      end
+      
+      should 'have correct affects' do
+        assert_equal 14, @element.affects.count
+        assert_equal 'http://sweet.jpl.nasa.gov/1.1/sunrealm.owl#SunRealm', @element.affects.first
+      end
+    end
+    
+  end
+  
   def do_request(cassette, url)
     VCR.use_cassette "oops/#{cassette}", match_requests_on: [:body] do
-      @response = Oops::Client.request(url)
+      Oops::Client.request(url)
     end
   end
   
