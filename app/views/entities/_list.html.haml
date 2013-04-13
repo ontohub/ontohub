@@ -9,7 +9,7 @@
     - collection.each do |entity|
       %tr
         %td
-          - unless entity.oops_responses.empty?
+          - if entity.oops_responses.any?
             = link_to "javascript:$('.pitfall#entity_" + entity.id.to_s + "').toggle();void(0)" do
               %i.icon-warning-sign
               = entity.oops_responses.count
@@ -26,4 +26,8 @@
         %td{colspan:2, style:"box-shadow:inset 0 0 5px grey"}
           %ul
             - entity.oops_responses.each do |response|
-              %li= response
+              %li
+                %strong
+                  = response.name
+                  (#{response.element_type})
+                %p= response.description

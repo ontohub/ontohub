@@ -73,17 +73,17 @@ Ontology.first.permissions.create! \
   c.save!
 end
 
-# Add OOPS! requests and responses
-Ontology.find_each do |o|
-  if [true,false].sample
-    ov = o.versions.latest.first
-    req = ov.build_request({state: 'done'}, without_protection: true)
-    rand(1..7).times do |n|
-      req.responses.build \
-        name: Faker::Name.name + n.to_s,
-        description: Faker::Lorem.paragraph,
-        element_type: %w(Pitfall Warning Suggestion).sample
-    end
-    ov.save!
-  end
+# Add OOPS! requests and responses to pizza ontology
+ontology  = Ontology.where(name: "Pizza").first!
+version   = ontology.versions.first
+request   = version.build_request({state: 'done'}, without_protection: true)
+request.save!
+
+responses = %w( Pitfall Warning Warning Suggestion ).map do |type|
+  request.responses.create! \
+      name:        Faker::Name.name,
+      description: Faker::Lorem.paragraph,
+      element_type: type
 end
+
+ontology.entities.all.select{ |o| responses.sample.entities << o if (o.id % 3 == 0) }
