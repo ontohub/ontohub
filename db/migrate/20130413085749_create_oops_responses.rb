@@ -5,7 +5,7 @@ class CreateOopsResponses < ActiveRecord::Migration
       t.integer :code
       t.string :name, null: false
       t.string :description
-      t.string :type, null: false
+      t.string :element_type, null: false
 
       t.timestamps null: false
     end

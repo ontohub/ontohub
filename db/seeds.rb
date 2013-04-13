@@ -32,10 +32,6 @@ team = Team.create! \
   team.users << user if i < 2
 end
 
-
-
-
-
 # Import ontologies
 Dir["#{Rails.root}/test/fixtures/ontologies/*/*.{casl,clf,clif,owl}"].each do |file|
   basename = File.basename(file)
@@ -77,3 +73,12 @@ Ontology.first.permissions.create! \
   c.save!
 end
 
+# Add pitfalls
+ov = Ontology.first.versions.latest.first
+req = ov.build_oops_request state: 'done'
+3.times do |n|
+  req.oops_responses.build \
+    name: Faker::Name.name + n.to_s,
+    element_type: 'Pitfall'
+end
+ov.save!
