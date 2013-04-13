@@ -40,10 +40,8 @@ Ontohub::Application.routes.draw do
     resources :sentences, :only => :index
     get 'bulk', :on => :collection
     resources :ontology_versions, :only => [:index, :show, :new, :create], :path => 'versions' do
-      get 'oops', on: :member
+      post 'oops', on: :member
     end
-
-  
 
 #	%w( entities sentences ).each do |name|
 #	  get "versions/:number/#{name}" => "#{name}#index", :as => "ontology_version_#{name}"
