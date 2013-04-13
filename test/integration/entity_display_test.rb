@@ -10,20 +10,20 @@ class EntityDisplayTest < ActionController::IntegrationTest
       end
 
       context 'page' do
-        should 'have 2 <th> tags' do
-          assert_equal 2, @ths.size
+        should 'have 3 <th> tags' do
+          assert_equal 3, @ths.size
         end
       end
 
       context 'first <th>' do
         should 'have text "Text"' do
-          assert_equal 'Text', @ths[0].text
+          assert_equal 'Text', @ths[1].text
         end
       end
 
       context 'second <th>' do
         should 'have text "Name"' do
-          assert_equal 'Name', @ths[1].text
+          assert_equal 'Name', @ths[2].text
         end
       end
     end
@@ -43,8 +43,8 @@ class EntityDisplayTest < ActionController::IntegrationTest
           @ths = all('th')
         end
 
-        should 'have 1 <th> tag' do
-          assert_equal 1, @ths.size
+        should 'have 2 <th> tag' do
+          assert_equal 2, @ths.size
         end
       end
 
@@ -55,7 +55,7 @@ class EntityDisplayTest < ActionController::IntegrationTest
             @entity.text = 'Foo'
             @entity.name = 'Foo'
             @entity.save!
-
+            
             visit ontology_entities_path(@entity.ontology)
           end
 

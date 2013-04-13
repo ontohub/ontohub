@@ -1,12 +1,18 @@
 %table.entities
   %thead
     %tr
+      %th{style:"border:0"}
       %th Text
       - if @show_name_column 
         %th Name
   %tbody
     - collection.each do |entity|
       %tr
+        %td
+          - if entity.oops_responses.any?
+            = link_to "javascript:$('.pitfall#entity_" + entity.id.to_s + "').toggle();void(0)" do
+              %i.icon-warning-sign
+              = entity.oops_responses.count
         - if @show_name_column
           %td= entity.text
           %td= entity.name
@@ -15,3 +21,13 @@
             %td= iri_tooltip(entity, entity.display_name)
           - else 
             %td= name_highlighter(entity)
+      %tr{:class => "pitfall", :id => "entity_" + entity.id.to_s, :style => "display:none"} 
+        %td
+        %td{colspan:2, style:"box-shadow:inset 0 0 5px grey"}
+          %ul
+            - entity.oops_responses.each do |response|
+              %li
+                %strong
+                  = response.name
+                  (#{response.element_type})
+                %p= response.description

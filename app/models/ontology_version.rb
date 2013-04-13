@@ -1,11 +1,12 @@
 class OntologyVersion < ActiveRecord::Base
-  include OntologyVersion::Async
+  include OntologyVersion::States
   include OntologyVersion::Download
   include OntologyVersion::Parsing
   include OntologyVersion::Numbers
 
   belongs_to :user
   belongs_to :ontology, :counter_cache => :versions_count
+  has_one :request, class_name: 'OopsRequest'
 
   mount_uploader :raw_file, OntologyUploader
   mount_uploader :xml_file, OntologyUploader
@@ -36,6 +37,11 @@ class OntologyVersion < ActiveRecord::Base
   
   def to_param
     self.number
+  end
+  
+  # public URL to this version
+  def url(params={})
+    Rails.application.routes.url_helpers.ontology_ontology_version_path(ontology, self, params.reverse_merge(host: Settings.hostname, only_path: false))
   end
  
 protected

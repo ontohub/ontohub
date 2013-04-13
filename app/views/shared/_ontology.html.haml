@@ -17,24 +17,33 @@
   %a.btn.btn-mini.dropdown-toggle{'href' => '#', 'data-toggle' => 'dropdown'}
     %span.caret
   %ul.dropdown-menu
-    -if can? :edit, resource
+    - if can? :edit, resource
       %li= link_to 'Rename', [:edit, resource]
       %li.divider
     %li= link_to 'Show comments', [resource, :comments]
     %li= link_to 'Show metadata', [resource, :metadata]
-    -if can? :permissions, resource
+    - if can? :permissions, resource
       %li= link_to 'Show permissions', [resource, :permissions]
-    -if can? :edit, resource
+    - if can? :edit, resource
       %li.divider
       %li= link_to 'Upload new version from my computer', new_ontology_ontology_version_path(resource, :from => 'http-client')
       %li= link_to 'Import new version from other website', new_ontology_ontology_version_path(resource, :from => 'http-server')
     %li= link_to 'Browse versions', [resource, :ontology_versions]
-    -if can? :edit, resource
+    - unless resource.versions.current.nil?
+      %li= link_to 'Test with OOPS!', oops_ontology_ontology_version_path(resource, resource.versions.current)
+    - if can? :edit, resource
       %li.divider
       %li= link_to 'Delete', resource, :confirm => 'Do you really want to delete this ontology?', :method => :delete
 
+- unless false #resource.oops_responses.empty?
+  = link_to "javascript:$('.pitfalls').toggle();void(0)" do
+    %i.icon-warning-sign
+    = 6#resource.oops_responses.count
+
 %div= link_to resource.iri, download_path(resource) if download_path(resource)
 %div= resource.description
+%div{class:"pitfalls", style:"display:none"}
+  Lorem Ipsum
 
 %nav
   %ul.nav.nav-tabs

@@ -7,7 +7,7 @@ class OntologiesControllerTest < ActionController::TestCase
   
   context 'Ontology Instance' do
     setup do
-      @ontology = FactoryGirl.create :single_ontology
+      @ontology = FactoryGirl.create :single_ontology, state: 'done'
       @user     = FactoryGirl.create :user
       
       2.times { FactoryGirl.create :entity, :ontology => @ontology }
@@ -20,7 +20,6 @@ class OntologiesControllerTest < ActionController::TestCase
         end
         
         should respond_with :success
-        should assign_to(:search).with{ nil }
         should render_template :index
         should render_template 'ontologies/_ontology'
       end
@@ -32,7 +31,6 @@ class OntologiesControllerTest < ActionController::TestCase
         end
         
         should respond_with :success
-        should assign_to(:search).with{ @search }
         should render_template :index
         should render_template 'ontologies/_ontology'
       end
@@ -92,7 +90,6 @@ class OntologiesControllerTest < ActionController::TestCase
         end
         
         should respond_with :success
-        should assign_to :ontology_version
         should render_template :new
       end
       
@@ -110,7 +107,6 @@ class OntologiesControllerTest < ActionController::TestCase
             end
             
             should respond_with :success
-            should assign_to :version
             should render_template :new
           end
           
@@ -140,8 +136,7 @@ class OntologiesControllerTest < ActionController::TestCase
                 }],
               }
             end
-            
-            should assign_to :version
+
             should respond_with :redirect
           end
           
@@ -156,8 +151,7 @@ class OntologiesControllerTest < ActionController::TestCase
                 }],
               }
             end
-            
-            should assign_to :version
+
             should respond_with :created
           end
         end

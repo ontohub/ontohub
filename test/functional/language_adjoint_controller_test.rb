@@ -27,7 +27,6 @@ class LanguageAdjointsControllerTest < ActionController::TestCase
           get :show, :id => @adjoint.id, :mapping_id => @mapping.id
         end
         should respond_with :success
-        should assign_to :language_adjoint
         should render_template :show
         should_not set_the_flash
       end
@@ -92,7 +91,6 @@ class LanguageAdjointsControllerTest < ActionController::TestCase
           get :edit, :id => @adjoint.id, :mapping_id => @mapping.id
         end
         should respond_with :success
-        should assign_to :language_adjoint
         should render_template :edit
         should_not set_the_flash
       end
@@ -111,7 +109,6 @@ class LanguageAdjointsControllerTest < ActionController::TestCase
           get :show, :id => @adjoint.id, :mapping_id => @mapping.id
         end
         should respond_with :success
-        should assign_to :language_adjoint
         should render_template :show
         should_not set_the_flash
       end
@@ -185,7 +182,6 @@ class LanguageAdjointsControllerTest < ActionController::TestCase
           get :show, :id => @adjoint.id, :translation_id => @mapping.id
         end
         should respond_with :success
-        should assign_to :language_adjoint
         should render_template :show
         should_not set_the_flash
       end

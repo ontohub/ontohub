@@ -32,10 +32,6 @@ team = Team.create! \
   team.users << user if i < 2
 end
 
-
-
-
-
 # Import ontologies
 Dir["#{Rails.root}/test/fixtures/ontologies/*/*.{casl,clf,clif,owl}"].each do |file|
   basename = File.basename(file)
@@ -77,3 +73,17 @@ Ontology.first.permissions.create! \
   c.save!
 end
 
+# Add OOPS! requests and responses to pizza ontology
+ontology  = Ontology.where(name: "Pizza").first!
+version   = ontology.versions.first
+request   = version.build_request({state: 'done'}, without_protection: true)
+request.save!
+
+responses = %w( Pitfall Warning Warning Suggestion ).map do |type|
+  request.responses.create! \
+      name:        Faker::Name.name,
+      description: Faker::Lorem.paragraph,
+      element_type: type
+end
+
+ontology.entities.all.select{ |o| responses.sample.entities << o if (o.id % 3 == 0) }

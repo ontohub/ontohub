@@ -1,7 +1,10 @@
-module OntologyVersion::Async
-  extend ActiveSupport::Concern
+module StateUpdater
   
-protected
+  protected
+  
+  def after_failed
+    # override if necessary
+  end
   
   def do_or_set_failed(&block)
     raise ArgumentError.new('No block given.') unless block_given?
@@ -10,14 +13,12 @@ protected
       yield
     rescue Exception => e
       update_state! :failed, e.message
-      self.remove_raw_file!
+      after_failed
       raise e
     end
   end
 
   def update_state!(state, error_message = nil)
-    ontology.state = state.to_s
-    ontology.save!
 
     self.state      = state.to_s
     self.last_error = error_message

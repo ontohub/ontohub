@@ -57,6 +57,9 @@ gem 'acts_as_tree'
 # Manage uploads
 gem 'carrierwave', "~> 0.8.0"
 
+# HTTP Client
+gem "rest-client"
+
 # Async jobs
 gem 'resque'
 gem 'redis-namespace'
@@ -82,6 +85,10 @@ group :test do
   gem "capybara-webkit"
   gem 'database_cleaner'
   gem "launchy"
+  
+  # Recording of HTTP Requests
+  gem "vcr"
+  gem "webmock", '~> 1.9.0'
 end
 
 group :development do
