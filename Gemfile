@@ -15,6 +15,7 @@ group :assets do
   gem 'bootstrap-sass', "~> 2.3.1", git: "git://github.com/digineo/bootstrap-sass.git", branch: 'v2.3.1.0-with_javascript_fixes'
   gem 'coffee-rails', '~> 3.2.1'
   gem 'compass',      '~> 0.12.1'
+  gem 'font_awesome'
   gem 'jquery-rails'
   gem 'jquery-ui-rails'
   gem 'momentjs-rails'
