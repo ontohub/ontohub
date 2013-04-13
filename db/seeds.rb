@@ -42,21 +42,15 @@ Dir["#{Rails.root}/test/fixtures/ontologies/*/*.{casl,clf,clif,owl}"].each do |f
     iri:         "file://db/seeds/#{basename}",
     name:        basename.split(".")[0].capitalize,
     description: Faker::Lorem.paragraph
+
+  v = o.versions.build raw_file: File.open(file)
+  v.user       = user
+  v.created_at = rand(60).minutes.ago
+  v.number     = 1
+  
+  o.save! 
+  o.ontology_version = v;
   o.save!
-
-  # Stub :parse_async to keep parsing syncronously.
-  class OntologyVersion; def parse_async; end; end
-
-  v = o.versions.build({
-    :created_at => rand(60).minutes.ago,
-    :raw_file =>   File.open(file),
-    :user =>       user,
-    :number =>     1,
-    :ontology =>   o
-  }, without_protection: true)
-  v.save!
-
-  v.parse
 end
 
 # Add permissions
