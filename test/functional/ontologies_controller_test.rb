@@ -7,7 +7,7 @@ class OntologiesControllerTest < ActionController::TestCase
   
   context 'Ontology Instance' do
     setup do
-      @ontology = FactoryGirl.create :single_ontology
+      @ontology = FactoryGirl.create :single_ontology, state: 'done'
       @user     = FactoryGirl.create :user
       
       2.times { FactoryGirl.create :entity, :ontology => @ontology }

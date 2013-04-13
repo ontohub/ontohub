@@ -31,7 +31,7 @@ class OntologyVersionsControllerTest < ActionController::TestCase
           post :oops, :ontology_id => @ontology.to_param, :id => @version.number
         end
         
-        should respond_with :success
+        should respond_with :redirect
         should set_the_flash.to(/Your request is send to OOPS!/i)
       end
 
@@ -42,7 +42,7 @@ class OntologyVersionsControllerTest < ActionController::TestCase
             post :oops, :ontology_id => @ontology.to_param, ontology_version: @version, :id => @version.number
           end
         
-          should respond_with :success
+          should respond_with :redirect
           should set_the_flash.to(/Already send to OOPS/i)
         end
         
@@ -52,7 +52,7 @@ class OntologyVersionsControllerTest < ActionController::TestCase
             @myresponse = FactoryGirl.create :oops_request, ontology_version: @version, state: :failed
           end
           
-          should respond_with :success
+          should respond_with :redirect
           should set_the_flash.to(/Your request is send to OOPS!/i)
         end
 
