@@ -16,7 +16,7 @@ module Oops
           node.xpath("oops:Code").text,
           node.xpath("oops:Name").text,
           node.xpath("oops:Description").text,
-          node.xpath("//oops:AffectedElement").map(&:text)
+          node.xpath("oops:Affects/*").map(&:text)
       end
     end
     

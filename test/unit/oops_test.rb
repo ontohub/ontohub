@@ -52,8 +52,7 @@ class OopsTest < ActiveSupport::TestCase
       end
       
       should 'have correct affects' do
-        assert_equal 14, @element.affects.count
-        assert_equal 'http://sweet.jpl.nasa.gov/1.1/sunrealm.owl#SunRealm', @element.affects.first
+        assert_equal ['http://sweet.jpl.nasa.gov/1.1/sunrealm.owl#SunRealm'], @element.affects
       end
     end
     

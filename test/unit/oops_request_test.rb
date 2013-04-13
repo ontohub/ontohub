@@ -8,6 +8,11 @@ class OopsRequestTest < ActiveSupport::TestCase
         File.read("#{Rails.root}/test/fixtures/oops/sunrealm.xml")
       
       @version = FactoryGirl.create :ontology_version
+      @entity  = FactoryGirl.create :entity,
+        ontology: @version.ontology,
+        name:     'Must be present',
+        text:     '',
+        iri:      'http://sweet.jpl.nasa.gov/1.1/sunrealm.owl#SunRealm'
       @request = @version.create_request
       
       # delete this line if you want tests running after this to fail
@@ -17,6 +22,10 @@ class OopsRequestTest < ActiveSupport::TestCase
     
     should 'have created a request with responses' do
       assert @request.responses.any?
+    end
+    
+    should 'affected entity with should be connected with response' do
+      assert @entity.oops_responses.any?
     end
     
   end

@@ -18,7 +18,8 @@ class OopsRequest < ActiveRecord::Base
         code:         e.code,
         name:         e.name,
         element_type: e.type,
-        description:  e.description
+        description:  e.description,
+        affects:      e.affects
     end
   end
   
