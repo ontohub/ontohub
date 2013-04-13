@@ -4,6 +4,10 @@
 
 ActiveRecord::Base.logger = Logger.new($stdout)
 
+# Do not create background jobs
+OntologyVersion.send :alias_method, :parse_async, :parse
+def OopsRequest.async_run; end
+
 # Create Admin User
 user = User.create!({
   :email    => "admin@example.com",
@@ -86,4 +90,4 @@ responses = %w( Pitfall Warning Warning Suggestion ).map do |type|
       element_type: type
 end
 
-ontology.entities.all.select{ |o| responses.sample.entities << o if (o.id % 3 == 0) }
+ontology.entities.all.select{ |entity| entity.oops_responses = responses.sample(rand(responses.count)) }
