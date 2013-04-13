@@ -12,6 +12,7 @@ class CreateOopsResponses < ActiveRecord::Migration
 
     change_table :oops_responses do |t|
       t.index :oops_request_id
+      t.foreign_key :oops_requests, dependent: :delete
     end
   end
 end
