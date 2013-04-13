@@ -34,19 +34,10 @@
       %li= link_to 'Delete', resource, :confirm => 'Do you really want to delete this ontology?', :method => :delete
 
 
-%div= link_to resource.iri, download_path(resource) if download_path(resource)
-%div= resource.description
+%p= link_to resource.iri, download_path(resource) if download_path(resource)
+%p= resource.description
 
-%p
-  - if req = resource.versions.current.try(:request)
-    OOPS State: #{req.state}
-    - if %( pending processing ).include?(req.state)
-      = link_to "javascript:document.location.reload()", class: 'btn', 'data-disable-with' => '...' do
-        %i.icon-refresh
-    - else
-      (#{req.responses.count} Responses)
-  - else
-    = link_to 'Test with OOPS!', oops_ontology_ontology_version_path(resource, resource.versions.current), method: 'post', class: 'btn'
+= render partial: 'ontologies/oops_state', locals: {resource: resource}
 
 %nav
   %ul.nav.nav-tabs
