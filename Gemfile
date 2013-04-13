@@ -57,6 +57,13 @@ gem 'acts_as_tree'
 # Manage uploads
 gem 'carrierwave', "~> 0.8.0"
 
+# HTTP Client
+gem "rest-client"
+
+# Recording of HTTP Requests
+gem "vcr"
+gem "webmock", '~> 1.10.0'
+
 # Async jobs
 gem 'resque'
 gem 'redis-namespace'
