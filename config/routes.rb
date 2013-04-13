@@ -40,9 +40,7 @@ Ontohub::Application.routes.draw do
     resources :sentences, :only => :index
     get 'bulk', :on => :collection
     resources :ontology_versions, :only => [:index, :show, :new, :create], :path => 'versions' do
-      member do
-        get 'oops'
-      end
+      get 'oops', on: :member
     end
 
   
