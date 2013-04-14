@@ -1,7 +1,9 @@
 %p
   - if req = resource.versions.current.try(:request)
     OOPS State: #{req.state}
-    - if %( pending processing ).include?(req.state)
+    - if req.state == 'failed'
+      (#{req.last_error})
+    - elsif %( pending processing ).include?(req.state)
       = link_to "javascript:document.location.reload()", class: 'btn', 'data-disable-with' => '...' do
         %i.icon-refresh
     - else
