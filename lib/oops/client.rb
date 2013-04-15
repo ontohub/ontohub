@@ -9,7 +9,12 @@ module Oops::Client
   protected
   
   def self.execute_request(url)
-    RestClient.post ENDPOINT, build_request(url)
+    RestClient::Request.execute \
+      method:       :post,
+      url:          ENDPOINT,
+      payload:      build_request(url),
+      open_timeout: 30,     # Number of seconds to wait for the connection to open
+      timeout:      60 * 15 # Number of seconds to wait for one block to be read
   end
   
   def self.build_request(url)
