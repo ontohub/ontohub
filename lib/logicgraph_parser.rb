@@ -125,7 +125,17 @@ module LogicgraphParser
             print "target sublogic comorphism"
             @current_comorphism.target = @current_target_sublogic
           else
-            # TODO get attributes
+            # Get attributes
+            if hash['is_weakly_amalgamable'] == 'TRUE'
+              @current_comorphism.exactness = LogicMapping::EXACTNESSES[2]
+            else
+              @current_comorphism.exactness = LogicMapping::EXACTNESSES[0]
+            end
+            if hash['has_model_expansion'] == 'TRUE'
+              @current_comorphism.faithfulness = LogicMapping::FAITHFULNESSES[2]
+            else
+              @current_comorphism.faithfulness = LogicMapping::FAITHFULNESSES[0]
+            end
             print "comorphism"
           end
         when SOURCE_SUBLOGIC
@@ -180,6 +190,7 @@ module LogicgraphParser
           elsif @path[-1] == TARGET_SUBLOGIC
             print "target sublogic comorphism\n"
           else
+            callback(:logic_mapping, @current_comorphism)
             print "comorphism\n"
           end
           @current_comorphism = nil
