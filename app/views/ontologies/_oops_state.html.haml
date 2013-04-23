@@ -1,4 +1,4 @@
-%p
+%p.oops
   - if req = resource.versions.current.try(:request)
     OOPS State: #{req.state}
     - if req.state == 'failed'
@@ -8,5 +8,16 @@
         %i.icon-refresh
     - else
       (#{req.responses.count} Responses)
+      = link_to 'Show global issues', '#', class: 'pitfalls'
   - else
     = link_to 'Test with OOPS!', oops_ontology_ontology_version_path(resource, resource.versions.current), method: 'post', class: 'btn'
+  %div.pitfalls{:style => "display:none"}
+    %dl.oops-responses
+      - req.responses.global.each do |response|
+        %dt{ title: response.element_type }
+          %i{ class: oops_icon(response.element_type) }
+        %dd
+          %strong
+            = response.name
+          %p= response.description
+    
