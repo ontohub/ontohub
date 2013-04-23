@@ -73,4 +73,5 @@ Ontology.first.permissions.create! \
   c.save!
 end
 
-Rake::Task['registry:import'].invoke
+#Rake::Task['registry:import'].invoke
+Rake::Task['logicgraph:import'].invoke
