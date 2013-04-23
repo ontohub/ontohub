@@ -1,8 +1,8 @@
 class CreateOntologyCategoriesTable < ActiveRecord::Migration
   def change
-    create_table :ontology_categories do |t|
-      t.references :ontology, :null => false
-      t.integer :category_id
+    create_table :categories_ontologies do |t|
+      t.references :ontology
+      t.references :category
     end
   end
 

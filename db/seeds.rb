@@ -73,3 +73,9 @@ Ontology.first.permissions.create! \
   c.save!
 end
 
+# Add categories
+5.times do |n|
+  Category.create \
+    category_id: n,
+    name: Faker::Lorem.word.capitalize
+end

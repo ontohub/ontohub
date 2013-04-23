@@ -1,7 +1,7 @@
 class Category < ActiveRecord::Base
   include Metadatable
   
-  belongs_to :ontology
+  has_and_belongs_to_many :ontologies
   
-  # attr_accessible :title, :body
+  attr_accessible :category_id, :name
 end

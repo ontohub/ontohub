@@ -3,8 +3,7 @@ require 'test_helper'
 class CategoryTest < ActiveSupport::TestCase
 
 context 'Migrations' do
-    %w( ontology_id ).each do |column|
-      should have_db_column(column).of_type(:integer)
-    end
+      should have_db_column('category_id').of_type(:integer)
+      should have_db_column('name').of_type(:string)
   end
 end
