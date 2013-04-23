@@ -5,6 +5,8 @@
   
   = render :partial => relation_list.form_path
   
+  - placeholder = 'placeholder' unless placeholder
+  
   %form.add
-    = text_field_tag :name, nil, :class => 'autocomplete', :placeholder => relation_list.t(:placeholder)
+    = text_field_tag :name, nil, :class => 'autocomplete', :placeholder => relation_list.t(placeholder)
     %button.help{:title => relation_list.t(:help) } ?
