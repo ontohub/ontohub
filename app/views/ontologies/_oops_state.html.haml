@@ -1,14 +1,12 @@
-%p.oops
+%p#oops
   - if req = resource.versions.current.try(:request)
-    OOPS State: #{req.state}
-    - if req.state == 'failed'
-      (#{req.last_error})
-    - elsif %( pending processing ).include?(req.state)
-      = link_to "javascript:document.location.reload()", class: 'btn', 'data-disable-with' => '...' do
-        %i.icon-refresh
-    - else
-      (#{req.responses.count} Responses)
-      = link_to 'Show global issues', '#', class: 'pitfalls'
+    %div#oops-state{ class: req.state, 'data-uri' => url_for(resource) }
+      OOPS State: #{status(req)}
+      - if req.state == 'failed'
+        (#{req.last_error})
+      - else
+        (#{req.responses.count} Responses)
+        = link_to 'Show global issues', '#', class: 'pitfalls'
     %div.pitfalls{:style => "display:none"}
       %dl.oops-responses
         - req.responses.global.each do |response|
