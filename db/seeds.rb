@@ -76,6 +76,9 @@ end
 # Add categories
 5.times do |n|
   Category.create \
-    category_id: n,
     name: Faker::Lorem.word.capitalize
+end
+
+5.times do
+  Ontology.shuffle.categories.push Category.shuffle
 end
