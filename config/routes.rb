@@ -13,6 +13,7 @@ Ontohub::Application.routes.draw do
     resources :logics, :except => [:show]
     resources :teams, :only => :index
     resources :users
+    resources :categories
   end
 
   constraints auth_resque do

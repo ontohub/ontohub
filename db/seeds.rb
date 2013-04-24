@@ -74,11 +74,12 @@ Ontology.first.permissions.create! \
 end
 
 # Add categories
+categories = []
 5.times do |n|
-  Category.create \
-    name: Faker::Lorem.word.capitalize
+  categories << Category.create(name: Faker::Lorem.word.capitalize)
 end
 
-5.times do
-  Ontology.all.shuffle.categories.push Category.all.shuffle
+# Append categories to ontologies
+categories.each do |category|
+  Ontology.all.sample.categories.push category
 end

@@ -1,0 +1,14 @@
+%h2= @page_title = 'Categories'
+
+%p
+  = pluralize collection.total_count, resource_class.to_s
+  found
+
+= pagination do
+  %table
+    %thead
+      %th ID
+      %th Name
+      %th
+    %tbody
+      = render collection
