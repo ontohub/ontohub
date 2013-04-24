@@ -2,11 +2,7 @@ class OopsResponse < ActiveRecord::Base
   belongs_to :request, class_name: 'OopsRequest'
   has_and_belongs_to_many :entities
   
-  scope :global, {
-    :joins      => "LEFT JOIN entities_oops_responses ON oops_responses.id = entities_oops_responses.oops_response_id",
-    :conditions => "entities_oops_responses.oops_response_id IS NULL",
-    :select     => "DISTINCT oops_responses.*"
-  }
+  scope :global, joins("LEFT JOIN entities_oops_responses ON oops_responses.id = entities_oops_responses.oops_response_id").where('entities_oops_responses.entity_id' => nil)
   
   attr_accessor :affects
 
