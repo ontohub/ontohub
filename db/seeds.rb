@@ -80,5 +80,5 @@ end
 end
 
 5.times do
-  Ontology.shuffle.categories.push Category.shuffle
+  Ontology.all.shuffle.categories.push Category.all.shuffle
 end
