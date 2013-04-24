@@ -2,7 +2,7 @@ class CreateOopsResponses < ActiveRecord::Migration
   def change
     create_table :oops_responses do |t|
       t.references :oops_request, null: false
-      t.integer :code
+      t.integer :code, null: false
       t.string :name, null: false
       t.text :description
       t.string :element_type, null: false

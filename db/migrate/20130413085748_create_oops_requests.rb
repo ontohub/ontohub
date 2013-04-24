@@ -2,9 +2,8 @@ class CreateOopsRequests < ActiveRecord::Migration
   def change
     create_table :oops_requests do |t|
       t.references :ontology_version, null: false
-      t.string :state, default: 'pending', null: false
-      t.string :last_error
-
+      t.string :state, null: false, limit: 50, default: 'pending'
+      t.text :last_error
       t.timestamps null: false
     end
 
