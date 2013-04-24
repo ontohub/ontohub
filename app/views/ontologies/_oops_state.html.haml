@@ -18,5 +18,5 @@
             %p= response.description
     
   - else
-    = link_to 'Test with OOPS!', oops_ontology_ontology_version_path(resource, resource.versions.current), method: 'post', class: 'btn oops'
+    = link_to 'Test with OOPS!', oops_ontology_ontology_version_path(resource, resource.versions.current), method: 'post', class: 'btn oops' unless resource.versions.current.nil?
   
