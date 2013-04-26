@@ -13,7 +13,7 @@
   = f.input :iri
   = f.input :name
   = f.input :description, input_html: { class: 'span8' }
-  = f.association :categories
+  = f.association :categories, as: :check_boxes
   
   .form-actions
     = f.button :submit, disable_with: t(:wait), class: 'btn-primary'

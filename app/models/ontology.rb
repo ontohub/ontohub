@@ -18,7 +18,7 @@ class Ontology < ActiveRecord::Base
   belongs_to :language
   belongs_to :logic
 
-  attr_accessible :iri, :name, :description, :logic_id
+  attr_accessible :iri, :name, :description, :logic_id, :category_ids
 
   validates_presence_of :iri
   validates_uniqueness_of :iri, :if => :iri_changed?

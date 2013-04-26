@@ -10,10 +10,10 @@ Ontohub::Application.routes.draw do
   resources :users, :only => :show
   
   namespace :admin do
-    resources :logics, :except => [:show]
+    resources :logics, :except => :show
     resources :teams, :only => :index
     resources :users
-    resources :categories
+    resources :categories, :except => :show
   end
 
   constraints auth_resque do

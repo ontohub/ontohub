@@ -4,4 +4,6 @@ class Category < ActiveRecord::Base
   
   attr_accessible :name
 
+  validates :name, :uniqueness => { :message => 'Already taken' }
+
 end
