@@ -11,4 +11,4 @@
       %th Name
       %th
     %tbody
-      = render collection
+      = render collection.sort_by { |c| c.id }
