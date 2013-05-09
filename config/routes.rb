@@ -39,9 +39,8 @@ Ontohub::Application.routes.draw do
     resources :entities, :only => :index
     resources :sentences, :only => :index
     get 'bulk', :on => :collection
-    get 'oops_state', :on => :member
     resources :ontology_versions, :only => [:index, :show, :new, :create], :path => 'versions' do
-      post 'oops', on: :member
+      resource :oops_request, :only => [:show, :create]
     end
 
 #	%w( entities sentences ).each do |name|
