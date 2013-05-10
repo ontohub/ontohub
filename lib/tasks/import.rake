@@ -9,7 +9,11 @@ namespace :import do
 
   namespace :hets do
     task :lib => :environment do
-      print "Hello World\n"
+      yaml = YAML.load_file(File.join(Rails.root, 'config', 'hets.yml'))
+      yaml['hets_lib'].each do |path|
+        path = File.expand_path path
+        print path + "\n" if File.exists? path
+      end
     end
   end
 end
