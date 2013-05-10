@@ -69,7 +69,7 @@ module Hets
   # @param onology_handler [Method] the handler of ontology file names
   # @param library_path [String] the path to the ontology library
   #
-  def self.handleOntologiesInDirectory(ontology_handler, library_path)
+  def self.handle_ontologies(ontology_handler, library_path)
       ontology_handler.call(library_path)
   end
 
