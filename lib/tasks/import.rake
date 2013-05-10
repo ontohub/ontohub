@@ -8,11 +8,11 @@ namespace :import do
   end
 
   namespace :hets do
-    def handle_ontology_file(file_name)
+    def handle_ontology(file_name)
       print file_name + "\n"
     end
     task :lib => :environment do
-      Hets.traverse(method(:handle_ontology_file))
+      Hets.handle_ontologies(method(:handle_ontology), Hets.library_path)
     end
   end
 end

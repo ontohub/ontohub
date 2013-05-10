@@ -1,5 +1,6 @@
 module Hets
   class HetsError < Exception; end
+  class HetsDeploymentError < Exception; end
 
   class Config
     attr_reader :path
@@ -7,7 +8,7 @@ module Hets
     def initialize
       yaml = YAML.load_file(File.join(Rails.root, 'config', 'hets.yml'))
 
-      @path = Hets.first_which_exists yaml['hets_path']
+      @path = Hets.first_existent_of yaml['hets_path']
 
       raise HetsError, 'Could not find hets' unless @path
       
@@ -15,13 +16,13 @@ module Hets
       raise ArgumentError, "Your version of hets is too old" if version.include?("2011")
 
       yaml.each_pair do |key, value|
-        ENV[key.upcase] = Hets.first_which_exists value if key != 'hets_path'
+        ENV[key.upcase] = Hets.first_existent_of value if key != 'hets_path'
       end
     end
   end
 
-  def self.first_which_exists(array)
-    array.each do |path|
+  def self.first_existent_of(paths)
+    paths.each do |path|
       path = File.expand_path path
       return path if File.exists? path
     end
@@ -51,14 +52,25 @@ module Hets
     status.split(': ').last
   end
 
+  # The path to the ontology library path
+  #
+  # @return [String] the path to the ontology library of Hets
+  #
+  def self.library_path
+    settings = YAML.load_file(File.join(Rails.root, 'config', 'hets.yml'))
+    library_paths = settings['hets_lib']
+    library_path = Hets.first_existent_of library_paths
+    raise HetsDeploymentError.new("*** Error: Hets library not found. ***") if library_path.nil?
+    return library_path
+  end
+
   # Traverses the Hets Lib directory recursively calling back on every ontology file
   #
-  # @param handle_onology [Method]
+  # @param onology_handler [Method] the handler of ontology file names
+  # @param library_path [String] the path to the ontology library
   #
-  def self.traverse(handle_ontology_file)
-      yaml = YAML.load_file(File.join(Rails.root, 'config', 'hets.yml'))
-      path = Hets.first_which_exists yaml['hets_path']
-      handle_ontology_file.call(path)
+  def self.handleOntologiesInDirectory(ontology_handler, library_path)
+      ontology_handler.call(library_path)
   end
 
 end
