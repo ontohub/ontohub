@@ -6,4 +6,10 @@ namespace :import do
       Ontology.all.map(&:import_latest_version)
     end
   end
+
+  namespace :hets do
+    task :lib => :environment do
+      print "Hello World\n"
+    end
+  end
 end
