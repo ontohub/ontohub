@@ -13,7 +13,6 @@ module LogicgraphParser
 
   # Parses the given string and executes the callback for each symbol
   def self.parse(input, callbacks)
-    print "parse\n"
     # Create a new parser
     parser = Nokogiri::XML::SAX::Parser.new(Listener.new(callbacks))
 
@@ -38,7 +37,6 @@ module LogicgraphParser
 
     # the callback function is called for each Symbol tag
     def initialize(callbacks)
-      print "init\n"
       @callbacks        = callbacks
       @path             = []
       @current_logic = nil
@@ -100,14 +98,11 @@ module LogicgraphParser
     
     # Parses the element opening tag
     def start_element(name, attributes)
-      print "====>start "
       @path << name
       case name
         when ROOT
-          print "graph"
           callback(:root, Hash[*[attributes]])
         when LOGIC
-          print "logic "
           hash = Hash[*[attributes]]
           @current_logic = make_logic(hash['name'])
           @current_language = make_language(hash['name'])
@@ -119,10 +114,8 @@ module LogicgraphParser
           hash = Hash[*[attributes]]
           @current_comorphism = make_mapping(hash['name'])
           if @path[-2] == SOURCE_SUBLOGIC
-            print "source sublogic comorphism"
             @current_comorphism.source = @current_source_sublogic
           elsif @path[-2] == TARGET_SUBLOGIC
-            print "target sublogic comorphism"
             @current_comorphism.target = @current_target_sublogic
           else
             # Get attributes
@@ -136,23 +129,18 @@ module LogicgraphParser
             else
               @current_comorphism.faithfulness = LogicMapping::FAITHFULNESSES[0]
             end
-            print "comorphism"
           end
         when SOURCE_SUBLOGIC
-          print "source sublogic"
           hash = Hash[*[attributes]]
           @current_source_sublogic = make_logic(hash['name'])
           callback(:logic, @current_source_sublogic)
         when TARGET_SUBLOGIC
-          print "target sublogic"
           hash = Hash[*[attributes]]
           @current_target_sublogic = make_logic(hash['name'])
           callback(:logic, @current_target_sublogic)
         when DESCRIPTION
-          print "description"
         when SERIALIZATION
           hash = Hash[*[attributes]]
-          print "serialization"
           name = hash['name']
           serialization = @current_language.serializations.create
           serialization.name = name
@@ -160,24 +148,17 @@ module LogicgraphParser
           serialization.mimetype = name
           @current_language.serializations << serialization
         when PROVER
-          print "prover"
         when CONSERVATIVITY
-          print "conservativity checker"
         when CONSISTENCY
-          print "consistency checker"
       end
-      print ".\n"
     end
 
     # Parses the element closing tag
     def end_element(name)
-      print "======>end "
       @path.pop
       case name
         when ROOT
-          print "graph\n"
         when LOGIC
-          print "logic\n"
           callback(:logic, @current_logic)
           callback(:language, @current_language)
           callback(:support, @current_support)
@@ -186,30 +167,20 @@ module LogicgraphParser
           @current_support = nil
         when COMORPHISM
           if @path[-1] == SOURCE_SUBLOGIC
-            print "source sublogic comorphism\n"
           elsif @path[-1] == TARGET_SUBLOGIC
-            print "target sublogic comorphism\n"
           else
             callback(:logic_mapping, @current_comorphism)
-            print "comorphism\n"
           end
           @current_comorphism = nil
         when SOURCE_SUBLOGIC
-          print "source sublogic\n"
           @current_axiom = nil
         when TARGET_SUBLOGIC
-          print "target sublogic\n"
           @current_link = nil
         when DESCRIPTION
-          print "description\n"
         when SERIALIZATION
-          print "serialization\n"
         when PROVER
-          print "prover\n"
         when CONSERVATIVITY
-          print "conservativity checker\n"
         when CONSISTENCY
-          print "consistency checker\n"
       end
     end
 
@@ -240,7 +211,6 @@ module LogicgraphParser
     private
     
     def callback(name, args)
-      print "::callback\n"
       block = @callbacks[name]
       block.call(args) if block
     end

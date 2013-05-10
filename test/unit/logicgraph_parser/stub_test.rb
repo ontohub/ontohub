@@ -5,33 +5,24 @@ class LogicgraphParser::StubTest < ActiveSupport::TestCase
   def save_language(language)
     language.user_id = @user.id
     language.save!
-    print language.inspect
-    print "\n"
-    print language.serializations
-    print "\n"
   end
 
   def save_logic(logic)
     logic.user_id = @user.id
     logic.save!
-    print logic.inspect
-    print "\n"
   end
 
   def save_support(support)
     support.save!
-    print "\n"
   end
 
   def save_logic_mapping(comorphism)
-    print "LOGIC MAPPING\n"
   end
 
   context "LogicgraphParser" do
 
     context 'parsing stub' do
       setup do
-        print "\nPARSING "
         @user = User.new
         @user.email = 'admin@example.com'
         @user.name = 'Admin'
