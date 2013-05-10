@@ -7,7 +7,7 @@ module Hets
     def initialize
       yaml = YAML.load_file(File.join(Rails.root, 'config', 'hets.yml'))
 
-      @path = first_which_exists yaml['hets_path']
+      @path = Hets.first_which_exists yaml['hets_path']
 
       raise HetsError, 'Could not find hets' unless @path
       
@@ -15,20 +15,17 @@ module Hets
       raise ArgumentError, "Your version of hets is too old" if version.include?("2011")
 
       yaml.each_pair do |key, value|
-        ENV[key.upcase] = first_which_exists value if key != 'hets_path'
+        ENV[key.upcase] = Hets.first_which_exists value if key != 'hets_path'
       end
     end
+  end
 
-  private
-
-    def first_which_exists(array)
-      array.each do |path|
-        path = File.expand_path path
-        return path if File.exists? path
-      end
-
-      nil
+  def self.first_which_exists(array)
+    array.each do |path|
+      path = File.expand_path path
+      return path if File.exists? path
     end
+    nil
   end
 
   # Runs hets with input_file and returns XML output file path.
@@ -53,4 +50,15 @@ module Hets
 
     status.split(': ').last
   end
+
+  # Traverses the Hets Lib directory recursively calling back on every ontology file
+  #
+  # @param handle_onology [Method]
+  #
+  def self.traverse(handle_ontology_file)
+      yaml = YAML.load_file(File.join(Rails.root, 'config', 'hets.yml'))
+      path = Hets.first_which_exists yaml['hets_path']
+      handle_ontology_file.call(path)
+  end
+
 end
