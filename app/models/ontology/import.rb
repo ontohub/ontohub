@@ -1,7 +1,7 @@
 module Ontology::Import
 	extend ActiveSupport::Concern
 
-  def import_xml(io)
+  def import_xml(io, user)
     now = Time.now
 
     transaction do
@@ -31,10 +31,10 @@ module Ontology::Import
           end
 
           if h['language']
-            ontology.language = Language.find_or_create_by_name_and_iri! h['language'], 'http://purl.net/dol/language/' + h['language']
+            ontology.language = Language.find_or_create_by_name_and_iri! h['language'], 'http://purl.net/dol/language/' + h['language'], :user => user
           end
           if h['logic']
-            ontology.logic = Logic.find_or_create_by_name_and_iri! h['logic'], 'http://purl.net/dol/logics/' + h['logic']
+            ontology.logic = Logic.find_or_create_by_name_and_iri! h['logic'], 'http://purl.net/dol/logics/' + h['logic'], :user => user
           end
 
           ontology.entities_count  = 0
@@ -56,19 +56,19 @@ module Ontology::Import
           ontology.sentences_count += 1
         },
         link: Proc.new { |h|
-          self.links.update_or_create_from_hash(h, now)
+          self.links.update_or_create_from_hash(h, user, now)
         }
       save!
     end
   end
 
-  def import_xml_from_file(path)
-    import_xml File.open path
+  def import_xml_from_file(path, user)
+    import_xml File.open(path), user
   end
 
   def import_latest_version
     return if versions.last.nil?
     return if versions.last.xml_file.nil?
-    import_xml_from_file versions.last.xml_file.current_path
+    import_xml_from_file versions.last.xml_file.current_path, user
   end
 end

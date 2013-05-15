@@ -3,7 +3,7 @@ require 'integration_test_helper'
 class CommentsTest < ActionController::IntegrationTest
   
   setup do
-    @ontology = FactoryGirl.create :ontology
+    @ontology = FactoryGirl.create :ontology, state: 'done'
     @user     = FactoryGirl.create :user
     
     # Add user as owner to the ontology

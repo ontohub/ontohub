@@ -3,7 +3,8 @@ require 'test_helper'
 class LogicTest < ActiveSupport::TestCase
     context 'logic instance' do
     setup do
-      @logic = FactoryGirl.create :logic
+      @user = FactoryGirl.create :user
+      @logic = FactoryGirl.create :logic, :user => @user
     end
     
     should 'have to_s' do
