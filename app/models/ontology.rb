@@ -15,7 +15,7 @@ class Ontology < ActiveRecord::Base
   include Ontology::Distributed
 
   belongs_to :language
-  belongs_to :logic
+  belongs_to :logic, counter_cache: true
 
   attr_accessible :iri, :name, :description, :logic_id
 
