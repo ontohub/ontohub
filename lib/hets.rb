@@ -2,7 +2,12 @@ module Hets
   class HetsError < Exception; end
   class HetsDeploymentError < Exception; end
 
-  @@extensions = %w(clif clf owl)
+  @@extensions = %w(3W.het casl clf clif dg dol het hets hol hpf hs in kif lisp log manual.thy mk ML monadic.thy owl pdf png pp.tex proposal sh sml spcf table.txt tex thy txt)
+  #.fenv.txt
+  #.het
+  #.hets
+  #.hpf.example
+  #.html
 
   class Config
     attr_reader :path
@@ -68,14 +73,12 @@ module Hets
 
   # Traverses the Hets Lib directory recursively calling back on every ontology file
   #
-  # @param onology_handling [Method] the way of handling ontology file paths
-  # @param user [User] the user that handles the ontology file paths
   # @param library_path [String] the path to the ontology library
   #
-  def self.handle_ontologies(ontology_handling, user, library_path)
+  def self.find_ontologies(library_path)
     @@extensions.each do |extension|
       Dir.glob("#{library_path}/**/*.#{extension}").each do |file_path|
-        ontology_handling.call(user, file_path, extension)
+        yield file_path, extension
       end
     end
   end
@@ -86,7 +89,9 @@ module Hets
   # @param library_path [String] the path to the ontology library
   #
   def self.import_ontologies(user, library_path)
-    handle_ontologies(method(:import_ontology), user, library_path)    
+    find_ontologies(library_path) do |file_path, extension|
+      import_ontology(user, file_path, extension)
+    end
   end
 
   # Imports an ontology in demand of a user
@@ -104,6 +109,7 @@ module Hets
     begin
       ontology.save!
     rescue
+      puts "ERROR: " + ontology.name + " <" + ontology.iri + ">"
       return
     end
 
@@ -113,7 +119,7 @@ module Hets
     ontology_version.ontology = ontology
     ontology_version.save!
 
-    redis = false
+    redis = true
     if redis
       ontology_version.async :parse
     else
