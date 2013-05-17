@@ -8,11 +8,9 @@ namespace :import do
   end
 
   namespace :hets do
-    def handle_ontology(file_name)
-      print file_name + "\n"
-    end
     task :lib => :environment do
-      Hets.handle_ontologies(method(:handle_ontology), Hets.library_path)
+      user = User.load
+      Hets.import_ontologies(user, Hets.library_path)
     end
   end
 end

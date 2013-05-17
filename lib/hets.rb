@@ -66,11 +66,52 @@ module Hets
 
   # Traverses the Hets Lib directory recursively calling back on every ontology file
   #
-  # @param onology_handler [Method] the handler of ontology file names
+  # @param onology_handling [Method] the way of handling ontology file paths
+  # @param user [User] the user that handles the ontology file paths
   # @param library_path [String] the path to the ontology library
   #
-  def self.handle_ontologies(ontology_handler, library_path)
-      ontology_handler.call(library_path)
+  def self.handle_ontologies(ontology_handling, user, library_path)
+    extensions.each do |extension|
+      Dir.glob("#{library_path}/**/*.#{extension}").each do |file_path|
+        ontology_handling.call(user, file_path, extension)
+      end
+    end
+  end
+
+  # Traverses the library directory recursively importing every ontology file
+  #
+  # @param user [User] the user that imports the ontology files
+  # @param library_path [String] the path to the ontology library
+  #
+  def self.import_ontologies(user, library_path)
+    handle_ontologies(method(:import_ontology), user, library_path)    
+  end
+
+  # Imports an ontology in demand of a user
+  #
+  # @param user [User] the user that imports the ontology file
+  # @param file_path [String] the path to the ontology file
+  # @param extension [String] the extension of the ontology file
+  #
+  def self.import_ontology(user, file_path, extension)
+    puts file_path
+
+    ontology = Ontology.new
+    ontology.uri = "file://#{file_path}"
+    ontology.name = File.basename(file_path, ".#{extension}")
+    ontology.save!
+
+    ontology_version = OntologyVersion.new
+    ontology_version.user = user
+    ontology_version.raw_file = File.open(file_path)
+    ontology_version.ontology = ontology
+    ontology_version.save!
+
+    if redis
+      ontology_version.async :parse
+    else
+      ontology_version.parse
+    end
   end
 
 end
