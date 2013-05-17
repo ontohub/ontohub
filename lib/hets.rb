@@ -2,6 +2,8 @@ module Hets
   class HetsError < Exception; end
   class HetsDeploymentError < Exception; end
 
+  @@extensions = %w(clif clf owl)
+
   class Config
     attr_reader :path
 
@@ -71,7 +73,7 @@ module Hets
   # @param library_path [String] the path to the ontology library
   #
   def self.handle_ontologies(ontology_handling, user, library_path)
-    extensions.each do |extension|
+    @@extensions.each do |extension|
       Dir.glob("#{library_path}/**/*.#{extension}").each do |file_path|
         ontology_handling.call(user, file_path, extension)
       end
@@ -97,9 +99,13 @@ module Hets
     puts file_path
 
     ontology = Ontology.new
-    ontology.uri = "file://#{file_path}"
+    ontology.iri = "file://#{file_path}"
     ontology.name = File.basename(file_path, ".#{extension}")
-    ontology.save!
+    begin
+      ontology.save!
+    rescue
+      return
+    end
 
     ontology_version = OntologyVersion.new
     ontology_version.user = user
@@ -107,6 +113,7 @@ module Hets
     ontology_version.ontology = ontology
     ontology_version.save!
 
+    redis = false
     if redis
       ontology_version.async :parse
     else

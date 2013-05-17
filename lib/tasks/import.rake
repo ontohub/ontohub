@@ -9,7 +9,8 @@ namespace :import do
 
   namespace :hets do
     task :lib => :environment do
-      user = User.load
+      user = User.find_all_by_admin(true).first
+      user = User.find_by_email! ENV['EMAIL'] unless ENV['EMAIL'].nil?
       Hets.import_ontologies(user, Hets.library_path)
     end
   end
