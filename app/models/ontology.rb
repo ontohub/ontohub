@@ -15,7 +15,7 @@ class Ontology < ActiveRecord::Base
   include Ontology::Distributed
 
   belongs_to :language
-  belongs_to :logic
+  belongs_to :logic, counter_cache: true
 
   attr_accessible :iri, :name, :description, :logic_id
 
@@ -26,6 +26,7 @@ class Ontology < ActiveRecord::Base
   strip_attributes :only => [:name, :iri]
 
   scope :search, ->(query) { where "iri #{connection.ilike_operator} :term OR name #{connection.ilike_operator} :term", :term => "%" << query << "%" }
+  scope :done_sorted_by_entities_count, where(state: 'done').order('ontologies.entities_count desc')
 
   def to_s
     name? ? name : iri

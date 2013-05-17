@@ -2,8 +2,11 @@ source 'https://rubygems.org'
 
 gem 'rails', '~> 3.2.13'
 gem 'pg'
+gem 'mysql', '~> 2.8.1'
 gem 'foreigner'
-
+gem 'rdf'
+gem 'rdf-rdfxml'
+gem 'rdf-n3'
 
 # Gems used only for assets and not required
 # in production environments by default.
@@ -62,7 +65,11 @@ gem 'redis-namespace'
 gem 'sunspot_rails', :git => 'git://github.com/digineo/sunspot.git'
 gem 'progress_bar'
 
-gem "faker", "~> 1.0"
+# Graph visualization
+gem 'ruby-graphviz', "~> 1.0.8"
+
+# Fake-inputs for tests and seeds
+gem "faker", "~> 1.1.2"
 
 group :test do
   gem 'mocha'

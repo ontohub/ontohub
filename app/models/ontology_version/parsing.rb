@@ -25,8 +25,7 @@ module OntologyVersion::Parsing
       save!
 
       File.delete(@path)
-
-      self.ontology.import_latest_version
+      self.ontology.import_latest_version self.user
     end
 
     update_state! :done

@@ -1,0 +1,9 @@
+- id = resource.class.to_s == "Logic" ? support.language_id : support.logic_id
+- clazz = resource.class == "Logic" ? support.logic : support.language
+%li{'data-id' => id, 'data-exact' => support.exact, 'data-uri' => url_for([clazz, support]) }
+
+  .functions
+    = link_to 'edit',   '#', rel: :edit
+    = link_to 'delete', '#', rel: :delete
+  = resource.class.to_s == "Logic" ? support.language : support.logic
+  = support.exact ? "(exact)" : "(not exact)"

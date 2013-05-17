@@ -1,9 +1,14 @@
 //  = link_to resource, resource#, 'data-type' => resource.class
 
 %h2{'style' => 'display: inline-block'}
-  %span= resource
+  %span= link_to resource
   %small
-    = "#{resource.language}/#{resource.logic}"
+    -if !resource.language_id.nil?
+      = link_to resource.language, resource.language
+    - else
+      = 'unknown'
+    = '/'
+    = link_to resource.logic.to_s, resource.logic
   - if resource.state != 'done'
     %small#ontology-state{ class: resource.state, 'data-uri' => url_for(resource) }
       = status resource

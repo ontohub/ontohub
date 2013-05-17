@@ -1,0 +1,10 @@
+- @page_title = resource.full_name
+%h2= link_to resource.full_name, resource, 'data-type' => resource_class
+
+- if can? :update, resource.language
+  %ul.actions.pull-right
+    %li= link_to 'Edit Serialization', :edit_serialization
+    - if can? :delete, resource.language
+      %li= link_to 'Delete Serialization', :serialization, :confirm => 'Are you sure?', :method => :delete
+
+= resource.full_name_with_type

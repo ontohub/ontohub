@@ -1,0 +1,25 @@
+- @page_title = resource
+%h2= link_to resource, resource, 'data-type' => resource_class
+
+- if can? :update, Logic
+  %ul.actions.pull-right
+    %li= link_to 'Edit Logic', :edit_logic
+    - if can? :delete, Logic
+      %li= link_to 'Delete Logic', :logic, :confirm => 'Are you sure?', :method => :delete
+
+%p.definedBy 
+  %h5 Defined by:
+  = resource.defined_by
+%p.standardStatus 
+  %h5 Standardization-status: 
+  = resource.standardization_status
+
+%p.description
+  %h5 Description
+  = resource.description
+
+= render :partial => "mappings"
+
+= render :partial => "supports"
+
+= render :partial => "ontologies"
