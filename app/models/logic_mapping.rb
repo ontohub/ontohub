@@ -29,7 +29,8 @@ class LogicMapping < ActiveRecord::Base
 private
 
   def add_permission
-    permissions.create! :subject => self.user, :role => 'owner' if self.user
+    permissions.create! subject: self.user, role: 'owner' if self.user
+  rescue ActiveRecord::RecordNotUnique
   end
   
 end
