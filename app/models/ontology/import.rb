@@ -5,6 +5,7 @@ module Ontology::Import
     now = Time.now
 
     transaction do
+      
       root             = nil
       ontology         = nil
       link             = nil
@@ -31,10 +32,12 @@ module Ontology::Import
           end
 
           if h['language']
-            ontology.language = Language.find_or_create_by_name_and_iri! h['language'], 'http://purl.net/dol/language/' + h['language'], :user => user
+            ontology.language = Language.where(:iri => "http://purl.net/dol/language/#{h['language']}")
+              .first_or_create(user: user, name: h['language'])
           end
           if h['logic']
-            ontology.logic = Logic.find_or_create_by_name_and_iri! h['logic'], 'http://purl.net/dol/logics/' + h['logic'], :user => user
+            ontology.logic = Logic.where(:iri => "http://purl.net/dol/logics/#{h['logic']}")
+            .first_or_create(user: user, name: h['logic'])
           end
 
           ontology.entities_count  = 0
