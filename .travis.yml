@@ -5,10 +5,10 @@ rvm:
   - 2.0.0
 
 branches:
-  only:
-    - master
-    - CRUD
-    - display_of_axioms
+  except:
+    - deployment
+    - ontohub.org
+    - staging.ontohub.org
 
 services:
   - redis-server

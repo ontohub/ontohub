@@ -1,6 +1,6 @@
 # Hets environment. The first matching item in the lists is used.
 hets_path:
-  - /usr/lib/hets/hets
+  - /usr/bin/hets
   - ~/dev/hets/hets
   - /opt/local/bin/hets
   - ~/code/hets/hets

@@ -19,7 +19,6 @@ module StateUpdater
   end
 
   def update_state!(state, error_message = nil)
-
     self.state      = state.to_s
     self.last_error = error_message
 

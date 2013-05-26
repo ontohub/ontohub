@@ -37,7 +37,9 @@ class Logic < ActiveRecord::Base
   #validates_format_of :iri, with: URI::regexp(ALLOWED_URI_SCHEMAS)
 
   after_create :add_permission
-  
+
+  default_scope order('ontologies_count desc')
+
   scope :autocomplete_search, ->(query) {
     where("name #{connection.ilike_operator} ?", "%" << query << "%")
   }

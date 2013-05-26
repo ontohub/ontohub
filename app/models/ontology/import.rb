@@ -32,14 +32,12 @@ module Ontology::Import
           end
 
           if h['language']
-            ontology.language = Language.find_or_create_by_iri! \
-              'http://purl.net/dol/language/' + h['language'],
-              user: user, name: h['language']
+            ontology.language = Language.where(:iri => "http://purl.net/dol/language/#{h['language']}")
+              .first_or_create(user: user, name: h['language'])
           end
           if h['logic']
-            ontology.logic = Logic.find_or_create_by_iri! \
-              'http://purl.net/dol/logics/' + h['logic'],
-              user: user, name: h['logic']
+            ontology.logic = Logic.where(:iri => "http://purl.net/dol/logics/#{h['logic']}")
+            .first_or_create(user: user, name: h['logic'])
           end
 
           ontology.entities_count  = 0
@@ -72,6 +70,8 @@ module Ontology::Import
   end
 
   def import_latest_version(user)
+    return if versions.last.nil?
+    return if versions.last.xml_file.blank?
     import_xml_from_file versions.last.xml_file.current_path, user
   end
 end
