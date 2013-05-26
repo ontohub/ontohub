@@ -9,4 +9,4 @@
     - else
       (#{req.responses.count} Responses)
   - else
-    = link_to 'Test with OOPS!', oops_ontology_ontology_version_path(resource, resource.versions.current), method: 'post', class: 'btn'
+    = link_to 'Test with OOPS!', oops_ontology_ontology_version_path(resource, resource.parent ? resource.parent.versions.current : resource.versions.current), method: 'post', class: 'btn'
