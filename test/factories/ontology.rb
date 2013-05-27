@@ -1,4 +1,3 @@
-
 FactoryGirl.define do
   
   sequence :iri do |n|
@@ -15,6 +14,5 @@ FactoryGirl.define do
     
     factory :distributed_ontology, class: DistributedOntology do
     end
-    
   end
 end

@@ -1,10 +1,14 @@
 require 'integration_test_helper'
-
 class EntityDisplayTest < ActionController::IntegrationTest
   context 'When text' do
     context 'does not contain name' do
       setup do
-        @entity = FactoryGirl.create :entity
+        # HACK setting state of ontology to 'done'
+        # so the ajax polling won't intere this test
+        @entity = FactoryGirl.create :entity_with_ontology_version
+        @entity.ontology.state = 'done'
+        @entity.ontology.save
+
         visit ontology_entities_path(@entity.ontology)
         @ths = all('th')
       end
@@ -30,10 +34,11 @@ class EntityDisplayTest < ActionController::IntegrationTest
 
     context 'contains name' do
       setup do
-        @entity = FactoryGirl.build :entity
-        @entity.text = 'Foo Bar'
-        @entity.name = 'Foo'
-        @entity.save!
+        @entity = FactoryGirl.create :entity_with_ontology_version,
+          name: 'Foo',
+          text: 'Foo Bar'
+        @entity.ontology.state = 'done'
+        @entity.ontology.save
 
         visit ontology_entities_path(@entity.ontology)
       end
@@ -51,10 +56,11 @@ class EntityDisplayTest < ActionController::IntegrationTest
       context 'and no IRI' do
         context 'and name equals text, there' do
           setup do
-            @entity = FactoryGirl.build :entity
-            @entity.text = 'Foo'
-            @entity.name = 'Foo'
-            @entity.save!
+            @entity = FactoryGirl.create :entity_with_ontology_version,
+              name: 'Foo',
+              text: 'Foo'
+            @entity.ontology.state = 'done'
+            @entity.ontology.save
             
             visit ontology_entities_path(@entity.ontology)
           end
@@ -75,12 +81,11 @@ class EntityDisplayTest < ActionController::IntegrationTest
 
       context 'and an IRI' do
         setup do
-          @entity = FactoryGirl.build :entity
-          @entity.text = 'Class <http://example.com/foo_class>'
-          @entity.name = '<http://example.com/foo_class>'
-          @entity.save!
-
-          visit ontology_entities_path(@entity.ontology)
+          @entity = FactoryGirl.create :entity_with_ontology_version,
+            text: 'Class <http://example.com/foo_class>',
+            name: '<http://example.com/foo_class>'
+          @entity.ontology.state = 'done'
+          @entity.ontology.save
         end
 
         context 'tooltip' do
