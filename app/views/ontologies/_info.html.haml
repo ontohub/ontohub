@@ -6,8 +6,9 @@
       = link_to resource.language, resource.language
     - else
       = 'unknown'
-    = '/'
-    = link_to resource.logic.to_s, resource.logic
+    - unless resource.distributed?
+      = '/'
+      = link_to resource.logic.to_s, resource.logic
   - if resource.state != 'done'
     %small#ontology-state{ class: resource.state, 'data-uri' => url_for(resource) }
       = status resource
