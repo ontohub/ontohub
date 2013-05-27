@@ -3,7 +3,9 @@ require 'integration_test_helper'
 class PermissionsTest < ActionController::IntegrationTest
   
   setup do
-    @ontology = FactoryGirl.create :ontology, state: 'done'
+    @ontology = FactoryGirl.create(:ontology_version).ontology
+    @ontology.state = 'done'
+    @ontology.save
     @user     = FactoryGirl.create :user
     @team     = FactoryGirl.create :team
     
@@ -15,6 +17,7 @@ class PermissionsTest < ActionController::IntegrationTest
     login_as @user, :scope => :user
     
     visit ontology_permissions_path(@ontology)
+    save_and_open_page
     find_link "Log out"
     
     within '.relationList' do
