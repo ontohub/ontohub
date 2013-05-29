@@ -1,5 +1,6 @@
 FactoryGirl.define do
   factory :category do
-    association :ontology, :factory => :single_ontology
+    name { Faker::Name.name }
+#   association :ontologies, :factory => :single_ontology
   end
 end

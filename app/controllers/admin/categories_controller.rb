@@ -7,6 +7,10 @@ class Admin::CategoriesController < InheritedResources::Base
 
   has_pagination
 
+  def create
+    create! { admin_categories_path }
+  end
+
   def update
     update! do |success, failure|
       success.html { redirect_to collection_path }
