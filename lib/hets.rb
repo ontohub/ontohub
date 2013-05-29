@@ -2,12 +2,7 @@ module Hets
   class HetsError < Exception; end
   class HetsDeploymentError < Exception; end
 
-  @@extensions = %w(3W.het casl clf clif dg dol het hets hol hpf hs in kif lisp log manual.thy mk ML monadic.thy owl pdf png pp.tex proposal sh sml spcf table.txt tex thy txt)
-  #.fenv.txt
-  #.het
-  #.hets
-  #.hpf.example
-  #.html
+  EXTENSIONS = %w(casl clf clif dg dol het hol hs kif owl rdf spcf thy)
 
   class Config
     attr_reader :path
@@ -59,7 +54,7 @@ module Hets
     status.split(': ').last
   end
 
-  # The path to the ontology library path
+  # The path to the Hets library path
   #
   # @return [String] the path to the ontology library of Hets
   #
@@ -71,12 +66,12 @@ module Hets
     return library_path
   end
 
-  # Traverses the Hets Lib directory recursively calling back on every ontology file
+  # Traverses the library recursively calling back on every ontology file
   #
   # @param library_path [String] the path to the ontology library
   #
   def self.find_ontologies(library_path)
-    @@extensions.each do |extension|
+    EXTENSIONS.each do |extension|
       Dir.glob("#{library_path}/**/*.#{extension}").each do |file_path|
         yield file_path, extension
       end
