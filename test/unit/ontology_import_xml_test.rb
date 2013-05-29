@@ -77,5 +77,13 @@ class OntologyImportXMLTest < ActiveSupport::TestCase
         assert_equal 1, @child.sentences_count
       end
     end
+
+    context 'all child ontologies' do
+      should 'have the same state as the parent' do
+        @ontology.children.each do |c|
+          assert_equal @ontology.state, c.state
+        end
+      end
+    end
   end
 end

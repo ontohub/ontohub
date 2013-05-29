@@ -53,7 +53,7 @@ module LogicgraphParser
     def make_mapping(key)
       if @mappings[key] == nil
         mapping = LogicMapping.new
-        mapping.iri = "http://perl.net/dol/logic-mapping/" + key
+        mapping.iri = "http://purl.net/dol/logic-mapping/" + key
         mapping.standardization_status = "Unofficial"
         @mappings[key] = mapping
       end
@@ -64,7 +64,7 @@ module LogicgraphParser
     def make_logic(key)
       if @logics[key] == nil
         logic = Logic.new
-        logic.iri = "http://perl.net/dol/logic/" + key
+        logic.iri = "http://purl.net/dol/logics/" + key
         logic.name = key
         logic.standardization_status = "Unofficial"
         @logics[key] = logic
@@ -76,7 +76,7 @@ module LogicgraphParser
     def make_language(key)
       if @languages[key] == nil
         language = Language.new
-        language.iri = "http://perl.net/dol/language/" + key
+        language.iri = "http://purl.net/dol/language/" + key
         language.name = key
         @languages[key] = language
       end

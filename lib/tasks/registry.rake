@@ -1,4 +1,5 @@
 namespace :registry do
+  desc 'Initially populate logics and languages'
   task :import => :environment do
     user = User.find_all_by_admin(true).first
     user = User.find_by_email! ENV['EMAIL'] unless ENV['EMAIL'].nil?

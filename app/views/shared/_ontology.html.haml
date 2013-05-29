@@ -41,7 +41,7 @@
     - @entities.each do |entity|
       %li{:class => (entity.kind == @active_kind ? 'active' : nil)}
         %a{:href => ontology_entities_path(resource, :kind => entity.kind)}
-          = entity.count == 1 ? entity.kind : entity.kind.pluralize
+          = pluralize(entity.count, entity.kind)
           %span.badge{:style => entity.count == 0 && 'display:none'}= entity.count
     - pages.each do |page, path, count|
       %li{:class => (page==current_page ? 'active' : nil)}
