@@ -99,6 +99,7 @@ module Hets
     puts file_path
 
     ontology = Ontology.new
+    # TODO Use custom ontology iris detached from the local file system
     ontology.iri = "file://#{file_path}"
     ontology.name = File.basename(file_path, ".#{extension}")
     begin
