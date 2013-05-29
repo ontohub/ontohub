@@ -50,6 +50,11 @@ Ontohub::Application.routes.draw do
     resources :comments, :only => [:index, :create, :destroy]
   end
   
+  resources :links do
+    get 'update_version', :on => :member
+    resources :link_versions
+  end
+  
   resources :teams do
     resources :permissions, :only => [:index], :controller => 'teams/permissions'
     resources :team_users, :only => [:index, :create, :update, :destroy], :path => 'users'

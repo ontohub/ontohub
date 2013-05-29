@@ -12,8 +12,21 @@ class Link < ActiveRecord::Base
   belongs_to :target, class_name: 'Ontology'
   belongs_to :logic_mapping
   belongs_to :current_version
-  has_many :link_versions
+  has_many :versions,
+      :dependent  => :destroy,
+      :order      => :version_number,
+      :class_name => 'LinkVersion' do
+        def current
+          reorder('version_number DESC').first
+        end
+      end
   
   attr_accessible :iri, :source, :target, :kind, :theorem, :proven, :local,
-                  :inclusion, :logic_mapping, :parent, :ontology_id
+                  :inclusion, :logic_mapping, :parent, :ontology_id, :source_id, 
+                  :target_id, :versions_attributes, :versions
+  accepts_nested_attributes_for :versions
+  
+  def to_s
+    iri
+  end
 end

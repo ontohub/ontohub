@@ -1,0 +1,14 @@
+- @page_title = resource.iri
+%h2= link_to resource.iri, resource, 'data-type' => resource_class
+
+- if can? :update, Link
+  %ul.actions.pull-right
+    %li= link_to 'Edit Metadata', :edit_link
+    %li= link_to 'Update Link', :update_version_link
+    - if can? :delete, Link
+      %li= link_to 'Delete Link', :link, :confirm => 'Are you sure?', :method => :delete
+
+%h5 Links
+= fancy_link resource.versions.current.source
+to
+= fancy_link resource.versions.current.target
