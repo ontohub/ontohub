@@ -113,13 +113,7 @@ module Hets
     ontology_version.raw_file = File.open(file_path)
     ontology_version.ontology = ontology
     ontology_version.save!
-
-    redis = true
-    if redis
-      ontology_version.async :parse
-    else
-      ontology_version.parse
-    end
+    ontology_version.async :parse
   end
 
 end
