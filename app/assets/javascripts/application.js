@@ -14,6 +14,8 @@
 //= require bootstrap-dropdown
 //= require bootstrap-modal
 //= require bootstrap-tooltip
+//= require bootstrap-transition
+//= require bootstrap-collapse
 
 // ----------------------------------------------
 // Other Plugins
