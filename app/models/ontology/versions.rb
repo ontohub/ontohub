@@ -15,14 +15,6 @@ module Ontology::Versions
 
     attr_accessible :versions_attributes
     accepts_nested_attributes_for :versions
-    
-    after_create :create_permission_for_first_version
   end
   
-protected
-  
-  def create_permission_for_first_version
-    version = versions.first
-    permissions.create! :subject => version.user, :role => 'owner' if version
-  end
 end

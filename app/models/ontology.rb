@@ -2,7 +2,6 @@ class Ontology < ActiveRecord::Base
 
   # Ontohub Library Includes  
   include Commentable
-  include Permissionable
   include Metadatable
 
   # Ontology Model Includes
@@ -14,6 +13,7 @@ class Ontology < ActiveRecord::Base
   include Ontology::Links
   include Ontology::Distributed
 
+  belongs_to :repository
   belongs_to :language
   belongs_to :logic, counter_cache: true
 

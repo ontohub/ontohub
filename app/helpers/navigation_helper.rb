@@ -1,5 +1,15 @@
 module NavigationHelper
 
+  def repository_nav(resource, current_page)
+    pages = [
+      [:overview,     resource]
+    ]
+    
+    pages << [:permissions, [resource, :permissions]] if can? :permissions, resource
+    
+    subnavigation(resource, pages, current_page)
+  end
+
   def ontology_nav(ontology, current_page)
     @entities = ontology.entities.groups_by_kind
 

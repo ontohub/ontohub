@@ -47,7 +47,6 @@ Ontohub::Application.routes.draw do
 #	  get "versions/:number/#{name}" => "#{name}#index", :as => "ontology_version_#{name}"
 #	end
 
-    resources :permissions, :only => [:index, :create, :update, :destroy]
     resources :metadata, :only => [:index, :create, :destroy]
     resources :comments, :only => [:index, :create, :destroy]
   end
@@ -59,6 +58,10 @@ Ontohub::Application.routes.draw do
   
   get 'autocomplete' => 'autocomplete#index'
   get 'search'       => 'search#index'
+
+  resources :repositories do
+    resources :permissions, :only => [:index, :create, :update, :destroy]
+  end
 
   root :to => 'home#show'
 

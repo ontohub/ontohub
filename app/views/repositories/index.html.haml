@@ -1,0 +1,8 @@
+- if can? :create, Repository
+  %ul.actions.pull-right
+    %li= link_to 'Create Repository', :new_repository
+
+%h2= @page_title = 'Repositories'
+
+%ul
+  = render collection

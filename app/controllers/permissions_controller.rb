@@ -1,9 +1,9 @@
 # 
-# Permissions list administration of a team, only accessible by ontology owners
+# Permissions list administration of permissions for a repository
 # 
 class PermissionsController < PrivilegeList::Base
   
-  belongs_to :ontology
+  belongs_to :repository, finder: :find_by_path!
   
   protected
   

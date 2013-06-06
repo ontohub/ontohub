@@ -36,6 +36,21 @@ team = Team.create! \
   team.users << user if i < 2
 end
 
+# Create a repository
+repository = Repository.create! \
+  title: 'Default'
+
+# Add permissions
+Repository.find_each do |o|
+  o.permissions.create! \
+    subject: Team.first,
+    role: 'owner'
+end
+
+Repository.first.permissions.create! \
+  subject: User.first,
+  role: 'editor'
+
 # initially import logics
 Rake::Task['logicgraph:import'].invoke
 
@@ -55,21 +70,11 @@ Dir["#{Rails.root}/test/fixtures/ontologies/*/*.{casl,clf,clif,owl}"].each do |f
   v.created_at = rand(60).minutes.ago
   v.number     = 1
   
+  o.repository = repository
   o.save! 
   o.ontology_version = v;
   o.save!
 end
-
-# Add permissions
-Ontology.find_each do |o|
-  o.permissions.create! \
-    subject: Team.first,
-    role: 'owner'
-end
-
-Ontology.first.permissions.create! \
-  subject: User.first,
-  role: 'editor'
 
 # Add comments
 5.times do |n|
