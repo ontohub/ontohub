@@ -23,6 +23,8 @@ class Ontology < ActiveRecord::Base
   validates_uniqueness_of :iri, :if => :iri_changed?
   validates_format_of :iri, :with => URI::regexp(ALLOWED_URI_SCHEMAS)
   
+  delegate :permission?, to: :repository
+
   strip_attributes :only => [:name, :iri]
 
   scope :search, ->(query) { where "iri #{connection.ilike_operator} :term OR name #{connection.ilike_operator} :term", :term => "%" << query << "%" }

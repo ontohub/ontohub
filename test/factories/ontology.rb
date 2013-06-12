@@ -5,6 +5,7 @@ FactoryGirl.define do
   end
   
   factory :ontology do
+    association :repository
     iri { FactoryGirl.generate :iri }
     name { Faker::Name.name }
     description { Faker::Lorem.paragraph }

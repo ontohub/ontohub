@@ -124,28 +124,28 @@ class AbilityTest < ActiveSupport::TestCase
       end
     end
     
-    context 'comments ontology owner' do
+    context 'comments repository owner' do
       setup do
         @owner = FactoryGirl.create :user
-        FactoryGirl.create(:permission, subject: @owner, role: 'owner', item: @comment.commentable)
+        FactoryGirl.create(:permission, subject: @owner, role: 'owner', item: @comment.commentable.repository)
         
         @ability = Ability.new(@owner)
       end
       
-      should 'destroy others comments for his ontology' do
+      should 'destroy others comments for his repository' do
         assert @ability.can?(:destroy, @comment)
       end
     end
     
-    context 'comments ontology editor' do
+    context 'comments repository editor' do
       setup do
         @owner = FactoryGirl.create :user
-        FactoryGirl.create(:permission, subject: @owner, role: 'editor', item: @comment.commentable)
+        FactoryGirl.create(:permission, subject: @owner, role: 'editor', item: @comment.commentable.repository)
         
         @ability = Ability.new(@owner)
       end
       
-      should 'not destroy others comments for his ontology' do
+      should 'not destroy others comments for his repository' do
         assert @ability.cannot?(:destroy, @comment)
       end
     end
