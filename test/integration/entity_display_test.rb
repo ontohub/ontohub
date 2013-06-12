@@ -86,6 +86,8 @@ class EntityDisplayTest < ActionController::IntegrationTest
             name: '<http://example.com/foo_class>'
           @entity.ontology.state = 'done'
           @entity.ontology.save
+
+          visit ontology_entities_path(@entity.ontology)
         end
 
         context 'tooltip' do
