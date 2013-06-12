@@ -74,12 +74,16 @@ gem 'ruby-graphviz', "~> 1.0.8"
 # Fake-inputs for tests and seeds
 gem "faker", "~> 1.1.2"
 
+# Git
+gem 'rugged', '0.17.0.b7' # has an encoding bug.
+gem 'diffy'
+
 group :test do
   gem 'mocha'
   gem 'shoulda'
   gem "shoulda_routing_macros", "~> 0.1.2"
   gem "factory_girl_rails"
-  
+
   # Required for integration tests
   gem "capybara"
   gem "capybara-webkit"
