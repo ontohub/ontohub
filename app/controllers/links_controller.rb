@@ -23,6 +23,8 @@ class LinksController < InheritedResources::Base
   
   def create
     @version = build_resource.versions.first
+    @version.source = Ontology.find(params[:link][:source_id]).versions.current
+    @version.target = Ontology.find(params[:link][:target_id]).versions.current
     super
   end
   
