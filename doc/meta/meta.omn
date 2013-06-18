@@ -1,0 +1,60 @@
+Prefix: owl: <http://www.w3.org/2002/07/owl#>
+Prefix: : <http://purl.net/ontohub/meta/0.1#>
+Ontology: <http://purl.net/ontohub/meta/0.1>
+
+Class: Commercial
+Class: Cultural
+Class: Financial
+Class: Geospatial
+Class: Government
+Class: Literature
+Class: Metadata
+Class: Other
+Class: Process
+Class: Provenance
+Class: Science
+Class: Social_Networking
+Class: Standards
+Class: Technology
+Class: Upper_Ontologies
+
+Class: Biology
+Class: Animal_Development SubClassOf: Biology
+Class: Biological_Process SubClassOf: Biology
+Class: Mouse_Anatomy SubClassOf: Anatomy
+Class: Arabadopsis SubClassOf: Biology
+Class: Human SubClassOf: Biology
+Class: Plant_Development SubClassOf: Plant
+Class: Plant SubClassOf: Biology
+Class: Yeast SubClassOf: Biology
+Class: Cell SubClassOf: Biology
+Class: Cellular_anatomy  SubClassOf: Anatomy SubClassOf: Cell
+Class: Anatomy SubClassOf: Biology
+Class: Subcellular SubClassOf: Biology
+Class: Subcellular_anatomy SubClassOf: Subcellular
+Class: Animal_Gross_Anatomy SubClassOf: Gross_Anatomy
+Class: Molecule SubClassOf: Biology
+Class: Gross_Anatomy SubClassOf: Anatomy
+Class: Human_Developmental_Anatomy SubClassOf: Anatomy SubClassOf: Human SubClassOf: Development
+Class: Fish_Anatomy SubClassOf: Anatomy
+Class: Plant_Anatomy SubClassOf: Anatomy
+Class: Microbial_Anatomy SubClassOf: Anatomy
+Class: Vocabularies
+Class: Taxonomic_Classification SubClassOf: Biology
+Class: Phenotype SubClassOf: Biology
+Class: Genomic_and_Proteomic SubClassOf: Biology
+Class: Health SubClassOf: Biology
+Class: Experimental_Conditions SubClassOf: Biology
+Class: Ethology SubClassOf: Biology
+Class: Biomedical_Resources SubClassOf: Biology
+Class: Physicochemical SubClassOf: Biology
+Class: Development SubClassOf: Biology
+Class: Protein SubClassOf: Biology
+Class: Immunology SubClassOf: Biology
+Class: Imaging SubClassOf: Biology
+Class: Gene_Product SubClassOf: Biology
+Class: Chemical SubClassOf: Biology
+Class: All_Organisms SubClassOf: Biology
+Class: Neurological_Disorder SubClassOf: Biology
+Class: Neurologic_Disease SubClassOf: Biology
+Class: Dysfunction SubClassOf: Biology
