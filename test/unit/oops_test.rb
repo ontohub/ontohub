@@ -48,7 +48,7 @@ class OopsTest < ActiveSupport::TestCase
       end
       
       should 'have correct code' do
-        assert_equal 'P04', @element.code
+        assert_equal 4, @element.code
       end
       
       should 'have correct affects' do

@@ -88,8 +88,9 @@ request.save!
 
 responses = %w( Pitfall Warning Warning Suggestion ).map do |type|
   request.responses.create! \
-      name:        Faker::Name.name,
-      description: Faker::Lorem.paragraph,
+      name:         Faker::Name.name,
+      code:         0,
+      description:  Faker::Lorem.paragraph,
       element_type: type
 end
 
