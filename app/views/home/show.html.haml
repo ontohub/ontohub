@@ -1,4 +1,10 @@
 %h2= @page_title = 'Welcome!'
 
-= render :partial => 'versions'
-= render :partial => 'comments'
+.row
+  .span9
+    = render :partial => 'versions'
+    .row
+      .span12
+        = render :partial => 'comments'
+  .span4
+    = render :partial => 'about'
