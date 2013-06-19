@@ -13,8 +13,6 @@ class LanguageMapping < ActiveRecord::Base
   has_many :language_adjoints, :foreign_key => :translation_id
   attr_accessible :source_id, :target_id, :source, :target, :iri, :standardization_status, :defined_by, :default, :projection, :faithfulness, :theoroidalness
 
-  after_create :add_permission
-
   validates_presence_of :target, :source, :iri
 
   def to_s
@@ -23,12 +21,6 @@ class LanguageMapping < ActiveRecord::Base
 
   def adjoints
     LanguageAdjoint.where("projection_id = ? OR translation_id = ?", self.id, self.id)
-  end
-
-private
-
-  def add_permission
-    permissions.create! :subject => self.user, :role => 'owner' if self.user
   end
 
 end

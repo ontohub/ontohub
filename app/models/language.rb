@@ -21,8 +21,6 @@ class Language < ActiveRecord::Base
   validates :iri, length: { minimum: 1 }
   validates_uniqueness_of :iri, if: :iri_changed?
   validates_format_of :iri, with: URI::regexp(ALLOWED_URI_SCHEMAS)
-
-  after_create :add_permission
   
   scope :autocomplete_search, ->(query) {
     where("name #{connection.ilike_operator} ?", "%" << query << "%")
@@ -45,10 +43,5 @@ class Language < ActiveRecord::Base
   def mappings_to
     LanguageMapping.where(target_id: self.id)
   end
-  
-private
 
-  def add_permission
-    permissions.create! :subject => self.user, :role => 'owner' if self.user
-  end
 end
