@@ -31,18 +31,18 @@ module Hets
     # Checks Hets installation compatibility by its version date
     # 
     # * *Args* :
-    # * - +minimum_version+ -> Minimum working hets version
+    # * - +minimum_date+ -> Minimum working hets version date
     # * *Returns* :
     # * - true if hets version minimum date prior or equal to actual hets version date
     # * - false otherwise
-    def is_compatible?(minimum_version)
+    def is_compatible?(minimum_date)
       # Read Hets version minimum date
-      raise HetsConfigDateFormatError, 'Could not read hets version minimum date in YAML' unless minimum_version
+      raise HetsConfigDateFormatError, 'Could not read hets version minimum date in YAML' unless minimum_date
 
       # Read Hets version date
       version = `#{@path} -V`
       version_date = begin
-        Date.parse(version.split.last)
+        Date.parse version.split.last
       rescue ArgumentError
         nil
       end
