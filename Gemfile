@@ -60,6 +60,10 @@ gem 'progress_bar'
 
 gem "faker", "~> 1.0"
 
+# Ancestry enabling tree structure in category model
+gem 'ancestry'
+
+
 group :test do
   gem 'mocha'
   gem 'shoulda'

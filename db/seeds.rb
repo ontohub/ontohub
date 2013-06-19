@@ -2,6 +2,9 @@
 # The data can then be loaded with the rake db:seed (or created alongside the db with db:setup).
 #
 
+# import sample! method
+require 'array.rb'
+
 ActiveRecord::Base.logger = Logger.new($stdout)
 
 # Create Admin User
@@ -73,13 +76,28 @@ Ontology.first.permissions.create! \
   c.save!
 end
 
-# Add categories
-categories = []
-5.times do |n|
-  categories << Category.create(name: Faker::Lorem.word.capitalize)
+# Create array of unique nodes
+nodes = []
+while nodes.count < 30 do
+  34.times do
+    nodes << Faker::Lorem.word.capitalize
+  end
+  nodes.uniq!
+end
+
+# Create Category items and organize in tree
+
+def nested_hash(levels, nodes)
+  hash = { :name => "#{nodes.sample!}" }
+  hash[:parent] = Category.create!(nested_hash(levels-1, nodes)) if levels > 0
+  hash
+end
+
+5.times do
+  Category.create!(nested_hash(5, nodes))
 end
 
 # Append categories to ontologies
-categories.each do |category|
+Category.all.each do |category|
   Ontology.all.sample.categories.push category
 end
