@@ -18,7 +18,8 @@
 %p= link_to resource.iri, download_path(resource) if download_path(resource)
 %p= resource.description
 
-= render partial: '/ontologies/oops_state', locals: {resource: resource}
+- if resource.is_a?(SingleOntology) && resource.logic.name == 'OWL2'
+  = render partial: '/ontologies/oops_state', locals: {resource: resource}
 
 %nav
   %ul.nav.nav-tabs
