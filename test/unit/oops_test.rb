@@ -6,17 +6,17 @@ class OopsTest < ActiveSupport::TestCase
     context 'with invalid url' do
       should 'raise error' do
         begin
-          do_request :invalid, "http://example.com/"
+          do_request :invalid, :url => "http://example.com/"
           assert false, "no error was thrown"
         rescue Oops::Error => e
-          assert_match(/expected XML/, e.message)
+          assert_match(/reach ontohub/, e.message)
         end
       end
     end
     
     context 'with valid url' do
       setup do
-        @result = do_request :valid, "http://sweet.jpl.nasa.gov/1.1/sunrealm.owl"
+        @result = do_request :valid, :url => "http://sweet.jpl.nasa.gov/1.1/sunrealm.owl"
       end
       
       should 'return a list' do
@@ -58,9 +58,9 @@ class OopsTest < ActiveSupport::TestCase
     
   end
   
-  def do_request(cassette, url)
+  def do_request(cassette, options)
     VCR.use_cassette "oops/#{cassette}", match_requests_on: [:body] do
-      Oops::Client.request(url)
+      Oops::Client.request(options)
     end
   end
   

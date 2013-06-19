@@ -6,7 +6,7 @@ ActiveRecord::Base.logger = Logger.new($stdout)
 
 # Do not create background jobs
 OntologyVersion.send :alias_method, :parse_async, :parse
-def OopsRequest.async_run; end
+OopsRequest.send :define_method, :async_run, ->{}
 
 # Create Admin User
 user = User.create!({
