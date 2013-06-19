@@ -3,11 +3,12 @@
 # 
 class OntologiesController < InheritedResources::Base
 
+  belongs_to :repository
   respond_to :json, :xml
   has_pagination
   has_scope :search
 
-  load_and_authorize_resource :except => [:index, :show]
+  before_filter :check_write_permission, :except => [:index, :show, :oops_state]
 
   def index
     super do |format|
@@ -50,11 +51,17 @@ class OntologiesController < InheritedResources::Base
   protected
   
   def build_resource
-    return @ontology if @ontology
-    
-    type  = (params[:ontology] || {}).delete(:type)
-    clazz = type=='DistributedOntology' ? DistributedOntology : SingleOntology
-    @ontology = clazz.new params[:ontology]
+    @ontology ||= begin
+      type  = (params[:ontology] || {}).delete(:type)
+      clazz = type=='DistributedOntology' ? DistributedOntology : SingleOntology
+      @ontology = clazz.new params[:ontology]
+      @ontology.repository = parent
+      @ontology
+    end
+  end
+
+  def check_write_permission
+    authorize! :write, parent
   end
 
 end

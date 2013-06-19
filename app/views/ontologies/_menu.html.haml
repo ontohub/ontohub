@@ -8,8 +8,6 @@
       %li.divider
     %li= link_to 'Comments', [resource, :comments]
     %li= link_to 'Metadata', [resource, :metadata]
-    - if can? :permissions, resource
-      %li= link_to 'Permissions', [resource, :permissions]
     - if can? :edit, resource
       %li.divider
       %li= link_to 'Upload new version from my computer', new_ontology_ontology_version_path(resource, :from => 'http-client')

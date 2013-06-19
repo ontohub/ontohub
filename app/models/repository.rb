@@ -7,7 +7,7 @@ class Repository < ActiveRecord::Base
   has_many :ontologies
 
   attr_accessible :name, :description
-
+  attr_accessor :user
 
   def to_s
     name

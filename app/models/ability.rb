@@ -10,13 +10,13 @@ class Ability
       can { true }
     elsif user.id
       # Repositories
-      can [:edit, :update], Repository do |subject|
+      can [:new, :create]
+      can [:write], Repository do |subject|
         subject.permission?(:editor, user)
       end
-      can [:destroy, :permissions], Repository do |subject|
+      can [:edit, :update, :destroy, :permissions], Repository do |subject|
         subject.permission?(:owner, user)
       end
-      can [:new, :create], Repository
 
       # Ontology
       can :manage, Ontology do |subject|

@@ -2,7 +2,7 @@ require 'test_helper'
 
 class PermissionsControllerTest < ActionController::TestCase
   
-  should_map_nested_resources :ontologies, :permissions,
+  should_map_nested_resources :repositories, :permissions,
     :except => [:new, :edit, :show]
   
   context 'permissions' do

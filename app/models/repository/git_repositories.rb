@@ -1,8 +1,10 @@
 module Repository::GitRepositories
   extend ActiveSupport::Concern
-  
-  after_create  :git
-  after_destroy :destroy_git
+
+  included do
+    after_create  :git
+    after_destroy :destroy_git
+  end
   
   def git
     @git ||= GitRepository.new(local_path)

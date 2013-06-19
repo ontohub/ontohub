@@ -17,7 +17,6 @@ class GitRepository
     end
   end
 
-<<<<<<< HEAD
   def destroy
     FileUtils.rmtree(@repo.path)
   end
@@ -30,8 +29,6 @@ class GitRepository
     end
   end
 
-=======
->>>>>>> 0575355e90e95b4ad3b2907244139419df71b640
   def path_exists?(commit_oid=nil, url='')
     rugged_commit = get_commit(commit_oid)
     if !rugged_commit && url.empty?

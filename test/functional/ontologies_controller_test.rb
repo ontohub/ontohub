@@ -7,8 +7,9 @@ class OntologiesControllerTest < ActionController::TestCase
   
   context 'Ontology Instance' do
     setup do
-      @ontology = FactoryGirl.create :single_ontology, state: 'done'
-      @user     = FactoryGirl.create :user
+      @ontology   = FactoryGirl.create :single_ontology, state: 'done'
+      @repository = @ontology.repository
+      @user       = FactoryGirl.create :user
       
       2.times { FactoryGirl.create :entity, :ontology => @ontology }
     end
@@ -16,7 +17,7 @@ class OntologiesControllerTest < ActionController::TestCase
     context 'on GET to index' do
       context 'without search' do
         setup do
-          get :index
+          get :index, repository_id: @repository.id
         end
         
         should respond_with :success
@@ -27,7 +28,9 @@ class OntologiesControllerTest < ActionController::TestCase
       context 'with search' do
         setup do
           @search = @ontology.name
-          get :index, :search => @search
+          get :index,
+            repository_id: @repository.id,
+            search:        @search
         end
         
         should respond_with :success
@@ -43,7 +46,10 @@ class OntologiesControllerTest < ActionController::TestCase
       
       context 'with format json' do
         setup do
-          get :show, :id => @ontology.to_param, :format => :json
+          get :show,
+            repository_id: @repository.id,
+            format:        :json,
+            id:            @ontology.to_param
         end
         
         should respond_with :success
@@ -52,7 +58,9 @@ class OntologiesControllerTest < ActionController::TestCase
       
       context 'without entities' do
         setup do
-          get :show, :id => @ontology.to_param
+          get :show,
+            repository_id: @repository.id,
+            id:            @ontology.to_param
         end
         
         should respond_with :redirect
@@ -62,22 +70,27 @@ class OntologiesControllerTest < ActionController::TestCase
       context 'with entity of kind Class' do
         setup do
           entity = FactoryGirl.create :entity, :ontology => @ontology, :kind => 'Class'
-          get :show, :id => @ontology.to_param
+          get :show,
+            repository_id: @repository.id,
+            id:            @ontology.to_param
         end
         
         should respond_with :redirect
-        should redirect_to("entities"){  ontology_entities_path(@ontology, :kind => 'Class') }
+        should redirect_to("entities"){  ontology_entities_path(@ontology, :kind => 'Class' ) }
       end
     end
     
-    context 'signed in' do
+    context 'signed in as editor' do
       setup do
         sign_in @user
+        @repository.permissions.create! \
+          :role    => 'editor',
+          :subject => @user
       end
       
       context 'on GET to bulk' do
         setup do
-          get :bulk
+          get :bulk, repository_id: @repository.id
         end
         
         should respond_with :success
@@ -86,7 +99,7 @@ class OntologiesControllerTest < ActionController::TestCase
       
       context 'on GET to new' do
         setup do
-          get :new
+          get :new, repository_id: @repository.id
         end
         
         should respond_with :success
@@ -98,12 +111,14 @@ class OntologiesControllerTest < ActionController::TestCase
         context 'with invalid input' do
           context 'without format' do
             setup do
-              post :create, :ontology => {
-                iri: 'fooo',
-                versions_attributes: [{
-                  source_url: ''
-                }],
-              }
+              post :create,
+                repository_id: @repository.id,
+                ontology: {
+                  iri: 'fooo',
+                  versions_attributes: [{
+                    source_url: ''
+                  }],
+                }
             end
             
             should respond_with :success
@@ -112,12 +127,15 @@ class OntologiesControllerTest < ActionController::TestCase
           
           context 'with format :json' do
             setup do
-              post :create, :format => :json, :ontology => {
-                iri: 'fooo',
-                versions_attributes: [{
-                  source_url: ''
-                }],
-              }
+              post :create,
+                format: :json,
+                repository_id: @repository.id,
+                ontology: {
+                  iri: 'fooo',
+                  versions_attributes: [{
+                    source_url: ''
+                  }],
+                }
             end
             
             should respond_with :unprocessable_entity
@@ -129,7 +147,7 @@ class OntologiesControllerTest < ActionController::TestCase
             setup do
               OntologyVersion.any_instance.expects(:parse_async).once
               
-              post :create, :ontology => {
+              post :create, repository_id: @repository.id, :ontology => {
                 iri: 'http://example.com/dummy.ontology',
                 versions_attributes: [{
                   source_url: 'http://example.com/dummy.ontology'
@@ -144,12 +162,15 @@ class OntologiesControllerTest < ActionController::TestCase
             setup do
               OntologyVersion.any_instance.expects(:parse_async).once
               
-              post :create, :format => :json, :ontology => {
-                iri: 'http://example.com/dummy.ontology',
-                versions_attributes: [{
-                  source_url: 'http://example.com/dummy.ontology'
-                }],
-              }
+              post :create,
+                format: :json,
+                repository_id: @repository.id,
+                ontology: {
+                  iri: 'http://example.com/dummy.ontology',
+                  versions_attributes: [{
+                    source_url: 'http://example.com/dummy.ontology'
+                  }],
+                }
             end
 
             should respond_with :created
@@ -161,14 +182,16 @@ class OntologiesControllerTest < ActionController::TestCase
     context 'owned by signed in user' do
       setup do
         sign_in @user
-        @ontology.permissions.create! \
+        @repository.permissions.create! \
           :role    => 'owner',
           :subject => @user
       end
       
       context 'on GET to edit' do
         setup do
-          get :edit, :id => @ontology.to_param
+          get :edit,
+            repository_id: @repository.id,
+            id:            @ontology.to_param
         end
         
         should respond_with :success
@@ -178,8 +201,9 @@ class OntologiesControllerTest < ActionController::TestCase
       context 'on PUT to update' do
         setup do
           put :update, 
-            :id   => @ontology.to_param,
-            :name => 'foo bar'
+            repository_id: @repository.id,
+            id:            @ontology.to_param,
+            name:          'foo bar'
         end
         
         should redirect_to("show action"){ @ontology }

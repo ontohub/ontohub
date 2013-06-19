@@ -66,25 +66,12 @@ class OntologyTest < ActiveSupport::TestCase
         }]
         
       @ontology.versions.first.user = @user
+      @ontology.repository = FactoryGirl.create(:repository)
       @ontology.save!
     end
     
     should 'create a version with source_url' do
       assert_equal @source_url, @ontology.versions.first.source_url
-    end
-    
-    context 'creating a permission' do
-      setup do
-        assert_not_nil @permission = @ontology.permissions.first
-      end
-      
-      should 'with subject' do
-        assert_equal @user, @permission.subject
-      end
-      
-      should 'with role owner' do
-        assert_equal 'owner', @permission.role
-      end
     end
     
   end

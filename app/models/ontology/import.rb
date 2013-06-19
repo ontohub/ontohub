@@ -25,7 +25,7 @@ module Ontology::Import
             
             # find or create sub-ontology by IRI
             ontology   = self.children.find_by_iri(child_iri)
-            ontology ||= SingleOntology.create!({iri: child_iri, name: child_name, parent: self}, without_protection: true)
+            ontology ||= SingleOntology.create!({iri: child_iri, name: child_name, parent: self, repository_id: repository_id}, without_protection: true)
           else
             raise "more than one ontology found" if ontologies_count > 1
             ontology = self
