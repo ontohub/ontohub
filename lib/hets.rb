@@ -42,7 +42,12 @@ module Hets
 
       # Read Hets version date
       version = `#{@path} -V`
-      version_date = Date.parse(version.split().last())
+      version_date = begin
+        Date.parse(version.split.last)
+      rescue ArgumentError
+        nil
+      end
+
       raise HetsVersionDateFormatError, 'Could not read hets version date in output of `hets -V`' unless version_date
 
       # Return true if minimum date is prior or equal to version date
