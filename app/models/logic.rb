@@ -36,8 +36,6 @@ class Logic < ActiveRecord::Base
   validates_uniqueness_of :iri, if: :iri_changed?
   #validates_format_of :iri, with: URI::regexp(ALLOWED_URI_SCHEMAS)
 
-  after_create :add_permission
-
   default_scope order('ontologies_count desc')
 
   scope :autocomplete_search, ->(query) {
@@ -60,11 +58,6 @@ class Logic < ActiveRecord::Base
   
   def mappings_to
     LogicMapping.find_all_by_target_id self.id
-  end
-  
-private
-  def add_permission
-    permissions.create! :subject => self.user, :role => 'owner' if self.user
   end
   
 end
