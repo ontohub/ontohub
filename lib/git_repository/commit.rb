@@ -2,15 +2,15 @@ module GitRepository::Commit
   # depends on GitRepository
   extend ActiveSupport::Concern
 
-  def delete_file(user, target_path)
-    commit_file(user, nil, target_path, "Delete file #{target_path}")
+  def delete_file(userinfo, target_path)
+    commit_file(userinfo, nil, target_path, "Delete file #{target_path}")
   end
 
-  def add_file(user, tmp_path, target_path, message)
-    commit_file(user, File.open(tmp_path, 'rb').read, target_path, message)
+  def add_file(userinfo, tmp_path, target_path, message)
+    commit_file(userinfo, File.open(tmp_path, 'rb').read, target_path, message)
   end
 
-  def commit_file(user, file_contents, target_path, message)
+  def commit_file(userinfo, file_contents, target_path, message)
     #Entry
     entry = nil
     if file_contents
@@ -33,8 +33,8 @@ module GitRepository::Commit
     tree = build_tree(entry, old_tree, target_path.split('/'))
 
     # Commit Sha
-    commit_oid = Rugged::Commit.create(@repo, author: user.author,
-      message: message, committer: user.author, parents: commit_parents, tree: tree)
+    commit_oid = Rugged::Commit.create(@repo, author: userinfo.author,
+      message: message, committer: userinfo.author, parents: commit_parents, tree: tree)
     rugged_commit = @repo.lookup(commit_oid)
 
     if @repo.empty?
@@ -45,8 +45,8 @@ module GitRepository::Commit
 
     # TODO: Use those model operations in the correct place:
     #touch
-    #push = build_push(user)
-    #commit = build_commit(user, push, rugged_commit)
+    #push = build_push(userinfo)
+    #commit = build_commit(userinfo, push, rugged_commit)
     #commit.save
 
     commit
@@ -121,15 +121,15 @@ module GitRepository::Commit
     end
   end
 
-  def build_commit(user, push, rugged_commit)
+  def build_commit(userinfo, push, rugged_commit)
     Commit.new(author_email: rugged_commit.author[:email], author_name: rugged_commit.author[:name], author_time: rugged_commit.author[:time],
       committer_email: rugged_commit.committer[:email], committer_name: rugged_commit.committer[:name], committer_time: rugged_commit.committer[:time],
       push: push, commit_hash: rugged_commit.oid, message: rugged_commit.message, parents: get_parents(rugged_commit))
   end
 
   # TODO: Insert this model operation in the correct place:
-  #def build_push(user)
-  #  Push.new(push_type: 'web', author: user, repository: self)
+  #def build_push(userinfo)
+  #  Push.new(push_type: 'web', author: userinfo, repository: self)
   #end
 
   def get_parents(rugged_commit)

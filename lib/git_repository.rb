@@ -1,6 +1,6 @@
 # Wrapper for access to the local Git repository
 class GitRepository
-  
+
   include \
     GetCommit,
     GetObject,
@@ -15,6 +15,10 @@ class GitRepository
     else
       @repo = Rugged::Repository.init_at(path, true)
     end
+  end
+
+  def destroy
+    FileUtils.rmtree(@repo.path)
   end
 
   def get_commit(commit_oid=nil)
