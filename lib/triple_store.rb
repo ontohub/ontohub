@@ -45,77 +45,85 @@ class TripleStore
       object = statement[2].to_s
 
       # Map subject
-      if @subjectMap[predicate] == nil
-        @subjectMap[predicate] = Hash.new
-      end
-      if @subjectMap[predicate][object] == nil
-        @subjectMap[predicate][object] = Array.new
-      end
-      @subjectMap[predicate][object].push subject
+      map_entity(@subjectMap, predicate, object, subject)
 
       # Map predicate
-      if @predicateMap[subject] == nil
-        @predicateMap[subject] = Hash.new
-      end
-      if @predicateMap[subject][object] == nil
-        @predicateMap[subject][object] = Array.new
-      end
-      @predicateMap[subject][object].push predicate
+      map_entity(@predicateMap, subject, object, predicate)
 
       # Map object
-      if @objectMap[subject] == nil
-        @objectMap[subject] = Hash.new
-      end
-      if @objectMap[subject][predicate] == nil
-        @objectMap[subject][predicate] = Array.new
-      end
-      @objectMap[subject][predicate].push object
+      map_entity(@objectMap, subject, predicate, object)
     end
   end
 
   # Returns a list with all subjects for a given object-predicate pair
   #
-  # predicate - a predicate
-  # object - a range
-  #
+  # * *Args* :
+  # * - +predicate+ -> a predicate
+  # * - +object+ -> an object
+  # * *Returns* :
+  # * - the list of subjects
   def subjects(predicate, object)
-    if @subjectMap[predicate] == nil
-      return Array.new
-    elsif @subjectMap[predicate][object] == nil
-      return Array.new
-    else
-      return Array.new(@subjectMap[predicate][object])
-    end
+    entities(@subjectMap, predicate, object)
   end
 
   # Returns a list with all predicates for a given subject-object pair
   #
-  # subject - a domain
-  # object - a range
-  #
+  # * *Args* :
+  # * - +subject+ -> a subject
+  # * - +object+ -> an object
+  # * *Returns* :
+  # * - the list of predicates
   def predicates(subject, object)
-    if @predicateMap[subject] == nil
-      return Array.new
-    elsif @predicateMap[subject][object] == nil
-      return Array.new
-    else
-      return Array.new(@predicateMap[subject][object])
-    end
+    entities(@predicateMap, subject, object)
   end
 
   # Returns a list with all objects for a given subject-predicate pair
   #
-  # subject - a domain
-  # predicate - a relation
-  #
+  # * *Args* :
+  # * - +subject+ -> a subject
+  # * - +predicate+ -> a predicate
+  # * *Returns* :
+  # * - the list of objects
   def objects(subject, predicate)
-    if @objectMap[subject] == nil
+    entities(@objectMap, subject, predicate)
+  end
+
+  private
+
+  # Lists the entities identified by two keys
+  #
+  # * *Args* :
+  # * - +map+ -> a hash of hashes of arrays
+  # * - +key1+ -> a key to a hash of arrays
+  # * - +key2+ -> a key to an array
+  # * *Returns* :
+  # * - the indicated array of entities if it exists
+  # * - an empty array otherwise
+  def entities(map, key1, key2)
+    if !map[key1]
       return Array.new
-    elsif @objectMap[subject][predicate] == nil
+    elsif !map[key1][key2]
       return Array.new
     else
-      return Array.new(@objectMap[subject][predicate])
+      return Array.new(map[key1][key2])
     end
+  end
+
+  # Maps an entity to two keys
+  #
+  # * *Args* :
+  # * - +map+ -> a hash of hashes of arrays
+  # * - +key1+ -> a key to a hash of arrays
+  # * - +key2+ -> a key to an array
+  # * - +entity+ -> an entity to be added to the array
+  def map_entity(map, key1, key2, entity)
+    if !map[key1]
+      map[key1] = Hash.new
+    end
+    if !map[key1][key2]
+      map[key1][key2] = Array.new
+    end
+    map[key1][key2].push entity
   end
 
 end
