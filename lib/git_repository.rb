@@ -17,14 +17,6 @@ class GitRepository
     end
   end
 
-  def get_commit(commit_oid=nil)
-    if @repo.empty?
-      nil
-    else
-      @repo.lookup(commit_oid || head_oid)
-    end
-  end
-
   def path_exists?(commit_oid=nil, url='')
     rugged_commit = get_commit(commit_oid)
     if !rugged_commit && url.empty?
