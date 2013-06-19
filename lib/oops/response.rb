@@ -7,7 +7,7 @@ module Oops
     def self.parse(data)
       doc = Nokogiri::XML(data)
       if doc.root.name == 'RDF'
-        raise Error, "got RDF response, expected XML"
+        raise Error, "OOPS wasn't able to reach ontohub.org"
       end
       
       doc.root.elements.map do |node|
