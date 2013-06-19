@@ -14,4 +14,4 @@ hets_owl_tools:
   - ~/dev/hets/OWL2
   - ~/code/hets/OWL2
   - ~/ontohub/Hets/OWL2
-
+hets_version_minimum_date: 2013-06-19

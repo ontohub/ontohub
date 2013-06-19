@@ -1,5 +1,11 @@
+require 'date'
+
 module Hets
   class HetsError < Exception; end
+  class HetsNotFoundError < HetsError; end
+  class HetsVersionOutdatedError < HetsError; end
+  class HetsConfigDateFormatError < HetsError; end
+  class HetsVersionDateFormatError < HetsError; end
 
   class Config
     attr_reader :path
@@ -9,17 +15,39 @@ module Hets
 
       @path = first_which_exists yaml['hets_path']
 
-      raise HetsError, 'Could not find hets' unless @path
-      
-      version = `#{@path} -V`
-      raise ArgumentError, "Your version of hets is too old" if version.include?("2011")
+      raise HetsNotFoundError, 'Could not find hets' unless @path
+
+      compatible = check_installation_compatibility(yaml)
+      raise HetsVersionOutdatedError, 'The installed version of Hets is too old' unless compatible
 
       yaml.each_pair do |key, value|
-        ENV[key.upcase] = first_which_exists value if key != 'hets_path'
+        ENV[key.upcase] = first_which_exists value if (key != 'hets_path' and value.is_a? Array)
       end
     end
 
   private
+
+    # Checks Hets installation compatibility by its version date
+    # 
+    # * *Args* :
+    # * - +yaml+ -> the configuration of Hets
+    # * *Returns* :
+    # * - true if hets version minimum date prior or equal to actual hets version date
+    # * - false otherwise
+    def check_installation_compatibility(yaml)
+
+      # Read Hets version minimum date
+      minimum_date = yaml['hets_version_minimum_date']
+      raise HetsConfigDateFormatError, 'Could not read hets version minimum date in YAML' unless minimum_date
+
+      # Read Hets version date
+      version = `#{@path} -V`
+      version_date = Date.parse(version.split().last())
+      raise HetsVersionDateFormatError, 'Could not read hets version date in output of `hets -V`' unless version_date
+
+      # Return true if minimum date is prior or equal to version date
+      return minimum_date <= version_date
+    end
 
     def first_which_exists(array)
       array.each do |path|
