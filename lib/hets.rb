@@ -17,8 +17,9 @@ module Hets
 
       raise HetsNotFoundError, 'Could not find hets' unless @path
 
-      compatible = check_installation_compatibility(yaml)
-      raise HetsVersionOutdatedError, 'The installed version of Hets is too old' unless compatible
+      unless is_compatible? yaml['hets_version_minimum_date']
+        raise HetsVersionOutdatedError, 'The installed version of Hets is too old'
+      end
 
       yaml.each_pair do |key, value|
         ENV[key.upcase] = first_which_exists value if (key != 'hets_path' and value.is_a? Array)
@@ -30,15 +31,13 @@ module Hets
     # Checks Hets installation compatibility by its version date
     # 
     # * *Args* :
-    # * - +yaml+ -> the configuration of Hets
+    # * - +minimum_version+ -> Minimum working hets version
     # * *Returns* :
     # * - true if hets version minimum date prior or equal to actual hets version date
     # * - false otherwise
-    def check_installation_compatibility(yaml)
-
+    def is_compatible?(minimum_version)
       # Read Hets version minimum date
-      minimum_date = yaml['hets_version_minimum_date']
-      raise HetsConfigDateFormatError, 'Could not read hets version minimum date in YAML' unless minimum_date
+      raise HetsConfigDateFormatError, 'Could not read hets version minimum date in YAML' unless minimum_version
 
       # Read Hets version date
       version = `#{@path} -V`
