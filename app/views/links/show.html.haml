@@ -1,5 +1,6 @@
 - @page_title = resource.iri
-%h2= link_to resource.iri, resource, 'data-type' => resource_class
+%h2= link_to resource, resource, 'data-type' => resource_class
+%p= fancy_tag(resource, [:theorem, :local, :proven, :inclusion]) { |a| ' | ' + a}
 
 - if can? :update, Link
   %ul.actions.pull-right
@@ -12,3 +13,14 @@
 = fancy_link resource.source
 to
 = fancy_link resource.target
+
+%h5 Status
+%p 
+  Proven:  
+  = resource.versions.current.proof_status
+%p 
+  Required Consstatus: 
+  = resource.versions.current.required_cons_status
+%p 
+  Prooven Consstatus: 
+  = resource.versions.current.proven_cons_status

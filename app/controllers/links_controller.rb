@@ -28,16 +28,18 @@ class LinksController < InheritedResources::Base
     super
   end
   
-  def build_resource
-    return @link if @link
-    @link = Link.new params[:link]
-  end
-  
   def update_version
     @version = resource.versions.current.dup
     @version.version_number = @version.version_number + 1
     @version.save
     redirect_to edit_link_link_version_path(resource, @version)
+  end
+  
+private
+  
+  def build_resource
+    return @link if @link
+    @link = Link.new params[:link]
   end
   
 end

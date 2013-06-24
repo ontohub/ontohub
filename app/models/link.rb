@@ -27,6 +27,6 @@ class Link < ActiveRecord::Base
   accepts_nested_attributes_for :versions
   
   def to_s
-    iri
+    iri + ' (' + kind + ')'
   end
 end
