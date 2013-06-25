@@ -33,8 +33,8 @@ module GitRepository::Commit
     tree = build_tree(entry, old_tree, target_path.split('/'))
 
     # Commit Sha
-    commit_oid = Rugged::Commit.create(@repo, author: userinfo.author,
-      message: message, committer: userinfo.author, parents: commit_parents, tree: tree)
+    commit_oid = Rugged::Commit.create(@repo, author: userinfo,
+      message: message, committer: userinfo, parents: commit_parents, tree: tree)
     rugged_commit = @repo.lookup(commit_oid)
 
     if @repo.empty?
@@ -49,7 +49,7 @@ module GitRepository::Commit
     #commit = build_commit(userinfo, push, rugged_commit)
     #commit.save
 
-    commit
+    commit_oid
   end
 
 

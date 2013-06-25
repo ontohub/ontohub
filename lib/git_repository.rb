@@ -21,12 +21,8 @@ class GitRepository
     FileUtils.rmtree(@repo.path)
   end
 
-  def get_commit(commit_oid=nil)
-    if @repo.empty?
-      nil
-    else
-      @repo.lookup(commit_oid || head_oid)
-    end
+  def empty?
+    @repo.empty?
   end
 
   def path_exists?(commit_oid=nil, url='')
@@ -81,6 +77,10 @@ class GitRepository
     commit_oid == nil || (!@repo.empty? && commit_oid == head_oid)
   end
 
+  def head_oid
+    @repo.head.target
+  end
+
 
   protected
 
@@ -115,10 +115,15 @@ class GitRepository
     end
   end
 
-  # NOTE: "destroy repository" function not inserted here
+  def mime_info(filename)
+    ext = File.extname(filename)[1..-1]
+    mime_type = Mime::Type.lookup_by_extension(ext) || Mime::TEXT
+    mime_category = mime_type.to_s.split('/')[0]
 
-  def head_oid
-    @repo.head.target
+    {
+      mime_type: mime_type,
+      mime_category: mime_category
+    }
   end
 
   def head

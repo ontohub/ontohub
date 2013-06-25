@@ -43,41 +43,42 @@ class GitRepositoryTest < ActiveSupport::TestCase
 
     context 'using files' do
       setup do
-        filepath = 'path/file.txt'
-        content = 'Some content'
-        message = 'Some commit message'
+        @filepath = 'path/file.txt'
+        @content = 'Some content'
+        @message = 'Some commit message'
       end
 
       should 'create single commit of a file' do
-        filepath = 'path/file.txt'
-        content = 'Some content'
-        message = 'Some commit message'
-        @repository.commit_file(@userinfo, content, filepath, message)
-        assert @repository.path_exists?(nil, filepath)
-        assert_equal @repository.get_current_file(nil, filepath)[:name], filepath
-        assert_equal @repository.get_current_file(nil, filepath)[:content], content
-        assert_equal @repository.commits.last.message, message
+        @filepath = 'path/file.txt'
+        @content = 'Some content'
+        @message = 'Some commit message'
+        @repository.commit_file(@userinfo, @content, @filepath, @message)
+        assert @repository.path_exists?(nil, @filepath)
+        assert_equal @repository.get_current_file(nil, @filepath)[:name], @filepath.split('/')[-1]
+        assert_equal @repository.get_current_file(nil, @filepath)[:content], @content
         assert_equal @repository.get_current_file(nil, 'path/file.txt')[:mime_type], Mime::Type.lookup('text/plain')
-        assert_equal @repository.commits.last.author, @userinfo.author
-        assert_equal @repository.commits.last.name, @userinfo.name
+        assert_equal @repository.get_commit_message, @message
+        assert_equal @repository.get_commit_author[:name], @userinfo[:name]
+        assert_equal @repository.get_commit_author[:email], @userinfo[:email]
+        # removed because of time zone issues
+        #assert_equal Time.at(@repository.get_commit_author[:time]), Time.gm(@userinfo[:time])
       end
 
       should 'delete a file' do
-        @repository.commit_file(@userinfo, content, filepath, message)
-        @repository.delete_file(@userinfo, filepath)
-        assert !@repository.path_exists?(nil, filepath)
+        @repository.commit_file(@userinfo, @content, @filepath, @message)
+        @repository.delete_file(@userinfo, @filepath)
+        assert !@repository.path_exists?(nil, @filepath)
       end
 
       should 'overwrite a file' do
-        content2 = "#{content}_2"
-        message2 = "#{message}_2"
-        @repository.commit_file(@userinfo, content, filepath, message)
-        first_commit_oid = assert_equal @repository.commits.last.oid
-        @repository.commit_file(@userinfo, content2, filepath, message2)
-        assert_equal @repository.get_current_file(nil, filepath)[:content], content2
-        assert_equal @repository.commits.last.message, message2
-        #assert_not_equal first_commit_oid, assert_equal @repository.commits.last.oid
-        assert_equal @repository.commits.last.parents[0].oid, first_commit_oid
+        content2 = "#{@content}_2"
+        message2 = "#{@message}_2"
+        @repository.commit_file(@userinfo, @content, @filepath, @message)
+        first_commit_oid = @repository.head_oid
+        @repository.commit_file(@userinfo, content2, @filepath, message2)
+        assert_equal @repository.get_current_file(nil, @filepath)[:content], content2
+        assert_equal @repository.get_commit_message(@repository.head_oid), message2
+        assert_not_equal first_commit_oid, @repository.head_oid
       end
     end
   end
