@@ -254,5 +254,49 @@ class GitRepositoryTest < ActiveSupport::TestCase
         assert_equal @repository.folder_contents(@commit_del3), []
       end
     end
+
+    context 'getting the history of a file' do
+      setup do
+        @filepath = 'path/to/file.txt'
+        @commit_add1 = @repository.commit_file(@userinfo, 'Some content1', @filepath, 'Add')
+        @commit_change1 = @repository.commit_file(@userinfo, 'Some other content1', @filepath, 'Change')
+        @commit_other1 = @repository.commit_file(@userinfo, 'Other content1', 'file2.txt', 'Other File: Add')
+        @commit_delete1 = @repository.delete_file(@userinfo, @filepath)
+        @commit_other2 = @repository.commit_file(@userinfo, 'Other content2', 'file2.txt', 'Other File: Change1')
+        @commit_other3 = @repository.commit_file(@userinfo, 'Other content3', 'file2.txt', 'Other File: Change2')
+        @commit_add2 = @repository.commit_file(@userinfo, 'Some content2', @filepath, 'Re-Add')
+        @commit_change2 = @repository.commit_file(@userinfo, 'Some other content2', @filepath, 'Re-Change')
+        @commit_delete2 = @repository.delete_file(@userinfo, @filepath)
+      end
+
+      should 'have the correct values in the history at the HEAD' do
+        assert_equal @repository.entry_info_list(@filepath), [
+          @commit_delete2,
+          @commit_change2,
+          @commit_add2,
+          @commit_delete1,
+          @commit_change1,
+          @commit_add1
+        ]
+      end
+
+      should 'have the correct values in the history a commit before the HEAD' do
+        assert_equal @repository.entry_info_list(@filepath, @commit_change2), [
+          @commit_change2,
+          @commit_add2,
+          @commit_delete1,
+          @commit_change1,
+          @commit_add1
+        ]
+      end
+
+      should 'have the correct values in the history in the commit that changes another file' do
+        assert_equal @repository.entry_info_list(@filepath, @commit_other3), [
+          @commit_delete1,
+          @commit_change1,
+          @commit_add1
+        ]
+      end
+    end
   end
 end
