@@ -76,11 +76,183 @@ class GitRepositoryTest < ActiveSupport::TestCase
         @repository.commit_file(@userinfo, @content, @filepath, @message)
         first_commit_oid = @repository.head_oid
         @repository.commit_file(@userinfo, content2, @filepath, message2)
+        assert @repository.path_exists?(nil, @filepath)
         assert_equal @repository.get_current_file(nil, @filepath)[:content], content2
         assert_equal @repository.get_commit_message(@repository.head_oid), message2
         assert_not_equal first_commit_oid, @repository.head_oid
       end
     end
-  end
 
+    context 'using folders' do
+      setup do
+        @subfolder = 'path'
+        @filepath1 = "#{@subfolder}/file1.txt"
+        @filepath2 = "#{@subfolder}/file2.txt"
+        @filepath3 = 'file3.txt'
+        @content = 'Some content'
+        @message1 = 'Some commit message1'
+        @message2 = 'Some commit message2'
+        @message3 = 'Some commit message3'
+        @commit_add1 = @repository.commit_file(@userinfo, @content, @filepath1, @message1)
+        @commit_add2 = @repository.commit_file(@userinfo, @content, @filepath2, @message2)
+        @commit_add3 = @repository.commit_file(@userinfo, @content, @filepath3, @message3)
+        @commit_del1 = @repository.delete_file(@userinfo, @filepath1)
+        @commit_del2 = @repository.delete_file(@userinfo, @filepath2)
+        @commit_del3 = @repository.delete_file(@userinfo, @filepath3)
+      end
+
+      should 'read the right number of contents in the root folder after adding the first file' do
+        assert_equal @repository.folder_contents(@commit_add1).size, 1
+      end
+
+      should 'read the right contents in the root folder after adding the first file' do
+        assert_equal @repository.folder_contents(@commit_add1), [{
+            type: :dir,
+            name: @subfolder,
+            path: @subfolder
+          }]
+      end
+
+      should 'read the right number of contents in the subfolder after adding the first file' do
+        assert_equal @repository.folder_contents(@commit_add1, @subfolder).size, 1
+      end
+
+      should 'read the right contents in the subfolder after adding the first file' do
+        assert_equal @repository.folder_contents(@commit_add1, @subfolder), [{
+          type: :file,
+          name: @filepath1.split('/')[-1],
+          path: @filepath1
+        }]
+      end
+
+
+      should 'read the right number of contents in the root folder after adding the second file' do
+        assert_equal @repository.folder_contents(@commit_add2).size, 1
+      end
+
+      should 'read the right contents in the root folder after adding the second file' do
+        assert_equal @repository.folder_contents(@commit_add2), [{
+          type: :dir,
+          name: @subfolder,
+          path: @subfolder
+        }]
+      end
+
+      should 'read the right number of contents in the subfolder after adding the second file' do
+        assert_equal @repository.folder_contents(@commit_add2, @subfolder).size, 2
+      end
+
+      should 'read the right contents in the subfolder after adding the second file' do
+        assert_equal @repository.folder_contents(@commit_add2, @subfolder), [{
+          type: :file,
+          name: @filepath1.split('/')[-1],
+          path: @filepath1
+        },{
+          type: :file,
+          name: @filepath2.split('/')[-1],
+          path: @filepath2
+        }]
+      end
+
+
+      should 'read the right number of contents in the root folder after adding the third file' do
+        assert_equal @repository.folder_contents(@commit_add3).size, 2
+      end
+
+      should 'read the right contents in the root folder after adding the third file' do
+        assert_equal @repository.folder_contents(@commit_add3), [{
+          type: :dir,
+          name: @subfolder,
+          path: @subfolder
+        },{
+          type: :file,
+          name: @filepath3.split('/')[-1],
+          path: @filepath3
+        }]
+      end
+
+      should 'read the right number of contents in the root folder after adding the third file' do
+        assert_equal @repository.folder_contents(@commit_add3).size, 2
+      end
+
+      should 'read the right contents in the root folder after adding the third file' do
+        assert_equal @repository.folder_contents(@commit_add3), [{
+          type: :dir,
+          name: @subfolder,
+          path: @subfolder
+        },{
+          type: :file,
+          name: @filepath3.split('/')[-1],
+          path: @filepath3
+        }]
+      end
+
+      should 'read the right number of contents in the subfolder after adding the third file' do
+        assert_equal @repository.folder_contents(@commit_add3, @subfolder).size, 2
+      end
+
+      should 'read the right contents in the subfolder after adding the third file' do
+        assert_equal @repository.folder_contents(@commit_add3, @subfolder), [{
+          type: :file,
+          name: @filepath1.split('/')[-1],
+          path: @filepath1
+        },{
+          type: :file,
+          name: @filepath2.split('/')[-1],
+          path: @filepath2
+        }]
+      end
+
+
+      should 'read the right number of contents in the root folder after deleting the first file' do
+        assert_equal @repository.folder_contents(@commit_del1).size, 2
+      end
+
+      should 'read the right contents in the root folder after deleting the first file' do
+        assert_equal @repository.folder_contents(@commit_del1), [{
+          type: :dir,
+          name: @subfolder,
+          path: @subfolder
+        },{
+          type: :file,
+          name: @filepath3.split('/')[-1],
+          path: @filepath3
+        }]
+      end
+
+      should 'read the right number of contents in the subfolder after deleting the first file' do
+        assert_equal @repository.folder_contents(@commit_del1, @subfolder).size, 1
+      end
+
+      should 'read the right contents in the subfolder after deleting the first file' do
+        assert_equal @repository.folder_contents(@commit_del1, @subfolder), [{
+          type: :file,
+          name: @filepath2.split('/')[-1],
+          path: @filepath2
+        }]
+      end
+
+
+      should 'read the right number of contents in the root folder after deleting the second file' do
+        assert_equal @repository.folder_contents(@commit_del2).size, 1
+      end
+
+      should 'read the right contents in the root folder after deleting the second file' do
+        assert_equal @repository.folder_contents(@commit_del2), [{
+          type: :file,
+          name: @filepath3.split('/')[-1],
+          path: @filepath3
+        }]
+      end
+
+
+      should 'read the right number of contents in the root folder after deleting the third file' do
+        assert_equal @repository.folder_contents(@commit_del3).size, 0
+      end
+
+      should 'read the right contents in the root folder after deleting the third file' do
+        assert_equal @repository.folder_contents(@commit_del3), []
+      end
+    end
+  end
 end
