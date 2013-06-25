@@ -78,8 +78,8 @@ end
 
 # Create array of unique nodes
 nodes = []
-while nodes.count < 30 do
-  34.times do
+while nodes.count < 50 do
+  55.times do
     nodes << Faker::Lorem.word.capitalize
   end
   nodes.uniq!
@@ -93,9 +93,13 @@ def nested_hash(levels, nodes)
   hash
 end
 
+root = Category.create!(:name => '/')
+
 5.times do
-  Category.create!(nested_hash(5, nodes))
+  Category.create! nested_hash(8, nodes)
 end
+
+Category.all.each { |c| if c.depth == 0 && c.id != 1 then c.parent = root end; c.save!}
 
 # Append categories to ontologies
 Category.all.each do |category|
