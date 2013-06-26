@@ -38,7 +38,7 @@ end
 
 # Create a repository
 repository = Repository.create! \
-  title: 'Default'
+  name: 'Default'
 
 # Add permissions
 Repository.find_each do |o|
