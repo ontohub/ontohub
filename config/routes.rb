@@ -13,8 +13,10 @@ Ontohub::Application.routes.draw do
     resources :logics, :except => :show
     resources :teams, :only => :index
     resources :users
-    resources :categories, :except => :show
+    resources :categories, :except => :index
+    match 'categories' => 'categories#show'
   end
+
 
   constraints auth_resque do
     mount Resque::Server, :at => "/admin/resque"
