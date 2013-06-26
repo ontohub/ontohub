@@ -2,6 +2,7 @@ module GitRepository::GetFolderContents
   # depends on GitRepository, GetCommit, GetObject
   extend ActiveSupport::Concern
 
+  # returns the contents (files and subfolders) of a folder
   def folder_contents(commit_oid=nil, url='')
     rugged_commit = get_commit(commit_oid)
     if !rugged_commit && url.empty?

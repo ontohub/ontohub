@@ -2,14 +2,17 @@ module GitRepository::Commit
   # depends on GitRepository
   extend ActiveSupport::Concern
 
+  # delete a single file and commit the change
   def delete_file(userinfo, target_path)
     commit_file(userinfo, nil, target_path, "Delete file #{target_path}")
   end
 
+  # add a single file and commit the change
   def add_file(userinfo, tmp_path, target_path, message)
     commit_file(userinfo, File.open(tmp_path, 'rb').read, target_path, message)
   end
 
+  # change a single file and commit the change
   def commit_file(userinfo, file_contents, target_path, message)
     #Entry
     entry = nil

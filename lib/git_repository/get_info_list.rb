@@ -2,24 +2,27 @@ module GitRepository::GetInfoList
   # depends on GitRepository, GetCommit, GetObject, GetFolderContents
   extend ActiveSupport::Concern
 
-  def entries_info(commit_oid=nil, url_path='')
+  # returns information about the last commit of the files in a folder
+  def entries_info(commit_oid=nil, url_folder='')
     rugged_commit = get_commit(commit_oid)
-    if !rugged_commit && url_path.empty?
+    if !rugged_commit && url_folder.empty?
       []
     else
-      contents = folder_contents_rugged(rugged_commit, url_path)
+      contents = folder_contents_rugged(rugged_commit, url_folder)
       contents.map do |e|
-        file_path = build_target_path(url_path, e[:name])
+        file_path = build_target_path(url_folder, e[:name])
         entry_info_rugged(rugged_commit, file_path)
       end
     end
   end
 
+  # returns information about the last commit of a file
   def entry_info(url, commit_oid=nil)
     rugged_commit = get_commit(commit_oid)
     entry_info_rugged(get_commit(commit_oid), url)
   end
 
+  # returns the information of all commits considering a file (commit history of a file)
   def entry_info_list(url, commit_oid=nil)
     rugged_commit = get_commit(commit_oid)
     if !rugged_commit

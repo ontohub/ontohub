@@ -2,6 +2,7 @@ module GitRepository::GetDiff
   # depends on GitRepository
   extend ActiveSupport::Concern
 
+  # returns a list of files changed by a commit
   def get_changed_files(commit_oid=nil)
     rugged_commit = get_commit(commit_oid)
     if !rugged_commit
