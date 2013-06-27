@@ -34,12 +34,12 @@ class GitRepository
     end
   end
 
-  def get_current_file(commit_oid=nil, url='')
+  def get_file(commit_oid=nil, url='')
     rugged_commit = get_commit(commit_oid)
     if !rugged_commit && url.empty?
       nil
     else
-      get_current_file_rugged(rugged_commit, url)
+      get_file_rugged(rugged_commit, url)
     end
   end
 
@@ -95,7 +95,7 @@ class GitRepository
     false
   end
 
-  def get_current_file_rugged(rugged_commit, url='')
+  def get_file_rugged(rugged_commit, url='')
     return nil unless path_exists_rugged?(rugged_commit, url)
 
     object = get_object(rugged_commit, url)

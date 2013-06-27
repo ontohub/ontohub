@@ -54,9 +54,9 @@ class GitRepositoryTest < ActiveSupport::TestCase
         @message = 'Some commit message'
         @repository.commit_file(@userinfo, @content, @filepath, @message)
         assert @repository.path_exists?(nil, @filepath)
-        assert_equal @repository.get_current_file(nil, @filepath)[:name], @filepath.split('/')[-1]
-        assert_equal @repository.get_current_file(nil, @filepath)[:content], @content
-        assert_equal @repository.get_current_file(nil, 'path/file.txt')[:mime_type], Mime::Type.lookup('text/plain')
+        assert_equal @repository.get_file(nil, @filepath)[:name], @filepath.split('/')[-1]
+        assert_equal @repository.get_file(nil, @filepath)[:content], @content
+        assert_equal @repository.get_file(nil, 'path/file.txt')[:mime_type], Mime::Type.lookup('text/plain')
         assert_equal @repository.commit_message, @message
         assert_equal @repository.commit_author[:name], @userinfo[:name]
         assert_equal @repository.commit_author[:email], @userinfo[:email]
@@ -77,7 +77,7 @@ class GitRepositoryTest < ActiveSupport::TestCase
         first_commit_oid = @repository.head_oid
         @repository.commit_file(@userinfo, content2, @filepath, message2)
         assert @repository.path_exists?(nil, @filepath)
-        assert_equal @repository.get_current_file(nil, @filepath)[:content], content2
+        assert_equal @repository.get_file(nil, @filepath)[:content], content2
         assert_equal @repository.commit_message(@repository.head_oid), message2
         assert_not_equal first_commit_oid, @repository.head_oid
       end
