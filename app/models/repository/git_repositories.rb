@@ -44,4 +44,7 @@ module Repository::GitRepositories
     touch
   end
 
+  def read_file(filepath, commit_oid=nil)
+    git.get_file(commit_oid, filepath)[:content]
+  end
 end
