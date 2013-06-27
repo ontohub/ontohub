@@ -1,4 +1,5 @@
 class OntologyVersion < ActiveRecord::Base
+  include OntologyVersion::Files
   include OntologyVersion::States
   include OntologyVersion::Download
   include OntologyVersion::Parsing
@@ -7,11 +8,6 @@ class OntologyVersion < ActiveRecord::Base
   
   belongs_to :user
   belongs_to :ontology, :counter_cache => :versions_count
-
-  mount_uploader :raw_file, OntologyUploader
-  mount_uploader :xml_file, OntologyUploader
-
-  attr_accessible :raw_file, :source_url
 
   before_validation :set_checksum
 

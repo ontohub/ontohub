@@ -6,7 +6,7 @@ class OntologyVersionTest < ActiveSupport::TestCase
 
   should have_db_index([:ontology_id, :number])
   should have_db_index(:user_id)
-  should have_db_index(:previous_version_id)
+  should have_db_index(:commit_oid)
   should have_db_index(:checksum)
   
   setup do
