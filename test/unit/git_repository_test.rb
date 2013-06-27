@@ -49,9 +49,6 @@ class GitRepositoryTest < ActiveSupport::TestCase
       end
 
       should 'create single commit of a file' do
-        @filepath = 'path/file.txt'
-        @content = 'Some content'
-        @message = 'Some commit message'
         @repository.commit_file(@userinfo, @content, @filepath, @message)
         assert @repository.path_exists?(nil, @filepath)
         assert_equal @repository.get_file(nil, @filepath)[:name], @filepath.split('/')[-1]
@@ -80,6 +77,27 @@ class GitRepositoryTest < ActiveSupport::TestCase
         assert_equal @repository.get_file(nil, @filepath)[:content], content2
         assert_equal @repository.commit_message(@repository.head_oid), message2
         assert_not_equal first_commit_oid, @repository.head_oid
+      end
+
+      should 'reset state on empty repository with failing commit block' do
+        assert @repository.empty?
+        assert_raise Exception do
+          @repository.commit_file(@userinfo, @content, @filepath, @message) do
+            raise Exception
+          end
+        end
+        assert @repository.empty?
+      end
+
+      should 'reset state with failing commit block' do
+        first_commit_oid = @repository.commit_file(@userinfo, @content, @filepath, @message)
+        assert_equal first_commit_oid, @repository.head_oid
+        assert_raise Exception do
+          second_commit_oid = @repository.commit_file(@userinfo, "#{@content}!", @filepath, @message) do
+            raise Exception
+          end
+        end
+        assert_equal first_commit_oid, @repository.head_oid
       end
     end
 
