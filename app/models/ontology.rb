@@ -1,6 +1,6 @@
 class Ontology < ActiveRecord::Base
 
-  # Ontohub Library Includes  
+  # Ontohub Library Includes
   include Commentable
   include Metadatable
 
@@ -22,7 +22,7 @@ class Ontology < ActiveRecord::Base
   validates_presence_of :iri
   validates_uniqueness_of :iri, :if => :iri_changed?
   validates_format_of :iri, :with => URI::regexp(ALLOWED_URI_SCHEMAS)
-  
+
   delegate :permission?, to: :repository
 
   strip_attributes :only => [:name, :iri]
@@ -33,7 +33,7 @@ class Ontology < ActiveRecord::Base
   def to_s
     name? ? name : iri
   end
-  
+
   # title for links
   def title
     name? ? iri : nil
@@ -46,5 +46,8 @@ class Ontology < ActiveRecord::Base
   def symbols_count
     entities_count
   end
-  
+
+  def filename_without_extension(filename)
+    filename.gsub(/(.+)\.[^\.]+/, "\\1")
+  end
 end

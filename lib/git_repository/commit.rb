@@ -3,18 +3,21 @@ module GitRepository::Commit
   extend ActiveSupport::Concern
 
   # delete a single file and commit the change
-  def delete_file(userinfo, target_path)
-    commit_file(userinfo, nil, target_path, "Delete file #{target_path}")
+  def delete_file(userinfo, target_path, &block)
+    commit_file(userinfo, nil, target_path, "Delete file #{target_path}", &block)
   end
 
   # add a single file and commit the change
-  def add_file(userinfo, tmp_path, target_path, message)
-    commit_file(userinfo, File.open(tmp_path, 'rb').read, target_path, message)
+  def add_file(userinfo, tmp_path, target_path, message, &block)
+    commit_file(userinfo, File.open(tmp_path, 'rb').read, target_path, message, &block)
   end
 
   # change a single file and commit the change
-  def commit_file(userinfo, file_contents, target_path, message)
-    #Entry
+  def commit_file(userinfo, file_contents, target_path, message, &block)
+    # save current head oid in case of an emergency
+    old_head = head_oid unless @repo.empty?
+
+    # Entry
     entry = nil
     if file_contents
       entry = {
@@ -35,6 +38,7 @@ module GitRepository::Commit
 
     tree = build_tree(entry, old_tree, target_path.split('/'))
 
+    userinfo.reverse_merge! time: Time.now
     # Commit Sha
     commit_oid = Rugged::Commit.create(@repo, author: userinfo,
       message: message, committer: userinfo, parents: commit_parents, tree: tree)
@@ -51,8 +55,16 @@ module GitRepository::Commit
     #push = build_push(userinfo)
     #commit = build_commit(userinfo, push, rugged_commit)
     #commit.save
-
+    block.call(commit_oid) if block_given?
     commit_oid
+  rescue => e
+    if old_head
+      @repo.head.target = old_head
+    else
+      @repo.head.delete!
+    end
+
+    raise e
   end
 
 
