@@ -11,9 +11,9 @@ class OntologyVersionsController < InheritedResources::Base
 
   # TODO Needs testing !!!
   def show
-    file = resource.raw_file
+    resource.checkout_raw!
     
-    send_file file.current_path, filename: file.identifier
+    send_file resource.raw_path, filename: File.basename(resource.ontology.path)
   rescue Errno::ENOENT, NoMethodError => e
     redirect_to collection_path, flash: { error: "The file was not found: #{e.message}" }
   end

@@ -47,7 +47,8 @@ class Ontology < ActiveRecord::Base
     entities_count
   end
 
-  def filename_without_extension(filename)
+  def self.filename_without_extension(filename)
     filename.gsub(/(.+)\.[^\.]+/, "\\1")
   end
+  
 end

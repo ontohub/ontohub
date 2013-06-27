@@ -8,6 +8,9 @@ ActiveRecord::Base.logger = Logger.new($stdout)
 OntologyVersion.send :alias_method, :parse_async, :parse
 OopsRequest.send :define_method, :async_run, ->{}
 
+# Remove existing repositories
+FileUtils.rm_rf Ontohub::Application.config.git_root
+
 # Create Admin User
 user = User.create!({
   :email    => "admin@example.com",
@@ -58,7 +61,7 @@ Rake::Task['logicgraph:import'].invoke
 Dir["#{Rails.root}/test/fixtures/ontologies/*/*.{casl,clf,clif,owl}"].each do |file|
   basename = File.basename(file)
   
-  version = repository.save_file file, basename, "message", user
+  version = repository.save_file file, basename, "#{basename} added", user
   version.ontology.update_attribute :description, Faker::Lorem.paragraph
 end
 

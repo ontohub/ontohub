@@ -9,5 +9,46 @@ module OntologyVersion::Files
   def raw_file=(value)
     @raw_file = value
   end
+
+  def tmp_dir
+    Rails.root.join("tmp","commits",commit_oid)
+  end
+
+  # path to the raw file
+  def raw_path
+    tmp_dir.join("raw",ontology.path)
+  end
+
+  # path to the raw file, checks out the raw file if is missing
+  def raw_path!
+    checkout_raw!
+    raw_path
+  end
+
+  # path to xml file (hets output)
+  def xml_path
+    tmp_dir.join("xml", ontology.path)
+  end
+
+  def xml_file?
+    File.exists? xml_path
+  end
+
+  def raw_file?
+    File.exists? raw_path
+  end
+
+  # checks out the raw file
+  def checkout_raw!
+    unless raw_file?
+      FileUtils.mkdir_p raw_path.dirname
+      File.open(raw_path, "w"){|f| f.write raw_data }
+    end
+  end
+
+  # returns the raw data directly from the repository
+  def raw_data
+    repository.read_file(ontology.path, commit_oid)
+  end
   
 end

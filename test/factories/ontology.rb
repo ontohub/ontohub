@@ -8,6 +8,7 @@ FactoryGirl.define do
     association :repository
     iri { FactoryGirl.generate :iri }
     name { Faker::Name.name }
+    path { SecureRandom.hex(10) }
     description { Faker::Lorem.paragraph }
     
     factory :single_ontology, class: SingleOntology do

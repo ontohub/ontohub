@@ -71,7 +71,6 @@ module Ontology::Import
 
   def import_latest_version(user)
     return if versions.last.nil?
-    return if versions.last.xml_file.blank?
-    import_xml_from_file versions.last.xml_file.current_path, user
+    import_xml_from_file versions.last.xml_path, user
   end
 end

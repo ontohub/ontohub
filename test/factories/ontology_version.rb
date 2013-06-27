@@ -2,6 +2,7 @@ FactoryGirl.define do
   factory :ontology_version do
     association :ontology
     association :user
+    commit_oid { SecureRandom.hex(20) }
     source_url "file://test/fixtures/ontologies/owl/pizza.owl"
   end
   
