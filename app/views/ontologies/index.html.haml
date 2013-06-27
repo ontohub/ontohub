@@ -1,11 +1,11 @@
+= repository_nav parent, :ontologies
+
 - if can? :create, Ontology
   %ul.actions.pull-right
-    %li= link_to 'Create Ontology', :new_ontology
-    %li= link_to 'Bulk Upload', :bulk_ontologies
+    %li= link_to 'Create Ontology', new_resource_path
+    %li= link_to 'Bulk Upload', [:bulk, parent, :ontologies]
 
-%h2= @page_title = 'Ontologies'
-
-= format_links
+=# format_links
 = render :partial => 'filter'
 
 %p

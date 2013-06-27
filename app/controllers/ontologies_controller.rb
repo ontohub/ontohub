@@ -3,7 +3,7 @@
 # 
 class OntologiesController < InheritedResources::Base
 
-  belongs_to :repository
+  belongs_to :repository, finder: :find_by_path!
   respond_to :json, :xml
   has_pagination
   has_scope :search
@@ -30,6 +30,13 @@ class OntologiesController < InheritedResources::Base
   end
   
   def show
+    if !params[:repository_id]
+      # redirect for legacy routing
+      ontology = Ontology.find params[:id]
+      redirect_to [ontology.repository, ontology]
+      return
+    end
+
     respond_to do |format|
       format.html do
         redirect_to ontology_entities_path(resource, :kind => resource.entities.groups_by_kind.first.kind)

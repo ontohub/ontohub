@@ -76,9 +76,6 @@ GEM
     capybara-webkit (0.14.2)
       capybara (~> 2.0, >= 2.0.2)
       json
-    carrierwave (0.8.0)
-      activemodel (>= 3.2.0)
-      activesupport (>= 3.2.0)
     childprocess (0.3.9)
       ffi (~> 1.0, >= 1.0.11)
     choice (0.1.6)
@@ -315,7 +312,6 @@ DEPENDENCIES
   capistrano
   capybara
   capybara-webkit
-  carrierwave (~> 0.8.0)
   coffee-rails (~> 3.2.1)
   compass (~> 0.12.1)
   database_cleaner

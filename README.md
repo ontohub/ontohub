@@ -158,13 +158,6 @@ The Hets installation path and environment variables are to be set in
 
 Allowed URI schemas are to be set in `config/initializers/ontohub_config.rb`.
 
-### Clean upload cache
-
-You can run the following command periodically to delete temporary files
-from uploads.
-
-    rails runner CarrierWave.clean_cached_files!
-
 Development
 -----------
 

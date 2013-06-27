@@ -1,4 +1,5 @@
 class OntologyVersion < ActiveRecord::Base
+  include OntologyVersion::Files
   include OntologyVersion::States
   include OntologyVersion::Download
   include OntologyVersion::Parsing
@@ -7,11 +8,6 @@ class OntologyVersion < ActiveRecord::Base
   
   belongs_to :user
   belongs_to :ontology, :counter_cache => :versions_count
-
-  mount_uploader :raw_file, OntologyUploader
-  mount_uploader :xml_file, OntologyUploader
-
-  attr_accessible :raw_file, :source_url
 
   before_validation :set_checksum
 
@@ -25,6 +21,8 @@ class OntologyVersion < ActiveRecord::Base
   scope :state, ->(state) { where :state => state }
   scope :done, state('done')
   scope :failed, state('failed')
+
+  delegate :repository, to: :ontology
 
   # updated_at of the latest version
   def self.last_updated_at

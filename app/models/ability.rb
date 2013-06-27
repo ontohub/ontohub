@@ -10,7 +10,7 @@ class Ability
       can { true }
     elsif user.id
       # Repositories
-      can [:new, :create]
+      can [:new, :create], Repository
       can [:write], Repository do |subject|
         subject.permission?(:editor, user)
       end

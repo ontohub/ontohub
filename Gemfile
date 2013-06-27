@@ -54,9 +54,6 @@ gem "strip_attributes", "~> 1.0"
 # For distributed ontologies
 gem 'acts_as_tree'
 
-# Manage uploads
-gem 'carrierwave', "~> 0.8.0"
-
 # HTTP Client
 gem "rest-client"
 

@@ -2,8 +2,8 @@ require 'test_helper'
 
 class OntologiesControllerTest < ActionController::TestCase
   
-  should_map_resources :ontologies
-  should route(:get, "/ontologies/bulk").to(:controller=> :ontologies, :action => :bulk)
+  should_map_nested_resources :repositories, :ontologies
+  should route(:get, "/repositories/path/ontologies/bulk").to(:controller=> :ontologies, :action => :bulk, repository_id: 'path')
   
   context 'Ontology Instance' do
     setup do
@@ -17,7 +17,7 @@ class OntologiesControllerTest < ActionController::TestCase
     context 'on GET to index' do
       context 'without search' do
         setup do
-          get :index, repository_id: @repository.id
+          get :index, repository_id: @repository.path
         end
         
         should respond_with :success
@@ -29,7 +29,7 @@ class OntologiesControllerTest < ActionController::TestCase
         setup do
           @search = @ontology.name
           get :index,
-            repository_id: @repository.id,
+            repository_id: @repository.path,
             search:        @search
         end
         
@@ -47,7 +47,7 @@ class OntologiesControllerTest < ActionController::TestCase
       context 'with format json' do
         setup do
           get :show,
-            repository_id: @repository.id,
+            repository_id: @repository.path,
             format:        :json,
             id:            @ontology.to_param
         end
@@ -59,7 +59,7 @@ class OntologiesControllerTest < ActionController::TestCase
       context 'without entities' do
         setup do
           get :show,
-            repository_id: @repository.id,
+            repository_id: @repository.path,
             id:            @ontology.to_param
         end
         
@@ -71,7 +71,7 @@ class OntologiesControllerTest < ActionController::TestCase
         setup do
           entity = FactoryGirl.create :entity, :ontology => @ontology, :kind => 'Class'
           get :show,
-            repository_id: @repository.id,
+            repository_id: @repository.path,
             id:            @ontology.to_param
         end
         
@@ -90,7 +90,7 @@ class OntologiesControllerTest < ActionController::TestCase
       
       context 'on GET to bulk' do
         setup do
-          get :bulk, repository_id: @repository.id
+          get :bulk, repository_id: @repository.path
         end
         
         should respond_with :success
@@ -99,7 +99,7 @@ class OntologiesControllerTest < ActionController::TestCase
       
       context 'on GET to new' do
         setup do
-          get :new, repository_id: @repository.id
+          get :new, repository_id: @repository.path
         end
         
         should respond_with :success
@@ -112,7 +112,7 @@ class OntologiesControllerTest < ActionController::TestCase
           context 'without format' do
             setup do
               post :create,
-                repository_id: @repository.id,
+                repository_id: @repository.path,
                 ontology: {
                   iri: 'fooo',
                   versions_attributes: [{
@@ -129,7 +129,7 @@ class OntologiesControllerTest < ActionController::TestCase
             setup do
               post :create,
                 format: :json,
-                repository_id: @repository.id,
+                repository_id: @repository.path,
                 ontology: {
                   iri: 'fooo',
                   versions_attributes: [{
@@ -147,7 +147,7 @@ class OntologiesControllerTest < ActionController::TestCase
             setup do
               OntologyVersion.any_instance.expects(:parse_async).once
               
-              post :create, repository_id: @repository.id, :ontology => {
+              post :create, repository_id: @repository.path, :ontology => {
                 iri: 'http://example.com/dummy.ontology',
                 versions_attributes: [{
                   source_url: 'http://example.com/dummy.ontology'
@@ -164,7 +164,7 @@ class OntologiesControllerTest < ActionController::TestCase
               
               post :create,
                 format: :json,
-                repository_id: @repository.id,
+                repository_id: @repository.path,
                 ontology: {
                   iri: 'http://example.com/dummy.ontology',
                   versions_attributes: [{
@@ -190,7 +190,7 @@ class OntologiesControllerTest < ActionController::TestCase
       context 'on GET to edit' do
         setup do
           get :edit,
-            repository_id: @repository.id,
+            repository_id: @repository.path,
             id:            @ontology.to_param
         end
         
@@ -201,12 +201,12 @@ class OntologiesControllerTest < ActionController::TestCase
       context 'on PUT to update' do
         setup do
           put :update, 
-            repository_id: @repository.id,
+            repository_id: @repository.path,
             id:            @ontology.to_param,
             name:          'foo bar'
         end
         
-        should redirect_to("show action"){ @ontology }
+        should redirect_to("show action"){ [@repository, @ontology] }
       end
     end
   end
