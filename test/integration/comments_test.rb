@@ -9,7 +9,7 @@ class CommentsTest < ActionController::IntegrationTest
     @user     = FactoryGirl.create :user
     
     # Add user as owner to the ontology
-    FactoryGirl.create :permission, subject: @user, item: @ontology
+    FactoryGirl.create :permission, subject: @user, item: @ontology.repository
     login_as @user, :scope => :user
   end
   

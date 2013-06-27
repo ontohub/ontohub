@@ -34,11 +34,10 @@ Ontohub::Application.routes.draw do
     mount Resque::Server, :at => "/admin/resque"
   end
   
-  resources :ontologies do
+  resources :ontologies, only: :show do
     resources :children, :only => :index
     resources :entities, :only => :index
     resources :sentences, :only => :index
-    get 'bulk', :on => :collection
     resources :ontology_versions, :only => [:index, :show, :new, :create], :path => 'versions' do
       resource :oops_request, :only => [:show, :create]
     end
@@ -61,6 +60,9 @@ Ontohub::Application.routes.draw do
 
   resources :repositories do
     resources :permissions, :only => [:index, :create, :update, :destroy]
+    resources :ontologies do
+      get 'bulk', :on => :collection
+    end
   end
 
   root :to => 'home#show'

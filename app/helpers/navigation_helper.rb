@@ -5,6 +5,7 @@ module NavigationHelper
       [:overview,     resource]
     ]
     
+    pages << [:ontologies,  [resource, :ontologies]]
     pages << [:permissions, [resource, :permissions]] if can? :permissions, resource
     
     subnavigation(resource, pages, current_page)

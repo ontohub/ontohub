@@ -3,7 +3,7 @@ require 'integration_test_helper'
 class PermissionsTest < ActionController::IntegrationTest
   
   setup do
-    @repository = FactoryGirl.create(:repository).repository
+    @repository = FactoryGirl.create(:repository)
     @user       = FactoryGirl.create :user
     @team       = FactoryGirl.create :team
     

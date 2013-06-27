@@ -15,7 +15,7 @@ class PermissionsControllerTest < ActionController::TestCase
       
       context 'not signed in' do
         setup do
-          get :index, :ontology_id => @ontology.to_param
+          get :index, :repository_id => @ontology.repository.to_param
         end
         
         should set_the_flash.to(/not authorized/)

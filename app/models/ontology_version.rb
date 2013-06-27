@@ -26,6 +26,8 @@ class OntologyVersion < ActiveRecord::Base
   scope :done, state('done')
   scope :failed, state('failed')
 
+  delegate :repository, to: :ontology
+
   # updated_at of the latest version
   def self.last_updated_at
     latest.first.try(:updated_at)

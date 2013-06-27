@@ -12,6 +12,6 @@
     - else
       %li= ontology.state
   
-  %h3= link_to highlight(ontology.to_s, @search), ontology
+  %h3= link_to highlight(ontology.to_s, @search), [ontology.repository, ontology]
   
   %p= highlight(ontology.iri.to_s, @search)
