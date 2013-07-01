@@ -13,8 +13,6 @@ Ontohub::Application.routes.draw do
     resources :logics, :except => :show
     resources :teams, :only => :index
     resources :users
-    resources :categories, :except => :index
-    match 'categories' => 'categories#show'
   end
 
 
@@ -45,6 +43,9 @@ Ontohub::Application.routes.draw do
   
   get 'autocomplete' => 'autocomplete#index'
   get 'search'       => 'search#index'
+
+  resources :categories, :only => :show
+  match 'categories' => 'categories#show'
 
   root :to => 'home#show'
 

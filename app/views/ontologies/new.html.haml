@@ -10,10 +10,10 @@
       \- OR -
       = vf.input :source_url, :as => :url
   
+  = render :partial => 'categories', :locals => {:category => @categories.first}
   = f.input :iri
   = f.input :name
   = f.input :description, input_html: { class: 'span8' }
-  = f.association :categories, as: :check_boxes
   
   .form-actions
     = f.button :submit, disable_with: t(:wait), class: 'btn-primary'
