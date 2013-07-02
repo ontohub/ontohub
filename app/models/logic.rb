@@ -82,5 +82,54 @@ private
   def add_permission
     permissions.create! :subject => self.user, :role => 'owner' if self.user
   end
-  
+
+  def determine_graph_nodes(depth = 3)
+    sql = ->(stmt) { ActiveRecord::Base.connection.execute(stmt) }
+
+    init_stmt = <<-SQL
+    SELECT "ids"."id" INTO graph_ids FROM
+      (SELECT ("logic_mappings"."source_id") AS id FROM "logic_mappings"
+    WHERE ("logic_mappings"."source_id" = #{self.id} OR
+      "logic_mappings"."target_id" = #{self.id})
+    UNION
+    SELECT ("logic_mappings"."target_id") AS id FROM "logic_mappings"
+    WHERE ("logic_mappings"."source_id" = #{self.id} OR
+      "logic_mappings"."target_id" = #{self.id})) AS ids;
+    SQL
+
+    loop_stmt = <<-SQL
+    INSERT INTO graph_ids
+    (SELECT ("logic_mappings"."source_id") AS id FROM "logic_mappings"
+    INNER JOIN graph_ids
+    ON ("logic_mappings"."source_id" = "graph_ids"."id" OR
+      "logic_mappings"."target_id" = "graph_ids"."id")
+    UNION
+    SELECT ("logic_mappings"."target_id") AS id FROM "logic_mappings"
+    INNER JOIN graph_ids
+    ON ("logic_mappings"."source_id" = "graph_ids"."id" OR
+      "logic_mappings"."target_id" = "graph_ids"."id"));
+    SQL
+
+    gather_stmt = ""
+
+    (depth-1).times { gather_stmt << "#{loop_stmt}\n" }
+
+    fetch_stmt = '(SELECT "graph_ids"."id" from "graph_ids")'
+
+    drop_stmt = <<-SQL
+    DROP TABLE IF EXISTS "graph_ids";
+    SQL
+
+    stmt = <<-SQL
+    #{init_stmt}
+    #{gather_stmt}
+    SQL
+
+    sql.call(drop_stmt)
+    sql.call(init_stmt)
+    sql.call(gather_stmt)
+    nodes = Logic.where("\"logics\".\"id\" IN #{fetch_stmt}")
+
+    nodes
+  end
 end
