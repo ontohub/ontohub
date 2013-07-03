@@ -20,8 +20,6 @@ class OntologiesControllerTest < ActionController::TestCase
         end
 
         should respond_with :success
-        should assign_to(:search).with{ nil }
-        should_not assign_to(:ontologies).with { [] }
         should render_template :index
       end
       
@@ -32,8 +30,6 @@ class OntologiesControllerTest < ActionController::TestCase
         end
         
         should respond_with :success
-        should assign_to(:search).with{ @search }
-        should_not assign_to(:ontologies).with { [] }
         should render_template :index
       end
     end
@@ -92,7 +88,6 @@ class OntologiesControllerTest < ActionController::TestCase
         end
         
         should respond_with :success
-        should assign_to :ontology_version
         should render_template :new
       end
       
@@ -110,7 +105,6 @@ class OntologiesControllerTest < ActionController::TestCase
             end
             
             should respond_with :success
-            should assign_to :version
             should render_template :new
           end
           
@@ -141,7 +135,6 @@ class OntologiesControllerTest < ActionController::TestCase
               }
             end
             
-            should assign_to :version
             should respond_with :redirect
           end
           
@@ -157,7 +150,6 @@ class OntologiesControllerTest < ActionController::TestCase
               }
             end
             
-            should assign_to :version
             should respond_with :created
           end
         end
