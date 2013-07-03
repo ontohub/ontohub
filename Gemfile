@@ -2,8 +2,11 @@ source 'https://rubygems.org'
 
 gem 'rails', '~> 3.2.13'
 gem 'rack-protection'
+gem 'secure_headers'
+
 gem 'pg'
 gem 'foreigner'
+
 gem 'rdf'
 gem 'rdf-rdfxml'
 gem 'rdf-n3'
