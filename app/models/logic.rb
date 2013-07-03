@@ -86,17 +86,15 @@ private
   end
 
   def determine_graph_nodes(depth = 3)
-    sql = ->(stmt) { ActiveRecord::Base.connection.execute(stmt) }
-
     init_stmt = <<-SQL
-    SELECT "ids"."id" INTO graph_ids FROM
+    WITH "loop_0" AS (SELECT "ids"."id" FROM
       (SELECT ("logic_mappings"."source_id") AS id FROM "logic_mappings"
     WHERE ("logic_mappings"."source_id" = #{self.id} OR
       "logic_mappings"."target_id" = #{self.id})
     UNION
     SELECT ("logic_mappings"."target_id") AS id FROM "logic_mappings"
     WHERE ("logic_mappings"."source_id" = #{self.id} OR
-      "logic_mappings"."target_id" = #{self.id})) AS ids;
+      "logic_mappings"."target_id" = #{self.id})) AS ids)
     SQL
 
     loop_stmt = <<-SQL
@@ -112,14 +110,36 @@ private
       "logic_mappings"."target_id" = "graph_ids"."id"));
     SQL
 
-    gather_stmt = ""
+    stmt_for = ->(depth) do
+      before = depth - 1
+      stmt = <<-SQL
+      "loop_#{depth}" AS (
+      SELECT ("logic_mappings"."source_id") AS id FROM "logic_mappings"
+      INNER JOIN "loop_#{before}"
+      ON ("logic_mappings"."source_id" = "loop_#{before}"."id" OR
+        "logic_mappings"."target_id" = "loop_#{before}"."id")
+      UNION
+      SELECT ("logic_mappings"."target_id") AS id FROM "logic_mappings"
+      INNER JOIN "loop_#{before}"
+      ON ("logic_mappings"."source_id" = "loop_#{before}"."id" OR
+        "logic_mappings"."target_id" = "loop_#{before}"."id"))
+      SQL
+    end
 
-    (depth-1).times { gather_stmt << "#{loop_stmt}\n" }
+    gather_stmt = ((depth-1) > 0) ? ", " : ""
 
-    fetch_stmt = '(SELECT "graph_ids"."id" from "graph_ids")'
+    (depth-1).times do |current_depth|
+      current_depth = current_depth + 1
+      gather_stmt << stmt_for.call(current_depth)
+      gather_stmt << ", " unless current_depth == depth-1
+    end
 
-    drop_stmt = <<-SQL
-    DROP TABLE IF EXISTS "graph_ids";
+    fetch_stmt = <<-SQL
+    (
+    #{init_stmt}
+    #{gather_stmt}
+    SELECT "loop_#{depth-1}"."id" FROM "loop_#{depth-1}"
+    )
     SQL
 
     stmt = <<-SQL
@@ -127,11 +147,6 @@ private
     #{gather_stmt}
     SQL
 
-    sql.call(drop_stmt)
-    sql.call(init_stmt)
-    sql.call(gather_stmt)
     nodes = Logic.where("\"logics\".\"id\" IN #{fetch_stmt}")
-
-    nodes
   end
 end
