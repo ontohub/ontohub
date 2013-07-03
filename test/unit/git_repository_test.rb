@@ -7,6 +7,10 @@ require 'test_helper'
 class GitRepositoryTest < ActiveSupport::TestCase
 
   context 'creating and deleting a repository' do
+    setup do
+      @path = '/tmp/ontohub/test/unit/git/repository'
+    end
+
     should 'create repository' do
       @path_new = "#{@path}_new"
       assert !File.exists?(@path_new)
@@ -26,7 +30,7 @@ class GitRepositoryTest < ActiveSupport::TestCase
 
   context 'existing repository' do
     setup do
-      @path = '/tmp/ontohub/unit_test/git/repository'
+      @path = '/tmp/ontohub/test/unit/git/repository'
       @repository = GitRepository.new(@path)
       @userinfo = {
         email: 'jan@jansson.com',
