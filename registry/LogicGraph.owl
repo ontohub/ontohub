@@ -1,0 +1,381 @@
+<?xml version="1.0"?>
+
+
+<!DOCTYPE Ontology [
+    <!ENTITY xsd "http://www.w3.org/2001/XMLSchema#" >
+    <!ENTITY xml "http://www.w3.org/XML/1998/namespace" >
+    <!ENTITY rdfs "http://www.w3.org/2000/01/rdf-schema#" >
+    <!ENTITY rdf "http://www.w3.org/1999/02/22-rdf-syntax-ns#" >
+]>
+
+
+<Ontology xmlns="http://www.w3.org/2002/07/owl#"
+     xml:base="http://ontohub.org/LogicGraph"
+     xmlns:rdfs="http://www.w3.org/2000/01/rdf-schema#"
+     xmlns:xsd="http://www.w3.org/2001/XMLSchema#"
+     xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#"
+     xmlns:xml="http://www.w3.org/XML/1998/namespace"
+     ontologyIRI="http://ontohub.org/LogicGraph">
+    <Prefix name="rdf" IRI="http://www.w3.org/1999/02/22-rdf-syntax-ns#"/>
+    <Prefix name="rdfs" IRI="http://www.w3.org/2000/01/rdf-schema#"/>
+    <Prefix name="xsd" IRI="http://www.w3.org/2001/XMLSchema#"/>
+    <Prefix name="owl" IRI="http://www.w3.org/2002/07/owl#"/>
+    <Declaration>
+        <Class IRI="#Adjoint"/>
+    </Declaration>
+    <Declaration>
+        <Class IRI="#Logic"/>
+    </Declaration>
+    <Declaration>
+        <Class IRI="#LogicAdjoint"/>
+    </Declaration>
+    <Declaration>
+        <Class IRI="#LogicMapping"/>
+    </Declaration>
+    <Declaration>
+        <Class IRI="#Mapping"/>
+    </Declaration>
+    <Declaration>
+        <Class IRI="#OntologyLanguage"/>
+    </Declaration>
+    <Declaration>
+        <Class IRI="#OntologyLanguageAdjoint"/>
+    </Declaration>
+    <Declaration>
+        <Class IRI="#OntologyLanguageMapping"/>
+    </Declaration>
+    <Declaration>
+        <Class IRI="#OntologyLanguageSerialization"/>
+    </Declaration>
+    <Declaration>
+        <Class IRI="#StandardizationStatus"/>
+    </Declaration>
+    <Declaration>
+        <ObjectProperty IRI="#hasProjection"/>
+    </Declaration>
+    <Declaration>
+        <ObjectProperty IRI="#hasSerialization"/>
+    </Declaration>
+    <Declaration>
+        <ObjectProperty IRI="#hasSource"/>
+    </Declaration>
+    <Declaration>
+        <ObjectProperty IRI="#hasStandardizationStatus"/>
+    </Declaration>
+    <Declaration>
+        <ObjectProperty IRI="#hasTarget"/>
+    </Declaration>
+    <Declaration>
+        <ObjectProperty IRI="#hasTranslation"/>
+    </Declaration>
+    <Declaration>
+        <ObjectProperty IRI="#logicgraphProperty"/>
+    </Declaration>
+    <Declaration>
+        <DataProperty IRI="#hasDescription"/>
+    </Declaration>
+    <Declaration>
+        <DataProperty IRI="#hasName"/>
+    </Declaration>
+    <Declaration>
+        <DataProperty IRI="#logicgraphDataProperty"/>
+    </Declaration>
+    <Declaration>
+        <NamedIndividual IRI="#AcademicLiterature"/>
+    </Declaration>
+    <Declaration>
+        <NamedIndividual IRI="#ISOStandard"/>
+    </Declaration>
+    <Declaration>
+        <NamedIndividual IRI="#Unofficial"/>
+    </Declaration>
+    <Declaration>
+        <NamedIndividual IRI="#W3CRecommendation"/>
+    </Declaration>
+    <Declaration>
+        <NamedIndividual IRI="#W3CTeamSubmission"/>
+    </Declaration>
+    <Declaration>
+        <NamedIndividual IRI="#W3CWorkingGroupNote"/>
+    </Declaration>
+    <EquivalentClasses>
+        <Class IRI="#LogicAdjoint"/>
+        <ObjectIntersectionOf>
+            <Class IRI="#Adjoint"/>
+            <ObjectExactCardinality cardinality="1">
+                <ObjectProperty IRI="#hasProjection"/>
+                <Class IRI="#Logic"/>
+            </ObjectExactCardinality>
+            <ObjectExactCardinality cardinality="1">
+                <ObjectProperty IRI="#hasTranslation"/>
+                <Class IRI="#Logic"/>
+            </ObjectExactCardinality>
+        </ObjectIntersectionOf>
+    </EquivalentClasses>
+    <EquivalentClasses>
+        <Class IRI="#LogicMapping"/>
+        <ObjectIntersectionOf>
+            <Class IRI="#Mapping"/>
+            <ObjectExactCardinality cardinality="1">
+                <ObjectProperty IRI="#hasSource"/>
+                <Class IRI="#Logic"/>
+            </ObjectExactCardinality>
+            <ObjectExactCardinality cardinality="1">
+                <ObjectProperty IRI="#hasTarget"/>
+                <Class IRI="#Logic"/>
+            </ObjectExactCardinality>
+        </ObjectIntersectionOf>
+    </EquivalentClasses>
+    <EquivalentClasses>
+        <Class IRI="#OntologyLanguageAdjoint"/>
+        <ObjectIntersectionOf>
+            <Class IRI="#Adjoint"/>
+            <ObjectExactCardinality cardinality="1">
+                <ObjectProperty IRI="#hasProjection"/>
+                <Class IRI="#OntologyLanguage"/>
+            </ObjectExactCardinality>
+            <ObjectExactCardinality cardinality="1">
+                <ObjectProperty IRI="#hasTranslation"/>
+                <Class IRI="#OntologyLanguage"/>
+            </ObjectExactCardinality>
+        </ObjectIntersectionOf>
+    </EquivalentClasses>
+    <EquivalentClasses>
+        <Class IRI="#OntologyLanguageMapping"/>
+        <ObjectIntersectionOf>
+            <Class IRI="#Mapping"/>
+            <ObjectExactCardinality cardinality="1">
+                <ObjectProperty IRI="#hasSource"/>
+                <Class IRI="#OntologyLanguage"/>
+            </ObjectExactCardinality>
+            <ObjectExactCardinality cardinality="1">
+                <ObjectProperty IRI="#hasTarget"/>
+                <Class IRI="#OntologyLanguage"/>
+            </ObjectExactCardinality>
+        </ObjectIntersectionOf>
+    </EquivalentClasses>
+    <SubClassOf>
+        <Class IRI="#Adjoint"/>
+        <ObjectIntersectionOf>
+            <ObjectSomeValuesFrom>
+                <ObjectProperty IRI="#hasProjection"/>
+                <Class abbreviatedIRI="owl:Thing"/>
+            </ObjectSomeValuesFrom>
+            <ObjectSomeValuesFrom>
+                <ObjectProperty IRI="#hasTranslation"/>
+                <Class abbreviatedIRI="owl:Thing"/>
+            </ObjectSomeValuesFrom>
+        </ObjectIntersectionOf>
+    </SubClassOf>
+    <SubClassOf>
+        <Class IRI="#Logic"/>
+        <ObjectExactCardinality cardinality="1">
+            <ObjectProperty IRI="#hasStandardizationStatus"/>
+            <Class IRI="#StandardizationStatus"/>
+        </ObjectExactCardinality>
+    </SubClassOf>
+    <SubClassOf>
+        <Class IRI="#Logic"/>
+        <DataExactCardinality cardinality="1">
+            <DataProperty IRI="#hasDescription"/>
+            <Datatype abbreviatedIRI="xsd:string"/>
+        </DataExactCardinality>
+    </SubClassOf>
+    <SubClassOf>
+        <Class IRI="#Logic"/>
+        <DataExactCardinality cardinality="1">
+            <DataProperty IRI="#hasName"/>
+            <Datatype abbreviatedIRI="xsd:string"/>
+        </DataExactCardinality>
+    </SubClassOf>
+    <SubClassOf>
+        <Class IRI="#LogicAdjoint"/>
+        <ObjectIntersectionOf>
+            <Class IRI="#Adjoint"/>
+            <ObjectExactCardinality cardinality="1">
+                <ObjectProperty IRI="#hasProjection"/>
+                <Class IRI="#Logic"/>
+            </ObjectExactCardinality>
+            <ObjectExactCardinality cardinality="1">
+                <ObjectProperty IRI="#hasTranslation"/>
+                <Class IRI="#Logic"/>
+            </ObjectExactCardinality>
+        </ObjectIntersectionOf>
+    </SubClassOf>
+    <SubClassOf>
+        <Class IRI="#LogicMapping"/>
+        <ObjectIntersectionOf>
+            <Class IRI="#Mapping"/>
+            <ObjectExactCardinality cardinality="1">
+                <ObjectProperty IRI="#hasSource"/>
+                <Class IRI="#Logic"/>
+            </ObjectExactCardinality>
+            <ObjectExactCardinality cardinality="1">
+                <ObjectProperty IRI="#hasTarget"/>
+                <Class IRI="#Logic"/>
+            </ObjectExactCardinality>
+        </ObjectIntersectionOf>
+    </SubClassOf>
+    <SubClassOf>
+        <Class IRI="#Mapping"/>
+        <ObjectIntersectionOf>
+            <ObjectExactCardinality cardinality="1">
+                <ObjectProperty IRI="#hasSource"/>
+            </ObjectExactCardinality>
+            <ObjectExactCardinality cardinality="1">
+                <ObjectProperty IRI="#hasTarget"/>
+            </ObjectExactCardinality>
+        </ObjectIntersectionOf>
+    </SubClassOf>
+    <SubClassOf>
+        <Class IRI="#OntologyLanguage"/>
+        <ObjectExactCardinality cardinality="1">
+            <ObjectProperty IRI="#hasStandardizationStatus"/>
+            <Class IRI="#StandardizationStatus"/>
+        </ObjectExactCardinality>
+    </SubClassOf>
+    <SubClassOf>
+        <Class IRI="#OntologyLanguage"/>
+        <DataExactCardinality cardinality="1">
+            <DataProperty IRI="#hasDescription"/>
+            <Datatype abbreviatedIRI="xsd:string"/>
+        </DataExactCardinality>
+    </SubClassOf>
+    <SubClassOf>
+        <Class IRI="#OntologyLanguage"/>
+        <DataExactCardinality cardinality="1">
+            <DataProperty IRI="#hasName"/>
+            <Datatype abbreviatedIRI="xsd:string"/>
+        </DataExactCardinality>
+    </SubClassOf>
+    <SubClassOf>
+        <Class IRI="#OntologyLanguageAdjoint"/>
+        <ObjectIntersectionOf>
+            <Class IRI="#Adjoint"/>
+            <ObjectExactCardinality cardinality="1">
+                <ObjectProperty IRI="#hasProjection"/>
+                <Class IRI="#OntologyLanguage"/>
+            </ObjectExactCardinality>
+            <ObjectExactCardinality cardinality="1">
+                <ObjectProperty IRI="#hasTranslation"/>
+                <Class IRI="#OntologyLanguage"/>
+            </ObjectExactCardinality>
+        </ObjectIntersectionOf>
+    </SubClassOf>
+    <SubClassOf>
+        <Class IRI="#OntologyLanguageMapping"/>
+        <ObjectIntersectionOf>
+            <Class IRI="#Mapping"/>
+            <ObjectExactCardinality cardinality="1">
+                <ObjectProperty IRI="#hasSource"/>
+                <Class IRI="#OntologyLanguage"/>
+            </ObjectExactCardinality>
+            <ObjectExactCardinality cardinality="1">
+                <ObjectProperty IRI="#hasTarget"/>
+                <Class IRI="#OntologyLanguage"/>
+            </ObjectExactCardinality>
+        </ObjectIntersectionOf>
+    </SubClassOf>
+    <SubClassOf>
+        <Class IRI="#OntologyLanguageSerialization"/>
+        <ObjectExactCardinality cardinality="1">
+            <ObjectProperty IRI="#hasStandardizationStatus"/>
+            <Class IRI="#StandardizationStatus"/>
+        </ObjectExactCardinality>
+    </SubClassOf>
+    <SubClassOf>
+        <Class IRI="#OntologyLanguageSerialization"/>
+        <DataExactCardinality cardinality="1">
+            <DataProperty IRI="#hasName"/>
+            <Datatype abbreviatedIRI="xsd:string"/>
+        </DataExactCardinality>
+    </SubClassOf>
+    <ClassAssertion>
+        <Class IRI="#StandardizationStatus"/>
+        <NamedIndividual IRI="#AcademicLiterature"/>
+    </ClassAssertion>
+    <ClassAssertion>
+        <Class IRI="#StandardizationStatus"/>
+        <NamedIndividual IRI="#ISOStandard"/>
+    </ClassAssertion>
+    <ClassAssertion>
+        <Class IRI="#StandardizationStatus"/>
+        <NamedIndividual IRI="#Unofficial"/>
+    </ClassAssertion>
+    <ClassAssertion>
+        <Class IRI="#StandardizationStatus"/>
+        <NamedIndividual IRI="#W3CRecommendation"/>
+    </ClassAssertion>
+    <ClassAssertion>
+        <Class IRI="#StandardizationStatus"/>
+        <NamedIndividual IRI="#W3CTeamSubmission"/>
+    </ClassAssertion>
+    <ClassAssertion>
+        <Class IRI="#StandardizationStatus"/>
+        <NamedIndividual IRI="#W3CWorkingGroupNote"/>
+    </ClassAssertion>
+    <SubObjectPropertyOf>
+        <ObjectProperty IRI="#hasProjection"/>
+        <ObjectProperty IRI="#logicgraphProperty"/>
+    </SubObjectPropertyOf>
+    <SubObjectPropertyOf>
+        <ObjectProperty IRI="#hasSerialization"/>
+        <ObjectProperty IRI="#logicgraphProperty"/>
+    </SubObjectPropertyOf>
+    <SubObjectPropertyOf>
+        <ObjectProperty IRI="#hasSource"/>
+        <ObjectProperty IRI="#logicgraphProperty"/>
+    </SubObjectPropertyOf>
+    <SubObjectPropertyOf>
+        <ObjectProperty IRI="#hasStandardizationStatus"/>
+        <ObjectProperty IRI="#logicgraphProperty"/>
+    </SubObjectPropertyOf>
+    <SubObjectPropertyOf>
+        <ObjectProperty IRI="#hasTarget"/>
+        <ObjectProperty IRI="#logicgraphProperty"/>
+    </SubObjectPropertyOf>
+    <SubObjectPropertyOf>
+        <ObjectProperty IRI="#hasTranslation"/>
+        <ObjectProperty IRI="#logicgraphProperty"/>
+    </SubObjectPropertyOf>
+    <ObjectPropertyRange>
+        <ObjectProperty IRI="#hasStandardizationStatus"/>
+        <Class IRI="#StandardizationStatus"/>
+    </ObjectPropertyRange>
+    <SubDataPropertyOf>
+        <DataProperty IRI="#hasDescription"/>
+        <DataProperty IRI="#logicgraphDataProperty"/>
+    </SubDataPropertyOf>
+    <SubDataPropertyOf>
+        <DataProperty IRI="#hasName"/>
+        <DataProperty IRI="#logicgraphDataProperty"/>
+    </SubDataPropertyOf>
+    <DataPropertyRange>
+        <DataProperty IRI="#hasDescription"/>
+        <Datatype abbreviatedIRI="xsd:string"/>
+    </DataPropertyRange>
+    <DataPropertyRange>
+        <DataProperty IRI="#hasName"/>
+        <Datatype abbreviatedIRI="xsd:string"/>
+    </DataPropertyRange>
+    <AnnotationAssertion>
+        <AnnotationProperty abbreviatedIRI="rdfs:comment"/>
+        <IRI>#Logic</IRI>
+        <Literal xml:lang="en" datatypeIRI="&rdf;PlainLiteral">A logic supporting an ontology language.</Literal>
+    </AnnotationAssertion>
+    <AnnotationAssertion>
+        <AnnotationProperty abbreviatedIRI="rdfs:comment"/>
+        <IRI>#OntologyLanguage</IRI>
+        <Literal xml:lang="en" datatypeIRI="&rdf;PlainLiteral">An ontology language in which the ontologies are submitted.</Literal>
+    </AnnotationAssertion>
+    <AnnotationAssertion>
+        <AnnotationProperty abbreviatedIRI="rdfs:comment"/>
+        <IRI>#StandardizationStatus</IRI>
+        <Literal xml:lang="en" datatypeIRI="&rdf;PlainLiteral">The status of the ontology/logic standard.</Literal>
+    </AnnotationAssertion>
+</Ontology>
+
+
+
+<!-- Generated by the OWL API (version 3.2.5.1928) http://owlapi.sourceforge.net -->
+
