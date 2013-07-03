@@ -18,11 +18,11 @@ class OntologiesControllerTest < ActionController::TestCase
         setup do
           get :index
         end
-        
+
         should respond_with :success
         should assign_to(:search).with{ nil }
+        should_not assign_to(:ontologies).with { [] }
         should render_template :index
-        should render_template 'ontologies/_ontology'
       end
       
       context 'with search' do
@@ -33,8 +33,8 @@ class OntologiesControllerTest < ActionController::TestCase
         
         should respond_with :success
         should assign_to(:search).with{ @search }
+        should_not assign_to(:ontologies).with { [] }
         should render_template :index
-        should render_template 'ontologies/_ontology'
       end
     end
     

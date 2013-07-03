@@ -2,9 +2,16 @@
   %thead
     %tr
       %th Text
-      %th Kind
-      %th Name
-      %th URI
-      %th Range
+      - if @show_name_column 
+        %th Name
   %tbody
-    = render collection
+    - collection.each do |entity|
+      %tr
+        - if @show_name_column
+          %td= entity.text
+          %td= entity.name
+        - else
+          - if entity.display_name
+            %td= iri_tooltip(entity, entity.display_name)
+          - else 
+            %td= name_highlighter(entity)

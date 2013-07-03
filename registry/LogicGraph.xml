@@ -1,0 +1,604 @@
+<?xml version='1.0' ?>
+<LogicGraph>
+  <logic name="Adl" Stability="Testing" has_basic_parser="True" has_basic_analysis="True" has_symbol_list_parser="False" has_symbol_map_parser="False" is_a_process_logic="False">
+    <Description>A description language</Description>
+  </logic>
+  <logic name="CASL" Stability="Stable" has_basic_parser="True" has_basic_analysis="True" has_symbol_list_parser="True" has_symbol_map_parser="True" is_a_process_logic="False">
+    <Description>CASL - the Common algebraic specification language
+This logic is subsorted partial first-order logic
+  with sort generation constraints
+See the CASL User Manual, LNCS 2900, Springer Verlag
+and the CASL Reference Manual, LNCS 2960, Springer Verlag
+See also http://www.cofi.info/CASL.html
+
+Abbreviations of sublogic names indicate the following feature:
+  Sub    -&gt; with subsorting
+  Sul    -&gt; with a locally filtered subsort relation
+  P      -&gt; with partial functions
+  C      -&gt; with sort generation constraints
+  eC     -&gt; C without renamings
+  sC     -&gt; C with injective constructors
+  seC    -&gt; sC and eC
+  FOL    -&gt; first order logic
+  FOAlg  -&gt; FOL without predicates
+  Horn   -&gt; positive conditional logic
+  GHorn  -&gt; generalized Horn
+  GCond  -&gt; GHorn without predicates
+  Cond   -&gt; Horn without predicates
+  Atom   -&gt; atomic logic
+  Eq     -&gt; Atom without predicates
+  =      -&gt; with equality
+
+Examples:
+  SubPCFOL=   -&gt; the CASL logic itself
+  FOAlg=      -&gt; first order algebra (without predicates)
+  SubPHorn=   -&gt; the positive conditional fragement of CASL
+  SubPAtom    -&gt; the atomic subset of CASL
+  SubPCAtom   -&gt; SubPAtom with sort generation constraints
+  Eq=         -&gt; classical equational logic
+</Description>
+    <Serialization name="KIF" />
+    <Prover name="QuickCheck" />
+    <ConservativityChecker name="CCC" />
+  </logic>
+  <logic name="CASL_DL" Stability="Unstable" has_basic_parser="True" has_basic_analysis="True" has_symbol_list_parser="True" has_symbol_map_parser="True" is_a_process_logic="False">
+    <Description>CASL_DL is at the same time an extension and a restriction of CASL.
+It additionally provides cardinality restrictions in a description logic
+sense; and it limits the expressivity of CASL to the description logic
+SHOIN(D). Hence it provides the following sublogics:
+  * Card -- CASL plus cardinality restrictions on binary relations
+  * DL   -- SHOIN(D)
+  * SHIQ
+  * SHOIQ
+</Description>
+  </logic>
+  <logic name="CoCASL" Stability="Unstable" has_basic_parser="True" has_basic_analysis="True" has_symbol_list_parser="True" has_symbol_map_parser="True" is_a_process_logic="False">
+    <Description>CoCASL is the coalgebraic extension of CASL.</Description>
+  </logic>
+  <logic name="CommonLogic" Stability="Experimental" has_basic_parser="True" has_basic_analysis="True" has_symbol_list_parser="True" has_symbol_map_parser="True" is_a_process_logic="False">
+    <Description>CommonLogic Logic
+</Description>
+    <Serialization name="CLIF" />
+    <Serialization name="KIF" />
+  </logic>
+  <logic name="ConstraintCASL" Stability="Experimental" has_basic_parser="True" has_basic_analysis="True" has_symbol_list_parser="True" has_symbol_map_parser="True" is_a_process_logic="False">
+    <Description>ConstraintCASL - a restriction of CASL to constraint formulas over predicates</Description>
+  </logic>
+  <logic name="CspCASL" Stability="Experimental" has_basic_parser="True" has_basic_analysis="True" has_symbol_list_parser="True" has_symbol_map_parser="True" is_a_process_logic="True">
+    <Description>CspCASL - see
+
+http://www.cs.swan.ac.uk/~csmarkus/ProcessesAndData/</Description>
+  </logic>
+  <logic name="CspCASL_Failure" Stability="Experimental" has_basic_parser="True" has_basic_analysis="True" has_symbol_list_parser="True" has_symbol_map_parser="True" is_a_process_logic="True">
+    <Description>CspCASL - see
+
+http://www.cs.swan.ac.uk/~csmarkus/ProcessesAndData/</Description>
+  </logic>
+  <logic name="CspCASL_Trace" Stability="Experimental" has_basic_parser="True" has_basic_analysis="True" has_symbol_list_parser="True" has_symbol_map_parser="True" is_a_process_logic="True">
+    <Description>CspCASL - see
+
+http://www.cs.swan.ac.uk/~csmarkus/ProcessesAndData/</Description>
+    <Prover name="CspCASLProver" />
+  </logic>
+  <logic name="DFOL" Stability="Experimental" has_basic_parser="True" has_basic_analysis="True" has_symbol_list_parser="True" has_symbol_map_parser="True" is_a_process_logic="False">
+    <Description>First-Order Logic with Dependent Types
+developed by F. Rabe</Description>
+  </logic>
+  <logic name="DMU" Stability="Experimental" has_basic_parser="True" has_basic_analysis="True" has_symbol_list_parser="False" has_symbol_map_parser="False" is_a_process_logic="False">
+    <Description>wrap Catia output</Description>
+  </logic>
+  <logic name="EnCL" Stability="Experimental" has_basic_parser="True" has_basic_analysis="True" has_symbol_list_parser="True" has_symbol_map_parser="True" is_a_process_logic="False">
+    <Description>EnCL Logic
+</Description>
+    <Prover name="Reduce" />
+  </logic>
+  <logic name="ExtModal" Stability="Experimental" has_basic_parser="True" has_basic_analysis="True" has_symbol_list_parser="True" has_symbol_map_parser="True" is_a_process_logic="False">
+    <Description>ExtModal is the &#39;extended modal logic&#39; extension of CASL. 
+Syntax for ordinary modalities, multi-modal logic, dynamic 
+logic, graded modal logic, hybrid logic, CTL* and mu-calculus  
+is provided. Specific modal logics can be obtained via 
+restrictions to sublanguages.
+</Description>
+  </logic>
+  <logic name="Fpl" Stability="Unstable" has_basic_parser="True" has_basic_analysis="True" has_symbol_list_parser="True" has_symbol_map_parser="True" is_a_process_logic="False">
+    <Description>logic of functional programs (FPL) as CASL extension
+</Description>
+  </logic>
+  <logic name="Framework" Stability="Experimental" has_basic_parser="False" has_basic_analysis="False" has_symbol_list_parser="False" has_symbol_map_parser="False" is_a_process_logic="False">
+    <Description>A framework allowing to add logics dynamically.</Description>
+  </logic>
+  <logic name="FreeCAD" Stability="Experimental" has_basic_parser="False" has_basic_analysis="True" has_symbol_list_parser="False" has_symbol_map_parser="False" is_a_process_logic="False">
+    <Description>FreeCAD object representation language</Description>
+  </logic>
+  <logic name="HasCASL" Stability="Testing" has_basic_parser="True" has_basic_analysis="True" has_symbol_list_parser="True" has_symbol_map_parser="True" is_a_process_logic="False">
+    <Description>HasCASL - Algebraic Specification + Functional Programming = 
+            Environment for Formal Software Development
+This logic is based on the partial lambda calculus and
+  features subtyping, overloading and type class polymorphism
+See the HasCASL summary and further papers available at
+  http://www.informatik.uni-bremen.de/cofi/HasCASL
+
+Abbreviations of sublogic names indicate the following feature:
+  Sub    -&gt; with subtyping
+  P      -&gt; with partial functions
+  TyCl   -&gt; with simple type classes (a la Isabelle)
+  CoCl   -&gt; with constructor classes (a la Haskell)
+  Poly   -&gt; polymorphism without classes
+  TyCons -&gt; user definable type constructors
+  HOL    -&gt; higher order logic (covers sort generation constraints)
+  FOL    -&gt; first order logic
+and others like for CASL
+
+Examples:
+  SubCFOL=       -&gt; the CASL logic without sort generation constraints
+  PCoClTyConsHOL -&gt; the Haskell type system fragment
+</Description>
+  </logic>
+  <logic name="Haskell" Stability="Experimental" has_basic_parser="True" has_basic_analysis="True" has_symbol_list_parser="False" has_symbol_map_parser="False" is_a_process_logic="False">
+    <Description>Haskell - a purely functional programming language
+featuring static typing, higher-order functions, polymorphism,
+type classes and monadic effects.
+See http://www.haskell.org. This version is based on Programatica,
+see http://www.cse.ogi.edu/PacSoft/projects/programatica/
+</Description>
+  </logic>
+  <logic name="HolLight" Stability="Experimental" has_basic_parser="False" has_basic_analysis="False" has_symbol_list_parser="False" has_symbol_map_parser="False" is_a_process_logic="False">
+    <Description>Hol Light
+for more information please refer to
+http://www.cl.cam.ac.uk/~jrh13/hol-light/</Description>
+  </logic>
+  <logic name="Isabelle" Stability="Testing" has_basic_parser="False" has_basic_analysis="False" has_symbol_list_parser="False" has_symbol_map_parser="False" is_a_process_logic="False">
+    <Description>Isabelle - a generic theorem prover
+This logic corresponds to the logic of Isabelle,
+a weak intuitionistic type theory
+Also, the logics encoded in Isabelle, like FOL, HOL, HOLCF, ZF are made available
+See http://www.cl.cam.ac.uk/Research/HVG/Isabelle/</Description>
+    <Prover name="Isabelle" />
+    <ConsistencyChecker name="Isabelle-refute" />
+  </logic>
+  <logic name="LF" Stability="Experimental" has_basic_parser="True" has_basic_analysis="True" has_symbol_list_parser="True" has_symbol_map_parser="True" is_a_process_logic="False">
+    <Description>Edinburgh Logical Framework</Description>
+  </logic>
+  <logic name="Maude" Stability="Experimental" has_basic_parser="True" has_basic_analysis="True" has_symbol_list_parser="False" has_symbol_map_parser="False" is_a_process_logic="False">
+    <Description>Maude - A High-Performance Rewriting Logic Framework
+This logic is rewriting logic, a logic of concurrent change that
+can naturally deal with state and with concurrent computations.
+For an overview of Maude see &lt;http://maude.cs.uiuc.edu/overview.html&gt;.
+For information about rewriting logic see &lt;http://maude.cs.uiuc.edu/rwl.html&gt;.
+For information about the Maude project see &lt;http://maude.cs.uiuc.edu/&gt;.
+</Description>
+  </logic>
+  <logic name="Modal" Stability="Unstable" has_basic_parser="True" has_basic_analysis="True" has_symbol_list_parser="True" has_symbol_map_parser="True" is_a_process_logic="False">
+    <Description>ModalCASL extends CASL by modal operators. Syntax for ordinary
+modalities, multi-modal logics as well as  term-modal
+logic (also covering dynamic logic) is provided.
+Specific modal logics can be obtained via restrictions to
+sublanguages.
+</Description>
+  </logic>
+  <logic name="OMDoc-PUN" Stability="Experimental" has_basic_parser="False" has_basic_analysis="False" has_symbol_list_parser="False" has_symbol_map_parser="False" is_a_process_logic="False">
+    <Description>OMDoc-PUN (possible utter nonsense). Logic to deal with OMDoc.</Description>
+  </logic>
+  <logic name="OWL" Stability="Experimental" has_basic_parser="True" has_basic_analysis="True" has_symbol_list_parser="True" has_symbol_map_parser="True" is_a_process_logic="False">
+    <Description>OWL2 DL -- Web Ontology Language Description Logic http://wwww.w3c.org/</Description>
+    <Serialization name="Manchester" />
+    <Serialization name="Ship" />
+    <Prover name="Pellet" />
+    <Prover name="Pellet" />
+    <Prover name="Fact" />
+    <ConsistencyChecker name="Pellet" />
+    <ConsistencyChecker name="Fact" />
+    <ConservativityChecker name="Locality_BOTTOM_BOTTOM" />
+    <ConservativityChecker name="Locality_TOP_BOTTOM" />
+    <ConservativityChecker name="Locality_TOP_TOP" />
+  </logic>
+  <logic name="Propositional" Stability="Experimental" has_basic_parser="True" has_basic_analysis="True" has_symbol_list_parser="True" has_symbol_map_parser="True" is_a_process_logic="False">
+    <Description>Propositional Logic
+for more information please refer to
+http://en.wikipedia.org/wiki/Propositional_logic</Description>
+    <Serialization name="Hets" />
+    <Prover name="zchaff" />
+    <Prover name="minisat" />
+    <Prover name="truth tables" />
+    <ConsistencyChecker name="zchaff" />
+    <ConsistencyChecker name="minisat" />
+    <ConsistencyChecker name="truth tables" />
+    <ConservativityChecker name="Truth Tables" />
+  </logic>
+  <logic name="QBF" Stability="Experimental" has_basic_parser="True" has_basic_analysis="True" has_symbol_list_parser="True" has_symbol_map_parser="True" is_a_process_logic="False">
+    <Description>Propositional Logic extended with QBFs
+for more information please refer to
+http://en.wikipedia.org/wiki/Propositional_logichttp://www.voronkov.com/lics.cgi</Description>
+  </logic>
+  <logic name="RDF" Stability="Experimental" has_basic_parser="True" has_basic_analysis="True" has_symbol_list_parser="True" has_symbol_map_parser="True" is_a_process_logic="False">
+    <Description>RDF -- Resource Description Framework http://www.w3.org/RDF/</Description>
+  </logic>
+  <logic name="RelScheme" Stability="Experimental" has_basic_parser="True" has_basic_analysis="True" has_symbol_list_parser="False" has_symbol_map_parser="False" is_a_process_logic="False">
+    <Description>Simple logic for Relational Schemes</Description>
+  </logic>
+  <logic name="SoftFOL" Stability="Testing" has_basic_parser="False" has_basic_analysis="False" has_symbol_list_parser="False" has_symbol_map_parser="False" is_a_process_logic="False">
+    <Description>SoftFOL - Softly typed First Order Logic for Automated Theorem Proving Systems
+
+This logic corresponds to the logic of SPASS, 
+but the generation of TPTP is also possible.
+See http://spass.mpi-sb.mpg.de/
+and http://www.cs.miami.edu/~tptp/TPTP/SyntaxBNF.html</Description>
+    <Prover name="SPASS" />
+    <Prover name="MathServe Broker" />
+    <Prover name="Vampire" />
+    <Prover name="darwin-non-fd" />
+    <Prover name="darwin" />
+    <Prover name="eprover" />
+    <Prover name="ekrhyper" />
+    <ConsistencyChecker name="darwin-non-fd" />
+    <ConsistencyChecker name="darwin" />
+    <ConsistencyChecker name="eprover" />
+    <ConsistencyChecker name="ekrhyper" />
+  </logic>
+  <logic name="THF" Stability="Testing" has_basic_parser="True" has_basic_analysis="True" has_symbol_list_parser="False" has_symbol_map_parser="False" is_a_process_logic="False">
+    <Description>THF is a language for Higher Order Logic from the TPTP standard.
+For further information please refer tohttp://www.cs.miami.edu/~tptp/TPTP/SyntaxBNF.html</Description>
+    <Prover name="Isabelle (automated)" />
+    <Prover name="Isabelle (nitpick)" />
+    <Prover name="Isabelle (refute)" />
+    <Prover name="Isabelle (sledgehammer)" />
+  </logic>
+  <logic name="Temporal" Stability="Experimental" has_basic_parser="False" has_basic_analysis="False" has_symbol_list_parser="False" has_symbol_map_parser="False" is_a_process_logic="False">
+    <Description>Temporal logic</Description>
+  </logic>
+  <logic name="VSE" Stability="Unstable" has_basic_parser="True" has_basic_analysis="True" has_symbol_list_parser="True" has_symbol_map_parser="True" is_a_process_logic="False">
+    <Description>VSE extends CASL by modal operators and programs.</Description>
+    <Prover name="VSE" />
+  </logic>
+  <sourceSublogic name="Adl">
+    <comorphism name="Adl2CASL" />
+  </sourceSublogic>
+  <sourceSublogic name="CASL.FOL">
+    <comorphism name="CASL2Propositional" />
+  </sourceSublogic>
+  <sourceSublogic name="CASL.CFOL=">
+    <comorphism name="CASL2VSERefine" />
+    <comorphism name="CASL2VSEImport" />
+    <comorphism name="CASL2VSE" />
+    <comorphism name="CASL2Isabelle" />
+  </sourceSublogic>
+  <sourceSublogic name="CASL.SuleCFOL=">
+    <comorphism name="CASL2SoftFOLInduction2" />
+    <comorphism name="CASL2SoftFOLInduction" />
+  </sourceSublogic>
+  <sourceSublogic name="CASL.SuleCFOL=E">
+    <comorphism name="CASL2SoftFOL" />
+  </sourceSublogic>
+  <sourceSublogic name="CASL.SulPCFOL=">
+    <comorphism name="CASL2OWL" />
+  </sourceSublogic>
+  <sourceSublogic name="CASL.SulPeCFOL=">
+    <comorphism name="CASL2PCFOLTopSort" />
+  </sourceSublogic>
+  <sourceSublogic name="CASL.SubPFOL=">
+    <comorphism name="CASL2SubCFOLSubsortBottoms" />
+    <comorphism name="CASL2SubCFOLNoMembershipOrCast" />
+  </sourceSublogic>
+  <sourceSublogic name="CASL.SubPCFOL=">
+    <comorphism name="CASL2SubCFOL" />
+    <comorphism name="CASL2PCFOL" />
+  </sourceSublogic>
+  <sourceSublogic name="CASL.SubPCSOL=E">
+    <comorphism name="CASL2Modal" />
+    <comorphism name="CASL2HasCASL" />
+    <comorphism name="CASL2ExtModal" />
+    <comorphism name="CASL2CspCASL" />
+    <comorphism name="CASL2CoCASL" />
+  </sourceSublogic>
+  <sourceSublogic name="CASL_DL.SROIQ">
+    <comorphism name="CASL_DL2CASL" />
+  </sourceSublogic>
+  <sourceSublogic name="CoCASL.CoCFOL=">
+    <comorphism name="CoCASL2Isabelle" />
+  </sourceSublogic>
+  <sourceSublogic name="CoCASL.CoSubPCFOL=">
+    <comorphism name="CoCASL2CoSubCFOL" />
+    <comorphism name="CoCASL2CoPCFOL" />
+  </sourceSublogic>
+  <sourceSublogic name="CommonLogic.FirstOrderSeq">
+    <comorphism name="CLSeq2CFOL" />
+  </sourceSublogic>
+  <sourceSublogic name="CommonLogic.FirstOrder">
+    <comorphism name="CLFol2CFOL" />
+  </sourceSublogic>
+  <sourceSublogic name="CommonLogic.ImpredicativeSeq">
+    <comorphism name="CommonLogicModuleElimination" />
+    <comorphism name="CommonLogic2Isabelle" />
+    <comorphism name="CLFull2CFOL" />
+  </sourceSublogic>
+  <sourceSublogic name="CommonLogic.Impredicative">
+    <comorphism name="CLImp2CFOL" />
+  </sourceSublogic>
+  <sourceSublogic name="CspCASL">
+    <comorphism name="CspCASL2Modal" />
+    <comorphism name="CspCASL2CspCASL_Trace" />
+    <comorphism name="CspCASL2CspCASL_Failure" />
+  </sourceSublogic>
+  <sourceSublogic name="DFOL">
+    <comorphism name="DFOL2CASL" />
+  </sourceSublogic>
+  <sourceSublogic name="DMU">
+    <comorphism name="DMU2OWL2" />
+  </sourceSublogic>
+  <sourceSublogic name="ExtModal.ManyDynHybrSubPCSOL=E">
+    <comorphism name="ExtModal2CASL" />
+  </sourceSublogic>
+  <sourceSublogic name="ExtModal.ManyDynHybrTimeFramesSubPCSOL=E">
+    <comorphism name="ExtModal2HasCASL" />
+  </sourceSublogic>
+  <sourceSublogic name="ExtModal.ManyDynHybrTimeFixFrames*SubPCSOL=E">
+    <comorphism name="ExtModal2OWL" />
+    <comorphism name="ExtModal2ExtModalTotal" />
+    <comorphism name="ExtModal2ExtModalNoSubsorts" />
+  </sourceSublogic>
+  <sourceSublogic name="HasCASL.TyConsHOL=">
+    <comorphism name="HasCASL2THFP_ST" />
+  </sourceSublogic>
+  <sourceSublogic name="HasCASL.PPolyTyConsHOL=">
+    <comorphism name="HasCASL2IsabelleDeprecated" />
+  </sourceSublogic>
+  <sourceSublogic name="HasCASL.PCoClTyConsHOL=">
+    <comorphism name="NormalisingTranslation" />
+    <comorphism name="MonadicTranslation" />
+    <comorphism name="HasCASL2IsabelleOption" />
+    <comorphism name="HasCASL2Haskell" />
+  </sourceSublogic>
+  <sourceSublogic name="HasCASL.SubPCoClTyConsHOL=">
+    <comorphism name="HasCASL2HasCASLPrograms" />
+    <comorphism name="HasCASL2HasCASLNoSubtypes" />
+  </sourceSublogic>
+  <sourceSublogic name="Haskell">
+    <comorphism name="Haskell2IsabelleHOLCF" />
+    <comorphism name="Haskell2Isabelle" />
+  </sourceSublogic>
+  <sourceSublogic name="HolLight.Top">
+    <comorphism name="HolLight2Isabelle" />
+  </sourceSublogic>
+  <sourceSublogic name="Maude">
+    <comorphism name="Maude2CASL" />
+  </sourceSublogic>
+  <sourceSublogic name="Modal">
+    <comorphism name="Modal2CASL" />
+  </sourceSublogic>
+  <sourceSublogic name="OWL.NP-sROIQ-D|-|">
+    <comorphism name="OWL22CommonLogic" />
+    <comorphism name="OWL22CASL" />
+  </sourceSublogic>
+  <sourceSublogic name="Propositional.Prop">
+    <comorphism name="Propositional2QBF" />
+    <comorphism name="Propositional2OWL2" />
+    <comorphism name="Propositional2CommonLogic" />
+    <comorphism name="Propositional2CASL" />
+  </sourceSublogic>
+  <sourceSublogic name="QBF.Prop">
+    <comorphism name="QBF2Propositional" />
+  </sourceSublogic>
+  <sourceSublogic name="RelScheme">
+    <comorphism name="RelScheme2CASL" />
+  </sourceSublogic>
+  <sourceSublogic name="SoftFOL">
+    <comorphism name="SoftFOL2CommonLogic" />
+  </sourceSublogic>
+  <sourceSublogic name="THF.THFP_P">
+    <comorphism name="THFP_P2THFP" />
+  </sourceSublogic>
+  <sourceSublogic name="THF.THFP_ST">
+    <comorphism name="THFP_ST2THF0_ST" />
+  </sourceSublogic>
+  <sourceSublogic name="THF.THFP_ST_P">
+    <comorphism name="THFP_P_ST2THFP_P" />
+  </sourceSublogic>
+  <targetSublogic name="CASL.FOL">
+    <comorphism name="Propositional2CASL" />
+  </targetSublogic>
+  <targetSublogic name="CASL.FOL=">
+    <comorphism name="DFOL2CASL" />
+  </targetSublogic>
+  <targetSublogic name="CASL.eCFOL=">
+    <comorphism name="OWL22CASL" />
+    <comorphism name="CLSeq2CFOL" />
+    <comorphism name="CLImp2CFOL" />
+    <comorphism name="CLFull2CFOL" />
+    <comorphism name="CLFol2CFOL" />
+  </targetSublogic>
+  <targetSublogic name="CASL.PFOL=">
+    <comorphism name="CASL2PCFOLTopSort" />
+  </targetSublogic>
+  <targetSublogic name="CASL.PCFOL=">
+    <comorphism name="CASL2PCFOL" />
+  </targetSublogic>
+  <targetSublogic name="CASL.PeCFOL=">
+    <comorphism name="Maude2CASL" />
+  </targetSublogic>
+  <targetSublogic name="CASL.SulFOL=">
+    <comorphism name="Adl2CASL" />
+  </targetSublogic>
+  <targetSublogic name="CASL.SulPFOL=">
+    <comorphism name="Modal2CASL" />
+  </targetSublogic>
+  <targetSublogic name="CASL.SulPeCFOL=">
+    <comorphism name="CASL_DL2CASL" />
+  </targetSublogic>
+  <targetSublogic name="CASL.SubFOL=">
+    <comorphism name="CASL2SubCFOLSubsortBottoms" />
+    <comorphism name="CASL2SubCFOLNoMembershipOrCast" />
+  </targetSublogic>
+  <targetSublogic name="CASL.SubCFOL=">
+    <comorphism name="CASL2SubCFOL" />
+  </targetSublogic>
+  <targetSublogic name="CASL.SubPCFOL=">
+    <comorphism name="RelScheme2CASL" />
+  </targetSublogic>
+  <targetSublogic name="CASL.SubPCSOL=E">
+    <comorphism name="ExtModal2CASL" />
+  </targetSublogic>
+  <targetSublogic name="CoCASL.CoPCFOL=">
+    <comorphism name="CoCASL2CoPCFOL" />
+  </targetSublogic>
+  <targetSublogic name="CoCASL.CoSubCFOL=">
+    <comorphism name="CoCASL2CoSubCFOL" />
+  </targetSublogic>
+  <targetSublogic name="CoCASL.SubPCSOL=E">
+    <comorphism name="CASL2CoCASL" />
+  </targetSublogic>
+  <targetSublogic name="CommonLogic.FirstOrder">
+    <comorphism name="SoftFOL2CommonLogic" />
+    <comorphism name="Propositional2CommonLogic" />
+  </targetSublogic>
+  <targetSublogic name="CommonLogic.ImpredicativeSeq">
+    <comorphism name="OWL22CommonLogic" />
+    <comorphism name="CommonLogicModuleElimination" />
+  </targetSublogic>
+  <targetSublogic name="CspCASL">
+    <comorphism name="CASL2CspCASL" />
+  </targetSublogic>
+  <targetSublogic name="CspCASL_Failure">
+    <comorphism name="CspCASL2CspCASL_Failure" />
+  </targetSublogic>
+  <targetSublogic name="CspCASL_Trace">
+    <comorphism name="CspCASL2CspCASL_Trace" />
+  </targetSublogic>
+  <targetSublogic name="ExtModal.ManyDynHybrTimeFixFrames*PCSOL=E">
+    <comorphism name="ExtModal2ExtModalNoSubsorts" />
+  </targetSublogic>
+  <targetSublogic name="ExtModal.ManyDynHybrTimeFixFrames*SubCSOL=E">
+    <comorphism name="ExtModal2ExtModalTotal" />
+  </targetSublogic>
+  <targetSublogic name="ExtModal.OneSubPCSOL=E">
+    <comorphism name="CASL2ExtModal" />
+  </targetSublogic>
+  <targetSublogic name="HasCASL.PCoClTyConsHOL=">
+    <comorphism name="HasCASL2HasCASLNoSubtypes" />
+  </targetSublogic>
+  <targetSublogic name="HasCASL.SubPHOL=">
+    <comorphism name="ExtModal2HasCASL" />
+    <comorphism name="CASL2HasCASL" />
+  </targetSublogic>
+  <targetSublogic name="HasCASL.SubPCoClTyConsHOL=">
+    <comorphism name="HasCASL2HasCASLPrograms" />
+  </targetSublogic>
+  <targetSublogic name="Haskell">
+    <comorphism name="HasCASL2Haskell" />
+  </targetSublogic>
+  <targetSublogic name="Isabelle">
+    <comorphism name="NormalisingTranslation" />
+    <comorphism name="MonadicTranslation" />
+    <comorphism name="HolLight2Isabelle" />
+    <comorphism name="Haskell2IsabelleHOLCF" />
+    <comorphism name="Haskell2Isabelle" />
+    <comorphism name="HasCASL2IsabelleOption" />
+    <comorphism name="HasCASL2IsabelleDeprecated" />
+    <comorphism name="CommonLogic2Isabelle" />
+    <comorphism name="CoCASL2Isabelle" />
+    <comorphism name="CASL2Isabelle" />
+  </targetSublogic>
+  <targetSublogic name="Modal">
+    <comorphism name="CspCASL2Modal" />
+    <comorphism name="CASL2Modal" />
+  </targetSublogic>
+  <targetSublogic name="OWL.NP-sROIQ-D|-|">
+    <comorphism name="Propositional2OWL2" />
+    <comorphism name="ExtModal2OWL" />
+    <comorphism name="DMU2OWL2" />
+    <comorphism name="CASL2OWL" />
+  </targetSublogic>
+  <targetSublogic name="Propositional.Prop">
+    <comorphism name="QBF2Propositional" />
+    <comorphism name="CASL2Propositional" />
+  </targetSublogic>
+  <targetSublogic name="QBF.Prop">
+    <comorphism name="Propositional2QBF" />
+  </targetSublogic>
+  <targetSublogic name="SoftFOL">
+    <comorphism name="CASL2SoftFOLInduction2" />
+    <comorphism name="CASL2SoftFOLInduction" />
+    <comorphism name="CASL2SoftFOL" />
+  </targetSublogic>
+  <targetSublogic name="THF.THFP">
+    <comorphism name="THFP_P2THFP" />
+  </targetSublogic>
+  <targetSublogic name="THF.THFP_P">
+    <comorphism name="THFP_P_ST2THFP_P" />
+  </targetSublogic>
+  <targetSublogic name="THF.THFP_ST">
+    <comorphism name="HasCASL2THFP_ST" />
+  </targetSublogic>
+  <targetSublogic name="THF.THF0_ST">
+    <comorphism name="THFP_ST2THF0_ST" />
+  </targetSublogic>
+  <targetSublogic name="VSE">
+    <comorphism name="CASL2VSERefine" />
+    <comorphism name="CASL2VSEImport" />
+    <comorphism name="CASL2VSE" />
+  </targetSublogic>
+  <comorphism name="Adl2CASL" source="Adl" target="CASL" sourceSublogic="" targetSublogic="SulFOL=" is_inclusion="True" has_model_expansion="True" is_weakly_amalgamable="True" />
+  <comorphism name="CASL2CoCASL" source="CASL" target="CoCASL" sourceSublogic="SubPCSOL=E" targetSublogic="SubPCSOL=E" is_inclusion="True" has_model_expansion="True" is_weakly_amalgamable="True" />
+  <comorphism name="CASL2CspCASL" source="CASL" target="CspCASL" sourceSublogic="SubPCSOL=E" targetSublogic="" is_inclusion="True" has_model_expansion="True" is_weakly_amalgamable="True" />
+  <comorphism name="CASL2ExtModal" source="CASL" target="ExtModal" sourceSublogic="SubPCSOL=E" targetSublogic="OneSubPCSOL=E" is_inclusion="True" has_model_expansion="True" is_weakly_amalgamable="True" />
+  <comorphism name="CASL2HasCASL" source="CASL" target="HasCASL" sourceSublogic="SubPCSOL=E" targetSublogic="SubPHOL=" is_inclusion="True" has_model_expansion="True" is_weakly_amalgamable="True" />
+  <comorphism name="CASL2Isabelle" source="CASL" target="Isabelle" sourceSublogic="CFOL=" targetSublogic="" is_inclusion="True" has_model_expansion="True" is_weakly_amalgamable="True" />
+  <comorphism name="CASL2Modal" source="CASL" target="Modal" sourceSublogic="SubPCSOL=E" targetSublogic="" is_inclusion="True" has_model_expansion="True" is_weakly_amalgamable="True" />
+  <comorphism name="CASL2OWL" source="CASL" target="OWL" sourceSublogic="SulPCFOL=" targetSublogic="NP-sROIQ-D|-|" is_inclusion="False" has_model_expansion="False" is_weakly_amalgamable="False" />
+  <comorphism name="CASL2PCFOL" source="CASL" target="CASL" sourceSublogic="SubPCFOL=" targetSublogic="PCFOL=" is_inclusion="False" has_model_expansion="True" is_weakly_amalgamable="True" />
+  <comorphism name="CASL2PCFOLTopSort" source="CASL" target="CASL" sourceSublogic="SulPeCFOL=" targetSublogic="PFOL=" is_inclusion="False" has_model_expansion="True" is_weakly_amalgamable="False" />
+  <comorphism name="CASL2Propositional" source="CASL" target="Propositional" sourceSublogic="FOL" targetSublogic="Prop" is_inclusion="False" has_model_expansion="True" is_weakly_amalgamable="True" />
+  <comorphism name="CASL2SoftFOL" source="CASL" target="SoftFOL" sourceSublogic="SuleCFOL=E" targetSublogic="" is_inclusion="False" has_model_expansion="True" is_weakly_amalgamable="False" />
+  <comorphism name="CASL2SoftFOLInduction" source="CASL" target="SoftFOL" sourceSublogic="SuleCFOL=" targetSublogic="" is_inclusion="False" has_model_expansion="True" is_weakly_amalgamable="False" />
+  <comorphism name="CASL2SoftFOLInduction2" source="CASL" target="SoftFOL" sourceSublogic="SuleCFOL=" targetSublogic="" is_inclusion="False" has_model_expansion="True" is_weakly_amalgamable="False" />
+  <comorphism name="CASL2SubCFOL" source="CASL" target="CASL" sourceSublogic="SubPCFOL=" targetSublogic="SubCFOL=" is_inclusion="False" has_model_expansion="True" is_weakly_amalgamable="True" />
+  <comorphism name="CASL2SubCFOLNoMembershipOrCast" source="CASL" target="CASL" sourceSublogic="SubPFOL=" targetSublogic="SubFOL=" is_inclusion="False" has_model_expansion="True" is_weakly_amalgamable="True" />
+  <comorphism name="CASL2SubCFOLSubsortBottoms" source="CASL" target="CASL" sourceSublogic="SubPFOL=" targetSublogic="SubFOL=" is_inclusion="False" has_model_expansion="True" is_weakly_amalgamable="True" />
+  <comorphism name="CASL2VSE" source="CASL" target="VSE" sourceSublogic="CFOL=" targetSublogic="" is_inclusion="True" has_model_expansion="True" is_weakly_amalgamable="True" />
+  <comorphism name="CASL2VSEImport" source="CASL" target="VSE" sourceSublogic="CFOL=" targetSublogic="" is_inclusion="True" has_model_expansion="True" is_weakly_amalgamable="True" />
+  <comorphism name="CASL2VSERefine" source="CASL" target="VSE" sourceSublogic="CFOL=" targetSublogic="" is_inclusion="False" has_model_expansion="True" is_weakly_amalgamable="True" />
+  <comorphism name="CASL_DL2CASL" source="CASL_DL" target="CASL" sourceSublogic="SROIQ" targetSublogic="SulPeCFOL=" is_inclusion="True" has_model_expansion="True" is_weakly_amalgamable="False" />
+  <comorphism name="CLFol2CFOL" source="CommonLogic" target="CASL" sourceSublogic="FirstOrder" targetSublogic="eCFOL=" is_inclusion="False" has_model_expansion="True" is_weakly_amalgamable="False" />
+  <comorphism name="CLFull2CFOL" source="CommonLogic" target="CASL" sourceSublogic="ImpredicativeSeq" targetSublogic="eCFOL=" is_inclusion="False" has_model_expansion="True" is_weakly_amalgamable="False" />
+  <comorphism name="CLImp2CFOL" source="CommonLogic" target="CASL" sourceSublogic="Impredicative" targetSublogic="eCFOL=" is_inclusion="False" has_model_expansion="True" is_weakly_amalgamable="False" />
+  <comorphism name="CLSeq2CFOL" source="CommonLogic" target="CASL" sourceSublogic="FirstOrderSeq" targetSublogic="eCFOL=" is_inclusion="False" has_model_expansion="True" is_weakly_amalgamable="False" />
+  <comorphism name="CoCASL2CoPCFOL" source="CoCASL" target="CoCASL" sourceSublogic="CoSubPCFOL=" targetSublogic="CoPCFOL=" is_inclusion="False" has_model_expansion="True" is_weakly_amalgamable="True" />
+  <comorphism name="CoCASL2CoSubCFOL" source="CoCASL" target="CoCASL" sourceSublogic="CoSubPCFOL=" targetSublogic="CoSubCFOL=" is_inclusion="False" has_model_expansion="True" is_weakly_amalgamable="True" />
+  <comorphism name="CoCASL2Isabelle" source="CoCASL" target="Isabelle" sourceSublogic="CoCFOL=" targetSublogic="" is_inclusion="False" has_model_expansion="True" is_weakly_amalgamable="True" />
+  <comorphism name="CommonLogic2Isabelle" source="CommonLogic" target="Isabelle" sourceSublogic="ImpredicativeSeq" targetSublogic="" is_inclusion="True" has_model_expansion="True" is_weakly_amalgamable="True" />
+  <comorphism name="CommonLogicModuleElimination" source="CommonLogic" target="CommonLogic" sourceSublogic="ImpredicativeSeq" targetSublogic="ImpredicativeSeq" is_inclusion="False" has_model_expansion="False" is_weakly_amalgamable="False" />
+  <comorphism name="CspCASL2CspCASL_Failure" source="CspCASL" target="CspCASL_Failure" sourceSublogic="" targetSublogic="" is_inclusion="True" has_model_expansion="True" is_weakly_amalgamable="True" />
+  <comorphism name="CspCASL2CspCASL_Trace" source="CspCASL" target="CspCASL_Trace" sourceSublogic="" targetSublogic="" is_inclusion="True" has_model_expansion="True" is_weakly_amalgamable="True" />
+  <comorphism name="CspCASL2Modal" source="CspCASL" target="Modal" sourceSublogic="" targetSublogic="" is_inclusion="False" has_model_expansion="False" is_weakly_amalgamable="False" />
+  <comorphism name="DFOL2CASL" source="DFOL" target="CASL" sourceSublogic="" targetSublogic="FOL=" is_inclusion="False" has_model_expansion="True" is_weakly_amalgamable="False" />
+  <comorphism name="DMU2OWL2" source="DMU" target="OWL" sourceSublogic="" targetSublogic="NP-sROIQ-D|-|" is_inclusion="True" has_model_expansion="True" is_weakly_amalgamable="True" />
+  <comorphism name="ExtModal2CASL" source="ExtModal" target="CASL" sourceSublogic="ManyDynHybrSubPCSOL=E" targetSublogic="SubPCSOL=E" is_inclusion="False" has_model_expansion="True" is_weakly_amalgamable="True" />
+  <comorphism name="ExtModal2ExtModalNoSubsorts" source="ExtModal" target="ExtModal" sourceSublogic="ManyDynHybrTimeFixFrames*SubPCSOL=E" targetSublogic="ManyDynHybrTimeFixFrames*PCSOL=E" is_inclusion="False" has_model_expansion="True" is_weakly_amalgamable="True" />
+  <comorphism name="ExtModal2ExtModalTotal" source="ExtModal" target="ExtModal" sourceSublogic="ManyDynHybrTimeFixFrames*SubPCSOL=E" targetSublogic="ManyDynHybrTimeFixFrames*SubCSOL=E" is_inclusion="False" has_model_expansion="True" is_weakly_amalgamable="True" />
+  <comorphism name="ExtModal2HasCASL" source="ExtModal" target="HasCASL" sourceSublogic="ManyDynHybrTimeFramesSubPCSOL=E" targetSublogic="SubPHOL=" is_inclusion="False" has_model_expansion="True" is_weakly_amalgamable="True" />
+  <comorphism name="ExtModal2OWL" source="ExtModal" target="OWL" sourceSublogic="ManyDynHybrTimeFixFrames*SubPCSOL=E" targetSublogic="NP-sROIQ-D|-|" is_inclusion="False" has_model_expansion="False" is_weakly_amalgamable="False" />
+  <comorphism name="HasCASL2HasCASLNoSubtypes" source="HasCASL" target="HasCASL" sourceSublogic="SubPCoClTyConsHOL=" targetSublogic="PCoClTyConsHOL=" is_inclusion="False" has_model_expansion="True" is_weakly_amalgamable="True" />
+  <comorphism name="HasCASL2HasCASLPrograms" source="HasCASL" target="HasCASL" sourceSublogic="SubPCoClTyConsHOL=" targetSublogic="SubPCoClTyConsHOL=" is_inclusion="False" has_model_expansion="False" is_weakly_amalgamable="False" />
+  <comorphism name="HasCASL2Haskell" source="HasCASL" target="Haskell" sourceSublogic="PCoClTyConsHOL=" targetSublogic="" is_inclusion="True" has_model_expansion="False" is_weakly_amalgamable="False" />
+  <comorphism name="HasCASL2IsabelleDeprecated" source="HasCASL" target="Isabelle" sourceSublogic="PPolyTyConsHOL=" targetSublogic="" is_inclusion="True" has_model_expansion="False" is_weakly_amalgamable="False" />
+  <comorphism name="HasCASL2IsabelleOption" source="HasCASL" target="Isabelle" sourceSublogic="PCoClTyConsHOL=" targetSublogic="" is_inclusion="True" has_model_expansion="True" is_weakly_amalgamable="False" />
+  <comorphism name="HasCASL2THFP_ST" source="HasCASL" target="THF" sourceSublogic="TyConsHOL=" targetSublogic="THFP_ST" is_inclusion="False" has_model_expansion="True" is_weakly_amalgamable="False" />
+  <comorphism name="Haskell2Isabelle" source="Haskell" target="Isabelle" sourceSublogic="" targetSublogic="" is_inclusion="False" has_model_expansion="False" is_weakly_amalgamable="False" />
+  <comorphism name="Haskell2IsabelleHOLCF" source="Haskell" target="Isabelle" sourceSublogic="" targetSublogic="" is_inclusion="False" has_model_expansion="True" is_weakly_amalgamable="False" />
+  <comorphism name="HolLight2Isabelle" source="HolLight" target="Isabelle" sourceSublogic="Top" targetSublogic="" is_inclusion="False" has_model_expansion="False" is_weakly_amalgamable="False" />
+  <comorphism name="Maude2CASL" source="Maude" target="CASL" sourceSublogic="" targetSublogic="PeCFOL=" is_inclusion="True" has_model_expansion="True" is_weakly_amalgamable="True" />
+  <comorphism name="Modal2CASL" source="Modal" target="CASL" sourceSublogic="" targetSublogic="SulPFOL=" is_inclusion="False" has_model_expansion="True" is_weakly_amalgamable="True" />
+  <comorphism name="MonadicTranslation" source="HasCASL" target="Isabelle" sourceSublogic="PCoClTyConsHOL=" targetSublogic="" is_inclusion="True" has_model_expansion="True" is_weakly_amalgamable="False" />
+  <comorphism name="NormalisingTranslation" source="HasCASL" target="Isabelle" sourceSublogic="PCoClTyConsHOL=" targetSublogic="" is_inclusion="True" has_model_expansion="True" is_weakly_amalgamable="False" />
+  <comorphism name="OWL22CASL" source="OWL" target="CASL" sourceSublogic="NP-sROIQ-D|-|" targetSublogic="eCFOL=" is_inclusion="True" has_model_expansion="True" is_weakly_amalgamable="False" />
+  <comorphism name="OWL22CommonLogic" source="OWL" target="CommonLogic" sourceSublogic="NP-sROIQ-D|-|" targetSublogic="ImpredicativeSeq" is_inclusion="True" has_model_expansion="True" is_weakly_amalgamable="False" />
+  <comorphism name="Propositional2CASL" source="Propositional" target="CASL" sourceSublogic="Prop" targetSublogic="FOL" is_inclusion="True" has_model_expansion="True" is_weakly_amalgamable="True" />
+  <comorphism name="Propositional2CommonLogic" source="Propositional" target="CommonLogic" sourceSublogic="Prop" targetSublogic="FirstOrder" is_inclusion="False" has_model_expansion="False" is_weakly_amalgamable="False" />
+  <comorphism name="Propositional2OWL2" source="Propositional" target="OWL" sourceSublogic="Prop" targetSublogic="NP-sROIQ-D|-|" is_inclusion="True" has_model_expansion="True" is_weakly_amalgamable="False" />
+  <comorphism name="Propositional2QBF" source="Propositional" target="QBF" sourceSublogic="Prop" targetSublogic="Prop" is_inclusion="True" has_model_expansion="True" is_weakly_amalgamable="True" />
+  <comorphism name="QBF2Propositional" source="QBF" target="Propositional" sourceSublogic="Prop" targetSublogic="Prop" is_inclusion="True" has_model_expansion="True" is_weakly_amalgamable="True" />
+  <comorphism name="RelScheme2CASL" source="RelScheme" target="CASL" sourceSublogic="" targetSublogic="SubPCFOL=" is_inclusion="True" has_model_expansion="False" is_weakly_amalgamable="False" />
+  <comorphism name="SoftFOL2CommonLogic" source="SoftFOL" target="CommonLogic" sourceSublogic="" targetSublogic="FirstOrder" is_inclusion="False" has_model_expansion="False" is_weakly_amalgamable="False" />
+  <comorphism name="THFP_P2THFP" source="THF" target="THF" sourceSublogic="THFP_P" targetSublogic="THFP" is_inclusion="False" has_model_expansion="True" is_weakly_amalgamable="False" />
+  <comorphism name="THFP_P_ST2THFP_P" source="THF" target="THF" sourceSublogic="THFP_ST_P" targetSublogic="THFP_P" is_inclusion="False" has_model_expansion="True" is_weakly_amalgamable="False" />
+  <comorphism name="THFP_ST2THF0_ST" source="THF" target="THF" sourceSublogic="THFP_ST" targetSublogic="THF0_ST" is_inclusion="False" has_model_expansion="True" is_weakly_amalgamable="False" />
+</LogicGraph>

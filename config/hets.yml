@@ -1,10 +1,11 @@
 # Hets environment. The first matching item in the lists is used.
 hets_path:
-  - /usr/lib/hets/hets
+  - /usr/bin/hets
   - ~/dev/hets/hets
   - /opt/local/bin/hets
   - ~/code/hets/hets
   - ~/ontohub/Hets/hets
+  - /Applications/Hets.app/Contents/Resources/hets
 hets_lib:
   - /usr/lib/hets/hets-lib
   - ~/dev/hets/lib

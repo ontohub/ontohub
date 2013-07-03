@@ -12,9 +12,10 @@ gem 'rdf-n3'
 # in production environments by default.
 group :assets do
   gem 'sass-rails',   '~> 3.2.3'
-  gem 'bootstrap-sass'
+  gem 'bootstrap-sass', "~> 2.3.1", git: "git://github.com/digineo/bootstrap-sass.git", branch: 'v2.3.1.0-with_javascript_fixes'
   gem 'coffee-rails', '~> 3.2.1'
   gem 'compass',      '~> 0.12.1'
+  gem 'font_awesome'
   gem 'jquery-rails'
   gem 'jquery-ui-rails'
   gem 'momentjs-rails'
@@ -24,6 +25,9 @@ group :assets do
 end
 
 gem 'haml-rails'
+
+# Project configuration
+gem 'rails_config'
 
 # Fancy Forms
 gem 'simple_form'
@@ -91,7 +95,7 @@ end
 
 group :production do
   gem 'god'
-  #gem 'newrelic_rpm'
+  gem 'exception_notification', '~> 2.6.1'
 end
 
 group :documentation do

@@ -12,9 +12,9 @@ module Ontology::Entities
       e = find_or_initialize_by_text(hash['text'])
 
       e.ontology = @association.owner
-      e.name       = hash['name']
+      e.name       = hash['name'] || hash['text']
       e.range      = hash['range']
-      e.kind       = hash['kind']
+      e.kind       = hash['kind'] || 'Undefined'
       e.updated_at = timestamp
       
       if e.range.to_s.include?(":")

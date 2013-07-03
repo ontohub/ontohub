@@ -1,4 +1,12 @@
 GIT
+  remote: git://github.com/digineo/bootstrap-sass.git
+  revision: 5a67304a90ac8e30e408f0553811eba65ed0096f
+  branch: v2.3.1.0-with_javascript_fixes
+  specs:
+    bootstrap-sass (2.3.1.0)
+      sass (~> 3.2)
+
+GIT
   remote: git://github.com/digineo/sunspot.git
   revision: 122f7c60207b9539903f06a66ce35a01cb1bf481
   specs:
@@ -11,14 +19,6 @@ GIT
       sunspot (= 2.0.0.pre.111215)
     sunspot_solr (2.0.0.pre.111215)
       escape (~> 0.0.4)
-
-GIT
-  remote: git://github.com/ontohub/thejit.git
-  revision: 2374603e7e329a9dd363077575d7060772faba36
-  specs:
-    thejit (0.1.0)
-      json
-      rails
 
 GEM
   remote: https://rubygems.org/
@@ -54,10 +54,8 @@ GEM
       activerecord (>= 3.0.0)
     addressable (2.3.3)
     arel (3.0.2)
-    backports (3.3.0)
+    backports (3.2.0)
     bcrypt-ruby (3.0.1)
-    bootstrap-sass (2.3.1.0)
-      sass (~> 3.2)
     bourne (1.4.0)
       mocha (~> 0.13.2)
     builder (3.0.4)
@@ -104,6 +102,8 @@ GEM
       warden (~> 1.2.1)
     erubis (2.7.0)
     escape (0.0.4)
+    exception_notification (2.6.1)
+      actionmailer (>= 3.0.4)
     execjs (1.4.0)
       multi_json (~> 1.0)
     factory_girl (4.2.0)
@@ -115,11 +115,12 @@ GEM
       i18n (~> 0.5)
     fattr (2.2.1)
     ffi (1.6.0)
-    foreigner (1.4.1)
+    font_awesome (3.2.1)
+    foreigner (1.4.0)
       activerecord (>= 3.0.0)
     fssm (0.2.10)
     god (0.13.2)
-    haml (4.0.2)
+    haml (4.0.1)
       tilt
     haml-rails (0.4)
       actionpack (>= 3.1, < 4.1)
@@ -171,7 +172,7 @@ GEM
     options (2.3.0)
       fattr
     orm_adapter (0.4.0)
-    pg (0.15.1)
+    pg (0.15.0)
     polyglot (0.3.3)
     pr_geohash (1.0.0)
     progress_bar (1.0.0)
@@ -201,6 +202,8 @@ GEM
       activesupport (>= 3.0)
       choice (~> 0.1.6)
       ruby-graphviz (~> 1.0.4)
+    rails_config (0.3.2)
+      activesupport (>= 3.0)
     railties (3.2.13)
       actionpack (= 3.2.13)
       activesupport (= 3.2.13)
@@ -282,7 +285,7 @@ GEM
       polyglot
       polyglot (>= 0.3.1)
     tzinfo (0.3.37)
-    uglifier (2.0.1)
+    uglifier (1.3.0)
       execjs (>= 0.3.0)
       multi_json (~> 1.0, >= 1.0.2)
     vegas (0.1.11)
@@ -299,7 +302,7 @@ PLATFORMS
 
 DEPENDENCIES
   acts_as_tree
-  bootstrap-sass
+  bootstrap-sass (~> 2.3.1)!
   cancan (~> 1.6.7)
   capistrano
   capybara
@@ -309,8 +312,10 @@ DEPENDENCIES
   compass (~> 0.12.1)
   database_cleaner
   devise (~> 2.0)
+  exception_notification (~> 2.6.1)
   factory_girl_rails
   faker (~> 1.1.2)
+  font_awesome
   foreigner
   god
   haml-rails
@@ -329,6 +334,7 @@ DEPENDENCIES
   quiet_assets
   rails (~> 3.2.13)
   rails-erd
+  rails_config
   rdf
   rdf-n3
   rdf-rdfxml
@@ -344,7 +350,6 @@ DEPENDENCIES
   strip_attributes (~> 1.0)
   sunspot_rails!
   sunspot_solr!
-  thejit!
   therubyracer
   uglifier (>= 1.0.3)
   yard
