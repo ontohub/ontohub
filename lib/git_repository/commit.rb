@@ -56,6 +56,7 @@ module GitRepository::Commit
     #commit = build_commit(userinfo, push, rugged_commit)
     #commit.save
     block.call(commit_oid) if block_given?
+
     commit_oid
   rescue => e
     if old_head
