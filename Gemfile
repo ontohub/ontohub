@@ -2,7 +2,7 @@ source 'https://rubygems.org'
 
 gem 'rails', '~> 3.2.13'
 gem 'pg'
-gem 'mysql', '~> 2.8.1'
+# gem 'mysql', '~> 2.8.1'
 gem 'foreigner'
 gem 'rdf'
 gem 'rdf-rdfxml'

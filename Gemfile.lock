@@ -20,6 +20,14 @@ GIT
     sunspot_solr (2.0.0.pre.111215)
       escape (~> 0.0.4)
 
+GIT
+  remote: git://github.com/ontohub/thejit.git
+  revision: 2374603e7e329a9dd363077575d7060772faba36
+  specs:
+    thejit (0.1.0)
+      json
+      rails
+
 GEM
   remote: https://rubygems.org/
   specs:
@@ -160,7 +168,6 @@ GEM
       railties (>= 3.1)
     mono_logger (1.0.0)
     multi_json (1.7.2)
-    mysql (2.8.1)
     net-scp (1.1.0)
       net-ssh (>= 2.6.5)
     net-sftp (2.1.1)
@@ -327,7 +334,6 @@ DEPENDENCIES
   launchy
   mocha
   momentjs-rails
-  mysql (~> 2.8.1)
   nokogiri (~> 1.5.0)
   pg
   progress_bar
@@ -350,6 +356,7 @@ DEPENDENCIES
   strip_attributes (~> 1.0)
   sunspot_rails!
   sunspot_solr!
+  thejit!
   therubyracer
   uglifier (>= 1.0.3)
   yard
