@@ -11,31 +11,39 @@ class GraphDataFetcher
   end
 
   def fetch
-    stmt = build_statement
-    nodes = @target.where("\"#{@target_table}\".\"id\" IN #{stmt}")
+    node_stmt = build_statement(:node)
+    nodes = @target.where("\"#{@target_table}\".\"id\" IN #{node_stmt}")
+    edge_stmt = build_statement(:edge)
+    edges = @source.where("\"#{@source_table}\".\"id\" IN #{edge_stmt}")
+    [nodes, edges]
   end
 
   private
-  def build_statement
+  def build_statement(type = :node)
+    type = type.to_s
     <<-SQL
     (
     #{init_statement}
     #{gather_statement}
-    SELECT "loop_#{@depth-1}"."id" FROM "loop_#{@depth-1}"
+    SELECT "loop_#{@depth-1}"."#{type}_id" FROM "loop_#{@depth-1}"
     )
     SQL
   end
 
   def init_statement
     <<-SQL
-    WITH "loop_0" AS (SELECT "ids"."id" FROM
-      (SELECT ("#{@source_table}"."source_id") AS id FROM "#{@source_table}"
-    WHERE ("#{@source_table}"."source_id" = #{@center.id} OR
-      "#{@source_table}"."target_id" = #{@center.id})
-    UNION
-    SELECT ("#{@source_table}"."target_id") AS id FROM "#{@source_table}"
-    WHERE ("#{@source_table}"."source_id" = #{@center.id} OR
-      "#{@source_table}"."target_id" = #{@center.id})) AS ids)
+    WITH "loop_0" AS (SELECT "ids".* FROM
+      (SELECT ("#{@source_table}"."source_id") AS node_id,
+        ("#{@source_table}"."id") AS edge_id
+        FROM "#{@source_table}"
+        WHERE ("#{@source_table}"."source_id" = #{@center.id} OR
+          "#{@source_table}"."target_id" = #{@center.id})
+      UNION
+      SELECT ("#{@source_table}"."target_id") AS node_id,
+        ("#{@source_table}"."id") AS edge_id
+        FROM "#{@source_table}"
+        WHERE ("#{@source_table}"."source_id" = #{@center.id} OR
+          "#{@source_table}"."target_id" = #{@center.id})) AS ids)
     SQL
   end
 
@@ -44,15 +52,19 @@ class GraphDataFetcher
       before = depth - 1
       stmt = <<-SQL
       "loop_#{depth}" AS (
-      SELECT ("#{@source_table}"."source_id") AS id FROM "#{@source_table}"
+      SELECT ("#{@source_table}"."source_id") AS node_id,
+        ("#{@source_table}"."id") AS edge_id
+        FROM "#{@source_table}"
       INNER JOIN "loop_#{before}"
-      ON ("#{@source_table}"."source_id" = "loop_#{before}"."id" OR
-        "#{@source_table}"."target_id" = "loop_#{before}"."id")
+      ON ("#{@source_table}"."source_id" = "loop_#{before}"."node_id" OR
+        "#{@source_table}"."target_id" = "loop_#{before}"."node_id")
       UNION
-      SELECT ("#{@source_table}"."target_id") AS id FROM "#{@source_table}"
+      SELECT ("#{@source_table}"."target_id") AS node_id,
+        ("#{@source_table}"."id") AS edge_id
+        FROM "#{@source_table}"
       INNER JOIN "loop_#{before}"
-      ON ("#{@source_table}"."source_id" = "loop_#{before}"."id" OR
-        "#{@source_table}"."target_id" = "loop_#{before}"."id"))
+      ON ("#{@source_table}"."source_id" = "loop_#{before}"."node_id" OR
+        "#{@source_table}"."target_id" = "loop_#{before}"."node_id"))
       SQL
     end
 
