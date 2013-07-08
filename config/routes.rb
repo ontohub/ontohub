@@ -11,6 +11,7 @@ Ontohub::Application.routes.draw do
   
   resources :logics do
     resources :supports, :only => [:create, :update, :destroy, :index]
+    resources :graphs, :only => [:index]
   end
   
   resources :languages do
