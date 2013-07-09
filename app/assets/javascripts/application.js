@@ -19,6 +19,7 @@
 // Other Plugins
 //= require moment
 //= require jit
+//= require d3
 
 // ----------------------------------------------
 // Application
