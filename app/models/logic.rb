@@ -62,24 +62,7 @@ class Logic < ActiveRecord::Base
     LogicMapping.find_all_by_target_id self.id
   end
   
-  def generate_graph(depth = 3)
-    children = Array.new
-    self.mappings_from.each do |mapping|
-      children << mapping.target.generate_graph(depth - 1)
-    end unless depth < 1
-    
-    self.mappings_to.each do |mapping|
-      children << mapping.source.generate_graph(depth - 1)
-    end unless depth < 1
-    
-    return {
-        id: self.id,
-        name:self.name, 
-        children:children.uniq, 
-        data:{band:"",relation:"root"}
-      }
-  end
-  
+
 private
   def add_permission
     permissions.create! :subject => self.user, :role => 'owner' if self.user
