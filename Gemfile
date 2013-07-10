@@ -78,7 +78,7 @@ gem 'ruby-graphviz', "~> 1.0.8"
 gem "faker", "~> 1.1.2"
 
 group :test do
-  gem 'mocha'
+  gem 'mocha', require: 'mocha/setup'
   gem 'shoulda'
   gem "shoulda_routing_macros", "~> 0.1.2"
   gem "factory_girl_rails"
