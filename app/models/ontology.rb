@@ -27,7 +27,7 @@ class Ontology < ActiveRecord::Base
 
   scope :search, ->(query) { where "iri #{connection.ilike_operator} :term OR name #{connection.ilike_operator} :term", :term => "%" << query << "%" }
   scope :done_sorted_by_entities_count, where(state: 'done').order('ontologies.entities_count desc')
-  scope :list, order('ontologies.entities_count desc')
+  scope :list, order('ontologies.state asc, ontologies.entities_count desc')
 
   def to_s
     name? ? name : iri
