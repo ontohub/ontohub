@@ -44,9 +44,6 @@ Ontohub::Application.routes.draw do
   get 'autocomplete' => 'autocomplete#index'
   get 'search'       => 'search#index'
 
-  resources :categories, :only => :show
-  match 'categories' => 'categories#show'
-
   root :to => 'home#show'
 
 end
