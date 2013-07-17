@@ -7,6 +7,7 @@ namespace :logicgraph do
       puts "Validation-Error: #{e.record} (#{e.message})"
     end
   end
+  desc 'Import logic graph.'
   task :import => :environment do
     @user = User.find_all_by_admin(true).first
     @user = User.find_by_email! ENV['EMAIL'] unless ENV['EMAIL'].nil?

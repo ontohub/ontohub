@@ -8,6 +8,7 @@ namespace :import do
   end
 
   namespace :hets do
+    desc 'Import the hets library.'
     task :lib => :environment do
       user = User.find_all_by_admin(true).first
       user = User.find_by_email! ENV['EMAIL'] unless ENV['EMAIL'].nil?
