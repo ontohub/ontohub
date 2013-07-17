@@ -37,7 +37,7 @@ team = Team.create! \
 end
 
 # initially import logics
-Rake::Task['logicgraph:import'].invoke
+Rake::Task['import:logicgraph'].invoke
 
 # Import ontologies
 Dir["#{Rails.root}/test/fixtures/ontologies/*/*.{casl,clf,clif,owl}"].each do |file|
