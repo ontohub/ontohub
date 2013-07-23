@@ -44,5 +44,19 @@ class Ontology < ActiveRecord::Base
   def symbols_count
     entities_count
   end
-  
+
+  def active_version
+    return self.ontology_version if self.state == 'done'
+    OntologyVersion.
+      where(ontology_id: self, state: 'done').
+      order('number DESC').
+      first
+  end
+
+  def self.with_activity
+    activity = "done"
+    includes(:versions).
+    where("ontologies.id IN (SELECT ontology_id FROM ontology_versions WHERE state = '#{activity}')")
+  end
+
 end
