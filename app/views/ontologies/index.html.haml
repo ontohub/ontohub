@@ -17,4 +17,7 @@
 
 = pagination do
   %ul.ontologies
-    = render collection.list
+    - if admin?
+      = render collection.list
+    - else
+      = render collection.with_activity
