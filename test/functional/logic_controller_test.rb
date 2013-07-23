@@ -13,7 +13,6 @@ class LogicsControllerTest < ActionController::TestCase
       end
       
       should respond_with :success
-      should assign_to :logic
       should render_template :show
       should_not set_the_flash
     end
@@ -25,8 +24,6 @@ class LogicsControllerTest < ActionController::TestCase
       end
       
       should respond_with :success
-      should assign_to :mappings_to
-      should assign_to :mappings_from
       should render_template :show
       should_not set_the_flash
     end
@@ -38,7 +35,6 @@ class LogicsControllerTest < ActionController::TestCase
     end
     
     should respond_with :success
-    should assign_to :logics
     should render_template :index
     should_not set_the_flash
   end
