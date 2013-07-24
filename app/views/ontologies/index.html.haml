@@ -15,9 +15,9 @@
     for
     %strong= @search
 
+%ul.ontologies#in_process
+  = render collection.in_process(admin? ? nil : current_user)
+
 = pagination do
   %ul.ontologies
-    - if admin?
-      = render collection.list
-    - else
-      = render collection.with_active_version
+    = render collection.with_active_version
