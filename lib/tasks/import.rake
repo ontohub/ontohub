@@ -16,9 +16,9 @@ namespace :import do
         Logicgraph.import(nil)
       end
 
-      desc 'Import a logic graph from http message directory.'
-      task :message => :environment do
-        Logicgraph.import('message/LogicGraph.rdf')
+      desc 'Import a logic graph from http transfer directory.'
+      task :transfer => :environment do
+        Logicgraph.import('tmp/transfer/LogicGraph.rdf')
       end
 
     end

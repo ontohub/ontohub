@@ -9,7 +9,7 @@ namespace :export do
 
       desc 'Export the logic graph to the http message directory.'
       task :message => :environment do
-        Logicgraph.export('message/LogicGraph.xml')
+        Logicgraph.export('tmp/transfer/LogicGraph.xml')
       end
 
     end
