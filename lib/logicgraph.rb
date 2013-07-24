@@ -1,4 +1,4 @@
-# This module imports and exports the logic graph as an owl ontology.
+# This module imports and exports the logic graph as an rdf ontology.
 #
 # Author::    Daniel Couto Vale (mailto:danielvale@uni-bremen.de)
 # Copyright:: Copyright (c) 2013 Bremen University, SFBTR8
