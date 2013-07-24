@@ -64,12 +64,13 @@ class Ontology < ActiveRecord::Base
   end
 
   def self.in_process(user=nil)
+    return [] if user.nil?
     state = "done"
-    stmt = ['state != ?', state]
-    if user
+    stmt = ['state != ?', state] if user == true
+    if user.is_a?(User)
       stmt = ['state != ? AND ' +
         'ontologies.id IN (SELECT ontology_id FROM ontology_versions ' +
-        'WHERE user_id = ?', state, user.id]
+        'WHERE user_id = ?)', state, user.id]
     end
     includes(:versions).
     where(stmt)

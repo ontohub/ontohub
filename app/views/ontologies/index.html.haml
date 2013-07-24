@@ -16,7 +16,7 @@
     %strong= @search
 
 %ul.ontologies#in_process
-  = render collection.in_process(admin? ? nil : current_user)
+  = render collection.in_process(admin? || current_user)
 
 = pagination do
   %ul.ontologies
