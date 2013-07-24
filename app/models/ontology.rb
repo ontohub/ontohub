@@ -53,10 +53,14 @@ class Ontology < ActiveRecord::Base
       first
   end
 
-  def self.with_activity
-    activity = "done"
+  def self.with_active_version
+    state = "done"
     includes(:versions).
-    where("ontologies.id IN (SELECT ontology_id FROM ontology_versions WHERE state = '#{activity}')")
+    where([
+      "ontologies.id IN " +
+      "(SELECT ontology_id FROM ontology_versions WHERE state = ?)",
+      state
+    ])
   end
 
 end
