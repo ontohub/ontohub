@@ -88,6 +88,18 @@ class TripleStore
     return entities(@objectMap[subject], predicate)
   end
 
+  # Prints out the statements of the store
+  #
+  def printStatements()
+    @objectMap.keys.each do |subject|
+      @objectMap[subject].keys.each do |predicate|
+        @objectMap[subject][predicate].each do |object|
+          print (subject + "\t" + predicate + "\t" + object + "\n")
+        end
+      end
+    end
+  end
+
   private
 
   # Lists the entities with the given restrictions

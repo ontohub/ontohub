@@ -73,6 +73,9 @@
         <ObjectProperty IRI="#logicgraphProperty"/>
     </Declaration>
     <Declaration>
+        <DataProperty IRI="#createdAt"/>
+    </Declaration>
+    <Declaration>
         <DataProperty IRI="#hasDescription"/>
     </Declaration>
     <Declaration>
@@ -82,7 +85,13 @@
         <DataProperty IRI="#logicgraphDataProperty"/>
     </Declaration>
     <Declaration>
+        <DataProperty IRI="#updatedAt"/>
+    </Declaration>
+    <Declaration>
         <NamedIndividual IRI="#AcademicLiterature"/>
+    </Declaration>
+    <Declaration>
+        <NamedIndividual IRI="#ExLogic"/>
     </Declaration>
     <Declaration>
         <NamedIndividual IRI="#ISOStandard"/>
@@ -296,6 +305,10 @@
         <NamedIndividual IRI="#AcademicLiterature"/>
     </ClassAssertion>
     <ClassAssertion>
+        <Class IRI="#Logic"/>
+        <NamedIndividual IRI="#ExLogic"/>
+    </ClassAssertion>
+    <ClassAssertion>
         <Class IRI="#StandardizationStatus"/>
         <NamedIndividual IRI="#ISOStandard"/>
     </ClassAssertion>
@@ -315,6 +328,21 @@
         <Class IRI="#StandardizationStatus"/>
         <NamedIndividual IRI="#W3CWorkingGroupNote"/>
     </ClassAssertion>
+    <ObjectPropertyAssertion>
+        <ObjectProperty IRI="#hasStandardizationStatus"/>
+        <NamedIndividual IRI="#ExLogic"/>
+        <NamedIndividual IRI="#Unofficial"/>
+    </ObjectPropertyAssertion>
+    <DataPropertyAssertion>
+        <DataProperty IRI="#createdAt"/>
+        <NamedIndividual IRI="#ExLogic"/>
+        <Literal datatypeIRI="&xsd;dateTimeStamp">1970-01-01T00:00:00Z+00:00</Literal>
+    </DataPropertyAssertion>
+    <DataPropertyAssertion>
+        <DataProperty IRI="#hasName"/>
+        <NamedIndividual IRI="#ExLogic"/>
+        <Literal datatypeIRI="&xsd;string">Example Ontology</Literal>
+    </DataPropertyAssertion>
     <SubObjectPropertyOf>
         <ObjectProperty IRI="#hasProjection"/>
         <ObjectProperty IRI="#logicgraphProperty"/>
@@ -344,6 +372,10 @@
         <Class IRI="#StandardizationStatus"/>
     </ObjectPropertyRange>
     <SubDataPropertyOf>
+        <DataProperty IRI="#createdAt"/>
+        <DataProperty IRI="#logicgraphDataProperty"/>
+    </SubDataPropertyOf>
+    <SubDataPropertyOf>
         <DataProperty IRI="#hasDescription"/>
         <DataProperty IRI="#logicgraphDataProperty"/>
     </SubDataPropertyOf>
@@ -351,6 +383,14 @@
         <DataProperty IRI="#hasName"/>
         <DataProperty IRI="#logicgraphDataProperty"/>
     </SubDataPropertyOf>
+    <SubDataPropertyOf>
+        <DataProperty IRI="#updatedAt"/>
+        <DataProperty IRI="#logicgraphDataProperty"/>
+    </SubDataPropertyOf>
+    <DataPropertyRange>
+        <DataProperty IRI="#createdAt"/>
+        <Datatype abbreviatedIRI="xsd:dateTimeStamp"/>
+    </DataPropertyRange>
     <DataPropertyRange>
         <DataProperty IRI="#hasDescription"/>
         <Datatype abbreviatedIRI="xsd:string"/>
@@ -358,6 +398,10 @@
     <DataPropertyRange>
         <DataProperty IRI="#hasName"/>
         <Datatype abbreviatedIRI="xsd:string"/>
+    </DataPropertyRange>
+    <DataPropertyRange>
+        <DataProperty IRI="#updatedAt"/>
+        <Datatype abbreviatedIRI="xsd:dateTimeStamp"/>
     </DataPropertyRange>
     <AnnotationAssertion>
         <AnnotationProperty abbreviatedIRI="rdfs:comment"/>
