@@ -40,7 +40,7 @@ gem 'inherited_resources', '~> 1.4.0'
 gem 'has_scope'
 
 # XML Parser
-gem 'nokogiri', '~> 1.5.0'
+gem 'nokogiri', '~> 1.6'
 
 # Authentication
 gem 'devise', '~> 2.0'
