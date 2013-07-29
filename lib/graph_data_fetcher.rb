@@ -1,13 +1,25 @@
 class GraphDataFetcher
 
+  MAPPINGS = {
+    Logic => LogicMapping,
+    Ontology => Link,
+  }
+
   def initialize(depth: 3,
-                 source: LogicMapping,
+                 source: nil,
                  center: nil,
                  target: center.class)
-    @source_table, @target_table = source.table_name, target.table_name
-    @source, @target = source, target
     @center = center
     @depth = depth
+    @source, @target = source, target
+    determine_source(target) unless source
+    @source_table, @target_table = @source.table_name, @target.table_name
+  end
+
+  def determine_source(target)
+    source = MAPPINGS[target]
+    raise UnknownGraphMappingError unless source
+    @source = source
   end
 
   def fetch
@@ -80,3 +92,5 @@ class GraphDataFetcher
   end
 
 end
+
+class UnknownGraphMappingError < RuntimeError; end
