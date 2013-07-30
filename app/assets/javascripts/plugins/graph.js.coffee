@@ -84,7 +84,9 @@ drawGraph = (data) ->
     $("div#d3_context").html("Node: <b>#{$(this).data('label')}</b>")
 
   node.append("circle").
-    attr("r", 7)
+    attr("r", (d) ->
+      return 10 if d.is_center
+      7)
 
   node.append("text").
     attr("x", 12).
