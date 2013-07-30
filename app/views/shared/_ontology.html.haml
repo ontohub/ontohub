@@ -13,8 +13,9 @@
     %small#ontology-state{ class: resource.state, 'data-uri' => url_for(resource) }
       = status resource
 
-%div.btn-group{'style' => 'display: inline-block'}
+%div.btn-group{'style' => 'display: inline-block; position:absolute; right:10%; margin-top:10px; margin-bottom:10px;'}
   %a.btn.btn-mini.dropdown-toggle{'href' => '#', 'data-toggle' => 'dropdown'}
+    Action
     %span.caret
   %ul.dropdown-menu
     -if can? :edit, resource
