@@ -14,7 +14,8 @@ d3NodesEdges = (data) ->
   nodes = []
   links = {}
   for node in data.nodes
-    nodes.push({label: node.name})
+    nodes.push
+      info: node
     links[node.id] = nodes.length - 1
   edges = []
   for edge in data.edges
@@ -85,7 +86,8 @@ drawGraph = (data) ->
   node.append("text").
     attr("x", 12).
     attr("dy", ".35em").
-    text((d) -> return d.label )
+    text((d) ->
+      return d.info.name )
 
   tick = ->
     path.attr("d", (d) ->
