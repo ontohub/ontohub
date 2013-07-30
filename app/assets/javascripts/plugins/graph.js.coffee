@@ -13,9 +13,11 @@ $.get("#{window.location.href}/graphs", (data) ->
 d3NodesEdges = (data) ->
   nodes = []
   links = {}
+  center = data.center
   for node in data.nodes
     nodes.push
       info: node
+      is_center: (node.id == center.id)
     links[node.id] = nodes.length - 1
   edges = []
   for edge in data.edges
@@ -38,9 +40,10 @@ drawGraph = (data) ->
   force = d3.layout.force()
   force.nodes(nodes)
   force.links(edges)
-  force.size([width, height]).
-    linkDistance(distance).
-    charge(force_charge)
+  force.size([width, height])
+    .gravity(0.05)
+    .linkDistance(distance)
+    .charge(force_charge)
   force.start()
 
   # Arrows
@@ -90,13 +93,15 @@ drawGraph = (data) ->
       return d.info.name )
 
   tick = ->
+    node.attr("transform", (d) ->
+      if d.is_center
+        d.x = width/2
+        d.y = height/2
+      "translate(#{d.x},#{d.y})")
     path.attr("d", (d) ->
       dx = d.target.x - d.source.x
       dy = d.target.y - d.source.y
       dr = Math.sqrt(dx*dx + dy*dy)*2
       "M#{d.source.x},#{d.source.y}" +
       "A#{dr},#{dr} 0 0,1 #{d.target.x},#{d.target.y}")
-    node.attr("transform", (d) ->
-      "translate(#{d.x},#{d.y})")
-
   force.on('tick', tick)
