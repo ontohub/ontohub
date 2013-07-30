@@ -26,6 +26,14 @@ d3NodesEdges = (data) ->
       target: links[edge.target_id])
   [nodes,edges]
 
+nodeDisplayName = (node) ->
+  name = node.info.name
+  matches = name.match(/^[^.]+\.?/)
+  if matches.length
+    matches[0]
+  else
+    name
+
 
 drawGraph = (data) ->
   nodes_edges = d3NodesEdges(data)
@@ -108,7 +116,7 @@ drawGraph = (data) ->
     attr("x", 12).
     attr("dy", ".35em").
     text((d) ->
-      return d.info.name )
+      nodeDisplayName(d))
 
   tick = ->
     node.attr("transform", (d) ->
