@@ -12,6 +12,8 @@ class Link < ActiveRecord::Base
   belongs_to :target, class_name: 'Ontology'
   belongs_to :logic_mapping
   belongs_to :current_version
+  has_many :entity_mappings
+
   has_many :versions,
       :dependent  => :destroy,
       :order      => :version_number,
