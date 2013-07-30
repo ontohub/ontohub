@@ -21,9 +21,10 @@ d3NodesEdges = (data) ->
     links[node.id] = nodes.length - 1
   edges = []
   for edge in data.edges
-    edges.push(
+    edges.push
       source: links[edge.source_id]
-      target: links[edge.target_id])
+      target: links[edge.target_id]
+      info: edge
   [nodes,edges]
 
 nodeDisplayName = (node) ->
@@ -105,6 +106,8 @@ drawGraph = (data) ->
       "<li><span>Mapping:</span> "+
       "<b>#{path_data.source.info.name} --> "+
       "#{path_data.target.info.name}</b></li>"+
+      "<li><span>exactness:</span> #{path_data.info.exactness}</li>"+
+      "<li><span>faithfulness:</span> #{path_data.info.faithfulness}</li>"+
       "</ul>")
 
   node.append("circle").
