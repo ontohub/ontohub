@@ -19,10 +19,9 @@ class OntologiesControllerTest < ActionController::TestCase
         setup do
           get :index, repository_id: @repository.path
         end
-        
+
         should respond_with :success
         should render_template :index
-        should render_template 'ontologies/_ontology'
       end
       
       context 'with search' do
@@ -35,7 +34,6 @@ class OntologiesControllerTest < ActionController::TestCase
         
         should respond_with :success
         should render_template :index
-        should render_template 'ontologies/_ontology'
       end
     end
     
