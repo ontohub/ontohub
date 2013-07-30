@@ -75,13 +75,29 @@ drawGraph = (data) ->
 
   $("g.node").on "click", (e) ->
     e.preventDefault()
+    node_data = d3.select(this).data()[0]
     if window.selected_node != this
       $(window.selected_node).find("circle").css("stroke", '')
       $(window.selected_node).find("circle").css("fill", '')
     window.selected_node = this
     $(this).find("circle").css("stroke", "#f00")
     $(this).find("circle").css("fill", "#f00")
-    $("div#d3_context").html("Node: <b>#{$(this).data('label')}</b>")
+    $("div#d3_context").html(
+      "<ul>"+
+      "<li><span>Node:</span> <b>#{node_data.info.name}</b></li>"+
+      "<li><span>IRI:</span> #{node_data.info.iri}</li>"+
+      "</ul>")
+
+  $("g > path").on "click", (e) ->
+    e.preventDefault()
+    path_data = d3.select(this).data()[0]
+    console.log(path_data)
+    $("div#d3_context").html(
+      "<ul>"+
+      "<li><span>Mapping:</span> "+
+      "<b>#{path_data.source.info.name} --> "+
+      "#{path_data.target.info.name}</b></li>"+
+      "</ul>")
 
   node.append("circle").
     attr("r", (d) ->
