@@ -6,7 +6,9 @@ distance = 60
 force_charge = -400
 colors = d3.scale.category10()
 
-$.get("#{window.location.href}/graphs", (data) ->
+uri = window.location.href
+graphs_uri = uri.replace(/\?[^/]+$/, "/graphs$&")
+$.get(graphs_uri, (data) ->
     drawGraph(data)
   , "json")
 
@@ -100,7 +102,6 @@ drawGraph = (data) ->
   $("g > path").on "click", (e) ->
     e.preventDefault()
     path_data = d3.select(this).data()[0]
-    console.log(path_data)
     $("div#d3_context").html(
       "<ul>"+
       "<li><span>Mapping:</span> "+
