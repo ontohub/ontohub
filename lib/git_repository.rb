@@ -25,7 +25,7 @@ class GitRepository
     @repo.empty?
   end
 
-  def path_exists?(commit_oid=nil, url='')
+  def path_exists?(url, commit_oid=nil)
     rugged_commit = get_commit(commit_oid)
     if !rugged_commit && url.empty?
       true
@@ -34,7 +34,7 @@ class GitRepository
     end
   end
 
-  def get_file(commit_oid=nil, url='')
+  def get_file(url, commit_oid=nil)
     rugged_commit = get_commit(commit_oid)
     if !rugged_commit && url.empty?
       nil
@@ -46,7 +46,7 @@ class GitRepository
   def get_url(oid=nil, url=nil)
     url ||= ''
     url = url[0..-2] if(url[-1] == '/')
-    raise URLNotFoundError.new unless path_exists?(oid, url)
+    raise URLNotFoundError.new unless path_exists?(url, oid)
 
     url
   end

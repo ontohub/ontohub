@@ -30,7 +30,7 @@ class RepositoryTest < ActiveSupport::TestCase
         @file_path = '/tmp/ontohub/test/git_repository/save_file.txt'
         @target_path = 'save_file.clif'
         @message = 'test message'
-        @content = '(Cat x)'
+        @content = "(Cat x)\n"
 
         # create directory if it doesn't exist
         dir = File.dirname(@file_path)
@@ -50,7 +50,7 @@ class RepositoryTest < ActiveSupport::TestCase
 
       context 'that doesn\'t exist' do
         setup do
-          @commit_oid = @repository.save_file(@file_path, @target_path, @message, @user)
+          @version = @repository.save_file(@file_path, @target_path, @message, @user)
         end
 
         should 'create the file in the git repository' do
@@ -58,7 +58,7 @@ class RepositoryTest < ActiveSupport::TestCase
         end
 
         should 'create the file with correct contents in the git repository' do
-          assert_equal @repository.git.get_file(@target_path)[:content], @content
+          assert_equal @content, @repository.git.get_file(@target_path)[:content]
         end
 
         should 'create a new ontology with a default name' do
@@ -69,7 +69,7 @@ class RepositoryTest < ActiveSupport::TestCase
         should 'create a new ontology with only one version pointing to the commit' do
           o = @repository.ontologies.first
           assert_equal o.versions.count, 1
-          assert_equal o.versions.first[:commit_oid], @commit_oid
+          assert_equal o.versions.first[:commit_oid], @version.commit_oid
         end
 
         should 'create a new ontology with only one version belonging to the right user' do
@@ -90,7 +90,8 @@ class RepositoryTest < ActiveSupport::TestCase
         end
 
         should 'create a new ontology version' do
-          flunk 'not implemented the test yet'
+          ontology = @repository.ontologies.where(path: @target_path).first!
+          assert_equal 2, ontology.versions.count
         end
       end
     end

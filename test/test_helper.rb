@@ -4,6 +4,13 @@ require 'rails/test_help'
 
 class ActiveSupport::TestCase
   # Add more helper methods to be used by all tests here...
+  
+  setup do
+    # clean git repositories
+    root = Ontohub::Application.config.git_root
+    FileUtils.rmtree root
+  end
+
 end
 
 # for devise

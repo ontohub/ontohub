@@ -54,10 +54,10 @@ class GitRepositoryTest < ActiveSupport::TestCase
 
       should 'create single commit of a file' do
         @repository.commit_file(@userinfo, @content, @filepath, @message)
-        assert @repository.path_exists?(nil, @filepath)
-        assert_equal @repository.get_file(nil, @filepath)[:name], @filepath.split('/')[-1]
-        assert_equal @repository.get_file(nil, @filepath)[:content], @content
-        assert_equal @repository.get_file(nil, 'path/file.txt')[:mime_type], Mime::Type.lookup('text/plain')
+        assert @repository.path_exists?(@filepath)
+        assert_equal @repository.get_file(@filepath)[:name], @filepath.split('/')[-1]
+        assert_equal @repository.get_file(@filepath)[:content], @content
+        assert_equal @repository.get_file('path/file.txt')[:mime_type], Mime::Type.lookup('text/plain')
         assert_equal @repository.commit_message, @message
         assert_equal @repository.commit_author[:name], @userinfo[:name]
         assert_equal @repository.commit_author[:email], @userinfo[:email]
@@ -68,7 +68,7 @@ class GitRepositoryTest < ActiveSupport::TestCase
       should 'delete a file' do
         @repository.commit_file(@userinfo, @content, @filepath, @message)
         @repository.delete_file(@userinfo, @filepath)
-        assert !@repository.path_exists?(nil, @filepath)
+        assert !@repository.path_exists?(@filepath)
       end
 
       should 'overwrite a file' do
@@ -77,8 +77,8 @@ class GitRepositoryTest < ActiveSupport::TestCase
         @repository.commit_file(@userinfo, @content, @filepath, @message)
         first_commit_oid = @repository.head_oid
         @repository.commit_file(@userinfo, content2, @filepath, message2)
-        assert @repository.path_exists?(nil, @filepath)
-        assert_equal @repository.get_file(nil, @filepath)[:content], content2
+        assert @repository.path_exists?(@filepath)
+        assert_equal @repository.get_file(@filepath)[:content], content2
         assert_equal @repository.commit_message(@repository.head_oid), message2
         assert_not_equal first_commit_oid, @repository.head_oid
       end
@@ -178,22 +178,6 @@ class GitRepositoryTest < ActiveSupport::TestCase
         }]
       end
 
-
-      should 'read the right number of contents in the root folder after adding the third file' do
-        assert_equal @repository.folder_contents(@commit_add3).size, 2
-      end
-
-      should 'read the right contents in the root folder after adding the third file' do
-        assert_equal @repository.folder_contents(@commit_add3), [{
-          type: :dir,
-          name: @subfolder,
-          path: @subfolder
-        },{
-          type: :file,
-          name: @filepath3.split('/')[-1],
-          path: @filepath3
-        }]
-      end
 
       should 'read the right number of contents in the root folder after adding the third file' do
         assert_equal @repository.folder_contents(@commit_add3).size, 2

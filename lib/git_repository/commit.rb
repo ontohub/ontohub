@@ -23,49 +23,47 @@ module GitRepository::Commit
       entry = {
         type: :blob,
         name: nil,
-        oid: Rugged::Blob.create(@repo, file_contents),
+        oid: @repo.write(file_contents, :blob),
         content: file_contents,
-        filemode: 33188
+        filemode: 0100644
       }
     end
 
     # TreeBuilder
-    if @repo.empty?
-      old_tree = nil
-    else
-      old_tree = head.tree
-    end
+    old_tree = @repo.empty? ? nil : head.tree
+    tree     = build_tree(entry, old_tree, target_path.split('/'))
 
-    tree = build_tree(entry, old_tree, target_path.split('/'))
-
-    userinfo.reverse_merge! time: Time.now
+    userinfo[:time] ||= Time.now
+    
     # Commit Sha
-    commit_oid = Rugged::Commit.create(@repo, author: userinfo,
-      message: message, committer: userinfo, parents: commit_parents, tree: tree)
+    commit_oid = Rugged::Commit.create @repo,
+      author:    userinfo,
+      message:   message,
+      committer: userinfo,
+      parents:   commit_parents,
+      tree:      tree
+    
     rugged_commit = @repo.lookup(commit_oid)
 
     if @repo.empty?
       ref = Rugged::Reference.create(@repo, 'refs/heads/master', commit_oid)
     else
-      @repo.head.target = commit_oid
+      @repo.head.set_target commit_oid
     end
 
-    # TODO: Use those model operations in the correct place:
-    #touch
-    #push = build_push(userinfo)
-    #commit = build_commit(userinfo, push, rugged_commit)
-    #commit.save
     block.call(commit_oid) if block_given?
 
     commit_oid
+=begin
   rescue => e
     if old_head
-      @repo.head.target = old_head
+      @repo.head.set_target old_head
     else
       @repo.head.delete!
     end
 
     raise e
+=end
   end
 
 
@@ -136,17 +134,6 @@ module GitRepository::Commit
       [head_oid]
     end
   end
-
-  def build_commit(userinfo, push, rugged_commit)
-    Commit.new(author_email: rugged_commit.author[:email], author_name: rugged_commit.author[:name], author_time: rugged_commit.author[:time],
-      committer_email: rugged_commit.committer[:email], committer_name: rugged_commit.committer[:name], committer_time: rugged_commit.committer[:time],
-      push: push, commit_hash: rugged_commit.oid, message: rugged_commit.message, parents: get_parents(rugged_commit))
-  end
-
-  # TODO: Insert this model operation in the correct place:
-  #def build_push(userinfo)
-  #  Push.new(push_type: 'web', author: userinfo, repository: self)
-  #end
 
   def get_parents(rugged_commit)
     if rugged_commit.parents.empty?

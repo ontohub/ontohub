@@ -145,8 +145,6 @@ class OntologiesControllerTest < ActionController::TestCase
         context 'with valid input' do
           context 'without format' do
             setup do
-              OntologyVersion.any_instance.expects(:parse_async).once
-              
               post :create, repository_id: @repository.path, :ontology => {
                 iri: 'http://example.com/dummy.ontology',
                 versions_attributes: [{
@@ -160,8 +158,6 @@ class OntologiesControllerTest < ActionController::TestCase
           
           context 'with format :json' do
             setup do
-              OntologyVersion.any_instance.expects(:parse_async).once
-              
               post :create,
                 format: :json,
                 repository_id: @repository.path,

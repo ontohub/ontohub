@@ -3,6 +3,7 @@ module OntologyVersion::Download
   
   included do
     @queue = :download
+    attr_accessible :source_url
     after_create :download_async, :if => :source_url?
   end
 
