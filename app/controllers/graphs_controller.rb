@@ -8,7 +8,11 @@ class GraphsController < ApplicationController
       depth = params[:depth] ? params[:depth].to_i : 3
       fetcher = GraphDataFetcher.new(center: parent, depth: depth)
       nodes, edges = fetcher.fetch
-      data = {nodes: nodes, edges: edges, center: parent}
+      data = {nodes: nodes,
+              edges: edges,
+              center: parent,
+              node_url: url_for(nodes.first.class),
+              edge_url: url_for(edges.first.class)}
       format.json do
         respond_with data
       end

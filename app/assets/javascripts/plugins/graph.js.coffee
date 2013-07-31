@@ -32,7 +32,7 @@ d3NodesEdges = (data) ->
       source: links[edge.source_id]
       target: links[edge.target_id]
       info: edge
-  [nodes,edges]
+  [nodes,edges,data.node_url,data.edge_url]
 
 nodeDisplayName = (node) ->
   name = node.info.name
@@ -47,6 +47,8 @@ drawGraph = (data) ->
   nodes_edges = d3NodesEdges(data)
   nodes = nodes_edges[0]
   edges = nodes_edges[1]
+  node_url = nodes_edges[2]
+  edge_url = nodes_edges[3]
 
   svg = d3.select("div#d3_graph").
     append('svg').
@@ -89,6 +91,43 @@ drawGraph = (data) ->
     .attr("data-label", (d) ->
       d.label)
 
+  embedNodeInfo = (node) ->
+    info_list = $('<ul />',
+      id: 'node_info')
+    addItem = (name, content) ->
+      info_list.append($('<li />')
+        .append($('<span />').html(name))
+        .append($('<span />').html(content)))
+    addItem("Node: ", $('<a />',
+      href: node_url + "/" + node.info.id)
+        .html(node.info.name))
+    addItem("IRI: ", $('<a />',
+      href: node.info.iri)
+        .html(node.info.iri))
+    addItem("Description: ", $('<p />')
+      .html(node.info.description))
+    addItem("Number of Ontologies: ", $('<span />')
+      .html(node.info.ontologies_count))
+    $("div#d3_context").html(info_list)
+
+  embedEdgeInfo = (edge) ->
+    info_list = $('<ul />',
+      id: 'edge_info')
+    addItem = (name, content) ->
+      info_list.append($('<li />')
+        .append($('<span />').html(name))
+        .append($('<span />').html(content)))
+    addItem("Mapping: ", $('<a />',
+      href: edge_url + "/" + edge.info.id)
+        .html(edge.source.info.name+
+          " --> "+
+          edge.target.info.name))
+    addItem("exactness: ", $('<span />')
+        .html(edge.info.exactness))
+    addItem("faithfulness: ", $('<span />')
+        .html(edge.info.faithfulness))
+    $("div#d3_context").html(info_list)
+
   $("g.node").on "click", (e) ->
     e.preventDefault()
     node_data = d3.select(this).data()[0]
@@ -98,23 +137,12 @@ drawGraph = (data) ->
     window.selected_node = this
     $(this).find("circle").css("stroke", "#f00")
     $(this).find("circle").css("fill", "#f00")
-    $("div#d3_context").html(
-      "<ul>"+
-      "<li><span>Node:</span> <b>#{node_data.info.name}</b></li>"+
-      "<li><span>IRI:</span> #{node_data.info.iri}</li>"+
-      "</ul>")
+    embedNodeInfo(node_data)
 
   $("g > path").on "click", (e) ->
     e.preventDefault()
     path_data = d3.select(this).data()[0]
-    $("div#d3_context").html(
-      "<ul>"+
-      "<li><span>Mapping:</span> "+
-      "<b>#{path_data.source.info.name} --> "+
-      "#{path_data.target.info.name}</b></li>"+
-      "<li><span>exactness:</span> #{path_data.info.exactness}</li>"+
-      "<li><span>faithfulness:</span> #{path_data.info.faithfulness}</li>"+
-      "</ul>")
+    embedEdgeInfo(path_data)
 
   node.append("circle").
     attr("r", (d) ->
