@@ -22,7 +22,7 @@ class Ontology < ActiveRecord::Base
 
   validates_presence_of :iri
   validates_uniqueness_of :iri, :if => :iri_changed?
-  validates_format_of :iri, :with => URI::regexp(ALLOWED_URI_SCHEMES)
+  validates_format_of :iri, :with => URI::regexp(Settings.allowed_iri_schemes)
   
   strip_attributes :only => [:name, :iri]
 
