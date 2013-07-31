@@ -19,7 +19,7 @@ class OntologyVersion < ActiveRecord::Base
 #  validate :raw_file_size_maximum
 
   validates_format_of :source_url,
-    :with => URI::regexp(ALLOWED_URI_SCHEMAS), :if => :source_url?
+    :with => URI::regexp(ALLOWED_URI_SCHEMES), :if => :source_url?
 
   scope :latest, order('id DESC')
   scope :state, ->(state) { where :state => state }
