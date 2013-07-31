@@ -10,7 +10,7 @@ class OntologyVersion < ActiveRecord::Base
   mount_uploader :raw_file, OntologyUploader
   mount_uploader :xml_file, OntologyUploader
 
-  attr_accessible :raw_file, :source_url
+  attr_accessible :raw_file, :source_url, :consistency_status
 
   before_validation :set_checksum
 
