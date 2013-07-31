@@ -50,6 +50,7 @@ class RepositoryTest < ActiveSupport::TestCase
 
       context 'that doesn\'t exist' do
         setup do
+          OntologyVersion.any_instance.expects(:parse_async).once
           @version = @repository.save_file(@file_path, @target_path, @message, @user)
         end
 
@@ -80,6 +81,7 @@ class RepositoryTest < ActiveSupport::TestCase
 
       context 'that exists' do
         setup do
+          OntologyVersion.any_instance.expects(:parse_async).twice
           @repository.save_file(@file_path, @target_path, @message, @user)
           
           file = File.open(@file_path, 'w')
@@ -95,28 +97,5 @@ class RepositoryTest < ActiveSupport::TestCase
         end
       end
     end
-  end
-  
-  context 'saving a file an ontology' do
-    setup do
-      OntologyVersion.any_instance.expects(:parse_async).once
-      
-      @user       = FactoryGirl.create :user
-      @source_url = 'http://colore.googlecode.com/svn/trunk/ontologies/arithmetic/robinson_arithmetic.clif'
-      @ontology   = Ontology.new \
-        :iri => 'http://example.com/ontology',
-        :versions_attributes => [{
-          source_url: @source_url
-        }]
-        
-      @ontology.versions.first.user = @user
-      @ontology.repository = FactoryGirl.create(:repository)
-      @ontology.save!
-    end
-    
-    should 'create a version with source_url' do
-      assert_equal @source_url, @ontology.versions.first.source_url
-    end
-    
   end
 end

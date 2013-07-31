@@ -54,29 +54,6 @@ class OntologyTest < ActiveSupport::TestCase
     end
   end
   
-  context 'creating ontology with version' do
-    setup do
-      OntologyVersion.any_instance.expects(:parse_async).once
-      
-      @user       = FactoryGirl.create :user
-      @source_url = 'http://colore.googlecode.com/svn/trunk/ontologies/arithmetic/robinson_arithmetic.clif'
-      @ontology   = Ontology.new \
-        :iri => 'http://example.com/ontology',
-        :versions_attributes => [{
-          source_url: @source_url
-        }]
-        
-      @ontology.versions.first.user = @user
-      @ontology.repository = FactoryGirl.create(:repository)
-      @ontology.save!
-    end
-    
-    should 'create a version with source_url' do
-      assert_equal @source_url, @ontology.versions.first.source_url
-    end
-    
-  end
-
   context 'checking ordering of Ontology list' do
     setup do
       Ontology::States::STATES.each do |state|

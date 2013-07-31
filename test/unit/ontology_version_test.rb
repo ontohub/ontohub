@@ -18,7 +18,7 @@ class OntologyVersionTest < ActiveSupport::TestCase
       should allow_value(val).for :source_url
     end
 
-    [nil, '','fooo'].each do |val|
+    ['fooo'].each do |val|
       should_not allow_value(val).for :source_url
     end
   end
@@ -27,30 +27,6 @@ class OntologyVersionTest < ActiveSupport::TestCase
     setup do
       @ontology = FactoryGirl.create :ontology
       @version  = @ontology.versions.build
-    end
-    
-    context 'without addional attributes' do
-      should 'be invalid' do
-        assert @version.invalid?
-      end
-    end
-    
-    context 'with invalid source_url' do
-      setup do
-        @version.source_url = 'invalid'
-      end
-      should 'be invalid' do
-        assert @version.invalid?
-      end
-    end
-    
-    context 'with valid remote_raw_file_url' do
-      setup do
-        @version.remote_raw_file_url = 'http://trac.informatik.uni-bremen.de:8080/hets/export/16726/trunk/OWL2/tests/family.owl'
-      end
-      should 'be valid' do
-        assert @version.valid?
-      end
     end
     
     context 'with valid raw_file' do
@@ -62,18 +38,11 @@ class OntologyVersionTest < ActiveSupport::TestCase
       end
     end
     
-    context 'with valid source_url' do
-      setup do
-        @version.source_url = 'http://example.com/fooo'
-      end
-      should 'be valid' do
-        assert @version.valid?
-      end
-    end
   end
   
   context 'OntologyVersion' do
     setup do
+      OntologyVersion.any_instance.expects(:parse_async).once
       @ontology_version = FactoryGirl.create :ontology_version
     end
     should 'have url' do
@@ -84,38 +53,15 @@ class OntologyVersionTest < ActiveSupport::TestCase
   context 'Parsing' do
     setup do
       OntologyVersion.any_instance.expects(:parse_async).once
-      @ontology_version = FactoryGirl.build :ontology_version
-      @pizza_owl = 'test/fixtures/ontologies/owl/pizza.owl'
+
+      @ontology = FactoryGirl.create :ontology
+      @version  = @ontology.save_file File.open('test/fixtures/ontologies/owl/pizza.owl'), "message", FactoryGirl.create(:user)
+      @version.parse
     end
 
-    should 'raise no exception' do
-      assert_nothing_raised do
-        @ontology_version.raw_file = File.open(@pizza_owl)
-        @ontology_version.save!
-        @ontology_version.parse
-      end
+    should 'be done' do
+      assert_equal 'done', @ontology.reload.state
     end
-
-    should 'raise exception if called without setting raw_file' do
-      assert_raise ArgumentError do
-        @ontology_version.parse
-      end
-    end
-
-    should 'raise no exception if called with remote iri' do
-      assert_nothing_raised do
-        @ontology_version.remote_raw_file_url = 'http://colore.googlecode.com/svn-history/r679/trunk/ontologies/arithmetic/robinson_arithmetic.clif'
-        @ontology_version.save!
-        @ontology_version.parse
-      end
-    end
-
-    should 'raise exception if called with unsupported remote file' do
-      assert_raise Hets::HetsError do
-        @ontology_version.remote_raw_file_url = 'http://colore.googlecode.com/svn-history/r679/trunk/ontologies/algebra/module.clif'
-        @ontology_version.save!
-        @ontology_version.parse
-      end
-    end
+    
   end
 end

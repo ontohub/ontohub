@@ -1,7 +1,6 @@
 class OntologyVersion < ActiveRecord::Base
   include OntologyVersion::Files
   include OntologyVersion::States
-  include OntologyVersion::Download
   include OntologyVersion::Parsing
   include OntologyVersion::Numbers
   include OntologyVersion::OopsRequests

@@ -4,10 +4,16 @@ module OntologyVersion::Files
   included do
     # virtual attribute for upload
     attr_accessible :raw_file
+    before_create :commit_raw_file, unless: :commit_oid?
   end
 
   def raw_file=(value)
     @raw_file = value
+  end
+
+  def commit_raw_file
+    raise "raw file missing" unless @raw_file
+    repository.save_file(@raw_file, ontology.path, "message", user)
   end
 
   def tmp_dir
