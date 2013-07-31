@@ -4,6 +4,8 @@ class OntologyVersion < ActiveRecord::Base
   include OntologyVersion::Parsing
   include OntologyVersion::Numbers
 
+  CONSISTENCY_STATUS = %w( consistent inconsistent unchecked )
+ 
   belongs_to :user
   belongs_to :ontology, :counter_cache => :versions_count
 
