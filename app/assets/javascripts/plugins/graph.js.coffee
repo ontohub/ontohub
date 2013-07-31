@@ -6,8 +6,13 @@ distance = 60
 force_charge = -400
 colors = d3.scale.category10()
 
-uri = window.location.href
-graphs_uri = uri.replace(/\?[^/]+$/, "/graphs$&")
+graphs_uri = window.location.href
+re = /\?[^/]+$/
+if graphs_uri.search(re) != -1
+  graphs_uri = graphs_uri.replace(re, "/graphs$&")
+else
+  graphs_uri += "/graphs"
+
 $.get(graphs_uri, (data) ->
     drawGraph(data)
   , "json")
