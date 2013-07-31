@@ -41,17 +41,22 @@ module Hets
 
     Rails.logger.debug command
 
-    # nice runs the process with lower scheduling priority
-    status = `nice #{command}`
-    status = status.split("\n").last
+    # Executes command with low priority
+    output = `nice #{command}`
 
-    Rails.logger.debug status
-
-    if $?.exitstatus != 0 or status.starts_with? '*** Error'
-      raise HetsError.new(status)
+    # Exclude usage message if exit status equals 2
+    if $?.exitstatus == 2 and output.include? 'Usage:'
+      output = output.split("Usage:").first
     end
 
-    status.split(': ').last
+    output = output.split("\n").last
+    Rails.logger.debug output
+
+    # Raise error if exit status different from 0
+    if $?.exitstatus != 0 or output.starts_with? '*** Error'
+      raise HetsError.new(output)
+    end
+    return output.split(': ').last
   end
 
   # The path to the Hets library path
