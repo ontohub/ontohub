@@ -1,0 +1,5 @@
+%li
+  %a 
+    = category[0].name
+  %ul 
+    = render :partial => 'category', :collection => category[1].to_a

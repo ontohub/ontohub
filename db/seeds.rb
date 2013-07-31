@@ -105,3 +105,5 @@ Category.all.each { |c| if c.depth == 0 && c.id != 1 then c.parent = root end; c
 Category.all.each do |category|
   Ontology.all.sample.categories.push category
 end
+
+#Category.create(:name => 'level 3', :parent => Category.create(:name => 'level 2', :parent => Category.create(:name => 'level 1', :parent => Category.create(:name => '/'))))

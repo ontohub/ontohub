@@ -22,7 +22,7 @@ class OntologiesController < InheritedResources::Base
 
   def new
     @ontology_version = build_resource.versions.build
-    @categories = Category.where :ancestry => nil
+    @categories = Category.first.subtree.arrange.first.second
   end
 
   def create

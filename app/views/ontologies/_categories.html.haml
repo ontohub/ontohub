@@ -1,3 +1,4 @@
 .well
-  %ul
-    = build_dropdown(category)
+  .selector
+    %ul
+      = render :partial => 'category', :collection => @categories.to_a
