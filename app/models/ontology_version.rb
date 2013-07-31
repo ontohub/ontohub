@@ -28,10 +28,6 @@ class OntologyVersion < ActiveRecord::Base
     latest.first.try(:updated_at)
   end
   
-  def source_name
-    source_url? ? source_url : 'File upload'
-  end
-  
   def to_param
     self.number
   end

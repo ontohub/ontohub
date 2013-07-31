@@ -3,11 +3,9 @@ FactoryGirl.define do
     association :ontology
     association :user
     commit_oid { SecureRandom.hex(20) }
-    source_url "file://test/fixtures/ontologies/owl/pizza.owl"
   end
   
   factory :ontology_version_with_file, :parent => :ontology_version do
     raw_file { File.open "test/fixtures/ontologies/owl/pizza.owl" }
-    source_url nil
   end
 end

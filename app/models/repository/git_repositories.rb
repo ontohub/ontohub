@@ -22,10 +22,18 @@ module Repository::GitRepositories
     version = nil
 
     git.add_file({email: user[:email], name: user[:name]}, tmp_file, filepath, message) do |commit_oid|
-      o = ontologies.where(path: filepath).first_or_initialize
+      o = ontologies.where(path: filepath).first
 
-      if o.new_record?
-        clazz = filepath.ends_with?('.casl') ? DistributedOntology : SingleOntology
+      if o
+        # update existing ontology
+        version = o.versions.build({ :commit_oid => commit_oid, :user => user }, { without_protection: true })
+        o.ontology_version = version
+        o.save!
+      else
+        # create new ontology
+        clazz  = filepath.ends_with?('.casl') ? DistributedOntology : SingleOntology
+        o      = clazz.new
+        o.path = filepath
 
         o.iri  = "http://#{Settings.hostname}/#{path}/#{Ontology.filename_without_extension(filepath)}"
         o.name = filepath.split('/')[-1].split(".")[0].capitalize
@@ -35,10 +43,6 @@ module Repository::GitRepositories
         o.repository = self
         o.save!
         o.ontology_version = version;
-        o.save!
-      else
-        version = o.versions.build({ :commit_oid => commit_oid, :user => user }, { without_protection: true })
-        o.ontology_version = version
         o.save!
       end
     end

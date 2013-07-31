@@ -18,10 +18,6 @@ class OntologyVersionsController < InheritedResources::Base
     redirect_to collection_path, flash: { error: "The file was not found: #{e.message}" }
   end
 
-  def new
-    build_resource.source_url = collection.latest.first.source_url
-  end
-
   def create
     build_resource.user = current_user
 

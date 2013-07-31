@@ -9,8 +9,6 @@
   .well
     = f.simple_fields_for :versions, resource.versions.first do |vf|
       = vf.input :raw_file, :as => :file
-      \- OR -
-      = vf.input :source_url, :as => :url
   
   = f.input :iri
   = f.input :name
