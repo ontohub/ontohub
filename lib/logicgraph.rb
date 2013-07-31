@@ -58,11 +58,44 @@ module Logicgraph
         assert_datetimestamp_property("#updatedAt", fix(logic.iri), logic.updated_at.strftime("%FT%TZ%:z"))
       end
       LogicMapping.all.each do |logic_mapping|
-        iri = logic_mapping.iri.gsub(/(.*)(\/)(.*)/, '\1#\3')
         declare_individual(fix(logic_mapping.iri))
         assert_class("#LogicMapping", fix(logic_mapping.iri))
         assert_object_property("#hasSource", fix(logic_mapping.iri), fix(logic_mapping.source.iri))
         assert_object_property("#hasTarget", fix(logic_mapping.iri), fix(logic_mapping.target.iri))
+      end
+      LogicAdjoint.all.each do |logic_adjoint|
+        declare_individual(fix(logic_adjoint.iri))
+        assert_class("#LogicAdjoint", fix(logic_adjoint.iri))
+        assert_object_property("#hasSource", fix(logic_adjoint.iri), fix(logic_adjoint.source.iri))
+        assert_object_property("#hasTarget", fix(logic_adjoint.iri), fix(logic_adjoint.target.iri))
+      end
+      Language.all.each do |language|
+        declare_individual(fix(language.iri))
+        assert_class("#OntologyLanguage", fix(language.iri))
+        assert_string_property("#hasName", fix(language.iri), language.name)
+        assert_string_property("#hasDescription", fix(language.iri), language.name)
+        assert_datetimestamp_property("#createdAt", fix(language.iri), language.created_at.strftime("%FT%TZ%:z"))
+        assert_datetimestamp_property("#updatedAt", fix(language.iri), language.updated_at.strftime("%FT%TZ%:z"))
+        language.serializations.each do |serialization|
+          iri = fix(language.iri + "*" + serialization.name)
+          assert_class("#OntologyLanguageSerialization", iri)
+          assert_object_property("#hasSerialization", fix(language.iri), iri)
+          assert_string_property("#hasName", iri, serialization.name);
+          assert_string_property("#hasMimeType", iri, serialization.mimetype);
+          assert_string_property("#hasExtension", iri, serialization.extension);
+        end
+      end
+      LanguageMapping.all.each do |language_mapping|
+        declare_individual(fix(language_mapping.iri))
+        assert_class("#OntologyLanguageMapping", fix(language_mapping.iri))
+        assert_object_property("#hasSource", fix(language_mapping.iri), fix(language_mapping.source.iri))
+        assert_object_property("#hasTarget", fix(language_mapping.iri), fix(language_mapping.target.iri)) 
+      end
+      LanguageAdjoint.all.each do |language_adjoint|
+        declare_individual(fix(language_adjoint.iri))
+        assert_class("#OntologyLanguageAdjoint", fix(language_adjoint.iri))
+        assert_object_property("#hasSource", fix(language_adjoint.iri), fix(langauge_adjoint.source.iri))
+        assert_object_property("#hasTarget", fix(language_adjoint.iri), fix(language_adjoint.target.iri))
       end
       @os.print(@document)
     end
