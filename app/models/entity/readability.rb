@@ -12,7 +12,7 @@ module Entity::Readability
   end
   
   def name_is_iri_and_in_text
-    self.text[self.name][URI::regexp(ALLOWED_URI_SCHEMAS)] rescue false
+    self.text[self.name][URI::regexp(Settings.allowed_iri_schemes)] rescue false
   end
   
 end

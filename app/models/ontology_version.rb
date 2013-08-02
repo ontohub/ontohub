@@ -16,10 +16,10 @@ class OntologyVersion < ActiveRecord::Base
   before_validation :set_checksum
 
   validate :presence_of_raw_file_or_source_url, :on => :create
-#  validate :raw_file_size_maximum
+# validate :raw_file_size_maximum
 
   validates_format_of :source_url,
-    :with => URI::regexp(ALLOWED_URI_SCHEMAS), :if => :source_url?
+    :with => URI::regexp(Settings.allowed_iri_schemes), :if => :source_url?
 
   scope :latest, order('id DESC')
   scope :state, ->(state) { where :state => state }

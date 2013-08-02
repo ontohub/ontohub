@@ -34,7 +34,7 @@ class Logic < ActiveRecord::Base
 
   validates_presence_of :iri
   validates_uniqueness_of :iri, if: :iri_changed?
-  #validates_format_of :iri, with: URI::regexp(ALLOWED_URI_SCHEMAS)
+  validates_format_of :iri, with: URI::regexp(Settings.allowed_iri_schemes)
 
   default_scope order('ontologies_count desc')
 

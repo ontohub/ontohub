@@ -39,3 +39,10 @@ exception_notifier:
   sender_address: "exceptions@example.com"
   exception_recipients:
     - exception-recipient@example.com
+
+allowed_iri_schemes:
+  - http
+  - https
+  - file
+  - gopher
+  - urn
