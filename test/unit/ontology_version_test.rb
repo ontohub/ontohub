@@ -72,6 +72,14 @@ class OntologyVersionTest < ActiveSupport::TestCase
     end
   end
   
+  context 'OntologyVersion' do
+    setup do
+      @ontology_version = FactoryGirl.create :ontology_version
+    end
+    should 'have url' do
+      assert_equal "http://example.com/ontologies/#{@ontology_version.ontology_id}/versions/1", @ontology_version.url
+    end
+  end
   
   context 'Parsing' do
     setup do

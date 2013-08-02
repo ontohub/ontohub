@@ -23,7 +23,6 @@ class LogicMappingsControllerTest < ActionController::TestCase
           get :show, :id => @mapping.id, :logic_id => @source_logic.id
         end
         should respond_with :success
-        should assign_to :logic_mapping
         should render_template :show
         should_not set_the_flash
       end
@@ -86,7 +85,6 @@ class LogicMappingsControllerTest < ActionController::TestCase
           get :edit, :id => @mapping.id, :logic_id => @source_logic.id
         end
         should respond_with :success
-        should assign_to :logic_mapping
         should render_template :edit
         should_not set_the_flash
       end
@@ -105,7 +103,6 @@ class LogicMappingsControllerTest < ActionController::TestCase
           get :show, :id => @mapping.id, :logic_id => @source_logic.id
         end
         should respond_with :success
-        should assign_to :logic_mapping
         should render_template :show
         should_not set_the_flash
       end
@@ -179,7 +176,6 @@ class LogicMappingsControllerTest < ActionController::TestCase
           get :show, :id => @mapping.id, :logic_id => @source_logic.id
         end
         should respond_with :success
-        should assign_to :logic_mapping
         should render_template :show
         should_not set_the_flash
       end

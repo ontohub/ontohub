@@ -25,7 +25,7 @@ class User < ActiveRecord::Base
   before_destroy :check_remaining_admins
 
   validates_length_of :name, :in => 3..32
-  
+
   def to_s
     name? ? name : email.split("@").first
   end
@@ -39,12 +39,22 @@ class User < ActiveRecord::Base
     @bypass_postpone       = true
     self.email             = nil
     self.unconfirmed_email = nil
+    self.admin             = false
     
     save(:validate => false)
   end
   
   def email_required?
     deleted_at.nil?
+  end
+  
+  def confirm!
+    super
+
+    if User.count < 2
+      self.admin = true
+      self.save
+    end
   end
   
   protected

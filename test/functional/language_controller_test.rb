@@ -13,7 +13,6 @@ class LanguagesControllerTest < ActionController::TestCase
       end
       
       should respond_with :success
-      should assign_to :language
       should render_template :show
       should_not set_the_flash
     end
@@ -25,7 +24,6 @@ class LanguagesControllerTest < ActionController::TestCase
       end
       
       should respond_with :success
-      should assign_to :language
       should render_template :show
       should_not set_the_flash
     end
@@ -37,7 +35,6 @@ class LanguagesControllerTest < ActionController::TestCase
     end
     
     should respond_with :success
-    should assign_to :languages
     should render_template :index
     should_not set_the_flash
   end

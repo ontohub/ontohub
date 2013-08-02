@@ -30,7 +30,20 @@ class OntologyVersionsController < InheritedResources::Base
     end
   end
 
+  def oops
+    resource.build_request.save!
+    flash[:notice] = "Your request is send to OOPS!" 
+    redirect_to ontology_entities_path(resource.ontology)
+  end
+  
 protected
+  def collection
+    if parent.parent
+      @versions = parent.parent.versions
+    else
+      super
+    end
+  end
 
   def check_changeable
     unless parent.changeable?
