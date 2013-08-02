@@ -1,12 +1,12 @@
 require 'bundler/capistrano'
 
-hostname = 'ontohub.org'
+hostname = YAML.load_file("#{File.dirname(__FILE__)}/settings.yml")['hostname']
 
 set :application, 'ontohub'
 set :scm, :git
-set :repository, "git@github.com:#{application}/#{application}.git"
-set :branch,     "master"
-set :deploy_to, "/srv/http/#{hostname}"
+set :repository, "git://github.com/#{application}/#{application}.git"
+set :branch,     hostname
+set :deploy_to, "/srv/http/ontohub"
 set :shared_children, %w( public/uploads log tmp/pids )
 
 set :user, 'ontohub'
@@ -16,7 +16,7 @@ set :deploy_via, :remote_cache
 # RVM
 require "rvm/capistrano"
 set :rvm_type, :system
-set :rvm_ruby_string, "ruby-1.9.3@#{application}"
+set :rvm_ruby_string, "ruby-2.0.0@#{application}"
 
 role :app, hostname
 role :web, hostname
