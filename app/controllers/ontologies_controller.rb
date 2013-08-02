@@ -39,6 +39,14 @@ class OntologiesController < InheritedResources::Base
     end
   end
   
+  def oops_state
+    respond_to do |format|
+      format.json do
+        respond_with resource.versions.current.try(:request)
+      end
+    end
+  end
+  
   protected
   
   def build_resource

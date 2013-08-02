@@ -1,8 +1,12 @@
 source 'https://rubygems.org'
 
 gem 'rails', '~> 3.2.13'
+gem 'rack-protection'
+gem 'secure_headers'
+
 gem 'pg'
 gem 'foreigner'
+
 gem 'rdf'
 gem 'rdf-rdfxml'
 gem 'rdf-n3'
@@ -11,7 +15,7 @@ gem 'rdf-n3'
 # in production environments by default.
 group :assets do
   gem 'sass-rails',   '~> 3.2.3'
-  gem 'bootstrap-sass', "~> 2.3.1", git: "git://github.com/digineo/bootstrap-sass.git", branch: 'v2.3.1.0-with_javascript_fixes'
+  gem 'bootstrap-sass', "~> 2.3.2"
   gem 'coffee-rails', '~> 3.2.1'
   gem 'compass',      '~> 0.12.1'
   gem 'font_awesome'
@@ -36,7 +40,7 @@ gem 'inherited_resources', '~> 1.4.0'
 gem 'has_scope'
 
 # XML Parser
-gem 'nokogiri', '~> 1.5.0'
+gem 'nokogiri', '~> 1.6'
 
 # Authentication
 gem 'devise', '~> 2.0'
@@ -55,6 +59,9 @@ gem 'acts_as_tree'
 
 # Manage uploads
 gem 'carrierwave', "~> 0.8.0"
+
+# HTTP Client
+gem "rest-client"
 
 # Async jobs
 gem 'resque'
@@ -81,6 +88,10 @@ group :test do
   gem "capybara-webkit"
   gem 'database_cleaner'
   gem "launchy"
+  
+  # Recording of HTTP Requests
+  gem "vcr"
+  gem "webmock", '~> 1.9.0'
 end
 
 group :development do
