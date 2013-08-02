@@ -20,7 +20,7 @@ class Language < ActiveRecord::Base
 
   validates :iri, length: { minimum: 1 }
   validates_uniqueness_of :iri, if: :iri_changed?
-  validates_format_of :iri, with: URI::regexp(ALLOWED_URI_SCHEMAS)
+  validates_format_of :iri, with: URI::regexp(Settings.allowed_iri_schemes)
 
   after_create :add_permission
   
@@ -45,10 +45,5 @@ class Language < ActiveRecord::Base
   def mappings_to
     LanguageMapping.where(target_id: self.id)
   end
-  
-private
 
-  def add_permission
-    permissions.create! :subject => self.user, :role => 'owner' if self.user
-  end
 end

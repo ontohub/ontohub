@@ -14,7 +14,7 @@ class UsersControllerTest < ActionController::TestCase
         setup do
           get :show, :id => @user.to_param
         end
-        
+
         should respond_with :success
         should render_template :show
       end
@@ -31,7 +31,7 @@ class UsersControllerTest < ActionController::TestCase
         setup do
           get :show, :id => @user.to_param
         end
-        
+
         should respond_with :success
         should render_template :show
       end

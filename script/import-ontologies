@@ -45,7 +45,7 @@ ARGV.each do |dir|
       puts file
 
       o = Ontology.new
-      o.uri = "file://#{file}"
+      o.iri = "file://#{file}"
       o.name = File.basename(file, ".#{ext}")
       o.save!
 

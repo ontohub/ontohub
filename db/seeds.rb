@@ -4,6 +4,10 @@
 
 ActiveRecord::Base.logger = Logger.new($stdout)
 
+# Do not create background jobs
+OntologyVersion.send :alias_method, :parse_async, :parse
+OopsRequest.send :define_method, :async_run, ->{}
+
 # Create Admin User
 user = User.create!({
   :email    => "admin@example.com",
@@ -33,7 +37,7 @@ team = Team.create! \
 end
 
 # initially import logics
-Rake::Task['logicgraph:import'].invoke
+Rake::Task['import:logicgraph'].invoke
 
 # Import ontologies
 Dir["#{Rails.root}/test/fixtures/ontologies/*/*.{casl,clf,clif,owl}"].each do |file|
@@ -76,3 +80,18 @@ Ontology.first.permissions.create! \
   c.save!
 end
 
+# Add OOPS! requests and responses to pizza ontology
+ontology  = Ontology.where(name: "Pizza").first!
+version   = ontology.versions.first
+request   = version.build_request({state: 'done'}, without_protection: true)
+request.save!
+
+responses = %w( Pitfall Warning Warning Suggestion ).map do |type|
+  request.responses.create! \
+      name:         Faker::Name.name,
+      code:         0,
+      description:  Faker::Lorem.paragraph,
+      element_type: type
+end
+
+ontology.entities.all.select{ |entity| entity.oops_responses = responses.sample(rand(responses.count)) }
