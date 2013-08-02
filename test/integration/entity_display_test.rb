@@ -1,39 +1,44 @@
 require 'integration_test_helper'
-
 class EntityDisplayTest < ActionController::IntegrationTest
   context 'When text' do
     context 'does not contain name' do
       setup do
-        @entity = FactoryGirl.create :entity
+        # HACK setting state of ontology to 'done'
+        # so the ajax polling won't intere this test
+        @entity = FactoryGirl.create :entity_with_ontology_version
+        @entity.ontology.state = 'done'
+        @entity.ontology.save
+
         visit ontology_entities_path(@entity.ontology)
         @ths = all('th')
       end
 
       context 'page' do
-        should 'have 2 <th> tags' do
-          assert_equal 2, @ths.size
+        should 'have 3 <th> tags' do
+          assert_equal 3, @ths.size
         end
       end
 
       context 'first <th>' do
         should 'have text "Text"' do
-          assert_equal 'Text', @ths[0].text
+          assert_equal 'Text', @ths[1].text
         end
       end
 
       context 'second <th>' do
         should 'have text "Name"' do
-          assert_equal 'Name', @ths[1].text
+          assert_equal 'Name', @ths[2].text
         end
       end
     end
 
     context 'contains name' do
       setup do
-        @entity = FactoryGirl.build :entity
-        @entity.text = 'Foo Bar'
-        @entity.name = 'Foo'
-        @entity.save!
+        @entity = FactoryGirl.create :entity_with_ontology_version,
+          name: 'Foo',
+          text: 'Foo Bar'
+        @entity.ontology.state = 'done'
+        @entity.ontology.save
 
         visit ontology_entities_path(@entity.ontology)
       end
@@ -43,19 +48,20 @@ class EntityDisplayTest < ActionController::IntegrationTest
           @ths = all('th')
         end
 
-        should 'have 1 <th> tag' do
-          assert_equal 1, @ths.size
+        should 'have 2 <th> tag' do
+          assert_equal 2, @ths.size
         end
       end
 
       context 'and no IRI' do
         context 'and name equals text, there' do
           setup do
-            @entity = FactoryGirl.build :entity
-            @entity.text = 'Foo'
-            @entity.name = 'Foo'
-            @entity.save!
-
+            @entity = FactoryGirl.create :entity_with_ontology_version,
+              name: 'Foo',
+              text: 'Foo'
+            @entity.ontology.state = 'done'
+            @entity.ontology.save
+            
             visit ontology_entities_path(@entity.ontology)
           end
 
@@ -75,10 +81,11 @@ class EntityDisplayTest < ActionController::IntegrationTest
 
       context 'and an IRI' do
         setup do
-          @entity = FactoryGirl.build :entity
-          @entity.text = 'Class <http://example.com/foo_class>'
-          @entity.name = '<http://example.com/foo_class>'
-          @entity.save!
+          @entity = FactoryGirl.create :entity_with_ontology_version,
+            text: 'Class <http://example.com/foo_class>',
+            name: '<http://example.com/foo_class>'
+          @entity.ontology.state = 'done'
+          @entity.ontology.save
 
           visit ontology_entities_path(@entity.ontology)
         end

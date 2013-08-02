@@ -6,7 +6,9 @@ class EntitiesControllerTest < ActionController::TestCase
   
   context 'Ontology Instance' do
     setup do
-      @ontology = FactoryGirl.create :ontology
+      @user = FactoryGirl.create :user
+      @logic = FactoryGirl.create :logic, :user => @user
+      @ontology = FactoryGirl.create :single_ontology, :logic => @logic
     end
     
     context 'on GET to index' do
@@ -15,8 +17,26 @@ class EntitiesControllerTest < ActionController::TestCase
       end
       
       should respond_with :success
+      should_not render_template(partial: '_oops_state')
     end
-    
+
+  end
+
+  context 'OWL Ontology instance' do
+    setup do
+      @user = FactoryGirl.create :user
+      @logic = FactoryGirl.create :logic, :name => 'OWL2', :user => @user
+      @ontology = FactoryGirl.create :single_ontology, :logic => @logic
+    end
+
+    context 'on GET to index' do
+      setup do
+        get :index, :ontology_id => @ontology.id
+      end
+
+      should respond_with :success
+      should render_template(partial: '_oops_state')
+    end
   end
   
 end

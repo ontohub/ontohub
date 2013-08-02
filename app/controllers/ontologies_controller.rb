@@ -9,8 +9,6 @@ class OntologiesController < InheritedResources::Base
 
   load_and_authorize_resource :except => [:index, :show]
 
-  respond_to :json
-
   def index
     super do |format|
       format.html do
@@ -37,6 +35,14 @@ class OntologiesController < InheritedResources::Base
       end
       format.json do
         respond_with resource
+      end
+    end
+  end
+  
+  def oops_state
+    respond_to do |format|
+      format.json do
+        respond_with resource.versions.current.try(:request)
       end
     end
   end
