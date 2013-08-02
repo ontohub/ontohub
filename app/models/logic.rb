@@ -34,9 +34,7 @@ class Logic < ActiveRecord::Base
 
   validates_presence_of :iri
   validates_uniqueness_of :iri, if: :iri_changed?
-  #validates_format_of :iri, with: URI::regexp(ALLOWED_URI_SCHEMAS)
-
-  after_create :add_permission
+  validates_format_of :iri, with: URI::regexp(Settings.allowed_iri_schemes)
 
   default_scope order('ontologies_count desc')
 
@@ -62,10 +60,4 @@ class Logic < ActiveRecord::Base
     LogicMapping.find_all_by_target_id self.id
   end
   
-
-private
-  def add_permission
-    permissions.create! :subject => self.user, :role => 'owner' if self.user
-  end
-
 end

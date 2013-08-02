@@ -1,9 +1,10 @@
 class OntologyVersion < ActiveRecord::Base
-  include OntologyVersion::Async
+  include OntologyVersion::States
   include OntologyVersion::Download
   include OntologyVersion::Parsing
   include OntologyVersion::Numbers
-
+  include OntologyVersion::OopsRequests
+  
   belongs_to :user
   belongs_to :ontology, :counter_cache => :versions_count
 
@@ -15,10 +16,10 @@ class OntologyVersion < ActiveRecord::Base
   before_validation :set_checksum
 
   validate :presence_of_raw_file_or_source_url, :on => :create
-#  validate :raw_file_size_maximum
+# validate :raw_file_size_maximum
 
   validates_format_of :source_url,
-    :with => URI::regexp(ALLOWED_URI_SCHEMAS), :if => :source_url?
+    :with => URI::regexp(Settings.allowed_iri_schemes), :if => :source_url?
 
   scope :latest, order('id DESC')
   scope :state, ->(state) { where :state => state }
@@ -36,6 +37,11 @@ class OntologyVersion < ActiveRecord::Base
   
   def to_param
     self.number
+  end
+  
+  # public URL to this version
+  def url(params={})
+    Rails.application.routes.url_helpers.ontology_ontology_version_path(ontology, self, params.reverse_merge(host: Settings.hostname, only_path: false))
   end
  
 protected
