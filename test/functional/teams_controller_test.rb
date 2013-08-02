@@ -28,7 +28,6 @@ class TeamsControllerTest < ActionController::TestCase
       
       should respond_with :success
       should render_template :index
-      should assign_to(:team_users).with{ [] }
     end
     
     context 'on GET to new' do
@@ -62,7 +61,6 @@ class TeamsControllerTest < ActionController::TestCase
         
         should respond_with :success
         should render_template :show
-        should assign_to :team_users
       end
       
       context 'on GET to edit' do
