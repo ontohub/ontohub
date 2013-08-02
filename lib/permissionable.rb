@@ -3,6 +3,8 @@ module Permissionable
 
   included do
     has_many :permissions, :as => :item
+
+    after_create :add_permission, if: :create_permission?
   end
   
   def permissions_count
@@ -39,4 +41,15 @@ module Permissionable
     # Deny otherwise.
     false
   end
+
+  protected
+
+  def create_permission?
+    respond_to?(:user) && user
+  end
+
+  def add_permission
+    permissions.create! :subject => self.user, :role => 'owner'
+  end
+
 end

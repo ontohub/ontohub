@@ -88,4 +88,19 @@ class OntologyTest < ActiveSupport::TestCase
     end
     
   end
+
+  context 'checking ordering of Ontology list' do
+    setup do
+      Ontology::States::STATES.each do |state|
+        FactoryGirl.create :ontology, state: state
+      end
+      @ontology_list = Ontology.list
+      @done_state = "done"
+    end
+
+    should 'list done ontologies first' do
+      assert_equal @done_state, @ontology_list.first.state
+    end
+  end
+
 end
