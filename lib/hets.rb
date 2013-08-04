@@ -78,7 +78,7 @@ module Hets
 
     output_path = "-O \"#{output_path}\"" unless output_path.blank?
 
-    command = "#{@@config.path} -o xml --full-signatures -v2 #{output_path} '#{input_file}' 2>&1"
+    command = "#{@@config.path} -o xml --full-signatures -a none -v2 #{output_path} '#{input_file}' 2>&1"
 
     Rails.logger.debug command
 
