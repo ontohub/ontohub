@@ -18,9 +18,7 @@ module Ontology::Categories
     end
 
     subclasses.each do |s|
-      c1,c2 = s.text.split('SubClassOf:').map do |c|
-        c.scan(/.*#([A-Za-z0-9_-]*).*/)[0][0]
-      end
+      c1,c2 = s.extract_class_names
       child = Category.find_by_name(c1)
       child.parent = Category.find_by_name(c2)
       child.save!
