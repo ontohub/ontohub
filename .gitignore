@@ -8,6 +8,9 @@
 .bundle
 .project
 
+# Ignore actual database.yml (copy database.example.yml)
+config/database.yml
+
 # Ignore the default SQLite database
 db/*.sqlite3*
 
@@ -44,3 +47,7 @@ tmp/*
 *.snm
 *.toc
 *~
+
+config/settings.local.yml
+config/settings/*.local.yml
+config/environments/*.local.yml

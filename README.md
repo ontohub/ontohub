@@ -1,4 +1,4 @@
-Ontohub [![Build Status](https://travis-ci.org/ontohub/ontohub.png)](https://travis-ci.org/ontohub/ontohub) [![Code Climate](https://codeclimate.com/github/ontohub/ontohub.png)](https://codeclimate.com/github/ontohub/ontohub)
+Ontohub [![Build Status](https://travis-ci.org/ontohub/ontohub.png?branch=master)](https://travis-ci.org/ontohub/ontohub) [![Code Climate](https://codeclimate.com/github/ontohub/ontohub.png)](https://codeclimate.com/github/ontohub/ontohub)
 =======
 
 A web-based repository for distributed ontologies.

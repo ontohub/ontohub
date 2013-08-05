@@ -1,14 +1,13 @@
 language: ruby
 
 rvm:
-  - 1.9.3
   - 2.0.0
 
 branches:
-  only:
-    - master
-    - CRUD
-    - display_of_axioms
+  except:
+    - deployment
+    - ontohub.org
+    - staging.ontohub.org
 
 services:
   - redis-server
@@ -17,8 +16,9 @@ notifications:
   email: false
 
 before_install:
-  - "export DISPLAY=:99.0"
-  - "sh -e /etc/init.d/xvfb start"
+  - 'export DISPLAY=:99.0'
+  - 'sh -e /etc/init.d/xvfb start'
+  - 'gem install bundler'
 
 script:
   - bundle exec rake test
@@ -26,8 +26,8 @@ script:
 before_script:
   - psql -c 'create database ontohub_test;' -U postgres
   - sudo apt-add-repository -y ppa:hets/hets
-  - sudo apt-add-repository -y "deb http://archive.canonical.com/ubuntu precise partner"
-  - sudo apt-add-repository -y "deb http://archive.ubuntu.com/ubuntu precise-updates main restricted universe multiverse"
+  - sudo apt-add-repository -y 'deb http://archive.canonical.com/ubuntu precise partner'
+  - sudo apt-add-repository -y 'deb http://archive.ubuntu.com/ubuntu precise-updates main restricted universe multiverse'
   - sudo apt-get update
   - sudo apt-get install ia32-libs libsane libgphoto2-2 hets-core subversion udrawgraph
   - sudo hets -update

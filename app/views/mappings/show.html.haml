@@ -1,0 +1,31 @@
+- @page_title = resource
+%h2= link_to resource, resource, 'data-type' => resource_class
+
+- if can? :update, resource.class
+  %ul.actions.pull-right
+    %li= link_to 'Edit mapping', edit_resource_path
+    - if can? :delete, resource.class
+      %li= link_to 'Delete mapping', resource, :confirm => 'Are you sure?', :method => :delete
+
+%h5 Maps 
+= fancy_link resource.source 
+to
+= fancy_link resource.target
+
+%p.definedBy 
+  %h5 Defined by: 
+  = resource.defined_by
+%p.standardStatus 
+  %h5 Standardization-status: 
+  = resource.standardization_status
+
+- if resource.has_attribute? :faithfulness
+  %p.faithfulness
+    %h5 Faithfulness
+    = resource.faithfulness
+- if resource.has_attribute? :theoroidalness
+  %p.theoroidalness
+    %h5 Theoroidalness
+    = resource.theoroidalness
+
+= render :partial => "adjoints"

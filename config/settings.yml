@@ -1,0 +1,48 @@
+#
+# Project configuration
+#
+# Environment specific settings can be overridden in:
+# /config/settings/<environment>.yml
+# 
+
+# Name of the installation
+name: "My Ontohub Installation"
+
+# Hostname of the installation
+hostname: example.com
+
+# Optional asset host for delivery of static files (css, images, javascripts)
+# asset_host: assets.example.com
+
+# Sender address for outgoing mail
+email: noreply@example.com
+
+# Mail delivery
+# http://guides.rubyonrails.org/action_mailer_basics.html#action-mailer-configuration
+action_mailer:
+  delivery_method: sendmail
+
+# The number of days a user can access
+# the website without confirming his account.
+allow_unconfirmed_access_for_days: 3
+
+# Footer links and texts
+footer:
+  - text: Foo Institute
+  - text: About
+    href: http://about.example.com
+
+# Delivery of exceptions, disabled by default
+exception_notifier:
+  enabled: false
+  email_prefix: "[ontohub exception]"
+  sender_address: "exceptions@example.com"
+  exception_recipients:
+    - exception-recipient@example.com
+
+allowed_iri_schemes:
+  - http
+  - https
+  - file
+  - gopher
+  - urn
