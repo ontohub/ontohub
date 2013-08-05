@@ -11,3 +11,4 @@
       = flash_messages
       %section= yield
     = javascript_include_tag "application"
+    = debug(params) if Rails.env.development?
