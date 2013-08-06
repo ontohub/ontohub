@@ -12,14 +12,6 @@ GIT
     sunspot_solr (2.0.0.pre.111215)
       escape (~> 0.0.4)
 
-GIT
-  remote: git://github.com/ontohub/thejit.git
-  revision: 2374603e7e329a9dd363077575d7060772faba36
-  specs:
-    thejit (0.1.0)
-      json
-      rails
-
 GEM
   remote: https://rubygems.org/
   specs:
@@ -367,7 +359,6 @@ DEPENDENCIES
   strip_attributes (~> 1.0)
   sunspot_rails!
   sunspot_solr!
-  thejit!
   therubyracer
   uglifier (>= 1.0.3)
   vcr

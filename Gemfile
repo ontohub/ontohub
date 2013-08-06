@@ -22,7 +22,6 @@ group :assets do
   gem 'jquery-rails'
   gem 'jquery-ui-rails'
   gem 'momentjs-rails'
-  gem 'thejit', :git => 'git://github.com/ontohub/thejit.git'
   gem 'd3_rails'
   gem 'therubyracer'
   gem 'uglifier', '>= 1.0.3'
