@@ -54,6 +54,15 @@ class Ontology < ActiveRecord::Base
       first
   end
 
+  def non_current_active_version?(user=nil)
+    real_process_state = active_version != self.ontology_version
+    if user && (user.admin || ontology_version.user == user)
+      real_process_state
+    else
+      false
+    end
+  end
+
   def self.with_active_version
     state = "done"
     includes(:versions).

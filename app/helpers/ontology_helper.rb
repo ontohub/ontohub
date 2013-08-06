@@ -40,4 +40,11 @@ module OntologyHelper
     end if ontologies.any?
   end
 
+  def status_tag
+    content_tag(:div, class: 'well', id: 'ontology_infos') do
+      content_tag(:h5, t(:ontology_versions_status)) +
+      content_tag(:h6, "Status: #{@ontology.state}")
+    end if @ontology.non_current_active_version?(current_user)
+  end
+
 end

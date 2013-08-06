@@ -21,6 +21,8 @@
 - if resource.oops_supported?
   = render partial: '/ontologies/oops_state', locals: {resource: resource}
 
+= status_tag
+
 %nav
   %ul.nav.nav-tabs
     - @entities.each do |entity|

@@ -3,6 +3,7 @@
 
 en:
   in_process_ontologies: "Ontologies with pending work:"
+  ontology_versions_status: "In-Process Ontology-Version found:"
   wait: 'Please wait …'
   relation_list:
     team_user:
