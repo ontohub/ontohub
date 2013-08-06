@@ -9,6 +9,7 @@ class User < ActiveRecord::Base
   has_many :teams, :through => :team_users
   has_many :metadata
   has_many :permissions, :as => :subject
+  has_many :keys
   
   attr_accessible :email, :name, :admin, :password, :as => :admin
   

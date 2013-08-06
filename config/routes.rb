@@ -8,6 +8,7 @@ Ontohub::Application.routes.draw do
 
   devise_for :users, :controllers => { :registrations => "users/registrations" }
   resources :users, :only => :show
+  resources :keys, except: [:show, :edit, :update]
   
   resources :logics do
     resources :supports, :only => [:create, :update, :destroy, :index]
