@@ -6,7 +6,7 @@ class Sentence < ActiveRecord::Base
 
   def extract_class_names
     c1,c2 = self.text.split('SubClassOf:').map do |c|
-      c.scan(URI::regexp(ALLOWED_URI_SCHEMAS))
+      c.scan(URI::regexp(Settings.allowed_iri_schemes))
     end
     [ c1[0][-1], c2[0][-1] ]
   end
