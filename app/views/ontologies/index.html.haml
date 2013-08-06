@@ -15,8 +15,7 @@
     for
     %strong= @search
 
-%ul.ontologies#in_process
-  = render collection.in_process(admin? || current_user)
+= in_process_tag
 
 = pagination do
   %ul.ontologies
