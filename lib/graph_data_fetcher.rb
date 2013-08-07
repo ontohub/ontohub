@@ -5,6 +5,8 @@ class GraphDataFetcher
   MAPPINGS = {
     Logic => LogicMapping,
     Ontology => Link,
+    SingleOntology => Link,
+    DistributedOntology => Link,
   }
 
   def initialize(depth: 3,
