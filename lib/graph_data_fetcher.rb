@@ -1,5 +1,7 @@
 class GraphDataFetcher
 
+  class UnknownMapping < RuntimeError; end
+
   MAPPINGS = {
     Logic => LogicMapping,
     Ontology => Link,
@@ -18,7 +20,7 @@ class GraphDataFetcher
 
   def determine_source(target)
     source = MAPPINGS[target]
-    raise UnknownGraphMappingError unless source
+    raise UnknownMapping unless source
     @source = source
   end
 
@@ -92,5 +94,3 @@ class GraphDataFetcher
   end
 
 end
-
-class UnknownGraphMappingError < RuntimeError; end
