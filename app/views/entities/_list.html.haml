@@ -1,12 +1,17 @@
 %table.entities
   %thead
     %tr
+      %th{style:"border:0"}
       %th Text
       - if @show_name_column 
         %th Name
   %tbody
     - collection.each do |entity|
       %tr
+        %td
+          - if entity.oops_responses.any?
+            = link_to "#" do
+              = oops_icons entity.oops_responses
         - if @show_name_column
           %td= entity.text
           %td= entity.name
@@ -15,3 +20,17 @@
             %td= iri_tooltip(entity, entity.display_name)
           - else 
             %td= name_highlighter(entity)
+      
+      - if entity.oops_responses.any?
+        %tr{:style => "display:none"}
+        %tr.pitfall{:style => "display:none"} 
+          %td
+          %td{colspan:2, style:"box-shadow:inset 0 0 5px grey"}
+            %dl.oops-responses
+              - entity.oops_responses.each do |response|
+                %dt{ title: response.element_type }
+                  %i{ class: oops_icon(response.element_type) }
+                %dd
+                  %strong
+                    = response.name
+                  %p= response.description

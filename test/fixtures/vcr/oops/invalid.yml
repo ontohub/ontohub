@@ -1,0 +1,48 @@
+---
+http_interactions:
+- request:
+    method: post
+    uri: http://oops-ws.oeg-upm.net/rest
+    body:
+      encoding: UTF-8
+      string: |-
+        <?xml version="1.0" encoding="UTF-8"?>
+        <OOPSRequest><OntologyUrl>http://example.com/</OntologyUrl><OntologyContent></OntologyContent><Pitfalls></Pitfalls><OutputFormat>XML</OutputFormat></OOPSRequest>
+    headers:
+      Accept:
+      - '*/*; q=0.5, application/xml'
+      Accept-Encoding:
+      - gzip, deflate
+      Content-Length:
+      - '200'
+      User-Agent:
+      - Ruby
+  response:
+    status:
+      code: 200
+      message: OK
+    headers:
+      Date:
+      - Sat, 13 Apr 2013 10:44:20 GMT
+      Server:
+      - Apache-Coyote/1.1
+      Content-Type:
+      - application/xml;charset=UTF-8
+      Via:
+      - 1.1 oops-ws.oeg-upm.net
+      Transfer-Encoding:
+      - chunked
+    body:
+      encoding: UTF-8
+      string: "<rdf:RDF\nxmlns:rdf=\"http://www.w3.org/1999/02/22-rdf-syntax-ns#\"\nxmlns:oops=\"http://www.oeg-upm.net/oops#\"
+        > \n<rdf:Description rdf:about=\"http://www.oeg-upm.net/oops/unexpected_error\">\n
+        \   <oops:hasTitle rdf:datatype=\"http://www.w3.org/2001/XMLSchema#string\">OOPS!
+        something went wrong.</oops:hasTitle>\n    <oops:hasMessage rdf:datatype=\"http://www.w3.org/2001/XMLSchema#string\">If
+        you have entered a URI make sure that it is available on-line using, for example,
+        Vapour or Hyperthing.</oops:hasMessage>\n    <oops:hasMessage rdf:datatype=\"http://www.w3.org/2001/XMLSchema#string\">Make
+        sure that your ontology RDF or OWL code is correct using an RDF validator
+        as http://www.w3.org/RDF/Validator/ or an OWL validator as http://www.mygrid.org.uk/OWL/Validator.</oops:hasMessage>\n
+        \   <rdf:type rdf:resource=\"http://www.oeg-upm.net/oops#response\"/>\n</rdf:Description>\n</rdf:RDF>\n"
+    http_version: 
+  recorded_at: Sat, 13 Apr 2013 10:46:05 GMT
+recorded_with: VCR 2.4.0

@@ -1,4 +1,3 @@
-# encoding: utf-8
 module NavigationHelper
 
   def ontology_nav(ontology, current_page)
@@ -30,7 +29,7 @@ module NavigationHelper
     @page_title = ontology.to_s
     @page_title = "#{current_page.capitalize} · #{@page_title}" if current_page != pages[0][0]
     
-    render :partial => '/shared/ontology', :locals => {
+    render :partial => '/ontologies/info', :locals => {
       resource:           ontology,
       current_page:       current_page,
       pages:              pages,

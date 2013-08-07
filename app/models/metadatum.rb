@@ -9,7 +9,7 @@ class Metadatum < ActiveRecord::Base
   attr_accessible :key, :value
 
   validates_format_of :key,
-    :with => URI::regexp(ALLOWED_URI_SCHEMAS),
+    :with => URI::regexp(Settings.allowed_iri_schemes),
     :if => :key?
 
 end
