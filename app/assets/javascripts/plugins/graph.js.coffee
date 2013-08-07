@@ -17,6 +17,17 @@ $.get(graphs_uri, (data) ->
     drawGraph(data)
   , "json")
 
+$('div#graph_depth_setting ul li a').on 'click', (e) ->
+  e.preventDefault()
+  depth = parseInt($(this).html())
+
+  $('div#graph_depth_setting > a').html(depth)
+    .append($('<span />', class: 'caret'))
+
+  $.get("#{graphs_uri}?depth=#{depth}", (data) ->
+      drawGraph(data)
+    , "json")
+
 d3NodesEdges = (data) ->
   nodes = []
   links = {}
@@ -50,6 +61,7 @@ drawGraph = (data) ->
   node_url = nodes_edges[2]
   edge_url = nodes_edges[3]
 
+  $("div#d3_graph").html("")
   svg = d3.select("div#d3_graph").
     append('svg').
     attr('width', width).
