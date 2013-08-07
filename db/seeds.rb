@@ -55,7 +55,7 @@ Repository.first.permissions.create! \
   role: 'editor'
 
 # initially import logics
-Rake::Task['logicgraph:import'].invoke
+#Rake::Task['logicgraph:import'].invoke
 
 # Import ontologies
 Dir["#{Rails.root}/test/fixtures/ontologies/*/*.{casl,clf,clif,owl}"].each do |file|
