@@ -55,4 +55,36 @@ class GraphDataFetcherTest < ActiveSupport::TestCase
 
   end
 
+  context 'ontology specific tests' do
+
+    setup do
+      @user = FactoryGirl.create :user
+      @source = FactoryGirl.create(:single_ontology, state: 'done')
+      @target = FactoryGirl.create(:single_ontology, state: 'done')
+      @mapping = FactoryGirl.create(:link,
+                                    source: @source,
+                                    target: @target,
+                                    ontology: @source)
+      @fetcher = GraphDataFetcher.new(center: @source)
+      @nodes, @edges = @fetcher.fetch
+    end
+
+    context 'valid request' do
+
+      should 'include source in the nodes list' do
+        assert_includes @nodes, @source
+      end
+
+      should 'include target in the nodes list' do
+        assert_includes @nodes, @target
+      end
+
+      should 'edges should include the mapping' do
+        assert_includes @edges, @mapping
+      end
+
+    end
+
+  end
+
 end
