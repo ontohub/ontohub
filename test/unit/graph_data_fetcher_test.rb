@@ -23,4 +23,36 @@ class GraphDataFetcherTest < ActiveSupport::TestCase
 
   end
 
+  context 'logic specific tests' do
+
+    setup do
+      @user = FactoryGirl.create :user
+      @source = FactoryGirl.create(:logic, user: @user)
+      @target = FactoryGirl.create(:logic, user: @user)
+      @mapping = FactoryGirl.create(:logic_mapping,
+                                    source: @source,
+                                    target: @target,
+                                    user: @user)
+      @fetcher = GraphDataFetcher.new(center: @source)
+      @nodes, @edges = @fetcher.fetch
+    end
+
+    context 'valid request' do
+
+      should 'include source in the nodes list' do
+        assert_includes @nodes, @source
+      end
+
+      should 'include target in the nodes list' do
+        assert_includes @nodes, @target
+      end
+
+      should 'edges should include the mapping' do
+        assert_includes @edges, @mapping
+      end
+
+    end
+
+  end
+
 end
