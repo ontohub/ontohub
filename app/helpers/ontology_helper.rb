@@ -42,8 +42,13 @@ module OntologyHelper
 
   def status_tag
     content_tag(:div, class: 'well', id: 'ontology_infos') do
-      content_tag(:h5, t(:ontology_versions_status)) +
-      content_tag(:h6, "Status: #{@ontology.state}")
+      content_tag(:small, id: 'ontology-state',
+                          class: @ontology.state,
+                          :"data-uri" => url_for(@ontology)) do
+        status(@ontology)
+      end
+      # content_tag(:h5, t(:ontology_versions_status)) +
+      # content_tag(:h6, "Status: #{@ontology.state}")
     end if @ontology.non_current_active_version?(current_user)
   end
 
