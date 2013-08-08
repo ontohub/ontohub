@@ -16,8 +16,6 @@ class LogicMapping < ActiveRecord::Base
 
   validates_presence_of :target, :source, :iri
 
-  after_create :add_permission
-
   def to_s
     "#{iri}: #{source} => #{target}"
   end
@@ -26,11 +24,4 @@ class LogicMapping < ActiveRecord::Base
     LogicAdjoint.where("projection_id = ? OR translation_id = ?", self.id, self.id)
   end
 
-private
-
-  def add_permission
-    permissions.create! subject: self.user, role: 'owner' if self.user
-  rescue ActiveRecord::RecordNotUnique
-  end
-  
 end

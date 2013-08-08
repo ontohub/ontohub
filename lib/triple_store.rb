@@ -45,13 +45,13 @@ class TripleStore
       object = statement[2].to_s
 
       # Map subject
-      @subjectMap = map_entity(@subjectMap, predicate, object, subject)
+      map_entity(@subjectMap, predicate, object, subject)
 
       # Map predicate
-      @predicateMap = map_entity(@predicateMap, subject, object, predicate)
+      map_entity(@predicateMap, subject, object, predicate)
 
       # Map object
-      @objectMap = map_entity(@objectMap, subject, predicate, object)
+      map_entity(@objectMap, subject, predicate, object)
     end
   end
 
@@ -59,73 +59,71 @@ class TripleStore
   #
   # * *Args* :
   # * - +predicate+ -> a predicate
-  # * - +object+ -> a range
+  # * - +object+ -> an object
   # * *Returns* :
-  # * - the list of subjects for given predicate and range
+  # * - the list of subjects
   def subjects(predicate, object)
-    entities(@subjectMap[predicate], object)
+    entities(@subjectMap, predicate, object)
   end
 
   # Returns a list with all predicates for a given subject-object pair
   #
   # * *Args* :
-  # * - +subject+ -> a domain
-  # * - +object+ -> a range
+  # * - +subject+ -> a subject
+  # * - +object+ -> an object
   # * *Returns* :
-  # * - the list of predicates for given domain and range
+  # * - the list of predicates
   def predicates(subject, object)
-    return entities(@predicateMap[subject], object)
+    entities(@predicateMap, subject, object)
   end
 
   # Returns a list with all objects for a given subject-predicate pair
   #
   # * *Args* :
-  # * - +subject+ -> a domain
-  # * - +predicate+ -> a relation
+  # * - +subject+ -> a subject
+  # * - +predicate+ -> a predicate
   # * *Returns* :
-  # * - the list of objects for given domain and relation
+  # * - the list of objects
   def objects(subject, predicate)
-    return entities(@objectMap[subject], predicate)
+    entities(@objectMap, subject, predicate)
   end
 
   private
 
-  # Lists the entities with the given restrictions
+  # Lists the entities identified by two keys
   #
   # * *Args* :
-  # * - +hash+ -> a hash of arrays
-  # * - +key+ -> a key of the array
+  # * - +map+ -> a hash of hashes of arrays
+  # * - +key1+ -> a key to a hash of arrays
+  # * - +key2+ -> a key to an array
   # * *Returns* :
-  # * - the indicated entity array if it exists
+  # * - the indicated array of entities if it exists
   # * - an empty array otherwise
-  def entities(hash, key)
-    if !hash
+  def entities(map, key1, key2)
+    if !map[key1]
       return Array.new
-    elsif !hash[key]
+    elsif !map[key1][key2]
       return Array.new
     else
-      return Array.new(hash[key])
+      return Array.new(map[key1][key2])
     end
   end
 
-  # Maps an entity with two keys
+  # Maps an entity to two keys
   #
   # * *Args* :
   # * - +map+ -> a hash of hashes of arrays
   # * - +key1+ -> a key to a hash of arrays
   # * - +key2+ -> a key to an array
   # * - +entity+ -> an entity to be added to the array
-  # * *Returns* :
-  # * - the updated map containing the entity
   def map_entity(map, key1, key2, entity)
-    unless map[key1]
+    if !map[key1]
       map[key1] = Hash.new
     end
-    unless map[key1][key2]
+    if !map[key1][key2]
       map[key1][key2] = Array.new
     end
     map[key1][key2].push entity
-    return map
   end
 
 end

@@ -1,0 +1,46 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<oops:OOPSResponse xmlns:oops="http://www.oeg-upm.net/oops">
+<!-- This is the response for http://sweet.jpl.nasa.gov/1.1/sunrealm.owl -->
+<oops:Pitfall>
+<oops:Code>P04</oops:Code><oops:Name>Creating unconnected ontology elements</oops:Name>
+<oops:Description>Ontology elements (classes, relationships or attributes) are created with no relation to the rest of the ontology. An example of this type of pitfall is to create the relationship “memberOfTeam” and to miss the class representing teams; thus, the relationship created is isolated in the ontology.</oops:Description>
+<oops:Affects>
+<oops:AffectedElement>http://sweet.jpl.nasa.gov/1.1/sunrealm.owl#SunRealm</oops:AffectedElement>
+</oops:Affects>
+</oops:Pitfall>
+<oops:Pitfall>
+<oops:Code>P08</oops:Code><oops:Name>Missing annotations</oops:Name>
+<oops:Description>Ontology terms lack annotations properties. This kind of properties improves the ontology understanding and usability from a user point of view.</oops:Description>
+<oops:Affects>
+<oops:AffectedElement>http://sweet.jpl.nasa.gov/1.1/sunrealm.owl#Sunspot</oops:AffectedElement>
+<oops:AffectedElement>http://sweet.jpl.nasa.gov/1.1/sunrealm.owl#Photosphere</oops:AffectedElement>
+<oops:AffectedElement>http://sweet.jpl.nasa.gov/1.1/sunrealm.owl#Corona</oops:AffectedElement>
+<oops:AffectedElement>http://sweet.jpl.nasa.gov/1.1/sunrealm.owl#Filament</oops:AffectedElement>
+<oops:AffectedElement>http://sweet.jpl.nasa.gov/1.1/sunrealm.owl#Chromosphere</oops:AffectedElement>
+<oops:AffectedElement>http://sweet.jpl.nasa.gov/1.1/sunrealm.owl#CoronaHole</oops:AffectedElement>
+<oops:AffectedElement>http://sweet.jpl.nasa.gov/1.1/sunrealm.owl#ActiveRegion</oops:AffectedElement>
+<oops:AffectedElement>http://sweet.jpl.nasa.gov/1.1/sunrealm.owl#Prominence</oops:AffectedElement>
+<oops:AffectedElement>http://sweet.jpl.nasa.gov/1.1/sunrealm.owl#StellarInterior</oops:AffectedElement>
+<oops:AffectedElement>http://sweet.jpl.nasa.gov/1.1/sunrealm.owl#SunRealm</oops:AffectedElement>
+<oops:AffectedElement>http://sweet.jpl.nasa.gov/1.1/sunrealm.owl#owlEquivalentClass</oops:AffectedElement>
+</oops:Affects>
+</oops:Pitfall>
+<oops:Pitfall>
+<oops:Code>P10</oops:Code><oops:Name>Missing disjointness [1, 2, 3]</oops:Name>
+<oops:Description>The ontology lacks disjoint axioms between classes or between properties that should be defined as disjoint. For example, we can create the classes “Odd” and “Even” (or the classes “Prime” and “Composite”) without being disjoint; such representation is not correct based on the definition of these types of numbers.</oops:Description>
+</oops:Pitfall>
+<oops:Pitfall>
+<oops:Code>P11</oops:Code><oops:Name>Missing domain or range in properties</oops:Name>
+<oops:Description>Relationships and/or attributes without domain or range (or none of them) are included in the ontology. There are situations in which the relation is very general and the range should be the most general concept “Thing”. However, in other cases, the relations are more specific and it could be a good practice to specify its domain and/or range. An example of this type of pitfall is to create the relationship “hasWritten” in an ontology about art in which the relationship domain should be “Writer” and the relationship range should be “LiteraryWork”. This pitfall is related to the common error when defining ranges and domains described in [3].</oops:Description>
+<oops:Affects>
+<oops:AffectedElement>http://sweet.jpl.nasa.gov/1.1/sunrealm.owl#owlEquivalentClass</oops:AffectedElement>
+</oops:Affects>
+</oops:Pitfall>
+<oops:Pitfall>
+<oops:Code>P13</oops:Code><oops:Name>Missing inverse relationships</oops:Name>
+<oops:Description>This pitfall appears when a relationship (except for the symmetric ones) has not an inverse relationship defined within the ontology. For example, the case in which the ontology developer omits the inverse definition between the relations “hasLanguageCode” and “isCodeOf”, or between “hasReferee” and “isRefereeOf”.</oops:Description>
+<oops:Affects>
+<oops:AffectedElement>http://sweet.jpl.nasa.gov/1.1/sunrealm.owl#owlEquivalentClass</oops:AffectedElement>
+</oops:Affects>
+</oops:Pitfall>
+</oops:OOPSResponse>
