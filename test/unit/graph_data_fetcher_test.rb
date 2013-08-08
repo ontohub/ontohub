@@ -5,8 +5,7 @@ class GraphDataFetcherTest < ActiveSupport::TestCase
   context 'determine the mapping class correctly' do
 
     setup do
-      user = FactoryGirl.create :user
-      @source = FactoryGirl.create(:logic, user: user)
+      @source = FactoryGirl.create(:logic)
       @fetcher = GraphDataFetcher.new(center: @source)
     end
 
@@ -58,7 +57,6 @@ class GraphDataFetcherTest < ActiveSupport::TestCase
   context 'ontology specific tests' do
 
     setup do
-      @user = FactoryGirl.create :user
       @source = FactoryGirl.create(:single_ontology, state: 'done')
       @target = FactoryGirl.create(:single_ontology, state: 'done')
       @mapping = FactoryGirl.create(:link,
