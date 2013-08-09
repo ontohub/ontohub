@@ -13,7 +13,7 @@ module OntologyParser
   
   # Listener for the SAX Parser
   class Listener < Nokogiri::XML::SAX::Document
-    
+    MAP      = "map"
     ROOT     = 'DGraph'
     ONTOLOGY = 'DGNode'
     SYMBOL   = 'Symbol'
@@ -44,6 +44,9 @@ module OntologyParser
         when SYMBOL
           @current_symbol = Hash[*[attributes]]
           @current_symbol['text'] = ''
+          if @current_link && @current_link['map']
+            @current_link['map'] << @current_symbol
+          end
         when AXIOM
           @current_axiom = Hash[*[attributes]]
           @current_axiom['symbols'] = []
@@ -52,6 +55,8 @@ module OntologyParser
           @current_link = Hash[*[attributes]]
         when MORPHISM
           @current_link['morphism'] = Hash[*[attributes]]['name'] if @current_link
+        when MAP
+          @current_link['map'] = []
       end
     end
     

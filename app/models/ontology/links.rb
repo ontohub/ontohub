@@ -13,7 +13,6 @@ module Ontology::Links
     
     def update_or_create_from_hash(hash, user, timestamp = Time.now)
       raise ArgumentError, 'No hash given.' unless hash.is_a? Hash
-
       # hash['name'] # maybe nil, in this case, we need to generate a name
       link_iri   = iri_for_child(hash['name'] || hash['linkid'])
       source_iri = iri_for_child(hash['source'])
