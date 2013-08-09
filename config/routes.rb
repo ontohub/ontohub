@@ -51,6 +51,7 @@ Ontohub::Application.routes.draw do
     resources :permissions, :only => [:index, :create, :update, :destroy]
     resources :metadata, :only => [:index, :create, :destroy]
     resources :comments, :only => [:index, :create, :destroy]
+    resources :graphs, :only => [:index]
   end
   
   resources :teams do
