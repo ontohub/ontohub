@@ -137,4 +137,45 @@ class OntologyTest < ActiveSupport::TestCase
 
   end
 
+  context 'correctness of non_current_active_version? question' do
+
+    setup do
+      @admin = FactoryGirl.create(:user, admin: true)
+      @user = FactoryGirl.create(:user)
+      @owner = FactoryGirl.create(:user)
+      @ontology = FactoryGirl.create(:ontology)
+      FactoryGirl.create(:ontology_version,
+                         state: 'done',
+                         user: @owner,
+                         ontology: @ontology)
+      @ontology.ontology_version = FactoryGirl.create(:ontology_version,
+                                                      state: 'failed',
+                                                      user: @owner,
+                                                      ontology: @ontology)
+      @ontology.state = 'failed'
+      @ontology.save
+      @current_ontology = FactoryGirl.create(:ontology)
+      @current_ontology.ontology_version = FactoryGirl.create(:ontology_version,
+                                                              state: 'done',
+                                                              user: @owner,
+                                                              ontology: @current_ontology)
+      @current_ontology.save
+    end
+
+    should "be true, iff the active version != current one according to user" do
+      assert !@ontology.non_current_active_version?
+      assert !@ontology.non_current_active_version?(@user)
+      assert @ontology.non_current_active_version?(@admin)
+      assert @ontology.non_current_active_version?(@owner)
+    end
+
+    should "be false, iff the active version == current one according to user" do
+      assert !@current_ontology.non_current_active_version?
+      assert !@current_ontology.non_current_active_version?(@user)
+      assert !@current_ontology.non_current_active_version?(@admin)
+      assert !@current_ontology.non_current_active_version?(@owner)
+    end
+
+  end
+
 end
