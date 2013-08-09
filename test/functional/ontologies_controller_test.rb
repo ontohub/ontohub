@@ -45,7 +45,11 @@ class OntologiesControllerTest < ActionController::TestCase
         end
         
         should respond_with :success
-        should respond_with_content_type :json
+
+        should 'respond with json content type' do
+          assert_equal "application/json", response.content_type.to_s
+        end
+
       end
       
       context 'without entities' do
