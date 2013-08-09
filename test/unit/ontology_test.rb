@@ -103,4 +103,38 @@ class OntologyTest < ActiveSupport::TestCase
     end
   end
 
+  context 'determining active version of ontology' do
+
+    should 'be equal to current version, if there is only one' do
+      @ontology_one_version = FactoryGirl.create(:ontology_version).ontology
+
+      assert_equal @ontology_one_version.ontology_version,
+        @ontology_one_version.active_version
+    end
+
+    should 'be equal to current version, if current is done' do
+      @ontology_two_versions = FactoryGirl.create(:ontology_version).ontology
+      FactoryGirl.create(:ontology_version, ontology: @ontology_two_versions)
+
+      assert_equal @ontology_two_versions.ontology_version,
+        @ontology_two_versions.active_version
+    end
+
+    should 'be equal to second to latest version , if current failed' do
+      @ontology = FactoryGirl.create(:ontology)
+      @done_version = FactoryGirl.create(:ontology_version,
+                                         state: 'done',
+                                         ontology: @ontology)
+      @ontology.ontology_version = FactoryGirl.create(:ontology_version,
+                                                      state: 'failed',
+                                                      ontology: @ontology)
+      @ontology.state = 'failed'
+      @ontology.save
+      @failed_version = @ontology.ontology_version
+
+      assert_equal @done_version, @ontology.active_version
+    end
+
+  end
+
 end
