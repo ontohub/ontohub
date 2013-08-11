@@ -1,8 +1,13 @@
 %div.btn-group
   -if can? :edit, resource
     %button.btn= link_to 'Edit', [:edit, resource]
-  -if can? :edit, resource
-    %button.btn= link_to 'Upload new version from my computer', new_ontology_ontology_version_path(resource, :from => 'http-client')
-    %button.btn= link_to 'Import new version from other website', new_ontology_ontology_version_path(resource, :from => 'http-server')
-  -if can? :edit, resource
     %button.btn= link_to 'Delete', resource, :confirm => 'Do you really want to delete this ontology?', :method => :delete
+  - if resource.oops_supported?
+    = render partial: '/ontologies/oops_state', locals: {resource: resource}
+  -if can? :edit, resource
+    %button.btn= link_to 'New Version', new_ontology_ontology_version_path(resource, :from => 'http-client')
+    %button.btn.dropdown-toggle{"data-toggle"=>"dropdown"}
+      %span.caret
+    %ul.dropdown-menu
+      %li= link_to 'From Computer', new_ontology_ontology_version_path(resource, :from => 'http-client')
+      %li= link_to 'From other website', new_ontology_ontology_version_path(resource, :from => 'http-server')
