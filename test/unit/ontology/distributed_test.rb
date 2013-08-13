@@ -4,16 +4,8 @@ class Ontology::DistributedTest < ActiveSupport::TestCase
 
   setup do
     @single = FactoryGirl.create(:single_ontology)
-    @logic_one = FactoryGirl.create(:logic)
-    @logic_two = FactoryGirl.create(:logic)
-    @hetero_distributed = FactoryGirl.create(:distributed_ontology)
-    FactoryGirl.create(:ontology, parent: @hetero_distributed, logic: @logic_one)
-    FactoryGirl.create(:ontology, parent: @hetero_distributed, logic: @logic_two)
-    @hetero_distributed.reload
-    @homogeneous_distributed = FactoryGirl.create(:distributed_ontology)
-    FactoryGirl.create(:ontology, parent: @homogeneous_distributed, logic: @logic_one)
-    FactoryGirl.create(:ontology, parent: @homogeneous_distributed, logic: @logic_one)
-    @homogeneous_distributed.reload
+    @hetero_distributed = FactoryGirl.create(:heterogeneous_ontology)
+    @homogeneous_distributed= FactoryGirl.create(:homogeneous_ontology)
   end
 
   context "heterogeneity" do
