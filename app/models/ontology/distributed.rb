@@ -1,10 +1,21 @@
 module Ontology::Distributed
   extend ActiveSupport::Concern
-  
+
   included do
     acts_as_tree
+
+    def self.homogeneous
+      where("ontologies.type = 'DistributedOntology'").
+        select { |ontology| ontology.homogeneous?}
+    end
+
+    def self.heterogeneous
+      where("ontologies.type = 'DistributedOntology'").
+        select { |ontology| ontology.heterogeneous?}
+    end
+
   end
-  
+
   def distributed?
     is_a? DistributedOntology
   end
