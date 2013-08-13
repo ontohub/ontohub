@@ -21,6 +21,17 @@ class Ontology::DistributedTest < ActiveSupport::TestCase
         "homogeneous registers as heterogeneous"
     end
 
+    context "collections" do
+
+      should "return only distributed homogeneous ontologies" do
+        Ontology.homogeneous.map do |ontology|
+          assert ontology.homogeneous?
+          assert ontology.distributed?
+        end
+      end
+
+    end
+
   end
 
   context "homogeneity" do
@@ -34,6 +45,22 @@ class Ontology::DistributedTest < ActiveSupport::TestCase
         "homogeneous registers as not homogeneous"
       assert !@hetero_distributed.homogeneous?,
         "heterogeneous registers as homogeneous"
+    end
+
+    context "collections" do
+
+      setup do
+        FactoryGirl.create_list(:heterogeneous_ontology, 10)
+        FactoryGirl.create_list(:homogeneous_ontology, 10)
+      end
+
+      should "return only distributed homogeneous ontologies" do
+        Ontology.homogeneous.map do |ontology|
+          assert ontology.homogeneous?
+          assert ontology.distributed?
+        end
+      end
+
     end
 
   end
