@@ -1,7 +1,7 @@
 #
 # A consistency check for a given ontology version.
 #
-class ConsistencyChecker < ActiveRecord::Base
+class ConsistencyCheck < ActiveRecord::Base
   include Resourcable
 
   belongs_to :object

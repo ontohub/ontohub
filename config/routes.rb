@@ -42,7 +42,6 @@ Ontohub::Application.routes.draw do
     resources :ontology_versions, :only => [:index, :show, :new, :create], :path => 'versions' do
       resource :oops_request, :only => [:show, :create]
     end
-
 #	%w( entities sentences ).each do |name|
 #	  get "versions/:number/#{name}" => "#{name}#index", :as => "ontology_version_#{name}"
 #	end
@@ -51,7 +50,11 @@ Ontohub::Application.routes.draw do
     resources :metadata, :only => [:index, :create, :destroy]
     resources :comments, :only => [:index, :create, :destroy]
   end
-  
+
+  resources :ontology_versions do
+    resources :consistency_checks, :only => [:index]
+  end
+
   resources :teams do
     resources :permissions, :only => [:index], :controller => 'teams/permissions'
     resources :team_users, :only => [:index, :create, :update, :destroy], :path => 'users'

@@ -3,7 +3,7 @@ class CreateConsistencyCheckMethod < ActiveRecord::Migration
     create_table :consistency_check_methods do |t|
       t.references :checker
       t.references :logic
-      t.integer :priority_order # is expressiveness of language exactly captured by logic?
+      t.integer :priority_order
 
       t.timestamps
     end

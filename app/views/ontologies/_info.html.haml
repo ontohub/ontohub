@@ -28,7 +28,7 @@
     %li= link_to 'Comments', [resource, :comments]
     %li= link_to 'Metadata', [resource, :metadata]
     %li= link_to 'Versions', [resource, :ontology_versions]
-    %li= link_to 'Consistency', [resource, :consistency_checks]
+    %li= link_to 'Consistency', [resource.ontology_version, :consistency_checks]
   - if controller_name == "entities" || controller_name == "sentences" 
     %nav
       %ul.nav.nav-tabs

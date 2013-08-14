@@ -19,6 +19,8 @@ class Logic < ActiveRecord::Base
   has_many :ontologies
   has_many :supports
   has_many :logic_mappings, :foreign_key => :source_id
+  has_many :methods
+  has_many :checkers, :through => :methods
 
   # The creator of this logic in the system
   # The logic creator
