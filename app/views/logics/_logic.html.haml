@@ -3,3 +3,5 @@
   %td= logic.iri
   %td= pluralize(logic.ontologies.count, Ontology.to_s)
   %td
+    with
+    = pluralize(Ontology.distributed_in(logic).count, "distributed #{Ontology}")
