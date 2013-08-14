@@ -5,7 +5,7 @@
       (#{req.last_error})
     - elsif req.state == 'done'
       (#{req.responses.count} Responses)
-      %button.btn= link_to 'Show global issues', '#', class: 'pitfalls' unless req.responses.count == 0
+      = link_to 'Show global issues', '#', class: 'pitfalls' unless req.responses.count == 0
   %div.pitfalls{:style => "display:none"}
     %dl.oops-responses
       - req.responses.global.each do |response|
@@ -16,5 +16,3 @@
             = response.name
           %p= response.description
     
-- else
-  %button.btn= link_to 'Test with OOPS!', ontology_ontology_version_oops_request_path(resource, resource.parent ? resource.parent.versions.current : resource.versions.current), method: 'post' unless resource.versions.current.nil?

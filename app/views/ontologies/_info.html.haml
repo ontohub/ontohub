@@ -18,6 +18,7 @@
 %p= link_to resource.iri, download_path(resource) if download_path(resource)
 %p= resource.description
 
+= render partial: '/ontologies/oops_state', locals: {resource: resource}
 
 
 %nav

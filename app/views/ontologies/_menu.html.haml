@@ -1,13 +1,12 @@
 %div.btn-group
+  - if resource.oops_supported? && !(req = resource.versions.current.try(:request))
+    %button.btn= link_to 'Test with OOPS!', ontology_ontology_version_oops_request_path(resource, resource.parent ? resource.parent.versions.current : resource.versions.current), method: 'post' unless resource.versions.current.nil?
   -if can? :edit, resource
     %button.btn= link_to 'Edit', [:edit, resource]
     %button.btn= link_to 'Delete', resource, :confirm => 'Do you really want to delete this ontology?', :method => :delete
-  - if resource.oops_supported?
-    = render partial: '/ontologies/oops_state', locals: {resource: resource}
-  -if can? :edit, resource
     %button.btn= link_to 'New Version', new_ontology_ontology_version_path(resource, :from => 'http-client')
     %button.btn.dropdown-toggle{"data-toggle"=>"dropdown"}
       %span.caret
-    %ul.dropdown-menu
+    %ul.dropdown-menu.pull-right
       %li= link_to 'From Computer', new_ontology_ontology_version_path(resource, :from => 'http-client')
       %li= link_to 'From other website', new_ontology_ontology_version_path(resource, :from => 'http-server')
