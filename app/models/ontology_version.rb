@@ -5,10 +5,11 @@ class OntologyVersion < ActiveRecord::Base
   include OntologyVersion::Numbers
   include OntologyVersion::OopsRequests
   
-  CONSISTENCY_STATUS = %w( consistent inconsistent unchecked )
+  CONSISTENCY_STATUS = %w( consistent inconsistent unchecked disputedly_consistent disputedly_inconsistent )
  
   belongs_to :user
   belongs_to :ontology, :counter_cache => :versions_count
+  has_many :consistency_checks, :foreign_key => :object_id
 
   mount_uploader :raw_file, OntologyUploader
   mount_uploader :xml_file, OntologyUploader

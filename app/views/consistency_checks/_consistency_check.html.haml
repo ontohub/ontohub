@@ -1,0 +1,7 @@
+%tr
+  - if consistency.nil?
+    %td= 'Consistency is nil'
+  - else
+    %td= consistency.process_status
+    %td= consistency.status
+    %td= consistency.checker.name
