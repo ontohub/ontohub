@@ -53,7 +53,7 @@ class SentenceTest < ActiveSupport::TestCase
 
   context 'extracted names' do
     setup do
-      sentence = FactoryGirl.create :sentence, :meta_ontology
+      sentence = FactoryGirl.create :sentence, :of_meta_ontology
       @name1,@name2 = sentence.extract_class_names
     end
     should "match iris\' fragments" do

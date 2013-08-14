@@ -11,7 +11,7 @@ class CategoryTest < ActiveSupport::TestCase
       @ontology = FactoryGirl.create :ontology
       @ontology.entities.push(FactoryGirl.create :entity, :kind => 'Class', :name => "Business_and_administration")
       @ontology.entities.push(FactoryGirl.create :entity, :kind => 'Class', :name => "Accounting_and_taxation")
-      sentence = FactoryGirl.create :sentence, :text => 'Class: <https://github.com/ontohub/OOR_Ontohub_API/blob/master/Domain_fields.owl#Accounting_and_taxation>\n       SubClassOf: <https://github.com/ontohub/OOR_Ontohub_API/blob/master/Domain_fields.owl#Business_and_administration>'
+      sentence = FactoryGirl.create :sentence, :of_meta_ontology
       @ontology.logic = FactoryGirl.create :logic, :name => 'OWL2', :user => (FactoryGirl.create :user)
       sentence.ontology = @ontology
       sentence.save!
