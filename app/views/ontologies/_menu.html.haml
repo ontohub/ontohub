@@ -4,6 +4,7 @@
   %ul.dropdown-menu
     - if can? :edit, resource
       %li= link_to 'Edit', [:edit, resource]
+      %li= link_to 'Check consistency', [:edit, resource]
       %li= link_to 'Delete', resource, confirm: 'Do you really want to delete this ontology?', method: :delete
       %li.divider
     %li= link_to 'Comments', [resource, :comments]

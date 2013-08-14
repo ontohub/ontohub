@@ -9,6 +9,7 @@
     - unless resource.distributed?
       = '/'
       = link_to resource.logic.to_s, resource.logic
+      = '(' + resource.ontology_version.consistency_status + ')'
   - if resource.state != 'done'
     %small#ontology-state{ class: resource.state, 'data-uri' => url_for(resource) }
       = status resource
