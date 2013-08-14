@@ -13,9 +13,7 @@ module Ontology::Distributed
     end
 
     def self.heterogeneous_children
-      ontologies = where("ontologies.type = 'DistributedOntology'").
-        select { |ontology| ontology.heterogeneous?}
-      where(parent_id: ontologies)
+      where(parent_id: self.heterogeneous)
     end
 
     private
