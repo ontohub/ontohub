@@ -16,13 +16,24 @@ module Ontology::Distributed
       where(parent_id: self.heterogeneous)
     end
 
+    def self.distributed_in(logic)
+      query = <<-STMT
+WITH parents AS (
+  SELECT (ontologies.parent_id) AS id FROM ontologies WHERE ontologies.logic_id = #{logic.id}
+)
+SELECT * FROM ontologies JOIN parents ON ontologies.parent_id = parents.id
+      STMT
+      select_with_character_selector('=', query)
+    end
+
     private
-    def self.select_with_character_selector(selector="=")
+    def self.select_with_character_selector(selector="=", ontologies_query=nil)
+      query = ontologies_query ? "(#{ontologies_query}) AS ontologies" : "ontologies"
       stmt = <<-STMT
 (
 SELECT distributed.id FROM
   (SELECT distributed_count.id, COUNT(distributed_count.id) AS occurrences FROM
-    (SELECT (ontologies.parent_id) as id FROM ontologies
+    (SELECT (ontologies.parent_id) as id FROM #{query}
     GROUP BY ontologies.logic_id, ontologies.parent_id)
   AS distributed_count
 GROUP BY distributed_count.id) AS distributed
@@ -36,6 +47,10 @@ WHERE distributed.occurrences #{selector} 1
 
   def distributed?
     is_a? DistributedOntology
+  end
+
+  def in_distributed?
+    !! self.parent
   end
 
   def homogeneous?
