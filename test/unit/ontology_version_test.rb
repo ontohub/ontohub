@@ -13,16 +13,6 @@ class OntologyVersionTest < ActiveSupport::TestCase
     @user = FactoryGirl.create :user
   end
 
-  context 'Validating OntologyVersion' do
-    ['http://example.com/', 'https://example.com/'].each do |val|
-      should allow_value(val).for :source_url
-    end
-
-    ['fooo'].each do |val|
-      should_not allow_value(val).for :source_url
-    end
-  end
-  
   context 'Creating OntologyVersion' do
     setup do
       @ontology = FactoryGirl.create :ontology

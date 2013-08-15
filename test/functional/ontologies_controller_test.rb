@@ -114,7 +114,7 @@ class OntologiesControllerTest < ActionController::TestCase
                 ontology: {
                   iri: 'fooo',
                   versions_attributes: [{
-                    source_url: ''
+                    raw_file: nil
                   }],
                 }
             end
@@ -122,54 +122,8 @@ class OntologiesControllerTest < ActionController::TestCase
             should respond_with :success
             should render_template :new
           end
-          
-          context 'with format :json' do
-            setup do
-              post :create,
-                format: :json,
-                repository_id: @repository.path,
-                ontology: {
-                  iri: 'fooo',
-                  versions_attributes: [{
-                    source_url: ''
-                  }],
-                }
-            end
-            
-            should respond_with :unprocessable_entity
-          end
         end
         
-        context 'with valid input' do
-          context 'without format' do
-            setup do
-              post :create, repository_id: @repository.path, :ontology => {
-                iri: 'http://example.com/dummy.ontology',
-                versions_attributes: [{
-                  source_url: 'http://example.com/dummy.ontology'
-                }],
-              }
-            end
-
-            should respond_with :redirect
-          end
-          
-          context 'with format :json' do
-            setup do
-              post :create,
-                format: :json,
-                repository_id: @repository.path,
-                ontology: {
-                  iri: 'http://example.com/dummy.ontology',
-                  versions_attributes: [{
-                    source_url: 'http://example.com/dummy.ontology'
-                  }],
-                }
-            end
-
-            should respond_with :created
-          end
-        end
       end
     end
     

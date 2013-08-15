@@ -9,8 +9,6 @@ class OntologyVersion < ActiveRecord::Base
   belongs_to :ontology, :counter_cache => :versions_count
 
 #  before_validation :set_checksum
-
-#  validate :presence_of_raw_file_or_source_url, :on => :create
 #  validate :raw_file_size_maximum
 
   validates_format_of :source_url,

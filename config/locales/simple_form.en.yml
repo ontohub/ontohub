@@ -18,7 +18,6 @@ en:
         email: E-Mail
       ontology_version:
         raw_file: Source File
-        source_url: Source URL
       logic:
         extension: File extension
         mimetype: MIME-Type
