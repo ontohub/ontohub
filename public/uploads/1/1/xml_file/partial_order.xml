@@ -1,0 +1,85 @@
+<?xml version='1.0' ?>
+<DGraph filename="/home/julian/workspace/ontohub/public/uploads/1/1/raw_file/partial_order.casl" libname="test" dgnodes="3" dgedges="2" nextlinkid="2">
+  <DGNode name="partial_order" logic="CASL" refname="partial_order" relxpath="/">
+    <Declarations>
+      <Symbol kind="sort" name="elem" range="/home/julian/workspace/ontohub/public/uploads/1/1/raw_file/partial_order.casl:4.8-4.11">sort elem</Symbol>
+      <Symbol kind="pred" name="__&lt;=__" range="/home/julian/workspace/ontohub/public/uploads/1/1/raw_file/partial_order.casl:5.8-5.13">pred __&lt;=__ : elem * elem</Symbol>
+    </Declarations>
+    <Symbols>
+      <Symbol kind="sort" name="elem" range="/home/julian/workspace/ontohub/public/uploads/1/1/raw_file/partial_order.casl:4.8-4.11">sort elem</Symbol>
+      <Symbol kind="pred" name="__&lt;=__" range="/home/julian/workspace/ontohub/public/uploads/1/1/raw_file/partial_order.casl:5.8-5.13">pred __&lt;=__ : elem * elem</Symbol>
+    </Symbols>
+    <Axioms>
+      <Axiom name="reflexive" range="/home/julian/workspace/ontohub/public/uploads/1/1/raw_file/partial_order.casl:5.17-9.3">
+        <Text>forall x : elem . x &lt;= x %(reflexive)%</Text>
+        <Symbol kind="pred" name="__&lt;=__" range="/home/julian/workspace/ontohub/public/uploads/1/1/raw_file/partial_order.casl:7.5-7.10">pred __&lt;=__ : elem * elem</Symbol>
+        <Symbol kind="sort" name="elem" range="/home/julian/workspace/ontohub/public/uploads/1/1/raw_file/partial_order.casl:6.16-6.19">sort elem</Symbol>
+      </Axiom>
+      <Axiom name="antisymmetric" range="/home/julian/workspace/ontohub/public/uploads/1/1/raw_file/partial_order.casl:5.17-9.3">
+        <Text>forall x, y : elem . x &lt;= y /\ y &lt;= x =&gt; x = y %(antisymmetric)%</Text>
+        <Symbol kind="pred" name="__&lt;=__" range="/home/julian/workspace/ontohub/public/uploads/1/1/raw_file/partial_order.casl:8.5-8.10">pred __&lt;=__ : elem * elem</Symbol>
+        <Symbol kind="sort" name="elem" range="/home/julian/workspace/ontohub/public/uploads/1/1/raw_file/partial_order.casl:6.16-6.19">sort elem</Symbol>
+      </Axiom>
+      <Axiom name="transitive" range="/home/julian/workspace/ontohub/public/uploads/1/1/raw_file/partial_order.casl:5.17-9.29">
+        <Text>forall x, y, z : elem . x &lt;= y /\ y &lt;= z =&gt; x &lt;= z %(transitive)%</Text>
+        <Symbol kind="pred" name="__&lt;=__" range="/home/julian/workspace/ontohub/public/uploads/1/1/raw_file/partial_order.casl:9.5-9.10">pred __&lt;=__ : elem * elem</Symbol>
+        <Symbol kind="sort" name="elem" range="/home/julian/workspace/ontohub/public/uploads/1/1/raw_file/partial_order.casl:6.16-6.19">sort elem</Symbol>
+      </Axiom>
+    </Axioms>
+  </DGNode>
+  <DGNode name="strict_partial_order" logic="CASL" refname="strict_partial_order" relxpath="/">
+    <Declarations>
+      <Symbol kind="sort" name="elem" range="/home/julian/workspace/ontohub/public/uploads/1/1/raw_file/partial_order.casl:13.8-13.11">sort elem</Symbol>
+      <Symbol kind="pred" name="__&lt;__" range="/home/julian/workspace/ontohub/public/uploads/1/1/raw_file/partial_order.casl:14.8-14.12">pred __&lt;__ : elem * elem</Symbol>
+    </Declarations>
+    <Symbols>
+      <Symbol kind="sort" name="elem" range="/home/julian/workspace/ontohub/public/uploads/1/1/raw_file/partial_order.casl:13.8-13.11">sort elem</Symbol>
+      <Symbol kind="pred" name="__&lt;__" range="/home/julian/workspace/ontohub/public/uploads/1/1/raw_file/partial_order.casl:14.8-14.12">pred __&lt;__ : elem * elem</Symbol>
+    </Symbols>
+    <Axioms>
+      <Axiom name="irreflexive" range="/home/julian/workspace/ontohub/public/uploads/1/1/raw_file/partial_order.casl:14.16-18.3">
+        <Text>forall x : elem . not x &lt; x %(irreflexive)%</Text>
+        <Symbol kind="pred" name="__&lt;__" range="/home/julian/workspace/ontohub/public/uploads/1/1/raw_file/partial_order.casl:16.9-16.13">pred __&lt;__ : elem * elem</Symbol>
+        <Symbol kind="sort" name="elem" range="/home/julian/workspace/ontohub/public/uploads/1/1/raw_file/partial_order.casl:15.16-15.19">sort elem</Symbol>
+      </Axiom>
+      <Axiom name="transitive" range="/home/julian/workspace/ontohub/public/uploads/1/1/raw_file/partial_order.casl:14.16-18.3">
+        <Text>forall x, y, z : elem . x &lt; y /\ y &lt; z =&gt; x &lt; z %(transitive)%</Text>
+        <Symbol kind="pred" name="__&lt;__" range="/home/julian/workspace/ontohub/public/uploads/1/1/raw_file/partial_order.casl:17.5-17.9">pred __&lt;__ : elem * elem</Symbol>
+        <Symbol kind="sort" name="elem" range="/home/julian/workspace/ontohub/public/uploads/1/1/raw_file/partial_order.casl:15.16-15.19">sort elem</Symbol>
+      </Axiom>
+    </Axioms>
+    <Theorems>
+      <Theorem status="open" name="asymmetric" range="/home/julian/workspace/ontohub/public/uploads/1/1/raw_file/partial_order.casl:14.16-18.22">
+        <Text>forall x, y : elem . x &lt; y =&gt; not y &lt; x %(asymmetric)% %implied</Text>
+        <Symbol kind="pred" name="__&lt;__" range="/home/julian/workspace/ontohub/public/uploads/1/1/raw_file/partial_order.casl:18.5-18.9">pred __&lt;__ : elem * elem</Symbol>
+        <Symbol kind="sort" name="elem" range="/home/julian/workspace/ontohub/public/uploads/1/1/raw_file/partial_order.casl:15.16-15.19">sort elem</Symbol>
+      </Theorem>
+    </Theorems>
+  </DGNode>
+  <DGNode name="v__T" logic="CASL" refname="v" relxpath="/Target/Extension/Spec[2]">
+    <Declarations>
+      <Symbol kind="pred" name="__&lt;=__" range="/home/julian/workspace/ontohub/public/uploads/1/1/raw_file/partial_order.casl:23.16-23.21">pred __&lt;=__ : elem * elem</Symbol>
+    </Declarations>
+    <Symbols>
+      <Symbol kind="sort" name="elem" range="/home/julian/workspace/ontohub/public/uploads/1/1/raw_file/partial_order.casl:13.8-13.11">sort elem</Symbol>
+      <Symbol kind="pred" name="__&lt;__" range="/home/julian/workspace/ontohub/public/uploads/1/1/raw_file/partial_order.casl:14.8-14.12">pred __&lt;__ : elem * elem</Symbol>
+      <Symbol kind="pred" name="__&lt;=__" range="/home/julian/workspace/ontohub/public/uploads/1/1/raw_file/partial_order.casl:23.16-23.21">pred __&lt;=__ : elem * elem</Symbol>
+    </Symbols>
+    <Axioms>
+      <Axiom name="Ax1" range="/home/julian/workspace/ontohub/public/uploads/1/1/raw_file/partial_order.casl:14.16-23.46">
+        <Text>forall x, y : elem . x &lt;= y &lt;=&gt; x &lt; y \/ x = y %(Ax1)%</Text>
+        <Symbol kind="pred" name="__&lt;__" range="/home/julian/workspace/ontohub/public/uploads/1/1/raw_file/partial_order.casl:23.37-23.39">pred __&lt;__ : elem * elem</Symbol>
+        <Symbol kind="pred" name="__&lt;=__" range="/home/julian/workspace/ontohub/public/uploads/1/1/raw_file/partial_order.casl:23.16-23.21">pred __&lt;=__ : elem * elem</Symbol>
+        <Symbol kind="sort" name="elem" range="/home/julian/workspace/ontohub/public/uploads/1/1/raw_file/partial_order.casl:23.27-23.30">sort elem</Symbol>
+      </Axiom>
+    </Axioms>
+  </DGNode>
+  <DGLink source="partial_order" target="v__T" linkid="1" name="v">
+    <Type>GlobalUnprovenThmInc</Type>
+    <GMorphism name="id_CASL.SubPCSOL=E" />
+  </DGLink>
+  <DGLink source="strict_partial_order" target="v__T" linkid="0">
+    <Type>GlobalDefInc</Type>
+    <GMorphism name="id_CASL.SubPCSOL=E" />
+  </DGLink>
+</DGraph>

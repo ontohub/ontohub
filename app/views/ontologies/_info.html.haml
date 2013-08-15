@@ -18,7 +18,8 @@
 %p= link_to resource.iri, download_path(resource) if download_path(resource)
 %p= resource.description
 
-= render partial: '/ontologies/oops_state', locals: {resource: resource}
+- if resource.oops_supported?
+  = render partial: '/ontologies/oops_state', locals: {resource: resource}
 
 %nav
   %ul.nav.nav-tabs

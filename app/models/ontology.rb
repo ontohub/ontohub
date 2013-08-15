@@ -12,6 +12,7 @@ class Ontology < ActiveRecord::Base
   include Ontology::Sentences
   include Ontology::Links
   include Ontology::Distributed
+  include Ontology::Oops
 
   belongs_to :repository
   belongs_to :language
@@ -21,7 +22,7 @@ class Ontology < ActiveRecord::Base
 
   validates_presence_of :iri
   validates_uniqueness_of :iri, :if => :iri_changed?
-  validates_format_of :iri, :with => URI::regexp(ALLOWED_URI_SCHEMAS)
+  validates_format_of :iri, :with => URI::regexp(Settings.allowed_iri_schemes)
 
   delegate :permission?, to: :repository
 
