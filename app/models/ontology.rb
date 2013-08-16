@@ -46,4 +46,8 @@ class Ontology < ActiveRecord::Base
     entities_count
   end
   
+  def consistency_checks
+    ontology_version.consistency_checks
+  end
+
 end

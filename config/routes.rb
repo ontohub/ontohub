@@ -49,9 +49,6 @@ Ontohub::Application.routes.draw do
     resources :permissions, :only => [:index, :create, :update, :destroy]
     resources :metadata, :only => [:index, :create, :destroy]
     resources :comments, :only => [:index, :create, :destroy]
-  end
-
-  resources :ontology_versions do
     resources :consistency_checks, :only => [:index]
   end
 
