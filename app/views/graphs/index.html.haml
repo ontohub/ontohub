@@ -1,0 +1,24 @@
+%h4
+  Graphical Visualization of
+  = t(GraphDataFetcher.link_for(parent.class)).pluralize
+Depth of
+.btn-group#graph_depth_setting
+  %a.btn.dropdown-toggle(data-toggle="dropdown" href="#")
+    = @depth
+    %span.caret
+
+  %ul.dropdown-menu
+    %li
+      - (1..9).each do |i|
+        = link_to i, parent_path(parent, :depth => i)
+
+from
+= fancy_link parent
+
+%div.row
+  %div.span12
+    %div.row
+      %div.span6
+        %div#d3_graph
+      %div.span3
+        %div#d3_context
