@@ -23,10 +23,9 @@
 
 %nav
   %ul.nav.nav-tabs
-    %li= link_to 'Content', [resource, :entities]
-    %li= link_to 'Comments', [resource, :comments]
-    %li= link_to 'Metadata', [resource, :metadata]
-    %li= link_to 'Versions', [resource, :ontology_versions]
+    - @top_level_pages.each do |(page_title, page)|
+      %li{class: page==current_page ? 'active' : nil}
+        = link_to page_title, [resource, page]
   - if controller_name == "entities" || controller_name == "sentences" 
     %nav
       %ul.nav.nav-tabs
