@@ -67,4 +67,22 @@ class OntologyParser::ComplexTest < ActiveSupport::TestCase
     File.open("#{Rails.root}/test/fixtures/ontologies/xml/#{name}")
   end
   
+  context "Building Links with entity Mapping" do
+    setup do
+      @ontologies = []
+      @symbols    = []
+      @axioms     = []
+      @links      = []
+      OntologyParser.parse open_fixture('links.xml'),
+        ontology: Proc.new{ |h| @ontologies << h },
+        symbol:   Proc.new{ |h| @symbols << h },
+        axiom:    Proc.new{ |h| @axioms << h },
+        link:     Proc.new{ |h| @links << h }
+    end
+    should "have entity mapping" do
+      link = @links[1]
+      assert_equal link["map"].first["text"], "sort s"
+    end
+  end
+  
 end
