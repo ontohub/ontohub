@@ -9,6 +9,12 @@ class GraphDataFetcher
     DistributedOntology => Link,
   }
 
+  def self.link_for(klass)
+    mapping_klass = MAPPINGS[klass]
+    raise UnknownMapping if mapping_klass.nil?
+    mapping_klass.to_s.to_sym
+  end
+
   def initialize(depth: 3,
                  source: nil,
                  center: nil,
