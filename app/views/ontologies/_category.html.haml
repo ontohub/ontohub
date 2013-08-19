@@ -1,5 +1,5 @@
-%li
-  %a 
-    = category[0].name
+%li{ :id => category[0].id }
+  %a
+    = category[0].name.gsub(/_/, ' ')
   %ul 
     = render :partial => 'category', :collection => category[1].to_a

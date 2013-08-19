@@ -27,6 +27,7 @@ class OntologiesController < InheritedResources::Base
     @version = build_resource.versions.first
     @version.user = current_user
     super
+    resource.category_ids = params[:category_ids].keys
   end
   
   def show
