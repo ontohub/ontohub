@@ -12,7 +12,8 @@ class GraphsController < ApplicationController
               edges: edges,
               center: parent,
               node_url: nodes.any? ? url_for(nodes.first.class) : nil,
-              edge_url: edges.any? ? url_for(edges.first.class) : nil}
+              edge_url: edges.any? ? url_for(edges.first.class) : nil,
+              edge_type: edges.first.class.to_s}
       format.html
       format.json do
         respond_with data
