@@ -22,6 +22,21 @@ class GraphDataFetcherTest < ActiveSupport::TestCase
 
   end
 
+  context 'query for mapping-type correctly' do
+
+    should 'produce the correct type on known mapping' do
+      assert_equal :Link, GraphDataFetcher.link_for(Ontology)
+      assert_equal :LogicMapping, GraphDataFetcher.link_for(Logic)
+    end
+
+    should 'raise the correct error on unknown mapping' do
+      assert_raises GraphDataFetcher::UnknownMapping do
+        GraphDataFetcher.link_for(LogicMapping)
+      end
+    end
+
+  end
+
   context 'logic specific tests' do
 
     setup do
