@@ -105,48 +105,32 @@ drawGraph = (data) ->
     .attr("data-label", (d) ->
       d.label)
 
-  addItemTo = (list, name, content) ->
-    list.append($('<li />')
-      .append($('<span />').html(name))
-      .append($('<span />').html(content)))
-
   embedNodeInfo = (node) ->
     info_list = $('<ul />',
       id: 'node_info')
-    addItem = (name, content) ->
-      addItemTo(info_list, name, content)
+    template = null
+    payload =
+      node_url: node_url
+      node: node
     if edge_type == 'LogicMapping'
-      addItem("Node: ", $('<a />',
-        href: node_url + "/" + node.info.id)
-          .html(node.info.name))
-      addItem("IRI: ", $('<a />',
-        href: node.info.iri)
-          .html(node.info.iri))
-      addItem("Description: ", $('<p />')
-        .html(node.info.description))
-      addItem("Number of Ontologies: ", $('<span />')
-        .html(node.info.ontologies_count))
+      template = 'graphs/logic_mappings_node'
     else if edge_type == 'Link'
-      addItem("This is an Ontology", $('<span />'))
+      template = 'graphs/links_node'
+    info_list.html(HandlebarsTemplates['graphs/logic_mappings_node'](payload)) if template
     $("div#d3_context").html(info_list)
 
   embedEdgeInfo = (edge) ->
     info_list = $('<ul />',
       id: 'edge_info')
-    addItem = (name, content) ->
-      addItemTo(info_list, name, content)
+    template = null
+    payload =
+      edge_url: edge_url
+      edge: edge
     if edge_type == "LogicMapping"
-      addItem("Mapping: ", $('<a />',
-        href: edge_url + "/" + edge.info.id)
-          .html(edge.source.info.name+
-            " --> "+
-            edge.target.info.name))
-      addItem("exactness: ", $('<span />')
-          .html(edge.info.exactness))
-      addItem("faithfulness: ", $('<span />')
-          .html(edge.info.faithfulness))
+      template = 'graphs/logic_mappings_edge'
     else if edge_type == "Link"
-      addItem("This is an Ontologylink", $('<span />'))
+      template = 'graphs/links_edge'
+    info_list.html(HandlebarsTemplates[template](payload)) if template
     $("div#d3_context").html(info_list)
 
   $("g.node").on "click", (e) ->
