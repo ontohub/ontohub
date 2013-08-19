@@ -1,3 +1,6 @@
+- if parent.is_a?(Ontology)
+  = ontology_nav parent, :graphs if respond_to?(:parent)
+
 %h4
   Graphical Visualization of
   = t(GraphDataFetcher.link_for(parent.class)).pluralize
