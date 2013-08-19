@@ -11,7 +11,7 @@ re = /\?[^/]+$/
 if graphs_uri.search(re) != -1
   graphs_uri = graphs_uri.replace(re, "/graphs$&")
 else
-  graphs_uri += "/graphs"
+  graphs_uri += "/graphs" if graphs_uri.search(/\/graphs/) == -1
 
 $.get(graphs_uri, (data) ->
     drawGraph(data)
