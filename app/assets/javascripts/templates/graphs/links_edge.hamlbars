@@ -1,0 +1,5 @@
+%ul#edge_info
+  %li
+    %span Link:
+    %a{href: '{{edge_url}}/{{edge.info.id}}'}
+      {{edge.source.info.name}} --> {{edge.target.info.name}}

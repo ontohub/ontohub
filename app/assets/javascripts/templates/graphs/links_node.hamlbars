@@ -1,0 +1,10 @@
+%ul#node_info
+  %li
+    %span Ontology:
+    %a{href: '{{node_url}}/{{node.info.id}}'} {{node.info.name}}
+  %li
+    %span IRI:
+    %a{href: '{{node.info.iri}}'} {{node.info.iri}}
+  %li
+    %span Description:
+    %p {{node.info.description}}
