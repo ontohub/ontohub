@@ -54,9 +54,9 @@ module Ontology::Links
       }
       link.updated_at = timestamp
       link.save!
-      versions = link.versions << LinkVersion.create(link: link,
-                                                     source: source.ontology_version,
-                                                     target: target.ontology_version)
+      link.versions << LinkVersion.create(link: link,
+                                          source: source.versions.current,
+                                          target: target.versions.current)
                                                     
       # entity mapping
       if hash["map"]
