@@ -14,6 +14,21 @@ namespace :import do
       user = User.find_by_email! ENV['EMAIL'] unless ENV['EMAIL'].nil?
       Hets.import_ontologies(user, Hets.library_path)
     end
+    task :checkers => :environment do
+      ontology_name = ENV['ONTOLOGY_NAME']
+      io = IO.popen("hets -I #{ontology_name}", "w+")
+      lines = Array.new
+      Thread.start do
+        io.each{|line| lines.push line}
+      end
+      io.sleep(1)
+      io.write(":q")
+      #puts h.readlines
+      puts lines
+      # hets -I #{ontology_name}
+      # 
+      # 
+    end
   end
 
   desc 'Import logic graph.'

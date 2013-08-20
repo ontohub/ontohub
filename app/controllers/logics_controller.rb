@@ -29,6 +29,7 @@ class LogicsController < InheritedResources::Base
         @mappings_from = resource.mappings_from
         @mappings_to = resource.mappings_to
         @ontologies = resource.ontologies
+        @checkers = resource.checkers
         @relation_list ||= RelationList.new [resource, :supports],
           :model       => Support,
           :collection  => resource.supports,
