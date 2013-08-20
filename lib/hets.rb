@@ -130,7 +130,7 @@ module Hets
 
     ext = path.split('.').last
 
-    o = if ['casl', 'dol', 'het'].include? ext
+    o = if ['casl', 'dol', 'hascasl', 'het'].include? ext
       DistributedOntology.new
     else
       SingleOntology.new
