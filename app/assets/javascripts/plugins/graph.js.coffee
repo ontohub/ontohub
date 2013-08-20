@@ -116,7 +116,7 @@ drawGraph = (data) ->
       template = 'graphs/logic_mappings_node'
     else if edge_type == 'Link'
       template = 'graphs/links_node'
-    info_list.html(HandlebarsTemplates['graphs/logic_mappings_node'](payload)) if template
+    info_list.html(HandlebarsTemplates[template](payload)) if template
     $("div#d3_context").html(info_list)
 
   embedEdgeInfo = (edge) ->
