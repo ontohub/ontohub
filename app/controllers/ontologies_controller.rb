@@ -20,14 +20,14 @@ class OntologiesController < InheritedResources::Base
 
   def new
     @ontology_version = build_resource.versions.build
-    @categories = Category.first.subtree.arrange.first.second
+    @categories = Category.first.subtree.arrange.first.second unless Category.first.nil?
   end
 
   def create
     @version = build_resource.versions.first
     @version.user = current_user
     super
-    resource.category_ids = params[:category_ids].keys
+    resource.category_ids = params[:category_ids].keys unless params[:category_ids].nil?
   end
   
   def show

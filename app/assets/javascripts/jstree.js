@@ -1,6 +1,6 @@
 $(function () {
         $(".selector").jstree({
-          "plugins" : [ "themes", "html_data", "checkbox", "sort", "ui" ],
+          "plugins" : [ "search", "themes", "html_data", "checkbox", "sort", "ui" ],
           "checkbox": {
             real_checkboxes: true,
             real_checkboxes_names: function (n) { return [("category_ids[" + n[0].id  + "]"), 1]; },
