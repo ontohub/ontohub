@@ -78,7 +78,7 @@ module Hets
 
     output_path = "-O \"#{output_path}\"" unless output_path.blank?
 
-    command = "#{@@config.path} -o xml --full-signatures -v2 #{output_path} '#{input_file}' 2>&1"
+    command = "#{@@config.path} -o xml --full-signatures -a none -v2 #{output_path} '#{input_file}' 2>&1"
 
     Rails.logger.debug command
 
@@ -128,10 +128,18 @@ module Hets
   def self.import_ontology(user, path)
     puts path
 
-    o = Ontology.new
+    ext = path.split('.').last
+
+    o = if ['casl', 'dol', 'hascasl', 'het'].include? ext
+      DistributedOntology.new
+    else
+      SingleOntology.new
+    end
+
     # TODO Use custom ontology iris detached from the local file system
     o.iri = "file://#{path}"
-    o.name = File.basename(path, ".#{extension}")
+    o.name = File.basename(path, ".#{ext}")
+
     begin
       o.save!
     rescue
@@ -139,13 +147,16 @@ module Hets
       return
     end
 
-    ov = OntologyVersion.new
-    ov.user = user
-    ov.raw_file = File.open path
-    ov.ontology = ontology
-    ov.save!
+    v = o.versions.build raw_file: File.open(path)
+    v.user = user
+    
+    o.save! 
+    o.ontology_version = v;
+    o.save!
+  end
 
-    ov.async :parse
+  def self.library_path
+    (@@config ||= Config.new).library_path
   end
 
 end
