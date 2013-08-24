@@ -14,7 +14,7 @@ module Ontology::Categories
     classes = self.entities.select { |e| e.kind == 'Class' }
     subclasses = self.sentences.select { |e| e.text.include?('SubClassOf')}
     classes.each do |c|
-      Category.create(:name => c.display_name || c.name)
+      Category.create!(:name => c.display_name || c.name)
     end
 
     subclasses.each do |s|

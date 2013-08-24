@@ -4,7 +4,7 @@ class Category < ActiveRecord::Base
   
   attr_accessible :name, :parent, :parent_id
 
-  validates :name, :uniqueness => { :message => 'Already taken' }
+  validates :name, :uniqueness => { :scope => :ancestry, :message => 'Already taken' }
 
   has_ancestry
 

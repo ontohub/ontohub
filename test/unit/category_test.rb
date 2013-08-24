@@ -6,6 +6,21 @@ class CategoryTest < ActiveSupport::TestCase
     should have_db_column('name').of_type(:string)
   end
 
+  context 'Validations' do
+    setup do
+      Category.create!(:name => 'node1', :parent => Category.create(:name => 'root'))
+    end
+    should 'trigger when identical node is created' do
+      assert_raise(ActiveRecord::RecordInvalid) { Category.create!(:name => 'node1', :parent => Category.find_by_name('root')) }
+    end
+    should 'let identical name but different ancestry (nil) pass' do
+      assert_nothing_raised { Category.create!(:name => 'node1')}
+    end
+    should 'let different name but identical ancestry pass' do
+      assert_nothing_raised { Category.create!(:name => 'node2', :parent => Category.find_by_name('root')) }
+    end
+  end
+
   context 'extracting names from sentences' do
     setup do 
       @ontology = FactoryGirl.create :ontology
