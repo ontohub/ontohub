@@ -29,6 +29,8 @@ class LogicsController < InheritedResources::Base
       ['Supports', :supports],
       ['Ontologies', :ontologies],
       ['homogeneous Distributed Ontologies', :distributed],
+      ['heterogeneous Distributed Ontologies',
+        :heterogeneous_distributed],
     ]
     @tab = params[:tab].try(:to_sym)
     super do |format|
