@@ -28,6 +28,7 @@ class LogicsController < InheritedResources::Base
       ['Mappings', :mappings],
       ['Supports', :supports],
       ['Ontologies', :ontologies],
+      ['homogeneous Distributed Ontologies', :distributed],
     ]
     @tab = params[:tab]
     super do |format|
