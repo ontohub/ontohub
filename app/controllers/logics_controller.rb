@@ -24,6 +24,12 @@ class LogicsController < InheritedResources::Base
   end
   
   def show
+    @available_tabs = [
+      ['Mappings', :mappings],
+      ['Supports', :supports],
+      ['Ontologies', :ontologies],
+    ]
+    @tab = params[:tab]
     super do |format|
       format.html do
         @mappings_from = resource.mappings_from
