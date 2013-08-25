@@ -30,6 +30,37 @@ class Ontology::DistributedTest < ActiveSupport::TestCase
         end
       end
 
+      context "can be filtered according to a specific logic" do
+        setup do
+          @ontology = FactoryGirl.create(:heterogeneous_ontology)
+          @logic = @ontology.children.first.logic
+          @ontologies = Ontology.also_distributed_in(@logic)
+        end
+
+        should "retrieve only distributed ontologies which children belong to logic" do
+          @ontologies.each do |ontology|
+            one_uses = ontology.children.reduce(false) do |mem, ontology|
+              ontology.logic == @logic ? true : mem
+            end
+            one_doesnt_use = ontology.children.reduce(false) do |mem, ontology|
+              ontology.logic != @logic ? true : mem
+            end
+
+            assert one_uses
+            assert one_doesnt_use
+          end
+        end
+
+        should "retrieve the right number of ontologies" do
+          assert_equal 1, @ontologies.size
+        end
+
+        should "include the right distributed ontology(/ies)" do
+          assert @ontologies.include?(@ontology)
+        end
+
+      end
+
     end
 
   end
