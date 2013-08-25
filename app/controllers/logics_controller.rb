@@ -30,7 +30,7 @@ class LogicsController < InheritedResources::Base
       ['Ontologies', :ontologies],
       ['homogeneous Distributed Ontologies', :distributed],
     ]
-    @tab = params[:tab]
+    @tab = params[:tab].try(:to_sym)
     super do |format|
       format.html do
         @mappings_from = resource.mappings_from

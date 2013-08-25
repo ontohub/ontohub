@@ -24,4 +24,4 @@
       %li{class: tab==@tab ? 'active' : nil}
         = link_to tab_title, resource_path(resource, tab: tab)
 
-= render partial: @tab unless @tab.nil?
+= render partial: @tab.to_s unless @tab.nil?
