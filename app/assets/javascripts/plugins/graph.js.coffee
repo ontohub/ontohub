@@ -37,6 +37,7 @@ d3NodesEdges = (data) ->
     nodes.push
       info: node
       is_center: (node.id == center.id)
+      aggregates: data.nodes_aggregate["#{node.id}"]
     links[node.id] = nodes.length - 1
   edges = []
   for edge in data.edges

@@ -3,3 +3,18 @@
     %span Link:
     %a{href: '{{edge_url}}/{{edge.info.id}}'}
       {{edge.source.info.name}} --> {{edge.target.info.name}}
+  %li
+    %span Kind:
+    %span {{edge.info.kind}}
+  %li
+    %span Theorem:
+    %span {{edge.info.theorem}}
+  %li
+    %span Proven:
+    %span {{edge.info.proven}}
+  %li
+    %span Local:
+    %span {{edge.info.local}}
+  %li
+    %span Inclusion:
+    %span {{edge.info.inclusion}}
