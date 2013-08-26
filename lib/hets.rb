@@ -9,6 +9,7 @@ module Hets
   class HetsVersionDateFormatError < HetsError; end
 
   EXTENSIONS = %w(casl clf clif dg dol het hol hs kif owl rdf spcf thy)
+  EXTENSIONS_DIST = %w(casl dol hascasl het)
 
   class Config
     attr_reader :path, :library_path
@@ -101,14 +102,6 @@ module Hets
     return output.split(': ').last
   end
 
-  # Traverses a directory for ontologies with supported extensions recursively,
-  # yielding their path.
-  def self.find_ontologies(dir)
-    EXTENSIONS.each do |extension|
-      Dir.glob("#{dir}/**/*.#{extension}").each { |path| yield path }
-    end
-  end
-
   # Traverses a directory recursively, importing ontology file with supported
   # extension.
   #
@@ -130,7 +123,7 @@ module Hets
 
     ext = path.split('.').last
 
-    o = if ['casl', 'dol', 'hascasl', 'het'].include? ext
+    o = if EXTENSIONS_DIST.include? ext
       DistributedOntology.new
     else
       SingleOntology.new
@@ -157,6 +150,14 @@ module Hets
 
   def self.library_path
     (@@config ||= Config.new).library_path
+  end
+
+private
+
+  # Traverses a directory for ontologies with supported extensions recursively,
+  # yielding their path.
+  def self.find_ontologies(dir)
+    Dir.glob("#{dir}/**/*.{#{EXTENSIONS.join(',')}}").each { |path| yield path }
   end
 
 end
