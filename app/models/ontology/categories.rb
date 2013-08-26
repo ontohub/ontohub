@@ -11,6 +11,8 @@ module Ontology::Categories
     if self.logic.name != 'OWL2' then
       raise Exception.new('Error: No OWL2')
     end
+    # Delete previous set of categories
+    Category.all.each { |c| c.destroy }
     classes = self.entities.select { |e| e.kind == 'Class' }
     subclasses = self.sentences.select { |e| e.text.include?('SubClassOf')}
     classes.each do |c|
