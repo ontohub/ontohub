@@ -14,6 +14,7 @@ class Ontology < ActiveRecord::Base
   include Ontology::Links
   include Ontology::Distributed
   include Ontology::Oops
+  include Ontology::OntologyTypes
 
   belongs_to :language
   belongs_to :logic, counter_cache: true

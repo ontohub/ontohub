@@ -4,6 +4,7 @@ class OntologyTest < ActiveSupport::TestCase
   should belong_to :language
   should belong_to :logic
   should belong_to :ontology_version
+  should belong_to :ontology_type
   should have_many :versions
   should have_many :comments
   should have_many :sentences
