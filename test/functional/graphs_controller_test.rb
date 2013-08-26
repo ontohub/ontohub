@@ -13,16 +13,16 @@ class GraphsControllerTest < ActionController::TestCase
   end
 
   context 'on GET to index' do
-    context 'invalid on non-json request' do
-      setup do
-        get :index, logic_id: @source
-      end
-
-      should respond_with 406
-    end
     context 'valid on json-request' do
       setup do
         get :index, logic_id: @source, format: :json
+      end
+
+      should respond_with :success
+    end
+    context 'valid on html-request' do
+      setup do
+        get :index, logic_id: @source, format: :html
       end
 
       should respond_with :success
