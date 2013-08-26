@@ -26,6 +26,7 @@ group :assets do
   gem 'therubyracer'
   gem 'uglifier', '>= 1.0.3'
   gem 'handlebars_assets', '~> 0.14.1'
+  gem 'hamlbars', '~> 2.0'
 end
 
 gem 'haml-rails'
