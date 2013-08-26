@@ -1,8 +1,7 @@
-%h2= @page_title = 'Links'
-
-- if can? :create, Link
-  %ul.actions.pull-right
-    %li= link_to 'Create Link', :new_link
+-if @ontology
+  = ontology_nav @ontology, :entities
+-else
+  %h2= @page_title = 'Links'
 
 %p
   = pluralize(collection.count, resource_class.to_s)
@@ -15,5 +14,6 @@
       %th IRI
       %th Source
       %th Target
+      %th Entites
     %tbody
       = render collection

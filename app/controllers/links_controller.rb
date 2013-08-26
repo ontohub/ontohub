@@ -5,7 +5,7 @@ class LinksController < InheritedResources::Base
   respond_to :json, :xml
   has_pagination
   has_scope :search
-  
+  belongs_to :ontology, :optional => true
   load_and_authorize_resource :except => [:index, :show]
 
   def index

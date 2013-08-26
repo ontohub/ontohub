@@ -5,7 +5,8 @@ module NavigationHelper
           ['Content', :entities],
           ['Comments', :comments],
           ['Metadata', :metadata],
-          ['Versions', :ontology_versions]
+          ['Versions', :ontology_versions],
+          ['Links', :links]
         ]
     @entities = ontology.entities.groups_by_kind
 

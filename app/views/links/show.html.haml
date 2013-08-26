@@ -14,6 +14,17 @@
 to
 = fancy_link resource.target
 
+%h5 Entities
+%table
+  %thead
+    %tr
+      %th Source
+      %th Target
+  %tbody
+    - resource.entity_mappings.each do |mapping|
+      %tr
+        %td= mapping.source
+        %td= mapping.target
 %h5 Status
 %p 
   Proven:  
