@@ -15,6 +15,8 @@
     for
     %strong= @search
 
+= in_process_tag
+
 = pagination do
   %ul.ontologies
-    = render collection.list
+    = render collection.with_active_version

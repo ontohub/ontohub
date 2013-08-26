@@ -5,6 +5,7 @@ FactoryGirl.define do
   end
   
   factory :logic do
+    association :user
     name { FactoryGirl.generate :name }
     iri { FactoryGirl.generate :iri }
   end
