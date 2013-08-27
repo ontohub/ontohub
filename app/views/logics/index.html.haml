@@ -13,6 +13,13 @@
     %thead
       %th Name
       %th IRI
-      %th 
+      %th
+      %th
     %tbody
+      %tr
+        %td (heterogeneous) Distributed Ontologies
+        %td
+        %td= pluralize(Ontology.heterogeneous.count, "distributed #{Ontology}")
+        %td= pluralize(Ontology.heterogeneous_children.count, "child #{Ontology}")
+        %td
       = render collection
