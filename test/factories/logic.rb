@@ -8,6 +8,5 @@ FactoryGirl.define do
     association :user
     name { FactoryGirl.generate :name }
     iri { FactoryGirl.generate :iri }
-    association :user
   end
 end
