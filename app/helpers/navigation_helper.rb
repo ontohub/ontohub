@@ -1,3 +1,4 @@
+# encoding: UTF-8
 module NavigationHelper
 
   def ontology_nav(ontology, current_page)
