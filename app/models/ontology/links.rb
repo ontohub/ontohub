@@ -15,6 +15,7 @@ module Ontology::Links
       raise ArgumentError, 'No hash given.' unless hash.is_a? Hash
       # hash['name'] # maybe nil, in this case, we need to generate a name
       link_iri   = iri_for_child(hash['name'] || hash['linkid'])
+      link_name  = hash['name']
       source_iri = iri_for_child(hash['source'])
       target_iri = iri_for_child(hash['target'])
       
@@ -43,6 +44,7 @@ module Ontology::Links
       # finally, create or update the link
       link = find_or_initialize_by_iri(link_iri)
       link.attributes = {
+        name:          link_name, 
         source:        source,
         target:        target,
         kind:          kind,

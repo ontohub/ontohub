@@ -9,11 +9,30 @@
 
 = pagination do
   %table
-    %thead
-      %th Name
-      %th IRI
-      %th Source
-      %th Target
-      %th Entites
+    -if @ontology
+      %thead
+        %th Source
+        %th Ontology
+        %th Target
+    -else
+      %thead
+        %th Name
+        %th IRI
+        %th Source
+        %th Target
+        %th Entites
     %tbody
-      = render collection
+      -if @ontology  
+        - hash = sort_link_list(collection)
+        - hash.each do |key, array|
+          %tr
+            %td=key
+            %td
+              %table
+                -array.each do |link|
+                  %tr
+                    %td=link[:link].target
+                    %td=link[:target]
+                    %td=link_to "#{link[:link].name} Link", link[:link]
+      -else
+        = render collection
