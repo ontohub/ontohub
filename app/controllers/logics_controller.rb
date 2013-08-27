@@ -26,7 +26,6 @@ class LogicsController < InheritedResources::Base
   def show
     @available_tabs = [
       ['Mappings', :mappings],
-      ['Supports', :supports],
       ['Ontologies', :ontologies],
       ['homogeneous Distributed Ontologies', :distributed],
       ['heterogeneous Distributed Ontologies',
