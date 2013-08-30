@@ -2,7 +2,7 @@ module Ontology::Projects
   extend ActiveSupport::Concern
 
   included do
-    belongs_to :projects
+    belongs_to :project
   end
 
 end
