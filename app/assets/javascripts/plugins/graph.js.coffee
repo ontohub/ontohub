@@ -80,24 +80,39 @@ drawGraph = (data) ->
   force.start()
 
   # Arrows
-  svg.append("svg:defs").selectAll("marker")
-    .data(["end"])
-    .enter().append("svg:marker")
-      .attr("id", String)
-      .attr("viewBox", "0 -5 10 10")
-      .attr("refX", 17)
-      .attr("refY", -0.0)
-      .attr("markerWidth", 6)
-      .attr("markerHeight", 6)
-      .attr("orient", "auto")
-    .append("svg:path")
-      .attr("d", "M0,-6L10,0L0,6")
+  for klass in ["non_theorem", "proven", "unproven"]
+    svg.append("svg:defs").selectAll("marker")
+      .data([klass])
+      .enter().append("svg:marker")
+        .attr("id", String)
+        .attr("viewBox", "0 -5 10 10")
+        .attr("refX", 17)
+        .attr("refY", -0.0)
+        .attr("markerWidth", 6)
+        .attr("markerHeight", 6)
+        .attr("orient", "auto")
+      .append("svg:path")
+        .attr("d", "M0,-6L10,0L0,6")
   path = svg.append("svg:g").selectAll("path").
     data(force.links()).
     enter().
     append("svg:path").
-    attr("class", "link").
-    attr("marker-end", "url(#end)")
+    attr("class", (d) ->
+      proveable = !! d.info.theorem
+      proven = !! d.info.proven
+      if proveable
+        return "link proven" if proven
+        "link unproven"
+      else
+        "link").
+    attr("marker-end", (d) ->
+      proveable = !! d.info.theorem
+      proven = !! d.info.proven
+      if proveable
+        return "url(#proven)" if proven
+        "url(#unproven)"
+      else
+        "url(#non_theorem)")
 
   node = svg.selectAll(".node")
     .data(force.nodes())

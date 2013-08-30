@@ -7,8 +7,23 @@ path.link {
   cursor: pointer;
 }
 
+path.proven {
+  stroke: green;
+}
+
+marker#proven {
+  fill: green;
+}
+
+path.unproven {
+  stroke: red;
+}
+
+marker#unproven {
+  fill: red;
+}
+
 path.link:hover {
-  stroke: black;
   stroke-width: 2px;
   opacity: 1;
 }
