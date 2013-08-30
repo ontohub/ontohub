@@ -136,13 +136,14 @@ drawGraph = (data) ->
 
   $("g.node").on "click", (e) ->
     e.preventDefault()
+    default_classes = "node"
+    classes = "#{default_classes} selected"
     node_data = d3.select(this).data()[0]
+    # use attr, because jquery-class doesn't work
     if window.selected_node != this
-      $(window.selected_node).find("circle").css("stroke", '')
-      $(window.selected_node).find("circle").css("fill", '')
+      $(window.selected_node).attr('class', default_classes)
     window.selected_node = this
-    $(this).find("circle").css("stroke", "#f00")
-    $(this).find("circle").css("fill", "#f00")
+    $(this).attr('class', classes)
     embedNodeInfo(node_data)
 
   $("g > path").on "click", (e) ->

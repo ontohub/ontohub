@@ -14,14 +14,14 @@ path.link:hover {
 }
 
 circle {
-  fill: #faa;
+  fill: #afa;
   stroke: #fff;
   stroke-width: 1.5px;
   cursor: pointer;
 }
 
 circle:hover {
-  fill: #faa;
+  fill: #afa;
   stroke: #000;
   stroke-width: 1.5px;
 }
@@ -30,4 +30,11 @@ text {
   fill: #000;
   font: 9px sans-serif;
   pointer-events: none;
+}
+
+g.node.selected circle{
+  stroke: #0f0;
+  fill: #0f0;
+  stroke-width: 1.5px;
+  cursor: pointer;
 }
