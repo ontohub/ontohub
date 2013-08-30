@@ -95,3 +95,16 @@ responses = %w( Pitfall Warning Warning Suggestion ).map do |type|
 end
 
 ontology.entities.all.select{ |entity| entity.oops_responses = responses.sample(rand(responses.count)) }
+
+no_of_types = 10
+no_of_types.times do |n|
+  OntologyType.create! \
+    name:           Faker::Lorem.word,
+    description:    Faker::Lorem.sentence,
+    documentation:  Faker::Internet.url
+end
+
+Ontology.all.each do |o|
+  o.ontology_type_id = rand(no_of_types)+1
+  o.save!
+end
