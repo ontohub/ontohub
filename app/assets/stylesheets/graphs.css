@@ -2,7 +2,7 @@ path.link {
   fill: white;
   /* stroke: #666; */
   stroke: black;
-  stroke-width: 1.5px;
+  stroke-width: 2px;
   opacity: 0.5;
   cursor: pointer;
 }
@@ -24,7 +24,7 @@ marker#unproven {
 }
 
 path.link:hover {
-  stroke-width: 2px;
+  stroke-width: 2.5px;
   opacity: 1;
 }
 
@@ -43,7 +43,8 @@ circle:hover {
 
 text {
   fill: #000;
-  font: 9px sans-serif;
+  font: 10px sans-serif;
+  font-weight: bold;
   pointer-events: none;
 }
 
@@ -52,4 +53,28 @@ g.node.selected circle{
   fill: #0f0;
   stroke-width: 1.5px;
   cursor: pointer;
+}
+
+ul#node_info {
+  list-style-type: none;
+}
+
+ul#node_info ul { list-style-type: none; }
+
+ul#node_info li span:first-child {
+  font-size: 0.8em;
+  font-color: #ccc;
+  font-weight: bold;
+}
+
+ul#edge_info {
+  list-style-type: none;
+}
+
+ul#edge_info ul { list-style-type: none; }
+
+ul#edge_info li span:first-child {
+  font-size: 0.8em;
+  font-color: #ccc;
+  font-weight: bold;
 }
