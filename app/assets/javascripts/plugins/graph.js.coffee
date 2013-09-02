@@ -186,6 +186,17 @@ drawGraph = (data) ->
     addClass($(this), 'selected')
     embedEdgeInfo(path_data)
 
+  $('path').on('mouseenter', (e) ->
+    removeClass('g.node', 'highlight')
+    path_data = d3.select(this).data()[0]
+    source_index = path_data.source.index
+    target_index = path_data.target.index
+    addClass($(node[0][source_index]), 'highlight')
+    addClass($(node[0][target_index]), 'highlight')
+  )
+  $('path').on('mouseleave', (e) ->
+    removeClass('g.node', 'highlight'))
+
   node.append("circle").
     attr("r", (d) ->
       return 10 if d.is_center
