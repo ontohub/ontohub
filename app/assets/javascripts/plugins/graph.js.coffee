@@ -29,6 +29,15 @@ $('div#graph_depth_setting ul li a').on 'click', (e) ->
       drawGraph(data)
     , "json")
 
+resetSelections = ->
+  func = (index, attr) ->
+    if attr
+      attr.replace(' selected', '')
+    else
+      ''
+  $('g.node').attr('class', func)
+  $('path').attr('class', func)
+
 d3NodesEdges = (data) ->
   nodes = []
   links = {}
@@ -151,6 +160,7 @@ drawGraph = (data) ->
 
   $("g.node").on "click", (e) ->
     e.preventDefault()
+    resetSelections()
     default_classes = "node"
     classes = "#{default_classes} selected"
     node_data = d3.select(this).data()[0]
@@ -163,6 +173,7 @@ drawGraph = (data) ->
 
   $("g > path").on "click", (e) ->
     e.preventDefault()
+    resetSelections()
     path_data = d3.select(this).data()[0]
     embedEdgeInfo(path_data)
 
