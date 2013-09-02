@@ -46,9 +46,21 @@ circle:hover {
   stroke-width: 1.5px;
 }
 
+g.node.highlight circle {
+  stroke: #0f0;
+  fill: #0f0;
+  stroke-width: 1.5px;
+  cursor: pointer;
+}
+
 text {
   fill: #000;
   font: 10px sans-serif;
+  pointer-events: none;
+}
+
+g.node:hover text {
+  font: 14px sans-serif;
   font-weight: bold;
   pointer-events: none;
 }
