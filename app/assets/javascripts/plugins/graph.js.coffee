@@ -183,6 +183,7 @@ drawGraph = (data) ->
     e.preventDefault()
     resetSelections()
     path_data = d3.select(this).data()[0]
+    addClass($(this), 'selected')
     embedEdgeInfo(path_data)
 
   node.append("circle").
