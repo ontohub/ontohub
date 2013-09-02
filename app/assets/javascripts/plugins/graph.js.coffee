@@ -29,14 +29,22 @@ $('div#graph_depth_setting ul li a').on 'click', (e) ->
       drawGraph(data)
     , "json")
 
-resetSelections = ->
+addClass = (selector, klass) ->
+  el = $(selector)
+  el.attr('class', el.attr('class') + " #{klass}")
+
+removeClass = (selector, klass) ->
   func = (index, attr) ->
     if attr
-      attr.replace(' selected', '')
+      attr.replace("#{klass}", '')
     else
       ''
-  $('g.node').attr('class', func)
-  $('path').attr('class', func)
+  el = $(selector)
+  el.attr('class', func)
+
+resetSelections = ->
+  removeClass('g.node', 'selected')
+  removeClass('path', 'selected')
 
 d3NodesEdges = (data) ->
   nodes = []
