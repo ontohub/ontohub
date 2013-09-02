@@ -103,7 +103,7 @@ drawGraph = (data) ->
       .enter().append("svg:marker")
         .attr("id", String)
         .attr("viewBox", "0 -5 10 10")
-        .attr("refX", 17)
+        .attr("refX", 14.5)
         .attr("refY", -0.0)
         .attr("markerWidth", 6)
         .attr("markerHeight", 6)
