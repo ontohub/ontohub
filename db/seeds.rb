@@ -4,6 +4,21 @@
 
 ActiveRecord::Base.logger = Logger.new($stdout)
 
+# returns up to n unique names
+def unique_names(n)
+  @names= []
+  n.times do |x|
+    @names<< Faker::Lorem.word
+    @names.uniq!
+    @names.length
+  end
+end
+
+# return files\' capital basename without extension
+def basename_no_ext(filename)
+  filename.split(".")[0]
+end
+
 # Do not create background jobs
 OntologyVersion.send :alias_method, :parse_async, :parse
 OopsRequest.send :define_method, :async_run, ->{}
@@ -46,9 +61,11 @@ Dir["#{Rails.root}/test/fixtures/ontologies/*/*.{casl,clf,clif,owl}"].each do |f
   clazz = basename.ends_with?('.casl') ? DistributedOntology : SingleOntology
   
   o = clazz.new \
-    iri:         "file://db/seeds/#{basename}",
-    name:        basename.split(".")[0].capitalize,
-    description: Faker::Lorem.paragraph
+    iri:            "file://db/seeds/#{basename}",
+    name:           basename_no_ext(basename).capitalize,
+    description:    Faker::Lorem.paragraph,
+    documentation:  Faker::Internet.url,
+    acronym:        basename_no_ext(basename)[0..2].upcase
 
   v = o.versions.build raw_file: File.open(file)
   v.user       = user
@@ -96,15 +113,15 @@ end
 
 ontology.entities.all.select{ |entity| entity.oops_responses = responses.sample(rand(responses.count)) }
 
-no_of_types = 10
-no_of_types.times do |n|
+unique_names(10).times do |n|
   OntologyType.create! \
-    name:           Faker::Lorem.word,
+    name:           @names.slice!(-1),
     description:    Faker::Lorem.sentence,
     documentation:  Faker::Internet.url
 end
 
 Ontology.all.each do |o|
-  o.ontology_type_id = rand(no_of_types)+1
+  o.ontology_type_id = rand(OntologyType.count)+1
   o.save!
 end
+
