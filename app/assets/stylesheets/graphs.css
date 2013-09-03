@@ -95,3 +95,8 @@ ul#edge_info li span:first-child {
   font-color: #ccc;
   font-weight: bold;
 }
+
+.center {
+  padding: 2em 0 2em 0;
+  text-align: center;
+}
