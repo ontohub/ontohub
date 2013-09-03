@@ -17,6 +17,47 @@ module Ontology::Versions
     accepts_nested_attributes_for :versions
     
     after_create :create_permission_for_first_version
+
+    def active_version
+      return self.ontology_version if self.state == 'done'
+      OntologyVersion.
+        where(ontology_id: self, state: 'done').
+        order('number DESC').
+        first
+    end
+
+    def non_current_active_version?(user=nil)
+      real_process_state = active_version != self.ontology_version
+      if user && (user.admin || ontology_version.try(:user) == user)
+        real_process_state
+      else
+        false
+      end
+    end
+
+    def self.with_active_version
+      state = "done"
+      includes(:versions).
+      where([
+        "ontologies.id IN " +
+        "(SELECT ontology_id FROM ontology_versions WHERE state = ?)",
+        state
+      ])
+    end
+
+    def self.in_process(user=nil)
+      return [] if user.nil?
+      state = "done"
+      stmt = ['state != ?', state] if user == true
+      if user.is_a?(User)
+        stmt = ['state != ? AND ' +
+          'ontologies.id IN (SELECT ontology_id FROM ontology_versions ' +
+          'WHERE user_id = ?)', state, user.id]
+      end
+      includes(:versions).
+      where(stmt)
+    end
+
   end
   
 protected

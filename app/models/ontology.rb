@@ -49,5 +49,5 @@ class Ontology < ActiveRecord::Base
   def symbols_count
     entities_count
   end
-  
+
 end
