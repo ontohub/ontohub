@@ -24,12 +24,16 @@ class OntologyTest < ActiveSupport::TestCase
     ['http://example.com/', 'https://example.com/', 'file://path/to/file'].each do |val|
       should allow_value(val).for :iri
     end
+
+    should_not allow_value(nil).for :iri
+
+    ['http://example.com/', 'https://example.com/', 'file://path/to/file', '', nil].each do |val|
+      should allow_value(val).for :documentation
+    end
+
+    should_not allow_value('fooo').for :documentation
   end
 
-  [nil, '', 'fooo'].each do |val|
-    should_not allow_value(val).for :iri
-  end
-  
   context 'ontology instance' do
     setup do
       @ontology = FactoryGirl.create :ontology

@@ -20,13 +20,15 @@ class Ontology < ActiveRecord::Base
   belongs_to :language
   belongs_to :logic, counter_cache: true
 
-  attr_accessible :iri, :name, :description, :logic_id
+  attr_accessible :iri, :name, :description, :logic_id, :documentation
 
-  validates_presence_of :iri
   validates_uniqueness_of :iri, :if => :iri_changed?
   validates_format_of :iri, :with => URI::regexp(Settings.allowed_iri_schemes)
-  
+  validates :documentation,
+    allow_blank: true,
+    format: { with: URI::regexp(Settings.allowed_iri_schemes) }
   strip_attributes :only => [:name, :iri]
+
 
   scope :search, ->(query) { where "ontologies.iri #{connection.ilike_operator} :term OR ontologies.name #{connection.ilike_operator} :term", :term => "%" << query << "%" }
   scope :list, includes(:logic).order('ontologies.state asc, ontologies.entities_count desc')
