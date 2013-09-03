@@ -20,7 +20,7 @@ class Ontology < ActiveRecord::Base
   belongs_to :language
   belongs_to :logic, counter_cache: true
 
-  attr_accessible :iri, :name, :description, :logic_id, :documentation
+  attr_accessible :iri, :name, :description, :logic_id, :documentation, :acronym
 
   validates_uniqueness_of :iri, :if => :iri_changed?
   validates_format_of :iri, :with => URI::regexp(Settings.allowed_iri_schemes)
