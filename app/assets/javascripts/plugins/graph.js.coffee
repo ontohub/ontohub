@@ -163,6 +163,7 @@ displayGraph = (data) ->
         payload =
           node_url: node_url
           node: node
+          url: "#{node_url}/#{node.info.id}/"
         if edge_type == 'LogicMapping'
           template = 'graphs/logic_mappings_node'
         else if edge_type == 'Link'
