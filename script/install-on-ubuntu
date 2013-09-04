@@ -22,13 +22,7 @@ gem install bundler
 bundle install
 
 # Configuring Ontohub
-rake secret:replace
 rake db:migrate:reset
-
-# Start ontohub if environment variable START is set
-[ -n "$START" ] && {
-	rake sunspot:solr:start
-	rake resque:work &
-	rake db:seed
-	rails s &
-}
+rake sunspot:solr:start
+rake db:seed
+rake sunspot:solr:stop
