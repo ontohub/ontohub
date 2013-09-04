@@ -84,6 +84,8 @@ displayGraph = (data) ->
   node_url = nodes_edges[2]
   edge_url = nodes_edges[3]
 
+  addClass($('a#all'), 'btn-primary')
+
   edgesForMode = (the_mode) ->
     if the_mode == "normal"
       edges
@@ -244,12 +246,17 @@ displayGraph = (data) ->
 
   drawGraph(nodes, edgesForMode(mode))
 
-  $('button#import').on('click', (e) ->
-    e.preventDefault()
-    mode = "import"
-    drawGraph(nodes, edgesForMode(mode)))
+  actOnModeButton = (the_mode, button) ->
+    removeClass('a.mode', 'btn-primary')
+    mode = the_mode
+    addClass($(button), 'btn-primary')
+    drawGraph(nodes, edgesForMode(mode))
 
-  $('button#all').on('click', (e) ->
+
+  $('a#import').on('click', (e) ->
     e.preventDefault()
-    mode = "normal"
-    drawGraph(nodes, edgesForMode(mode)))
+    actOnModeButton("import", $(this)))
+
+  $('a#all').on('click', (e) ->
+    e.preventDefault()
+    actOnModeButton("normal", $(this)))

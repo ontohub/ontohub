@@ -17,8 +17,8 @@ Depth of
 - if parent.is_a?(Ontology)
   and show
   .btn-group#ontology_selections
-    %button.btn#all= link_to 'all links', '#all'
-    %button.btn#import= link_to 'only imports', '#ontology_selections'
+    = link_to 'all links', '#all', class: 'btn mode', id: 'all'
+    = link_to 'only imports', '#ontology_selections', class: 'btn mode', id: 'import'
 
 from
 = fancy_link parent
