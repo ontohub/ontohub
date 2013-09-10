@@ -1,28 +1,88 @@
 #!/bin/bash
 
-# Installing Dependencies
-sudo apt-add-repository ppa:hets/hets
-sudo apt-add-repository "deb http://archive.canonical.com/ubuntu precise partner"
-sudo apt-get update
 
-sudo apt-get install -y build-essential openssl libreadline6 libreadline6-dev curl git-core zlib1g zlib1g-dev libssl-dev libyaml-dev libsqlite3-0 libsqlite3-dev sqlite3 libxml2-dev libxslt-dev autoconf libc6-dev ncurses-dev automake libtool bison subversion postgresql redis-server hets-core libqtwebkit-dev
 
-# RVM
-curl -L https://get.rvm.io | bash -s stable --ruby
-source $HOME/.rvm/scripts/rvm
-echo "source $HOME/.rvm/scripts/rvm" >> ~/.bashrc
-sudo addgroup rvm
-sudo adduser $USER rvm
 
-# Workarounds
-sudo ln -s /lib/x86_64-linux-gnu/libpng12.so.0 /lib/x86_64-linux-gnu/libpng14.so.14
+set -x
 
-# Installing bundler and ontohub dependencies
-gem install bundler
-bundle install
 
-# Write database configuration
-cat > config/database.yml <<EOF
+
+
+echo "Install Ontohub dependencies? (y|n): "
+read answer
+if [[ "$answer" == "y" ]]; then
+
+  # Apt Installer
+  sudo apt-add-repository ppa:hets/hets
+  #sudo apt-add-repository "deb http://ppa.launchpad.net/hets/hets/ubuntu precise main"
+  sudo apt-get update
+
+  # Apt Intall
+  sudo apt-get install -y build-essential openssl libreadline6 libreadline6-dev curl git-core zlib1g zlib1g-dev libssl-dev libyaml-dev libsqlite3-0 libsqlite3-dev sqlite3 libxml2-dev libxslt-dev autoconf libc6-dev ncurses-dev automake libtool bison subversion postgresql libpq-dev redis-server hets libqtwebkit-dev
+
+  # Rvm Installer
+  curl -L https://get.rvm.io | bash -s stable --ruby
+  source $HOME/.rvm/scripts/rvm
+  echo "source $HOME/.rvm/scripts/rvm" >> ~/.bashrc
+  sudo addgroup rvm
+  sudo adduser $USER rvm
+
+  # Workarounds
+  sudo ln -s /lib/x86_64-linux-gnu/libpng12.so.0 /lib/x86_64-linux-gnu/libpng14.so.14
+
+  # Feedback
+  echo "The dependencies are installed!\n"
+
+fi
+
+
+
+
+echo "Install Ontohub? (y|n): "
+read answer
+if [[ "$answer" == "y" ]]; then
+
+  # Prepare
+  if hash bundle 2>/dev/null; then
+    true
+  else
+    source $HOME/.rvm/scripts/rvm
+  fi
+
+  # Local Copy
+  cd $HOME
+  mkdir Workspace
+  cd Workspace
+  git clone git@github.com:ontohub/ontohub.git
+  mv ontohub Ontohub
+  cd Ontohub
+
+  # Install bundler and ontohub dependencies
+  gem install bundler
+  bundle install
+
+  # Feedback
+  echo "Ontohub is installed!\n"
+
+fi
+
+
+
+
+echo "Configure Ontohub? (y|n): "
+read answer
+if [[ "$answer" == "y" ]]; then
+
+  # Prepare
+  if hash bundle 2>/dev/null; then
+    true
+  else
+    source $HOME/.rvm/scripts/rvm
+  fi
+  cd $HOME/Workspace/Ontohub
+
+  # Configure database
+  cat > config/database.yml <<EOF
 development: &config
   adapter: postgresql
   host: localhost
@@ -31,7 +91,7 @@ development: &config
   template: template0
   database: ontohub_development
   username: postgres
-  password:
+  password: 
   pool: 5
 
 test:
@@ -44,8 +104,13 @@ production:
   username: ontohub
 EOF
 
-# Configuring Ontohub
-rake db:migrate:reset
-rake sunspot:solr:start
-rake db:seed
-rake sunspot:solr:stop
+  # Populate database
+  rake db:migrate:reset
+  rake sunspot:solr:start
+  rake db:seed
+  rake sunspot:solr:stop
+
+  # Feedback
+  echo "Ontohub is configured!\n"
+
+fi
