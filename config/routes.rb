@@ -21,6 +21,8 @@ Ontohub::Application.routes.draw do
   resources :language_mappings
   resources :logic_mappings
 
+  resource :links
+
   resources :language_adjoints
   resources :logic_adjoints
 
