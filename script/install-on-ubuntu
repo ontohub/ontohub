@@ -3,11 +3,6 @@
 
 
 
-set -x
-
-
-
-
 echo "Install Ontohub dependencies? (y|n): "
 read answer
 if [[ "$answer" == "y" ]]; then
@@ -20,6 +15,9 @@ if [[ "$answer" == "y" ]]; then
   # Apt Intall
   sudo apt-get install -y build-essential openssl libreadline6 libreadline6-dev curl git-core zlib1g zlib1g-dev libssl-dev libyaml-dev libsqlite3-0 libsqlite3-dev sqlite3 libxml2-dev libxslt-dev autoconf libc6-dev ncurses-dev automake libtool bison subversion postgresql libpq-dev redis-server hets libqtwebkit-dev
 
+  # Hets Update
+  sudo hets -update
+
   # Rvm Installer
   curl -L https://get.rvm.io | bash -s stable --ruby
   source $HOME/.rvm/scripts/rvm
@@ -31,7 +29,7 @@ if [[ "$answer" == "y" ]]; then
   sudo ln -s /lib/x86_64-linux-gnu/libpng12.so.0 /lib/x86_64-linux-gnu/libpng14.so.14
 
   # Feedback
-  echo "The dependencies are installed!\n"
+  echo "The dependencies are installed!"
 
 fi
 
@@ -62,7 +60,7 @@ if [[ "$answer" == "y" ]]; then
   bundle install
 
   # Feedback
-  echo "Ontohub is installed!\n"
+  echo "Ontohub is installed!"
 
 fi
 
@@ -80,6 +78,11 @@ if [[ "$answer" == "y" ]]; then
     source $HOME/.rvm/scripts/rvm
   fi
   cd $HOME/Workspace/Ontohub
+  sudo cat /etc/postgresql/9.1/main/pg_hba.conf | sed 's/^\([^#]\([a-z0-9.:/]\+[[:space:]]\+\)\+\)\([a-z0-9]\+\)/\1trust/' | cat > temp.conf
+  sudo mv temp.conf /etc/postgresql/9.1/main/pg_hba.conf
+  sudo chown postgres:postgres /etc/postgresql/9.1/main/pg_hba.conf
+  sudo chmod 640 /etc/postgresql/9.1/main/pg_hba.conf
+  sudo service postgresql restart
 
   # Configure database
   cat > config/database.yml <<EOF
@@ -111,6 +114,6 @@ EOF
   rake sunspot:solr:stop
 
   # Feedback
-  echo "Ontohub is configured!\n"
+  echo "Ontohub is configured!"
 
 fi
