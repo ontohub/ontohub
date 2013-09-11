@@ -1,3 +1,16 @@
+div#graph_content {
+  margin: 1em 2em 0 2em;
+  background-color: white;
+}
+
+div#d3_graph {
+}
+
+div#d3_context {
+  min-height: 20em;
+  max-height: 100%;
+}
+
 path.link {
   fill: white;
   /* stroke: #666; */
