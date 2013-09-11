@@ -1,4 +1,4 @@
-class CreateConsistencyCheckMethod < ActiveRecord::Migration
+class CreateConsistencyCheck < ActiveRecord::Migration
   def change
     create_table :consistency_checks do |t|
       t.references :checker
