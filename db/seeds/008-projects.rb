@@ -17,6 +17,6 @@ count.times do
 end
 
 Ontology.all.each do |o|
-  o.ontology_type_id = rand(OntologyType.count)+1
+  o.project_id= rand(OntologyType.count)+1
   o.save!
 end
