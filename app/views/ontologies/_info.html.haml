@@ -8,20 +8,19 @@
       = link_to resource.language, resource.language
     - else
       = 'unknown'
-    - unless resource.distributed?
+    - if resource.logic
       = '/'
       = link_to resource.logic.to_s, resource.logic
-      - unless resource.versions.last.nil?
-        = '(' + resource.ontology_version.consistency_status + ')'
-  - if resource.state != 'done'
-    %small#ontology-state{ class: resource.state, 'data-uri' => url_for(resource) }
-      = status resource
+    - unless resource.versions.last.nil?
+      = '(' + resource.ontology_version.consistency_status + ')'
 
 %p= link_to resource.iri, download_path(resource) if download_path(resource)
 %p= resource.description
 
 = render partial: '/ontologies/oops_state', locals: {resource: resource}
 
+
+= status_tag
 
 %nav
   %ul.nav.nav-tabs
