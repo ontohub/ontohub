@@ -1,12 +1,20 @@
 class GraphDataFetcher
 
   class UnknownMapping < RuntimeError; end
+  class UnknownTarget < RuntimeError; end
 
   MAPPINGS = {
     Logic => LogicMapping,
     Ontology => Link,
     SingleOntology => Link,
     DistributedOntology => Link,
+  }
+
+  TARGET_MAPPINGS = {
+    Ontology => Ontology,
+    DistributedOntology => Ontology,
+    SingleOntology => Ontology,
+    Logic => Logic,
   }
 
   def self.link_for(klass)
@@ -22,6 +30,7 @@ class GraphDataFetcher
     @center = center
     @depth = depth
     @source, @target = source, target
+    determine_target(target)
     determine_source(target) unless source
     @source_table, @target_table = @source.table_name, @target.table_name
   end
@@ -30,6 +39,12 @@ class GraphDataFetcher
     source = MAPPINGS[target]
     raise UnknownMapping unless source
     @source = source
+  end
+
+  def determine_target(target)
+    real_target = TARGET_MAPPINGS[target]
+    raise UnknownTarget unless real_target
+    @target = real_target
   end
 
   def fetch
