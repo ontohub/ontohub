@@ -1,0 +1,119 @@
+#!/bin/bash
+
+
+
+
+echo "Install Ontohub dependencies? (y|n): "
+read answer
+if [[ "$answer" == "y" ]]; then
+
+  # Apt Installer
+  sudo apt-add-repository ppa:hets/hets
+  #sudo apt-add-repository "deb http://ppa.launchpad.net/hets/hets/ubuntu precise main"
+  sudo apt-get update
+
+  # Apt Intall
+  sudo apt-get install -y build-essential openssl libreadline6 libreadline6-dev curl git-core zlib1g zlib1g-dev libssl-dev libyaml-dev libsqlite3-0 libsqlite3-dev sqlite3 libxml2-dev libxslt-dev autoconf libc6-dev ncurses-dev automake libtool bison subversion postgresql libpq-dev redis-server hets libqtwebkit-dev
+
+  # Hets Update
+  sudo hets -update
+
+  # Rvm Installer
+  curl -L https://get.rvm.io | bash -s stable --ruby
+  source $HOME/.rvm/scripts/rvm
+  echo "source $HOME/.rvm/scripts/rvm" >> ~/.bashrc
+  sudo addgroup rvm
+  sudo adduser $USER rvm
+
+  # Workarounds
+  sudo ln -s /lib/x86_64-linux-gnu/libpng12.so.0 /lib/x86_64-linux-gnu/libpng14.so.14
+
+  # Feedback
+  echo "The dependencies are installed!"
+
+fi
+
+
+
+
+echo "Install Ontohub? (y|n): "
+read answer
+if [[ "$answer" == "y" ]]; then
+
+  # Prepare
+  if hash bundle 2>/dev/null; then
+    true
+  else
+    source $HOME/.rvm/scripts/rvm
+  fi
+
+  # Local Copy
+  cd $HOME
+  mkdir Workspace
+  cd Workspace
+  git clone git@github.com:ontohub/ontohub.git
+  mv ontohub Ontohub
+  cd Ontohub
+
+  # Install bundler and ontohub dependencies
+  gem install bundler
+  bundle install
+
+  # Feedback
+  echo "Ontohub is installed!"
+
+fi
+
+
+
+
+echo "Configure Ontohub? (y|n): "
+read answer
+if [[ "$answer" == "y" ]]; then
+
+  # Prepare
+  if hash bundle 2>/dev/null; then
+    true
+  else
+    source $HOME/.rvm/scripts/rvm
+  fi
+  cd $HOME/Workspace/Ontohub
+  sudo cat /etc/postgresql/9.1/main/pg_hba.conf | sed 's/^\([^#]\([a-z0-9.:/]\+[[:space:]]\+\)\+\)\([a-z0-9]\+\)/\1trust/' | cat > temp.conf
+  sudo mv temp.conf /etc/postgresql/9.1/main/pg_hba.conf
+  sudo chown postgres:postgres /etc/postgresql/9.1/main/pg_hba.conf
+  sudo chmod 640 /etc/postgresql/9.1/main/pg_hba.conf
+  sudo service postgresql restart
+
+  # Configure database
+  cat > config/database.yml <<EOF
+development: &config
+  adapter: postgresql
+  host: localhost
+  port: 5432
+  encoding: unicode
+  template: template0
+  database: ontohub_development
+  username: postgres
+  password: 
+  pool: 5
+
+test:
+  <<: *config
+  database: ontohub_test
+
+production:
+  <<: *config
+  database: ontohub
+  username: ontohub
+EOF
+
+  # Populate database
+  rake db:migrate:reset
+  rake sunspot:solr:start
+  rake db:seed
+  rake sunspot:solr:stop
+
+  # Feedback
+  echo "Ontohub is configured!"
+
+fi
