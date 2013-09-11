@@ -48,6 +48,7 @@ class GraphDataFetcher
   end
 
   def fetch
+    return fetch_for_distributed if @center.is_a?(DistributedOntology)
     node_stmt = build_statement(:node)
     nodes = on_target(node_stmt)
     edge_stmt = build_statement(:edge)
@@ -56,6 +57,15 @@ class GraphDataFetcher
   end
 
   private
+  def fetch_for_distributed
+    func_stmt = <<-SQL
+      (SELECT fetch_distributed_graph_data(#{@center.id}))
+    SQL
+    edges = on_source(@center.id, '"ontology_id" =')
+    nodes = on_target(func_stmt)
+    [nodes, edges]
+  end
+
   def on_source(stmt, portion='"id" IN')
     @source.where("\"#{@source_table}\".#{portion} #{stmt}")
   end
