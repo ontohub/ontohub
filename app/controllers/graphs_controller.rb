@@ -1,10 +1,11 @@
 class GraphsController < ApplicationController
   respond_to :json, :html
   inherit_resources
-  belongs_to :logic, :ontology, polymorphic: true
+  belongs_to :logic, :ontology, :single_ontology, :distributed_ontology, polymorphic: true
 
   def index
     respond_to do |format|
+      @ontology = parent if parent.is_a?(Ontology)
       @depth = params[:depth] ? params[:depth].to_i : 3
       format.html
       format.json do
