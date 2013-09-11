@@ -34,13 +34,21 @@ class GraphDataFetcher
 
   def fetch
     node_stmt = build_statement(:node)
-    nodes = @target.where("\"#{@target_table}\".\"id\" IN #{node_stmt}")
+    nodes = on_target(node_stmt)
     edge_stmt = build_statement(:edge)
-    edges = @source.where("\"#{@source_table}\".\"id\" IN #{edge_stmt}")
+    edges = on_source(edge_stmt)
     [nodes, edges]
   end
 
   private
+  def on_source(stmt, portion='"id" IN')
+    @source.where("\"#{@source_table}\".#{portion} #{stmt}")
+  end
+
+  def on_target(stmt, portion='"id" IN')
+    @target.where("\"#{@target_table}\".#{portion} #{stmt}")
+  end
+
   def build_statement(type = :node)
     type = type.to_s
     <<-SQL
