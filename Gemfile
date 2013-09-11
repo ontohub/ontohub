@@ -4,6 +4,8 @@ gem 'rails', '~> 3.2.13'
 gem 'rack-protection'
 gem 'secure_headers'
 
+gem 'pry-rails'
+
 gem 'pg'
 gem 'foreigner'
 
