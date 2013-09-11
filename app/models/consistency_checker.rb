@@ -9,7 +9,6 @@ class ConsistencyChecker < ActiveRecord::Base
   include Resourcable
 
   has_many :methods, :foreign_key => :checker_id
-  has_many :logics, :through => :methods
   attr_accessible :name
 
   validates_presence_of :name
