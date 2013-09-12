@@ -25,7 +25,7 @@
     - @top_level_pages.each do |(page_title, page)|
       %li{class: page==current_page ? 'active' : nil}
         = link_to page_title, [resource, page]
-  - if controller_name == "entities" || controller_name == "sentences" 
+  - if controller_name == "entities" || controller_name == "sentences" || controller_name == "children" 
     %nav
       %ul.nav.nav-tabs
         - @entities.each do |entity|
