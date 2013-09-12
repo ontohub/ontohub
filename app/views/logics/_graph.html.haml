@@ -1,0 +1,22 @@
+%h4 Graphical Visualization of Logic-Mappings
+Depth of 
+.btn-group#graph_depth_setting
+  %a.btn.dropdown-toggle(data-toggle="dropdown" href="#")
+    = @depth
+    %span.caret
+  
+  %ul.dropdown-menu
+    %li
+      - (1..9).each do |i|
+        = link_to i, resource_path(resource, :depth => i)
+      
+from
+= fancy_link resource
+
+%div.row
+  %div.span12
+    %div.row
+      %div.span6 
+        %div#d3_graph
+      %div.span3
+        %div#d3_context

@@ -26,6 +26,7 @@ class LogicsController < InheritedResources::Base
   def show
     super do |format|
       format.html do
+        @depth = params[:depth] ? params[:depth].to_i : 3
         @mappings_from = resource.mappings_from
         @mappings_to = resource.mappings_to
         @ontologies = resource.ontologies

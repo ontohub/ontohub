@@ -28,18 +28,20 @@ module Ontology::Links
       kind   = Link::KINDS.find {|k| linktype.downcase.include?(k) }
       kind ||= Link::KIND_DEFAULT
       
-      # moprhism
+      # morphism
       gmorphism = hash['morphism']
       raise "gmorphism missing" if gmorphism.blank?
       gmorphism = 'http://purl.net/dol/translations/' + gmorphism unless gmorphism.include?('://')
       
-      # login mapping
-      logic_mapping   = LogicMapping.find_by_iri gmorphism
-      logic_mapping ||= LogicMapping.create! \
-        source: source.logic,
-        target: target.logic,
-        iri: link_iri,
-        user: user
+      # logic mapping
+      if source.logic and target.logic
+        logic_mapping   = LogicMapping.find_by_iri gmorphism
+        logic_mapping ||= LogicMapping.create! \
+          source: source.logic,
+          target: target.logic,
+          iri: link_iri,
+          user: user
+      end
       
       # finally, create or update the link
       link = find_or_initialize_by_iri(link_iri)
