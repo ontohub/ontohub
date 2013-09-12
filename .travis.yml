@@ -31,4 +31,5 @@ before_script:
   - sudo apt-get update
   - sudo apt-get install ia32-libs libsane libgphoto2-2 hets-core subversion udrawgraph
   - sudo hets -update
+  - ln -s database.example.yml config/database.yml
   - bundle exec rake db:migrate || true
