@@ -1,7 +1,12 @@
-%tr
-  %td= fancy_link link
-  %td= link.iri
-  %td= link.source
-  %td= link.target
-  %td= link.entity_mappings.first
-    
+.row.center
+  .span4
+    = fancy_link link
+  .span4
+    = link.iri
+  .span1
+    = link.source
+  .span1
+    = link.target
+  .span2
+    = link.entity_mappings.first
+  

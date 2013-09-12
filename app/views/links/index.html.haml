@@ -7,32 +7,38 @@
   = pluralize(collection.count, resource_class.to_s)
   found
 
-= pagination do
-  %table
-    -if @ontology
-      %thead
-        %th Source
-        %th Ontology
-        %th Target
-    -else
-      %thead
-        %th Name
-        %th IRI
-        %th Source
-        %th Target
-        %th Entites
-    %tbody
-      -if @ontology  
-        - hash = sort_link_list(collection)
-        - hash.each do |key, array|
-          %tr
-            %td=key
-            %td
-              %table
-                -array.each do |link|
-                  %tr
-                    %td=link[:link].target
-                    %td=link[:target]
-                    %td=link_to "#{link[:link].name} Link", link[:link]
-      -else
-        = render collection
+= pagination do 
+  -if @ontology
+    .row.center
+      .span4 
+        %h4 Source
+      .span4
+        %h4 Ontology
+      .span4
+        %h4 Target
+    - hash = sort_link_list(collection)
+    - hash.each do |key, array|
+      .row.center
+        .span4
+          =key
+        .span8
+          -array.each do |link|
+            .row.center
+              .span4
+                =link[:link].target
+              .span4
+                =link[:target]
+                =link_to "#{link[:link].name} Link", link[:link]
+  -else
+    .row.center
+      .span4
+        %h4 Name
+      .span4
+        %h4 IRI
+      .span1
+        %h4 Source
+      .span1
+        %h4 Target
+      .span2
+        %h4 Entites
+      = render collection
