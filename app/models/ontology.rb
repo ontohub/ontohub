@@ -16,6 +16,7 @@ class Ontology < ActiveRecord::Base
   include Ontology::Oops
   include Ontology::OntologyTypes
   include Ontology::Projects
+  include Ontology::Tools
 
   belongs_to :language
   belongs_to :logic, counter_cache: true
