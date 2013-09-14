@@ -100,4 +100,32 @@ class GraphDataFetcherTest < ActiveSupport::TestCase
 
   end
 
+  context 'distributed ontology specific tests' do
+
+    setup do
+      @distributed = FactoryGirl.create(:linked_distributed_ontology)
+      @links = Link.where(ontology_id: @distributed.id)
+      @fetcher = GraphDataFetcher.new(center: @distributed)
+      @nodes, @edges = @fetcher.fetch
+    end
+
+    context 'with valid request:' do
+
+      should 'include all children in the node list' do
+        children = @distributed.children.map{|o| Ontology.find(o.id)}
+        children.each do |child|
+          assert_includes @nodes, child
+        end
+      end
+
+      should 'include all links defined by the DO in the edge list' do
+        @links.each do |link|
+          assert @edges.include?(link)
+        end
+      end
+
+    end
+
+  end
+
 end
