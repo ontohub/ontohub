@@ -8,6 +8,15 @@ module NavigationHelper
           ['Versions', :ontology_versions]
         ]
     @entities = ontology.entities.groups_by_kind
+    
+    @metadatas = [
+          ['Projects', :projects],
+          ['Acronyms', :acronyms],
+          ['Tasks', :tasks],
+          ['Formality Level', :formality_levels],
+          ['Ontology Type', :ontology_type],
+          ['Licens Model', :licens_model]
+        ]
 
     @active_kind = nil
     @active_kind = @entities.first.kind if current_page == :entities

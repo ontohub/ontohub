@@ -40,4 +40,9 @@
               = page.to_s.capitalize
               - if count # hide counter if empty
                 %span.badge{:style => count==0 && 'display:none'}= count
-
+  - if controller_name == "metadata"
+    %nav
+      %ul.nav.nav-tabs
+        - @metadatas.each do |(page_title, page)|
+          %li{class: page==current_page ? 'active' : nil}
+            = link_to page_title, "#"
