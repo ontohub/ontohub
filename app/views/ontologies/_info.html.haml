@@ -11,6 +11,11 @@
     - if resource.logic
       = '/'
       = link_to resource.logic.to_s, resource.logic
+%br
+- if resource.parent
+  %small
+    defined by
+    %span= fancy_link(resource.parent)
 
 %p= link_to resource.iri, download_path(resource) if download_path(resource)
 %p= resource.description
