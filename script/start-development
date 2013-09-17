@@ -1,0 +1,8 @@
+#!/bin/sh
+
+rake sunspot:solr:start
+rake resque:work &
+resque_pid=$!
+rails s
+kill $resque_pid
+rake sunspot:solr:stop

@@ -5,17 +5,15 @@ height = 350
 distance = 60
 force_charge = -400
 colors = d3.scale.category10()
+edge_type = null # May be LogicMapping or Link
+mode = "normal"
 
 graphs_uri = window.location.href
 re = /\?[^/]+$/
 if graphs_uri.search(re) != -1
   graphs_uri = graphs_uri.replace(re, "/graphs$&")
 else
-  graphs_uri += "/graphs"
-
-$.get(graphs_uri, (data) ->
-    drawGraph(data)
-  , "json")
+  graphs_uri += "/graphs" if graphs_uri.search(/\/graphs/) == -1
 
 $('div#graph_depth_setting ul li a').on 'click', (e) ->
   e.preventDefault()
@@ -25,7 +23,30 @@ $('div#graph_depth_setting ul li a').on 'click', (e) ->
     .append($('<span />', class: 'caret'))
 
   $.get("#{graphs_uri}?depth=#{depth}", (data) ->
-      drawGraph(data)
+      displayGraph(data)
+    , "json")
+
+addClass = (selector, klass) ->
+  el = $(selector)
+  el.attr('class', el.attr('class') + " #{klass}")
+
+removeClass = (selector, klass) ->
+  func = (index, attr) ->
+    if attr
+      attr.replace("#{klass}", '')
+    else
+      ''
+  el = $(selector)
+  el.attr('class', func)
+
+resetSelections = ->
+  removeClass('g.node', 'selected')
+  removeClass('path', 'selected')
+
+jQuery ->
+  $("div#d3_graph").html(HandlebarsTemplates['graphs/loading']({}))
+  $.get(graphs_uri, (data) ->
+      displayGraph(data)
     , "json")
 
 d3NodesEdges = (data) ->
@@ -36,6 +57,7 @@ d3NodesEdges = (data) ->
     nodes.push
       info: node
       is_center: (node.id == center.id)
+      aggregates: data.nodes_aggregate["#{node.id}"]
     links[node.id] = nodes.length - 1
   edges = []
   for edge in data.edges
@@ -54,129 +76,187 @@ nodeDisplayName = (node) ->
     name
 
 
-drawGraph = (data) ->
+displayGraph = (data) ->
+  edge_type = data.edge_type
   nodes_edges = d3NodesEdges(data)
   nodes = nodes_edges[0]
   edges = nodes_edges[1]
   node_url = nodes_edges[2]
   edge_url = nodes_edges[3]
 
-  $("div#d3_graph").html("")
-  svg = d3.select("div#d3_graph").
-    append('svg').
-    attr('width', width).
-    attr('height', height)
+  addClass($('a#all'), 'btn-primary')
 
-  force = d3.layout.force()
-  force.nodes(nodes)
-  force.links(edges)
-  force.size([width, height])
-    .gravity(0.05)
-    .linkDistance(distance)
-    .charge(force_charge)
-  force.start()
+  edgesForMode = (the_mode) ->
+    if the_mode == "normal"
+      edges
+    else if the_mode == "import"
+      import_edges = []
+      for import_edge in edges
+        if import_edge.info.kind == "import_or_view"
+          import_edges.push(import_edge)
+      import_edges
 
-  # Arrows
-  svg.append("svg:defs").selectAll("marker")
-    .data(["end"])
-    .enter().append("svg:marker")
-      .attr("id", String)
-      .attr("viewBox", "0 -5 10 10")
-      .attr("refX", 17)
-      .attr("refY", -0.0)
-      .attr("markerWidth", 6)
-      .attr("markerHeight", 6)
-      .attr("orient", "auto")
-    .append("svg:path")
-      .attr("d", "M0,-6L10,0L0,6")
-  path = svg.append("svg:g").selectAll("path").
-    data(force.links()).
-    enter().
-    append("svg:path").
-    attr("class", "link").
-    attr("marker-end", "url(#end)")
+  drawGraph = (nodes, edges) ->
+    console.log("redraw for: #{mode}")
+    if !edges || (edges && !edges.length)
+      $("div#d3_graph").html(HandlebarsTemplates['graphs/none']({}))
+    else
+      $("div#d3_graph").html("")
+      svg = d3.select("div#d3_graph").
+        append('svg').
+        attr('width', width).
+        attr('height', height)
 
-  node = svg.selectAll(".node")
-    .data(force.nodes())
-    .enter().append("g")
-    .attr("class", "node")
-    .attr("data-label", (d) ->
-      d.label)
+      force = d3.layout.force()
+      force.nodes(nodes)
+      force.links(edges)
+      force.size([width, height])
+        .gravity(0.05)
+        .linkDistance(distance)
+        .charge(force_charge)
+      force.start()
 
-  embedNodeInfo = (node) ->
-    info_list = $('<ul />',
-      id: 'node_info')
-    addItem = (name, content) ->
-      info_list.append($('<li />')
-        .append($('<span />').html(name))
-        .append($('<span />').html(content)))
-    addItem("Node: ", $('<a />',
-      href: node_url + "/" + node.info.id)
-        .html(node.info.name))
-    addItem("IRI: ", $('<a />',
-      href: node.info.iri)
-        .html(node.info.iri))
-    addItem("Description: ", $('<p />')
-      .html(node.info.description))
-    addItem("Number of Ontologies: ", $('<span />')
-      .html(node.info.ontologies_count))
-    $("div#d3_context").html(info_list)
+      # Arrows
+      for klass in ["non_theorem", "proven", "unproven"]
+        svg.append("svg:defs").selectAll("marker")
+          .data([klass])
+          .enter().append("svg:marker")
+            .attr("id", String)
+            .attr("viewBox", "0 -5 10 10")
+            .attr("refX", 14.5)
+            .attr("refY", -0.0)
+            .attr("markerWidth", 6)
+            .attr("markerHeight", 6)
+            .attr("orient", "auto")
+          .append("svg:path")
+            .attr("d", "M0,-6L10,0L0,6")
+      path = svg.append("svg:g").selectAll("path").
+        data(force.links()).
+        enter().
+        append("svg:path").
+        attr("class", (d) ->
+          proveable = !! d.info.theorem
+          proven = !! d.info.proven
+          if proveable
+            return "link proven" if proven
+            "link unproven"
+          else
+            "link").
+        attr("marker-end", (d) ->
+          proveable = !! d.info.theorem
+          proven = !! d.info.proven
+          if proveable
+            return "url(#proven)" if proven
+            "url(#unproven)"
+          else
+            "url(#non_theorem)")
 
-  embedEdgeInfo = (edge) ->
-    info_list = $('<ul />',
-      id: 'edge_info')
-    addItem = (name, content) ->
-      info_list.append($('<li />')
-        .append($('<span />').html(name))
-        .append($('<span />').html(content)))
-    addItem("Mapping: ", $('<a />',
-      href: edge_url + "/" + edge.info.id)
-        .html(edge.source.info.name+
-          " --> "+
-          edge.target.info.name))
-    addItem("exactness: ", $('<span />')
-        .html(edge.info.exactness))
-    addItem("faithfulness: ", $('<span />')
-        .html(edge.info.faithfulness))
-    $("div#d3_context").html(info_list)
+      node = svg.selectAll(".node")
+        .data(force.nodes())
+        .enter().append("g")
+        .attr("class", "node")
+        .attr("data-label", (d) ->
+          d.label)
 
-  $("g.node").on "click", (e) ->
+      embedNodeInfo = (node) ->
+        info_list = $('<ul />',
+          id: 'node_info')
+        template = null
+        payload =
+          node_url: node_url
+          node: node
+          url: "#{node_url}/#{node.info.id}/"
+        if edge_type == 'LogicMapping'
+          template = 'graphs/logic_mappings_node'
+        else if edge_type == 'Link'
+          template = 'graphs/links_node'
+        info_list.html(HandlebarsTemplates[template](payload)) if template
+        $("div#d3_context").html(info_list)
+
+      embedEdgeInfo = (edge) ->
+        info_list = $('<ul />',
+          id: 'edge_info')
+        template = null
+        payload =
+          edge_url: edge_url
+          edge: edge
+        if edge_type == "LogicMapping"
+          template = 'graphs/logic_mappings_edge'
+        else if edge_type == "Link"
+          template = 'graphs/links_edge'
+        info_list.html(HandlebarsTemplates[template](payload)) if template
+        $("div#d3_context").html(info_list)
+
+      $("g.node").on "click", (e) ->
+        e.preventDefault()
+        resetSelections()
+        default_classes = "node"
+        classes = "#{default_classes} selected"
+        node_data = d3.select(this).data()[0]
+        # use attr, because jquery-class doesn't work
+        if window.selected_node != this
+          $(window.selected_node).attr('class', default_classes)
+        window.selected_node = this
+        $(this).attr('class', classes)
+        embedNodeInfo(node_data)
+
+      $("g > path").on "click", (e) ->
+        e.preventDefault()
+        resetSelections()
+        path_data = d3.select(this).data()[0]
+        addClass($(this), 'selected')
+        embedEdgeInfo(path_data)
+
+      $('path').on('mouseenter', (e) ->
+        removeClass('g.node', 'highlight')
+        path_data = d3.select(this).data()[0]
+        source_index = path_data.source.index
+        target_index = path_data.target.index
+        addClass($(node[0][source_index]), 'highlight')
+        addClass($(node[0][target_index]), 'highlight')
+      )
+      $('path').on('mouseleave', (e) ->
+        removeClass('g.node', 'highlight'))
+
+      node.append("circle").
+        attr("r", (d) ->
+          return 10 if d.is_center
+          7)
+
+      node.append("text").
+        attr("x", 12).
+        attr("dy", ".35em").
+        text((d) ->
+          nodeDisplayName(d))
+
+
+      tick = ->
+        node.attr("transform", (d) ->
+          if d.is_center
+            d.x = width/2
+            d.y = height/2
+          "translate(#{d.x},#{d.y})")
+        path.attr("d", (d) ->
+          dx = d.target.x - d.source.x
+          dy = d.target.y - d.source.y
+          dr = Math.sqrt(dx*dx + dy*dy)*2
+          "M#{d.source.x},#{d.source.y}" +
+          "A#{dr},#{dr} 0 0,1 #{d.target.x},#{d.target.y}")
+      force.on('tick', tick)
+
+  drawGraph(nodes, edgesForMode(mode))
+
+  actOnModeButton = (the_mode, button) ->
+    removeClass('a.mode', 'btn-primary')
+    mode = the_mode
+    addClass($(button), 'btn-primary')
+    drawGraph(nodes, edgesForMode(mode))
+
+
+  $('a#import').on('click', (e) ->
     e.preventDefault()
-    node_data = d3.select(this).data()[0]
-    if window.selected_node != this
-      $(window.selected_node).find("circle").css("stroke", '')
-      $(window.selected_node).find("circle").css("fill", '')
-    window.selected_node = this
-    $(this).find("circle").css("stroke", "#f00")
-    $(this).find("circle").css("fill", "#f00")
-    embedNodeInfo(node_data)
+    actOnModeButton("import", $(this)))
 
-  $("g > path").on "click", (e) ->
+  $('a#all').on('click', (e) ->
     e.preventDefault()
-    path_data = d3.select(this).data()[0]
-    embedEdgeInfo(path_data)
-
-  node.append("circle").
-    attr("r", (d) ->
-      return 10 if d.is_center
-      7)
-
-  node.append("text").
-    attr("x", 12).
-    attr("dy", ".35em").
-    text((d) ->
-      nodeDisplayName(d))
-
-  tick = ->
-    node.attr("transform", (d) ->
-      if d.is_center
-        d.x = width/2
-        d.y = height/2
-      "translate(#{d.x},#{d.y})")
-    path.attr("d", (d) ->
-      dx = d.target.x - d.source.x
-      dy = d.target.y - d.source.y
-      dr = Math.sqrt(dx*dx + dy*dy)*2
-      "M#{d.source.x},#{d.source.y}" +
-      "A#{dr},#{dr} 0 0,1 #{d.target.x},#{d.target.y}")
-  force.on('tick', tick)
+    actOnModeButton("normal", $(this)))

@@ -22,8 +22,10 @@
 // Other Plugins
 //= require moment
 //= require d3
+//= require handlebars.runtime
 
 // ----------------------------------------------
 // Application
+//= require_tree ./templates
 //= require_tree ./plugins
 //= require_tree .
