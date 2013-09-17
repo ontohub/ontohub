@@ -1,17 +1,20 @@
+- unless resource.versions.current.nil?
+  .btn-group
+    %button.btn.dropdown-toggle{'data-toggle' => 'dropdown'}
+      Evaluate
+      %span.caret
+    %ul.dropdown-menu
+      - if resource.oops_supported? && !resource.versions.current.try(:request)
+        - version = resource.parent ? resource.parent.versions.current : resource.versions.current
+        %li= link_to 'design with OOPS!', ontology_ontology_version_oops_request_path(resource, version), method: 'post'
+  
 .btn-group
-  - if resource.oops_supported? && !(req = resource.versions.current.try(:request))
-    .btn-group
-      %button.btn.dropdown-toggle{"data-toggle"=>"dropdown"}
-        Evaluate
-        %span.caret
-      %ul.dropdown-menu
-        %li= link_to 'design with OOPS!', ontology_ontology_version_oops_request_path(resource, resource.parent ? resource.parent.versions.current : resource.versions.current), method: 'post' unless resource.versions.current.nil?
   -if can? :edit, resource
-    %button.btn= link_to 'Edit', [:edit, resource]
-    %button.btn= link_to 'Delete', resource, :confirm => 'Do you really want to delete this ontology?', :method => :delete
-    %button.btn= link_to 'New Version', new_ontology_ontology_version_path(resource, :from => 'http-client')
-    %button.btn.dropdown-toggle{"data-toggle"=>"dropdown"}
+    = link_to 'Edit', [:edit, resource], class: 'btn'
+    = link_to 'Delete', resource, confirm: 'Do you really want to delete this ontology?', method: :delete, class: 'btn'
+    = link_to 'New Version', new_ontology_ontology_version_path(resource, from: 'http-client'), class: 'btn'
+    %button.btn.dropdown-toggle{'data-toggle' => 'dropdown'}
       %span.caret
     %ul.dropdown-menu.pull-right
-      %li= link_to 'From Computer', new_ontology_ontology_version_path(resource, :from => 'http-client')
-      %li= link_to 'From other website', new_ontology_ontology_version_path(resource, :from => 'http-server')
+      %li= link_to 'From Computer', new_ontology_ontology_version_path(resource, from: 'http-client')
+      %li= link_to 'From other website', new_ontology_ontology_version_path(resource, from: 'http-server')
