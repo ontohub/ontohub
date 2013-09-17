@@ -1,0 +1,6 @@
+%h3 homogeneous Distributed Ontologies
+%h5 with children which use this logic
+
+%ol.latest
+  - Ontology.distributed_in(resource).each do |ontology|
+    %li= fancy_link(ontology)

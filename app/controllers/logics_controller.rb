@@ -24,6 +24,17 @@ class LogicsController < InheritedResources::Base
   end
   
   def show
+    @available_tabs = [
+      ['Mappings', :mappings],
+      ['Supports', :supports],
+      ['Ontologies', :ontologies, resource.ontologies.size],
+      ['homogeneous Distributed Ontologies', :distributed,
+        Ontology.distributed_in(resource).size],
+      ['heterogeneous Distributed Ontologies',
+        :heterogeneous_distributed,
+        Ontology.also_distributed_in(resource).size],
+    ]
+    @tab = params[:tab].try(:to_sym)
     super do |format|
       format.html do
         @depth = params[:depth] ? params[:depth].to_i : 3
