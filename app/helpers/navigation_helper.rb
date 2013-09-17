@@ -1,7 +1,7 @@
 module NavigationHelper
 
   def ontology_nav(ontology, current_page)
-    @entities = ontology.entities.groups_by_kind
+    @entities = ontology.distributed? ? [] : ontology.entities.groups_by_kind
 
     @active_kind = nil
     @active_kind = @entities.first.kind if current_page == :entities
