@@ -1,4 +1,4 @@
-class AddAcronymDocumentationToOntology < ActiveRecord::Migration
+class AddAcronymDocumentationToOntologies < ActiveRecord::Migration
   def change
     change_table :ontologies do |t|
     t.string :acronym
