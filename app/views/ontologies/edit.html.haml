@@ -4,7 +4,7 @@
   = f.input :iri
   = f.input :name
   = f.input :description
-  = f.association :categories, as: :check_boxes 
+  = render :partial => 'categories'
 
   .form-actions  
     = f.button :submit, disable_with: t(:wait), class: 'btn-primary'
