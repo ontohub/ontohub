@@ -31,7 +31,12 @@ class OntologiesController < InheritedResources::Base
   def show
     respond_to do |format|
       format.html do
-        redirect_to ontology_entities_path(resource, :kind => resource.entities.groups_by_kind.first.kind)
+        if !resource.distributed?
+          redirect_to ontology_entities_path(resource,
+                       :kind => resource.entities.groups_by_kind.first.kind)
+        else
+          redirect_to ontology_children_path(resource)
+        end
       end
       format.json do
         respond_with resource
