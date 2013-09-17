@@ -1,0 +1,29 @@
+- if parent.is_a?(Ontology)
+  = ontology_nav parent, :graphs if respond_to?(:parent)
+
+%h4
+  Graphical Visualization of
+  = t(GraphDataFetcher.link_for(parent.class)).pluralize
+- unless parent.is_a?(DistributedOntology)
+  Depth of
+  .btn-group#graph_depth_setting
+    %a.btn.dropdown-toggle(data-toggle="dropdown" href="#")
+      = @depth
+      %span.caret
+
+    %ul.dropdown-menu
+      %li
+        - (1..9).each do |i|
+          = link_to i, parent_path(parent, :depth => i)
+  - if parent.is_a?(Ontology)
+    and show
+    .btn-group#ontology_selections
+      = link_to 'all links', '#all', class: 'btn mode', id: 'all'
+      = link_to 'only imports', '#ontology_selections', class: 'btn mode', id: 'import'
+
+  from
+= fancy_link parent
+
+%div#graph_content.row.well.well-large
+  %div#d3_graph.span6
+  %div#d3_context.well.well-small.span5
