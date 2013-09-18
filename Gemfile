@@ -4,6 +4,8 @@ gem 'rails', '~> 3.2.13'
 gem 'rack-protection'
 gem 'secure_headers'
 
+gem 'pry-rails'
+
 gem 'pg'
 gem 'foreigner'
 
@@ -25,6 +27,8 @@ group :assets do
   gem 'd3_rails'
   gem 'therubyracer'
   gem 'uglifier', '>= 1.0.3'
+  gem 'handlebars_assets', '~> 0.14.1'
+  gem 'hamlbars', '~> 2.0'
 end
 
 gem 'haml-rails'

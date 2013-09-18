@@ -1,3 +1,5 @@
+= render partial: '/ontologies/menu', locals: {resource: resource}
+%br
 %h2{'style' => 'display: inline-block'}
   %span= resource.class.name
   %span= link_to resource
@@ -9,8 +11,11 @@
     - if resource.logic
       = '/'
       = link_to resource.logic.to_s, resource.logic
-
-= render partial: '/ontologies/menu', locals: {resource: resource}
+%br
+- if resource.parent
+  %small
+    defined by
+    %span= fancy_link(resource.parent)
 
 %p= link_to resource.iri, download_path(resource) if download_path(resource)
 %p= resource.description
@@ -22,15 +27,21 @@
 
 %nav
   %ul.nav.nav-tabs
-    - @entities.each do |entity|
-      %li{:class => (entity.kind == @active_kind ? 'active' : nil)}
-        %a{:href => ontology_entities_path(resource, :kind => entity.kind)}
-          = entity.count == 1 ? entity.kind : entity.kind.pluralize
-          %span.badge{:style => entity.count == 0 && 'display:none'}= entity.count
-    - pages.each do |page, path, count|
-      %li{:class => (page==current_page ? 'active' : nil)}
-        %a{:href => url_for(path)}
-          = page.to_s.capitalize
-          - if count # hide counter if empty
-            %span.badge{:style => count==0 && 'display:none'}= count
+    - @top_level_pages.each do |(page_title, page)|
+      %li{class: page==current_page ? 'active' : nil}
+        = link_to page_title, [resource, page]
+  - if controller_name == "entities" || controller_name == "sentences" || controller_name == "children" 
+    %nav
+      %ul.nav.nav-tabs
+        - @entities.each do |entity|
+          %li{:class => (entity.kind == @active_kind ? 'active' : nil)}
+            %a{:href => ontology_entities_path(resource, :kind => entity.kind)}
+              = entity.count == 1 ? entity.kind : entity.kind.pluralize
+              %span.badge{:style => entity.count == 0 && 'display:none'}= entity.count
+        - pages.each do |page, path, count|
+          %li{:class => (page==current_page ? 'active' : nil)}
+            %a{:href => url_for(path)}
+              = page.to_s.capitalize
+              - if count # hide counter if empty
+                %span.badge{:style => count==0 && 'display:none'}= count
 
