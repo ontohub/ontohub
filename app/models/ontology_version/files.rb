@@ -13,7 +13,14 @@ module OntologyVersion::Files
 
   def commit_raw_file
     raise "raw file missing" unless @raw_file
-    repository.save_file(@raw_file, ontology.path, "message", user)
+    ontology.path = @raw_file.original_filename if ontology.path.nil?
+    # otherwise the file upload is broken (no implicit conversion of ActionDispatch::Http::UploadedFile into String):
+    tmp_file = if @raw_file.class == ActionDispatch::Http::UploadedFile 
+        @raw_file.tempfile
+      else
+        @raw_file
+      end
+    repository.save_file(tmp_file, ontology.path, "message", user)
   end
 
   def tmp_dir
