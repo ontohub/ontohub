@@ -17,17 +17,27 @@ class OntologiesController < InheritedResources::Base
       end
     end
   end
+  
 
   def new
     @ontology_version = build_resource.versions.build
-    @categories = Category.first.subtree.arrange.first.second unless Category.first.nil?
+    @categories = build_categories_tree
+  end
+
+  def edit
+    @categories = build_categories_tree
+  end
+
+  def update
+    resource.category_ids = user_selected_categories
+    super
   end
 
   def create
     @version = build_resource.versions.first
     @version.user = current_user
     super
-    resource.category_ids = params[:category_ids].keys unless params[:category_ids].nil?
+    resource.category_ids = user_selected_categories
   end
   
   def show
@@ -64,4 +74,13 @@ class OntologiesController < InheritedResources::Base
     @ontology = clazz.new params[:ontology]
   end
 
+  def build_categories_tree
+    Category.first.subtree.arrange.first.second unless Category.first.nil?
+  end
+
+  def user_selected_categories
+    params[:category_ids].keys unless params[:category_ids].nil?
+  end
+
 end
+
