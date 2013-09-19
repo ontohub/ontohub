@@ -235,8 +235,8 @@ displayGraph = (data) ->
       path.attr("d", (d) ->
         dx = d.target.x - d.source.x
         dy = d.target.y - d.source.y
-        dr = Math.sqrt(dx+dx + dy*dy)*2
-        if d.source != d.target
+        dr = Math.sqrt(dx*dx + dy*dy)*2
+        if d.source.info.id != d.target.info.id
           "M#{d.source.x},#{d.source.y}" +
           "A#{dr},#{dr} 0 0,1 #{d.target.x},#{d.target.y}"
         else
