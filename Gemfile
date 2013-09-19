@@ -62,7 +62,7 @@ gem "strip_attributes", "~> 1.0"
 gem 'acts_as_tree'
 
 # Manage uploads
-gem 'carrierwave', "~> 0.8.0"
+gem 'carrierwave', "~> 0.9.0"
 
 # HTTP Client
 gem "rest-client"
