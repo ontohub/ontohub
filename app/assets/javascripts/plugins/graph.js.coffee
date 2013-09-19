@@ -235,9 +235,14 @@ displayGraph = (data) ->
       path.attr("d", (d) ->
         dx = d.target.x - d.source.x
         dy = d.target.y - d.source.y
-        dr = Math.sqrt(dx*dx + dy*dy)*2
-        "M#{d.source.x},#{d.source.y}" +
-        "A#{dr},#{dr} 0 0,1 #{d.target.x},#{d.target.y}")
+        dr = Math.sqrt(dx+dx + dy*dy)*2
+        if d.source != d.target
+          "M#{d.source.x},#{d.source.y}" +
+          "A#{dr},#{dr} 0 0,1 #{d.target.x},#{d.target.y}"
+        else
+          "M#{d.source.x},#{d.source.y-0.6}" +
+          "A-30,-15 0 1,0 #{d.target.x-4},#{d.target.y}"
+      )
     force.on('tick', tick)
 
   drawGraph(nodes, edgesForMode(mode))
