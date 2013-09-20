@@ -2,7 +2,7 @@ module NavigationHelper
 
   def ontology_nav(ontology, current_page)
     @top_level_pages = [
-          ['Content', :entities],
+          ['Content', ontology.distributed? ? :children : :entities],
           ['Comments', :comments],
           ['Metadata', :metadata],
           ['Versions', :ontology_versions],
