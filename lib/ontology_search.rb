@@ -14,10 +14,10 @@ class OntologySearch
     textList = Set.new
     textList.add(prefix) unless Ontology.where("name = :prefix", prefix: prefix).length == 0
     textList.add(prefix) unless Entity.where("name = :prefix", prefix: prefix).length == 0
-    Ontology.where("name LIKE :prefix", prefix: "#{prefix}%").each do |ontology|
+    Ontology.where("name LIKE :prefix", prefix: "#{prefix}%").order("updated_at desc").limit(50).each do |ontology|
       textList.add(ontology.name)
     end
-    Entity.where("name LIKE :prefix", prefix: "#{prefix}%").each do |symbol|
+    Entity.where("name LIKE :prefix", prefix: "#{prefix}%").order("updated_at desc").limit(50).each do |symbol|
       textList.add(symbol.name)
     end
     textList = textList.to_a();
