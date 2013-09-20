@@ -1,7 +1,14 @@
 module NavigationHelper
 
   def ontology_nav(ontology, current_page)
-    @entities = ontology.entities.groups_by_kind
+    @top_level_pages = [
+          ['Content', :entities],
+          ['Comments', :comments],
+          ['Metadata', :metadata],
+          ['Versions', :ontology_versions],
+          ['Graphs', :graphs]
+        ]
+    @entities = ontology.distributed? ? [] : ontology.entities.groups_by_kind
 
     @active_kind = nil
     @active_kind = @entities.first.kind if current_page == :entities

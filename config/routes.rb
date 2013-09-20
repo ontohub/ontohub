@@ -21,6 +21,8 @@ Ontohub::Application.routes.draw do
   resources :language_mappings
   resources :logic_mappings
 
+  resource :links
+
   resources :language_adjoints
   resources :logic_adjoints
 
@@ -51,6 +53,7 @@ Ontohub::Application.routes.draw do
     resources :permissions, :only => [:index, :create, :update, :destroy]
     resources :metadata, :only => [:index, :create, :destroy]
     resources :comments, :only => [:index, :create, :destroy]
+    resources :graphs, :only => [:index]
   end
   
   resources :teams do

@@ -18,10 +18,13 @@
   %h5 Description
   = resource.description
 
-= render :partial => "mappings"
+%nav
+  %ul.nav.nav-tabs
+    - @available_tabs.each do |(tab_title, tab, number)|
+      %li{class: tab==@tab ? 'active' : nil}
+        %a{href: resource_path(resource, tab: tab)}
+          = tab_title
+          - if number
+            %span.badge= number
 
-= render :partial => "supports"
-
-= render :partial => "ontologies"
-    
-= render :partial => "graph"
+= render partial: @tab.to_s unless @tab.nil?
