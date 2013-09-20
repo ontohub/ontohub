@@ -52,6 +52,13 @@ module LinkHelper
     [data_type, value]
   end
 
+  def ontology_link_to(resource)
+    data_type, value = determine_image_type(resource)
+    content_tag(:span, class: 'ontology_title') do
+      link_to resource, {}, data_type => value
+    end
+  end
+
   def counter_link(url, counter, subject)
     text = content_tag(:strong, counter || '?')
     text << content_tag(:span, counter==1 ? subject : subject.pluralize)
