@@ -110,6 +110,7 @@ class RepositoryTest < ActiveSupport::TestCase
         }
         @message = 'test message'
         @file_path_prefix = '/tmp/ontohub/test/git_repository/'
+        @iri_prefix = 'http://localhost/repo_name/'
         @files.each do | path, content |
           file_path = "#{@file_path_prefix}#{path}"
 
@@ -124,36 +125,44 @@ class RepositoryTest < ActiveSupport::TestCase
           tmpfile.puts(content)
           tmpfile.close
           
-          @repository.save_file(file_path, path, @message, @user)
+          OntologyVersion.any_instance.expects(:parse_async).once
+          @repository.save_file(file_path, path, @message, @user, "#{@iri_prefix}#{file_path}")
         end
       end
 
       should 'list files and directories in the directories' do
         assert_equal @repository.path_type, @repository.path_type('/')
         %w{/ folder1 folder2}.each do |folder|
-          assert_equal @repository.path_type(folder)[:type], :dir
-          assert_equal @repository.path_type(folder)[:entries].size, 5
+          assert_equal :dir, @repository.path_type(folder)[:type]
         end
+        assert_equal 5, @repository.path_type('/')[:entries].size
+        assert_equal 2, @repository.path_type('folder1')[:entries].size
+        assert_equal 1, @repository.path_type('folder2')[:entries].size
       end
 
       should 'list files with given basename' do
-        assert_equal @repository.path_type('inroot1'), {
+        expected = {
           type: :file_base,
-          entries: ['inroot1.clif']
+          entries: [{:type=>:file, :name=>"inroot1.clif", :path=>"inroot1.clif"}]
         }
+        assert_equal expected, @repository.path_type('inroot1')
 
-        assert_equal @repository.path_type('inroot2'), {
+        expected = {
           type: :file_base,
-          entries: ['inroot2.clf', 'inroot2.clif']
+          entries: [
+              {:type=>:file, :name=>"inroot2.clf", :path=>"inroot2.clf"},
+              {:type=>:file, :name=>"inroot2.clif", :path=>"inroot2.clif"}
+            ]
         }
+        assert_equal expected, @repository.path_type('inroot2')
       end
 
       should 'have type raw on exact filename' do
         @files.each do |path, content|
-          assert_equal @repository.path_type(path)[:type], :raw
-          assert_equal @repository.path_type(path)[:file][:name], path.split('/')[-1]
-          assert_equal @repository.path_type(path)[:file][:size], content.size
-          assert_equal @repository.path_type(path)[:file][:content], content
+          assert_equal :raw, @repository.path_type(path)[:type]
+          assert_equal path.split('/')[-1], @repository.path_type(path)[:file][:name]
+          assert_equal content.size, @repository.path_type(path)[:file][:size]
+          assert_equal content, @repository.path_type(path)[:file][:content]
         end
       end
     end

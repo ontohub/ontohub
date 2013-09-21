@@ -18,7 +18,7 @@ module Repository::GitRepositories
     FileUtils.rmtree local_path
   end
 
-  def save_file(tmp_file, filepath, message, user)
+  def save_file(tmp_file, filepath, message, user, iri=nil)
     version = nil
 
     git.add_file({email: user[:email], name: user[:name]}, tmp_file, filepath, message) do |commit_oid|
@@ -35,7 +35,7 @@ module Repository::GitRepositories
         o      = clazz.new
         o.path = filepath
 
-        o.iri  = "http://#{Settings.hostname}/#{path}/#{Ontology.filename_without_extension(filepath)}"
+        o.iri  = iri || "http://#{Settings.hostname}/#{path}/#{Ontology.filename_without_extension(filepath)}"
         o.name = filepath.split('/')[-1].split(".")[0].capitalize
 
         version = o.versions.build({ :commit_oid => commit_oid, :user => user }, { without_protection: true })
@@ -55,12 +55,12 @@ module Repository::GitRepositories
     git.path_exists?(path, commit_oid=nil)
   end
 
-  def path_type(path, commit_oid=nil)
+  def path_type(path=nil, commit_oid=nil)
     path ||= '/'
 
     if path_exists?(path, commit_oid)
-      file = read_file(path, commit_oid)
-      return {type: raw, file: file} if file
+      file = git.get_file(path, commit_oid)
+      return {type: :raw, file: file} if file
       return {type: :dir, entries: list_folder(path, commit_oid)}
     end
 
@@ -70,7 +70,7 @@ module Repository::GitRepositories
     filenames = list_folder(path, commit_oid).select { |e| e[:name].split('.')[0] == file }
 
     {
-      type: file_base,
+      type: :file_base,
       entries: filenames
     }
   end
