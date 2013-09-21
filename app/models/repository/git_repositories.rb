@@ -55,7 +55,7 @@ module Repository::GitRepositories
     git.path_exists?(path, commit_oid=nil)
   end
 
-  def path_type(path=nil, commit_oid=nil)
+  def path_info(path=nil, commit_oid=nil)
     path ||= '/'
 
     if path_exists?(path, commit_oid)
@@ -67,12 +67,19 @@ module Repository::GitRepositories
     file = path.split('/')[-1]
     path = path.split('/')[0..-2].join('/')
 
-    filenames = list_folder(path, commit_oid).select { |e| e[:name].split('.')[0] == file }
+    entries = list_folder(path, commit_oid).select { |e| e[:name].split('.')[0] == file }
 
-    {
-      type: :file_base,
-      entries: filenames
-    }
+    return nil if entries.empty?
+
+    if entries.size == 1
+      { type: :file_base,
+        entry: entries[0]
+      }
+    else
+      { type: :file_base_ambiguous,
+        entries: entries
+      }
+    end
   end
 
   def list_folder(folderpath, commit_oid=nil)

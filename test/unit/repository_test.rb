@@ -131,44 +131,48 @@ class RepositoryTest < ActiveSupport::TestCase
       end
 
       should 'list files and directories in the directories' do
-        assert_equal @repository.path_type, @repository.path_type('/')
+        assert_equal @repository.path_info, @repository.path_info('/')
         %w{/ folder1 folder2}.each do |folder|
-          assert_equal :dir, @repository.path_type(folder)[:type]
+          assert_equal :dir, @repository.path_info(folder)[:type]
         end
-        assert_equal 5, @repository.path_type('/')[:entries].size
-        assert_equal 2, @repository.path_type('folder1')[:entries].size
-        assert_equal 1, @repository.path_type('folder2')[:entries].size
+        assert_equal 5, @repository.path_info('/')[:entries].size
+        assert_equal 2, @repository.path_info('folder1')[:entries].size
+        assert_equal 1, @repository.path_info('folder2')[:entries].size
         assert_equal [{
             type: :file,
             name: "file3.clf",
             path: "folder2/file3.clf"
-          }], @repository.path_type('folder2')[:entries]
+          }], @repository.path_info('folder2')[:entries]
       end
 
       should 'list files with given basename' do
         expected = {
           type: :file_base,
-          entries: [{:type=>:file, :name=>"inroot1.clif", :path=>"inroot1.clif"}]
+          entry: {:type=>:file, :name=>"inroot1.clif", :path=>"inroot1.clif"}
         }
-        assert_equal expected, @repository.path_type('inroot1')
+        assert_equal expected, @repository.path_info('inroot1')
 
         expected = {
-          type: :file_base,
+          type: :file_base_ambiguous,
           entries: [
               {:type=>:file, :name=>"inroot2.clf", :path=>"inroot2.clf"},
               {:type=>:file, :name=>"inroot2.clif", :path=>"inroot2.clif"}
             ]
         }
-        assert_equal expected, @repository.path_type('inroot2')
+        assert_equal expected, @repository.path_info('inroot2')
       end
 
       should 'have type raw on exact filename' do
         @files.each do |path, content|
-          assert_equal :raw, @repository.path_type(path)[:type]
-          assert_equal path.split('/')[-1], @repository.path_type(path)[:file][:name]
-          assert_equal content.size, @repository.path_type(path)[:file][:size]
-          assert_equal content, @repository.path_type(path)[:file][:content]
+          assert_equal :raw, @repository.path_info(path)[:type]
+          assert_equal path.split('/')[-1], @repository.path_info(path)[:file][:name]
+          assert_equal content.size, @repository.path_info(path)[:file][:size]
+          assert_equal content, @repository.path_info(path)[:file][:content]
         end
+      end
+
+      should 'be nil on non-existent file/folder' do
+        assert_nil @repository.path_info('dolfer1')
       end
     end
   end
