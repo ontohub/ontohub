@@ -67,9 +67,9 @@ Ontohub::Application.routes.draw do
   end
 
   get '/:id(/:path)', controller: :repositories,
-                      action: :browse,
+                      action: :files,
                       constraints: { path: /.*/ },
-                      as: :browse_repository
+                      as: :repository_files
 
   root :to => 'home#show'
 

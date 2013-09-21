@@ -5,6 +5,7 @@ module NavigationHelper
       [:overview,     resource]
     ]
     
+    pages << [:files,  [resource, :files]]
     pages << [:ontologies,  [resource, :ontologies]]
     pages << [:permissions, [resource, :permissions]] if can? :permissions, resource
     
