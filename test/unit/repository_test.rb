@@ -97,5 +97,65 @@ class RepositoryTest < ActiveSupport::TestCase
         end
       end
     end
+
+    context 'browsing the repository' do
+      setup do
+        @files = {
+          'inroot1.clif' => "(In1 Root)\n",
+          'inroot2.clf' => "(In2 Root Too)\n",
+          'inroot2.clif' => "(In2 Root Too2)\n",
+          'folder1/file1.clif' => "(In Folder)\n",
+          'folder1/file2.clf' => "(In2 Folder Too)\n",
+          'folder2/file3.clf' => "(In2 Folder Again)\n"
+        }
+        @message = 'test message'
+        @file_path_prefix = '/tmp/ontohub/test/git_repository/'
+        @files.each do | path, content |
+          file_path = "#{@file_path_prefix}#{path}"
+
+          # create directory if it doesn't exist
+          dir = File.dirname(file_path)
+          unless File.directory?(dir)
+            FileUtils.mkdir_p(dir)
+          end
+          
+          # create file
+          tmpfile = File.open(file_path, 'w')
+          tmpfile.puts(content)
+          tmpfile.close
+          
+          @repository.save_file(file_path, path, @message, @user)
+        end
+      end
+
+      should 'list files and directories in the directories' do
+        assert_equal @repository.path_type, @repository.path_type('/')
+        %w{/ folder1 folder2}.each do |folder|
+          assert_equal @repository.path_type(folder)[:type], :dir
+          assert_equal @repository.path_type(folder)[:entries].size, 5
+        end
+      end
+
+      should 'list files with given basename' do
+        assert_equal @repository.path_type('inroot1'), {
+          type: :file_base,
+          entries: ['inroot1.clif']
+        }
+
+        assert_equal @repository.path_type('inroot2'), {
+          type: :file_base,
+          entries: ['inroot2.clf', 'inroot2.clif']
+        }
+      end
+
+      should 'have type raw on exact filename' do
+        @files.each do |path, content|
+          assert_equal @repository.path_type(path)[:type], :raw
+          assert_equal @repository.path_type(path)[:file][:name], path.split('/')[-1]
+          assert_equal @repository.path_type(path)[:file][:size], content.size
+          assert_equal @repository.path_type(path)[:file][:content], content
+        end
+      end
+    end
   end
 end
