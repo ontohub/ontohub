@@ -138,6 +138,11 @@ class RepositoryTest < ActiveSupport::TestCase
         assert_equal 5, @repository.path_type('/')[:entries].size
         assert_equal 2, @repository.path_type('folder1')[:entries].size
         assert_equal 1, @repository.path_type('folder2')[:entries].size
+        assert_equal [{
+            type: :file,
+            name: "file3.clf",
+            path: "folder2/file3.clf"
+          }], @repository.path_type('folder2')[:entries]
       end
 
       should 'list files with given basename' do
