@@ -50,6 +50,36 @@ module Repository::GitRepositories
     version
   end
 
+  def path_exists?(path, commit_oid=nil)
+    path ||= '/'
+    git.path_exists?(path, commit_oid=nil)
+  end
+
+  def path_type(path, commit_oid=nil)
+    path ||= '/'
+
+    if path_exists?(path, commit_oid)
+      file = read_file(path, commit_oid)
+      return {type: raw, file: file} if file
+      return {type: :dir, entries: list_folder(path, commit_oid)}
+    end
+
+    file = path.split('/')[-1]
+    path = path.split('/')[0..-2].join('/')
+
+    filenames = list_folder(path, commit_oid).select { |e| e[:name].split('.')[0] == file }
+
+    {
+      type: file_base,
+      entries: filenames
+    }
+  end
+
+  def list_folder(folderpath, commit_oid=nil)
+    folderpath ||= '/'
+    git.folder_contents(commit_oid, folderpath)
+  end
+
   def read_file(filepath, commit_oid=nil)
     git.get_file(filepath, commit_oid)[:content]
   end
