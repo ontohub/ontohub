@@ -16,6 +16,7 @@ module GitRepository::GetFolderContents
   protected
 
   def folder_contents_rugged(rugged_commit, url='')
+    url = '' if url == '/' || url.nil?
     return [] unless path_exists_rugged?(rugged_commit, url)
 
     tree = get_object(rugged_commit, url)

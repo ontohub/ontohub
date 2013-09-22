@@ -211,6 +211,11 @@ class GitRepositoryTest < ActiveSupport::TestCase
         }]
       end
 
+      should 'treat path "/" and empty path equally' do
+        assert_equal @repository.folder_contents(@commit_add3, '/'), @repository.folder_contents(@commit_add3)
+        assert_equal @repository.folder_contents(@commit_add3, '/'), @repository.folder_contents(@commit_add3, nil)
+      end
+
 
       should 'read the right number of contents in the root folder after deleting the first file' do
         assert_equal @repository.folder_contents(@commit_del1).size, 2
