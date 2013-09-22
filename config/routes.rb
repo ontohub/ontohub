@@ -66,6 +66,11 @@ Ontohub::Application.routes.draw do
     end
   end
 
+  get '/repositories/:id/:oid(/:path)', controller: :repositories,
+                      action: :files,
+                      constraints: { path: /.*/ },
+                      as: :repository_files_by_oid
+
   get '/:id(/:path)', controller: :repositories,
                       action: :files,
                       constraints: { path: /.*/ },

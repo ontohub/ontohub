@@ -65,6 +65,16 @@ class GitRepository
     end
   end
 
+  def branch_oid(name)
+    ref = Rugged::Reference.lookup(@repo, "refs/heads/#{name}")
+
+    if ref.nil?
+      nil
+    else
+      ref.target
+    end
+  end
+
   def build_target_path(url, file_name)
     file_path = url.dup
     file_path << '/' if file_path[-1] != '/' && !file_path.empty?

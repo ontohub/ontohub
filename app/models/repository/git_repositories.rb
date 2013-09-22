@@ -18,6 +18,10 @@ module Repository::GitRepositories
     FileUtils.rmtree local_path
   end
 
+  def is_head?(commit_oid=nil)
+    git.is_head?(commit_oid)
+  end
+
   def save_file(tmp_file, filepath, message, user, iri=nil)
     version = nil
 
@@ -52,7 +56,7 @@ module Repository::GitRepositories
 
   def path_exists?(path, commit_oid=nil)
     path ||= '/'
-    git.path_exists?(path, commit_oid=nil)
+    git.path_exists?(path, commit_oid)
   end
 
   def path_info(path=nil, commit_oid=nil)
@@ -89,5 +93,24 @@ module Repository::GitRepositories
 
   def read_file(filepath, commit_oid=nil)
     git.get_file(filepath, commit_oid)[:content]
+  end
+
+  # given a commit oid or a branch name, commit_id returns a hash of oid and branch name if existent
+  def commit_id(oid)
+    return { oid: git.head_oid, branch_name: 'master' } if oid.nil?
+    if oid.match /[0-9a-fA-F]{40}/
+      branch_names = git.get_branches.select { |b| b[:oid] == oid }
+      if branch_names.empty?
+        { oid: oid, branch_name: nil }
+      else
+        { oid: oid, branch_name: branch_names[0].name }
+      end
+    else
+      if git.branch_oid(oid).nil?
+        nil
+      else
+        { oid: git.branch_oid(oid), branch_name: oid }
+      end
+    end
   end
 end

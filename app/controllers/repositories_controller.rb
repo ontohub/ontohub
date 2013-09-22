@@ -7,7 +7,14 @@ class RepositoriesController < ApplicationController
 
   def files
     @path = params[:path]
-    @info = @repository.path_info params[:path]
+
+    commit_id = @repository.commit_id(params[:oid])
+    @oid = commit_id[:oid]
+    @branch_name = commit_id[:branch_name]
+
+    @is_head = @repository.is_head?(@oid)
+
+    @info = @repository.path_info(params[:path], @oid)
 
     raise Repository::FileNotFoundError, @path if @info.nil?
     if @info[:type] == :raw

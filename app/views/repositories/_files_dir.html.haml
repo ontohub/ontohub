@@ -18,11 +18,11 @@
             - else
               %i.icon-file
           %td
-            -# if @is_head #next line should be indented
-            = link_to entry[:name].force_encoding('UTF-8'), repository_files_path(@repository.path, basepath(entry[:path])) #FIXME force_encoding is needed due to errors in rugged
-            -# else
-              =# link_to entry[:name].force_encoding('UTF-8'), repository_commits_path(@repository.path, @oid, entry[:path]) #FIXME force_encoding is needed due to errors in rugged    
+            - if @is_head #next line should be indented
+              = link_to entry[:name].force_encoding('UTF-8'), repository_files_path(@repository.path, basepath(entry[:path])) #FIXME force_encoding is needed due to errors in rugged
+            - else
+              = link_to entry[:name].force_encoding('UTF-8'), repository_files_by_oid_path(@repository.path, @oid, entry[:path]) #FIXME force_encoding is needed due to errors in rugged    
           %td.last-modified.muted 
             %i.icon-spinner.icon-spin
           %td.last-commit.muted
-            %i.icon-spinner.icon-spin      
+            %i.icon-spinner.icon-spin
