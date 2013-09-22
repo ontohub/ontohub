@@ -11,6 +11,14 @@ class RepositoryTest < ActiveSupport::TestCase
       @repository = FactoryGirl.create :repository, user: @user
     end
 
+    context 'with a reserved name' do
+      should 'not be valid' do
+        repository = FactoryGirl.build :repository, user: @user, name: 'repositories'
+        assert repository.invalid?
+        assert repository.errors[:path].any?
+      end
+    end
+
     context 'creating a permission' do
       setup do
         assert_not_nil @permission = @repository.permissions.first
