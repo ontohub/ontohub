@@ -12,7 +12,10 @@ public class Ontohub implements EntryPoint {
 	 * This is the entry point method.
 	 */
 	public void onModuleLoad() {
-		OntologySearchBar ontologySearchBar = new OntologySearchBar();
-		RootPanel.get("OntologySearchBarContainer").add(ontologySearchBar);
+		RootPanel rootPanel = RootPanel.get("OntologySearch");
+		if (rootPanel != null) {
+			OntologySearch ontologySearchBar = new OntologySearch();
+			rootPanel.add(ontologySearchBar);
+		}
 	}
 }

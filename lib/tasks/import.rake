@@ -36,4 +36,11 @@ namespace :import do
       logic_mapping:  Proc.new{ |h| save(h) },
       support:        Proc.new{ |h| save(h) }
   end
+
+  desc 'Import keywords starting with P.'
+  task :keywords => :environment do
+    ontologySearch = OntologySearch.new()
+    puts ontologySearch.makeKeywordListJson('P')
+  end
+
 end

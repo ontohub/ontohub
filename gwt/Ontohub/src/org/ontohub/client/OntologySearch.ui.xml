@@ -70,23 +70,23 @@
           overflow-x: hidden;
         }
         .bar:focus {
-	      outline: 0px none;
+	      outline: 0px none!important;
         }
         .conceptPanel {
           display: inline-block;
         }
-        .box {
+        input[type="text"].box {
 	      display: inline-block;
 	      height: 23px;
 	      width: auto;
-	      inline-hight: 23px;
+	      line-height: 23px!important;
 	      font-size: 18px;
-          outline: 0px none;
-          border: 0px none;
+          outline: 0px none!important;
+          border: 0px none!important;
         }
-        .box:focus {
-          outline: 0px none;
-          border: 0px none;
+        input[type="text"].box:focus {
+          outline: 0px none!important;
+          border: 0px none!important;
         }
         .nobreak {
           white-space: nowrap;

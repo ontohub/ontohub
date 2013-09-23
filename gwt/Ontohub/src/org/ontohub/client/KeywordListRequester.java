@@ -48,7 +48,7 @@ public class KeywordListRequester {
 	}
 
 	public void requestKeywordList(final String prefix, final AsyncCallback<KeywordList> keywordListCallback) {
-		RequestBuilder builder = new RequestBuilder(RequestBuilder.GET, "OntologyKeywordList");
+		RequestBuilder builder = new RequestBuilder(RequestBuilder.GET, "ontologies/keywords");
 		String requestData = "query=" + URL.encodeQueryString(prefix);
 		try {
 			builder.sendRequest(requestData, new RequestCallback() {
@@ -78,7 +78,7 @@ public class KeywordListRequester {
 	}
 
 	public void requestOntologyList(final String[] keywordList, final AsyncCallback<OntologyList> keywordListCallback) {
-		RequestBuilder builder = new RequestBuilder(RequestBuilder.GET, "OntologyList");
+		RequestBuilder builder = new RequestBuilder(RequestBuilder.GET, "ontologies/search");
 		try {
 			String requestData;
 			StringBuffer requestDataBuffer = new StringBuffer();

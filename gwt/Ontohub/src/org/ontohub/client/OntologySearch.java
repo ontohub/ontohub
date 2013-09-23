@@ -35,11 +35,11 @@ import com.google.gwt.user.client.ui.Widget;
  * @author DanielVale
  *
  */
-public class OntologySearchBar extends Composite {
+public class OntologySearch extends Composite {
 
-	private static OntologySearchBarUiBinder uiBinder = GWT.create(OntologySearchBarUiBinder.class);
+	private static OntologySearchUiBinder uiBinder = GWT.create(OntologySearchUiBinder.class);
 
-	interface OntologySearchBarUiBinder extends UiBinder<Widget, OntologySearchBar> {}
+	interface OntologySearchUiBinder extends UiBinder<Widget, OntologySearch> {}
 
 
 	@UiField
@@ -65,7 +65,7 @@ public class OntologySearchBar extends Composite {
 	 * implement HasHTML instead of HasText.
 	 * @param ontologySearchService 
 	 */
-	public OntologySearchBar() {
+	public OntologySearch() {
 		requester = new KeywordListRequester();
 		initWidget(uiBinder.createAndBindUi(this));
 	}
@@ -102,7 +102,7 @@ public class OntologySearchBar extends Composite {
 			@Override
 			public void onSelection(SelectionEvent<Suggestion> event) {
 				Suggestion suggestion = event.getSelectedItem();
-				conceptPanel.add(new OntologySearchConcept(OntologySearchBar.this, "Category", suggestion.getReplacementString()));
+				conceptPanel.add(new OntologySearchConcept(OntologySearch.this, "Category", suggestion.getReplacementString()));
 				box.setText("");
 
 				requester.requestOntologyList(new String[]{}, new AsyncCallback<OntologyList>() {

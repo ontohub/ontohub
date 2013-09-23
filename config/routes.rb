@@ -60,6 +60,7 @@ Ontohub::Application.routes.draw do
   
   get 'autocomplete' => 'autocomplete#index'
   get 'search'       => 'search#index'
+  get 'ontology_keywords' => 'ontology_search#keywords'
 
   root :to => 'home#show'
 

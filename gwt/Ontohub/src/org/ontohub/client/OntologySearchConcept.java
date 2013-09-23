@@ -38,9 +38,9 @@ public class OntologySearchConcept extends Composite implements HasText {
 
 	private String instanceLabel;
 
-	private OntologySearchBar ontologySearchBar;
+	private OntologySearch ontologySearchBar;
 
-	public OntologySearchConcept(OntologySearchBar ontologySearchBar, String typeLabel, String instanceLabel) {
+	public OntologySearchConcept(OntologySearch ontologySearchBar, String typeLabel, String instanceLabel) {
 		this.ontologySearchBar = ontologySearchBar;
 		this.typeLabel = typeLabel;
 		this.instanceLabel = instanceLabel;

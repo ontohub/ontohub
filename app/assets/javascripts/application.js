@@ -23,6 +23,9 @@
 //= require moment
 //= require d3
 
+// GWT Plugin
+//= require gwt/ontohub.nocache.js
+
 // ----------------------------------------------
 // Application
 //= require_tree ./plugins

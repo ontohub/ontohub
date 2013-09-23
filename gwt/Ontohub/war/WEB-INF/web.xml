@@ -6,15 +6,6 @@
          xmlns="http://java.sun.com/xml/ns/javaee">
 
   <!-- Servlets -->
-  <servlet>
-    <servlet-name>ontologySearchServlet</servlet-name>
-    <servlet-class>org.ontohub.server.OntologySearchServiceImpl</servlet-class>
-  </servlet>
-  
-  <servlet-mapping>
-    <servlet-name>ontologySearchServlet</servlet-name>
-    <url-pattern>/ontohub/searchForOntology</url-pattern>
-  </servlet-mapping>
   
   <!-- Default page to serve -->
   <welcome-file-list>

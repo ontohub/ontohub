@@ -5,18 +5,4 @@
 
 %h2= @page_title = 'Ontologies'
 
-= format_links
-= render :partial => 'filter'
-
-%p
-  = pluralize(collection.total_count, 'Ontology')
-  found
-  - if @search
-    for
-    %strong= @search
-
-= in_process_tag
-
-= pagination do
-  %ul.ontologies
-    = render collection.with_active_version
+%div#OntologySearch
