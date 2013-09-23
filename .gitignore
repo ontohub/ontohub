@@ -57,5 +57,6 @@ gwt/Ontohub/.gwt
 gwt/Ontohub/gwt-unitCache
 gwt/Ontohub/test-classes
 gwt/Ontohub/war/ontohub
+gwt/Ontohub/war/ontologies
 gwt/Ontohub/war/WEB-INF/classes
 gwt/Ontohub/war/WEB-INF/deploy
