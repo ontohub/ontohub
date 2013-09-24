@@ -18,7 +18,8 @@ class Ontology < ActiveRecord::Base
   include Ontology::Projects
   include Ontology::Tools
   include Ontology::Tasks
-  include Ontology::LicenseModel
+  include Ontology::LicenseModels
+  include Ontology::FormalityLevels
 
   belongs_to :language
   belongs_to :logic, counter_cache: true
