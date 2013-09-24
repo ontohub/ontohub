@@ -10,6 +10,7 @@ module Ontology::Import
       ontology         = nil
       link             = nil
       ontologies_count = 0
+      version = nil
       
       OntologyParser.parse io,
         root: Proc.new { |h|
@@ -26,6 +27,8 @@ module Ontology::Import
             # find or create sub-ontology by IRI
             ontology   = self.children.find_by_iri(child_iri)
             ontology ||= SingleOntology.create!({iri: child_iri, name: child_name, parent: self}, without_protection: true)
+            version = ontology.versions.build
+            version.user = user
           else
             raise "more than one ontology found" if ontologies_count > 1
             ontology = self
@@ -62,6 +65,8 @@ module Ontology::Import
           self.links.update_or_create_from_hash(h, user, now)
         }
       save!
+      version.save! if version
+
     end
   end
 
