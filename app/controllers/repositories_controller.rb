@@ -15,18 +15,15 @@ class RepositoriesController < ApplicationController
     @is_head = @repository.is_head?(@oid)
 
     @info = @repository.path_info(params[:path], @oid)
-    puts @info
 
     raise Repository::FileNotFoundError, @path if @info.nil?
     
     case @info[:type]
     when :raw
-      render text: @repository.read_file(@path, params[:oid]),
+      render text: @repository.read_file(@path, params[:oid])[:content],
              content_type: Mime::Type.lookup('application/force-download')
     when :file_base
-      @content = @repository.read_file(@info[:entry][:path], params[:oid])
-    when :file_base_ambiguous
-      @info[:entries]
+      @file = @repository.read_file(@info[:entry][:path], params[:oid])
     end
   end
 end

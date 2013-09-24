@@ -69,6 +69,8 @@ GEM
       json
     choice (0.1.6)
     chunky_png (1.2.8)
+    codemirror-rails (3.16)
+      railties (>= 3.0, < 5)
     coffee-rails (3.2.2)
       coffee-script (>= 2.2.0)
       railties (~> 3.2.0)
@@ -231,7 +233,7 @@ GEM
     rsolr (1.0.9)
       builder (>= 2.1.2)
     ruby-graphviz (1.0.9)
-    rugged (0.19.0)
+    rugged (0.17.0.b7)
     rvm-capistrano (1.5.0)
       capistrano (>= 2.15.4)
     safe_yaml (0.9.6)
@@ -297,6 +299,7 @@ DEPENDENCIES
   capistrano
   capybara
   capybara-webkit
+  codemirror-rails
   coffee-rails (~> 3.2.1)
   compass (~> 0.12.1)
   database_cleaner
@@ -333,7 +336,7 @@ DEPENDENCIES
   resque
   rest-client
   ruby-graphviz (~> 1.0.8)
-  rugged
+  rugged (= 0.17.0.b7)
   rvm-capistrano
   sass-rails (~> 3.2.3)
   secure_headers

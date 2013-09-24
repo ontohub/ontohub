@@ -61,7 +61,7 @@ module OntologyVersion::Files
 
   # returns the raw data directly from the repository
   def raw_data
-    repository.read_file(ontology.path, commit_oid)
+    repository.read_file(ontology.path, commit_oid)[:content]
   end
   
 end

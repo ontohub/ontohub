@@ -21,6 +21,7 @@
 // ----------------------------------------------
 // Other Plugins
 //= require moment
+//= require codemirror
 
 // ----------------------------------------------
 // Application
