@@ -22,6 +22,14 @@ class TaskTest < ActiveSupport::TestCase
       should_not allow_value('foo').for :name
     end
 
+    context 'when Task without name is to be saved' do
+      should 'raise error' do 
+        assert_raise ActiveRecord::RecordInvalid do
+          Task.create!
+        end
+      end
+    end
+
   end
 
 end
