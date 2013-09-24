@@ -15,6 +15,7 @@ class RepositoriesController < ApplicationController
     @is_head = @repository.is_head?(@oid)
 
     @info = @repository.path_info(params[:path], @oid)
+    puts @info
 
     raise Repository::FileNotFoundError, @path if @info.nil?
     

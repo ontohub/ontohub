@@ -1,3 +1,9 @@
 %h3 
   =@info[:entry][:path]
-%pre=@content
+
+-if @content.size <= Ontohub::Application.config.max_read_filesize
+  %pre=@content
+-else
+  %p
+    File too large to display.
+    =link_to "Download #{@info[:entry][:name]}.", fancy_repository_files_path(@repository, @info[:entry][:path], @oid)
