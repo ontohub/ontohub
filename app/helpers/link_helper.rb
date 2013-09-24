@@ -52,8 +52,8 @@ module LinkHelper
     content_tag('ul', links.html_safe, :class => 'formats')
   end
   
-  def fancy_repository_files_path(repository, path, oid)
-    if repository.is_head?(oid)
+  def fancy_repository_files_path(repository, path=nil, oid=nil)
+    if oid.nil? || repository.is_head?(oid)
       repository_files_path id: repository, path: path
     else
       repository_files_by_oid id: repository, oid: oid, path: path
