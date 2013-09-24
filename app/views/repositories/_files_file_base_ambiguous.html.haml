@@ -6,4 +6,4 @@
   %ul
     -@info[:entries].each do |entry|
       %li
-        = fancy_link repository_files_path({ id: @repository, path: entry[:path] })
+        = fancy_link fancy_repository_files_path(@repository, entry[:path], @oid)
