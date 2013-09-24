@@ -1,1 +1,9 @@
-file_base_ambiguous
+%h3 IRI Ambiguous
+%p
+  Please select a representation of
+  =params[:path]
+
+  %ul
+    -@info[:entries].each do |entry|
+      %li
+        = fancy_link repository_files_path({ id: @repository, path: entry[:path] })
