@@ -1,18 +1,14 @@
 ### Create ontology types
 
-# create up to n unique names and return no. of results
-def unique_names(n)
-  @names= []
-  n.times do |x|
-    @names << Faker::Lorem.word
-  end
-  @names.uniq!
-  @names.length
-end
+require "#{Rails.root}/db/seed_helper.rb"
 
-unique_names(10).times do |n|
+count = 10
+
+names_count, names = unique_names(count)
+
+names_count.times do |n|
   OntologyType.create! \
-    name:           @names.slice!(-1),
+    name:           names.slice!(-1),
     description:    Faker::Lorem.sentence,
     documentation:  Faker::Internet.url
 end
