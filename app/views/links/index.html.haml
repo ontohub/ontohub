@@ -30,15 +30,13 @@
                 =link[:target]
                 =link_to "#{link[:link].name} Link", link[:link]
   -else
-    .row.center
-      .span4
-        %h4 Name
-      .span4
-        %h4 IRI
-      .span1
-        %h4 Source
-      .span1
-        %h4 Target
-      .span2
-        %h4 Entites
-      = render collection
+    %table.table
+      %thead
+        %tr.center
+          %th Name
+          %th IRI
+          %th Source
+          %th Target
+          %th Entites
+      %tbody
+        = render collection

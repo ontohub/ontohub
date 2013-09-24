@@ -22,11 +22,16 @@ module Ontology::Links
       source = Ontology.find_by_iri(source_iri) || (raise ArgumentError, "source ontology not found: #{source_iri}")
       target = Ontology.find_by_iri(target_iri) || (raise ArgumentError, "target ontology not found: #{target_iri}")
       
+      
       # linktype
       linktype = hash['type']
       raise "link type missing" if linktype.blank?
       kind   = Link::KINDS.find {|k| linktype.downcase.include?(k) }
-      kind ||= Link::KIND_DEFAULT
+      if linktype.include?("Thm")
+        kind ||= "view"
+      else
+        kind ||= "import"
+      end
       
       # moprhism
       gmorphism = hash['morphism']
@@ -56,9 +61,9 @@ module Ontology::Links
       }
       link.updated_at = timestamp
       link.save!
-      #link.versions << LinkVersion.create(link: link,
-       #                                   source: source.versions.current,
-        #                                  target: target.versions.current)
+      link.versions << LinkVersion.create(link: link,
+                                          source: source.versions.current,
+                                          target: target.versions.current)
                                                     
       # entity mapping
       if hash["map"]

@@ -2,8 +2,7 @@ class Link < ActiveRecord::Base
   include Permissionable
   include Metadatable
 
-  KINDS = %w( alignment import_or_view hiding minimization free cofree )
-  KIND_DEFAULT = 'import_or_view'
+  KINDS = %w( alignment import view hiding minimization free cofree )
   
   CONS_STATUSES = %w( inconsistent none cCons mcons mono def )
   
