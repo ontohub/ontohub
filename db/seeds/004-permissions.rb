@@ -5,6 +5,6 @@ Ontology.find_each do |o|
     role:    'owner'
 end
 
-Ontology.first.permissions.create! \
+Ontology.first.permissions.create \
   subject: User.first,
   role:    'editor'
