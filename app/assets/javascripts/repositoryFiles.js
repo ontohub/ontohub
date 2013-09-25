@@ -14,9 +14,9 @@ $(function() {
 		}).done(function(list) {
 			$.each(list, function(key, value) {
 				table.find("tr[data-id="+key+"] td.last-modified").html('<span class="timestamp">'+value.committer_time+'</span>').relatizeTimestamps();
-				var html = '<span class="message">'
+				var html = '<a class="message" href='+repository_diff_path(table, value.oid)+'>'
 				html += value.message;
-				html += '</span>';
+				html += '</a>';
 				html += ' ['+value.committer_name+']';
 				table.find("tr[data-id="+key+"] td.last-commit").html(html);
 			});
@@ -25,5 +25,9 @@ $(function() {
 				token: '&hellip;'
 			});
 		});
+	}
+
+	function repository_diff_path(table, oid) {
+		return table.data('diff-path').replace('%s', oid)
 	}
 });

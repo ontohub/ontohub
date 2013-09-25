@@ -118,4 +118,8 @@ module Repository::GitRepositories
     dirpath = git.get_path_of_dir(oid, path)
     git.entries_info(oid,dirpath)
   end
+
+  def changed_files(oid=nil)
+    git.changed_files(commit_id(oid)[:oid])
+  end
 end

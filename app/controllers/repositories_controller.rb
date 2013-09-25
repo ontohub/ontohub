@@ -30,4 +30,9 @@ class RepositoriesController < ApplicationController
   def entries_info
     render json: @repository.entries_info(@oid, params[:path])
   end
+
+  def diff
+    @oid = @repository.commit_id(params[:oid])[:oid]
+    @changed_files = @repository.changed_files(@oid)
+  end
 end

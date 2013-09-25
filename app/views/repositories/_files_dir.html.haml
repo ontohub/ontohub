@@ -2,7 +2,7 @@
   .muted
     This folder is empty
 - else
-  %table.table.table-condensed.table-hover.file-table{'data-id' => @repository.path, 'data-path' => @path, 'data-oid' => @oid, 'data-ajax-path' => fancy_repository_path(@repository, path: @path, oid: @oid, action: :entries_info)}
+  %table.table.table-condensed.table-hover.file-table{'data-id' => @repository.path, 'data-path' => @path, 'data-oid' => @oid, 'data-ajax-path' => fancy_repository_path(@repository, path: @path, oid: @oid, action: :entries_info), 'data-diff-path' => fancy_repository_path(@repository, oid: '%s', action: :diff)}
     %tbody
       - @info[:entries].each_with_index do |entry, i|
         %tr{"data-id" => i}
