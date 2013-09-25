@@ -48,10 +48,11 @@ public class KeywordListRequester {
 	}
 
 	public void requestKeywordList(final String prefix, final AsyncCallback<KeywordList> keywordListCallback) {
-		RequestBuilder builder = new RequestBuilder(RequestBuilder.GET, "ontologies/keywords");
-		String requestData = "query=" + URL.encodeQueryString(prefix);
+		String requestData = "prefix=" + URL.encodeQueryString(prefix);
+		RequestBuilder builder = new RequestBuilder(RequestBuilder.GET, "ontologies/keywords?" + requestData);
+		builder.setHeader("Content-Type", "application/json");
 		try {
-			builder.sendRequest(requestData, new RequestCallback() {
+			builder.sendRequest(null, new RequestCallback() {
 				@Override
 				public void onError(Request request, Throwable exception) {
 					keywordListCallback.onFailure(exception);
@@ -78,20 +79,21 @@ public class KeywordListRequester {
 	}
 
 	public void requestOntologyList(final String[] keywordList, final AsyncCallback<OntologyList> keywordListCallback) {
-		RequestBuilder builder = new RequestBuilder(RequestBuilder.GET, "ontologies/search");
+		String requestData;
+		StringBuffer requestDataBuffer = new StringBuffer();
+		for (String keyword : keywordList) {
+			requestDataBuffer.append("keywords[]=" + URL.encodeQueryString(keyword));
+			requestDataBuffer.append("&");
+		}
+		if (keywordList.length > 0) {
+			requestData = requestDataBuffer.toString().substring(0, requestDataBuffer.length() - 1);
+		} else {
+			requestData = "";
+		}
+		RequestBuilder builder = new RequestBuilder(RequestBuilder.GET, "ontologies/search?" + requestData);
+		builder.setHeader("Content-Type", "application/json");
 		try {
-			String requestData;
-			StringBuffer requestDataBuffer = new StringBuffer();
-			for (String keyword : keywordList) {
-				requestDataBuffer.append("keyword[]=" + URL.encodeQueryString(keyword));
-				requestDataBuffer.append("&");
-			}
-			if (keywordList.length > 0) {
-				requestData = requestDataBuffer.toString().substring(0, requestDataBuffer.length() - 1);
-			} else {
-				requestData = "";
-			}
-			builder.sendRequest(requestData, new RequestCallback() {
+			builder.sendRequest(null, new RequestCallback() {
 				@Override
 				public void onError(Request request, Throwable exception) {
 					keywordListCallback.onFailure(exception);

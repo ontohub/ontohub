@@ -2,6 +2,25 @@
 <ui:UiBinder xmlns:ui="urn:ui:com.google.gwt.uibinder"
 	xmlns:g="urn:import:com.google.gwt.user.client.ui">
 	<ui:style>
+	    @external .gwt-SuggestBoxPopup .item .item-selected;
+	    .gwt-SuggestBoxPopup {
+	      background-color: white;
+	      border: 1px solid #cccccc;
+	      border-radius: 4px;
+	      padding: 4px 3px;
+        }
+        .gwt-SuggestBoxPopup table tbody tr td {
+	      padding: 0;
+	      border: 0 none;
+        }
+        .gwt-SuggestBoxPopup table tbody tr td.item {
+	      background-color: white;
+	      padding: 1px 4px;
+        }
+        .gwt-SuggestBoxPopup table tbody tr td.item-selected {
+	      background-color: rgb(233,211,134);
+	      cursor: pointer;
+        }
 		.container {
           background-color: rgba(0, 0, 0, 0);
           border-collapse: separate;
@@ -55,10 +74,7 @@
           margin-left: 0px;
           margin-right: 0px;
           margin-top: 0px;
-          padding-bottom: 10px;
-          padding-left: 16px;
-          padding-right: 16px;
-          padding-top: 10px;
+          padding: 5px 8px;
           position: static;
           text-align: -webkit-auto;
           text-indent: 0px;
@@ -83,10 +99,14 @@
 	      font-size: 18px;
           outline: 0px none!important;
           border: 0px none!important;
+          box-shadow: none;
+          -webkit-box-shadow: none;
         }
         input[type="text"].box:focus {
           outline: 0px none!important;
           border: 0px none!important;
+          box-shadow: none;
+          -webkit-box-shadow: none;
         }
         .nobreak {
           white-space: nowrap;

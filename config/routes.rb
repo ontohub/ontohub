@@ -36,6 +36,10 @@ Ontohub::Application.routes.draw do
   end
   
   resources :ontologies do
+    collection do
+      get 'keywords' => 'ontology_search#keywords'
+      get 'search' => 'ontology_search#search'
+    end
     resources :children, :only => :index
     resources :entities, :only => :index
     resources :sentences, :only => :index
@@ -60,7 +64,6 @@ Ontohub::Application.routes.draw do
   
   get 'autocomplete' => 'autocomplete#index'
   get 'search'       => 'search#index'
-  get 'ontology_keywords' => 'ontology_search#keywords'
 
   root :to => 'home#show'
 

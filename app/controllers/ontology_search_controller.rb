@@ -12,8 +12,19 @@ class OntologySearchController < ApplicationController
     end
 
     ontologySearch = OntologySearch.new()
-    @keywordList
+    @keywordList = ontologySearch.makeKeywordListJson(prefix)
     respond_with(@keywordList)
+  end
+
+  def search
+    keywords = params[:keywords]
+    if keywords.blank?
+      keywords = Array.new
+    end
+
+    ontologySearch = OntologySearch.new()
+    @beanList = ontologySearch.makeBeanListJson(keywords)
+    respond_with(@beanList)
   end
   
 end

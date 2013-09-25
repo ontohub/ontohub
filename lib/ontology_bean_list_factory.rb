@@ -14,12 +14,11 @@ class OntologyBeanListFactory
   def makeSmallBean(ontology)
     return {
       name: ontology.name,
-      acronym: ontology.acronym,
-      language: ontology.language.name,
-      logic: ontology.current_version.logic.name,
+      acronym: "",
+      language: ontology.language.nil? ? "" : ontology.language.name,
+      logic:  ontology.logic.nil? ? "" : ontology.logic.name,
       iri: ontology.iri,
-      url: ontology.iri,
-      acronym: ontology.acronym,
+      url: "/ontologies/#{ontology.id}",
       description: ontology.description,
     }
   end

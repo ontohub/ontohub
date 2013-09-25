@@ -30,8 +30,23 @@ class OntologySearch
     return keywordList
   end
 
-  def makeSmallBeanList()
+  def makeBeanListJson(keywordList)
+    beanList = makeBeanList(keywordList)
+    return JSON.generate(beanList)
+  end
 
+  def makeBeanList(keywordList)
+    beanListFactory = OntologyBeanListFactory.new()
+    keywordList.each do |keyword|
+      Ontology.where("name = :name", name: "#{keyword}").limit(50).each do |ontology|
+        beanListFactory.addSmallBean(ontology)
+      end
+      Entity.where("name = :name", name: "#{keyword}").limit(50).each do |symbol|
+        beanListFactory.addSmallBean(symbol.ontology)
+      end
+    end
+    beanList = beanListFactory.getBeanList()
+    return beanList
   end
 
 end

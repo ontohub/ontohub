@@ -3,6 +3,9 @@
  */
 package org.ontohub.client;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import org.ontohub.client.KeywordListRequester.Keyword;
 import org.ontohub.client.KeywordListRequester.KeywordList;
 import org.ontohub.client.KeywordListRequester.Ontology;
@@ -17,8 +20,6 @@ import com.google.gwt.event.dom.client.KeyPressEvent;
 import com.google.gwt.event.dom.client.KeyPressHandler;
 import com.google.gwt.event.logical.shared.SelectionEvent;
 import com.google.gwt.event.logical.shared.SelectionHandler;
-import com.google.gwt.event.logical.shared.ValueChangeEvent;
-import com.google.gwt.event.logical.shared.ValueChangeHandler;
 import com.google.gwt.uibinder.client.UiBinder;
 import com.google.gwt.uibinder.client.UiFactory;
 import com.google.gwt.uibinder.client.UiField;
@@ -78,7 +79,6 @@ public class OntologySearch extends Composite {
 
 			@Override
 			public void onKeyPress(KeyPressEvent event) {
-				System.out.print(box.getText());
 				requester.requestKeywordList(box.getText(), new AsyncCallback<KeywordList>() {
 
 					@Override
@@ -104,8 +104,14 @@ public class OntologySearch extends Composite {
 				Suggestion suggestion = event.getSelectedItem();
 				conceptPanel.add(new OntologySearchConcept(OntologySearch.this, "Category", suggestion.getReplacementString()));
 				box.setText("");
-
-				requester.requestOntologyList(new String[]{}, new AsyncCallback<OntologyList>() {
+				List<String> stringArray = new ArrayList<String>();
+				for (Widget widget : conceptPanel) {
+					if (widget instanceof OntologySearchConcept) {
+						OntologySearchConcept concept = (OntologySearchConcept)widget;
+						stringArray.add(concept.getItemLabel());
+					}
+				}
+				requester.requestOntologyList(stringArray.toArray(new String[stringArray.size()]), new AsyncCallback<OntologyList>() {
 
 					@Override
 					public void onFailure(Throwable caught) {

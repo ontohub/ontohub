@@ -36,14 +36,14 @@ public class OntologySearchConcept extends Composite implements HasText {
 
 	private String typeLabel;
 
-	private String instanceLabel;
+	private String itemLabel;
 
 	private OntologySearch ontologySearchBar;
 
 	public OntologySearchConcept(OntologySearch ontologySearchBar, String typeLabel, String instanceLabel) {
 		this.ontologySearchBar = ontologySearchBar;
 		this.typeLabel = typeLabel;
-		this.instanceLabel = instanceLabel;
+		this.itemLabel = instanceLabel;
 		initWidget(uiBinder.createAndBindUi(this));
 		label.setText(instanceLabel);
 	}
@@ -93,17 +93,29 @@ public class OntologySearchConcept extends Composite implements HasText {
 			return;
 		}
 		typeLabel = labels[0];
-		instanceLabel = labels[1].substring(1, labels[1].length() - 1).replace("\\\"", "\"").replace("\\\\", "\\");
-		label.setText(instanceLabel);
+		itemLabel = labels[1].substring(1, labels[1].length() - 1).replace("\\\"", "\"").replace("\\\\", "\\");
+		label.setText(itemLabel);
 	}
 
 	public String getText() {
-		instanceLabel = label.getText();
-		return typeLabel + ":\"" + instanceLabel.replace("\\", "\\\\").replace("\"", "\\\"") + "\"";
+		itemLabel = label.getText();
+		return typeLabel + ":\"" + itemLabel.replace("\\", "\\\\").replace("\"", "\\\"") + "\"";
 	}
 
 	public final void setFocus(boolean focused) {
 		panel.setFocus(focused);
+	}
+
+	public final String getRoleLabel() {
+		return "";
+	}
+
+	public final String getTypeLabel() {
+		return typeLabel;
+	}
+
+	public final String getItemLabel() {
+		return label.getText();
 	}
 
 }
