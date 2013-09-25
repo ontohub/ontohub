@@ -10,7 +10,7 @@
 @mixin ontology-icon($name)
   background:
     image: image-url('icons/'+$name+'.svg')
-    size: 32px 32px
+    size: 24px 24px
     repeat: no-repeat
     position:  10px center
   padding-left: 30px !important
@@ -49,15 +49,19 @@ a[data-type]
 
 a[data-ontologyclass]
   background-position: 0px center
-  padding-left: 33px !important
+  padding-left: 26px !important
   padding-right: 5px
   padding-top: 9px
-  padding-bottom: 9px
+  padding-bottom: 3px
 
 span.ontology_title
   a[data-ontologyclass]
-    padding-left: 97px !important
+    padding-left: 76px !important
     padding-top: 27px
     padding-bottom: 20px
     background:
-      size: 96px 96px
+      size: 72px 72px
+
+h2#ontology_title
+  margin-top: 24px
+  display: inline-block
