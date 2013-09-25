@@ -36,14 +36,36 @@ class OntologySearch
   end
 
   def makeBeanList(keywordList)
-    beanListFactory = OntologyBeanListFactory.new()
+    ontologyHash = Hash.new
+    index = 0
     keywordList.each do |keyword|
+      keywordHash = Hash.new
       Ontology.where("name = :name", name: "#{keyword}").limit(50).each do |ontology|
-        beanListFactory.addSmallBean(ontology)
+        if (keywordHash[ontology.id].nil?)
+          keywordHash[ontology.id] = ontology
+        end
       end
       Entity.where("name = :name", name: "#{keyword}").limit(50).each do |symbol|
-        beanListFactory.addSmallBean(symbol.ontology)
+        if (keywordHash[ontology.id].nil?)
+          keywordHash[ontology.id] = ontology
+        end
       end
+      if (index == 0)
+        ontologyHash = keywordHash
+      else
+        hash = Hash.new
+        keywordHash.each_key do |key|
+          if (!ontologyHash[key].nil?)
+            hash[key] = ontologyHash[key]
+          end
+        end
+        ontologyHash = hash
+      end
+      index = index + 1
+    end
+    beanListFactory = OntologyBeanListFactory.new()
+    ontologyHash.each_value do |ontology|
+      beanListFactory.addSmallBean(ontology)
     end
     beanList = beanListFactory.getBeanList()
     return beanList

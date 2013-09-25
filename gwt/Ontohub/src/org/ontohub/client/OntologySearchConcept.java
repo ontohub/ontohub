@@ -38,10 +38,10 @@ public class OntologySearchConcept extends Composite implements HasText {
 
 	private String itemLabel;
 
-	private OntologySearch ontologySearchBar;
+	private OntologySearch ontologySearch;
 
 	public OntologySearchConcept(OntologySearch ontologySearchBar, String typeLabel, String instanceLabel) {
-		this.ontologySearchBar = ontologySearchBar;
+		this.ontologySearch = ontologySearchBar;
 		this.typeLabel = typeLabel;
 		this.itemLabel = instanceLabel;
 		initWidget(uiBinder.createAndBindUi(this));
@@ -77,14 +77,15 @@ public class OntologySearchConcept extends Composite implements HasText {
 		event.preventDefault();
 		selectNext();
 		removeFromParent();
+		ontologySearch.onConceptDeleted();
 	}
 
 	private void selectNext() {
-		ontologySearchBar.selectNext(this);
+		ontologySearch.selectNext(this);
 	}
 
 	private void selectPrevious() {
-		ontologySearchBar.selectPrevious(this);
+		ontologySearch.selectPrevious(this);
 	}
 
 	public void setText(String text) {

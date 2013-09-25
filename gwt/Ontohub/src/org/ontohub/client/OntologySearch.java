@@ -104,34 +104,38 @@ public class OntologySearch extends Composite {
 				Suggestion suggestion = event.getSelectedItem();
 				conceptPanel.add(new OntologySearchConcept(OntologySearch.this, "Category", suggestion.getReplacementString()));
 				box.setText("");
-				List<String> stringArray = new ArrayList<String>();
-				for (Widget widget : conceptPanel) {
-					if (widget instanceof OntologySearchConcept) {
-						OntologySearchConcept concept = (OntologySearchConcept)widget;
-						stringArray.add(concept.getItemLabel());
-					}
-				}
-				requester.requestOntologyList(stringArray.toArray(new String[stringArray.size()]), new AsyncCallback<OntologyList>() {
-
-					@Override
-					public void onFailure(Throwable caught) {
-						caught.printStackTrace();
-					}
-
-					@Override
-					public void onSuccess(OntologyList ontologyList) {
-						ontologyWidgetPanel.clear();
-						for (Ontology ontology : ontologyList) {
-							OntologyWidget ontologyWidget = new OntologyWidget(ontology);
-							ontologyWidgetPanel.add(ontologyWidget);
-						}
-					}
-					
-				});
+				updateOntologyWidgetList();
 			}
 			
 		});
 		return box;
+	}
+
+	private final void updateOntologyWidgetList() {
+		List<String> stringArray = new ArrayList<String>();
+		for (Widget widget : conceptPanel) {
+			if (widget instanceof OntologySearchConcept) {
+				OntologySearchConcept concept = (OntologySearchConcept)widget;
+				stringArray.add(concept.getItemLabel());
+			}
+		}
+		requester.requestOntologyList(stringArray.toArray(new String[stringArray.size()]), new AsyncCallback<OntologyList>() {
+
+			@Override
+			public void onFailure(Throwable caught) {
+				caught.printStackTrace();
+			}
+
+			@Override
+			public void onSuccess(OntologyList ontologyList) {
+				ontologyWidgetPanel.clear();
+				for (Ontology ontology : ontologyList) {
+					OntologyWidget ontologyWidget = new OntologyWidget(ontology);
+					ontologyWidgetPanel.add(ontologyWidget);
+				}
+			}
+			
+		});
 	}
 
 	@UiHandler("bar")
@@ -180,6 +184,10 @@ public class OntologySearch extends Composite {
 			OntologySearchConcept previousConcept = (OntologySearchConcept) conceptPanel.getWidget(index - 1);
 			previousConcept.setFocus(true);
 		}
+	}
+
+	public void onConceptDeleted() {
+		updateOntologyWidgetList();
 	}
 
 }
