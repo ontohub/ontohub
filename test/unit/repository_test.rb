@@ -15,7 +15,7 @@ class RepositoryTest < ActiveSupport::TestCase
       should 'not be valid' do
         repository = FactoryGirl.build :repository, user: @user, name: 'repositories'
         assert repository.invalid?
-        assert repository.errors[:path].any?
+        assert repository.errors[:name].any?
       end
     end
 

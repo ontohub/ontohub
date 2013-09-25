@@ -26,7 +26,7 @@ end
 class UnreservedValidator < ActiveModel::Validator
   def validate(record)
     if is_reserved_name?(record.path)
-      record.errors[:path] = "is a reserved path"
+      record.errors[:name] = "is a reserved name"
     end
   end
 
