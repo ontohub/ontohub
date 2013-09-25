@@ -46,8 +46,8 @@ class OntologySearch
         end
       end
       Entity.where("name = :name", name: "#{keyword}").limit(50).each do |symbol|
-        if (keywordHash[ontology.id].nil?)
-          keywordHash[ontology.id] = ontology
+        if (keywordHash[symbol.ontology.id].nil?)
+          keywordHash[symbol.ontology.id] = symbol.ontology
         end
       end
       if (index == 0)
