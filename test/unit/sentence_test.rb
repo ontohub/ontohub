@@ -55,7 +55,8 @@ class SentenceTest < ActiveSupport::TestCase
   	context 'OWL2 sentences' do
       setup do
         @ontology = FactoryGirl.create :single_ontology
-        @ontology.import_xml_from_file Rails.root + 'test/fixtures/ontologies/xml/generations.xml'
+        user = FactoryGirl.create :user
+        @ontology.import_xml_from_file Rails.root + 'test/fixtures/ontologies/xml/generations.xml', user
         @sentence = @ontology.sentences.first
       end
 
