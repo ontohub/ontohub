@@ -43,12 +43,12 @@ class GitRepository
     end
   end
 
-  def get_url(oid=nil, url=nil)
-    url ||= ''
-    url = url[0..-2] if(url[-1] == '/')
-    raise URLNotFoundError.new unless path_exists?(url, oid)
+  def get_path_of_dir(oid=nil, path=nil)
+    path ||= ''
+    path = path[0..-2] if(path[-1] == '/')
+    raise URLNotFoundError.new unless path_exists?(path, oid)
 
-    url
+    path
   end
 
   def self.directory(path)

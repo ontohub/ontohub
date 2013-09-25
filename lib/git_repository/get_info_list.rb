@@ -35,6 +35,10 @@ module GitRepository::GetInfoList
 
   protected
 
+  def commit_message_title(message)
+    message.split("\n").first
+  end
+
   def entry_info_rugged(rugged_commit, url)
     object = get_object(rugged_commit, url)
     changing_rugged_commit = get_commit_of_last_change(url, object.oid, rugged_commit)
@@ -46,7 +50,7 @@ module GitRepository::GetInfoList
       committer_name: changing_rugged_commit.committer[:name],
       committer_email: changing_rugged_commit.committer[:email],
       committer_time: changing_rugged_commit.committer[:time].iso8601,
-      message: Commit.message_title(changing_rugged_commit.message),
+      message: commit_message_title(changing_rugged_commit.message),
       oid: changing_rugged_commit.oid,
       filename: url.split('/')[-1]
     }

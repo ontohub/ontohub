@@ -20,10 +20,14 @@ class RepositoriesController < ApplicationController
     
     case @info[:type]
     when :raw
-      render text: @repository.read_file(@path, params[:oid])[:content],
+      render text: @repository.read_file(@path, @oid)[:content],
              content_type: Mime::Type.lookup('application/force-download')
     when :file_base
       @file = @repository.read_file(@info[:entry][:path], params[:oid])
     end
+  end
+
+  def entries_info
+    render json: @repository.entries_info(@oid, params[:path])
   end
 end

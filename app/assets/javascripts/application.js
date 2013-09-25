@@ -22,6 +22,7 @@
 // Other Plugins
 //= require moment
 //= require codemirror
+//= require js-routes
 
 // ----------------------------------------------
 // Application

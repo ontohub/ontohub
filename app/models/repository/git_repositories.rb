@@ -103,7 +103,7 @@ module Repository::GitRepositories
       if branch_names.empty?
         { oid: oid, branch_name: nil }
       else
-        { oid: oid, branch_name: branch_names[0].name }
+        { oid: oid, branch_name: branch_names[0][:name] }
       end
     else
       if git.branch_oid(oid).nil?
@@ -112,5 +112,10 @@ module Repository::GitRepositories
         { oid: git.branch_oid(oid), branch_name: oid }
       end
     end
+  end
+
+  def entries_info(oid=nil, path=nil)
+    dirpath = git.get_path_of_dir(oid, path)
+    git.entries_info(oid,dirpath)
   end
 end
