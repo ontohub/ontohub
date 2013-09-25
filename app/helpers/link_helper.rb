@@ -56,7 +56,7 @@ module LinkHelper
     if oid.nil? || repository.is_head?(oid)
       repository_files_path id: repository, path: path
     else
-      repository_files_by_oid id: repository, oid: oid, path: path
+      repository_oid_path id: repository, oid: oid, action: :files, path: path
     end
   end
 
