@@ -1,0 +1,6 @@
+# Put your test specific settings into this file
+
+hostname: example.com
+email: noreply@example.com
+action_mailer:
+  delivery_method: :test

@@ -1,0 +1,30 @@
+- @page_title = resource
+%h2= link_to resource, resource, 'data-type' => resource_class
+
+- if can? :update, Logic
+  %ul.actions.pull-right
+    %li= link_to 'Edit Logic', :edit_logic
+    - if can? :delete, Logic
+      %li= link_to 'Delete Logic', :logic, :confirm => 'Are you sure?', :method => :delete
+
+%p.definedBy 
+  %h5 Defined by:
+  = resource.defined_by
+%p.standardStatus 
+  %h5 Standardization-status: 
+  = resource.standardization_status
+
+%p.description
+  %h5 Description
+  = resource.description
+
+%nav
+  %ul.nav.nav-tabs
+    - @available_tabs.each do |(tab_title, tab, number)|
+      %li{class: tab==@tab ? 'active' : nil}
+        %a{href: resource_path(resource, tab: tab)}
+          = tab_title
+          - if number
+            %span.badge= number
+
+= render partial: @tab.to_s unless @tab.nil?

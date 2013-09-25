@@ -23,7 +23,10 @@ class AutocompleteControllerTest < ActionController::TestCase
           assert_equal 2, JSON.parse(@response.body).size
         end
         
-        should respond_with_content_type :json
+        should 'respond with json content type' do
+          assert_equal "application/json", response.content_type.to_s
+        end
+
         should respond_with :success
       end
       
@@ -38,7 +41,11 @@ class AutocompleteControllerTest < ActionController::TestCase
         should 'return one entry' do
           assert_equal 1, JSON.parse(@response.body).size
         end
-        should respond_with_content_type :json
+
+        should 'respond with json content type' do
+          assert_equal "application/json", response.content_type.to_s
+        end
+
         should respond_with :success
       end
       

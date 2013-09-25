@@ -1,0 +1,145 @@
+<?xml version='1.0' ?>
+<LogicGraph>
+  <logic name="Adl" Stability="Testing" has_basic_parser="True" has_basic_analysis="True" has_symbol_list_parser="False" has_symbol_map_parser="False" is_a_process_logic="False">
+    <Description>A description language</Description>
+  </logic>
+  <logic name="CASL" Stability="Stable" has_basic_parser="True" has_basic_analysis="True" has_symbol_list_parser="True" has_symbol_map_parser="True" is_a_process_logic="False">
+    <Description>CASL - the Common algebraic specification language
+This logic is subsorted partial first-order logic
+  with sort generation constraints
+See the CASL User Manual, LNCS 2900, Springer Verlag
+and the CASL Reference Manual, LNCS 2960, Springer Verlag
+See also http://www.cofi.info/CASL.html
+
+Abbreviations of sublogic names indicate the following feature:
+  Sub    -&gt; with subsorting
+  Sul    -&gt; with a locally filtered subsort relation
+  P      -&gt; with partial functions
+  C      -&gt; with sort generation constraints
+  eC     -&gt; C without renamings
+  sC     -&gt; C with injective constructors
+  seC    -&gt; sC and eC
+  FOL    -&gt; first order logic
+  FOAlg  -&gt; FOL without predicates
+  Horn   -&gt; positive conditional logic
+  GHorn  -&gt; generalized Horn
+  GCond  -&gt; GHorn without predicates
+  Cond   -&gt; Horn without predicates
+  Atom   -&gt; atomic logic
+  Eq     -&gt; Atom without predicates
+  =      -&gt; with equality
+
+Examples:
+  SubPCFOL=   -&gt; the CASL logic itself
+  FOAlg=      -&gt; first order algebra (without predicates)
+  SubPHorn=   -&gt; the positive conditional fragement of CASL
+  SubPAtom    -&gt; the atomic subset of CASL
+  SubPCAtom   -&gt; SubPAtom with sort generation constraints
+  Eq=         -&gt; classical equational logic
+</Description>
+    <Serialization name="KIF" />
+    <Prover name="QuickCheck" />
+    <ConservativityChecker name="CCC" />
+  </logic>
+  <logic name="CASL_DL" Stability="Unstable" has_basic_parser="True" has_basic_analysis="True" has_symbol_list_parser="True" has_symbol_map_parser="True" is_a_process_logic="False">
+    <Description>CASL_DL is at the same time an extension and a restriction of CASL.
+It additionally provides cardinality restrictions in a description logic
+sense; and it limits the expressivity of CASL to the description logic
+SHOIN(D). Hence it provides the following sublogics:
+  * Card -- CASL plus cardinality restrictions on binary relations
+  * DL   -- SHOIN(D)
+  * SHIQ
+  * SHOIQ
+</Description>
+  </logic>
+  <logic name="CoCASL" Stability="Unstable" has_basic_parser="True" has_basic_analysis="True" has_symbol_list_parser="True" has_symbol_map_parser="True" is_a_process_logic="False">
+    <Description>CoCASL is the coalgebraic extension of CASL.</Description>
+  </logic>
+  <logic name="CommonLogic" Stability="Testing" has_basic_parser="True" has_basic_analysis="True" has_symbol_list_parser="True" has_symbol_map_parser="True" is_a_process_logic="False">
+    <Description>CommonLogic Logic
+</Description>
+    <Serialization name="CLIF" />
+    <Serialization name="KIF" />
+  </logic>
+  <logic name="ConstraintCASL" Stability="Experimental" has_basic_parser="True" has_basic_analysis="True" has_symbol_list_parser="True" has_symbol_map_parser="True" is_a_process_logic="False">
+    <Description>ConstraintCASL - a restriction of CASL to constraint formulas over predicates</Description>
+  </logic>
+  <logic name="CspCASL" Stability="Experimental" has_basic_parser="True" has_basic_analysis="True" has_symbol_list_parser="True" has_symbol_map_parser="True" is_a_process_logic="True">
+    <Description>CspCASL - see
+
+http://www.cs.swan.ac.uk/~csmarkus/ProcessesAndData/</Description>
+  </logic>
+  <logic name="CspCASL_Failure" Stability="Experimental" has_basic_parser="True" has_basic_analysis="True" has_symbol_list_parser="True" has_symbol_map_parser="True" is_a_process_logic="True">
+    <Description>CspCASL - see
+
+http://www.cs.swan.ac.uk/~csmarkus/ProcessesAndData/</Description>
+  </logic>
+  <logic name="CspCASL_Trace" Stability="Experimental" has_basic_parser="True" has_basic_analysis="True" has_symbol_list_parser="True" has_symbol_map_parser="True" is_a_process_logic="True">
+    <Description>CspCASL - see
+
+http://www.cs.swan.ac.uk/~csmarkus/ProcessesAndData/</Description>
+    <Prover name="CspCASLProver" />
+  </logic>
+  <logic name="DFOL" Stability="Experimental" has_basic_parser="True" has_basic_analysis="True" has_symbol_list_parser="True" has_symbol_map_parser="True" is_a_process_logic="False">
+    <Description>First-Order Logic with Dependent Types
+developed by F. Rabe</Description>
+  </logic>
+  <logic name="DMU" Stability="Experimental" has_basic_parser="True" has_basic_analysis="True" has_symbol_list_parser="False" has_symbol_map_parser="False" is_a_process_logic="False">
+    <Description>wrap Catia output</Description>
+  </logic>
+  <logic name="EnCL" Stability="Experimental" has_basic_parser="True" has_basic_analysis="True" has_symbol_list_parser="True" has_symbol_map_parser="True" is_a_process_logic="False">
+    <Description>EnCL Logic
+</Description>
+    <Prover name="Reduce" />
+  </logic>
+  <logic name="ExtModal" Stability="Experimental" has_basic_parser="True" has_basic_analysis="True" has_symbol_list_parser="True" has_symbol_map_parser="True" is_a_process_logic="False">
+    <Description>ExtModal is the &#39;extended modal logic&#39; extension of CASL. 
+Syntax for ordinary modalities, multi-modal logic, dynamic 
+logic, graded modal logic, hybrid logic, CTL* and mu-calculus  
+is provided. Specific modal logics can be obtained via 
+restrictions to sublanguages.
+</Description>
+  </logic>
+  <logic name="Fpl" Stability="Unstable" has_basic_parser="True" has_basic_analysis="True" has_symbol_list_parser="True" has_symbol_map_parser="True" is_a_process_logic="False">
+    <Description>logic of functional programs (FPL) as CASL extension
+</Description>
+  </logic>
+  <logic name="Framework" Stability="Experimental" has_basic_parser="False" has_basic_analysis="False" has_symbol_list_parser="False" has_symbol_map_parser="False" is_a_process_logic="False">
+    <Description>A framework allowing to add logics dynamically.</Description>
+  </logic>
+  <logic name="FreeCAD" Stability="Experimental" has_basic_parser="False" has_basic_analysis="True" has_symbol_list_parser="False" has_symbol_map_parser="False" is_a_process_logic="False">
+    <Description>FreeCAD object representation language</Description>
+  </logic>
+  <logic name="HasCASL" Stability="Testing" has_basic_parser="True" has_basic_analysis="True" has_symbol_list_parser="True" has_symbol_map_parser="True" is_a_process_logic="False">
+    <Description>HasCASL - Algebraic Specification + Functional Programming = 
+            Environment for Formal Software Development
+This logic is based on the partial lambda calculus and
+  features subtyping, overloading and type class polymorphism
+See the HasCASL summary and further papers available at
+  http://www.informatik.uni-bremen.de/cofi/HasCASL
+
+Abbreviations of sublogic names indicate the following feature:
+  Sub    -&gt; with subtyping
+  P      -&gt; with partial functions
+  TyCl   -&gt; with simple type classes (a la Isabelle)
+  CoCl   -&gt; with constructor classes (a la Haskell)
+  Poly   -&gt; polymorphism without classes
+  TyCons -&gt; user definable type constructors
+  HOL    -&gt; higher order logic (covers sort generation constraints)
+  FOL    -&gt; first order logic
+and others like for CASL
+
+Examples:
+  SubCFOL=       -&gt; the CASL logic without sort generation constraints
+  PCoClTyConsHOL -&gt; the Haskell type system fragment
+</Description>
+  </logic>
+  <logic name="Haskell" Stability="Experimental" has_basic_parser="True" has_basic_analysis="True" has_symbol_list_parser="False" has_symbol_map_parser="False" is_a_process_logic="False">
+    <Description>Haskell - a purely functional programming language
+featuring static typing, higher-order functions, polymorphism,
+type classes and monadic effects.
+See http://www.haskell.org. This version is based on Programatica,
+see http://www.cse.ogi.edu/PacSoft/projects/programatica/
+</Description>
+  </logic>
+  <logic name="HolLight" Stability="Experimental" has_basic_parser="F

@@ -1,8 +1,14 @@
-# encoding: utf-8
 module NavigationHelper
 
   def ontology_nav(ontology, current_page)
-    @entities = ontology.entities.groups_by_kind
+    @top_level_pages = [
+          ['Content', ontology.distributed? ? :children : :entities],
+          ['Comments', :comments],
+          ['Metadata', :metadata],
+          ['Versions', :ontology_versions],
+          ['Graphs', :graphs]
+        ]
+    @entities = ontology.distributed? ? [] : ontology.entities.groups_by_kind
 
     @active_kind = nil
     @active_kind = @entities.first.kind if current_page == :entities
@@ -30,7 +36,7 @@ module NavigationHelper
     @page_title = ontology.to_s
     @page_title = "#{current_page.capitalize} · #{@page_title}" if current_page != pages[0][0]
     
-    render :partial => '/shared/ontology', :locals => {
+    render :partial => '/ontologies/info', :locals => {
       resource:           ontology,
       current_page:       current_page,
       pages:              pages,

@@ -9,8 +9,6 @@ class OntologiesController < InheritedResources::Base
 
   load_and_authorize_resource :except => [:index, :show]
 
-  respond_to :json
-
   def index
     super do |format|
       format.html do
@@ -33,10 +31,23 @@ class OntologiesController < InheritedResources::Base
   def show
     respond_to do |format|
       format.html do
-        redirect_to ontology_entities_path(resource, :kind => resource.entities.groups_by_kind.first.kind)
+        if !resource.distributed?
+          redirect_to ontology_entities_path(resource,
+                       :kind => resource.entities.groups_by_kind.first.kind)
+        else
+          redirect_to ontology_children_path(resource)
+        end
       end
       format.json do
         respond_with resource
+      end
+    end
+  end
+  
+  def oops_state
+    respond_to do |format|
+      format.json do
+        respond_with resource.versions.current.try(:request)
       end
     end
   end

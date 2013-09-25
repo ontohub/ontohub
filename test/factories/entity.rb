@@ -25,5 +25,12 @@ FactoryGirl.define do
       text { FactoryGirl.generate :entity_owl2_text }
       name { FactoryGirl.generate :entity_owl2_name }
     end
+
+    factory :entity_with_ontology_version do
+      after(:create) do |e|
+        e.ontology.versions << FactoryGirl.create(:ontology_version, ontology: e.ontology)
+        e.ontology.save
+      end
+    end
   end
 end

@@ -13,19 +13,24 @@ class Ontology < ActiveRecord::Base
   include Ontology::Sentences
   include Ontology::Links
   include Ontology::Distributed
+  include Ontology::Oops
+
+  # Multiple Class Features
+  include Aggregatable
 
   belongs_to :language
-  belongs_to :logic
+  belongs_to :logic, counter_cache: true
 
   attr_accessible :iri, :name, :description, :logic_id
 
   validates_presence_of :iri
   validates_uniqueness_of :iri, :if => :iri_changed?
-  validates_format_of :iri, :with => URI::regexp(ALLOWED_URI_SCHEMAS)
+  validates_format_of :iri, :with => URI::regexp(Settings.allowed_iri_schemes)
   
   strip_attributes :only => [:name, :iri]
 
-  scope :search, ->(query) { where "iri #{connection.ilike_operator} :term OR name #{connection.ilike_operator} :term", :term => "%" << query << "%" }
+  scope :search, ->(query) { where "ontologies.iri #{connection.ilike_operator} :term OR ontologies.name #{connection.ilike_operator} :term", :term => "%" << query << "%" }
+  scope :list, includes(:logic).order('ontologies.state asc, ontologies.entities_count desc')
 
   def to_s
     name? ? name : iri
@@ -43,5 +48,5 @@ class Ontology < ActiveRecord::Base
   def symbols_count
     entities_count
   end
-  
+
 end

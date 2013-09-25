@@ -14,12 +14,18 @@
 //= require bootstrap-dropdown
 //= require bootstrap-modal
 //= require bootstrap-tooltip
+//= require bootstrap-popover
+//= require bootstrap-transition
+//= require bootstrap-collapse
 
 // ----------------------------------------------
 // Other Plugins
 //= require moment
+//= require d3
+//= require handlebars.runtime
 
 // ----------------------------------------------
 // Application
+//= require_tree ./templates
 //= require_tree ./plugins
 //= require_tree .

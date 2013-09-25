@@ -2,7 +2,6 @@ module OntologyVersion::Parsing
   extend ActiveSupport::Concern
   
   included do
-    @queue = :hets
     after_create :parse_async, :if => :raw_file?
   end
 
@@ -25,11 +24,10 @@ module OntologyVersion::Parsing
       save!
 
       File.delete(@path)
-
-      self.ontology.import_latest_version
+      self.ontology.import_latest_version self.user
+      
+      update_state! :done
     end
-
-    update_state! :done
   end
   
   def parse_async

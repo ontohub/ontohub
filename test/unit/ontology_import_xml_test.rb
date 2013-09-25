@@ -7,8 +7,9 @@ class OntologyImportXMLTest < ActiveSupport::TestCase
 
   context 'Import single Ontology' do
     setup do
+      @user = FactoryGirl.create :user
       @ontology = FactoryGirl.create :single_ontology
-      @ontology.import_xml_from_file fixture_file('test1.xml')
+      @ontology.import_xml_from_file fixture_file('test1.xml'), @user
     end
 
     should 'save logic' do
@@ -34,8 +35,9 @@ class OntologyImportXMLTest < ActiveSupport::TestCase
   
   context 'Import distributed Ontology' do
     setup do
+      @user = FactoryGirl.create :user
       @ontology = FactoryGirl.create :distributed_ontology
-      @ontology.import_xml_from_file fixture_file('test2.xml')
+      @ontology.import_xml_from_file fixture_file('test2.xml'), @user
     end
     
     should 'create single ontologies' do
@@ -64,7 +66,7 @@ class OntologyImportXMLTest < ActiveSupport::TestCase
     
     context 'first child ontology' do
       setup do
-        @child = @ontology.children.first
+        @child = @ontology.children.where(name: 'sp__E1').first
       end
       
       should 'have entities' do
@@ -73,6 +75,14 @@ class OntologyImportXMLTest < ActiveSupport::TestCase
       
       should 'have sentences' do
         assert_equal 1, @child.sentences_count
+      end
+    end
+
+    context 'all child ontologies' do
+      should 'have the same state as the parent' do
+        @ontology.children.each do |c|
+          assert_equal @ontology.state, c.state
+        end
       end
     end
   end
