@@ -4,7 +4,7 @@
 
 -if @info[:type] == :file_base_ambiguous
   =render partial: 'repositories/files_file_base_ambiguous'
--if @info[:type] == :file_base
-  =render partial: 'repositories/files_file_base'
+-if @info[:type] == :file_base || @info[:type] == :file
+  =render partial: 'repositories/files_file'
 -if @info[:type] == :dir
   =render partial: 'repositories/files_dir'

@@ -64,7 +64,7 @@ module Repository::GitRepositories
 
     if path_exists?(path, commit_oid)
       file = git.get_file(path, commit_oid)
-      return {type: :raw, file: file} if file
+      return {type: :file, file: file} if file
       return {type: :dir, entries: list_folder(path, commit_oid)}
     end
 
@@ -77,7 +77,7 @@ module Repository::GitRepositories
 
     if entries.size == 1
       { type: :file_base,
-        entry: entries[0]
+        entry: entries[0],
       }
     else
       { type: :file_base_ambiguous,

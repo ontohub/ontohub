@@ -1,5 +1,5 @@
 %ul.breadcrumb
-  -repository_breadcrumbs(@repository, params[:path],@oid).each do |crumb|
+  -repository_breadcrumbs(@repository, @path,@oid).each do |crumb|
     -if crumb[:last]
       %li.active
         =crumb[:name]

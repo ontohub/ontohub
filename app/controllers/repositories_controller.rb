@@ -6,22 +6,26 @@ class RepositoriesController < ApplicationController
   load_and_authorize_resource :except => [:index, :show]
 
   def files
-    @path = params[:path]
-
     commit_id = @repository.commit_id(params[:oid])
     @oid = commit_id[:oid]
     @branch_name = commit_id[:branch_name]
-
+    @path = params[:path]
     @info = @repository.path_info(params[:path], @oid)
 
-    raise Repository::FileNotFoundError, @path if @info.nil?
+    raise Repository::FileNotFoundError, params[:path] if @info.nil?
     
-    case @info[:type]
-    when :raw
+    if request.format == 'text/html' || @info[:type] != :file
+      case @info[:type]
+      when :file
+        @file = @repository.read_file(@path, params[:oid])
+      when :file_base 
+        # TODO: redirect to ontology view instead of rendering file view
+        @path = @info[:entry][:path]
+        @file = @repository.read_file(@path, params[:oid])
+      end
+    else
       render text: @repository.read_file(@path, @oid)[:content],
              content_type: Mime::Type.lookup('application/force-download')
-    when :file_base
-      @file = @repository.read_file(@info[:entry][:path], params[:oid])
     end
   end
 
