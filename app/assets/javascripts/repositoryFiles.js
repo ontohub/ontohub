@@ -1,6 +1,6 @@
 $(function() {
 	// Render last commit, for better performance
-	if($(".file-table").length > 0) {
+	if(false && $(".file-table").length > 0) {
 		var table = $(".file-table");
 		$.ajax({
 			type: "GET",
