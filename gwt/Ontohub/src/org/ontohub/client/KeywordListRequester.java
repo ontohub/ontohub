@@ -51,6 +51,7 @@ public class KeywordListRequester {
 		String requestData = "prefix=" + URL.encodeQueryString(prefix);
 		RequestBuilder builder = new RequestBuilder(RequestBuilder.GET, "ontologies/keywords?" + requestData);
 		builder.setHeader("Content-Type", "application/json");
+		builder.setHeader("Accept", "application/json");
 		try {
 			builder.sendRequest(null, new RequestCallback() {
 				@Override
@@ -92,6 +93,7 @@ public class KeywordListRequester {
 		}
 		RequestBuilder builder = new RequestBuilder(RequestBuilder.GET, "ontologies/search?" + requestData);
 		builder.setHeader("Content-Type", "application/json");
+		builder.setHeader("Accept", "application/json");
 		try {
 			builder.sendRequest(null, new RequestCallback() {
 				@Override

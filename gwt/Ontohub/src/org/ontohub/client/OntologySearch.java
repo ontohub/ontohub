@@ -18,8 +18,12 @@ import com.google.gwt.event.dom.client.KeyDownEvent;
 import com.google.gwt.event.dom.client.KeyEvent;
 import com.google.gwt.event.dom.client.KeyPressEvent;
 import com.google.gwt.event.dom.client.KeyPressHandler;
+import com.google.gwt.event.dom.client.KeyUpEvent;
+import com.google.gwt.event.dom.client.KeyUpHandler;
 import com.google.gwt.event.logical.shared.SelectionEvent;
 import com.google.gwt.event.logical.shared.SelectionHandler;
+import com.google.gwt.event.logical.shared.ValueChangeEvent;
+import com.google.gwt.event.logical.shared.ValueChangeHandler;
 import com.google.gwt.uibinder.client.UiBinder;
 import com.google.gwt.uibinder.client.UiFactory;
 import com.google.gwt.uibinder.client.UiField;
@@ -75,10 +79,21 @@ public class OntologySearch extends Composite {
 	public final SuggestBox makeSuggestBox() {
 		final MultiWordSuggestOracle oracle = new MultiWordSuggestOracle();
 		final SuggestBox box = new SuggestBox(oracle);
-		box.addKeyPressHandler(new KeyPressHandler() {
+		box.addKeyUpHandler(new KeyUpHandler() {
 
 			@Override
-			public void onKeyPress(KeyPressEvent event) {
+			public void onKeyUp(KeyUpEvent event) {
+				if (KeyUpEvent.isArrow(event.getNativeKeyCode())) {
+					return;
+				}
+				char ch = (char) event.getNativeKeyCode();
+				if (box.getTextBox().getCursorPos() == 0) {
+					if (ch == (char) KeyCodes.KEY_BACKSPACE) {
+						return;
+					} else if (ch == (char) KeyCodes.KEY_DELETE) {
+						return;
+					}
+				}
 				requester.requestKeywordList(box.getText(), new AsyncCallback<KeywordList>() {
 
 					@Override
