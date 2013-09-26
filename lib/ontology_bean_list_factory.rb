@@ -7,8 +7,10 @@ class OntologyBeanListFactory
   end
 
   def addSmallBean(ontology)
-    bean = makeSmallBean(ontology)
-    @beanList.push(bean)
+    if (@beanList.size() < 50)
+      bean = makeSmallBean(ontology)
+      @beanList.push(bean)
+    end
   end
 
   def makeSmallBean(ontology)

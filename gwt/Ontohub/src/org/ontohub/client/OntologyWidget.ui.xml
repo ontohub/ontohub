@@ -26,8 +26,9 @@
 	<g:FocusPanel ui:field="widget" styleName="{style.widget}">
 		<g:HTMLPanel>
 			<g:Anchor styleName="{style.important}" ui:field="titleAnchor" tabIndex="-1" />
-			(<g:InlineLabel ui:field="acronymLabel" />)
-			<g:InlineLabel ui:field="languageLabel" />/<g:InlineLabel ui:field="logicLabel" />
+			<!-- (<g:InlineLabel ui:field="acronymLabel" />) -->
+			<!-- <g:InlineLabel ui:field="languageLabel" />/ -->
+			(<g:InlineLabel ui:field="logicLabel" />)
 			<g:Label styleName="{style.iri}" ui:field="iriLabel"/>
 			<g:Label styleName="{style.description}" ui:field="descriptionLabel"/>
 		</g:HTMLPanel>

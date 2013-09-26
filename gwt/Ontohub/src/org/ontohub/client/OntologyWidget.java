@@ -24,12 +24,12 @@ public class OntologyWidget extends Composite {
 
 	@UiField
 	Anchor titleAnchor;
-
-	@UiField
-	InlineLabel acronymLabel;
-
-	@UiField
-	InlineLabel languageLabel;
+//
+//	@UiField
+//	InlineLabel acronymLabel;
+//
+//	@UiField
+//	InlineLabel languageLabel;
 
 	@UiField
 	InlineLabel logicLabel;
@@ -53,8 +53,8 @@ public class OntologyWidget extends Composite {
 		titleAnchor.setText(ontology.getName());
 		titleAnchor.setHref(ontology.getHref());
 		titleAnchor.setTabIndex(-1);
-		acronymLabel.setText(ontology.getAcronym());
-		languageLabel.setText(ontology.getLanguage());
+//		acronymLabel.setText(ontology.getAcronym());
+//		languageLabel.setText(ontology.getLanguage());
 		logicLabel.setText(ontology.getLogic());
 		iriLabel.setText(ontology.getIri());
 		descriptionLabel.setText(ontology.getDescription());
