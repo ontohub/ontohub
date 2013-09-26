@@ -6,6 +6,7 @@ module NavigationHelper
     ]
     
     pages << [:files,  [resource, :files]]
+    #pages << [:history,  [resource, :history]] # this line breaks routing
     pages << [:ontologies,  [resource, :ontologies]]
     pages << [:permissions, [resource, :permissions]] if can? :permissions, resource
     

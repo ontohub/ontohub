@@ -7,7 +7,8 @@ class GitRepository
     GetDiff,
     GetFolderContents,
     GetInfoList,
-    Commit
+    Commit,
+    History
 
   def initialize(path)
     if File.exists?(path)
@@ -15,6 +16,10 @@ class GitRepository
     else
       @repo = Rugged::Repository.init_at(path, true)
     end
+  end
+
+  def repo
+    @repo
   end
 
   def destroy

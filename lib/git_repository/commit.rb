@@ -48,7 +48,7 @@ module GitRepository::Commit
     if @repo.empty?
       ref = Rugged::Reference.create(@repo, 'refs/heads/master', commit_oid)
     else
-      @repo.head.set_target commit_oid
+      @repo.head.target = commit_oid
     end
 
     block.call(commit_oid) if block_given?

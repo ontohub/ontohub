@@ -122,4 +122,8 @@ module Repository::GitRepositories
   def changed_files(oid=nil)
     git.changed_files(commit_id(oid)[:oid])
   end
+
+  def commits(oid=nil, path=nil)
+    git.commits(commit_id(oid)[:oid], path)
+  end
 end

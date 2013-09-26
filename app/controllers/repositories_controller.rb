@@ -35,4 +35,11 @@ class RepositoriesController < ApplicationController
     @oid = @repository.commit_id(params[:oid])[:oid]
     @changed_files = @repository.changed_files(@oid)
   end
+
+  def history
+    @path = params[:path]
+    @oid = @repository.commit_id(params[:oid])[:oid]
+    @current_file = @repository.read_file(@path, @oid) if @path
+    @commits = @repository.commits(@oid, @path)
+  end
 end

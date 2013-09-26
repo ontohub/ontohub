@@ -268,7 +268,7 @@ class GitRepositoryTest < ActiveSupport::TestCase
       end
     end
 
-    context 'getting the history of a file' do
+    context 'getting the commit history' do
       setup do
         @filepath = 'path/to/file.txt'
         @commit_add1 = @repository.commit_file(@userinfo, 'Some content1', @filepath, 'Add')
@@ -282,33 +282,43 @@ class GitRepositoryTest < ActiveSupport::TestCase
         @commit_delete2 = @repository.delete_file(@userinfo, @filepath)
       end
 
+      should 'list all commits regarding the whole branch' do
+        assert_equal @repository.commits(@commit_delete2), @repository.commits
+        assert_equal [ @commit_delete2, @commit_change2, @commit_add2,
+                       @commit_other3, @commit_other2, @commit_delete1,
+                       @commit_other1, @commit_change1, @commit_add1 ],
+                     @repository.commits.map{ |c| c[:oid] }
+        assert_equal 2, @repository.commits(@commit_change1).size
+      end
+
       should 'have the correct values in the history at the HEAD' do
-        assert_equal @repository.entry_info_list(@filepath), [
+        assert_equal @repository.commits(@commit_delete2, @filepath), @repository.commits(nil, @filepath)
+        assert_equal [
           @commit_delete2,
           @commit_change2,
           @commit_add2,
           @commit_delete1,
           @commit_change1,
           @commit_add1
-        ]
+        ], @repository.commits(nil, @filepath).map{ |c| c[:oid] }
       end
 
       should 'have the correct values in the history a commit before the HEAD' do
-        assert_equal @repository.entry_info_list(@filepath, @commit_change2), [
+        assert_equal [
           @commit_change2,
           @commit_add2,
           @commit_delete1,
           @commit_change1,
           @commit_add1
-        ]
+        ], @repository.commits(@commit_change2, @filepath).map{ |c| c[:oid] }
       end
 
       should 'have the correct values in the history in the commit that changes another file' do
-        assert_equal @repository.entry_info_list(@filepath, @commit_other3), [
+        assert_equal [
           @commit_delete1,
           @commit_change1,
           @commit_add1
-        ]
+        ], @repository.commits(@commit_other3, @filepath).map{ |c| c[:oid] }
       end
     end
 
@@ -330,91 +340,91 @@ class GitRepositoryTest < ActiveSupport::TestCase
 
 
       should 'have the right file count when using the first commit' do
-        assert_equal @repository.get_changed_files(@commit1).size, 1
+        assert_equal @repository.changed_files(@commit1).size, 1
       end
 
       should 'have the right name in the list when using the first commit' do
-        assert_equal @repository.get_changed_files(@commit1).first[:name], 'file.xml'
+        assert_equal @repository.changed_files(@commit1).first[:name], 'file.xml'
       end
 
       should 'have the right path in the list when using the first commit' do
-        assert_equal @repository.get_changed_files(@commit1).first[:path], @filepath
+        assert_equal @repository.changed_files(@commit1).first[:path], @filepath
       end
 
       should 'have the right type in the list when using the first commit' do
-        assert_equal @repository.get_changed_files(@commit1).first[:type], :add
+        assert_equal @repository.changed_files(@commit1).first[:type], :add
       end
 
       should 'have the right mime type in the list when using the first commit' do
-        assert_equal @repository.get_changed_files(@commit1).first[:mime_type], Mime::Type.lookup_by_extension(@file_extension)
+        assert_equal @repository.changed_files(@commit1).first[:mime_type], Mime::Type.lookup_by_extension(@file_extension)
       end
 
       should 'have the right mime category in the list when using the first commit' do
-        assert_equal @repository.get_changed_files(@commit1).first[:mime_category], 'application'
+        assert_equal @repository.changed_files(@commit1).first[:mime_category], 'application'
       end
 
       should 'have the right editable in the list when using the first commit' do
-        assert_equal @repository.get_changed_files(@commit1).first[:editable], true
+        assert_equal @repository.changed_files(@commit1).first[:editable], true
       end
 
 
 
       should 'have the right file count when using a commit in the middle' do
-        assert_equal @repository.get_changed_files(@commit2).size, 1
+        assert_equal @repository.changed_files(@commit2).size, 1
       end
 
       should 'have the right name in the list when using a commit in the middle' do
-        assert_equal @repository.get_changed_files(@commit2).first[:name], @filepath.split('/')[-1]
+        assert_equal @repository.changed_files(@commit2).first[:name], @filepath.split('/')[-1]
       end
 
       should 'have the right path in the list when using a commit in the middle' do
-        assert_equal @repository.get_changed_files(@commit2).first[:path], @filepath
+        assert_equal @repository.changed_files(@commit2).first[:path], @filepath
       end
 
       should 'have the right type in the list when using a commit in the middle' do
-        assert_equal @repository.get_changed_files(@commit2).first[:type], :change
+        assert_equal @repository.changed_files(@commit2).first[:type], :change
       end
 
       should 'have the right mime type in the list when using a commit in the middle' do
-        assert_equal @repository.get_changed_files(@commit2).first[:mime_type], Mime::Type.lookup_by_extension(@file_extension)
+        assert_equal @repository.changed_files(@commit2).first[:mime_type], Mime::Type.lookup_by_extension(@file_extension)
       end
 
       should 'have the right mime category in the list when using a commit in the middle' do
-        assert_equal @repository.get_changed_files(@commit2).first[:mime_category], 'application'
+        assert_equal @repository.changed_files(@commit2).first[:mime_category], 'application'
       end
 
       should 'have the right editable in the list when using a commit in the middle' do
-        assert_equal @repository.get_changed_files(@commit2).first[:editable], true
+        assert_equal @repository.changed_files(@commit2).first[:editable], true
       end
 
 
 
       should 'have the right file count when using the HEAD' do
-        assert_equal @repository.get_changed_files.size, 1
+        assert_equal @repository.changed_files.size, 1
       end
 
       should 'have the right name in the list when using the HEAD' do
-        assert_equal @repository.get_changed_files.first[:name], @filepath.split('/')[-1]
+        assert_equal @repository.changed_files.first[:name], @filepath.split('/')[-1]
       end
 
       should 'have the right path in the list when using the HEAD' do
-        assert_equal @repository.get_changed_files.first[:path], @filepath
+        assert_equal @repository.changed_files.first[:path], @filepath
       end
 
       should 'have the right type in the list when using the HEAD' do
-        assert_equal @repository.get_changed_files.first[:type], :delete
+        assert_equal @repository.changed_files.first[:type], :delete
       end
 
       should 'have the right mime type in the list when using the HEAD' do
-        assert_equal @repository.get_changed_files.first[:mime_type], Mime::Type.lookup_by_extension(@file_extension)
+        assert_equal @repository.changed_files.first[:mime_type], Mime::Type.lookup_by_extension(@file_extension)
       end
 
       should 'have the right mime category in the list when using the HEAD' do
-        assert_equal @repository.get_changed_files.first[:mime_category], 'application'
+        assert_equal @repository.changed_files.first[:mime_category], 'application'
       end
 
       should 'have the right editable in the list when using the HEAD' do
-        assert_equal @repository.get_changed_files.first[:editable], true
+        assert_equal @repository.changed_files.first[:editable], true
       end
     end
   end
