@@ -12,8 +12,6 @@ class RepositoriesController < ApplicationController
     @oid = commit_id[:oid]
     @branch_name = commit_id[:branch_name]
 
-    @is_head = @repository.is_head?(@oid)
-
     @info = @repository.path_info(params[:path], @oid)
 
     raise Repository::FileNotFoundError, @path if @info.nil?
