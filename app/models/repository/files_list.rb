@@ -1,4 +1,4 @@
-module Repository::FileList
+module Repository::FilesList
   extend ActiveSupport::Concern
 
   def list_folder(folderpath, commit_oid=nil)
