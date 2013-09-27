@@ -2,6 +2,7 @@ class Repository < ActiveRecord::Base
 
   include Permissionable
   include Repository::GitRepositories
+  include Repository::FileList
   include Repository::Validations
 
   has_many :ontologies

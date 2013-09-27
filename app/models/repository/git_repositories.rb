@@ -64,31 +64,38 @@ module Repository::GitRepositories
 
     if path_exists?(path, commit_oid)
       file = git.get_file(path, commit_oid)
-      return {type: :file, file: file} if file
-      return {type: :dir, entries: list_folder(path, commit_oid)}
-    end
-
-    file = path.split('/')[-1]
-    path = path.split('/')[0..-2].join('/')
-
-    entries = list_folder(path, commit_oid).select { |e| e[:name].split('.')[0] == file }
-
-    return nil if entries.empty?
-
-    if entries.size == 1
-      { type: :file_base,
-        entry: entries[0],
-      }
+      if file
+        {
+          type: :file,
+          file: file
+        }
+      else
+        {
+          type: :dir,
+          entries: list_folder(path, commit_oid)
+        }
+      end
     else
-      { type: :file_base_ambiguous,
-        entries: entries
-      }
-    end
-  end
+      file = path.split('/')[-1]
+      path = path.split('/')[0..-2].join('/')
 
-  def list_folder(folderpath, commit_oid=nil)
-    folderpath ||= '/'
-    git.folder_contents(commit_oid, folderpath)
+      entries = git.folder_contents(commit_oid, path).select { |e| e[:name].split('.')[0] == file }
+
+      case
+      when entries.empty?
+        nil
+      when entries.size == 1
+        {
+          type: :file_base,
+          entry: entries[0],
+        }
+      else
+        {
+          type: :file_base_ambiguous,
+          entries: entries
+        }
+      end
+    end
   end
 
   def read_file(filepath, commit_oid=nil)

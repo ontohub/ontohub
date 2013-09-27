@@ -2,9 +2,12 @@
 
 = render partial: 'repositories/breadcrumbs'
 
--if @info[:type] == :file_base_ambiguous
+- case @info[:type]
+- when :file_base_ambiguous
   =render partial: 'repositories/files_file_base_ambiguous'
--if @info[:type] == :file_base || @info[:type] == :file
+- when :file_base
   =render partial: 'repositories/files_file'
--if @info[:type] == :dir
+- when :file
+  =render partial: 'repositories/files_file'
+- when :dir
   =render partial: 'repositories/files_dir'
