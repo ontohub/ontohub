@@ -62,6 +62,7 @@ WHERE distributed.occurrences #{selector} 1
 
   end
 
+  public
   def distributed?
     is_a? DistributedOntology
   end
