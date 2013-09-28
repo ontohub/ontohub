@@ -11,6 +11,12 @@ class GitRepositoryTest < ActiveSupport::TestCase
       @path = '/tmp/ontohub/test/unit/git/repository'
     end
 
+    teardown do
+      FileUtils.rmtree(@path) if File.exists?(@path)
+      @path = nil
+      @repository = nil
+    end
+
     should 'create repository' do
       @path_new = "#{@path}_new"
       assert !File.exists?(@path_new)
@@ -425,6 +431,98 @@ class GitRepositoryTest < ActiveSupport::TestCase
 
       should 'have the right editable in the list when using the HEAD' do
         assert_equal @repository.changed_files.first[:editable], true
+      end
+    end
+
+    context 'being cloned' do
+      setup do
+        @commit_count = 10
+        @commit_count.times do |n|
+          @content = "content #{n}"
+          @filepath = "file-#{n}"
+          @message = "message #{n}"
+          @repository.commit_file(@userinfo, @content, @filepath, @message)
+        end
+
+        @path_clone = '/tmp/ontohub/test/unit/git/repository_clone'
+        assert !File.exists?(@path_clone)
+      end
+
+      context 'fully from filesystem' do
+        setup do
+          @repository_clone = GitRepository.clone("file://#{@path}", @path_clone)
+        end
+
+        teardown do
+          FileUtils.rmtree(@path_clone) if File.exists?(@path_clone)
+          @path_clone = nil
+          @repository_clone = nil
+        end
+
+        should 'create a repository in the new path' do
+          assert !File.exists(@path_clone)
+          %w{branches  config  description  HEAD  hooks  info  objects  packed-refs  refs}.each do |w|
+            assert !File.exists("#{@path_clone}/#{w}")
+          end
+        end
+
+        should 'clone all commits' do
+          assert_equal @repository.commits, @repository_clone.commits
+        end
+
+        should 'create the same branches in the clone' do
+          assert_equal @repository.get_branches, @repository_clone.get_branches
+        end
+      end
+
+      context 'in a shallow way (only last few commits)' do
+        setup do
+          @max_commits = 3
+          @repository_clone = GitRepository.clone("file://#{@path}", @path_clone, @max_commits)
+        end
+
+        teardown do
+          FileUtils.rmtree(@path_clone) if File.exists?(@path_clone)
+          @path_clone = nil
+          @repository_clone = nil
+        end
+
+        should 'create a repository in the new path' do
+          assert !File.exists(@path_clone)
+          %w{branches  config  description  HEAD  hooks  info  objects  packed-refs  refs}.each do |w|
+            assert !File.exists("#{@path_clone}/#{w}")
+          end
+        end
+
+        should 'clone only the last commits' do
+          assert_equal @max_commits, @repository_clone.commits.size
+          assert_equal @repository.head_oid, @repository_clone.head_oid
+        end
+      end
+
+      context 'in a shallow way (only last commit)' do
+        setup do
+          @max_commits = 1
+          @repository_clone = GitRepository.clone("file://#{@path}", @path_clone, @max_commits)
+        end
+
+        teardown do
+          FileUtils.rmtree(@path_clone) if File.exists?(@path_clone)
+          @path_clone = nil
+          @repository_clone = nil
+        end
+
+        should 'create a repository in the new path' do
+          assert !File.exists(@path_clone)
+          %w{branches  config  description  HEAD  hooks  info  objects  packed-refs  refs}.each do |w|
+            assert !File.exists("#{@path_clone}/#{w}")
+          end
+        end
+
+        should 'clone only the last commits' do
+          assert_equal @max_commits, @repository_clone.commits.size
+          assert_equal @repository.head_oid, @repository_clone.head_oid
+        end
       end
     end
   end
