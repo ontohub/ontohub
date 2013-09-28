@@ -26,6 +26,9 @@ $('div#graph_depth_setting ul li a').on 'click', (e) ->
       displayGraph(data)
     , "json")
 
+randomNumber = (min, max) ->
+  return Math.random() * (max - min) + min
+
 addClass = (selector, klass) ->
   el = $(selector)
   el.attr('class', el.attr('class') + " #{klass}")
@@ -225,6 +228,17 @@ displayGraph = (data) ->
       text((d) ->
         nodeDisplayName(d))
 
+    calc_offsets = (d) ->
+      d.arc_offset_a = randomNumber(55, 15) if d.arc_offset_a == undefined
+      d.arc_offset_b = randomNumber(20, 10) if d.arc_offset_b == undefined
+      if d.pos_offset_a == undefined
+        rand = Math.floor(randomNumber(1,100))
+        d.pos_offset_a = 1
+        d.pos_offset_a = 0 if (rand % 2) == 0
+      if d.pos_offset_b == undefined
+        rand = Math.floor(randomNumber(1,100))
+        d.pos_offset_b = 0
+        d.pos_offset_b = 1 if (rand % 2) == 0
 
     tick = ->
       node.attr("transform", (d) ->
@@ -236,12 +250,14 @@ displayGraph = (data) ->
         dx = d.target.x - d.source.x
         dy = d.target.y - d.source.y
         dr = Math.sqrt(dx*dx + dy*dy)*2
+        calc_offsets(d)
         if d.source.info.id != d.target.info.id
           "M#{d.source.x},#{d.source.y}" +
           "A#{dr},#{dr} 0 0,1 #{d.target.x},#{d.target.y}"
         else
           "M#{d.source.x},#{d.source.y-0.6}" +
-          "A-30,-15 0 1,0 #{d.target.x-4},#{d.target.y}"
+          "A-#{d.arc_offset_a},-#{d.arc_offset_b} 0 " +
+          "#{d.pos_offset_a},#{d.pos_offset_b} #{d.target.x-4},#{d.target.y}"
       )
     force.on('tick', tick)
 
