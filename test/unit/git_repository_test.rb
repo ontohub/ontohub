@@ -445,25 +445,30 @@ class GitRepositoryTest < ActiveSupport::TestCase
         end
 
         @path_clone = '/tmp/ontohub/test/unit/git/repository_clone'
-        assert !File.exists?(@path_clone)
+        assert !File.exists?(@path_clone), 'Folder to clone into already exists'
+      end
+
+      teardown do
+        FileUtils.rmtree(@path_clone) if File.exists?(@path_clone)
+        @path_clone = nil
       end
 
       context 'fully from filesystem' do
         setup do
-          @repository_clone = GitRepository.clone("file://#{@path}", @path_clone)
+          @result = GitRepository.clone_git("file://#{@path}", @path_clone)
+          @repository_clone = GitRepository.new(@path_clone)
         end
 
         teardown do
-          FileUtils.rmtree(@path_clone) if File.exists?(@path_clone)
-          @path_clone = nil
           @repository_clone = nil
         end
 
+        should 'be sueccessful' do
+          assert @result[:success]
+        end
+
         should 'create a repository in the new path' do
-          assert !File.exists(@path_clone)
-          %w{branches  config  description  HEAD  hooks  info  objects  packed-refs  refs}.each do |w|
-            assert !File.exists("#{@path_clone}/#{w}")
-          end
+          assert GitRepository.is_bare_repository?(@path_clone), 'Clone is not a valid bare repository'
         end
 
         should 'clone all commits' do
@@ -471,31 +476,31 @@ class GitRepositoryTest < ActiveSupport::TestCase
         end
 
         should 'create the same branches in the clone' do
-          assert_equal @repository.get_branches, @repository_clone.get_branches
+          assert(@repository.get_branches & @repository_clone.get_branches == @repository.get_branches, 'The original branches are not a subset of the clone branches.')
         end
       end
 
       context 'in a shallow way (only last few commits)' do
         setup do
           @max_commits = 3
-          @repository_clone = GitRepository.clone("file://#{@path}", @path_clone, @max_commits)
+          @result = GitRepository.clone_git("file://#{@path}", @path_clone, @max_commits)
+          @repository_clone = GitRepository.new(@path_clone)
         end
 
         teardown do
-          FileUtils.rmtree(@path_clone) if File.exists?(@path_clone)
-          @path_clone = nil
           @repository_clone = nil
         end
 
-        should 'create a repository in the new path' do
-          assert !File.exists(@path_clone)
-          %w{branches  config  description  HEAD  hooks  info  objects  packed-refs  refs}.each do |w|
-            assert !File.exists("#{@path_clone}/#{w}")
-          end
+        should 'be sueccessful' do
+          assert @result[:success]
         end
 
-        should 'clone only the last commits' do
-          assert_equal @max_commits, @repository_clone.commits.size
+        should 'create a repository in the new path' do
+          assert GitRepository.is_bare_repository?(@path_clone), 'Clone is not a valid bare repository'
+        end
+
+        should 'clone only the last commits (max_commits+1)' do
+          assert_equal @max_commits+1, @repository_clone.commits.size
           assert_equal @repository.head_oid, @repository_clone.head_oid
         end
       end
@@ -503,27 +508,74 @@ class GitRepositoryTest < ActiveSupport::TestCase
       context 'in a shallow way (only last commit)' do
         setup do
           @max_commits = 1
-          @repository_clone = GitRepository.clone("file://#{@path}", @path_clone, @max_commits)
+          @result = GitRepository.clone_git("file://#{@path}", @path_clone, @max_commits)
+          @repository_clone = GitRepository.new(@path_clone)
         end
 
         teardown do
-          FileUtils.rmtree(@path_clone) if File.exists?(@path_clone)
-          @path_clone = nil
+          @result = nil
           @repository_clone = nil
         end
 
-        should 'create a repository in the new path' do
-          assert !File.exists(@path_clone)
-          %w{branches  config  description  HEAD  hooks  info  objects  packed-refs  refs}.each do |w|
-            assert !File.exists("#{@path_clone}/#{w}")
-          end
+        should 'be sueccessful' do
+          assert @result[:success]
         end
 
-        should 'clone only the last commits' do
-          assert_equal @max_commits, @repository_clone.commits.size
+        should 'create a repository in the new path' do
+          assert GitRepository.is_bare_repository?(@path_clone), 'Clone is not a valid bare repository'
+        end
+
+        should 'clone only the last two commits' do
+          assert_equal @max_commits+1, @repository_clone.commits.size
           assert_equal @repository.head_oid, @repository_clone.head_oid
         end
       end
+
+      context 'should produce the typical git errors' do
+        setup {} #needed for teardown
+
+        teardown do
+          @repository_clone = nil
+        end
+
+        should '(not a repository)' do
+          result = GitRepository.clone_git('/', @path_clone)
+          assert_equal "fatal: repository '/' does not exist\n", result[:err]
+        end
+
+        should '(already exists)' do
+          GitRepository.clone_git(@path, @path_clone)
+          result = GitRepository.clone_git(@path, @path_clone)
+          assert_equal "fatal: destination path '#{@path_clone}' already exists and is not an empty directory.\n", result[:err]
+        end
+      end
+    end
+  end
+
+  context 'importing an svn repository' do
+    setup do
+      @path_clone = '/tmp/ontohub/test/unit/git/repository_clone'
+      @result = GitRepository.clone_svn('http://colore.googlecode.com/svn/trunk/ontologies/algebra', @path_clone)
+      @repository_clone = GitRepository.new(@path_clone)
+    end
+
+    teardown do
+      FileUtils.rmtree(@path_clone) if File.exists?(@path_clone)
+      @result = nil
+      @repository_clone = nil
+    end
+
+    should 'be sueccessful' do
+      assert @result[:success]
+    end
+
+    should 'create a valid repository' do
+      assert GitRepository.is_bare_repository?(@path_clone), 'Clone is not a valid bare repository'
+    end
+
+    should 'create a shallow copy with only a single commit' do
+      @repository = GitRepository.new(@path_clone)
+      assert_equal 1, @repository.commits.size
     end
   end
 end

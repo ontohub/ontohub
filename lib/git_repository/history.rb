@@ -24,6 +24,8 @@ module GitRepository::History
     end
 
     commits
+  rescue Rugged::OdbError #FIXME: returns empty array if repository is cloned in a shallow way
+    commits
   end
 
   def commits_path(walker, path)
@@ -49,6 +51,8 @@ module GitRepository::History
       commits << to_hash(commit)
     end
 
+    commits
+  rescue Rugged::OdbError #FIXME: returns empty array if repository is cloned in a shallow way
     commits
   end
 
