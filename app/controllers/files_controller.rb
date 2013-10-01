@@ -22,6 +22,10 @@ class FilesController < ApplicationController
       when :file_base 
         ontology = @repository.ontologies.where(path: @info[:entry][:path]).first!
         redirect_to ontology_path(ontology)
+      when :dir
+        puts "=========="
+        puts @info[:entries].inspect
+        puts "=========="
       end
     else
       render text: repository.read_file(@path, @oid)[:content],

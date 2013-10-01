@@ -70,9 +70,17 @@ module Repository::GitRepositories
           file: file
         }
       else
+        entries = list_folder(path, commit_oid)
+        entries.each do |name, es|
+          es.each do |e|
+            o = ontologies.where(path: e[:path]).first
+            puts "#{e} \t #{o}"
+            e[:ontology] = o
+          end
+        end
         {
           type: :dir,
-          entries: list_folder(path, commit_oid)
+          entries: entries
         }
       end
     else
