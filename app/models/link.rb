@@ -28,6 +28,33 @@ class Link < ActiveRecord::Base
   accepts_nested_attributes_for :versions
   
   def to_s
-    iri + ' (' + kind + ')'
+    string = ""
+    if name 
+      string = name
+    else
+      array = iri.split("#")
+      string = array[1]
+    end
+    return string
+  end
+  
+  def display_connection
+    if theorem
+      if proven
+        return "badge badge-success"
+      else
+        return "badge badge-important"
+      end
+    else
+      return "badge badge-inverse"
+    end
+  end
+  
+  def get_entity
+    if entity_mappings.size > 1
+      return "#{entity_mappings.first}..."
+    else
+      return "#{entity_mappings.first}"
+    end
   end
 end

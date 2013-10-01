@@ -1,7 +1,9 @@
 %tr.center
-  %td= fancy_link link
-  %td= link.iri
+  %td= link.kind
+  %td= link_to link , link,{:class =>"iri", :"data-toggle"=>"tooltip", :"data-original-title" => "#{link.iri}"}
   %td= link.source
+  %td
+    %span{:class => "#{link.display_connection}"}
+      ="->"
   %td= link.target
-  %td= link.entity_mappings.first
-  
+  %td= link.get_entity

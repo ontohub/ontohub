@@ -37,6 +37,16 @@ class LinksController < InheritedResources::Base
   
 private
   
+  def collection
+    if params[:ontology_id]
+      onto = params[:ontology_id]
+      @links = Link.where("ontology_id =#{onto} OR source_id = #{onto} OR target_id = #{onto}")
+      collection = Kaminari.paginate_array(Link.where("ontology_id =#{onto} OR source_id = #{onto} OR target_id = #{onto}")).page(params[:page])
+    else
+      super
+    end
+  end
+  
   def build_resource
     return @link if @link
     @link = Link.new params[:link]
