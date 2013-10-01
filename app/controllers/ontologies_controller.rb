@@ -11,12 +11,14 @@ class OntologiesController < InheritedResources::Base
   before_filter :check_write_permission, :except => [:index, :show, :oops_state]
 
   def index
-    super do |format|
-      format.html do
-        @search = params[:search]
-        @search = nil if @search.blank?
-      end
-    end
+    @content_kind = :ontologies
+    @search = nil
+    #super do |format|
+    #  format.html do
+    #    @search = params[:search]
+    #    @search = nil if @search.blank?
+    #  end
+    #end
   end
 
   def new
