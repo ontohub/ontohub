@@ -6,5 +6,9 @@ class Admin::TeamsController < ApplicationController
   actions :index
   respond_to :json, :xml
   has_pagination
+
+  def index()
+    @content_kind = :teams
+  end
   
 end

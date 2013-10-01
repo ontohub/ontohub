@@ -8,6 +8,10 @@ class Admin::UsersController < ApplicationController
   has_pagination
   
   with_role :admin
+
+  def index
+    @content_kind = :users
+  end
   
   def update
     update! do
