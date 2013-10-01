@@ -3,6 +3,7 @@ module LinkHelper
   def fancy_link(resource)
     clazz = resource.class
     clazz = 'Ontology' if clazz.to_s.include?('Ontology')
+    data_type, value = determine_image_type(resource)
     
     unless resource.is_a? Array then
 
@@ -13,7 +14,7 @@ module LinkHelper
       end
 
       link_to name, resource,
-        'data-type' => clazz.to_s,
+        data_type => value,
         :title      => resource.respond_to?(:title) ? resource.title : nil
     else
 
@@ -24,11 +25,40 @@ module LinkHelper
       end
 
       link_to name, resource,
-        'data-type' => clazz.to_s,
+        data_type => value,
         :title      => resource.last.respond_to?(:title) ? resource.last.title : nil
     end
   end
-  
+
+  def determine_image_type(resource)
+    return ['data-type', resource.class.to_s] unless resource.is_a?(Ontology)
+    data_type = 'data-ontologyclass'
+    distributed_type = ->(distributed_ontology) do
+      if distributed_ontology.homogeneous?
+        "distributed_homogeneous_ontology"
+      else
+        "distributed_heterogeneous_ontology"
+      end
+    end
+    value = if resource.is_a?(DistributedOntology)
+              distributed_type[resource]
+            else
+              if resource.parent
+                "single_in_#{distributed_type[resource.parent]}"
+              else
+                'single_ontology'
+              end
+            end
+    [data_type, value]
+  end
+
+  def ontology_link_to(resource)
+    data_type, value = determine_image_type(resource)
+    content_tag(:span, class: 'ontology_title') do
+      link_to resource, {}, data_type => value
+    end
+  end
+
   def counter_link(url, counter, subject)
     text = content_tag(:strong, counter || '?')
     text << content_tag(:span, counter==1 ? subject : subject.pluralize)

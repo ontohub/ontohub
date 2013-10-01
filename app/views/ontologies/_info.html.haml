@@ -1,8 +1,7 @@
 = render partial: '/ontologies/menu', locals: {resource: resource}
 %br
-%h2{'style' => 'display: inline-block'}
-  %span= resource.class.name
-  %span= link_to resource
+%h2#ontology_title
+  = ontology_link_to resource
   %small
     -if !resource.language_id.nil?
       = link_to resource.language, resource.language
