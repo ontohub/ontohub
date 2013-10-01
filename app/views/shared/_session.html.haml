@@ -2,16 +2,16 @@
   %ul.nav.navbar-nav.navbar-right
     %li.dropdown
       = link_to '#', {class: 'dropdown-toggle', 'data-toggle' => 'dropdown'} do
-        #{current_user}
+        #{current_user.name}
         %b.caret
       %ul.dropdown-menu
-        %li= link_to 'My Account', current_user
-        %li= link_to 'My Teams', :teams
+        / %li= link_to 'My Account', current_user
         %li
           = link_to edit_user_registration_path do
-            Settings
+            My Account
             - if current_user.display_alert?
               %strong.badge !
+        %li= link_to 'My Teams', :teams
         %li= link_to 'SSH Keys', :keys
         %li.divider{role: 'presentation'}
         %li= link_to 'Sign out', :destroy_user_session, method: :delete
