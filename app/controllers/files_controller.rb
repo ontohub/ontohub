@@ -20,9 +20,8 @@ class FilesController < ApplicationController
       when :file
         @file = repository.read_file(@path, params[:oid])
       when :file_base 
-        # TODO: redirect to ontology view instead of rendering file view
-        @path = @info[:entry][:path]
-        @file = repository.read_file(@path, params[:oid])
+        ontology = @repository.ontologies.where(path: @info[:entry][:path]).first!
+        redirect_to ontology_path(ontology)
       end
     else
       render text: repository.read_file(@path, @oid)[:content],
