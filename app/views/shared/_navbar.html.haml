@@ -1,0 +1,18 @@
+%nav.navbar.navbar-inverse.navbar-fixed-top{role: "navigation"}
+  %div.content
+    %ul.nav.navbar-nav
+      %li=link_to Settings.name, :root, {class: 'navbar-brand', style: 'color:white;font-weight:bold;font-size:24px;'}
+      / 
+      / Contents for any visitor
+      %li= link_to 'Ontologies', :ontologies
+      %li= link_to 'Symbols', :search
+      %li= link_to 'Logics', :logics
+      / %li= link_to 'Mappings', :links
+      %li= link_to 'Repositories', :repositories
+      / 
+      / Contents only for admins
+      -if admin?
+        %li= link_to 'Users',  :admin_users
+        %li= link_to 'Teams',  :admin_teams
+        %li= link_to 'Jobs', :resque_server, target: '_blank'
+    = render partial: 'shared/session'

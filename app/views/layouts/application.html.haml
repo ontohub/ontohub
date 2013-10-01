@@ -6,7 +6,7 @@
     = stylesheet_link_tag "application", :media => "all"
     = csrf_meta_tags
   %body
-    = render :partial => '/shared/header'
+    = render :partial => '/shared/navbar'
     .container
       = flash_messages
       %section= yield

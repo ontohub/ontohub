@@ -35,7 +35,7 @@ Ontohub::Application.routes.draw do
     mount Resque::Server, :at => "/admin/resque"
   end
   
-  resources :ontologies, only: :show do
+  resources :ontologies, only: [:index, :show] do
     resources :children, :only => :index
     resources :entities, :only => :index
     resources :sentences, :only => :index

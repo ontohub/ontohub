@@ -294,7 +294,7 @@ PLATFORMS
 
 DEPENDENCIES
   acts_as_tree
-  bootstrap-sass (~> 2.3.2)
+  bootstrap-sass (~> 2.3.2.2)
   cancan (~> 1.6.7)
   capistrano
   capybara
