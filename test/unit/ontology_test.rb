@@ -25,7 +25,7 @@ class OntologyTest < ActiveSupport::TestCase
     end
   end
 
-  [nil, '', 'fooo'].each do |val|
+  ['', 'fooo'].each do |val|
     should_not allow_value(val).for :iri
   end
   

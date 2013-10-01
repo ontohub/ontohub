@@ -38,8 +38,6 @@ module Repository::GitRepositories
         clazz  = filepath.ends_with?('.casl') ? DistributedOntology : SingleOntology
         o      = clazz.new
         o.path = filepath
-
-        o.iri  = iri || "http://#{Settings.hostname}/#{path}/#{Ontology.filename_without_extension(filepath)}"
         o.name = filepath.split('/')[-1].split(".")[0].capitalize
 
         version = o.versions.build({ :commit_oid => commit_oid, :user => user }, { without_protection: true })
