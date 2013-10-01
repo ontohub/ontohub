@@ -15,7 +15,6 @@ class PermissionsTest < ActionController::IntegrationTest
     login_as @user, :scope => :user
     
     visit repository_permissions_path(@repository)
-    find_link "Log out"
     
     within '.relationList' do
       # does only one permission exist?

@@ -5,8 +5,8 @@ module NavigationHelper
       [:overview,     resource]
     ]
     
-    pages << [:files,  [resource, :files]]
-    #pages << [:history,  [resource, :history]] # this line breaks routing
+    pages << [:files,       [resource, :tree]]
+    pages << [:history,     repository_oid_path(resource, 'master')]
     pages << [:ontologies,  [resource, :ontologies]]
     pages << [:permissions, [resource, :permissions]] if can? :permissions, resource
     

@@ -9,13 +9,15 @@ module Repository::Validations
 
     validates :name, presence: true,
                      uniqueness: { case_sensitive: false },
-                     format: VALID_NAME_REGEX
+                     format: VALID_NAME_REGEX,
+                     if: :name_changed?
     
     validates :path, presence: true,
                      uniqueness: { case_sensitive: true },
-                     format: VALID_PATH_REGEX
+                     format: VALID_PATH_REGEX,
+                     if: :path_changed?
     
-    validates_with UnreservedValidator
+    validates_with UnreservedValidator, if: :path_changed?
   end
 
   def set_path
@@ -24,6 +26,9 @@ module Repository::Validations
 end
 
 class UnreservedValidator < ActiveModel::Validator
+
+  REVERSED_NAMES = Rails.application.routes.routes.map{ |r| r.path.spec.to_s }.compact.map{ |s| s.split('/')[1] }.compact.map{ |s| s.split('(',2)[0] }.map{ |s| s.split(':',2)[0] }.select(&:present?).uniq
+
   def validate(record)
     if is_reserved_name?(record.path)
       record.errors[:name] = "is a reserved name"
@@ -32,6 +37,6 @@ class UnreservedValidator < ActiveModel::Validator
 
   # toplevel namespaces in routing are reserved words
   def is_reserved_name?(name)
-    Rails.application.routes.routes.map{ |r| r.path.spec.to_s }.select{ |s| !s.nil? }.map{ |s| s.split('/')[1] }.select{ |s| !s.nil? }.map{ |s| s.split('(')[0] }.map{ |s| s.split(':')[0] }.select{ |s| !s.empty? }.uniq.include?(name)
+    REVERSED_NAMES.include?(name)
   end
 end

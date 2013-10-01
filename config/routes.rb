@@ -64,15 +64,21 @@ Ontohub::Application.routes.draw do
     resources :ontologies do
       get 'bulk', :on => :collection
     end
-    scope ':oid' do
-      get '/:action(/:path)', constraints: { path: /.*/ }, as: :oid
-    end
+
+    # action: history, diff, entries_info, files
+    get ':oid/:action(/:path)',
+      controller:  :files,
+      as:          :oid,
+      constraints: { path: /.*/ }
+
+    resources :files, only: [:new, :create]
   end
 
-  get '/:id(/:path)', controller: :repositories,
-                      action: :files,
-                      constraints: { path: /.*/ },
-                      as: :repository_files
+  get ':repository_id(/:path)',
+    controller:  :files,
+    action:      :files,
+    as:          :repository_tree,
+    constraints: { path: /.*/ }
 
   root :to => 'home#show'
 

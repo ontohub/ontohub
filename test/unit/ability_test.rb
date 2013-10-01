@@ -23,7 +23,7 @@ class AbilityTest < ActiveSupport::TestCase
         end
       end
 
-      should 'not be allowed: new, create' do
+      should 'not be allowed some actions' do
         [:edit, :update, :destroy, :write].each do |perm|
           assert @ability.cannot?(perm, @item)
         end
