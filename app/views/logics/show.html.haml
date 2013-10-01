@@ -1,4 +1,4 @@
-- @page_title = resource
+- lh = LogicViewhelper.new(resource)
 %h2= link_to resource, resource, 'data-type' => resource_class
 
 - if can? :update, Logic
@@ -20,11 +20,14 @@
 
 %nav
   %ul.nav.nav-tabs
-    - @available_tabs.each do |(tab_title, tab, number)|
+    - lh.available_tabs.each do |(tab_title, tab, number)|
       %li{class: tab==@tab ? 'active' : nil}
-        %a{href: resource_path(resource, tab: tab)}
+        = link_to logic_path(resource, tab: tab) do
           = tab_title
           - if number
             %span.badge= number
+    - lh.available_tab_links.each do |(tab_title, tab)|
+      %li{class: tab==@link_tab ? 'active' : nil}
+        = link_to tab_title, [resource, tab]
 
 = render partial: @tab.to_s unless @tab.nil?

@@ -24,7 +24,7 @@ class GraphsController < ApplicationController
                 center: parent,
                 node_url: nodes.any? ? url_for(nodes.first.class) : nil,
                 edge_url: edges.any? ? url_for(edges.first.class) : nil,
-                edge_type: edges.first.class.to_s,
+                edge_type: GraphDataFetcher.link_for(nodes.first.class),
                 nodes_aggregate: nodes_aggregate }
         respond_with data
       end
