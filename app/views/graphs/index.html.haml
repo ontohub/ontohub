@@ -1,5 +1,8 @@
+- @link_tab = :graphs
 - if parent.is_a?(Ontology)
   = ontology_nav parent, :graphs if respond_to?(:parent)
+- elsif parent.is_a?(Logic)
+  = render template: "logics/show", locals: {resource: parent}
 
 %h4
   Graphical Visualization of
