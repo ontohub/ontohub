@@ -11,7 +11,7 @@ class User < ActiveRecord::Base
   has_many :permissions, :as => :subject
   has_many :keys
   
-  attr_accessible :email, :name, :admin, :password, :as => :admin
+  attr_accessible :email, :name, :first_name, :admin, :password, :as => :admin
   
   strip_attributes :only => [:name, :email]
   
@@ -58,6 +58,10 @@ class User < ActiveRecord::Base
     end
   end
   
+  def first_name
+    return name.split(' ')[0]
+  end
+
   protected
   
   def check_remaining_admins
