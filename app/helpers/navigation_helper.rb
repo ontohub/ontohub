@@ -11,10 +11,8 @@ module NavigationHelper
     
     @metadatas = [
           ['Projects', :projects],
-          ['Acronyms', :acronyms],
+          ['Categories', :categories],
           ['Tasks', :tasks],
-          ['Formality Level', :formality_levels],
-          ['Ontology Type', :ontology_type],
           ['Licens Model', :licens_model]
         ]
 
