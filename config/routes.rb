@@ -57,7 +57,7 @@ Ontohub::Application.routes.draw do
   end
   
   get 'autocomplete' => 'autocomplete#index'
-  get 'search'       => 'search#index'
+  get 'symbols'      => 'search#index'
 
   resources :repositories do
     resources :permissions, :only => [:index, :create, :update, :destroy]

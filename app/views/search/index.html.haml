@@ -1,6 +1,6 @@
 %h2= @page_title = 'Symbols'
 
-= form_tag :search, :method => :get, class: 'form-search' do
+= form_tag :symbols, :method => :get, class: 'form-search' do
   .input-append
     = text_field_tag :q, @query, placeholder: 'Symbol text', class: 'search-query'
     %button.btn Search symbols
