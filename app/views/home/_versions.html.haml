@@ -1,8 +1,11 @@
-%h3 Latest ontologies
-%ol.latest
-  - @versions.each do |version|
-    %li
-      = fancy_link version.ontology
-      by
-      = fancy_link version.user
-      = timestamp version
+%div.col-md-8
+  %div.panel.panel-default
+    %div.panel-heading
+      %h3.panel-title='Trending Ontologies'
+    %div.panel-body
+      - @versions.each do |version|
+        %div
+          = fancy_link version.ontology
+          by
+          = fancy_link version.user
+          = timestamp version

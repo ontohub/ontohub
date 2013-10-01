@@ -10,6 +10,7 @@ class LogicsController < InheritedResources::Base
   load_and_authorize_resource :except => [:index, :show]
   
   def index
+    @content_kind = :logics
     super do |format|
       format.html do
         @search = params[:search]
@@ -19,11 +20,13 @@ class LogicsController < InheritedResources::Base
   end
 
   def create
+    @content_kind = :logics
     @logic.user = current_user
     super
   end
   
   def show
+    @content_kind = :logics
     super do |format|
       format.html do
         @mappings_from = resource.mappings_from

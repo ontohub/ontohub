@@ -1,4 +1,4 @@
-%div.content
+- if !user_signed_in?
   %div.jumbotron
     %div.container
       %h1 Ontohub
@@ -12,12 +12,5 @@
         %strong="Distributed"
         ="- combine distinct ontologies into a single one"
       %p= link_to 'Learn more', "http://ontohub.blogspot.de",{class: "btn btn-primary btn-lg"}
-
-.row
-  .span8
-    = render :partial => 'versions'
-    .row
-      .span12
-        = render :partial => 'comments'
-  .span4
-    = render :partial => 'about'
+  %div.content-padding
+= render partial: 'versions'
