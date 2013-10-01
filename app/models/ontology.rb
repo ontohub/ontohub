@@ -20,9 +20,9 @@ class Ontology < ActiveRecord::Base
 
   attr_accessible :iri, :name, :description, :logic_id
 
-  before_validation :empty_iri_to_nil
-  validates_uniqueness_of :iri, if: :validate_iri?
-  validates_format_of :iri, :with => URI::regexp(Settings.allowed_iri_schemes), if: :validate_iri?
+  validates_presence_of :iri
+  validates_uniqueness_of :iri, :if => :iri_changed?
+  validates_format_of :iri, :with => URI::regexp(Settings.allowed_iri_schemes)
 
   delegate :permission?, to: :repository
 
@@ -46,14 +46,6 @@ class Ontology < ActiveRecord::Base
 
   def symbols_count
     entities_count
-  end
-
-  def empty_iri_to_nil
-    iri = nil if !iri.nil? && iri.empty?
-  end
-
-  def validate_iri?
-    iri_changed? && !iri.nil?
   end
 
   def self.filename_without_extension(filename)

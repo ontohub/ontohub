@@ -20,12 +20,12 @@ class OntologyTest < ActiveSupport::TestCase
   should_not strip_attribute :description
 
   context 'Validations' do
-    [nil, '', 'http://example.com/', 'https://example.com/', 'file://path/to/file'].each do |val|
+    ['http://example.com/', 'https://example.com/', 'file://path/to/file'].each do |val|
       should allow_value(val).for :iri
     end
   end
 
-  ['fooo'].each do |val|
+  [nil, '', 'fooo'].each do |val|
     should_not allow_value(val).for :iri
   end
   
