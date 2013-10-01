@@ -20,7 +20,7 @@ class Ontology < ActiveRecord::Base
 
   attr_accessible :iri, :name, :description, :logic_id
 
-  validates_presence_of :iri, if: :validate_iri?
+  before_validation :empty_iri_to_nil
   validates_uniqueness_of :iri, if: :validate_iri?
   validates_format_of :iri, :with => URI::regexp(Settings.allowed_iri_schemes), if: :validate_iri?
 
@@ -46,6 +46,10 @@ class Ontology < ActiveRecord::Base
 
   def symbols_count
     entities_count
+  end
+
+  def empty_iri_to_nil
+    iri = nil if !iri.nil? && iri.empty?
   end
 
   def validate_iri?

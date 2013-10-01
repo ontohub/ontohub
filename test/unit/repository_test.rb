@@ -134,7 +134,7 @@ class RepositoryTest < ActiveSupport::TestCase
           tmpfile.close
           
           OntologyVersion.any_instance.expects(:parse_async).once
-          @repository.save_file(file_path, path, @message, @user, "#{@iri_prefix}#{file_path}")
+          @repository.save_file(file_path, path, @message, @user)
         end
       end
 
