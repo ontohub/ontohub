@@ -26,12 +26,14 @@ class OntologiesController < InheritedResources::Base
   end
 
   def create
+    @content_kind = :ontologies
     @version = build_resource.versions.first
     @version.user = current_user
     super
   end
   
   def show
+    @content_kind = :ontologies
     if !params[:repository_id]
       # redirect for legacy routing
       ontology = Ontology.find params[:id]
@@ -50,6 +52,7 @@ class OntologiesController < InheritedResources::Base
   end
   
   def oops_state
+    @content_kind = :ontologies
     respond_to do |format|
       format.json do
         respond_with resource.versions.current.try(:request)
