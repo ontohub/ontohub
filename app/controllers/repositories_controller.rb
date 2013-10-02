@@ -5,6 +5,14 @@ class RepositoriesController < ApplicationController
 
   load_and_authorize_resource :except => [:index, :show]
 
+  def index
+    @content_kind = :repositories
+  end
+
+  def show
+    @content_kind = :repositories
+  end
+
   def files
     @path = params[:path]
 
