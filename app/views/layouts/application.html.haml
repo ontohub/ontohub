@@ -16,9 +16,12 @@
         %div.content-padding
         %div.col-md-8
           = yield
+        - if user_signed_in?
+          %div.col-md-4
+            = render partial: '/shared/userdata'
       %div{style: 'clear:both;'}
       - if ! user_signed_in?
         %div{style: 'position: absolute; top: 83px; right:15px; width: 303px;'}
-          = render :partial => '/shared/signin'
+          = render partial: '/shared/signin'
     = render :partial => '/shared/footer'
     = javascript_include_tag "application"
