@@ -29,6 +29,7 @@ Ontohub::Application.routes.draw do
   namespace :admin do
     resources :teams, :only => :index
     resources :users
+    resources :jobs, :only => :index
   end
 
   constraints auth_resque do

@@ -1,20 +1,17 @@
-- @page_title = 'Users'
+%h2=@page_title = 'Users'
+= render :partial => 'filter'
 
-%div.col-md-8
-  %h2='Users'
-  = render :partial => 'filter'
+%p
+  = pluralize collection.total_count, resource_class.to_s
+  found
 
-  %p
-    = pluralize collection.total_count, resource_class.to_s
-    found
-
-  = pagination do
-    %table
-      %thead
-        %th ID
-        %th Name
-        %th Email
-        %th Admin
-        %th
-      %tbody
-        = render collection
+= pagination do
+  %table
+    %thead
+      %th ID
+      %th Name
+      %th Email
+      %th Admin
+      %th
+    %tbody
+      = render collection

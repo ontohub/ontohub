@@ -11,7 +11,8 @@
     %div.content
       - if @content_kind or user_signed_in?
         %div.content-padding
-      = yield
+      %div.col-md-8
+        = yield
       %div{style: 'clear:both;'}
       - if ! user_signed_in?
         %div{style: 'position: absolute; top: 83px; right:15px; width: 303px;'}

@@ -1,17 +1,14 @@
-- @page_title = 'Symbols'
+%h2=@page_title = 'Symbols'
+= form_tag :symbols, :method => :get do
+  .input-group
+    = text_field_tag :q, @query, :placeholder => 'Symbol label', class: 'form-control'
+    %span.input-group-btn
+      %input.btn.btn-primary{type: 'submit', value:'Seach for Symbols'}
 
-%div.col-md-8
-  %h2='Symbols'
-  = form_tag :symbols, :method => :get do
-    .input-group
-      = text_field_tag :q, @query, :placeholder => 'Symbol label', class: 'form-control'
-      %span.input-group-btn
-        %input.btn.btn-primary{type: 'submit', value:'Seach for Symbols'}
-
-  - if @query
-    %p
-      %strong= pluralize @group.matches, 'Symbol'
-      = @max_groups > @groups.size ? 'found in' : 'found, displaying the first'
-      %strong= pluralize @groups.size, 'Ontology'
-    %ol.searchResult
-      = render :partial => 'group', :collection => @groups
+- if @query
+  %p
+    %strong= pluralize @group.matches, 'Symbol'
+    = @max_groups > @groups.size ? 'found in' : 'found, displaying the first'
+    %strong= pluralize @groups.size, 'Ontology'
+  %ol.searchResult
+    = render :partial => 'group', :collection => @groups

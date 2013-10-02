@@ -48,7 +48,7 @@
 
         / Job
         - if :jobs == @content_kind
-          %li.active= link_to 'Jobs', :resque_server, target: '_blank'
+          %li.active= link_to 'Jobs', :admin_jobs
         - else
-          %li= link_to 'Jobs', :resque_server, target: '_blank'
+          %li= link_to 'Jobs', :admin_jobs
     = render partial: 'shared/session'
