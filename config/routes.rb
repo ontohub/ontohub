@@ -52,6 +52,7 @@ Ontohub::Application.routes.draw do
       get 'import'
     end
 
+    resources :ssh_access, :only => :index
     resources :permissions, :only => [:index, :create, :update, :destroy]
 
     resources :ontologies, only: [:index, :show, :edit, :update] do
