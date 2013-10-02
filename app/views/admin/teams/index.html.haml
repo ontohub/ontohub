@@ -1,16 +1,14 @@
-- @page_title = 'Teams'
+%h2=@page_title = 'Teams'
 
-%div.col-md-8
-  %h2='Teams'
-  %p
-    = pluralize collection.total_count, resource_class.to_s
-    found
+%p
+  = pluralize collection.total_count, resource_class.to_s
+  found
 
-  = pagination do
-    %table
-      %thead
-        %th Name
-        %th Users
-        %th
-      %tbody
-        = render collection
+= pagination do
+  %table
+    %thead
+      %th Name
+      %th Users
+      %th
+    %tbody
+      = render collection
