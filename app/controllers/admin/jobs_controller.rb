@@ -1,5 +1,5 @@
-class Admin::TeamsController < ApplicationController
-  
+class Admin::JobsController < ApplicationController
+
   before_filter :authenticate_admin!
   
   inherit_resources
@@ -8,7 +8,7 @@ class Admin::TeamsController < ApplicationController
   has_pagination
 
   def index()
-    @content_kind = :teams
+    @content_kind = :jobs
   end
-  
+   
 end

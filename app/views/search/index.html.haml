@@ -1,12 +1,11 @@
-%h2= @page_title = 'Symbols'
+%h2=@page_title = 'Symbols'
+= form_tag :symbols, :method => :get do
+  .input-group
+    = text_field_tag :q, @query, :placeholder => 'Symbol label', class: 'form-control'
+    %span.input-group-btn
+      %input.btn.btn-primary{type: 'submit', value:'Seach for Symbols'}
 
-= form_tag :search, :method => :get, class: 'form-search' do
-  .input-append
-    = text_field_tag :q, @query, placeholder: 'Symbol text', class: 'search-query'
-    %button.btn Search symbols
-    %button.help{ title: t('search.help') } ?
-
--if @query
+- if @query
   %p
     %strong= pluralize @group.matches, 'Symbol'
     = @max_groups > @groups.size ? 'found in' : 'found, displaying the first'

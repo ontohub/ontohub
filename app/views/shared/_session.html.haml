@@ -1,20 +1,16 @@
-%ul#session.nav.pull-right
-  - if user_signed_in?
+- if user_signed_in?
+  %ul.nav.navbar-nav.navbar-right
     %li.dropdown
-      = link_to '#', class: 'dropdown-toggle', 'data-toggle' => 'dropdown' do
-        Logged in as #{current_user}
+      = link_to '#', {class: 'dropdown-toggle', 'data-toggle' => 'dropdown'} do
+        #{current_user.name}
         %b.caret
       %ul.dropdown-menu
-        %li= link_to 'My Profile', current_user
-        %li= link_to 'My Teams', :teams
         %li
           = link_to edit_user_registration_path do
-            Settings
+            #{current_user.first_name}'s Account
             - if current_user.display_alert?
               %strong.badge !
+        %li= link_to current_user.first_name + "'s Teams", :teams
         %li= link_to 'SSH Keys', :keys
-        %li.divider
-        %li= link_to 'Log out', :destroy_user_session, method: :delete
-  - else
-    %li= link_to 'Log in', :new_user_session
-    %li= link_to 'Register', :new_user_registration
+        %li.divider{role: 'presentation'}
+        %li= link_to 'Sign out', :destroy_user_session, method: :delete

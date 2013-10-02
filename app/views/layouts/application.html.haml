@@ -6,9 +6,18 @@
     = stylesheet_link_tag "application", :media => "all"
     = csrf_meta_tags
   %body
-    = render :partial => '/shared/header'
-    .container
-      = flash_messages
-      %section= yield
+    = render :partial => '/shared/navbar'
+    = flash_messages
+    %div.content
+      - if (@content_kind == :jobs) or (!@content_kind and !user_signed_in?)
+        = yield
+      - else
+        %div.content-padding
+        %div.col-md-8
+          = yield
+      %div{style: 'clear:both;'}
+      - if ! user_signed_in?
+        %div{style: 'position: absolute; top: 83px; right:15px; width: 303px;'}
+          = render :partial => '/shared/signin'
     = render :partial => '/shared/footer'
     = javascript_include_tag "application"

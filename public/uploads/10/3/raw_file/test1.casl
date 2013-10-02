@@ -1,5 +1,0 @@
-spec sp =
-  sort s
-  op f:s->s
-  . forall x:s . f(x) = x
-end

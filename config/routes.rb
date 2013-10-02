@@ -29,13 +29,14 @@ Ontohub::Application.routes.draw do
   namespace :admin do
     resources :teams, :only => :index
     resources :users
+    resources :jobs, :only => :index
   end
 
   constraints auth_resque do
     mount Resque::Server, :at => "/admin/resque"
   end
   
-  resources :ontologies, only: :show do
+  resources :ontologies, only: [:index, :show] do
     resources :children, :only => :index
     resources :entities, :only => :index
     resources :sentences, :only => :index
@@ -57,7 +58,7 @@ Ontohub::Application.routes.draw do
   end
   
   get 'autocomplete' => 'autocomplete#index'
-  get 'search'       => 'search#index'
+  get 'symbols'      => 'search#index'
 
   resources :repositories do
     resources :permissions, :only => [:index, :create, :update, :destroy]
