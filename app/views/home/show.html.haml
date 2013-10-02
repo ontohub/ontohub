@@ -1,3 +1,4 @@
+- @page_title = 'Home'
 - if !user_signed_in?
   %div.jumbotron
     %div.container
@@ -12,5 +13,7 @@
         %strong="Distributed"
         ="- combine distinct ontologies into a single one"
       %p= link_to 'Learn more', "http://ontohub.blogspot.de",{class: "btn btn-primary btn-lg"}
-  %div.content-padding
-= render partial: 'versions'
+  %div.col-md-8
+    = render partial: 'versions'
+- else
+  = render partial: 'versions'

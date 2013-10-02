@@ -6,14 +6,14 @@
 /    %li= link_to 'Bulk Upload', [:bulk, parent, :ontologies]
 
 =# format_links
-= render :partial => 'filter'
+= render :partial => 'shared/ontology_search'
 
 / %p
 /   = pluralize(collection.total_count, 'Ontology')
-/   found
-/   - if @search
-/     for
-/     %strong= @search
+/    found
+/    - if @search
+/      for
+/      %strong= @search
 
 / = pagination do
 /   %ul.ontologies
