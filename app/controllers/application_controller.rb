@@ -41,5 +41,13 @@ class ApplicationController < ActionController::Base
       redirect_to :root
     end
   end
-  
+
+  def after_sign_in_path_for(resource)
+    request.referrer
+  end
+
+  def after_sign_out_path_for(resource)
+    request.referrer
+  end
+
 end
