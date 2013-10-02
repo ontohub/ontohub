@@ -5,7 +5,8 @@ module NavigationHelper
       [:overview,     resource]
     ]
     
-    pages << [:files,  [resource, :files]]
+    pages << [:files,       [resource, :tree]]
+    pages << [:history,     repository_oid_path(resource, oid: 'master', path: nil, action: :history)]
     pages << [:ontologies,  [resource, :ontologies]]
     pages << [:permissions, [resource, :permissions]] if can? :permissions, resource
     

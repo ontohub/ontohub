@@ -15,7 +15,7 @@ class RepositoryTest < ActiveSupport::TestCase
       should 'not be valid' do
         repository = FactoryGirl.build :repository, user: @user, name: 'repositories'
         assert repository.invalid?
-        assert repository.errors[:path].any?
+        assert repository.errors[:name].any?
       end
     end
 
@@ -143,14 +143,21 @@ class RepositoryTest < ActiveSupport::TestCase
         %w{/ folder1 folder2}.each do |folder|
           assert_equal :dir, @repository.path_info(folder)[:type]
         end
-        assert_equal 5, @repository.path_info('/')[:entries].size
+        assert_equal 4, @repository.path_info('/')[:entries].size
         assert_equal 2, @repository.path_info('folder1')[:entries].size
         assert_equal 1, @repository.path_info('folder2')[:entries].size
-        assert_equal [{
-            type: :file,
-            name: "file3.clf",
-            path: "folder2/file3.clf"
-          }], @repository.path_info('folder2')[:entries]
+        assert_equal({
+            "folder1"=>[{:type=>:dir, :name=>"folder1", :path=>"folder1", :index=>0}],
+            "folder2"=>[{:type=>:dir, :name=>"folder2", :path=>"folder2", :index=>1}],
+            "inroot1"=>[{:type=>:file, :name=>"inroot1.clif", :path=>"inroot1.clif", :index=>2}],
+            "inroot2"=>[
+                {:type=>:file, :name=>"inroot2.clf", :path=>"inroot2.clf", :index=>3},
+                {:type=>:file, :name=>"inroot2.clif", :path=>"inroot2.clif", :index=>4}
+              ]
+            }, @repository.path_info('/')[:entries])
+        assert_equal({
+              "file3"=>[{:type=>:file, :name=>"file3.clf", :path=>"folder2/file3.clf", :index=>0}]
+            }, @repository.path_info('folder2')[:entries])
       end
 
       should 'list files with given basename' do
@@ -170,9 +177,9 @@ class RepositoryTest < ActiveSupport::TestCase
         assert_equal expected, @repository.path_info('inroot2')
       end
 
-      should 'have type raw on exact filename' do
+      should 'have type file on exact filename' do
         @files.each do |path, content|
-          assert_equal :raw, @repository.path_info(path)[:type]
+          assert_equal :file, @repository.path_info(path)[:type]
           assert_equal path.split('/')[-1], @repository.path_info(path)[:file][:name]
           assert_equal content.size, @repository.path_info(path)[:file][:size]
           assert_equal content, @repository.path_info(path)[:file][:content]

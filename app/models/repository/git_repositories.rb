@@ -64,31 +64,46 @@ module Repository::GitRepositories
 
     if path_exists?(path, commit_oid)
       file = git.get_file(path, commit_oid)
-      return {type: :raw, file: file} if file
-      return {type: :dir, entries: list_folder(path, commit_oid)}
-    end
-
-    file = path.split('/')[-1]
-    path = path.split('/')[0..-2].join('/')
-
-    entries = list_folder(path, commit_oid).select { |e| e[:name].split('.')[0] == file }
-
-    return nil if entries.empty?
-
-    if entries.size == 1
-      { type: :file_base,
-        entry: entries[0]
-      }
+      if file
+        {
+          type: :file,
+          file: file
+        }
+      else
+        entries = list_folder(path, commit_oid)
+        entries.each do |name, es|
+          es.each do |e|
+            o = ontologies.where(path: e[:path]).first
+            puts "#{e} \t #{o}"
+            e[:ontology] = o
+          end
+        end
+        {
+          type: :dir,
+          entries: entries
+        }
+      end
     else
-      { type: :file_base_ambiguous,
-        entries: entries
-      }
-    end
-  end
+      file = path.split('/')[-1]
+      path = path.split('/')[0..-2].join('/')
 
-  def list_folder(folderpath, commit_oid=nil)
-    folderpath ||= '/'
-    git.folder_contents(commit_oid, folderpath)
+      entries = git.folder_contents(commit_oid, path).select { |e| e[:name].split('.')[0] == file }
+
+      case
+      when entries.empty?
+        nil
+      when entries.size == 1
+        {
+          type: :file_base,
+          entry: entries[0],
+        }
+      else
+        {
+          type: :file_base_ambiguous,
+          entries: entries
+        }
+      end
+    end
   end
 
   def read_file(filepath, commit_oid=nil)
@@ -103,7 +118,7 @@ module Repository::GitRepositories
       if branch_names.empty?
         { oid: oid, branch_name: nil }
       else
-        { oid: oid, branch_name: branch_names[0].name }
+        { oid: oid, branch_name: branch_names[0][:name] }
       end
     else
       if git.branch_oid(oid).nil?
@@ -112,5 +127,18 @@ module Repository::GitRepositories
         { oid: git.branch_oid(oid), branch_name: oid }
       end
     end
+  end
+
+  def entries_info(oid=nil, path=nil)
+    dirpath = git.get_path_of_dir(oid, path)
+    git.entries_info(oid,dirpath)
+  end
+
+  def changed_files(oid=nil)
+    git.changed_files(commit_id(oid)[:oid])
+  end
+
+  def commits(oid=nil, path=nil)
+    git.commits(commit_id(oid)[:oid], path)
   end
 end

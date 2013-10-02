@@ -18,7 +18,6 @@ class CommentsTest < ActionController::IntegrationTest
     comment_text = 'very loooooooong comment'
     
     visit ontology_comments_path(@ontology)
-    find_link "Log out"
     
     # zero comments at the beginning
     assert_equal 0, all('.comments > ol > li').count

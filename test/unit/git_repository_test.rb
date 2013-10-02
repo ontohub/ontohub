@@ -11,6 +11,12 @@ class GitRepositoryTest < ActiveSupport::TestCase
       @path = '/tmp/ontohub/test/unit/git/repository'
     end
 
+    teardown do
+      FileUtils.rmtree(@path) if File.exists?(@path)
+      @path = nil
+      @repository = nil
+    end
+
     should 'create repository' do
       @path_new = "#{@path}_new"
       assert !File.exists?(@path_new)
@@ -268,7 +274,7 @@ class GitRepositoryTest < ActiveSupport::TestCase
       end
     end
 
-    context 'getting the history of a file' do
+    context 'getting the commit history' do
       setup do
         @filepath = 'path/to/file.txt'
         @commit_add1 = @repository.commit_file(@userinfo, 'Some content1', @filepath, 'Add')
@@ -282,33 +288,43 @@ class GitRepositoryTest < ActiveSupport::TestCase
         @commit_delete2 = @repository.delete_file(@userinfo, @filepath)
       end
 
+      should 'list all commits regarding the whole branch' do
+        assert_equal @repository.commits(@commit_delete2), @repository.commits
+        assert_equal [ @commit_delete2, @commit_change2, @commit_add2,
+                       @commit_other3, @commit_other2, @commit_delete1,
+                       @commit_other1, @commit_change1, @commit_add1 ],
+                     @repository.commits.map{ |c| c[:oid] }
+        assert_equal 2, @repository.commits(@commit_change1).size
+      end
+
       should 'have the correct values in the history at the HEAD' do
-        assert_equal @repository.entry_info_list(@filepath), [
+        assert_equal @repository.commits(@commit_delete2, @filepath), @repository.commits(nil, @filepath)
+        assert_equal [
           @commit_delete2,
           @commit_change2,
           @commit_add2,
           @commit_delete1,
           @commit_change1,
           @commit_add1
-        ]
+        ], @repository.commits(nil, @filepath).map{ |c| c[:oid] }
       end
 
       should 'have the correct values in the history a commit before the HEAD' do
-        assert_equal @repository.entry_info_list(@filepath, @commit_change2), [
+        assert_equal [
           @commit_change2,
           @commit_add2,
           @commit_delete1,
           @commit_change1,
           @commit_add1
-        ]
+        ], @repository.commits(@commit_change2, @filepath).map{ |c| c[:oid] }
       end
 
       should 'have the correct values in the history in the commit that changes another file' do
-        assert_equal @repository.entry_info_list(@filepath, @commit_other3), [
+        assert_equal [
           @commit_delete1,
           @commit_change1,
           @commit_add1
-        ]
+        ], @repository.commits(@commit_other3, @filepath).map{ |c| c[:oid] }
       end
     end
 
@@ -330,92 +346,236 @@ class GitRepositoryTest < ActiveSupport::TestCase
 
 
       should 'have the right file count when using the first commit' do
-        assert_equal @repository.get_changed_files(@commit1).size, 1
+        assert_equal @repository.changed_files(@commit1).size, 1
       end
 
       should 'have the right name in the list when using the first commit' do
-        assert_equal @repository.get_changed_files(@commit1).first[:name], 'file.xml'
+        assert_equal @repository.changed_files(@commit1).first[:name], 'file.xml'
       end
 
       should 'have the right path in the list when using the first commit' do
-        assert_equal @repository.get_changed_files(@commit1).first[:path], @filepath
+        assert_equal @repository.changed_files(@commit1).first[:path], @filepath
       end
 
       should 'have the right type in the list when using the first commit' do
-        assert_equal @repository.get_changed_files(@commit1).first[:type], :add
+        assert_equal @repository.changed_files(@commit1).first[:type], :add
       end
 
       should 'have the right mime type in the list when using the first commit' do
-        assert_equal @repository.get_changed_files(@commit1).first[:mime_type], Mime::Type.lookup_by_extension(@file_extension)
+        assert_equal @repository.changed_files(@commit1).first[:mime_type], Mime::Type.lookup_by_extension(@file_extension)
       end
 
       should 'have the right mime category in the list when using the first commit' do
-        assert_equal @repository.get_changed_files(@commit1).first[:mime_category], 'application'
+        assert_equal @repository.changed_files(@commit1).first[:mime_category], 'application'
       end
 
       should 'have the right editable in the list when using the first commit' do
-        assert_equal @repository.get_changed_files(@commit1).first[:editable], true
+        assert_equal @repository.changed_files(@commit1).first[:editable], true
       end
 
 
 
       should 'have the right file count when using a commit in the middle' do
-        assert_equal @repository.get_changed_files(@commit2).size, 1
+        assert_equal @repository.changed_files(@commit2).size, 1
       end
 
       should 'have the right name in the list when using a commit in the middle' do
-        assert_equal @repository.get_changed_files(@commit2).first[:name], @filepath.split('/')[-1]
+        assert_equal @repository.changed_files(@commit2).first[:name], @filepath.split('/')[-1]
       end
 
       should 'have the right path in the list when using a commit in the middle' do
-        assert_equal @repository.get_changed_files(@commit2).first[:path], @filepath
+        assert_equal @repository.changed_files(@commit2).first[:path], @filepath
       end
 
       should 'have the right type in the list when using a commit in the middle' do
-        assert_equal @repository.get_changed_files(@commit2).first[:type], :change
+        assert_equal @repository.changed_files(@commit2).first[:type], :change
       end
 
       should 'have the right mime type in the list when using a commit in the middle' do
-        assert_equal @repository.get_changed_files(@commit2).first[:mime_type], Mime::Type.lookup_by_extension(@file_extension)
+        assert_equal @repository.changed_files(@commit2).first[:mime_type], Mime::Type.lookup_by_extension(@file_extension)
       end
 
       should 'have the right mime category in the list when using a commit in the middle' do
-        assert_equal @repository.get_changed_files(@commit2).first[:mime_category], 'application'
+        assert_equal @repository.changed_files(@commit2).first[:mime_category], 'application'
       end
 
       should 'have the right editable in the list when using a commit in the middle' do
-        assert_equal @repository.get_changed_files(@commit2).first[:editable], true
+        assert_equal @repository.changed_files(@commit2).first[:editable], true
       end
 
 
 
       should 'have the right file count when using the HEAD' do
-        assert_equal @repository.get_changed_files.size, 1
+        assert_equal @repository.changed_files.size, 1
       end
 
       should 'have the right name in the list when using the HEAD' do
-        assert_equal @repository.get_changed_files.first[:name], @filepath.split('/')[-1]
+        assert_equal @repository.changed_files.first[:name], @filepath.split('/')[-1]
       end
 
       should 'have the right path in the list when using the HEAD' do
-        assert_equal @repository.get_changed_files.first[:path], @filepath
+        assert_equal @repository.changed_files.first[:path], @filepath
       end
 
       should 'have the right type in the list when using the HEAD' do
-        assert_equal @repository.get_changed_files.first[:type], :delete
+        assert_equal @repository.changed_files.first[:type], :delete
       end
 
       should 'have the right mime type in the list when using the HEAD' do
-        assert_equal @repository.get_changed_files.first[:mime_type], Mime::Type.lookup_by_extension(@file_extension)
+        assert_equal @repository.changed_files.first[:mime_type], Mime::Type.lookup_by_extension(@file_extension)
       end
 
       should 'have the right mime category in the list when using the HEAD' do
-        assert_equal @repository.get_changed_files.first[:mime_category], 'application'
+        assert_equal @repository.changed_files.first[:mime_category], 'application'
       end
 
       should 'have the right editable in the list when using the HEAD' do
-        assert_equal @repository.get_changed_files.first[:editable], true
+        assert_equal @repository.changed_files.first[:editable], true
       end
+    end
+
+    context 'being cloned' do
+      setup do
+        @commit_count = 10
+        @commit_count.times do |n|
+          @content = "content #{n}"
+          @filepath = "file-#{n}"
+          @message = "message #{n}"
+          @repository.commit_file(@userinfo, @content, @filepath, @message)
+        end
+
+        @path_clone = '/tmp/ontohub/test/unit/git/repository_clone'
+        assert !File.exists?(@path_clone), 'Folder to clone into already exists'
+      end
+
+      teardown do
+        FileUtils.rmtree(@path_clone) if File.exists?(@path_clone)
+        @path_clone = nil
+      end
+
+      context 'fully from filesystem' do
+        setup do
+          @result = GitRepository.clone_git("file://#{@path}", @path_clone)
+          @repository_clone = GitRepository.new(@path_clone)
+        end
+
+        teardown do
+          @repository_clone = nil
+        end
+
+        should 'be sueccessful' do
+          assert @result[:success]
+        end
+
+        should 'create a repository in the new path' do
+          assert GitRepository.is_bare_repository?(@path_clone), 'Clone is not a valid bare repository'
+        end
+
+        should 'clone all commits' do
+          assert_equal @repository.commits, @repository_clone.commits
+        end
+
+        should 'create the same branches in the clone' do
+          assert(@repository.get_branches & @repository_clone.get_branches == @repository.get_branches, 'The original branches are not a subset of the clone branches.')
+        end
+      end
+
+      context 'in a shallow way (only last few commits)' do
+        setup do
+          @max_commits = 3
+          @result = GitRepository.clone_git("file://#{@path}", @path_clone, @max_commits)
+          @repository_clone = GitRepository.new(@path_clone)
+        end
+
+        teardown do
+          @repository_clone = nil
+        end
+
+        should 'be sueccessful' do
+          assert @result[:success]
+        end
+
+        should 'create a repository in the new path' do
+          assert GitRepository.is_bare_repository?(@path_clone), 'Clone is not a valid bare repository'
+        end
+
+        should 'clone only the last commits (max_commits+1)' do
+          assert_equal @max_commits+1, @repository_clone.commits.size
+          assert_equal @repository.head_oid, @repository_clone.head_oid
+        end
+      end
+
+      context 'in a shallow way (only last commit)' do
+        setup do
+          @max_commits = 1
+          @result = GitRepository.clone_git("file://#{@path}", @path_clone, @max_commits)
+          @repository_clone = GitRepository.new(@path_clone)
+        end
+
+        teardown do
+          @result = nil
+          @repository_clone = nil
+        end
+
+        should 'be sueccessful' do
+          assert @result[:success]
+        end
+
+        should 'create a repository in the new path' do
+          assert GitRepository.is_bare_repository?(@path_clone), 'Clone is not a valid bare repository'
+        end
+
+        should 'clone only the last two commits' do
+          assert_equal @max_commits+1, @repository_clone.commits.size
+          assert_equal @repository.head_oid, @repository_clone.head_oid
+        end
+      end
+
+      context 'should produce the typical git errors' do
+        setup {} #needed for teardown
+
+        teardown do
+          @repository_clone = nil
+        end
+
+        should '(not a repository)' do
+          result = GitRepository.clone_git('/', @path_clone)
+          assert_equal "fatal: repository '/' does not exist\n", result[:err]
+        end
+
+        should '(already exists)' do
+          GitRepository.clone_git(@path, @path_clone)
+          result = GitRepository.clone_git(@path, @path_clone)
+          assert_equal "fatal: destination path '#{@path_clone}' already exists and is not an empty directory.\n", result[:err]
+        end
+      end
+    end
+  end
+
+  context 'importing an svn repository' do
+    setup do
+      @path_clone = '/tmp/ontohub/test/unit/git/repository_clone'
+      @result = GitRepository.clone_svn('http://colore.googlecode.com/svn/trunk/ontologies/algebra', @path_clone)
+      @repository_clone = GitRepository.new(@path_clone)
+    end
+
+    teardown do
+      FileUtils.rmtree(@path_clone) if File.exists?(@path_clone)
+      @result = nil
+      @repository_clone = nil
+    end
+
+    should 'be sueccessful' do
+      assert @result[:success]
+    end
+
+    should 'create a valid repository' do
+      assert GitRepository.is_bare_repository?(@path_clone), 'Clone is not a valid bare repository'
+    end
+
+    should 'create a shallow copy with only a single commit' do
+      @repository = GitRepository.new(@path_clone)
+      assert_equal 1, @repository.commits.size
     end
   end
 end
