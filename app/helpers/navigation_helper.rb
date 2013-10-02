@@ -13,7 +13,7 @@ module NavigationHelper
           ['Projects', :projects],
           ['Categories', :categories],
           ['Tasks', :tasks],
-          ['Licens Model', :licens_model]
+          ['License Model', :license_model]
         ]
 
     @active_kind = nil
