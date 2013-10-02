@@ -45,8 +45,6 @@ GEM
     acts_as_tree (1.2.0)
       activerecord (>= 3.0.0)
     addressable (2.3.3)
-    ancestry (2.0.0)
-      activerecord (>= 3.0.0)
     arel (3.0.2)
     bcrypt-ruby (3.0.1)
     bootstrap-sass (2.3.2.1)
@@ -95,6 +93,8 @@ GEM
       safe_yaml (~> 0.9.0)
     d3_rails (3.2.8)
       railties (>= 3.1.0)
+    dagnabit (3.0.1)
+      activerecord (>= 2.3.0)
     database_cleaner (0.9.1)
     devise (2.2.3)
       bcrypt-ruby (~> 3.0)
@@ -329,7 +329,6 @@ PLATFORMS
 
 DEPENDENCIES
   acts_as_tree
-  ancestry
   bootstrap-sass (~> 2.3.2)
   cancan (~> 1.6.7)
   capistrano
@@ -339,6 +338,7 @@ DEPENDENCIES
   coffee-rails (~> 3.2.1)
   compass (~> 0.12.1)
   d3_rails
+  dagnabit
   database_cleaner
   devise (~> 2.0)
   exception_notification (~> 2.6.1)

@@ -82,8 +82,10 @@ gem 'ruby-graphviz', "~> 1.0.8"
 gem "faker", "~> 1.1.2"
 
 # Ancestry enabling tree structure in category model
-gem 'ancestry'
+# gem 'ancestry'
 
+# Use dagnabit to model categories
+gem 'dagnabit'
 
 group :test do
   gem 'mocha', require: 'mocha/setup'
