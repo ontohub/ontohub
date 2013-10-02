@@ -10,7 +10,7 @@
     = render :partial => '/shared/navbar'
     = flash_messages
     %div.content
-      - if (@content_kind == :jobs) or (!@content_kind and !user_signed_in?)
+      - if (!@content_kind and !user_signed_in?)
         = yield
       - else
         %div.content-padding
