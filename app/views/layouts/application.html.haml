@@ -23,5 +23,7 @@
       - if ! user_signed_in?
         %div{style: 'position: absolute; top: 83px; right:15px; width: 303px;'}
           = render partial: '/shared/signin'
+          %div.content-padding
+          = render partial: '/shared/signup'
     = render :partial => '/shared/footer'
     = javascript_include_tag "application"
