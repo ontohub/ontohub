@@ -106,6 +106,11 @@ group :development do
   gem 'quiet_assets'
 end
 
+group :development, :test do
+  gem 'byebug'
+  gem 'rspec-rails', '~> 2.0'
+end
+
 group :production do
   gem 'god'
   gem 'exception_notification', '~> 2.6.1'
