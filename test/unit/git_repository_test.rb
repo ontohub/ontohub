@@ -453,7 +453,38 @@ class GitRepositoryTest < ActiveSupport::TestCase
         @path_clone = nil
       end
 
-      context 'fully from filesystem' do
+      context 'fully from filesystem into a bare repository' do
+        setup do
+          @result = GitRepository.clone_git("file://#{@path}", @path_clone, true)
+          @repository_clone = GitRepository.new(@path_clone)
+        end
+
+        teardown do
+          @repository_clone = nil
+        end
+
+        should 'be sueccessful' do
+          assert @result[:success]
+        end
+
+        should 'be a bare repository' do
+          assert GitRepository.is_bare_repository?(@path_clone)
+        end
+
+        should 'not be an svn clone' do
+          assert !@repository_clone.is_svn_clone?
+        end
+
+        should 'clone all commits' do
+          assert_equal @repository.commits, @repository_clone.commits
+        end
+
+        should 'create the same branches in the clone' do
+          assert(@repository.branches & @repository_clone.branches == @repository.branches, 'The original branches are not a subset of the clone branches.')
+        end
+      end
+
+      context 'fully from filesystem into repository with working copy' do
         setup do
           @result = GitRepository.clone_git("file://#{@path}", @path_clone)
           @repository_clone = GitRepository.new(@path_clone)
@@ -467,12 +498,12 @@ class GitRepositoryTest < ActiveSupport::TestCase
           assert @result[:success]
         end
 
-        should 'not be an svn clone' do
-          assert !@repository_clone.is_svn_clone?
+        should 'be a repository with working copy' do
+          assert GitRepository.is_repository_with_working_copy?(@path_clone)
         end
 
-        should 'create a repository in the new path' do
-          assert GitRepository.is_bare_repository?(@path_clone), 'Clone is not a valid bare repository'
+        should 'not be an svn clone' do
+          assert !@repository_clone.is_svn_clone?
         end
 
         should 'clone all commits' do
@@ -545,9 +576,6 @@ class GitRepositoryTest < ActiveSupport::TestCase
       @result = GitRepository.clone_svn('http://colore.googlecode.com/svn/trunk/ontologies/owltime', @path_clone_bare, @path_clone_wc, 703)
       @repository_clone_wc = GitRepository.new(@path_clone_wc)
       @repository_clone_bare = GitRepository.new(@path_clone_bare)
-
-      DIR = File.dirname(__FILE__)
-      SCRIPT_REMOTE_V = "#{DIR}/git_repository_remote_v.sh"
     end
 
     teardown do

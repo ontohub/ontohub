@@ -6,27 +6,28 @@ module GitRepository::Cloning
   DIR = File.dirname(__FILE__)
   SCRIPT_REMOTE_ADD = "#{DIR}/remote_add_origin.sh"
   SCRIPT_REMOTE_RM  = "#{DIR}/remote_rm_origin.sh"
+  SCRIPT_REMOTE_SET = "#{DIR}/remote_set_url_push.sh"
   SCRIPT_PUSH       = "#{DIR}/push.sh"
   SCRIPT_PULL       = "#{DIR}/pull.sh"
   SCRIPT_SVN_REBASE = "#{DIR}/svn_rebase.sh"
 
   # runs `git push`
   def push
-    stdin, stdout, stderr, wait_thr = Open3.popen3 'sh', SCRIPT_PUSH, repo.path
+    stdin, stdout, stderr, wait_thr = Open3.popen3 'sh', SCRIPT_PUSH, local_path
 
     { out: stdout.gets(nil), err: stderr.gets(nil), success: wait_thr.value.success? }
   end
 
   # runs `git pull`
   def pull
-    stdin, stdout, stderr, wait_thr = Open3.popen3 'sh', SCRIPT_PULL, repo.path
+    stdin, stdout, stderr, wait_thr = Open3.popen3 'sh', SCRIPT_PULL, local_path
 
     { out: stdout.gets(nil), err: stderr.gets(nil), success: wait_thr.value.success? }
   end
 
   # runs `git svn rebase`
   def svn_rebase
-    stdin, stdout, stderr, wait_thr = Open3.popen3 'sh', SCRIPT_SVN_REBASE, repo.path.split('/')[0..-2].join('/')
+    stdin, stdout, stderr, wait_thr = Open3.popen3 'sh', SCRIPT_SVN_REBASE, local_path
 
     { out: stdout.gets(nil), err: stderr.gets(nil), success: wait_thr.value.success? }
   end
@@ -35,10 +36,32 @@ module GitRepository::Cloning
     branches.map {|r| r[:refname]}.include? 'refs/remotes/git-svn'
   end
 
+  def remote_add_origin(target_path)
+    stdin, stdout, stderr, wait_thr = Open3.popen3 'sh', SCRIPT_REMOTE_ADD, local_path, target_path
+
+    { out: stdout.gets(nil), err:   stderr.gets(nil), success: wait_thr.value.success? }
+  end
+
+  def remote_set_url_push(target_path)
+    stdin, stdout, stderr, wait_thr = Open3.popen3 'sh', SCRIPT_REMOTE_SET, local_path, target_path
+
+    { out: stdout.gets(nil), err:   stderr.gets(nil), success: wait_thr.value.success? }
+  end
+
+  def remote_rm_origin
+    stdin, stdout, stderr, wait_thr = Open3.popen3 'sh', SCRIPT_REMOTE_RM, local_path
+
+    { out: stdout.gets(nil), err: stderr.gets(nil), success: wait_thr.value.success? }
+  end
+
   module ClassMethods
     # clones a git repository into a bare git repository
-    def clone_git(source_path, target_path)
-      stdin, stdout, stderr, wait_thr = Open3.popen3 'git', 'clone', '--bare', source_path, target_path
+    def clone_git(source_path, target_path, bare=false)
+      if bare
+        stdin, stdout, stderr, wait_thr = Open3.popen3 'git', 'clone', '--bare', source_path, target_path
+      else
+        stdin, stdout, stderr, wait_thr = Open3.popen3 'git', 'clone', source_path, target_path
+      end
 
       { out: stdout.gets(nil), err: stderr.gets(nil), success: wait_thr.value.success? }
     end
@@ -54,17 +77,29 @@ module GitRepository::Cloning
         result_svn = clone_svn_only(source_path, target_path_working_copy, max_revision)
         return result_svn unless result_svn[:success]
 
-        result_git = clone_git(target_path_working_copy, target_path_bare)
+        result_git = clone_git(target_path_working_copy, target_path_bare, true)
         return result_git unless result_git[:success]
 
-        result_remote_rm = remote_rm_origin(target_path_bare)
+        result_remote_rm = GitRepository.new(target_path_bare).remote_rm_origin
         return result_remote_rm unless result_remote_rm[:success]
 
-        result_remote_add = remote_add_origin(target_path_working_copy, target_path_bare)
+        result_remote_add = GitRepository.new(target_path_working_copy).remote_add_origin(target_path_bare)
         return result_remote_add unless result_remote_add[:success]
 
         result_git
       end
+    end
+
+    def is_git_repository?(address)
+      stdin, stdout, stderr, wait_thr = Open3.popen3 'git', 'ls-remote', address
+
+      wait_thr.value.success?
+    end
+
+    def is_svn_repository?(address)
+      stdin, stdout, stderr, wait_thr = Open3.popen3 'svn', 'ls', address
+
+      wait_thr.value.success?
     end
 
     protected
@@ -78,17 +113,15 @@ module GitRepository::Cloning
 
       { out: stdout.gets(nil), err: stderr.gets(nil), success: wait_thr.value.success? }
     end
+  end
 
-    def remote_add_origin(source_path, target_path)
-      stdin, stdout, stderr, wait_thr = Open3.popen3 'sh', SCRIPT_REMOTE_ADD, source_path, target_path
+  protected
 
-      { out: stdout.gets(nil), err:   stderr.gets(nil), success: wait_thr.value.success? }
-    end
-
-    def remote_rm_origin(path)
-      stdin, stdout, stderr, wait_thr = Open3.popen3 'sh', SCRIPT_REMOTE_RM, path
-
-      { out: stdout.gets(nil), err: stderr.gets(nil), success: wait_thr.value.success? }
+  def local_path
+    if repo.bare?
+      repo.path
+    else
+      repo.path.split('/')[0..-2].join('/')
     end
   end
 end
