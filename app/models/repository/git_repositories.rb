@@ -154,7 +154,7 @@ module Repository::GitRepositories
     unless source_type.nil?
       repo_working_copy = GitRepository.new(local_path_working_copy)
 
-      case source_type
+      result_pull = case source_type
       when Repository::SourceTypes::GIT
         repo_working_copy.pull
       when Repository::SourceTypes::SVN
@@ -162,22 +162,24 @@ module Repository::GitRepositories
       else
         raise Repository::ImportError, "unknown source type: #{source_type}"
       end
+      result_push = repo_working_copy.push
 
-      repo_working_copy.push
+      result_pull[:success] && result_push[:success]
     end
   end
 
   module ClassMethods
     # creates a new repository and imports the contents from the source git repository
-    def import_from_git(source, name, params=nil)
+    def import_from_git(user, source, name, params={})
       raise Repository::ImportError, "#{source} is not a git repository" unless GitRepository.is_git_repository? source
 
-      params ||= {}
       params[:name] = name
-      #params[:source_type] = Repository::SourceTypes::GIT
-      #params[:source_address] = source
+      params[:source_type] = Repository::SourceTypes::GIT
+      params[:source_address] = source
 
       r = Repository.create!(params)
+      r.user = user
+      r.save!
       r.destroy_git
 
       result_wc = GitRepository.clone_git(source, r.local_path_working_copy, false)
@@ -197,15 +199,16 @@ module Repository::GitRepositories
     end
 
     # creates a new repository and imports the contents from the source svn repository
-    def import_from_svn(source, name, params=nil)
+    def import_from_svn(user, source, name, params={})
       raise Repository::ImportError, "#{source} is not an svn repository" unless GitRepository.is_svn_repository? source
 
-      params ||= {}
       params[:name] = name
-      #params[:source_type] = Repository::SourceTypes::SVN
-      #params[:source_address] = source
+      params[:source_type] = Repository::SourceTypes::SVN
+      params[:source_address] = source
 
       r = Repository.create!(params)
+      r.user = user
+      r.save!
       r.destroy_git
 
       result_clone = GitRepository.clone_svn(source, r.local_path, r.local_path_working_copy)

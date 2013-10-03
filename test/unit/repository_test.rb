@@ -229,7 +229,7 @@ class RepositoryTest < ActiveSupport::TestCase
           @repository_source.commit_file(@userinfo, "content #{n}", "file-#{n}", "message #{n}")
         end
 
-        @repository = Repository.import_from_git("file://#{@source_path}", 'local import', description: 'just an imported repo')
+        @repository = Repository.import_from_git(@user, "file://#{@source_path}", 'local import', description: 'just an imported repo')
       end
 
       teardown do
@@ -264,7 +264,26 @@ class RepositoryTest < ActiveSupport::TestCase
       end
     end
 
-    context 'via svn' do
+    context 'via svn (takes long time)' do
+      setup do
+        @user        = FactoryGirl.create :user
+        @source_path = 'http://colore.googlecode.com/svn/trunk/ontologies/owltime'
+        @repository  = Repository.import_from_svn(@user, @source_path, 'local svn clone', description: 'just a local svn clone')
+      end
+
+      teardown do
+        @repository.destroy
+      end
+
+      #should 'be read_only' do
+      #  assert false #TODO
+      #end
+
+      should 'work properly' do
+        assert_equal Repository::SourceTypes::SVN, @repository.source_type, 'has wrong source type'
+        assert_equal @source_path, @repository.source_address, 'has wrong source address'
+        assert @repository.sync, 'sync failed'
+      end
     end
   end
 end
