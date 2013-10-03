@@ -1,4 +1,4 @@
 #!/bin/sh
 
-echo $1
+cd $1
 git svn rebase
