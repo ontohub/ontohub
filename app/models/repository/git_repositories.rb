@@ -114,7 +114,7 @@ module Repository::GitRepositories
   def commit_id(oid)
     return { oid: git.head_oid, branch_name: 'master' } if oid.nil?
     if oid.match /[0-9a-fA-F]{40}/
-      branch_names = git.get_branches.select { |b| b[:oid] == oid }
+      branch_names = git.branches.select { |b| b[:oid] == oid }
       if branch_names.empty?
         { oid: oid, branch_name: nil }
       else

@@ -20,6 +20,7 @@ class GitRepository
     end
   end
 
+  # DELETEME (exists only for debugging purpose)
   def repo
     @repo
   end
@@ -62,7 +63,7 @@ class GitRepository
     path.split("/")[0..-2].join("/")
   end
 
-  def get_branches
+  def branches
     @repo.refs.map do |r|
       {
         refname: r.name,
@@ -96,6 +97,14 @@ class GitRepository
 
   def head_oid
     @repo.head.target
+  end
+
+  def self.is_repository_with_working_copy?(path)
+    repo = Rugged::Repository.new(path)
+
+    !repo.bare?
+  rescue Rugged::RepositoryError
+    false
   end
 
   def self.is_bare_repository?(path)

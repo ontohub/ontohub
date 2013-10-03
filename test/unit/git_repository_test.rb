@@ -467,6 +467,10 @@ class GitRepositoryTest < ActiveSupport::TestCase
           assert @result[:success]
         end
 
+        should 'not be an svn clone' do
+          assert !@repository_clone.is_svn_clone?
+        end
+
         should 'create a repository in the new path' do
           assert GitRepository.is_bare_repository?(@path_clone), 'Clone is not a valid bare repository'
         end
@@ -476,106 +480,49 @@ class GitRepositoryTest < ActiveSupport::TestCase
         end
 
         should 'create the same branches in the clone' do
-          assert(@repository.get_branches & @repository_clone.get_branches == @repository.get_branches, 'The original branches are not a subset of the clone branches.')
-        end
-      end
-
-      context 'in a shallow way (only last few commits)' do
-        setup do
-          @max_commits = 3
-          @result = GitRepository.clone_git("file://#{@path}", @path_clone, @max_commits)
-          @repository_clone = GitRepository.new(@path_clone)
-        end
-
-        teardown do
-          @repository_clone = nil
-        end
-
-        should 'be sueccessful' do
-          assert @result[:success]
-        end
-
-        should 'create a repository in the new path' do
-          assert GitRepository.is_bare_repository?(@path_clone), 'Clone is not a valid bare repository'
-        end
-
-        should 'clone only the last commits (max_commits+1)' do
-          assert_equal @max_commits+1, @repository_clone.commits.size
-          assert_equal @repository.head_oid, @repository_clone.head_oid
-        end
-      end
-
-      context 'in a shallow way (only last commit)' do
-        setup do
-          @max_commits = 1
-          @result = GitRepository.clone_git("file://#{@path}", @path_clone, @max_commits)
-          @repository_clone = GitRepository.new(@path_clone)
-        end
-
-        teardown do
-          @result = nil
-          @repository_clone = nil
-        end
-
-        should 'be sueccessful' do
-          assert @result[:success]
-        end
-
-        should 'create a repository in the new path' do
-          assert GitRepository.is_bare_repository?(@path_clone), 'Clone is not a valid bare repository'
-        end
-
-        should 'clone only the last two commits' do
-          assert_equal @max_commits+1, @repository_clone.commits.size
-          assert_equal @repository.head_oid, @repository_clone.head_oid
-        end
-      end
-
-      context 'should produce the typical git errors' do
-        setup {} #needed for teardown
-
-        teardown do
-          @repository_clone = nil
-        end
-
-        should '(not a repository)' do
-          result = GitRepository.clone_git('/', @path_clone)
-          assert_equal "fatal: repository '/' does not exist\n", result[:err]
-        end
-
-        should '(already exists)' do
-          GitRepository.clone_git(@path, @path_clone)
-          result = GitRepository.clone_git(@path, @path_clone)
-          assert_equal "fatal: destination path '#{@path_clone}' already exists and is not an empty directory.\n", result[:err]
+          assert(@repository.branches & @repository_clone.branches == @repository.branches, 'The original branches are not a subset of the clone branches.')
         end
       end
     end
   end
 
-  context 'importing an svn repository' do
+  context 'importing an svn repository (takes a lot of time)' do
     setup do
-      @path_clone = '/tmp/ontohub/test/unit/git/repository_clone'
-      @result = GitRepository.clone_svn('http://colore.googlecode.com/svn/trunk/ontologies/algebra', @path_clone)
-      @repository_clone = GitRepository.new(@path_clone)
+      @path_clone_wc = '/tmp/ontohub/test/unit/git/repository_clone_wc'
+      @path_clone_bare = '/tmp/ontohub/test/unit/git/repository_clone_bare'
+      @result = GitRepository.clone_svn('http://colore.googlecode.com/svn/trunk/ontologies/owltime', @path_clone_bare, @path_clone_wc)
+      @repository_clone_wc = GitRepository.new(@path_clone_wc)
+      @repository_clone_bare = GitRepository.new(@path_clone_bare)
+
+      DIR = File.dirname(__FILE__)
+      SCRIPT_REMOTE = "#{DIR}/git_repository_remote_v.sh"
     end
 
     teardown do
-      FileUtils.rmtree(@path_clone) if File.exists?(@path_clone)
+      FileUtils.rmtree(@path_clone_wc) if File.exists?(@path_clone_wc)
+      FileUtils.rmtree(@path_clone_bare) if File.exists?(@path_clone_bare)
       @result = nil
-      @repository_clone = nil
+      @repository_clone_wc = nil
+      @repository_clone_bare = nil
     end
 
-    should 'be sueccessful' do
-      assert @result[:success]
-    end
+    # merged all tests into a single test sincy cloning takes very long time
+    # there are no functions tested that cause side effects
+    should 'work properly' do
+      assert @result[:success], "Cloning was unsuccessful: #{@result[:err]}"
+      assert @repository_clone_wc.is_svn_clone?, "Working copy is not an svn clone"
+      assert !@repository_clone_bare.is_svn_clone?, "Bare repo is an svn clone"
+      assert GitRepository.is_repository_with_working_copy?(@path_clone_wc), 'Clone is not a valid repository with working copy'
+      assert GitRepository.is_bare_repository?(@path_clone_bare), 'Clone is not a valid bare repository'
 
-    should 'create a valid repository' do
-      assert GitRepository.is_bare_repository?(@path_clone), 'Clone is not a valid bare repository'
-    end
+      stdin, stdout, stderr, wait_thr = Open3.popen3 'sh', SCRIPT_REMOTE, @path_clone_wc
+      assert wait_thr.value.success?
+      out = stdout.gets(nil).gsub(/origin\s+(.*)\(.*\)\s/, '\1').split.uniq
+      assert_equal [@path_clone_bare], out, 'working copy does not have any remotes'
 
-    should 'create a shallow copy with only a single commit' do
-      @repository = GitRepository.new(@path_clone)
-      assert_equal 1, @repository.commits.size
+      stdin, stdout, stderr, wait_thr = Open3.popen3 'sh', SCRIPT_REMOTE, @path_clone_bare
+      assert wait_thr.value.success?
+      assert_nil stdout.gets(nil), 'bare repository has remotes'
     end
   end
 end
