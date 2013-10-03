@@ -26,7 +26,7 @@ module GitRepository::Cloning
 
   # runs `git svn rebase`
   def svn_rebase
-    stdin, stdout, stderr, wait_thr = Open3.popen3 'sh', SCRIPT_SVN_REBASE, repo.path
+    stdin, stdout, stderr, wait_thr = Open3.popen3 'sh', SCRIPT_SVN_REBASE, repo.path.split('/')[0..-2].join('/')
 
     { out: stdout.gets(nil), err: stderr.gets(nil), success: wait_thr.value.success? }
   end
@@ -44,13 +44,14 @@ module GitRepository::Cloning
     end
 
     # clones a git repository into a bare git repository and one with a working copy
-    def clone_svn(source_path, target_path_bare, target_path_working_copy)
+    # last parameter (max_revision) is used for testing only
+    def clone_svn(source_path, target_path_bare, target_path_working_copy, max_revision=nil)
       if File.exists? target_path_bare
         { out: nil, err: "#{target_path_bare} already exists.", success: false }
       elsif File.exists? target_path_working_copy
         { out: nil, err: "#{target_path_working_copy} already exists.", success: false }
       else
-        result_svn = clone_svn_only(source_path, target_path_working_copy)
+        result_svn = clone_svn_only(source_path, target_path_working_copy, max_revision)
         return result_svn unless result_svn[:success]
 
         result_git = clone_git(target_path_working_copy, target_path_bare)
@@ -68,8 +69,12 @@ module GitRepository::Cloning
 
     protected
 
-    def clone_svn_only(source_path, target_path)
-      stdin, stdout, stderr, wait_thr = Open3.popen3 'git', 'svn', 'clone', source_path, target_path
+    def clone_svn_only(source_path, target_path, max_revision=nil)
+      if max_revision.nil?
+        stdin, stdout, stderr, wait_thr = Open3.popen3 'git', 'svn', 'clone', source_path, target_path
+      else
+        stdin, stdout, stderr, wait_thr = Open3.popen3 'git', 'svn', 'clone', '-r', "0:#{max_revision}", source_path, target_path
+      end
 
       { out: stdout.gets(nil), err: stderr.gets(nil), success: wait_thr.value.success? }
     end

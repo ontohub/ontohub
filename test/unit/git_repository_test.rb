@@ -482,6 +482,14 @@ class GitRepositoryTest < ActiveSupport::TestCase
         should 'create the same branches in the clone' do
           assert(@repository.branches & @repository_clone.branches == @repository.branches, 'The original branches are not a subset of the clone branches.')
         end
+
+        should 'be able to pull new changes' do
+          @repository.commit_file(@userinfo, @content+'new', @filepath, 'change file for pull')
+          result = @repository_clone.pull
+          
+          assert result[:success], "Pull was unseccessful: #{result[:err]}"
+          assert_equal @repository.commits, @repository_clone.commits
+        end
       end
     end
   end
@@ -495,7 +503,7 @@ class GitRepositoryTest < ActiveSupport::TestCase
       @repository_clone_bare = GitRepository.new(@path_clone_bare)
 
       DIR = File.dirname(__FILE__)
-      SCRIPT_REMOTE = "#{DIR}/git_repository_remote_v.sh"
+      SCRIPT_REMOTE_V = "#{DIR}/git_repository_remote_v.sh"
     end
 
     teardown do
@@ -515,14 +523,49 @@ class GitRepositoryTest < ActiveSupport::TestCase
       assert GitRepository.is_repository_with_working_copy?(@path_clone_wc), 'Clone is not a valid repository with working copy'
       assert GitRepository.is_bare_repository?(@path_clone_bare), 'Clone is not a valid bare repository'
 
-      stdin, stdout, stderr, wait_thr = Open3.popen3 'sh', SCRIPT_REMOTE, @path_clone_wc
+      # remote handling for working copy
+      stdin, stdout, stderr, wait_thr = Open3.popen3 'sh', SCRIPT_REMOTE_V, @path_clone_wc
       assert wait_thr.value.success?
       out = stdout.gets(nil).gsub(/origin\s+(.*)\(.*\)\s/, '\1').split.uniq
       assert_equal [@path_clone_bare], out, 'working copy does not have any remotes'
 
-      stdin, stdout, stderr, wait_thr = Open3.popen3 'sh', SCRIPT_REMOTE, @path_clone_bare
+      # remote handling for bare repo
+      stdin, stdout, stderr, wait_thr = Open3.popen3 'sh', SCRIPT_REMOTE_V, @path_clone_bare
       assert wait_thr.value.success?
       assert_nil stdout.gets(nil), 'bare repository has remotes'
+
+      assert_equal @repository_clone_wc.commits, @repository_clone_bare.commits
+    end
+  end
+
+  context 'importing new changes from svn and pushing them into the bare repo' do
+    setup do
+      @path_clone_wc = '/tmp/ontohub/test/unit/git/repository_clone_wc'
+      @path_clone_bare = '/tmp/ontohub/test/unit/git/repository_clone_bare'
+      @result = GitRepository.clone_svn('http://colore.googlecode.com/svn/trunk/ontologies/owltime', @path_clone_bare, @path_clone_wc, 703)
+      @repository_clone_wc = GitRepository.new(@path_clone_wc)
+      @repository_clone_bare = GitRepository.new(@path_clone_bare)
+
+      DIR = File.dirname(__FILE__)
+      SCRIPT_REMOTE_V = "#{DIR}/git_repository_remote_v.sh"
+    end
+
+    teardown do
+      FileUtils.rmtree(@path_clone_wc) if File.exists?(@path_clone_wc)
+      FileUtils.rmtree(@path_clone_bare) if File.exists?(@path_clone_bare)
+      @result = nil
+      @repository_clone_wc = nil
+      @repository_clone_bare = nil
+    end
+
+    should 'work properly' do
+      result_rebase = @repository_clone_wc.svn_rebase
+      assert result_rebase[:success], "rebase failed:\n#{result_rebase[:out]}\n#{result_rebase[:err]}"
+      assert(@repository_clone_wc.commits.size > @repository_clone_bare.commits.size, 'no new commits in working copy')
+
+      result_push = @repository_clone_wc.push
+      assert result_push[:success], "push failed:\n#{result_push[:out]}\n#{result_push[:err]}"
+      assert_equal @repository_clone_wc.commits, @repository_clone_bare.commits
     end
   end
 end
