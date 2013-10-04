@@ -170,7 +170,11 @@ module Repository::GitRepositories
       end
       result_push = repo_working_copy.push
 
-      result_pull[:success] && result_push[:success]
+      {
+        success: result_pull[:success] && result_push[:success],
+        head_oid_pre: result_pull[:head_oid_pre],
+        head_oid_post: result_pull[:head_oid_post]
+      }
     end
   end
 
