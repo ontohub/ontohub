@@ -22,6 +22,7 @@ class OntologiesController < InheritedResources::Base
   end
 
   def new
+    @content_kind = ":ontologies"
     @ontology_version = build_resource.versions.build
   end
 
@@ -34,6 +35,7 @@ class OntologiesController < InheritedResources::Base
   
   def show
     @content_kind = :ontologies
+    @content_object = :ontology
     if !params[:repository_id]
       # redirect for legacy routing
       ontology = Ontology.find params[:id]

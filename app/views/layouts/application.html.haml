@@ -14,13 +14,17 @@
         = yield
       - else
         %div.content-padding
-        %div.col-md-8
-          = yield
-        - if user_signed_in?
-          %div.col-md-4
-            = render partial: '/shared/user_content'
+        - if @content_object.nil?
+          %div.col-md-8
+            = yield
+          - if user_signed_in?
+            %div.col-md-4
+              = render partial: '/shared/user_content'
+        - else
+          %div.col-md-12
+            = yield
       %div{style: 'clear:both;'}
-      - if ! user_signed_in?
+      - if @content_object.nil? and ! user_signed_in?
         %div{style: 'position: absolute; top: 83px; right:15px; width: 303px;'}
           = render partial: '/shared/signin'
           %div.content-padding
