@@ -60,11 +60,11 @@ module Repository::GitRepositories
       o.iri  = iri || "http://#{Settings.hostname}/#{path}/#{basepath}"
       o.name = filepath.split('/')[-1].split(".")[0].capitalize
 
-      version = o.versions.build({ :commit_oid => commit_oid, :user => user }, { without_protection: true })
-
       o.repository = self
       o.save!
-      o.ontology_version = version;
+      version = o.versions.build({ :commit_oid => commit_oid, :user => user }, { without_protection: true })
+      version.save!
+      o.ontology_version = version
       o.save!
     end
 
