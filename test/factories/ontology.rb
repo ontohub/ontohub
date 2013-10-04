@@ -22,8 +22,12 @@ FactoryGirl.define do
       factory :linked_distributed_ontology do |ontology|
         ontology.after(:build) do |ontology|
           logic = FactoryGirl.create(:logic)
-          child_one = FactoryGirl.create(:ontology, logic: logic)
-          child_two = FactoryGirl.create(:ontology, logic: logic)
+          child_one = FactoryGirl.create(:ontology,
+            logic: logic,
+            repository: ontology.repository)
+          child_two = FactoryGirl.create(:ontology,
+            logic: logic,
+            repository: ontology.repository)
 
           FactoryGirl.create(:link,
                             source: child_one,
@@ -38,16 +42,24 @@ FactoryGirl.define do
         ontology.after(:build) do |ontology|
           logic_one = FactoryGirl.create(:logic)
           logic_two = FactoryGirl.create(:logic)
-          ontology.children << FactoryGirl.create(:ontology, logic: logic_one)
-          ontology.children << FactoryGirl.create(:ontology, logic: logic_two)
+          ontology.children << FactoryGirl.create(:ontology,
+            logic: logic_one,
+            repository: ontology.repository)
+          ontology.children << FactoryGirl.create(:ontology,
+            logic: logic_two,
+            repository: ontology.repository)
         end
       end
 
       factory :homogeneous_ontology do |ontology|
         ontology.after(:build) do |ontology|
           logic_one = FactoryGirl.create(:logic)
-          ontology.children << FactoryGirl.create(:ontology, logic: logic_one)
-          ontology.children << FactoryGirl.create(:ontology, logic: logic_one)
+          ontology.children << FactoryGirl.create(:ontology,
+            logic: logic_one,
+            repository: ontology.repository)
+          ontology.children << FactoryGirl.create(:ontology,
+            logic: logic_one,
+            repository: ontology.repository)
         end
       end
     end
