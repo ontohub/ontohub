@@ -2,7 +2,8 @@
 <ui:UiBinder xmlns:ui="urn:ui:com.google.gwt.uibinder"
 	xmlns:g="urn:import:com.google.gwt.user.client.ui">
 	<ui:style>
-	    @external .gwt-SuggestBoxPopup .item .item-selected;
+	    @external .gwt-SuggestBoxPopup .item .item-selected, .input-group, .form-control, .input-group-btn, .btn, .btn-primary, .glyphicon, .glyphicon-search;
+	    .input-group, .form-control, .input-group-btn, .btn, .btn-primary, .glyphicon, .glyphicon-search {};
 	    .gwt-SuggestBoxPopup {
 	      background-color: white;
 	      border: 1px solid #cccccc;
@@ -35,68 +36,21 @@
           position: relative;
           width: 665px;
 		}
-		.bar {
-          -webkit-appearance: none;
-          -webkit-box-shadow: rgba(0, 0, 0, 0.0742188) 0px 1px 1px 0px inset, rgba(103, 175, 234, 0.386719) 0px 0px 5px 0px;
-          -webkit-rtl-ordering: logical;
-          -webkit-transition-delay: 0s, 0s;
-          -webkit-transition-duration: 0.15000000596046448s, 0.15000000596046448s;
-          -webkit-transition-property: border-color, box-shadow;
-          -webkit-transition-timing-function: cubic-bezier(0.42, 0, 0.58, 1), cubic-bezier(0.42, 0, 0.58, 1);
-          -webkit-user-select: text;
-          background-color: rgb(255, 255, 255);
-          background-image: none;
-          border-radius: 6px;
-          border-bottom-color: rgb(138, 185, 223);
-          border-bottom-style: solid;
-          border-bottom-width: 1px;
-          border-collapse: separate;
-          border-left-color: rgb(138, 185, 223);
-          border-left-style: solid;
-          border-left-width: 1px;
-          border-right-color: rgb(138, 185, 223);
-          border-right-style: solid;
-          border-right-width: 1px;
-          border-top-color: rgb(138, 185, 223);
-          border-top-style: solid;
-          border-top-width: 1px;
-          box-shadow: rgba(0, 0, 0, 0.0742188) 0px 1px 1px 0px inset, rgba(103, 175, 234, 0.386719) 0px 0px 5px 0px;
-          box-sizing: border-box;
-          color: rgb(85, 85, 85);
-          cursor: auto;
-          display: inline-block;
-          font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif;
-          font-size: 18px;
-          height: 45px;
-          letter-spacing: normal;
-          line-height: 23px;
-          margin-bottom: 0px;
-          margin-left: 0px;
-          margin-right: 0px;
-          margin-top: 0px;
-          padding: 5px 8px;
-          position: static;
-          text-align: -webkit-auto;
-          text-indent: 0px;
-          text-shadow: none;
-          text-transform: none;
-          vertical-align: middle;
-          width: 618px;
-          word-spacing: 0px;
-          overflow-x: hidden;
-        }
         .bar:focus {
 	      outline: 0px none!important;
         }
         .conceptPanel {
-          display: inline-block;
+          display: block;
+          float: left;
         }
         input[type="text"].box {
 	      display: inline-block;
-	      height: 23px;
+	      font-size: 14px;
+	      font-weight: bold;
+	      padding: 3px 8px;
+	      line-height: 14px;
+	      height: 20px;
 	      width: auto;
-	      line-height: 23px!important;
-	      font-size: 18px;
           outline: 0px none!important;
           border: 0px none!important;
           box-shadow: none;
@@ -110,16 +64,22 @@
         }
         .nobreak {
           white-space: nowrap;
+          height: 20px;
         }
 	</ui:style>
 	<g:FlowPanel>
-	  <g:FlowPanel styleName="{style.container}">
-	    <g:FocusPanel styleName="{style.bar}" ui:field="bar">
+	  <g:FlowPanel styleName="input-group">
+	    <g:FocusPanel styleName="form-control" ui:field="bar">
 	      <g:FlowPanel styleName="{style.nobreak}">
 	        <g:FlowPanel styleName="{style.conceptPanel}" ui:field="conceptPanel"/>
 	        <g:SuggestBox styleName="{style.box}" ui:field="box"/>
 	      </g:FlowPanel>
 	    </g:FocusPanel>
+	    <g:SimplePanel styleName="input-group-btn">
+	      <g:SimplePanel styleName="btn btn-primary">
+	        <g:InlineLabel styleName="glyphicon glyphicon-search" />
+	      </g:SimplePanel>
+	    </g:SimplePanel>
 	  </g:FlowPanel>
 	  <g:FlowPanel ui:field="ontologyWidgetPanel"></g:FlowPanel>
 	</g:FlowPanel>

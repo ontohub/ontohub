@@ -2,38 +2,25 @@
 <ui:UiBinder xmlns:ui="urn:ui:com.google.gwt.uibinder"
 	xmlns:g="urn:import:com.google.gwt.user.client.ui">
 	<ui:style>
-		.label {
-          background-color: rgb(66, 139, 202);
-          border-radius: 13px;
-          box-sizing: border-box;
-          color: rgb(255, 255, 255);
-          display: inline;
-          font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif;
-          font-size: 18px;
-          font-weight: bold;
-          height: auto;
-          line-height: 17px;
-          padding-bottom: 3px;
-          padding-left: 9px;
-          padding-right: 9px;
-          padding-top: 2px;
-          margin-right: 5px;
-          text-align: center;
-          vertical-align: baseline;
-          white-space: nowrap;
-          width: auto;
-		}
-		.panel {
-          display: inline-block;
-        }
-        .panel:focus {
-          outline: 0px none;
-        }
-        .panel:focus .label {
-          background-color: rgb(44, 117, 180);
-        }
+	  @external .label, .label-primary;
+	  .label-primary {}
+	  .label {
+	    display:block;
+	    float: left;
+	    position:relative;
+	    font-size:14px;
+	    height: 20px;
+	    line-height:14px;
+	    padding:3px 8px;
+	    margin: 0 2px 0 0;
+	    border-radius: 10px;
+	  }
+      .label:focus {
+         outline: 0px none;
+         background-color: rgb(44, 117, 180);
+       }
 	</ui:style>
-	<g:FocusPanel styleName="{style.panel}" ui:field="panel">
-	  <g:InlineLabel styleName="{style.label}" ui:field="label" />
+	<g:FocusPanel styleName="label label-primary" ui:field="panel">
+	  <g:InlineLabel styleName="" ui:field="label" />
 	</g:FocusPanel>
 </ui:UiBinder> 
