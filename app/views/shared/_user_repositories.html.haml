@@ -3,10 +3,10 @@
   %div.panel-heading
     %h3.panel-title= current_user.first_name + "'s Repositories"
   %div.panel-body
-    - current_user.permissions.each do |permission|
-      - if (permission.item_type == "Repository")
-        - repository = Repository.find(permission.item_id)
-        %div
-          %span.glyphicon.glyphicon-hdd
-          = link_to repository.name, repository
+    - repository_ids = current_user.permissions.where(item_type: "Repository").map{|p| p.item_id }
+    - repositories = Repository.where(id: repository_ids)
+    - repositories.each do |repository|
+      %div
+        %span.glyphicon.glyphicon-hdd
+        = link_to repository.name, repository
 
