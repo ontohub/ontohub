@@ -34,7 +34,7 @@ class GitShell
         puts 'Not allowed command'
       end
     else
-      puts "Welcome to Ontohub, #{username}!"
+      exit(1)
     end
   end
 

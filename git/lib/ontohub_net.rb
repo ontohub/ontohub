@@ -3,15 +3,29 @@ require 'openssl'
 require 'json'
 
 class OntohubNet
+
+  GIT_CMD_MAP = {
+    'git-upload-pack' => 'read',
+    'git-upload-archive' => 'read',
+    'git-receive-pack' => 'write',
+  }
+
+  attr_reader :cmd, :access_right, :repo, :project_name, :key_id, :ref
+
   def allowed?(cmd, repo, key, ref)
+    @cmd = cmd
+    @access_right = GIT_CMD_MAP[cmd]
+    raise ArgumentError, "unknown cmd: #{cmd}" if access_right.nil?
+
+    @repo = repo
     project_name = repo.gsub("'", "")
     project_name = project_name.gsub(/\.git\Z/, "")
-    project_name = project_name.gsub(/\A\//, "")
+    @project_name = project_name.gsub(/\A\//, "")
 
-    key_id = key.gsub("key-", "")
+    @key_id = key.gsub("key-", "")
+    @ref = ref
 
-    url = "#{host}/allowed?key_id=#{key_id}&action=#{cmd}&ref=#{ref}&project=#{project_name}"
-    resp = get(url)
+    resp = get(build_url)
 
     !!(resp.code == '200' && resp.body == 'true')
   end
@@ -77,5 +91,12 @@ class OntohubNet
         store.add_path(ca_path)
       end
     }
+  end
+
+  private
+  def build_url
+    access_url = "#{host}/repositories/#{project_name}/ssh_access"
+    options = "?key_id=#{key_id}&permission=#{GIT_CMD_MAP[cmd]}"
+    "#{access_url}#{options}"
   end
 end
