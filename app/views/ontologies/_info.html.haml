@@ -6,12 +6,9 @@
       = link_to resource.language, resource.language
     - else
       = 'unknown'
-    - unless resource.distributed?
+    - if resource.logic
       = '/'
       = link_to resource.logic.to_s, resource.logic
-  - if resource.state != 'done'
-    %small#ontology-state{ class: resource.state, 'data-uri' => url_for(resource) }
-      = status resource
 
 = render partial: '/ontologies/menu', locals: {resource: resource}
 
@@ -20,6 +17,8 @@
 
 - if resource.oops_supported?
   = render partial: '/ontologies/oops_state', locals: {resource: resource}
+
+= status_tag
 
 %nav
   %ul.nav.nav-tabs

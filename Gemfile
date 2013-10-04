@@ -22,7 +22,7 @@ group :assets do
   gem 'jquery-rails'
   gem 'jquery-ui-rails'
   gem 'momentjs-rails'
-
+  gem 'd3_rails'
   gem 'therubyracer'
   gem 'uglifier', '>= 1.0.3'
 end
@@ -79,6 +79,10 @@ gem 'rugged'
 gem 'diffy'
 gem 'codemirror-rails'
 gem 'js-routes'
+
+group :development, :test do
+  gem 'byebug'
+end
 
 group :test do
   gem 'mocha', require: 'mocha/setup'

@@ -24,6 +24,10 @@
 //= require moment
 //= require codemirror
 //= require js-routes
+//= require d3
+
+// GWT Plugin
+//= require gwt/ontohub.nocache.js
 
 // ----------------------------------------------
 // Application

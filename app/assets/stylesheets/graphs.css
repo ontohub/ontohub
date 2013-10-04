@@ -1,0 +1,33 @@
+path.link {
+  fill: white;
+  /* stroke: #666; */
+  stroke: black;
+  stroke-width: 1.5px;
+  opacity: 0.5;
+  cursor: pointer;
+}
+
+path.link:hover {
+  stroke: black;
+  stroke-width: 2px;
+  opacity: 1;
+}
+
+circle {
+  fill: #faa;
+  stroke: #fff;
+  stroke-width: 1.5px;
+  cursor: pointer;
+}
+
+circle:hover {
+  fill: #faa;
+  stroke: #000;
+  stroke-width: 1.5px;
+}
+
+text {
+  fill: #000;
+  font: 9px sans-serif;
+  pointer-events: none;
+}

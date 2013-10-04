@@ -12,6 +12,7 @@ Ontohub::Application.routes.draw do
   
   resources :logics do
     resources :supports, :only => [:create, :update, :destroy, :index]
+    resources :graphs, :only => [:index]
   end
   
   resources :languages do
@@ -37,6 +38,10 @@ Ontohub::Application.routes.draw do
   end
   
   resources :ontologies, only: [:index, :show] do
+    collection do
+      get 'keywords' => 'ontology_search#keywords'
+      get 'search' => 'ontology_search#search'
+    end
     resources :children, :only => :index
     resources :entities, :only => :index
     resources :sentences, :only => :index

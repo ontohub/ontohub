@@ -10,8 +10,8 @@ namespace :import do
   namespace :hets do
     desc 'Import the hets library.'
     task :lib => :environment do
-      user = User.find_all_by_admin(true).first
-      user = User.find_by_email! ENV['EMAIL'] unless ENV['EMAIL'].nil?
+      user   = User.find_by_email! ENV['EMAIL'] unless ENV['EMAIL'].nil?
+      user ||= User.find_all_by_admin(true).first
       Hets.import_ontologies(user, Hets.library_path)
     end
   end
@@ -36,4 +36,11 @@ namespace :import do
       logic_mapping:  Proc.new{ |h| save(h) },
       support:        Proc.new{ |h| save(h) }
   end
+
+  desc 'Import keywords starting with P.'
+  task :keywords => :environment do
+    ontologySearch = OntologySearch.new()
+    puts ontologySearch.makeKeywordListJson('P')
+  end
+
 end

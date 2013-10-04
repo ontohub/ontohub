@@ -9,6 +9,7 @@ module Hets
   class HetsVersionDateFormatError < HetsError; end
 
   EXTENSIONS = %w(casl clf clif dg dol het hol hs kif owl rdf spcf thy)
+  EXTENSIONS_DIST = %w(casl dol hascasl het)
 
   class Config
     attr_reader :path, :library_path
@@ -82,7 +83,7 @@ module Hets
     end
 
 
-    command = "#{@@config.path} -o xml --full-signatures -v2 #{output_path} '#{input_file}' 2>&1"
+    command = "#{@@config.path} -o xml --full-signatures -a none -v2 #{output_path} '#{input_file}' 2>&1"
 
     Rails.logger.debug command
 
@@ -105,14 +106,6 @@ module Hets
     return output.split(': ').last
   end
 
-  # Traverses a directory for ontologies with supported extensions recursively,
-  # yielding their path.
-  def self.find_ontologies(dir)
-    EXTENSIONS.each do |extension|
-      Dir.glob("#{dir}/**/*.#{extension}").each { |path| yield path }
-    end
-  end
-
   # Traverses a directory recursively, importing ontology file with supported
   # extension.
   #
@@ -132,10 +125,18 @@ module Hets
   def self.import_ontology(user, path)
     puts path
 
-    o = Ontology.new
+    ext = path.split('.').last
+
+    o = if EXTENSIONS_DIST.include? ext
+      DistributedOntology.new
+    else
+      SingleOntology.new
+    end
+
     # TODO Use custom ontology iris detached from the local file system
     o.iri = "file://#{path}"
-    o.name = File.basename(path, ".#{extension}")
+    o.name = File.basename(path, ".#{ext}")
+
     begin
       o.save!
     rescue
@@ -143,13 +144,24 @@ module Hets
       return
     end
 
-    ov = OntologyVersion.new
-    ov.user = user
-    ov.raw_file = File.open path
-    ov.ontology = ontology
-    ov.save!
+    v = o.versions.build raw_file: File.open(path)
+    v.user = user
+    
+    o.save! 
+    o.ontology_version = v;
+    o.save!
+  end
 
-    ov.async :parse
+  def self.library_path
+    (@@config ||= Config.new).library_path
+  end
+
+private
+
+  # Traverses a directory for ontologies with supported extensions recursively,
+  # yielding their path.
+  def self.find_ontologies(dir)
+    Dir.glob("#{dir}/**/*.{#{EXTENSIONS.join(',')}}").each { |path| yield path }
   end
 
 end
