@@ -5,7 +5,7 @@
   %div.panel-body
     - repository_ids = current_user.permissions.where(item_type: "Repository").map{|p| p.item_id }
     - repositories = Repository.where(id: repository_ids)
-    - repositories.each do |repository|
+    - current_user.accessible_repositories.each do |repository|
       %div
         %span.glyphicon.glyphicon-hdd
         = link_to repository.name, repository
