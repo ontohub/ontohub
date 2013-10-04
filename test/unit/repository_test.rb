@@ -254,13 +254,17 @@ class RepositoryTest < ActiveSupport::TestCase
       end
 
       should 'get the new changes' do
+        head_oid_pre = @repository_source.head_oid
         @commit_count.times do |n|
           @repository_source.commit_file(@userinfo, "content #{n+@commit_count}", "file-#{n+@commit_count}", "message #{n+@commit_count}")
         end
+        head_oid_post = @repository_source.head_oid
 
-        @repository.sync
+        result = @repository.sync
 
         assert_equal(2*@commit_count, @repository.commits.size)
+        assert_equal head_oid_pre, result[:head_oid_pre]
+        assert_equal head_oid_post, result[:head_oid_post]
       end
     end
 
