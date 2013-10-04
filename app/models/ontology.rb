@@ -21,11 +21,13 @@ class Ontology < ActiveRecord::Base
   belongs_to :language
   belongs_to :logic, counter_cache: true
 
-  attr_accessible :iri, :name, :description, :logic_id
+  attr_accessible :iri, :name, :description, :logic_id, :basepath, :file_extension
 
   validates_presence_of :iri
   validates_uniqueness_of :iri, :if => :iri_changed?
   validates_format_of :iri, :with => URI::regexp(Settings.allowed_iri_schemes)
+
+  validates_presence_of :basepath
 
   delegate :permission?, to: :repository
 
@@ -51,8 +53,7 @@ class Ontology < ActiveRecord::Base
     entities_count
   end
 
-  def self.filename_without_extension(filename)
-    filename.gsub(/(.+)\.[^\.]+/, "\\1")
+  def path
+    "#{basepath}#{file_extension}"
   end
-  
 end

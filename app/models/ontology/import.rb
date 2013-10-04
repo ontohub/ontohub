@@ -27,7 +27,13 @@ module Ontology::Import
             # find or create sub-ontology by IRI
             ontology   = self.children.find_by_iri(child_iri)
             if ontology.nil?
-              ontology = SingleOntology.create!({iri: child_iri, name: child_name, repository_id: repository_id}, without_protection: true)
+
+              ontology = SingleOntology.create!({iri: child_iri,
+                  name: child_name,
+                  basepath: self.basepath,
+                  file_extension: self.file_extension,
+                  repository_id: repository_id},
+                without_protection: true)
               self.children << ontology
             end
 	    

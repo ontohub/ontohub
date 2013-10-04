@@ -42,7 +42,8 @@ module Repository::GitRepositories
   end
 
   def save_ontology(commit_oid, filepath, user, iri=nil)
-    o = ontologies.where(path: filepath).first
+    basepath = File.real_basepath(filepath)
+    o = ontologies.where(basepath: basepath).first
 
     if o
       # update existing ontology
@@ -51,11 +52,12 @@ module Repository::GitRepositories
       o.save!
     else
       # create new ontology
-      clazz  = %w{.dol .casl}.include?(File.extname(filepath)) ? DistributedOntology : SingleOntology
-      o      = clazz.new
-      o.path = filepath
+      clazz      = %w{.dol .casl}.include?(File.extname(filepath)) ? DistributedOntology : SingleOntology
+      o          = clazz.new
+      o.basepath = basepath
+      o.file_extension = File.extname(filepath)
 
-      o.iri  = iri || "http://#{Settings.hostname}/#{path}/#{Ontology.filename_without_extension(filepath)}"
+      o.iri  = iri || "http://#{Settings.hostname}/#{path}/#{basepath}"
       o.name = filepath.split('/')[-1].split(".")[0].capitalize
 
       version = o.versions.build({ :commit_oid => commit_oid, :user => user }, { without_protection: true })
