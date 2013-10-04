@@ -16,7 +16,7 @@ module Ontology::Versions
     attr_accessible :versions_attributes
     accepts_nested_attributes_for :versions
     
-    after_create :create_permission_for_first_version
+    #after_create :create_permission_for_first_version
 
     def active_version
       return self.ontology_version if self.state == 'done'
