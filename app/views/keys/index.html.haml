@@ -1,4 +1,4 @@
-%h2= @page_title = 'SSH Keys'
+%h2= @page_title = current_user.first_name + "'s SSH Keys"
 
 - if collection.any?
   %table
