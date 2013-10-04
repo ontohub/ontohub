@@ -20,6 +20,6 @@ Repository.first.permissions.create! \
 Dir["#{Rails.root}/test/fixtures/ontologies/*/*.{casl,clf,clif,owl}"].each do |file|
   basename = File.basename(file)
   
-  version = repository.save_file file, basename, "#{basename} added", user
+  version = repository.save_file file, basename, "#{basename} added", @user
   version.ontology.update_attribute :description, Faker::Lorem.paragraph
 end

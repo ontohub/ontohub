@@ -26,9 +26,13 @@ module Ontology::Import
             
             # find or create sub-ontology by IRI
             ontology   = self.children.find_by_iri(child_iri)
-            ontology ||= SingleOntology.create!({iri: child_iri, name: child_name, parent: self, repository_id: repository_id}, without_protection: true)
-            version = ontology.versions.build
-            version.user = user
+            if ontology.nil?
+              ontology = SingleOntology.create!({iri: child_iri, name: child_name, repository_id: repository_id}, without_protection: true)
+              self.children << ontology
+            end
+	    
+            #version = ontology.versions.build
+            #version.user = user
           else
             raise "more than one ontology found" if ontologies_count > 1
             ontology = self
@@ -51,7 +55,7 @@ module Ontology::Import
           conditions = ['updated_at < ?', now]
           ontology.entities.where(conditions).destroy_all
           ontology.sentences.where(conditions).delete_all
-          ontology.save!
+          #ontology.save!
         },
         symbol:   Proc.new { |h|
           ontology.entities.update_or_create_from_hash(h, now)
