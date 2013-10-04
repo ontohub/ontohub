@@ -264,7 +264,7 @@ class RepositoryTest < ActiveSupport::TestCase
       end
     end
 
-    context 'via svn (takes long time)' do
+    context 'via svn (takes a lot of time)' do
       setup do
         @user        = FactoryGirl.create :user
         @source_path = 'http://colore.googlecode.com/svn/trunk/ontologies/owltime'
