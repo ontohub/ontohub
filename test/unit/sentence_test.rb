@@ -11,7 +11,9 @@ class SentenceTest < ActiveSupport::TestCase
       should have_db_column(column).of_type(:string)
     end
 
-    should have_db_column('text').of_type(:text)
+    %w( text display_text ).each do |column|
+      should have_db_column(column).of_type(:text)
+    end
 
     should have_db_index([:ontology_id, :id]).unique(true)
     should have_db_index([:ontology_id, :name]).unique(true)
@@ -49,6 +51,25 @@ class SentenceTest < ActiveSupport::TestCase
   			end
   		end
   	end
+
+  	context 'OWL2 sentences' do
+      setup do
+        @ontology = FactoryGirl.create :single_ontology
+        user = FactoryGirl.create :user
+        @ontology.import_xml_from_file Rails.root + 'test/fixtures/ontologies/xml/generations.xml', user
+        @sentence = @ontology.sentences.first
+      end
+
+      should 'have display_text set' do
+        assert_not_nil @sentence.display_text
+      end
+
+      should "not contain entities' iris" do
+        @sentence.entities.each do |x|
+          assert !(@sentence.display_text.include? x.iri)
+        end
+      end
+    end
   end
 
 end
