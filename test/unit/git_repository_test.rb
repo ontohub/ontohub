@@ -515,10 +515,14 @@ class GitRepositoryTest < ActiveSupport::TestCase
         end
 
         should 'be able to pull new changes' do
+          head_oid_pre = @repository.head_oid
           @repository.commit_file(@userinfo, @content+'new', @filepath, 'change file for pull')
+          head_oid_post = @repository.head_oid
           result = @repository_clone.pull
           
           assert result[:success], "Pull was unseccessful: #{result[:err]}"
+          assert_equal head_oid_pre, result[:head_oid_pre]
+          assert_equal head_oid_post, result[:head_oid_post]
           assert_equal @repository.commits, @repository_clone.commits
         end
       end
@@ -586,14 +590,22 @@ class GitRepositoryTest < ActiveSupport::TestCase
       @repository_clone_bare = nil
     end
 
+
+    # merged all tests into a single test sincy cloning takes very long time
+    # there are no functions tested that cause side effects
     should 'work properly' do
+      head_oid_pre = @repository_clone_wc.head_oid
       result_rebase = @repository_clone_wc.svn_rebase
+      head_oid_post = @repository_clone_wc.head_oid
       assert result_rebase[:success], "rebase failed:\n#{result_rebase[:out]}\n#{result_rebase[:err]}"
       assert(@repository_clone_wc.commits.size > @repository_clone_bare.commits.size, 'no new commits in working copy')
 
       result_push = @repository_clone_wc.push
       assert result_push[:success], "push failed:\n#{result_push[:out]}\n#{result_push[:err]}"
       assert_equal @repository_clone_wc.commits, @repository_clone_bare.commits
+
+      assert_equal head_oid_pre, result_rebase[:head_oid_pre]
+      assert_equal head_oid_post, result_rebase[:head_oid_post]
     end
   end
 end
