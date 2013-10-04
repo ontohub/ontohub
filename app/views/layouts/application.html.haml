@@ -18,7 +18,7 @@
           = yield
         - if user_signed_in?
           %div.col-md-4
-            = render partial: '/shared/userdata'
+            = render partial: '/shared/user_content'
       %div{style: 'clear:both;'}
       - if ! user_signed_in?
         %div{style: 'position: absolute; top: 83px; right:15px; width: 303px;'}

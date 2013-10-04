@@ -1,14 +1,8 @@
 
-= render partial: 'shared/ontology_search'
-
-%div.content-padding
-%div.panel.panel-default
-  %div.panel-heading
-    %h3.panel-title='Trending Ontologies'
-  %div.panel-body
-    - @versions.each do |version|
-      %div
-        = fancy_link version.ontology
-        by
-        = fancy_link version.user
-        = timestamp version
+%h2='Recently Updated Ontologies'
+- @versions.each do |version|
+  %div
+    = fancy_link version.ontology
+    by
+    = fancy_link version.user
+    = timestamp version

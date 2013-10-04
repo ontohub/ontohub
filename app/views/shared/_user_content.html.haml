@@ -1,0 +1,16 @@
+%div{role:'presentation',style:'height: 63px'}
+
+- if @content_kind == :ontologies
+  = render partial: '/shared/user_ontologies'
+- if @content_kind == :symbols
+  = render partial: '/shared/user_ontologies'
+- if @content_kind == :logics
+  = render partial: '/shared/user_repositories'
+- if @content_kind == :repositories
+  = render partial: '/shared/user_repositories'
+- if @content_kind == :users
+  = render partial: '/shared/user_teams'
+- if @content_kind == :teams
+  = render partial: '/shared/user_teams'
+- if @content_kind == :jobs
+  = render partial: '/shared/user_teams'
