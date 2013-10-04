@@ -6,16 +6,14 @@ module LinkHelper
     data_type, value = determine_image_type(resource)
     
     unless resource.is_a? Array then
+      title = nil
 
       if block_given?
         name = yield resource
       else
         name = resource
       end
-
-      link_to name, resource,
-        data_type => value,
-        :title      => resource.respond_to?(:title) ? resource.title : nil
+      title = resource.respond_to?(:title) ? resource.title : nil
     else
 
       if block_given?
@@ -23,11 +21,15 @@ module LinkHelper
       else
         name = resource
       end
-
-      link_to name, resource,
-        data_type => value,
-        :title      => resource.last.respond_to?(:title) ? resource.last.title : nil
+      title = resource.last.respond_to?(:title) ? resource.last.title : nil
     end
+
+    linked_to = resource
+    linked_to = ontology_tree_path(resource.repository, resource.basepath) if resource.is_a?(Ontology)
+
+    link_to name, linked_to,
+      data_type => value,
+      :title    => title
   end
 
   def determine_image_type(resource)

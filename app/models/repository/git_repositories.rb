@@ -90,7 +90,7 @@ module Repository::GitRepositories
         entries = list_folder(path, commit_oid)
         entries.each do |name, es|
           es.each do |e|
-            o = ontologies.where(path: e[:path]).first
+            o = ontologies.find_by_basepath(File.real_basepath(e[:path]))
             e[:ontology] = o
           end
         end

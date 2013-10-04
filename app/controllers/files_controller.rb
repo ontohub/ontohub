@@ -15,17 +15,14 @@ class FilesController < ApplicationController
 
     raise Repository::FileNotFoundError, params[:path] if @info.nil?
     
+
     if request.format == 'text/html' || @info[:type] != :file
       case @info[:type]
       when :file
         @file = repository.read_file(@path, params[:oid])
-      when :file_base 
-        ontology = @repository.ontologies.where(path: @info[:entry][:path]).first!
+      when :file_base
+        ontology = @repository.ontologies.find_by_basepath(@info[:entry][:path])
         redirect_to ontology_path(ontology)
-      when :dir
-        puts "=========="
-        puts @info[:entries].inspect
-        puts "=========="
       end
     else
       render text: repository.read_file(@path, @oid)[:content],

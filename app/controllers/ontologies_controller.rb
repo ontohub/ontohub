@@ -3,6 +3,8 @@
 # 
 class OntologiesController < InheritedResources::Base
 
+  defaults finder: :find_by_basepath!
+
   belongs_to :repository, finder: :find_by_path!
   respond_to :json, :xml
   has_pagination
