@@ -14,7 +14,7 @@ en:
   devise:
     failure:
       already_authenticated: 'You are already logged in.'
-      unauthenticated: 'You need to log in or register before continuing.'
+      unauthenticated: 'You have to sign in or sign up to access this page.'
       unconfirmed: 'You have to confirm your account before continuing.'
       locked: 'Your account is locked.'
       invalid: 'Invalid email or password.'

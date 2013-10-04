@@ -1,6 +1,6 @@
 class CustomFailure < Devise::FailureApp
   def redirect_url
-    request.referrer
+    root_path
   end
   def respond
     if http_auth?
