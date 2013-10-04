@@ -20,16 +20,20 @@ module GitRepository::Cloning
 
   # runs `git pull`
   def pull
+    head_oid_pre = head_oid
     stdin, stdout, stderr, wait_thr = Open3.popen3 'sh', SCRIPT_PULL, local_path
 
-    { out: stdout.gets(nil), err: stderr.gets(nil), success: wait_thr.value.success? }
+    { out: stdout.gets(nil), err: stderr.gets(nil), success: wait_thr.value.success?,
+      head_oid_pre: head_oid_pre, head_oid_post: head_oid }
   end
 
   # runs `git svn rebase`
   def svn_rebase
+    head_oid_pre = head_oid
     stdin, stdout, stderr, wait_thr = Open3.popen3 'sh', SCRIPT_SVN_REBASE, local_path
 
-    { out: stdout.gets(nil), err: stderr.gets(nil), success: wait_thr.value.success? }
+    { out: stdout.gets(nil), err: stderr.gets(nil), success: wait_thr.value.success?,
+      head_oid_pre: head_oid_pre, head_oid_post: head_oid }
   end
 
   def is_svn_clone?
