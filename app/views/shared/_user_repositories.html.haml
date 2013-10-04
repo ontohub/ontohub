@@ -3,13 +3,9 @@
   %div.panel-heading
     %h3.panel-title= current_user.first_name + "'s Repositories"
   %div.panel-body
-    %div
-      %span.glyphicon.glyphicon-hdd
-      = '...'
-    %div
-      %span.glyphicon.glyphicon-hdd
-      = '...'
-    %div
-      %span.glyphicon.glyphicon-hdd
-      = '...'
+    - current_user.permissions.each do |permission|
+      - if (permission.item_type == "Repository")
+        - repository = Repository.find(permission.item_id)
+        %span.glyphicon.glyphicon-hdd
+        = link_to repository.name, repository
 
