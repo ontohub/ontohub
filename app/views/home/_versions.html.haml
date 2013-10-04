@@ -1,5 +1,7 @@
 
 %h2='Recently Updated Ontologies'
+%div.pull-right
+  = link_to 'Browse Ontologies', ontologies_path, {class: 'btn btn-primary', type: 'button'}
 - @versions.each do |version|
   %div
     = fancy_link version.ontology
