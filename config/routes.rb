@@ -66,13 +66,13 @@ Ontohub::Application.routes.draw do
       get 'bulk', :on => :collection
     end
 
+    resources :files, only: [:new, :create]
+
     # action: history, diff, entries_info, files
     get ':oid/:action(/:path)',
       controller:  :files,
       as:          :oid,
       constraints: { path: /.*/ }
-
-    resources :files, only: [:new, :create]
   end
 
   get ':repository_id(/:path)',

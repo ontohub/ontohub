@@ -58,6 +58,8 @@ class FilesController < ApplicationController
       repository.save_file @file.file.path, @file.filepath, @file.message, current_user
       flash[:success] = "Successfully saved uploaded file."
       redirect_to fancy_repository_path(repository, path: @file.path)
+    else
+      render :new
     end
   end
 

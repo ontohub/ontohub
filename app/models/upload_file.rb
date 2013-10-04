@@ -8,7 +8,8 @@ class UploadFile
 
   validates :message, :file, presence: true
 
-  def initialize(attributes = {})
+  def initialize(attributes = nil)
+    attributes ||= {}
     attributes.each do |name, value|
       send("#{name}=", value)
     end
