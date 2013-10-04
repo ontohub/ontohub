@@ -51,7 +51,7 @@ module Repository::GitRepositories
       o.save!
     else
       # create new ontology
-      clazz  = filepath.ends_with?('.casl') ? DistributedOntology : SingleOntology
+      clazz  = %w{.dol .casl}.include?(File.extname(filepath)) ? DistributedOntology : SingleOntology
       o      = clazz.new
       o.path = filepath
 
