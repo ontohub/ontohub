@@ -1,4 +1,4 @@
-module Ontology::Categories
+module Ontology::CVertices
   extend ActiveSupport::Concern
 
   included do
@@ -12,18 +12,16 @@ module Ontology::Categories
       raise Exception.new('Error: No OWL2')
     end
     # Delete previous set of categories
-    Category.all.each { |c| c.destroy }
+    [ CVertex.all, CEdge.all ].flatten.each { |c| c.destroy }
     classes = self.entities.select { |e| e.kind == 'Class' }
     subclasses = self.sentences.select { |e| e.text.include?('SubClassOf')}
     classes.each do |c|
-      Category.create!(:name => c.display_name || c.name)
+      CVertex.create!(:name => c.display_name || c.name)
     end
 
     subclasses.each do |s|
       c1,c2 = s.extract_class_names
-      child = Category.find_by_name(c1)
-      child.parent = Category.find_by_name(c2)
-      child.save!
+      CEdge.create!(:child_id => CVertex.find_by_name(c1).id, :parent_id => CVertex.find_by_name(c2).id)
     end
   end
 

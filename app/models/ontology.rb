@@ -13,7 +13,7 @@ class Ontology < ActiveRecord::Base
   include Ontology::Sentences
   include Ontology::Links
   include Ontology::Distributed
-  include Ontology::Categories
+  include Ontology::CVertices
   include Ontology::Oops
 
   # Multiple Class Features
