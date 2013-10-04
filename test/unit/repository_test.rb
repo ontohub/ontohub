@@ -60,7 +60,7 @@ class RepositoryTest < ActiveSupport::TestCase
         assert_equal @repository.ontologies.count, 0
       end
 
-      context 'that doesn\'t exist' do
+      context "that doesn't exist" do
         setup do
           OntologyVersion.any_instance.expects(:parse_async).once
           @version = @repository.save_file(@file_path, @target_path, @message, @user)
