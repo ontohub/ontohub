@@ -8,6 +8,7 @@ Ontohub::Application.routes.draw do
 
   devise_for :users, :controllers => { :registrations => "users/registrations" }
   resources :users, :only => :show
+  resources :keys, except: [:show, :edit, :update]
   
   resources :logics do
     resources :supports, :only => [:create, :update, :destroy, :index]
@@ -31,17 +32,17 @@ Ontohub::Application.routes.draw do
   namespace :admin do
     resources :teams, :only => :index
     resources :users
+    resources :jobs, :only => :index
   end
 
   constraints auth_resque do
     mount Resque::Server, :at => "/admin/resque"
   end
   
-  resources :ontologies do
+  resources :ontologies, only: [:index, :show] do
     resources :children, :only => :index
     resources :entities, :only => :index
     resources :sentences, :only => :index
-    get 'bulk', :on => :collection
     resources :ontology_versions, :only => [:index, :show, :new, :create], :path => 'versions' do
       resource :oops_request, :only => [:show, :create]
     end
@@ -50,7 +51,6 @@ Ontohub::Application.routes.draw do
 #	  get "versions/:number/#{name}" => "#{name}#index", :as => "ontology_version_#{name}"
 #	end
 
-    resources :permissions, :only => [:index, :create, :update, :destroy]
     resources :metadata, :only => [:index, :create, :destroy]
     resources :comments, :only => [:index, :create, :destroy]
     resources :graphs, :only => [:index]
@@ -62,7 +62,28 @@ Ontohub::Application.routes.draw do
   end
   
   get 'autocomplete' => 'autocomplete#index'
-  get 'search'       => 'search#index'
+  get 'symbols'      => 'search#index'
+
+  resources :repositories do
+    resources :permissions, :only => [:index, :create, :update, :destroy]
+    resources :ontologies do
+      get 'bulk', :on => :collection
+    end
+
+    resources :files, only: [:new, :create]
+
+    # action: history, diff, entries_info, files
+    get ':oid/:action(/:path)',
+      controller:  :files,
+      as:          :oid,
+      constraints: { path: /.*/ }
+  end
+
+  get ':repository_id(/:path)',
+    controller:  :files,
+    action:      :files,
+    as:          :repository_tree,
+    constraints: { path: /.*/ }
 
   root :to => 'home#show'
 

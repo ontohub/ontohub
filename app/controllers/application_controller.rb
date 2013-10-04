@@ -3,6 +3,7 @@ class ApplicationController < ActionController::Base
   ensure_security_headers
   
   include Pagination
+  include PathHelpers
   
   # CanCan Authorization
   rescue_from CanCan::AccessDenied do |exception|

@@ -3,21 +3,18 @@ require 'integration_test_helper'
 class PermissionsTest < ActionController::IntegrationTest
   
   setup do
-    @ontology = FactoryGirl.create(:ontology_version).ontology
-    @ontology.state = 'done'
-    @ontology.save
-    @user     = FactoryGirl.create :user
-    @team     = FactoryGirl.create :team
+    @repository = FactoryGirl.create(:repository)
+    @user       = FactoryGirl.create :user
+    @team       = FactoryGirl.create :team
     
-    # Add user as owner to the ontology
-    FactoryGirl.create :permission, subject: @user, item: @ontology
+    # Add user as owner to the repository
+    FactoryGirl.create :permission, subject: @user, item: @repository
   end
   
   test 'login' do
     login_as @user, :scope => :user
     
-    visit ontology_permissions_path(@ontology)
-    find_link "Log out"
+    visit repository_permissions_path(@repository)
     
     within '.relationList' do
       # does only one permission exist?

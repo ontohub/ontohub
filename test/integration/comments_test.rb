@@ -3,13 +3,14 @@ require 'integration_test_helper'
 class CommentsTest < ActionController::IntegrationTest
   
   setup do
+    OntologyVersion.any_instance.stubs(:parse_async)
     @ontology = FactoryGirl.create(:ontology_version).ontology
     @ontology.state = 'done'
     @ontology.save
     @user     = FactoryGirl.create :user
     
     # Add user as owner to the ontology
-    FactoryGirl.create :permission, subject: @user, item: @ontology
+    FactoryGirl.create :permission, subject: @user, item: @ontology.repository
     login_as @user, :scope => :user
   end
   
@@ -17,7 +18,6 @@ class CommentsTest < ActionController::IntegrationTest
     comment_text = 'very loooooooong comment'
     
     visit ontology_comments_path(@ontology)
-    find_link "Log out"
     
     # zero comments at the beginning
     assert_equal 0, all('.comments > ol > li').count

@@ -17,7 +17,7 @@ gem 'rdf-n3'
 # in production environments by default.
 group :assets do
   gem 'sass-rails',   '~> 3.2.3'
-  gem 'bootstrap-sass', "~> 2.3.2"
+  gem 'bootstrap-sass', "~> 2.3.2.2"
   gem 'coffee-rails', '~> 3.2.1'
   gem 'compass',      '~> 0.12.1'
   gem 'font_awesome'
@@ -85,12 +85,18 @@ group :development, :test do
   gem 'byebug'
 end
 
+# Git
+gem 'rugged'
+gem 'diffy'
+gem 'codemirror-rails'
+gem 'js-routes'
+
 group :test do
   gem 'mocha', require: 'mocha/setup'
   gem 'shoulda'
   gem "shoulda_routing_macros", "~> 0.1.2"
   gem "factory_girl_rails"
-  
+
   # Required for integration tests
   gem "capybara"
   gem "capybara-webkit"
@@ -109,6 +115,11 @@ group :development do
   gem 'sunspot_solr', :git => 'git://github.com/digineo/sunspot.git'
   gem "rails-erd"
   gem 'quiet_assets'
+end
+
+group :development, :test do
+  gem 'byebug'
+  gem 'rspec-rails', '~> 2.0'
 end
 
 group :production do

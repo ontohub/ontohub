@@ -1,9 +1,7 @@
 %tr
+  %td= ontology_version.commit_oid[0..8]
   %td= timestamp ontology_version
-  %td= ontology_version.source_name
   %td= fancy_link ontology_version.user
   %td= status ontology_version
   %td= ontology_version.last_error
-  %td
-    - if ontology_version.raw_file?
-      = link_to "Download", [ontology_version.ontology, ontology_version], :class => 'btn'
+  %td= link_to "Download", [ontology_version.ontology, ontology_version], :class => 'btn'

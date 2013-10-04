@@ -1,0 +1,37 @@
+%li.commit
+  .row-fluid
+    .span7
+      .message= link_to get_message(commit)[:title], fancy_repository_path(@repository, oid: commit[:oid])
+      .time-author
+        by
+        = commit[:committer][:name]
+        = timestamp(commit[:committer][:time])
+    .span5
+      .pull-right.short_oid
+        .btn-group.pull-right
+          - if @current_file && @repository.path_exists?(@path, commit[:oid])
+            = render partial: 'download_file', locals: { oid:  commit[:oid], path: @path }
+            = link_to fancy_repository_path(@repository, oid: commit[:oid], path: @path), class: 'btn' do
+              %i.icon-file 
+              Show
+          - elsif @current_file
+            = link_to '#', class: 'btn disabled', 'data-toggle' => 'tooltip', 'data-original-title' => 'You cannot download a deleted file' do
+              %i.icon-download
+              Download
+            = link_to '#', class: 'btn disabled', 'data-toggle' => 'tooltip', 'data-original-title' => 'You cannot view a deleted file' do
+              %i.icon-file
+              Show
+
+          - if @current_file
+            = link_to short_oid(commit), fancy_repository_path(@repository, oid: commit[:oid], action: :diff), class: 'btn'
+            .clearfix
+            .pull-right
+              = link_to fancy_repository_path(@repository, oid: commit[:oid]), class: 'btn btn-small btn-inverse' do
+                %i.icon-chevron-right
+                Browse Files  
+          - else
+            = link_to short_oid(commit), fancy_repository_path(@repository, oid: commit[:oid], action: :diff), class: 'btn'
+            = link_to fancy_repository_path(@repository, oid: commit[:oid]), class: 'btn btn-inverse' do
+              %i.icon-chevron-right
+              Browse Files
+    .clearfix

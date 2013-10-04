@@ -81,5 +81,4 @@ module LinkHelper
     
     content_tag('ul', links.html_safe, :class => 'formats')
   end
-  
 end

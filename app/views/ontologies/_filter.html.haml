@@ -1,4 +1,6 @@
-= form_tag '', :method => :get, :class => 'filter ontology form-search' do
-  .input-append
-    = text_field_tag :search, params[:search], :placeholder => 'Ontology IRI or name', class: 'search-query'
-    %button.btn{type: 'submit'} Search ontology
+%h2='Ontologies'
+= form_tag '', :method => :get do
+  .input-group
+    = text_field_tag :search, params[:search], :placeholder => 'Ontology iri or name', class: 'form-control'
+    %span.input-group-btn
+      %input.btn.btn-primary{type: 'submit', value:'Seach for Ontologies'}

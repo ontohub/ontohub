@@ -1,0 +1,4 @@
+%tr
+  %td= key.name
+  %td= key.fingerprint.scan(/../).join(":")
+  %td= link_to 'remove', key, method: 'delete', confirm: 'Really remove this key?'

@@ -14,9 +14,9 @@ class PermissionTest < ActiveSupport::TestCase
     should_not allow_value(val).for :role
   end
   
-  context 'Ontology' do
+  context 'repository' do
     setup do
-      @ontology = FactoryGirl.create :ontology
+      @repository = FactoryGirl.create :repository
     end
 
     context 'admin user' do
@@ -25,70 +25,70 @@ class PermissionTest < ActiveSupport::TestCase
       end
 
       should 'have owner and editor permissions' do
-        assert @ontology.permission?(:owner,  @admin)
-        assert @ontology.permission?(:editor, @admin)
+        assert @repository.permission?(:owner,  @admin)
+        assert @repository.permission?(:editor, @admin)
       end
     end
 
     context 'owner user' do
       setup do
-        @permission = FactoryGirl.create :permission, item: @ontology
+        @permission = FactoryGirl.create :permission, item: @repository
       end
 
       should 'have owner and editor permissions' do
-        assert @ontology.permission?(:owner,  @permission.subject)
-        assert @ontology.permission?(:editor, @permission.subject)
+        assert @repository.permission?(:owner,  @permission.subject)
+        assert @repository.permission?(:editor, @permission.subject)
       end
     end
 
     context 'editor user' do
       setup do
-        @permission = FactoryGirl.create :permission, item: @ontology, role: 'editor'
+        @permission = FactoryGirl.create :permission, item: @repository, role: 'editor'
       end
 
       should 'have editor permission' do
-        assert @ontology.permission?(:editor, @permission.subject)
+        assert @repository.permission?(:editor, @permission.subject)
       end
     end
 
     context 'team user' do
       setup do
         @team_user = FactoryGirl.create :team_user
-        @permission = FactoryGirl.create :permission, item: @ontology, subject: @team_user.team
+        @permission = FactoryGirl.create :permission, item: @repository, subject: @team_user.team
       end
 
       should 'have owner and editor permissions' do
-        assert @ontology.permission?(:owner,  @team_user.user)
-        assert @ontology.permission?(:editor, @team_user.user)
+        assert @repository.permission?(:owner,  @team_user.user)
+        assert @repository.permission?(:editor, @team_user.user)
       end
     end
 
     context 'bernd' do
       should 'not have any permissions' do
-        assert !@ontology.permission?(:owner,  nil)
-        assert !@ontology.permission?(:editor, nil)
+        assert !@repository.permission?(:owner,  nil)
+        assert !@repository.permission?(:editor, nil)
       end
     end
 
     context 'editor' do
       setup do
-        @permission = FactoryGirl.create :permission, item: @ontology, role: 'editor'
+        @permission = FactoryGirl.create :permission, item: @repository, role: 'editor'
       end
 
       should 'not have owner permission' do
-        assert !@ontology.permission?(:owner, @permission.subject)
+        assert !@repository.permission?(:owner, @permission.subject)
       end
     end
 
     context 'user on other team' do
       setup do
         @team_user = FactoryGirl.create :team_user
-        @permission = FactoryGirl.create :permission, item: @ontology
+        @permission = FactoryGirl.create :permission, item: @repository
       end
 
       should 'not have owner and editor permissions' do
-        assert !@ontology.permission?(:owner,  @team_user.user)
-        assert !@ontology.permission?(:editor, @team_user.user)
+        assert !@repository.permission?(:owner,  @team_user.user)
+        assert !@repository.permission?(:editor, @team_user.user)
       end
     end
 
@@ -97,9 +97,9 @@ class PermissionTest < ActiveSupport::TestCase
         @user = FactoryGirl.create :user
       end
 
-      should 'not have permissions without ontology having permissions' do
-        assert !@ontology.permission?(:owner,  @user)
-        assert !@ontology.permission?(:editor, @user)
+      should 'not have permissions without repository having permissions' do
+        assert !@repository.permission?(:owner,  @user)
+        assert !@repository.permission?(:editor, @user)
       end
     end
   end

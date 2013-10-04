@@ -1,5 +1,18 @@
 module NavigationHelper
 
+  def repository_nav(resource, current_page)
+    pages = [
+      [:overview,     resource]
+    ]
+    
+    pages << [:files,       [resource, :tree]]
+    pages << [:history,     repository_oid_path(resource, oid: 'master', path: nil, action: :history)]
+    pages << [:ontologies,  [resource, :ontologies]]
+    pages << [:permissions, [resource, :permissions]] if can? :permissions, resource
+    
+    subnavigation(resource, pages, current_page)
+  end
+
   def ontology_nav(ontology, current_page)
     @top_level_pages = [
           ['Content', ontology.distributed? ? :children : :entities],

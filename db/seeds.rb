@@ -13,3 +13,4 @@ Dir["#{Rails.root}/db/seeds/*.rb"].sort.each do |path|
   puts File.basename path
   require path
 end
+

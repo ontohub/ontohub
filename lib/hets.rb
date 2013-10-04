@@ -74,10 +74,14 @@ module Hets
   end
 
   # Runs hets with input_file and returns XML output file path.
-  def self.parse(input_file, output_path = '')
+  def self.parse(input_file, output_path = nil)
     @@config ||= Config.new
 
-    output_path = "-O \"#{output_path}\"" unless output_path.blank?
+    if output_path
+      FileUtils.mkdir_p output_path
+      output_path = "-O \"#{output_path}\""
+    end
+
 
     command = "#{@@config.path} -o xml --full-signatures -a none -v2 #{output_path} '#{input_file}' 2>&1"
 

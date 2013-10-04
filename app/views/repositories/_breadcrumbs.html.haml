@@ -1,0 +1,8 @@
+%ul.breadcrumb
+  -repository_breadcrumbs(@repository, @path,@oid).each do |crumb|
+    -if crumb[:last]
+      %li.active
+        =crumb[:name]
+    -else
+      %li
+        =link_to crumb[:name], crumb[:path]
