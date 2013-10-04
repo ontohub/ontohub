@@ -6,6 +6,7 @@
     - current_user.permissions.each do |permission|
       - if (permission.item_type == "Repository")
         - repository = Repository.find(permission.item_id)
-        %span.glyphicon.glyphicon-hdd
-        = link_to repository.name, repository
+        %div
+          %span.glyphicon.glyphicon-hdd
+          = link_to repository.name, repository
 
