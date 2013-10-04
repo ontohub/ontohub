@@ -67,6 +67,23 @@ class OntologyParser::ComplexTest < ActiveSupport::TestCase
     File.open("#{Rails.root}/test/fixtures/ontologies/xml/#{name}")
   end
   
+  context "Bulding Links with Link version" do
+    setup do
+      @user = FactoryGirl.create :user
+      @ontology = FactoryGirl.create :distributed_ontology
+      @ontology.import_xml open_fixture('links.xml'), @user
+    end
+    
+    
+    should "have LinkVersion" do
+      links = Link.all
+      assert_not_empty links
+      links.each do |link|
+        assert_not_nil link.versions.first
+      end
+    end
+  end
+  
   context "Building Links with entity Mapping" do
     setup do
       @ontologies = []

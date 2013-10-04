@@ -37,7 +37,7 @@ class Link < ActiveRecord::Base
     end
     return string
   end
-  
+   
   def display_connection
     if theorem
       if proven

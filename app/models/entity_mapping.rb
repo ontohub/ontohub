@@ -6,6 +6,6 @@ class EntityMapping < ActiveRecord::Base
   KINDS = %w( subsumes is-subsumed equivalent incompatible has-instance instance-of default-relation )
 
   def to_s
-    "#{self.source} -> #{self.target}"
+   "#{self.source} → #{self.target}"
   end
 end
