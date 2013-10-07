@@ -154,8 +154,11 @@ module Repository::GitRepositories
     git.changed_files(commit_id(oid)[:oid])
   end
 
-  def commits(oid=nil, path=nil)
-    git.commits(start_oid: commit_id(oid)[:oid], path: path)
+  # recognized options: :start_oid (first commit to show)
+  #                     :stop_oid (first commit to hide)
+  #                     :path (file to show changes for)
+  def commits(options={})
+    git.commits(options)
   end
 
   def sync
