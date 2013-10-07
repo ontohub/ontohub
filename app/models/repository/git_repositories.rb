@@ -183,6 +183,16 @@ module Repository::GitRepositories
     end
   end
 
+  def suspended_save_ontologies(user, options={})
+    commits(options) { |commit_oid|
+      git.changed_files(commit_oid).each { |f|
+        if f[:type] == :add || f[:type] == :change
+          save_ontology(commit_oid, f[:path], user)
+        end
+      }
+    }
+  end
+
   module ClassMethods
     # creates a new repository and imports the contents from the source git repository
     def import_from_git(user, source, name, params={})
