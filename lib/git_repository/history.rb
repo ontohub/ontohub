@@ -2,15 +2,18 @@ module GitRepository::History
   # depends on GitRepository
   extend ActiveSupport::Concern
 
-  def commits(oid=nil, path=nil)
-    oid ||= head_oid
-    walker = Rugged::Walker.new(@repo)
-    walker.push(oid)
+  def commits(options={})
+    options ||= {}
+    start_oid = options[:start_oid] || head_oid
 
-    if path.nil?
-      commits_all(walker)
+    walker = Rugged::Walker.new(@repo)
+    walker.push(start_oid)
+    walker.hide(options[:stop_oid]) if options[:stop_oid]
+
+    if options[:path]
+      commits_path(walker, options[:path])
     else
-      commits_path(walker, path)
+      commits_all(walker)
     end
   end
 

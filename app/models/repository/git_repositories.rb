@@ -155,7 +155,7 @@ module Repository::GitRepositories
   end
 
   def commits(oid=nil, path=nil)
-    git.commits(commit_id(oid)[:oid], path)
+    git.commits(start_oid: commit_id(oid)[:oid], path: path)
   end
 
   def sync

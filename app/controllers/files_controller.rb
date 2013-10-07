@@ -43,7 +43,7 @@ class FilesController < ApplicationController
     @path = params[:path]
     @oid = repository.commit_id(params[:oid])[:oid]
     @current_file = repository.read_file(@path, @oid) if @path
-    @commits = repository.commits(@oid, @path)
+    @commits = repository.commits(start_oid: @oid, path: @path)
   end
 
   def new
