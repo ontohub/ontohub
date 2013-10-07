@@ -6,6 +6,11 @@ require 'test_helper'
 
 class GitRepositoryTest < ActiveSupport::TestCase
 
+  DIR = File.dirname(__FILE__)
+  SCRIPT_GIT_REMOTE_V = "#{DIR}/git_repository_remote_v.sh"
+  SCRIPT_SVN_CREATE_REPO = "#{DIR}/git_repository_svn_create_repo.sh"
+  SCRIPT_SVN_ADD_COMMITS = "#{DIR}/git_repository_svn_add_commits.sh"
+
   context 'creating and deleting a repository' do
     setup do
       @path = '/tmp/ontohub/test/unit/git/repository'
@@ -529,83 +534,110 @@ class GitRepositoryTest < ActiveSupport::TestCase
     end
   end
 
-  context 'importing an svn repository (takes a lot of time)' do
+  context 'importing an svn repository' do
     setup do
+      @path_svn = '/tmp/ontohub/test/unit/git/svn'
+      FileUtils.rmtree(@path_svn) if File.exists?(@path_svn)
+      svn_server_name = 'server'
+      svn_client_name = 'client'
+      @url_svn_server = "file://#{@path_svn}/#{svn_server_name}"
+      @path_svn_client = "#{@path_svn}/#{svn_client_name}"
+      @commit_count = 5
+      stdin, stdout, stderr, wait_thr = Open3.popen3('bash', SCRIPT_SVN_CREATE_REPO, @path_svn, svn_server_name, svn_client_name)
+      exit_status = wait_thr.value
+
+      stdin, stdout, stderr, wait_thr = Open3.popen3('bash', SCRIPT_SVN_ADD_COMMITS, @path_svn_client, "#{@commit_count}")
+      exit_status = wait_thr.value
+
       @path_clone_wc = '/tmp/ontohub/test/unit/git/repository_clone_wc'
       @path_clone_bare = '/tmp/ontohub/test/unit/git/repository_clone_bare'
-      @result = GitRepository.clone_svn('http://colore.googlecode.com/svn/trunk/ontologies/owltime', @path_clone_bare, @path_clone_wc)
+      @result = GitRepository.clone_svn(@url_svn_server, @path_clone_bare, @path_clone_wc)
       @repository_clone_wc = GitRepository.new(@path_clone_wc)
       @repository_clone_bare = GitRepository.new(@path_clone_bare)
-
-      DIR = File.dirname(__FILE__)
-      SCRIPT_REMOTE_V = "#{DIR}/git_repository_remote_v.sh"
     end
 
     teardown do
       FileUtils.rmtree(@path_clone_wc) if File.exists?(@path_clone_wc)
       FileUtils.rmtree(@path_clone_bare) if File.exists?(@path_clone_bare)
+      FileUtils.rmtree(@path_svn) if File.exists?(@path_svn)
       @result = nil
       @repository_clone_wc = nil
       @repository_clone_bare = nil
     end
 
-    # merged all tests into a single test sincy cloning takes very long time
-    # there are no functions tested that cause side effects
-    should 'work properly' do
+    should 'be successful' do
       assert @result[:success], "Cloning was unsuccessful: #{@result[:err]}"
-      assert @repository_clone_wc.is_svn_clone?, "Working copy is not an svn clone"
-      assert !@repository_clone_bare.is_svn_clone?, "Bare repo is an svn clone"
-      assert GitRepository.is_repository_with_working_copy?(@path_clone_wc), 'Clone is not a valid repository with working copy'
-      assert GitRepository.is_bare_repository?(@path_clone_bare), 'Clone is not a valid bare repository'
+    end
 
-      # remote handling for working copy
-      stdin, stdout, stderr, wait_thr = Open3.popen3 'sh', SCRIPT_REMOTE_V, @path_clone_wc
+    should 'be an svn clone (working copy)' do
+      assert @repository_clone_wc.is_svn_clone?, "Working copy is not an svn clone"
+    end
+
+    should 'not be an svn clone (bare)' do
+      assert !@repository_clone_bare.is_svn_clone?, "Bare repo is an svn clone"
+    end
+
+    should 'have a working copy (working copy)' do
+      assert GitRepository.is_repository_with_working_copy?(@path_clone_wc), 'Clone is not a valid repository with working copy'
+    end
+
+    should 'be a bare repository (bare)' do
+      assert GitRepository.is_bare_repository?(@path_clone_bare), 'Clone is not a valid bare repository'
+    end
+
+    should 'get the correct remotes (working copy)' do
+      stdin, stdout, stderr, wait_thr = Open3.popen3 'bash', SCRIPT_GIT_REMOTE_V, @path_clone_wc
       assert wait_thr.value.success?
       out = stdout.gets(nil).gsub(/origin\s+(.*)\(.*\)\s/, '\1').split.uniq
       assert_equal [@path_clone_bare], out, 'working copy does not have any remotes'
-
-      # remote handling for bare repo
-      stdin, stdout, stderr, wait_thr = Open3.popen3 'sh', SCRIPT_REMOTE_V, @path_clone_bare
+    end
+    
+    should 'get the correct remotes (bare)' do
+      stdin, stdout, stderr, wait_thr = Open3.popen3 'bash', SCRIPT_GIT_REMOTE_V, @path_clone_bare
       assert wait_thr.value.success?
       assert_nil stdout.gets(nil), 'bare repository has remotes'
+    end
 
+    should 'have the correct amount of commits' do
+      assert_equal @commit_count, @repository_clone_wc.commits.size
+    end
+
+    should 'synchronize between working copy and bare' do
       assert_equal @repository_clone_wc.commits, @repository_clone_bare.commits
     end
-  end
 
-  context 'importing new changes from svn and pushing them into the bare repo' do
-    setup do
-      @path_clone_wc = '/tmp/ontohub/test/unit/git/repository_clone_wc'
-      @path_clone_bare = '/tmp/ontohub/test/unit/git/repository_clone_bare'
-      @result = GitRepository.clone_svn('http://colore.googlecode.com/svn/trunk/ontologies/owltime', @path_clone_bare, @path_clone_wc, 703)
-      @repository_clone_wc = GitRepository.new(@path_clone_wc)
-      @repository_clone_bare = GitRepository.new(@path_clone_bare)
-    end
+    context 'and synchronizing with it' do
+      setup do
+        stdin, stdout, stderr, wait_thr = Open3.popen3 'bash', SCRIPT_SVN_ADD_COMMITS, @path_svn_client, "#{@commit_count}", 'new_'
+        exit_status = wait_thr.value
 
-    teardown do
-      FileUtils.rmtree(@path_clone_wc) if File.exists?(@path_clone_wc)
-      FileUtils.rmtree(@path_clone_bare) if File.exists?(@path_clone_bare)
-      @result = nil
-      @repository_clone_wc = nil
-      @repository_clone_bare = nil
-    end
+        @head_oid_pre = @repository_clone_wc.head_oid
+        @result_rebase = @repository_clone_wc.svn_rebase
+        @head_oid_post = @repository_clone_wc.head_oid
+        
+        @result_push = @repository_clone_wc.push
+      end
 
+      teardown do
+      end
 
-    # merged all tests into a single test sincy cloning takes very long time
-    # there are no functions tested that cause side effects
-    should 'work properly' do
-      head_oid_pre = @repository_clone_wc.head_oid
-      result_rebase = @repository_clone_wc.svn_rebase
-      head_oid_post = @repository_clone_wc.head_oid
-      assert result_rebase[:success], "rebase failed:\n#{result_rebase[:out]}\n#{result_rebase[:err]}"
-      assert(@repository_clone_wc.commits.size > @repository_clone_bare.commits.size, 'no new commits in working copy')
+      should 'be successful' do
+        assert @result_rebase[:success], "rebase failed:\n#{@result_rebase[:out]}\n#{@result_rebase[:err]}"
+        assert @result_push[:success], "push failed:\n#{@result_push[:out]}\n#{@result_push[:err]}"
+      end
 
-      result_push = @repository_clone_wc.push
-      assert result_push[:success], "push failed:\n#{result_push[:out]}\n#{result_push[:err]}"
-      assert_equal @repository_clone_wc.commits, @repository_clone_bare.commits
+      should 'get the new commits' do
+        assert_equal @commit_count*2, @repository_clone_wc.commits.size
+      end
 
-      assert_equal head_oid_pre, result_rebase[:head_oid_pre]
-      assert_equal head_oid_post, result_rebase[:head_oid_post]
+      should 'synchronize between working copy and bare' do
+        assert_equal @repository_clone_wc.commits, @repository_clone_bare.commits
+      end
+
+      should 'have the correct oid-range of sync between working copy and bare' do
+        assert_equal @head_oid_pre, @result_rebase[:head_oid_pre]
+        assert_equal @head_oid_post, @result_rebase[:head_oid_post]
+      end
     end
   end
 end
