@@ -292,7 +292,7 @@ class RepositoryTest < ActiveSupport::TestCase
       end
 
       teardown do
-        repository.destroy
+        @repository.destroy
       end
 
       should 'be read_only' do

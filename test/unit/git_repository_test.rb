@@ -294,16 +294,17 @@ class GitRepositoryTest < ActiveSupport::TestCase
       end
 
       should 'list all commits regarding the whole branch' do
-        assert_equal @repository.commits(@commit_delete2), @repository.commits
+        assert_equal @repository.commits(start_oid: @commit_delete2), @repository.commits
         assert_equal [ @commit_delete2, @commit_change2, @commit_add2,
                        @commit_other3, @commit_other2, @commit_delete1,
                        @commit_other1, @commit_change1, @commit_add1 ],
                      @repository.commits.map{ |c| c[:oid] }
-        assert_equal 2, @repository.commits(@commit_change1).size
+        assert_equal 2, @repository.commits(start_oid: @commit_change1).size
       end
 
       should 'have the correct values in the history at the HEAD' do
-        assert_equal @repository.commits(@commit_delete2, @filepath), @repository.commits(nil, @filepath)
+        assert_equal @repository.commits(start_oid: @commit_delete2, path:@filepath),
+          @repository.commits(path: @filepath)
         assert_equal [
           @commit_delete2,
           @commit_change2,
@@ -311,7 +312,7 @@ class GitRepositoryTest < ActiveSupport::TestCase
           @commit_delete1,
           @commit_change1,
           @commit_add1
-        ], @repository.commits(nil, @filepath).map{ |c| c[:oid] }
+        ], @repository.commits(path: @filepath).map{ |c| c[:oid] }
       end
 
       should 'have the correct values in the history a commit before the HEAD' do
@@ -321,7 +322,7 @@ class GitRepositoryTest < ActiveSupport::TestCase
           @commit_delete1,
           @commit_change1,
           @commit_add1
-        ], @repository.commits(@commit_change2, @filepath).map{ |c| c[:oid] }
+        ], @repository.commits(start_oid: @commit_change2, path: @filepath).map{ |c| c[:oid] }
       end
 
       should 'have the correct values in the history in the commit that changes another file' do
@@ -329,7 +330,7 @@ class GitRepositoryTest < ActiveSupport::TestCase
           @commit_delete1,
           @commit_change1,
           @commit_add1
-        ], @repository.commits(@commit_other3, @filepath).map{ |c| c[:oid] }
+        ], @repository.commits(start_oid: @commit_other3, path: @filepath).map{ |c| c[:oid] }
       end
     end
 
