@@ -2,7 +2,7 @@ module GitRepository::History
   # depends on GitRepository
   extend ActiveSupport::Concern
 
-  def commits(options={})
+  def commits(options={}, &block)
     options ||= {}
     start_oid = options[:start_oid] || head_oid
 
@@ -11,19 +11,23 @@ module GitRepository::History
     walker.hide(options[:stop_oid]) if options[:stop_oid]
 
     if options[:path]
-      commits_path(walker, options[:path])
+      commits_path(walker, options[:path], &block)
     else
-      commits_all(walker)
+      commits_all(walker, &block)
     end
   end
 
 
   protected
 
-  def commits_all(walker)
+  def commits_all(walker, &block)
     commits = []
     walker.each do |c|
-      commits << to_hash(c)
+      if block_given?
+        commits << block.call(c.oid)
+      else
+        commits << to_hash(c)
+      end
     end
 
     commits
@@ -31,7 +35,7 @@ module GitRepository::History
     commits
   end
 
-  def commits_path(walker, path)
+  def commits_path(walker, path, &block)
     commits = []
 
     object = nil
@@ -43,7 +47,11 @@ module GitRepository::History
       if object_added(object, previous_object, !commit.nil?) || 
       object_changed(object, previous_object, !commit.nil?) || 
       object_deleted(object, previous_object, !commit.nil?)
-        commits << to_hash(commit)
+        if block_given?
+          commits << block.call(commit.oid)
+        else
+          commits << to_hash(commit)
+        end
       end
 
       object = previous_object
@@ -51,7 +59,11 @@ module GitRepository::History
     end
 
     unless object.nil?
-      commits << to_hash(commit)
+      if block_given?
+        commits << block.call(commit.oid)
+      else
+        commits << to_hash(commit)
+      end
     end
 
     commits
