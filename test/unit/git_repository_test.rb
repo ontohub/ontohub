@@ -325,6 +325,13 @@ class GitRepositoryTest < ActiveSupport::TestCase
         ], @repository.commits(start_oid: @commit_change2, path: @filepath).map{ |c| c[:oid] }
       end
 
+      should 'have the correct values in the history a commit before the HEAD until fourth commit' do
+        assert_equal [
+          @commit_change2,
+          @commit_add2
+        ], @repository.commits(start_oid: @commit_change2, path: @filepath, stop_oid: @commit_delete1).map{ |c| c[:oid] }
+      end
+
       should 'have the correct values in the history in the commit that changes another file' do
         assert_equal [
           @commit_delete1,
