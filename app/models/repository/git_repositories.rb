@@ -157,8 +157,8 @@ module Repository::GitRepositories
   # recognized options: :start_oid (first commit to show)
   #                     :stop_oid (first commit to hide)
   #                     :path (file to show changes for)
-  def commits(options={})
-    git.commits(options)
+  def commits(options={}, &block)
+    git.commits(options, &block)
   end
 
   def sync
