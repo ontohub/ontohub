@@ -474,7 +474,7 @@ class GitRepositoryTest < ActiveSupport::TestCase
 
     context 'being cloned' do
       setup do
-        @commit_count = 10
+        @commit_count = 2
         @commit_count.times do |n|
           @content = "content #{n}"
           @filepath = "file-#{n}"
@@ -575,7 +575,7 @@ class GitRepositoryTest < ActiveSupport::TestCase
       svn_client_name = 'client'
       @url_svn_server = "file://#{@path_svn}/#{svn_server_name}"
       @path_svn_client = "#{@path_svn}/#{svn_client_name}"
-      @commit_count = 5
+      @commit_count = 2
       stdin, stdout, stderr, wait_thr = Open3.popen3('bash', SCRIPT_SVN_CREATE_REPO, @path_svn, svn_server_name, svn_client_name)
       exit_status = wait_thr.value
 

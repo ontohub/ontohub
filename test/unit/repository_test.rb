@@ -228,7 +228,7 @@ class RepositoryTest < ActiveSupport::TestCase
         @source_path       = '/tmp/ontohub/test/unit/repository/repo'
         @repository_source = GitRepository.new(@source_path)
 
-        @commit_count = 5
+        @commit_count = 2
         @commit_count.times do |n|
           @repository_source.commit_file(@userinfo, "content #{n}", "file-#{n}", "message #{n}")
         end
@@ -280,7 +280,7 @@ class RepositoryTest < ActiveSupport::TestCase
         svn_client_name = 'client'
         @url_svn_server = "file://#{@path_svn}/#{svn_server_name}"
         @path_svn_client = "#{@path_svn}/#{svn_client_name}"
-        @commit_count = 5
+        @commit_count = 2
         stdin, stdout, stderr, wait_thr = Open3.popen3('bash', SCRIPT_SVN_CREATE_REPO, @path_svn, svn_server_name, svn_client_name)
         exit_status = wait_thr.value
 
