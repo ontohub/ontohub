@@ -339,6 +339,31 @@ class GitRepositoryTest < ActiveSupport::TestCase
           @commit_add1
         ], @repository.commits(start_oid: @commit_other3, path: @filepath).map{ |c| c[:oid] }
       end
+
+      should 'only get the oid of each commit (for any file)' do
+        assert_equal [
+          @commit_delete2,
+          @commit_change2,
+          @commit_add2,
+          @commit_other3,
+          @commit_other2,
+          @commit_delete1,
+          @commit_other1,
+          @commit_change1,
+          @commit_add1
+        ], @repository.commits { |commit_oid| commit_oid }
+      end
+
+      should 'only get the oid of each commit that changes a specific file' do
+        assert_equal [
+          @commit_delete2,
+          @commit_change2,
+          @commit_add2,
+          @commit_delete1,
+          @commit_change1,
+          @commit_add1
+        ], @repository.commits(path: @filepath) { |commit_oid| commit_oid }
+      end
     end
 
 
