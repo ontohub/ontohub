@@ -230,10 +230,12 @@ class RepositoryTest < ActiveSupport::TestCase
 
         @commit_count = 2
         @commit_count.times do |n|
-          @repository_source.commit_file(@userinfo, "content #{n}", "file-#{n}", "message #{n}")
+          @repository_source.commit_file(@userinfo, "(#{n})", "file-#{n}.clif", "add #{n}")
         end
 
         @repository = Repository.import_from_git(@user, "file://#{@source_path}", 'local import', description: 'just an imported repo')
+
+        @repository.suspended_save_ontologies(@user)
       end
 
       teardown do
@@ -257,18 +259,52 @@ class RepositoryTest < ActiveSupport::TestCase
         assert_equal "file://#{@source_path}", @repository.source_address
       end
 
-      should 'get the new changes' do
-        head_oid_pre = @repository_source.head_oid
-        @commit_count.times do |n|
-          @repository_source.commit_file(@userinfo, "content #{n+@commit_count}", "file-#{n+@commit_count}", "message #{n+@commit_count}")
+      should 'save the ontologies in the database' do
+        assert_equal @commit_count, @repository.ontologies.count
+      end
+
+      should 'save ontology versions in the database' do
+        @repository.ontologies.each do |o|
+          assert_equal 1, o.versions.count
         end
-        head_oid_post = @repository_source.head_oid
+      end
 
-        result = @repository.sync
+      context 'getting synchronized' do
+        setup do
+          @head_oid_pre = @repository_source.head_oid
+          @repository_source.commit_file(@userinfo, '(and 0 0)', 'file-0.clif', 'change 0')
+          @commit_count.times do |n|
+            m = n+@commit_count
+            @repository_source.commit_file(@userinfo, "(#{m})", "file-#{m}.clif", "add #{m}")
+          end
+          @head_oid_post = @repository_source.head_oid
 
-        assert_equal(2*@commit_count, @repository.commits.size)
-        assert_equal head_oid_pre, result[:head_oid_pre]
-        assert_equal head_oid_post, result[:head_oid_post]
+          @result = @repository.sync
+        end
+
+        should 'get the new changes' do
+          assert_equal(2*@commit_count+1, @repository.commits.size)
+          assert_equal @head_oid_pre, @result[:head_oid_pre]
+          assert_equal @head_oid_post, @result[:head_oid_post]
+        end
+
+        context 'adding new ontologies' do
+          setup do
+            @repository.suspended_save_ontologies(@user,
+              stop_oid:  @head_oid_pre,
+              start_oid: @head_oid_post)
+          end
+
+          should 'save the ontologies in the database' do
+            assert_equal 2*@commit_count, @repository.ontologies.count
+          end
+
+          should 'save ontology versions in the database' do
+            @repository.ontologies.each do |o|
+              assert_equal(o.path == 'file-0.clif' ? 2 : 1, o.versions.count)
+            end
+          end
+        end
       end
     end
 
