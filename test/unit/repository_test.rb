@@ -1,6 +1,10 @@
 require 'test_helper'
 
 class RepositoryTest < ActiveSupport::TestCase
+
+  DIR = File.dirname(__FILE__)
+  SCRIPT_SVN_CREATE_REPO = "#{DIR}/git_repository_svn_create_repo.sh"
+  SCRIPT_SVN_ADD_COMMITS = "#{DIR}/git_repository_svn_add_commits.sh"
   
   should have_many :ontologies
   should have_many :permissions
@@ -268,25 +272,43 @@ class RepositoryTest < ActiveSupport::TestCase
       end
     end
 
-    context 'via svn (takes a lot of time)' do
+    context 'via svn' do
       setup do
+        @path_svn = '/tmp/ontohub/test/unit/git/svn'
+        FileUtils.rmtree(@path_svn) if File.exists?(@path_svn)
+        svn_server_name = 'server'
+        svn_client_name = 'client'
+        @url_svn_server = "file://#{@path_svn}/#{svn_server_name}"
+        @path_svn_client = "#{@path_svn}/#{svn_client_name}"
+        @commit_count = 5
+        stdin, stdout, stderr, wait_thr = Open3.popen3('bash', SCRIPT_SVN_CREATE_REPO, @path_svn, svn_server_name, svn_client_name)
+        exit_status = wait_thr.value
+
+        stdin, stdout, stderr, wait_thr = Open3.popen3('bash', SCRIPT_SVN_ADD_COMMITS, @path_svn_client, "#{@commit_count}")
+        exit_status = wait_thr.value
+
         @user        = FactoryGirl.create :user
-        @source_path = 'http://colore.googlecode.com/svn/trunk/ontologies/owltime'
-        @repository  = Repository.import_from_svn(@user, @source_path, 'local svn clone', description: 'just a local svn clone')
+        @repository  = Repository.import_from_svn(@user, @url_svn_server, 'local svn clone', description: 'just a local svn clone')
       end
 
       teardown do
-        @repository.destroy
+        repository.destroy
       end
 
-      #should 'be read_only' do
-      #  assert false #TODO
-      #end
+      should 'be read_only' do
+        assert false #TODO
+      end
 
-      should 'work properly' do
+      should 'have correct source type' do
         assert_equal Repository::SourceTypes::SVN, @repository.source_type, 'has wrong source type'
-        assert_equal @source_path, @repository.source_address, 'has wrong source address'
-        assert @repository.sync, 'sync failed'
+      end
+
+      should 'have correct source address' do
+        assert_equal @url_svn_server, @repository.source_address, 'has wrong source address'
+      end
+
+      should 'be successful' do
+        assert @repository.sync[:success], 'sync failed'
       end
     end
   end
