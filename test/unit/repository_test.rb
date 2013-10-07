@@ -12,7 +12,7 @@ class RepositoryTest < ActiveSupport::TestCase
   context "a repository" do
     setup do
       @user       = FactoryGirl.create :user
-      @repository = FactoryGirl.create :repository, user: @user
+      @repository = FactoryGirl.create :repository
     end
 
     teardown do
