@@ -242,7 +242,7 @@ class RepositoryTest < ActiveSupport::TestCase
       end
 
       should 'be read_only' do
-        assert false #TODO
+        assert false, 'Test not implemented yet' #TODO
       end
 
       should 'have all the commits' do
@@ -296,7 +296,7 @@ class RepositoryTest < ActiveSupport::TestCase
       end
 
       should 'be read_only' do
-        assert false #TODO
+        assert false, 'Test not implemented yet' #TODO
       end
 
       should 'have correct source type' do
