@@ -161,28 +161,6 @@ module Repository::GitRepositories
     git.commits(options, &block)
   end
 
-  def sync
-    unless source_type.nil?
-      repo_working_copy = GitRepository.new(local_path_working_copy)
-
-      result_pull = case source_type
-      when Repository::SourceTypes::GIT
-        repo_working_copy.pull
-      when Repository::SourceTypes::SVN
-        repo_working_copy.svn_rebase
-      else
-        raise Repository::ImportError, "unknown source type: #{source_type}"
-      end
-      result_push = repo_working_copy.push
-
-      {
-        success: result_pull[:success] && result_push[:success],
-        head_oid_pre: result_pull[:head_oid_pre],
-        head_oid_post: result_pull[:head_oid_post]
-      }
-    end
-  end
-
   def suspended_save_ontologies(user, options={})
     commits(options) { |commit_oid|
       git.changed_files(commit_oid).each { |f|
@@ -193,58 +171,4 @@ module Repository::GitRepositories
     }
   end
 
-  module ClassMethods
-    # creates a new repository and imports the contents from the source git repository
-    def import_from_git(user, source, name, params={})
-      raise Repository::ImportError, "#{source} is not a git repository" unless GitRepository.is_git_repository? source
-
-      params[:name] = name
-      params[:source_type] = Repository::SourceTypes::GIT
-      params[:source_address] = source
-
-      r = Repository.create!(params)
-      r.user = user
-      r.save!
-      r.destroy_git
-
-      result_wc = GitRepository.clone_git(source, r.local_path_working_copy, false)
-      result_bare = GitRepository.clone_git(r.local_path_working_copy, r.local_path, true)
-
-      r.git!
-
-      result_remote_rm  = r.git.remote_rm_origin
-      result_remote_set = GitRepository.new(r.local_path_working_copy).remote_set_url_push(r.local_path)
-
-      unless result_wc[:success] && result_bare[:success] && result_remote_rm[:success] && result_remote_set[:success]
-        r.destroy
-        raise Repository::ImportError, 'could not import repository'
-      end
-
-      r
-    end
-
-    # creates a new repository and imports the contents from the source svn repository
-    def import_from_svn(user, source, name, params={})
-      raise Repository::ImportError, "#{source} is not an svn repository" unless GitRepository.is_svn_repository? source
-
-      params[:name] = name
-      params[:source_type] = Repository::SourceTypes::SVN
-      params[:source_address] = source
-
-      r = Repository.create!(params)
-      r.user = user
-      r.save!
-      r.destroy_git
-
-      result_clone = GitRepository.clone_svn(source, r.local_path, r.local_path_working_copy)
-      unless result_clone[:success]
-        r.destroy
-        raise Repository::ImportError, 'could not import repository'
-      end
-
-      r.git!
-
-      r
-    end
-  end
 end
