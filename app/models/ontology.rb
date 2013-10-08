@@ -56,4 +56,5 @@ class Ontology < ActiveRecord::Base
   def path
     "#{basepath}#{file_extension}"
   end
+
 end

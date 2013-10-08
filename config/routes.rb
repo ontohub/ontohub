@@ -39,23 +39,6 @@ Ontohub::Application.routes.draw do
     mount Resque::Server, :at => "/admin/resque"
   end
   
-  resources :ontologies, only: [:index, :show] do
-    resources :children, :only => :index
-    resources :entities, :only => :index
-    resources :sentences, :only => :index
-    resources :ontology_versions, :only => [:index, :show, :new, :create], :path => 'versions' do
-      resource :oops_request, :only => [:show, :create]
-    end
-
-#	%w( entities sentences ).each do |name|
-#	  get "versions/:number/#{name}" => "#{name}#index", :as => "ontology_version_#{name}"
-#	end
-
-    resources :metadata, :only => [:index, :create, :destroy]
-    resources :comments, :only => [:index, :create, :destroy]
-    resources :graphs, :only => [:index]
-  end
-  
   resources :teams do
     resources :permissions, :only => [:index], :controller => 'teams/permissions'
     resources :team_users, :only => [:index, :create, :update, :destroy], :path => 'users'
@@ -66,16 +49,25 @@ Ontohub::Application.routes.draw do
 
   resources :repositories do
     resources :permissions, :only => [:index, :create, :update, :destroy]
-    resources :ontologies do
-      get 'bulk', :on => :collection
+
+    resources :ontologies, only: [:index, :show, :edit, :update] do
+      resources :children, :only => :index
+      resources :entities, :only => :index
+      resources :sentences, :only => :index
+      resources :ontology_versions, :only => [:index, :show, :new, :create], :path => 'versions' do
+        resource :oops_request, :only => [:show, :create]
+      end
+
+      resources :metadata, :only => [:index, :create, :destroy]
+      resources :comments, :only => [:index, :create, :destroy]
+      resources :graphs, :only => [:index]
     end
 
     resources :files, only: [:new, :create]
-
     # action: history, diff, entries_info, files
-    get ':oid/:action(/:path)',
+    get ':ref/:action(/:path)',
       controller:  :files,
-      as:          :oid,
+      as:          :ref,
       constraints: { path: /.*/ }
   end
 

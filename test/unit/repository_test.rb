@@ -12,7 +12,7 @@ class RepositoryTest < ActiveSupport::TestCase
   context "a repository" do
     setup do
       @user       = FactoryGirl.create :user
-      @repository = FactoryGirl.create :repository
+      @repository = FactoryGirl.create :repository, user: @user
     end
 
     teardown do
@@ -66,8 +66,8 @@ class RepositoryTest < ActiveSupport::TestCase
 
       context "that doesn't exist" do
         setup do
-          OntologyVersion.any_instance.expects(:parse_async).once
           @version = @repository.save_file(@file_path, @target_path, @message, @user)
+          assert_queued OntologyVersion
         end
 
         should 'create the file in the git repository' do
@@ -97,8 +97,8 @@ class RepositoryTest < ActiveSupport::TestCase
 
       context 'that exists' do
         setup do
-          OntologyVersion.any_instance.expects(:parse_async).twice
           @repository.save_file(@file_path, @target_path, @message, @user)
+          assert_queued OntologyVersion
           
           file = File.open(@file_path, 'w')
           file.puts("#{@content}\n#{@content}")
@@ -145,8 +145,8 @@ class RepositoryTest < ActiveSupport::TestCase
           tmpfile.puts(content)
           tmpfile.close
           
-          OntologyVersion.any_instance.expects(:parse_async).once
           @repository.save_file(file_path, path, @message, @user, "#{@iri_prefix}#{file_path}")
+          assert_queued OntologyVersion
         end
       end
 

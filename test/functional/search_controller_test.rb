@@ -1,7 +1,7 @@
 require 'test_helper'
 
-class UsersControllerTest < ActionController::TestCase
+class SearchControllerTest < ActionController::TestCase
   
-  should route(:get, "/search").to(:controller=> :search, :action => :index)
+  should route(:get, "symbols").to(:controller=> :search, :action => :index)
   
 end

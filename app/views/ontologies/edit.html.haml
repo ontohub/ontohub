@@ -1,6 +1,6 @@
 = ontology_nav resource, :edit
 
-= simple_form_for resource do |f|
+= simple_form_for resource_path(resource) do |f|
   = f.input :iri
   = f.input :name
   = f.input :description

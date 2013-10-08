@@ -3,7 +3,6 @@ require 'integration_test_helper'
 class CommentsTest < ActionController::IntegrationTest
   
   setup do
-    OntologyVersion.any_instance.stubs(:parse_async)
     @ontology = FactoryGirl.create(:ontology_version).ontology
     @ontology.state = 'done'
     @ontology.save

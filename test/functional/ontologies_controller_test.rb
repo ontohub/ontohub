@@ -2,8 +2,7 @@ require 'test_helper'
 
 class OntologiesControllerTest < ActionController::TestCase
   
-  should_map_nested_resources :repositories, :ontologies
-  should route(:get, "/repositories/path/ontologies/bulk").to(:controller=> :ontologies, :action => :bulk, repository_id: 'path')
+  should_map_nested_resources :repositories, :ontologies, :except => [:new, :create, :destroy]
   
   context 'Ontology Instance' do
     setup do
@@ -66,7 +65,7 @@ class OntologiesControllerTest < ActionController::TestCase
         end
         
         should respond_with :redirect
-        should redirect_to("entities"){  ontology_entities_path(@ontology, :kind => 'Symbol') }
+        should redirect_to("entities"){  repository_ontology_entities_path(@repository, @ontology, :kind => 'Symbol') }
       end
       
       context 'with entity of kind Class' do
@@ -78,56 +77,7 @@ class OntologiesControllerTest < ActionController::TestCase
         end
         
         should respond_with :redirect
-        should redirect_to("entities"){  ontology_entities_path(@ontology, :kind => 'Class' ) }
-      end
-    end
-    
-    context 'signed in as editor' do
-      setup do
-        sign_in @user
-        @repository.permissions.create! \
-          :role    => 'editor',
-          :subject => @user
-      end
-      
-      context 'on GET to bulk' do
-        setup do
-          get :bulk, repository_id: @repository.path
-        end
-        
-        should respond_with :success
-        should render_template :bulk
-      end
-      
-      context 'on GET to new' do
-        setup do
-          get :new, repository_id: @repository.path
-        end
-        
-        should respond_with :success
-        should render_template :new
-      end
-      
-      context 'on POST to create' do
-        
-        context 'with invalid input' do
-          context 'without format' do
-            setup do
-              post :create,
-                repository_id: @repository.path,
-                ontology: {
-                  iri: 'fooo',
-                  versions_attributes: [{
-                    raw_file: nil
-                  }],
-                }
-            end
-            
-            should respond_with :success
-            should render_template :new
-          end
-        end
-        
+        should redirect_to("entities"){  repository_ontology_entities_path(@repository, @ontology, :kind => 'Class' ) }
       end
     end
     

@@ -10,12 +10,4 @@
   
 .btn-group
   -if can? :edit, resource
-    = link_to 'Edit', edit_repository_ontology_path(resource.repository, resource), class: 'btn'
-    = link_to 'Delete', resource, confirm: 'Do you really want to delete this ontology?', method: :delete, class: 'btn'
-    = link_to 'New Version', new_ontology_ontology_version_path(resource, from: 'http-client'), class: 'btn'
-    %button.btn.dropdown-toggle{'data-toggle' => 'dropdown'}
-      %span.caret
-    %ul.dropdown-menu.pull-right
-      %li= link_to 'From Computer', new_ontology_ontology_version_path(resource, from: 'http-client')
-      %li= link_to 'From other website', new_ontology_ontology_version_path(resource, from: 'http-server')
-
+    = link_to 'Edit', [:edit, *resource_chain], class: 'btn'

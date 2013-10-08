@@ -32,7 +32,7 @@ class OntologyVersion < ActiveRecord::Base
   
   # public URL to this version
   def url(params={})
-    Rails.application.routes.url_helpers.ontology_ontology_version_path(ontology, self, params.reverse_merge(host: Settings.hostname, only_path: false))
+    Rails.application.routes.url_helpers.repository_ref_path(repository, commit_oid, ontology.path, params.reverse_merge(host: Settings.hostname, only_path: false))
   end
  
 protected

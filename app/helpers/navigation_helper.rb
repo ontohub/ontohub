@@ -5,10 +5,10 @@ module NavigationHelper
       [:overview,     resource]
     ]
     
-    pages << [:files,       [resource, :tree]]
-    pages << [:history,     repository_oid_path(resource, oid: 'master', path: nil, action: :history)]
-    pages << [:ontologies,  [resource, :ontologies]]
-    pages << [:permissions, [resource, :permissions]] if can? :permissions, resource
+    pages << [:files,       [*resource_chain, :tree]]
+    pages << [:history,     repository_ref_path(resource, ref: 'master', path: nil, action: :history)]
+    pages << [:ontologies,  [*resource_chain, :ontologies]]
+    pages << [:permissions, [*resource_chain, :permissions]] if can? :permissions, resource
     
     subnavigation(resource, pages, current_page)
   end
@@ -30,15 +30,12 @@ module NavigationHelper
     pages = []
     
     if ontology.distributed?
-      pages << [:children,  [ontology, :children]]
+      pages << [:children,  [*resource_chain, :children]]
     else
-      pages << [:sentences, [ontology, :sentences]]
+      pages << [:sentences, [*resource_chain, :sentences]]
     end
 
     actions = []
-
-    # action link to new version
-    actions << link_to('New version', [:new, ontology, :ontology_version ]) if can? :edit, ontology
     
     # add counters
     pages.each do |row|

@@ -41,5 +41,22 @@ class ApplicationController < ActionController::Base
       redirect_to :root
     end
   end
+
+  helper_method :resource_chain
+  def resource_chain
+    return @resource_chain if @resource_chain
+
+    @resource_chain = [ Repository.find_by_path!( controller_name=='repositories' ? params[:id] : params[:repository_id] )]
+    
+    if id = params[:commit_reference_id]
+      @resource_chain << CommitReference.new(id)
+    end
+
+    if id = (controller_name=='ontologies' ? params[:id] : params[:ontology_id])
+      @resource_chain << Ontology.find(id)
+    end
+
+    @resource_chain
+  end
   
 end

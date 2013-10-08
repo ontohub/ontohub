@@ -22,8 +22,6 @@ class UsersControllerTest < ActionController::TestCase
     
     context 'with data' do
       setup do
-        OntologyVersion.any_instance.expects(:parse_async).once
-        
         FactoryGirl.create :comment, :user => @user
         FactoryGirl.create :ontology_version_with_file, :user => @user
       end

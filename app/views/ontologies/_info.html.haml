@@ -28,18 +28,18 @@
   %ul.nav.nav-tabs
     - @top_level_pages.each do |(page_title, page)|
       %li{class: page==current_page ? 'active' : nil}
-        = link_to page_title, [resource, page]
+        = link_to page_title, [*resource_chain, page]
   - if controller_name == "entities" || controller_name == "sentences" || controller_name == "children" 
     %nav
       %ul.nav.nav-tabs
         - @entities.each do |entity|
           %li{:class => (entity.kind == @active_kind ? 'active' : nil)}
-            %a{:href => ontology_entities_path(resource, :kind => entity.kind)}
+            = link_to repository_ontology_entities_path(*resource_chain, kind: entity.kind) do
               = entity.count == 1 ? entity.kind : entity.kind.pluralize
               %span.badge{:style => entity.count == 0 && 'display:none'}= entity.count
         - pages.each do |page, path, count|
           %li{:class => (page==current_page ? 'active' : nil)}
-            %a{:href => url_for(path)}
+            = link_to path do
               = page.to_s.capitalize
               - if count # hide counter if empty
                 %span.badge{:style => count==0 && 'display:none'}= count

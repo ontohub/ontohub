@@ -12,13 +12,14 @@ class OntologyVersionsControllerTest < ActionController::TestCase
   
   context 'OntologyVersion of a DistributedOntology' do
     setup do
-      OntologyVersion.any_instance.expects(:parse_async).once
       @user = FactoryGirl.create :user
       @ontology = FactoryGirl.create :distributed_ontology
       @ontology.import_xml_from_file fixture_file('test2.xml'), @user
       @version  = FactoryGirl.create :ontology_version, ontology: @ontology
       @ontology.reload
       @ontology_child = @ontology.children.first
+
+      assert_queued OntologyVersion
     end
 
     context 'on GET to index of a child' do
@@ -34,9 +35,10 @@ class OntologyVersionsControllerTest < ActionController::TestCase
     
   context 'OntologyVersion Instance' do
     setup do
-      OntologyVersion.any_instance.expects(:parse_async).once
       @version  = FactoryGirl.create :ontology_version_with_file
       @ontology = @version.ontology
+
+      assert_queued OntologyVersion
     end
     
     context 'on GET to index' do

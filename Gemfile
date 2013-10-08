@@ -93,6 +93,7 @@ gem 'js-routes'
 
 group :test do
   gem 'mocha', require: 'mocha/setup'
+  gem 'resque_unit'
   gem 'shoulda'
   gem "shoulda_routing_macros", "~> 0.1.2"
   gem "factory_girl_rails"

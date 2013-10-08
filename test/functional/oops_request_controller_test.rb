@@ -7,7 +7,6 @@ class OopsRequestsControllerTest < ActionController::TestCase
     should route(:post, "/ontologies/12/versions/45/oops_request").to(:controller => :oops_requests, :action => :create, :ontology_id => '12', :ontology_version_id => '45')
 
     setup do
-      OntologyVersion.any_instance.expects(:parse_async).once
       @version  = FactoryGirl.create :ontology_version_with_file
       @ontology = @version.ontology
     end

@@ -25,20 +25,20 @@ class OntologyVersionTest < ActiveSupport::TestCase
   
   context 'OntologyVersion' do
     setup do
-      OntologyVersion.any_instance.expects(:parse_async).once
       @ontology_version = FactoryGirl.create :ontology_version
     end
     should 'have url' do
-      assert_equal "http://example.com/ontologies/#{@ontology_version.ontology_id}/versions/1", @ontology_version.url
+      assert_match %r(http://example\.com/repositories/#{@ontology_version.repository.path}/[0-9a-f]{40}/\w+\.owl$), @ontology_version.url
     end
   end
   
   context 'Parsing' do
     setup do
-      OntologyVersion.any_instance.expects(:parse_async).once
-
       @ontology = FactoryGirl.create :ontology
       @version  = @ontology.save_file File.open('test/fixtures/ontologies/owl/pizza.owl'), "message", FactoryGirl.create(:user)
+      
+      assert_queued OntologyVersion
+
       @version.parse
     end
 

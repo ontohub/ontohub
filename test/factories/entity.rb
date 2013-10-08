@@ -29,7 +29,6 @@ FactoryGirl.define do
     factory :entity_with_ontology_version do
       after(:create) do |e|
         version = FactoryGirl.build(:ontology_version, ontology: e.ontology)
-        version.stubs(:parse_async)
         e.ontology.versions << version
         e.ontology.save
       end

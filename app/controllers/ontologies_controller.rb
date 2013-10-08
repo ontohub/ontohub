@@ -3,12 +3,11 @@
 # 
 class OntologiesController < InheritedResources::Base
 
-  defaults finder: :find_by_basepath!
-
   belongs_to :repository, finder: :find_by_path!
   respond_to :json, :xml
   has_pagination
   has_scope :search
+  actions :index, :show, :edit, :update
 
   before_filter :check_write_permission, :except => [:index, :show, :oops_state]
 
@@ -22,16 +21,6 @@ class OntologiesController < InheritedResources::Base
     #  end
     #end
   end
-
-  def new
-    @ontology_version = build_resource.versions.build
-  end
-
-  def create
-    @version = build_resource.versions.first
-    @version.user = current_user
-    super
-  end
   
   def show
     if !params[:repository_id]
@@ -44,10 +33,10 @@ class OntologiesController < InheritedResources::Base
     respond_to do |format|
       format.html do
         if !resource.distributed?
-          redirect_to ontology_entities_path(resource,
+          redirect_to repository_ontology_entities_path(parent, resource,
                        :kind => resource.entities.groups_by_kind.first.kind)
         else
-          redirect_to ontology_children_path(resource)
+          redirect_to repository_ontology_children_path(parent, resource)
         end
       end
       format.json do

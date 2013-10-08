@@ -4,7 +4,6 @@ class OopsRequest::ResponsesTest < ActiveSupport::TestCase
   
   context 'creating a oops request' do
     setup do
-      OntologyVersion.any_instance.stubs(:parse_async).once
       Oops::Client.stubs(:execute_request).returns \
         File.read("#{Rails.root}/test/fixtures/oops/sunrealm.xml")
       
