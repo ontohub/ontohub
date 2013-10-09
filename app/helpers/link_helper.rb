@@ -25,7 +25,7 @@ module LinkHelper
     end
 
     linked_to = resource
-    linked_to = ontology_tree_path(resource.repository, resource.basepath) if resource.is_a?(Ontology)
+    linked_to = repository_ontology_path(resource.repository, resource) if resource.is_a?(Ontology)
 
     link_to name, linked_to,
       data_type => value,

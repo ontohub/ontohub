@@ -6,7 +6,7 @@ module NavigationHelper
     ]
     
     pages << [:files,       [*resource_chain, :tree]]
-    pages << [:history,     repository_ref_path(resource, ref: 'master', path: nil, action: :history)]
+    pages << [:history,     repository_ref_path(resource, 'master', path: nil, action: :history)]
     pages << [:ontologies,  [*resource_chain, :ontologies]]
     pages << [:permissions, [*resource_chain, :permissions]] if can? :permissions, resource
     

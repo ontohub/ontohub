@@ -64,6 +64,7 @@ Ontohub::Application.routes.draw do
     end
 
     resources :files, only: [:new, :create]
+
     # action: history, diff, entries_info, files
     get ':ref/:action(/:path)',
       controller:  :files,
@@ -75,29 +76,7 @@ Ontohub::Application.routes.draw do
     controller:  :files,
     action:      :files,
     as:          :repository_tree,
-    constraints: proc { |request|
-      params = request.send(:env)["action_dispatch.request.path_parameters"]
-
-      path  = params[:path]
-      path += ".#{params[:format]}" if params[:format]
-
-      result = path.nil? || Repository.find_by_path(params[:repository_id]).
-        path_exists?(path)
-
-      if result
-        params[:path] = path
-        params[:format] = nil
-      end
-
-      result
-    }
-
-  get ':repository_id/:id',
-    controller:  :ontologies,
-    action:      :show,
-    as:          :ontology_tree do 
-      resources :entities, :only => :index
-    end
+    constraints: { path: /.*/ }
 
   root :to => 'home#show'
 

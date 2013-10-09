@@ -27,7 +27,7 @@ module OntologyHelper
 
   def download_path(resource)
     return nil if resource.versions.done.empty?
-    ontology_ontology_version_path(resource, resource.versions.done.latest.first)
+    repository_ontology_ontology_version_path(*resource_chain, resource.versions.done.latest.first)
   end
 
   def in_process_tag

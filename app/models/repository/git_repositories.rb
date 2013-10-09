@@ -79,6 +79,10 @@ module Repository::GitRepositories
   def path_info(path=nil, commit_oid=nil)
     path ||= '/'
 
+    if git.empty?
+      return { type: :dir, entries: [] }
+    end
+
     if path_exists?(path, commit_oid)
       file = git.get_file(path, commit_oid)
       if file

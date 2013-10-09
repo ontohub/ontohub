@@ -96,7 +96,11 @@ class GitRepository
   end
 
   def head_oid
-    @repo.head.target
+    if @repo.empty?
+      nil
+    else
+      @repo.head.target
+    end
   end
 
   def self.is_repository_with_working_copy?(path)
@@ -118,7 +122,7 @@ class GitRepository
   protected
 
   def path_exists_rugged?(rugged_commit, url='')
-    if url.empty? || url == '/'
+    if url.empty?
       true
     else
       tree = rugged_commit.tree

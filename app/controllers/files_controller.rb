@@ -7,7 +7,7 @@ class FilesController < ApplicationController
   #load_and_authorize_resource :except => [:index, :show]
 
   def files
-    commit_id = repository.commit_id(params[:oid])
+    commit_id = repository.commit_id(params[:ref])
     @oid = commit_id[:oid]
     @branch_name = commit_id[:branch_name]
     @path = params[:path]
@@ -19,10 +19,10 @@ class FilesController < ApplicationController
     if request.format == 'text/html' || @info[:type] != :file
       case @info[:type]
       when :file
-        @file = repository.read_file(@path, params[:oid])
+        @file = repository.read_file(@path, @oid)
       when :file_base
         ontology = @repository.ontologies.find_by_basepath(@info[:entry][:path])
-        redirect_to ontology_path(ontology)
+        redirect_to [@repository, ontology]
       end
     else
       render text: repository.read_file(@path, @oid)[:content],
@@ -35,13 +35,13 @@ class FilesController < ApplicationController
   end
 
   def diff
-    @oid = repository.commit_id(params[:oid])[:oid]
+    @oid = repository.commit_id(params[:ref])[:oid]
     @changed_files = repository.changed_files(@oid)
   end
 
   def history
     @path = params[:path]
-    @oid = repository.commit_id(params[:oid])[:oid]
+    @oid = repository.commit_id(params[:ref])[:oid]
     @current_file = repository.read_file(@path, @oid) if @path
     @commits = repository.commits(start_oid: @oid, path: @path)
   end

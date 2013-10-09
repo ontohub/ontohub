@@ -9,4 +9,6 @@ describe FilesController do
   it { should     route(:post, 'repositories/repopath/files'      ).to(repository_id: 'repopath', action: :create ) }
   it { should     route(:get,  'repositories/repopath/12ab/action' ).to(repository_id: 'repopath', action: :action, ref: '12ab' ) }
   it { should     route(:get,  'repositories/repopath/12ab/files/some/path' ).to(repository_id: 'repopath', action: :files, ref: '12ab', path: 'some/path' ) }
+
+  it { should     route(:get,  'repositories/repopath/master/history'      ).to(repository_id: 'repopath', action: :history, ref: 'master' ) }
 end

@@ -8,8 +8,9 @@ class EntityDisplayTest < ActionController::IntegrationTest
         @entity = FactoryGirl.create :entity_with_ontology_version
         @entity.ontology.state = 'done'
         @entity.ontology.save
+        @repository = @entity.ontology.repository
 
-        visit ontology_entities_path(@entity.ontology)
+        visit repository_ontology_entities_path(@repository, @entity.ontology)
         @ths = all('th')
       end
 
@@ -39,8 +40,9 @@ class EntityDisplayTest < ActionController::IntegrationTest
           text: 'Foo Bar'
         @entity.ontology.state = 'done'
         @entity.ontology.save
+        @repository = @entity.ontology.repository
 
-        visit ontology_entities_path(@entity.ontology)
+        visit repository_ontology_entities_path(@repository, @entity.ontology)
       end
 
       context 'page' do
@@ -61,8 +63,9 @@ class EntityDisplayTest < ActionController::IntegrationTest
               text: 'Foo'
             @entity.ontology.state = 'done'
             @entity.ontology.save
+            @repository = @entity.ontology.repository
             
-            visit ontology_entities_path(@entity.ontology)
+            visit repository_ontology_entities_path(@repository, @entity.ontology)
           end
 
           should 'be no highlighting' do
@@ -86,8 +89,9 @@ class EntityDisplayTest < ActionController::IntegrationTest
             name: '<http://example.com/foo_class>'
           @entity.ontology.state = 'done'
           @entity.ontology.save
+          @repository = @entity.ontology.repository
 
-          visit ontology_entities_path(@entity.ontology)
+          visit repository_ontology_entities_path(@repository, @entity.ontology)
         end
       end
     end
