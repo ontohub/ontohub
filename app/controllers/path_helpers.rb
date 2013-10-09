@@ -11,7 +11,7 @@ module PathHelpers
     if (params[:oid].nil? || repository.is_head?(params[:oid])) && action == :files
       repository_tree_path repository, path: params[:path]
     else
-      repository_oid_path repository_id: repository, oid: params[:oid], action: action, path: params[:path]
+      repository_ref_path repository_id: repository, oid: params[:oid], action: action, path: params[:path]
     end
   end
 

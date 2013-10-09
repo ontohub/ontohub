@@ -118,7 +118,7 @@ class GitRepository
   protected
 
   def path_exists_rugged?(rugged_commit, url='')
-    if url.empty?
+    if url.empty? || url == '/'
       true
     else
       tree = rugged_commit.tree

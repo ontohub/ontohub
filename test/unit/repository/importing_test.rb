@@ -128,7 +128,7 @@ class Repository::ImportingTest < ActiveSupport::TestCase
       end
 
       should 'be successful' do
-        assert @repository.sync[:success], 'sync failed'
+        assert @repository.remote_repository.synchronize[:success], 'sync failed'
       end
     end
   end

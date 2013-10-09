@@ -59,6 +59,8 @@ module RemoteRepository
     self.sync_method = :svn_rebase
 
     def clone
+      destroy_git
+      
       result_clone = GitRepository.clone_svn(source_address, local_path, local_path_working_copy)
       unless result_clone[:success]
         raise Repository::ImportError, "could not import repository: #{result_clone[:err]}"

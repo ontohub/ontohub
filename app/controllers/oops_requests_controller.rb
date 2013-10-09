@@ -13,7 +13,7 @@ class OopsRequestsController < ApplicationController
     respond_to do |format|
       ontology_version.create_oops_request!
       format.json do
-        respond_with(ontology, ontology_version, resource)
+        respond_with(*resource_chain, ontology_version, resource)
       end
       format.html do
         flash[:notice] = "Your request is send to OOPS!"
