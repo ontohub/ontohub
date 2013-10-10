@@ -3,6 +3,7 @@ module GitRepository::History
   extend ActiveSupport::Concern
 
   def commits(start_oid: nil, stop_oid: nil, path: nil, limit: nil, &block)
+    return [] if @repo.empty?
     start_oid ||= head_oid
 
     walker = Rugged::Walker.new(@repo)
