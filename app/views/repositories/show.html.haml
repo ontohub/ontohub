@@ -1,6 +1,11 @@
 = repository_nav resource, :overview
 
-%p Lorem Ipsum ...
+%h2 Description
+%p
+  - if resource.description.present?
+    =resource.description
+  - else
+    No description.
 
 %h2 Recent changes
 - if resource.recent_changes.empty?
