@@ -21,11 +21,11 @@ class OntologiesController < InheritedResources::Base
 
   def new
     @ontology_version = build_resource.versions.build
-    @categories = build_categories_tree
+    @c_vertices = build_categories_tree(CVertex.first.roots[0])
   end
 
   def edit
-    @categories = build_categories_tree
+    @c_vertices = build_categories_tree(CVertex.first.roots[0])
   end
 
   def update
@@ -74,8 +74,10 @@ class OntologiesController < InheritedResources::Base
     @ontology = clazz.new params[:ontology]
   end
 
-  def build_categories_tree
-    Category.first.subtree.arrange.first.second unless Category.first.nil?
+  def build_categories_tree(vertex)
+    @a = []
+    vertex.descendants.each { |child| build_categories_tree(child) unless child.children.empty?; @a << child }
+    @a
   end
 
   def user_selected_categories
