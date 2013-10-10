@@ -364,6 +364,46 @@ class GitRepositoryTest < ActiveSupport::TestCase
           @commit_add1
         ], @repository.commits(path: @filepath) { |commit_oid| commit_oid }
       end
+
+      should 'only list the newest commits if a limit is specified' do
+        assert_equal([
+          @commit_delete2,
+          @commit_change2,
+          @commit_add2], @repository.commits(limit: 3) { |commit_oid| commit_oid })
+        assert_equal([
+          @commit_delete2,
+          @commit_change2,
+          @commit_add2,
+          @commit_other3,
+          @commit_other2,
+          @commit_delete1,
+          @commit_other1,
+          @commit_change1,
+          @commit_add1], @repository.commits(limit: 30) { |commit_oid| commit_oid })
+        assert_equal([
+          @commit_delete2,
+          @commit_change2,
+          @commit_add2,
+          @commit_delete1,
+          @commit_change1
+        ], @repository.commits(path: @filepath, limit: 5) { |commit_oid| commit_oid })
+        assert_equal([
+          @commit_delete2,
+          @commit_change2,
+          @commit_add2,
+          @commit_delete1,
+          @commit_change1,
+          @commit_add1
+        ], @repository.commits(path: @filepath, limit: 6) { |commit_oid| commit_oid })
+        assert_equal([
+          @commit_delete2,
+          @commit_change2,
+          @commit_add2,
+          @commit_delete1,
+          @commit_change1,
+          @commit_add1
+        ], @repository.commits(path: @filepath, limit: 7) { |commit_oid| commit_oid })
+      end
     end
 
 
