@@ -158,9 +158,14 @@ module Repository::GitRepositories
     git.changed_files(commit_id(oid)[:oid])
   end
 
+  def recent_changes
+    commits(limit: 3)
+  end
+
   # recognized options: :start_oid (first commit to show)
   #                     :stop_oid (first commit to hide)
   #                     :path (file to show changes for)
+  #                     :limit (max number of commits)
   def commits(options={}, &block)
     git.commits(options, &block)
   end

@@ -2,7 +2,7 @@ module GitRepository::History
   # depends on GitRepository
   extend ActiveSupport::Concern
 
-  def commits(start_oid: nil, stop_oid: nil, path: nil, &block)
+  def commits(start_oid: nil, stop_oid: nil, path: nil, limit: nil, &block)
     start_oid ||= head_oid
 
     walker = Rugged::Walker.new(@repo)
@@ -10,18 +10,21 @@ module GitRepository::History
     walker.hide(stop_oid) if stop_oid
 
     if path
-      commits_path(walker, path, &block)
+      commits_path(walker, limit, path, &block)
     else
-      commits_all(walker, &block)
+      commits_all(walker, limit, &block)
     end
   end
 
 
   protected
 
-  def commits_all(walker, &block)
+  def commits_all(walker, limit, &block)
     commits = []
-    walker.each do |c|
+
+    walker.each_with_index do |c,i|
+      break if limit && i == limit
+
       if block_given?
         commits << block.call(c.oid)
       else
@@ -34,13 +37,16 @@ module GitRepository::History
     commits
   end
 
-  def commits_path(walker, path, &block)
+  def commits_path(walker, limit, path, &block)
     commits = []
 
     object = nil
     commit = nil
 
-    walker.each do | previous_commit |
+    added_commits = 0
+
+    walker.each do |previous_commit|
+      break if limit && added_commits == limit
       previous_object = get_object(previous_commit, path)
 
       if object_added(object, previous_object, !commit.nil?) || 
@@ -51,6 +57,7 @@ module GitRepository::History
         else
           commits << to_hash(commit)
         end
+        added_commits = added_commits + 1
       end
 
       object = previous_object
@@ -58,10 +65,12 @@ module GitRepository::History
     end
 
     unless object.nil?
-      if block_given?
-        commits << block.call(commit.oid)
-      else
-        commits << to_hash(commit)
+      unless limit && added_commits == limit
+        if block_given?
+          commits << block.call(commit.oid)
+        else
+          commits << to_hash(commit)
+        end
       end
     end
 
