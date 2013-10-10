@@ -2,6 +2,9 @@
 
 %p Lorem Ipsum ...
 
-%h2= 'Recent changes'
-
-%p Lorem Ipsum
+%h2 Recent changes
+- if resource.recent_changes.empty?
+  %p No changes.
+- else
+  - resource.recent_changes.each do |commit|
+    = render partial: 'files/commit', locals: { repository: resource, commit: commit }
