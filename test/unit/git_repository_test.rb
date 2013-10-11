@@ -6,6 +6,8 @@ require 'test_helper'
 
 class GitRepositoryTest < ActiveSupport::TestCase
 
+  ENV['LANG'] = 'C'
+
   DIR = File.dirname(__FILE__)
   SCRIPT_GIT_REMOTE_V = "#{DIR}/git_repository_remote_v.sh"
   SCRIPT_SVN_CREATE_REPO = "#{DIR}/git_repository_svn_create_repo.sh"
@@ -590,6 +592,25 @@ class GitRepositoryTest < ActiveSupport::TestCase
 
         should 'create the same branches in the clone' do
           assert(@repository.branches & @repository_clone.branches == @repository.branches, 'The original branches are not a subset of the clone branches.')
+        end
+
+        context 'should produce the typical git errors' do
+          setup {} #needed for teardown
+
+          teardown do
+            @repository_clone = nil
+          end
+
+          should '(not a repository)' do
+            result = GitRepository.clone_git('/', @path_clone)
+            assert_equal "fatal: repository '/' does not exist\n", result[:err]
+          end
+
+          should '(already exists)' do
+            GitRepository.clone_git(@path, @path_clone)
+            result = GitRepository.clone_git(@path, @path_clone)
+            assert_equal "fatal: destination path '#{@path_clone}' already exists and is not an empty directory.\n", result[:err]
+          end
         end
 
         should 'be able to pull new changes' do
