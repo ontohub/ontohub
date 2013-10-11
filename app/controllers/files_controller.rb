@@ -7,6 +7,7 @@ class FilesController < ApplicationController
   #load_and_authorize_resource :except => [:index, :show]
 
   def files
+    @content_kind = :repositories
     commit_id = repository.commit_id(params[:ref])
     @oid = commit_id[:oid]
     @branch_name = commit_id[:branch_name]
