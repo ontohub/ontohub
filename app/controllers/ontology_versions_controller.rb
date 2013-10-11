@@ -11,6 +11,8 @@ class OntologyVersionsController < InheritedResources::Base
 
   # TODO Needs testing !!!
   def show
+    @content_kind = :ontologies
+    @content_object = :ontology
     resource.checkout_raw!
     
     send_file resource.raw_path, filename: File.basename(resource.ontology.path)

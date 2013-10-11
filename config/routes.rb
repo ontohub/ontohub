@@ -39,6 +39,13 @@ Ontohub::Application.routes.draw do
     mount Resque::Server, :at => "/admin/resque"
   end
   
+  resources :ontologies, only: [:index] do
+    collection do
+      get 'keywords' => 'ontology_search#keywords'
+      get 'search' => 'ontology_search#search'
+    end
+  end
+  
   resources :teams do
     resources :permissions, :only => [:index], :controller => 'teams/permissions'
     resources :team_users, :only => [:index, :create, :update, :destroy], :path => 'users'

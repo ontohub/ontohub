@@ -64,4 +64,12 @@ class ApplicationController < ActionController::Base
     @resource_chain
   end
   
+  def after_sign_in_path_for(resource)
+    request.referrer
+  end
+
+  def after_sign_out_path_for(resource)
+    request.referrer
+  end
+
 end

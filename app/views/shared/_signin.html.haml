@@ -1,9 +1,8 @@
-%form#new_user{'accept-charset' => 'UTF-8', action: '/users/sign_in', method:'post'}
-  %input{name: 'utf8', type: 'hidden', value: '✓'}
-  %input{name: 'user[remember_me]', type: 'hidden', value: '1'}
-  %input{name: 'authenticity_token',type:'hidden',value: 'EXyhnVc9ncVK/adz6WO9XqPNDYgcY82dpiY/N/c/sBw='}
-  %input.form-control#user_email{type: 'email', name: 'user[email]', required: 'required', size: '50', placeholder: 'E-mail', style: 'margin:0 0 2px;'}
+- @user = User.new
+= simple_form_for @user, :url => user_session_path, html: { class:'form-horizontal' } do |f|
+  
+  = f.input_field :email, class: 'form-control', required: true, placeholder: 'E-mail', style: 'margin: 0 0 2px;'
   %div.input-group
-    %input.form-control#user_password{type: 'password', name: 'user[password]', required: 'required', size: '50', placeholder: 'Password'}
+    = f.input_field :password, class: 'form-control', required: true, placeholder: 'Password'
     %span.input-group-btn
-      %input.btn.btn-primary{type: 'submit', value:'Sign In'}
+      %input.btn.btn-primary{type: 'submit', value: 'Sign In'}

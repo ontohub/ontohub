@@ -1,20 +1,2 @@
-/ = repository_nav parent, :ontologies
-
-/ - if can? :create, Ontology
-/   %ul.actions.pull-right
-/     %li= link_to 'Create Ontology', new_resource_path
-/    %li= link_to 'Bulk Upload', [:bulk, parent, :ontologies]
-
-=# format_links
-= render :partial => 'filter'
-
-/ %p
-/   = pluralize(collection.total_count, 'Ontology')
-/   found
-/   - if @search
-/     for
-/     %strong= @search
-
-/ = pagination do
-/   %ul.ontologies
-/     = render collection.list
+%h2=@page_title = 'Ontologies'
+%div#OntologySearch

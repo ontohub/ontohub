@@ -3,21 +3,32 @@
   %head
     %title #{page_title} · #{Settings.name}
     %meta{"http-equiv" => "Content-Type", :content => "text/html; charset=utf-8"}
+    = stylesheet_link_tag "application", "//netdna.bootstrapcdn.com/bootstrap/3.0.0/css/bootstrap-glyphicons.css"
     = stylesheet_link_tag "application", :media => "all"
     = csrf_meta_tags
   %body
     = render :partial => '/shared/navbar'
     = flash_messages
     %div.content
-      - if (@content_kind == :jobs) or (!@content_kind and !user_signed_in?)
+      - if (!@content_kind and !user_signed_in?)
         = yield
       - else
         %div.content-padding
-        %div.col-md-8
-          = yield
+        - if @content_object.nil?
+          %div.col-md-8
+            = yield
+          - if user_signed_in?
+            %div.col-md-4
+              = render partial: '/shared/user_content'
+        - else
+          %div.col-md-12
+            = yield
       %div{style: 'clear:both;'}
-      - if ! user_signed_in?
+      - if @content_object.nil? and ! user_signed_in?
         %div{style: 'position: absolute; top: 83px; right:15px; width: 303px;'}
-          = render :partial => '/shared/signin'
+          = render partial: '/shared/signin'
+          %div.content-padding
+          = render partial: '/shared/signup'
+    %div{style:'height:30px;'}
     = render :partial => '/shared/footer'
     = javascript_include_tag "application"

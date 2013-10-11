@@ -1,15 +1,15 @@
-%nav.navbar.navbar-inverse.navbar-fixed-top{role: "navigation"}
+%nav.navbar.navbar-inverse.navbar-fixed-top{role: "navigation",style:'box-shadow:0 0 5px #888888;'}
   %div.content
     %ul.nav.navbar-nav
-      %li=link_to Settings.name, :root, {class: 'navbar-brand', style: 'color:white;font-weight:bold;font-size:24px;'}
+      %li=link_to Settings.name, :root, {class: 'navbar-brand', style: 'color:white;font-weight:bold;font-size:24px;background:url(/assets/icons/ontohub3.png) no-repeat; padding-left: 55px'}
 
       / FOR ANY VISITOR
 
       / Ontologies
-      /- if :ontologies == @content_kind
-      /  %li.active= link_to 'Ontologies', :ontologies
-      /- else
-      /  %li= link_to 'Ontologies', :ontologies
+      - if :ontologies == @content_kind
+        %li.active= link_to 'Ontologies', :ontologies
+      - else
+        %li= link_to 'Ontologies', :ontologies
 
       / Symbols
       - if :symbols == @content_kind

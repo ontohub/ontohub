@@ -91,6 +91,10 @@ gem 'diffy'
 gem 'codemirror-rails'
 gem 'js-routes'
 
+group :development, :test do
+  gem 'byebug'
+end
+
 group :test do
   gem 'mocha', require: 'mocha/setup'
   gem 'resque_unit'

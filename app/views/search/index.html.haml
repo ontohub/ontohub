@@ -1,9 +1,10 @@
 %h2=@page_title = 'Symbols'
 = form_tag :symbols, :method => :get do
   .input-group
-    = text_field_tag :q, @query, :placeholder => 'Symbol label', class: 'form-control'
+    = text_field_tag :q, @query, :placeholder => 'Symbol', class: 'form-control'
     %span.input-group-btn
-      %input.btn.btn-primary{type: 'submit', value:'Seach for Symbols'}
+      %button.btn.btn-primary{type: 'submit'}
+        %span.glyphicon.glyphicon-search
 
 - if @query
   %p

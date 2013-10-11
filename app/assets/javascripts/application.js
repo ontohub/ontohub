@@ -27,6 +27,9 @@
 //= require codemirror
 //= require js-routes
 
+// GWT Plugin
+//= require gwt/ontohub.nocache.js
+
 // ----------------------------------------------
 // Application
 //= require_tree ./templates
