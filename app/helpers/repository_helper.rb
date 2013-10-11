@@ -33,4 +33,5 @@ module RepositoryHelper
   def in_repository?
     params[:repository_id] || params[:controller] == 'repositories'
   end
+
 end

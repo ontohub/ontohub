@@ -3,6 +3,8 @@
 # 
 class OntologiesController < InheritedResources::Base
 
+  include RepositoryHelper
+
   belongs_to :repository, finder: :find_by_path!
   respond_to :json, :xml
   has_pagination
@@ -12,7 +14,11 @@ class OntologiesController < InheritedResources::Base
   before_filter :check_write_permission, :except => [:index, :show, :oops_state]
 
   def index
-    @content_kind = :ontologies
+    if in_repository?
+      @content_kind = :repositories
+    else
+      @content_kind = :ontologies
+    end
     @search = nil
     #super do |format|
     #  format.html do
