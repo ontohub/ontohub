@@ -20,7 +20,8 @@ class OntologyBeanListFactory
       language: ontology.language.nil? ? "" : ontology.language.name,
       logic:  ontology.logic.nil? ? "" : ontology.logic.name,
       iri: ontology.iri,
-      url: "/ontologies/#{ontology.id}",
+      #url: repository_ontology_path(ontology.repository, ontology),
+      url: "repositories/#{ontology.repository.to_param}/ontologies/#{ontology.to_param}",
       description: ontology.description,
     }
   end
