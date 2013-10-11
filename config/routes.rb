@@ -55,10 +55,6 @@ Ontohub::Application.routes.draw do
   get 'symbols'      => 'search#index'
 
   resources :repositories do
-    collection do
-      get 'import'
-    end
-
     resources :ssh_access, :only => :index
     resources :permissions, :only => [:index, :create, :update, :destroy]
 
