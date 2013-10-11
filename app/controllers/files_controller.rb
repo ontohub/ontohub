@@ -21,7 +21,7 @@ class FilesController < ApplicationController
       when :file
         @file = repository.read_file(@path, @oid)
       when :file_base
-        ontology = repository.ontologies.find_by_basepath(@info[:entry][:path])
+        ontology = repository.ontologies.find_by_basepath(File.real_basepath(@info[:entry][:path]))
         redirect_to [repository, ontology]
       end
     else
