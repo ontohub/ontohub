@@ -9,7 +9,7 @@ class Repository < ActiveRecord::Base
   has_many :ontologies, dependent: :destroy
 
   attr_accessible :name, :description, :source_type, :source_address
-  attr_accessor :source_type, :source_address # FIX ME
+  attr_accessor :user
 
   def to_s
     name
