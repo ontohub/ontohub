@@ -59,7 +59,11 @@ Ontohub::Application.routes.draw do
     resources :permissions, :only => [:index, :create, :update, :destroy]
 
     resources :ontologies, only: [:index, :show, :edit, :update] do
-      resources :children, :only => :index
+      collection do
+        get 'keywords' => 'ontology_search#keywords'
+        get 'search' => 'ontology_search#search'
+      end
+       resources :children, :only => :index
       resources :entities, :only => :index
       resources :sentences, :only => :index
       resources :ontology_versions, :only => [:index, :show, :new, :create], :path => 'versions' do
