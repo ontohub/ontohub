@@ -13,7 +13,7 @@ module GitRepository::Cloning
 
   # runs `git push`
   def push
-    stdin, stdout, stderr, wait_thr = Open3.popen3 'sh', SCRIPT_PUSH, local_path
+    stdin, stdout, stderr, wait_thr = Open3.popen3 'bash', SCRIPT_PUSH, local_path
 
     { out: stdout.gets(nil), err: stderr.gets(nil), success: wait_thr.value.success? }
   end
@@ -21,7 +21,7 @@ module GitRepository::Cloning
   # runs `git pull`
   def pull
     head_oid_pre = head_oid
-    stdin, stdout, stderr, wait_thr = Open3.popen3 'sh', SCRIPT_PULL, local_path
+    stdin, stdout, stderr, wait_thr = Open3.popen3 'bash', SCRIPT_PULL, local_path
 
     { out: stdout.gets(nil), err: stderr.gets(nil), success: wait_thr.value.success?,
       head_oid_pre: head_oid_pre, head_oid_post: head_oid }
@@ -30,7 +30,7 @@ module GitRepository::Cloning
   # runs `git svn rebase`
   def svn_rebase
     head_oid_pre = head_oid
-    stdin, stdout, stderr, wait_thr = Open3.popen3 'sh', SCRIPT_SVN_REBASE, local_path
+    stdin, stdout, stderr, wait_thr = Open3.popen3 'bash', SCRIPT_SVN_REBASE, local_path
 
     { out: stdout.gets(nil), err: stderr.gets(nil), success: wait_thr.value.success?,
       head_oid_pre: head_oid_pre, head_oid_post: head_oid }
@@ -41,19 +41,19 @@ module GitRepository::Cloning
   end
 
   def remote_add_origin(target_path)
-    stdin, stdout, stderr, wait_thr = Open3.popen3 'sh', SCRIPT_REMOTE_ADD, local_path, target_path
+    stdin, stdout, stderr, wait_thr = Open3.popen3 'bash', SCRIPT_REMOTE_ADD, local_path, target_path
 
     { out: stdout.gets(nil), err:   stderr.gets(nil), success: wait_thr.value.success? }
   end
 
   def remote_set_url_push(target_path)
-    stdin, stdout, stderr, wait_thr = Open3.popen3 'sh', SCRIPT_REMOTE_SET, local_path, target_path
+    stdin, stdout, stderr, wait_thr = Open3.popen3 'bash', SCRIPT_REMOTE_SET, local_path, target_path
 
     { out: stdout.gets(nil), err:   stderr.gets(nil), success: wait_thr.value.success? }
   end
 
   def remote_rm_origin
-    stdin, stdout, stderr, wait_thr = Open3.popen3 'sh', SCRIPT_REMOTE_RM, local_path
+    stdin, stdout, stderr, wait_thr = Open3.popen3 'bash', SCRIPT_REMOTE_RM, local_path
 
     { out: stdout.gets(nil), err: stderr.gets(nil), success: wait_thr.value.success? }
   end
