@@ -1,85 +1,84 @@
 require 'json'
 
+#
+# Beware! This is not tested well.
+#
 class OntologySearch
 
-  def initialize()
+  def make_keyword_list_json(prefix)
+    JSON.generate(make_keyword_list(prefix))
   end
 
-  def makeKeywordListJson(prefix)
-    keywordList = makeKeywordList(prefix)
-    return JSON.generate(keywordList)
-  end
+  def make_keyword_list(prefix)
+    text_list = Set.new
 
-  def makeKeywordList(prefix)
-    textList = Set.new
-    textList.add(prefix) unless Ontology.where("name = :prefix", prefix: prefix).length == 0
-    textList.add(prefix) unless Entity.where("name = :prefix", prefix: prefix).length == 0
+    unless Ontology.where("name = :prefix", prefix: prefix).empty?
+      text_list.add(prefix)
+    end
+
+    unless Entity.where("name = :prefix", prefix: prefix).empty?
+      text_list.add(prefix)
+    end
+
     Ontology.select(:name).where("name ILIKE :prefix", prefix: "#{prefix}%").group("name").limit(5).each do |ontology|
-      textList.add(ontology.name)
+      text_list.add(ontology.name)
     end
+
     Entity.select(:name).where("name ILIKE :prefix", prefix: "#{prefix}%").group("name").limit(5).each do |symbol|
-      textList.add(symbol.name)
+      text_list.add(symbol.name)
     end
+
     Logic.select(:name).where("name ILIKE :prefix", prefix: "#{prefix}%").limit(5).each do |logic|
-      textList.add(logic.name)
+      text_list.add(logic.name)
     end
-    textList = textList.to_a();
-    textList = textList.sort
-    keywordListFactory = KeywordListFactory.new()
-    textList.each do |text|
-      keywordListFactory.addKeyword(text)
-    end
-    keywordList = keywordListFactory.getKeywordList()
-    return keywordList
+
+    text_list.to_a.sort.map { |x| {text: x} }
   end
 
-  def makeBeanListJson(keywordList)
-    beanList = makeBeanList(keywordList)
-    return JSON.generate(beanList)
+  def make_bean_list_json(keyword_list)
+    JSON.generate(make_bean_list(keyword_list))
   end
 
-  def makeBeanList(keywordList)
-    ontologyHash = Hash.new
+  def make_bean_list(keyword_list)
+    ontology_hash = Hash.new
     index = 0
-    keywordList.each do |keyword|
-      keywordHash = Hash.new
+
+    keyword_list.each do |keyword|
+      keyword_hash = Hash.new
+
       Ontology.where("name = :name", name: "#{keyword}").limit(50).each do |ontology|
-        if (keywordHash[ontology.id].nil?)
-          keywordHash[ontology.id] = ontology
-        end
+        keyword_hash[ontology.id] ||= ontology
       end
+
       Entity.where("name = :name", name: "#{keyword}").limit(50).each do |symbol|
-        if (keywordHash[symbol.ontology.id].nil?)
-          keywordHash[symbol.ontology.id] = symbol.ontology
-        end
+        keyword_hash[symbol.ontology.id] ||= symbol.ontology
       end
-      logic = Logic.find_by_name(keyword)
-      if logic
-        logic.ontologies.each do |ontology|
-          if (keywordHash[ontology.id].nil?)
-            keywordHash[ontology.id] = ontology
-          end
-        end
+
+      if logic = Logic.find_by_name(keyword)
+        logic.ontologies.each { |o| keyword_hash[o.id] ||= o }
       end
-      if (index == 0)
-        ontologyHash = keywordHash
+
+      if index == 0
+        ontology_hash = keyword_hash
       else
         hash = Hash.new
-        keywordHash.each_key do |key|
-          if (!ontologyHash[key].nil?)
-            hash[key] = ontologyHash[key]
-          end
+
+        keyword_hash.each_key do |key|
+          hash[key] ||= ontology_hash[key] if ontology_hash[key]
         end
-        ontologyHash = hash
+
+        ontology_hash = hash
       end
-      index = index + 1
+
+      index += 1
     end
-    beanListFactory = OntologyBeanListFactory.new()
-    ontologyHash.each_value do |ontology|
-      beanListFactory.addSmallBean(ontology)
+
+    bean_list_factory = OntologyBeanListFactory.new
+    ontology_hash.each_value do |ontology|
+      bean_list_factory.add_small_bean(ontology)
     end
-    beanList = beanListFactory.getBeanList()
-    return beanList
+
+    bean_list_factory.bean_list
   end
 
 end
