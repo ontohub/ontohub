@@ -46,7 +46,12 @@ class ApplicationController < ActionController::Base
   def resource_chain
     return @resource_chain if @resource_chain
 
-    if !params[:repository_id]
+    if params[:logic_id]
+      @resource_chain = []
+      return @resource_chain      
+    end
+
+    if !params[:repository_id] && !(params[:controller] == 'repositories' && params[:id])
       @resource_chain = []
       return @resource_chain
     end
