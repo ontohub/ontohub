@@ -29,5 +29,9 @@ module RepositoryHelper
   def short_oid(commit)
     commit[:oid][0..6]
   end
-  
+
+  def in_repository?
+    params[:repository_id] || params[:controller] == 'repositories'
+  end
+
 end
