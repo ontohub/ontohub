@@ -1,7 +1,10 @@
-= repository_nav parent, :ontologies if in_repository?
-- unless in_repository?
+- if in_repository?
+  = repository_nav parent, :ontologies
+  .pull-right
+    = link_to 'Upload an ontology file', new_repository_file_path(parent, 'upload_file[path]' => params[:path]), class: 'btn'
+- else
   %h2= @page_title = 'Ontologies'
-.pull-right
-  = link_to 'Upload an ontology file', new_repository_file_path(parent, 'upload_file[path]' => params[:path]), class: 'btn'
+
 .clearfix
+
 #OntologySearch
