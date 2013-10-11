@@ -1,5 +1,5 @@
 - if req = resource.versions.current.try(:request)
-  %div.state{ class: req.state, 'data-uri' => ontology_ontology_version_oops_request_path(resource, resource.versions.current), 'data-button' => "show results", 'data-reload_uri' => url_for(resource) }
+  %div.state{ class: req.state, 'data-uri' => repository_ontology_ontology_version_oops_request_path(parent, resource, resource.versions.current), 'data-button' => "show results", 'data-reload_uri' => repository_ontology_url(parent, resource) }
     %span.oops OOPS State: #{status(req)}
     - if req.state == 'failed'
       (#{req.last_error})
