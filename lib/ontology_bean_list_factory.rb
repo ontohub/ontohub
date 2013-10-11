@@ -2,31 +2,26 @@ require 'json'
 
 class OntologyBeanListFactory
 
-  def initialize()
-    @beanList = []
+  attr_reader :bean_list
+
+  def initialize
+    @bean_list = []
   end
 
-  def addSmallBean(ontology)
-    if (@beanList.size() < 50)
-      bean = makeSmallBean(ontology)
-      @beanList.push(bean)
-    end
+  def add_small_bean(ontology)
+    @bean_list.push(make_small_bean(ontology)) if @bean_list.size < 50
   end
 
-  def makeSmallBean(ontology)
-    return {
+  def make_small_bean(ontology)
+    {
       name: ontology.name,
-      acronym: "",
-      language: ontology.language.nil? ? "" : ontology.language.name,
-      logic:  ontology.logic.nil? ? "" : ontology.logic.name,
+      acronym: '',
+      language: ontology.language.nil? ? '' : ontology.language.name,
+      logic:  ontology.logic.nil? ? '' : ontology.logic.name,
       iri: ontology.iri,
       url: "/ontologies/#{ontology.id}",
-      description: ontology.description,
+      description: ontology.description
     }
-  end
-
-  def getBeanList()
-    return @beanList
   end
 
 end
