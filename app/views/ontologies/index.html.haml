@@ -1,2 +1,6 @@
 %h2=@page_title = 'Ontologies'
+.pull-right
+  = link_to 'Upload an ontology file', new_repository_file_path(parent, 'upload_file[path]' => params[:path]), class: 'btn'
+.clearfix
+  
 %div#OntologySearch
