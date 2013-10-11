@@ -62,7 +62,11 @@ class OntologySearch
         ontology_hash = keyword_hash
       else
         hash = Hash.new
-        keyword_hash.each_key { |key| hash[key] ||= ontology_hash[key] }
+
+        keyword_hash.each_key do |key|
+          hash[key] ||= ontology_hash[key] if ontology_hash[key]
+        end
+
         ontology_hash = hash
       end
 

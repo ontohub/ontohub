@@ -50,7 +50,7 @@ class OntologySearchTest < ActiveSupport::TestCase
             assert results.size != 0
 
             results.each do |result|
-              assert result[:text].starts_with? prefix
+              assert result[:text].downcase.starts_with? prefix.downcase
             end
 
             assert results.map { |x| x[:text] }.include? o.name
@@ -67,7 +67,7 @@ class OntologySearchTest < ActiveSupport::TestCase
             assert results.size != 0
 
             results.each do |result|
-              assert result[:text].starts_with? prefix
+              assert result[:text].downcase.starts_with? prefix.downcase
             end
 
             assert results.map { |x| x[:text] }.include? e.name
@@ -84,7 +84,7 @@ class OntologySearchTest < ActiveSupport::TestCase
             assert results.size != 0
 
             results.each do |result|
-              assert result[:text].starts_with? prefix
+              assert result[:text].downcase.starts_with? prefix.downcase
             end
 
             assert results.map { |x| x[:text] }.include? l.name
@@ -113,6 +113,15 @@ class OntologySearchTest < ActiveSupport::TestCase
           assert_equal 1, results.size
 
           assert  results.include?(@o1.name)
+          assert !results.include?(@o2.name)
+          assert !results.include?(@o3.name)
+        end
+
+        should 'return an empty set' do
+          results = @os.make_bean_list([@o2.name, @e1.name]).map { |x| x[:name] }
+          assert_equal 0, results.size
+
+          assert !results.include?(@o1.name)
           assert !results.include?(@o2.name)
           assert !results.include?(@o3.name)
         end
