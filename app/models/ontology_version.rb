@@ -15,8 +15,7 @@ class OntologyVersion < ActiveRecord::Base
 
   before_validation :set_checksum
 
-  validate :presence_of_raw_file_or_source_url, :on => :create
-# validate :raw_file_size_maximum
+  # validate :raw_file_size_maximum
 
   validates_format_of :source_url,
     :with => URI::regexp(Settings.allowed_iri_schemes), :if => :source_url?
@@ -46,12 +45,6 @@ class OntologyVersion < ActiveRecord::Base
  
 protected
 
-  def presence_of_raw_file_or_source_url
-    if raw_file.blank? and source_url.blank?
-      errors.add :source_url, 'Specify either a source file or URI.'
-    end
-  end
- 
   def raw_file_size_maximum
     if raw_file.size > 10.megabytes.to_i
       errors.add :raw_file, 'The maximum file size is 10M.'

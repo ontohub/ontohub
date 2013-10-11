@@ -66,7 +66,7 @@ class OntologyImportXMLTest < ActiveSupport::TestCase
     
     context 'first child ontology' do
       setup do
-        @child = @ontology.children.first
+        @child = @ontology.children.where(name: 'sp__E1').first
       end
       
       should 'have entities' do

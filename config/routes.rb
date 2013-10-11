@@ -21,6 +21,8 @@ Ontohub::Application.routes.draw do
   resources :language_mappings
   resources :logic_mappings
 
+  resource :links
+
   resources :language_adjoints
   resources :logic_adjoints
 
@@ -40,6 +42,10 @@ Ontohub::Application.routes.draw do
     resources :entities, :only => :index
     resources :sentences, :only => :index
     get 'bulk', :on => :collection
+    resources :links do
+      get 'update_version', :on => :member
+      resources :link_versions
+    end
     resources :ontology_versions, :only => [:index, :show, :new, :create], :path => 'versions' do
       resource :oops_request, :only => [:show, :create]
     end
@@ -51,6 +57,12 @@ Ontohub::Application.routes.draw do
     resources :permissions, :only => [:index, :create, :update, :destroy]
     resources :metadata, :only => [:index, :create, :destroy]
     resources :comments, :only => [:index, :create, :destroy]
+    resources :graphs, :only => [:index]
+  end
+  
+  resources :links do
+    get 'update_version', :on => :member
+    resources :link_versions
   end
   
   resources :teams do

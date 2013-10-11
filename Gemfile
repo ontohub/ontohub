@@ -4,6 +4,8 @@ gem 'rails', '~> 3.2.13'
 gem 'rack-protection'
 gem 'secure_headers'
 
+gem 'pry-rails'
+
 gem 'pg'
 gem 'foreigner'
 
@@ -25,6 +27,8 @@ group :assets do
   gem 'd3_rails'
   gem 'therubyracer'
   gem 'uglifier', '>= 1.0.3'
+  gem 'handlebars_assets', '~> 0.14.1'
+  gem 'hamlbars', '~> 2.0'
 end
 
 gem 'haml-rails'
@@ -58,7 +62,7 @@ gem "strip_attributes", "~> 1.0"
 gem 'acts_as_tree'
 
 # Manage uploads
-gem 'carrierwave', "~> 0.8.0"
+gem 'carrierwave', "~> 0.9.0"
 
 # HTTP Client
 gem "rest-client"
@@ -76,6 +80,10 @@ gem 'ruby-graphviz', "~> 1.0.8"
 
 # Fake-inputs for tests and seeds
 gem "faker", "~> 1.1.2"
+
+group :development, :test do
+  gem 'byebug'
+end
 
 group :test do
   gem 'mocha', require: 'mocha/setup'

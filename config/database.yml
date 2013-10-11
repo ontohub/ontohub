@@ -1,10 +1,10 @@
-# PostgreSQL. Versions 8.2 and up are supported.
+# PostgreSQL 8.2 and up are supported.
+# Other DBMS (for example MySQL) are NOT supported.
 #
 development: &config
   adapter: postgresql
   encoding: unicode
   template: template0
-  hostname: localhost
   database: ontohub_development
   username: postgres
   password:

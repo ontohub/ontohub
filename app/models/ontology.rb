@@ -21,6 +21,9 @@ class Ontology < ActiveRecord::Base
   include Ontology::LicenseModels
   include Ontology::FormalityLevels
 
+  # Multiple Class Features
+  include Aggregatable
+
   belongs_to :language
   belongs_to :logic, counter_cache: true
 
