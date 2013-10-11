@@ -279,6 +279,23 @@ class GitRepositoryTest < ActiveSupport::TestCase
       should 'read the right contents in the root folder after deleting the third file' do
         assert_equal @repository.folder_contents(@commit_del3), []
       end
+
+      should 'process all files by files method' do
+        files = []
+        @repository.files do |f|
+          files << f
+        end
+        assert_equal [], files
+
+        @repository.files(@commit_add3) do |f|
+          files << f
+        end
+
+        assert_equal [
+          @filepath1,
+          @filepath2,
+          @filepath3 ], files
+      end
     end
 
     context 'getting the commit history' do
