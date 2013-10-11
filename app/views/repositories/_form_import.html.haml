@@ -1,7 +1,0 @@
-= simple_form_for Repository.new, html: {class: 'form-horizontal' } do |f|
-  = f.input :name, input_html: { class: 'input-xlarge' }, required: true
-  = f.input :description, input_html: { class: 'input-xlarge' }
-  = f.input :source_type, required: true, as: :radio_buttons, collection: Repository::SOURCE_TYPES, required: true
-  = f.input :source_address, required: true
-  .control-group
-    .controls= f.button :submit, class: 'btn btn-primary'
