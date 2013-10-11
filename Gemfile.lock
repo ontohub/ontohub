@@ -12,6 +12,13 @@ GIT
     sunspot_solr (2.0.0.pre.111215)
       escape (~> 0.0.4)
 
+GIT
+  remote: git://github.com/thomas-mcdonald/bootstrap-sass.git
+  revision: ab2f7dd92491bd490e545c18d32e966567b84a3b
+  specs:
+    bootstrap-sass (3.0.0.0)
+      sass (~> 3.2)
+
 GEM
   remote: https://rubygems.org/
   specs:
@@ -47,8 +54,6 @@ GEM
     addressable (2.3.5)
     arel (3.0.2)
     bcrypt-ruby (3.1.2)
-    bootstrap-sass (2.3.2.2)
-      sass (~> 3.2)
     brwsr (1.1.1)
     builder (3.0.4)
     byebug (2.2.2)
@@ -314,7 +319,7 @@ PLATFORMS
 
 DEPENDENCIES
   acts_as_tree
-  bootstrap-sass (~> 2.3.2.2)
+  bootstrap-sass!
   byebug
   cancan (~> 1.6.7)
   capistrano
