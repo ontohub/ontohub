@@ -57,6 +57,27 @@ class GraphDataFetcher
     [nodes, edges]
   end
 
+  def explain
+    if @center.is_a?(DistributedOntology)
+      @source.
+        connection.
+        select_all("EXPLAIN (SELECT fetch_distributed_graph_data(#{@center.id}))")
+    else
+      @source.
+        connection.
+        select_all("EXPLAIN (FORMAT JSON) (#{build_statement(:node)})")
+    end
+  end
+
+  def query_cost
+    response = explain
+    cost = JSON.parse(response.first["QUERY PLAN"]).
+        first["Plan"]["Total Cost"]
+    return cost
+  rescue NoMethodError
+    return nil
+  end
+
   private
   def fetch_for_distributed
     func_stmt = <<-SQL
