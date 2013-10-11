@@ -8,7 +8,7 @@ class GitRepositoryTest < ActiveSupport::TestCase
 
   ENV['LANG'] = 'C'
 
-  DIR = File.dirname(__FILE__)
+  DIR = Rails.root.join('test', 'unit')
   SCRIPT_GIT_REMOTE_V = "#{DIR}/git_repository_remote_v.sh"
   SCRIPT_SVN_CREATE_REPO = "#{DIR}/git_repository_svn_create_repo.sh"
   SCRIPT_SVN_ADD_COMMITS = "#{DIR}/git_repository_svn_add_commits.sh"
