@@ -46,6 +46,11 @@ class ApplicationController < ActionController::Base
   def resource_chain
     return @resource_chain if @resource_chain
 
+    if !params[:repository_id]
+      @resource_chain = []
+      return @resource_chain
+    end
+
     @resource_chain = [ Repository.find_by_path!( controller_name=='repositories' ? params[:id] : params[:repository_id] )]
     
     if id = params[:commit_reference_id]
