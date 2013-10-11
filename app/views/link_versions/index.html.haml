@@ -1,0 +1,13 @@
+%h2= @page_title = 'Links - Versions'
+
+%p
+  = pluralize(collection.count, resource_class.to_s)
+  found
+
+= pagination do
+  %table
+    %thead
+      %th resource.link
+      %th resource.version_number
+    %tbody
+      = render collection

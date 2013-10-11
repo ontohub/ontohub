@@ -1,5 +1,25 @@
 module LinkHelper
   
+  def sort_link_list(collection)
+    hash = {}
+    collection.each do |link|
+        i = 0
+      if link.entity_mappings.empty?
+        hash["empty#{i}"] = [{link: link, target: ""}]
+        i += 1
+      end
+         link.entity_mappings.each do |mapping|
+         sym =  mapping.source.to_s.to_sym
+          if hash[sym]
+            hash[sym] << {link: link, target: mapping.target}
+          else
+            hash[sym] = [{link: link, target: mapping.target}]
+          end
+        end
+      end
+      return hash
+  end
+  
   def fancy_link(resource)
     clazz = resource.class
     clazz = 'Ontology' if clazz.to_s.include?('Ontology')

@@ -6,7 +6,8 @@ module NavigationHelper
           ['Comments', :comments],
           ['Metadata', :metadata],
           ['Versions', :ontology_versions],
-          ['Graphs', :graphs]
+          ['Graphs', :graphs],
+          ['Links', :links]
         ]
     @entities = ontology.distributed? ? [] : ontology.entities.groups_by_kind
 
