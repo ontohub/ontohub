@@ -35,15 +35,24 @@ class OntologyVersionTest < ActiveSupport::TestCase
   context 'Parsing' do
     setup do
       @ontology = FactoryGirl.create :ontology
-      @version  = @ontology.save_file File.open('test/fixtures/ontologies/owl/pizza.owl'), "message", FactoryGirl.create(:user)
-      
-      assert_queued OntologyVersion
 
-      @version.parse
+      # Clear Jobs
+      Worker.jobs.clear
+
+      assert_difference 'Worker.jobs.count' do
+        @version  = @ontology.save_file File.open('test/fixtures/ontologies/owl/pizza.owl'), "message", FactoryGirl.create(:user)
+      end
+
+      # Run Job
+      Worker.drain
     end
 
     should 'be done' do
       assert_equal 'done', @ontology.reload.state
+    end
+
+    should 'have checksum' do
+      assert_match /^[a-z0-9]{40}$/, @version.reload.checksum
     end
     
   end

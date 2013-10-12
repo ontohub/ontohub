@@ -1,5 +1,5 @@
 
-class ResqueWorkers
+class SidekiqWorkers
   
   RAILS_ROOT = ENV['RAILS_ROOT'] || File.dirname(__FILE__) + "/../.."
   
@@ -11,19 +11,15 @@ class ResqueWorkers
     @count = 0
   end
   
-  def watch(queue, num=1)
-    num.times do
-      watch_one queue
-    end
-  end
-  
-  def watch_one(queue)
+  def watch(queues, concurrency)
+    queues = [queues] unless queues.is_a?(Array)
+
     God.watch do |w|
       w.dir           = RAILS_ROOT
-      w.group         = 'resque'
-      w.name          = "resque-#{@count+=1}"
+      w.group         = 'workers'
+      w.name          = "worker-#{@count+=1}"
       w.interval      = 30.seconds
-      w.start         = "QUEUE=#{queue} nice rake resque:work"
+      w.start         = "nice bin/sidekiq -c #{concurrency} --logfile log/sidekiq.log" << queues.map{|q| " -q '#{q}'"}.join
       w.start_grace   = 10.seconds
       
       # Restart if memory gets too high

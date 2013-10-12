@@ -19,8 +19,6 @@ class OntologyVersionsControllerTest < ActionController::TestCase
       @ontology.reload
       @ontology_child = @ontology.children.first
       @repository = @ontology.repository
-
-      assert_queued OntologyVersion
     end
 
     context 'on GET to index of a child' do
@@ -39,8 +37,6 @@ class OntologyVersionsControllerTest < ActionController::TestCase
       @version  = FactoryGirl.create :ontology_version_with_file
       @ontology = @version.ontology
       @repository = @ontology.repository
-
-      assert_queued OntologyVersion
     end
     
     context 'on GET to index' do
