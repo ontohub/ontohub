@@ -17,6 +17,8 @@ module OntologyVersion::Parsing
     update_state! :processing
 
     do_or_set_failed do
+      refresh_checksum! unless checksum?
+      
       @path = Hets.parse(self.raw_path!, File.dirname(self.xml_path))
       
       # move generated file to destination

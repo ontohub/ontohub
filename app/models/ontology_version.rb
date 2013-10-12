@@ -43,7 +43,8 @@ protected
     end
   end
 
-  def set_checksum
-    self.checksum = raw_file.sha1 if raw_file.present? and raw_file_changed?
+  def refresh_checksum!
+    self.checksum = Digest::SHA1.file(raw_path!).hexdigest
+    save! if checksum_changed?
   end
 end

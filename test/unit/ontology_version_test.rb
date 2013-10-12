@@ -50,6 +50,10 @@ class OntologyVersionTest < ActiveSupport::TestCase
     should 'be done' do
       assert_equal 'done', @ontology.reload.state
     end
+
+    should 'have checksum' do
+      assert_match /^[a-z0-9]{40}$/, @version.reload.checksum
+    end
     
   end
 end
