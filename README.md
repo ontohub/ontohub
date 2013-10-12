@@ -195,11 +195,6 @@ After configuring your `config/database.yml` you have to create the tables:
 
     rake db:migrate:reset
 
-### Solr and Resque
-
-    rake sunspot:solr:start
-    rake resque:work
-
 ### Seeds
 
 Fill the database with dummy data:
@@ -208,21 +203,14 @@ Fill the database with dummy data:
 
 ### Start the rails server
 
-Start the rails server. It will be available at http://localhost:3000/ until you
-stop it by pressing `CTRL+C`.
+Start the rails server and background processes.
+The server will be available at http://localhost:3000/ until you stop it by pressing `CTRL+C`.
 
-    rails s
+    script/start-development
 
 Now you can log in as *admin@example.com* with password *foobar*.
 *Alice, Bob, Carol, Dave, Ted* @example.com can also be used (with the same
 password).
-
-### Stopping Solr and Resque
-
-Resque has to be stopped with `CTRL+C` on the terminal you typed `rake
-resque:work`. Solr is to be stopped as follows:
-
-    rake sunspot:solr:stop
 
 License
 -------

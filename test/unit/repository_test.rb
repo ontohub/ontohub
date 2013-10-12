@@ -63,7 +63,6 @@ class RepositoryTest < ActiveSupport::TestCase
       context "that doesn't exist" do
         setup do
           @version = @repository.save_file(@file_path, @target_path, @message, @user)
-          assert_queued OntologyVersion
         end
 
         should 'create the file in the git repository' do
@@ -93,8 +92,9 @@ class RepositoryTest < ActiveSupport::TestCase
 
       context 'that exists' do
         setup do
-          @repository.save_file(@file_path, @target_path, @message, @user)
-          assert_queued OntologyVersion
+          assert_difference 'Worker.jobs.count' do
+            @repository.save_file(@file_path, @target_path, @message, @user)
+          end
           
           file = File.open(@file_path, 'w')
           file.puts("#{@content}\n#{@content}")
@@ -141,8 +141,9 @@ class RepositoryTest < ActiveSupport::TestCase
           tmpfile.puts(content)
           tmpfile.close
           
-          @repository.save_file(file_path, path, @message, @user, "#{@iri_prefix}#{file_path}")
-          assert_queued OntologyVersion
+          assert_difference 'Worker.jobs.count' do
+            @repository.save_file(file_path, path, @message, @user, "#{@iri_prefix}#{file_path}")
+          end
         end
       end
 

@@ -7,8 +7,6 @@ module Repository::Importing
   included do
     include StateUpdater
 
-    @queue = 'import'
-
     validates_inclusion_of :state,       in: STATES
     validates_inclusion_of :source_type, in: SOURCE_TYPES, if: :remote?
 

@@ -2,7 +2,7 @@ module OntologyVersion::Parsing
   extend ActiveSupport::Concern
   
   included do
-    @queue = 'parsing'
+    @queue = 'hets'
     after_create :parse_async, :if => :commit_oid?
   end
 
