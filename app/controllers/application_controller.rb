@@ -9,7 +9,7 @@ class ApplicationController < ActionController::Base
   rescue_from CanCan::AccessDenied do |exception|
     redirect_to root_url, :alert => exception.message
   end
-  
+ 
   if defined? PG
     # A foreign key constraint exception from the database
     rescue_from PG::Error do |exception|
@@ -27,7 +27,7 @@ class ApplicationController < ActionController::Base
       end
     end
   end
-  
+
   protected
   
   helper_method :admin?
@@ -76,5 +76,27 @@ class ApplicationController < ActionController::Base
   def after_sign_out_path_for(resource)
     request.referrer
   end
+
+  helper_method :cover_visible?
+  def cover_visible?
+    params[:controller] == 'home' && !user_signed_in?
+  end
+
+  helper_method :context_pane_visible?
+  def context_pane_visible?
+    if params[:controller] == 'home'
+      return true
+    end
+    if params[:action] != 'index'
+      return false
+    end
+    if %w(search logics repositories).include? params[:controller]
+      return true
+    end
+    if params[:controller] == 'ontologies' && !in_repository?
+      return true
+    end
+    return false 
+  end 
 
 end

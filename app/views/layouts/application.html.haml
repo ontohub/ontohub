@@ -10,25 +10,24 @@
     = render :partial => '/shared/navbar'
     = flash_messages
     %div.content
-      - if (!@content_kind and !user_signed_in?)
-        = yield
-      - else
-        %div.content-padding
-        - if @content_object.nil?
-          %div.col-md-8
-            = yield
-          - if user_signed_in?
-            %div.col-md-4
-              = render partial: '/shared/user_content'
+      - if cover_visible?
+        = render :partial => '/shared/cover'
+      %div.content-padding
+      - if context_pane_visible?
+        %div.col-md-8
+          = yield
+        - if user_signed_in?
+          %div.col-md-4
+            = render partial: '/shared/user_content'
         - else
-          %div.col-md-12
-            = yield
+          %div{style: 'position: absolute; top: 83px; right:15px; width: 303px;'}
+            = render partial: '/shared/signin'
+            %div.content-padding
+            = render partial: '/shared/signup' 
+      - else
+        %div.col-md-12
+          = yield
       %div{style: 'clear:both;'}
-      - if @content_object.nil? and ! user_signed_in?
-        %div{style: 'position: absolute; top: 83px; right:15px; width: 303px;'}
-          = render partial: '/shared/signin'
-          %div.content-padding
-          = render partial: '/shared/signup'
     %div{style:'height:30px;'}
     = render :partial => '/shared/footer'
     = javascript_include_tag "application"
