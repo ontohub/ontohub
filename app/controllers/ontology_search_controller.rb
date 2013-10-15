@@ -7,7 +7,12 @@ class OntologySearchController < ApplicationController
 
   def keywords
     prefix = params[:prefix] || ''
-    respond_with OntologySearch.new.make_keyword_list_json(prefix)
+    if in_repository?
+      repository = Repository.find_by_path params[:repository_id]
+      respond_with OntologySearch.new.make_repository_keyword_list_json(repository, prefix)
+    else
+      respond_with OntologySearch.new.make_global_keyword_list_json(prefix)
+    end
   end
 
   def search

@@ -45,7 +45,7 @@ class OntologySearchTest < ActiveSupport::TestCase
         @ontologies.each do |o|
           (0..(o.name.size-1)).each do |i|
             prefix = o.name[0..i]
-            results = @os.make_keyword_list prefix
+            results = @os.make_global_keyword_list prefix
 
             assert results.size != 0
 
@@ -62,7 +62,7 @@ class OntologySearchTest < ActiveSupport::TestCase
         @entities.each do |e|
           (0..(e.name.size-1)).each do |i|
             prefix = e.name[0..i]
-            results = @os.make_keyword_list prefix
+            results = @os.make_global_keyword_list prefix
 
             assert results.size != 0
 
@@ -79,7 +79,7 @@ class OntologySearchTest < ActiveSupport::TestCase
         @logics.each do |l|
           (0..(l.name.size-1)).each do |i|
             prefix = l.name[0..i]
-            results = @os.make_keyword_list prefix
+            results = @os.make_global_keyword_list prefix
 
             assert results.size != 0
 

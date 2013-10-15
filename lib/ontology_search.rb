@@ -5,11 +5,15 @@ require 'json'
 #
 class OntologySearch
 
-  def make_keyword_list_json(prefix)
-    JSON.generate(make_keyword_list(prefix))
+  def make_repository_keyword_list_json(repository, prefix)
+    JSON.generate(make_repository_keyword_list(repository, prefix))
   end
 
-  def make_keyword_list(prefix)
+  def make_global_keyword_list_json(prefix)
+    JSON.generate(make_global_keyword_list(prefix))
+  end
+
+  def make_repository_keyword_list(repository, prefix)
     text_list = Set.new
 
     unless Ontology.where("name = :prefix", prefix: prefix).empty?
@@ -34,6 +38,33 @@ class OntologySearch
 
     text_list.to_a.sort.map { |x| {text: x} }
   end
+
+  def make_global_keyword_list(prefix)
+    text_list = Set.new
+
+    unless Ontology.where("name = :prefix", prefix: prefix).empty?
+      text_list.add(prefix)
+    end
+
+    unless Entity.where("name = :prefix", prefix: prefix).empty?
+      text_list.add(prefix)
+    end
+
+    Ontology.select(:name).where("name ILIKE :prefix", prefix: "#{prefix}%").group("name").limit(5).each do |ontology|
+      text_list.add(ontology.name)
+    end
+
+    Entity.select(:name).where("name ILIKE :prefix", prefix: "#{prefix}%").group("name").limit(5).each do |symbol|
+      text_list.add(symbol.name)
+    end
+
+    Logic.select(:name).where("name ILIKE :prefix", prefix: "#{prefix}%").limit(5).each do |logic|
+      text_list.add(logic.name)
+    end
+
+    text_list.to_a.sort.map { |x| {text: x} }
+  end
+
 
   def make_bean_list_json(keyword_list)
     JSON.generate(make_bean_list(keyword_list))

@@ -99,4 +99,9 @@ class ApplicationController < ActionController::Base
     return false 
   end 
 
+  helper_method :in_repository?
+  def in_repository?
+    params[:repository_id] || params[:controller] == 'repositories'
+  end
+
 end
