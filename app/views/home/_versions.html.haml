@@ -1,4 +1,12 @@
 
+%h2='Recently Updated Repositories'
+%div.pull-right
+  = link_to 'Browse Repositories', repositories_path, {class: 'btn btn-primary', type: 'button'}
+- @repositories.each do |repository|
+  %div
+    = fancy_link repository
+    = timestamp repository.updated_at
+
 %h2='Recently Updated Ontologies'
 %div.pull-right
   = link_to 'Browse Ontologies', ontologies_path, {class: 'btn btn-primary', type: 'button'}

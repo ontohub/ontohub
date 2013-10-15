@@ -11,6 +11,8 @@ class Repository < ActiveRecord::Base
   attr_accessible :name, :description, :source_type, :source_address
   attr_accessor :user
 
+  scope :latest, order('updated_at DESC')
+
   def to_s
     name
   end
