@@ -7,8 +7,6 @@ module Repository::Importing
   included do
     include StateUpdater
 
-    @queue = 'import'
-
     validates_inclusion_of :state,       in: STATES
     validates_inclusion_of :source_type, in: SOURCE_TYPES, if: :remote?
 
@@ -50,7 +48,7 @@ module Repository::Importing
   end
 
   def remote_repository
-    RemoteRepository.instance(self)
+    RemoteRepository.instance(self, user)
   end
 
   module ClassMethods

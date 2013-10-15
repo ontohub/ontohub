@@ -8,7 +8,7 @@ class GitRepositoryTest < ActiveSupport::TestCase
 
   ENV['LANG'] = 'C'
 
-  DIR = File.dirname(__FILE__)
+  DIR = Rails.root.join('test', 'unit')
   SCRIPT_GIT_REMOTE_V = "#{DIR}/git_repository_remote_v.sh"
   SCRIPT_SVN_CREATE_REPO = "#{DIR}/git_repository_svn_create_repo.sh"
   SCRIPT_SVN_ADD_COMMITS = "#{DIR}/git_repository_svn_add_commits.sh"
@@ -278,6 +278,23 @@ class GitRepositoryTest < ActiveSupport::TestCase
 
       should 'read the right contents in the root folder after deleting the third file' do
         assert_equal @repository.folder_contents(@commit_del3), []
+      end
+
+      should 'process all files by files method' do
+        files = []
+        @repository.files do |filepath,commit_oid|
+          files << [filepath,commit_oid]
+        end
+        assert_equal [], files
+
+        @repository.files(@commit_add3) do |filepath,commit_oid|
+          files << [filepath,commit_oid]
+        end
+
+        assert_equal [
+          [@filepath1, @commit_add1],
+          [@filepath2, @commit_add2],
+          [@filepath3, @commit_add3] ], files
       end
     end
 

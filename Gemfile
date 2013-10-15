@@ -67,9 +67,9 @@ gem 'carrierwave', "~> 0.9.0"
 # HTTP Client
 gem "rest-client"
 
-# Async jobs
-gem 'resque'
-gem 'redis-namespace'
+# Background-Jobs
+gem 'sidekiq', '~> 2.15'
+gem 'sinatra', require: false, group: [:development, :production]
 
 # Search engine
 gem 'sunspot_rails', :git => 'git://github.com/digineo/sunspot.git'
@@ -97,7 +97,6 @@ end
 
 group :test do
   gem 'mocha', require: 'mocha/setup'
-  gem 'resque_unit'
   gem 'shoulda'
   gem "shoulda_routing_macros", "~> 0.1.2"
   gem "factory_girl_rails"

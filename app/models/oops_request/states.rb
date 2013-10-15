@@ -11,8 +11,6 @@ module OopsRequest::States
   include StateUpdater
   
   included do
-    @queue = 'oops'
-    
     after_create :async_run, if: ->{ responses.empty? }
   end
   

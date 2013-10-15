@@ -1,8 +1,5 @@
-require 'resque/server'
+require 'sidekiq/web' if defined? Sidekiq
 
-auth_resque = ->(request) {
-  request.env['warden'].authenticate? and request.env['warden'].user.admin?
-}
 
 Ontohub::Application.routes.draw do
 
@@ -35,8 +32,8 @@ Ontohub::Application.routes.draw do
     resources :jobs, :only => :index
   end
 
-  constraints auth_resque do
-    mount Resque::Server, :at => "/admin/resque"
+  authenticate :user, lambda { |u| u.admin? } do
+    mount Sidekiq::Web => 'admin/sidekiq'
   end
   
   resources :ontologies, only: [:index] do

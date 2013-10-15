@@ -1,17 +1,25 @@
 module RemoteRepository
 
-  def self.instance(repository)
-    "#{to_s}::#{repository.source_type.camelcase}".constantize.new(repository)
+  def self.instance(repository, user)
+    "#{to_s}::#{repository.source_type.camelcase}".constantize.new(repository, user)
   end
 
   class Base
-    attr_accessor :repository
-    delegate :git, :git!, :destroy_git, :source_address, :local_path, :local_path_working_copy, to: :repository
+    attr_accessor :repository, :user
+    delegate :git,
+      :git!,
+      :destroy_git,
+      :source_address,
+      :local_path,
+      :local_path_working_copy,
+      :save_current_ontologies, 
+      to: :repository
 
     class_attribute :sync_method
 
-    def initialize(repository)
+    def initialize(repository, user)
       @repository = repository
+      @user = user
     end
 
     def clone
@@ -23,6 +31,8 @@ module RemoteRepository
       
       result_pull = repo_working_copy.send sync_method
       result_push = repo_working_copy.push
+
+      save_current_ontologies(user)
 
       {
         success: result_pull[:success] && result_push[:success],
@@ -51,6 +61,8 @@ module RemoteRepository
       unless result_wc[:success] && result_bare[:success] && result_remote_rm[:success] && result_remote_set[:success]
         raise Repository::ImportError, 'could not import repository'
       end
+
+      save_current_ontologies(user)
     end
   end
 
@@ -65,6 +77,8 @@ module RemoteRepository
       unless result_clone[:success]
         raise Repository::ImportError, "could not import repository: #{result_clone[:err]}"
       end
+
+      save_current_ontologies(user)
 
       git!
     end

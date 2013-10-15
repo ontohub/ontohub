@@ -33,11 +33,11 @@ Installation
 
 These commands should work on Ubuntu 12.04. First of all you need a root shell.
 
-### RVM with Ruby 1.9.3
+### RVM with Ruby 2.0
 
-Installation of [RVM](https://rvm.beginrescueend.com/ "Ruby Version Manager"):
+Installation of [RVM](https://rvm.io/ "Ruby Version Manager"):
 
-    apt-get install -y build-essential openssl libreadline6 libreadline6-dev curl git-core zlib1g zlib1g-dev libssl-dev libyaml-dev libsqlite3-0 libsqlite3-dev sqlite3 libxml2-dev libxslt-dev autoconf libc6-dev ncurses-dev automake libtool bison subversion
+    apt-get install -y curl
     curl -L https://get.rvm.io | bash -s stable --ruby
 
 If you have a desktop installation, you should "run command as a login shell" to
@@ -195,11 +195,6 @@ After configuring your `config/database.yml` you have to create the tables:
 
     rake db:migrate:reset
 
-### Solr and Resque
-
-    rake sunspot:solr:start
-    rake resque:work
-
 ### Seeds
 
 Fill the database with dummy data:
@@ -208,21 +203,14 @@ Fill the database with dummy data:
 
 ### Start the rails server
 
-Start the rails server. It will be available at http://localhost:3000/ until you
-stop it by pressing `CTRL+C`.
+Start the rails server and background processes.
+The server will be available at http://localhost:3000/ until you stop it by pressing `CTRL+C`.
 
-    rails s
+    script/start-development
 
 Now you can log in as *admin@example.com* with password *foobar*.
 *Alice, Bob, Carol, Dave, Ted* @example.com can also be used (with the same
 password).
-
-### Stopping Solr and Resque
-
-Resque has to be stopped with `CTRL+C` on the terminal you typed `rake
-resque:work`. Solr is to be stopped as follows:
-
-    rake sunspot:solr:stop
 
 License
 -------
