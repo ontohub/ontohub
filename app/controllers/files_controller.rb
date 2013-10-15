@@ -36,11 +36,13 @@ class FilesController < ApplicationController
   end
 
   def diff
+    @content_kind = :repositories
     @oid = repository.commit_id(params[:ref])[:oid]
     @changed_files = repository.changed_files(@oid)
   end
 
   def history
+    @content_kind = :repositories
     @path = params[:path]
     @oid = repository.commit_id(params[:ref])[:oid]
     @current_file = repository.read_file(@path, @oid) if @path
