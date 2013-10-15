@@ -3,6 +3,8 @@ class GraphsController < ApplicationController
   inherit_resources
   belongs_to :logic, :ontology, :single_ontology, :distributed_ontology, polymorphic: true
 
+  before_filter :content_kind
+
   def index
     respond_to do |format|
       @ontology = parent if parent.is_a?(Ontology)
@@ -29,6 +31,12 @@ class GraphsController < ApplicationController
         respond_with data
       end
     end
+  end
+
+  protected
+
+  def content_kind
+    @content_kind = :ontologies
   end
 
 end
