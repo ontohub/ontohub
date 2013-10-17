@@ -16,6 +16,7 @@ class GitRepository
     if File.exists?(path)
       @repo = Rugged::Repository.new(path)
     else
+      mkdir_p(Ontohub::Application.config.git_root)
       @repo = Rugged::Repository.init_at(path, true)
     end
   end
