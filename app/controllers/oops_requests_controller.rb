@@ -17,7 +17,7 @@ class OopsRequestsController < ApplicationController
       end
       format.html do
         flash[:notice] = "Your request is send to OOPS!"
-        redirect_to ontology
+        redirect_to repository_ontology_path(*resource_chain)
       end
     end
   end
