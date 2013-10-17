@@ -49,7 +49,7 @@ module RemoteRepository
     def clone
       destroy_git
 
-      mkdir_p(Ontohub::Application.config.git_working_copies_root)
+      FileUtils.mkdir_p(Ontohub::Application.config.git_working_copies_root)
 
       result_wc   = GitRepository.clone_git(source_address, local_path_working_copy, false)
       result_bare = GitRepository.clone_git(local_path_working_copy, local_path, true)
@@ -75,7 +75,7 @@ module RemoteRepository
     def clone
       destroy_git
       
-      mkdir_p(Ontohub::Application.config.git_working_copies_root)
+      FileUtils.mkdir_p(Ontohub::Application.config.git_working_copies_root)
 
       result_clone = GitRepository.clone_svn(source_address, local_path, local_path_working_copy)
       unless result_clone[:success]
