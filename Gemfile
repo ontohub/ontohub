@@ -128,7 +128,7 @@ end
 
 group :production do
   gem 'god'
-  gem 'exception_notification', '~> 2.6.1'
+  gem 'exception_notification', '~> 4.0'
 end
 
 group :documentation do

@@ -28,6 +28,8 @@ module Repository::Importing
   end
 
   # enqueues a synchronize job
+  # IMPORTANT: before calling this function, the user of the
+  # ontology versions created by the synchronization must be set!
   def async_synchronize
     async_remote :synchronize
   end

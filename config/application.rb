@@ -76,10 +76,6 @@ module Ontohub
         config.action_mailer.send("#{key}=", val)
       end
       
-      # Exception Notifier
-      if (c = Settings.exception_notifier).try(:enabled)
-        config.middleware.use "ExceptionNotifier", c.to_hash
-      end
     end
   end
 end

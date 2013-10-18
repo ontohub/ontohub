@@ -1,6 +1,15 @@
 require 'bundler/capistrano'
 
-hostname = YAML.load_file("#{File.dirname(__FILE__)}/settings.yml")['hostname']
+# Set up Rails configuration
+Rails = Struct.new(:env,:root).new
+Rails.env  = ENV['RAILS_ENV'] || 'production'
+Rails.root = Pathname.new(File.dirname(__FILE__) << "/..")
+
+# Load application settings
+require 'rails_config'
+Settings = RailsConfig.load_files ["settings.yml","settings.local.yml", "settings/#{Rails.env}.yml"].map{|f| "#{Rails.root}/config/#{f}" }
+
+hostname = Settings.hostname
 
 set :application, 'ontohub'
 set :scm, :git
@@ -26,4 +35,4 @@ def rake_command(cmd)
   run "cd #{current_path} && bundle exec rake #{cmd}", :env => { :RAILS_ENV => rails_env }
 end
 
-Dir[File.dirname(__FILE__) + "/deploy/*.rb"].each{|f| load f }
+Dir["#{Rails.root}/config/deploy/*.rb"].each{|f| load f }

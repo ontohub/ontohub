@@ -27,6 +27,10 @@ module Repository::GitRepositories
     FileUtils.rmtree local_path_working_copy
   end
 
+  def empty?
+    git.empty?
+  end
+
   def is_head?(commit_oid=nil)
     git.is_head?(commit_oid)
   end
@@ -149,6 +153,10 @@ module Repository::GitRepositories
         { oid: git.branch_oid(oid), branch_name: oid }
       end
     end
+  end
+
+  def commit_message(oid=nil)
+    git.commit_message(oid)
   end
 
   def entries_info(oid=nil, path=nil)
