@@ -1,5 +1,10 @@
 = repository_nav repository, :files
 
+%h3 Commit message
+.well
+  %p= @message
+
+%h3 Files changed by this commit
 %ul.changed-files-list.nav.nav-stacked.nav-tabs
   - @changed_files.each do |file|
     %li
@@ -11,6 +16,8 @@
         - elsif file[:type] == :change
           %i.icon-edit
         = file[:path]
+
+%h3 Changes
 - @changed_files.each do |file|
   .changed-file.well.well-small
     %h2.file-name
