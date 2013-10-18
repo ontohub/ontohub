@@ -44,7 +44,7 @@ module OntologyHelper
     content_tag(:div, class: 'well', id: 'ontology_infos') do
       content_tag(:small, id: 'ontology-state',
                           class: @ontology.state,
-                          :"data-uri" => url_for(@ontology)) do
+                          :"data-uri" => repository_ontology_url(@ontology.repository, @ontology)) do
         status(@ontology)
       end
       # content_tag(:h5, t(:ontology_versions_status)) +
