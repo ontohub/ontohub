@@ -59,13 +59,13 @@ this section, if you are preparing your development setup.)
 Depending on the installed ruby and passenger version you need to create a
 `/etc/apache2/mods-available/passenger.load` with the LoadModule directive:
 
-    LoadModule passenger_module /usr/local/rvm/gems/ruby-1.9.3-p<version>/gems/passenger-<version>/ext/apache2/mod_passenger.so
+    LoadModule passenger_module /usr/local/rvm/gems/ruby-2.0.0-p<version>/gems/passenger-<version>/ext/apache2/mod_passenger.so
 
 and a `/etc/apache2/mods-available/passenger.conf` with the global passenger
 configuration:
 
-    PassengerRoot /usr/local/rvm/gems/ruby-1.9.3-p<version>/gems/passenger-<version>
-    PassengerRuby /usr/local/rvm/wrappers/ruby-1.9.3-p<version>/ruby
+    PassengerRoot /usr/local/rvm/gems/ruby-2.0.0-p<version>/gems/passenger-<version>
+    PassengerRuby /usr/local/rvm/wrappers/ruby-2.0.0-p<version>/ruby
 
 now enable the module an restart apache2:
 
