@@ -26,6 +26,10 @@ module RepositoryHelper
     }
   end
 
+  def current_commit_id(oid)
+    oid[0..6]
+  end
+
   def short_oid(commit)
     commit[:oid][0..6]
   end
