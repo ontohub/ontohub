@@ -27,6 +27,10 @@ module Repository::GitRepositories
     FileUtils.rmtree local_path_working_copy
   end
 
+  def empty?
+    git.empty?
+  end
+
   def is_head?(commit_oid=nil)
     git.is_head?(commit_oid)
   end
