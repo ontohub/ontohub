@@ -155,6 +155,10 @@ module Repository::GitRepositories
     end
   end
 
+  def commit_message(oid=nil)
+    git.commit_message(oid)
+  end
+
   def entries_info(oid=nil, path=nil)
     dirpath = git.get_path_of_dir(oid, path)
     git.entries_info(oid,dirpath)

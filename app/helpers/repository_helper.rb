@@ -21,7 +21,7 @@ module RepositoryHelper
     end
 
     {
-      title: title,
+      title: short_title,
       body: body
     }
   end

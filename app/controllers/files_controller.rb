@@ -38,6 +38,7 @@ class FilesController < ApplicationController
   def diff
     @content_kind = :repositories
     @oid = repository.commit_id(params[:ref])[:oid]
+    @message = repository.commit_message(@oid)
     @changed_files = repository.changed_files(@oid)
   end
 
