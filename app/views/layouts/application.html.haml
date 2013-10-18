@@ -3,7 +3,6 @@
   %head
     %title #{page_title} · #{Settings.name}
     %meta{"http-equiv" => "Content-Type", :content => "text/html; charset=utf-8"}
-    = stylesheet_link_tag "application", "//netdna.bootstrapcdn.com/bootstrap/3.0.0/css/bootstrap-glyphicons.css"
     = stylesheet_link_tag "application", :media => "all"
     = csrf_meta_tags
   %body
@@ -31,3 +30,4 @@
     %div{style:'height:30px;'}
     = render :partial => '/shared/footer'
     = javascript_include_tag "application"
+    = javascript_include_tag "/static/gwt/ontohub.nocache.js"
