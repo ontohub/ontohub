@@ -5,6 +5,7 @@ class Repository < ActiveRecord::Base
   include Repository::FilesList
   include Repository::Validations
   include Repository::Importing
+  include Repository::Symlink
 
   has_many :ontologies, dependent: :destroy
 

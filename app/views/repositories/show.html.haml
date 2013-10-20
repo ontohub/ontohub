@@ -1,5 +1,10 @@
 = repository_nav resource, :overview
 
+%p
+  Clone URL:
+  %code
+    = repository_url(resource, protocol: 'git', port: nil) << '.git'
+
 %h2 Description
 %p
   - if resource.description.present?
