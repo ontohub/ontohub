@@ -1,11 +1,11 @@
 class ActiveRecord::Base
 
-  # Makes a method asynchronous
+  # Creates a async_<methodname> method that
+  # enqueues the corresponding method call.
   def self.async_method(*methods)
     methods.each do |method|
-      alias_method "#{method}_sync", method
-      define_method method do |*args|
-        async "#{method}_sync", *args
+      define_method "async_#{method}" do |*args|
+        async method, *args
       end
     end
   end

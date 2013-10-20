@@ -11,11 +11,8 @@ module OopsRequest::States
   include StateUpdater
   
   included do
+    async_method :run
     after_create :async_run, if: ->{ responses.empty? }
-  end
-  
-  def async_run
-    async :run
   end
   
   def run
