@@ -15,16 +15,13 @@ module Key::Fingerprint
     Tempfile.open('ssh_key_file') do |file|
       file.puts key
       file.rewind
-      output = `ssh-keygen -lf #{file.path} 2>&1`
+      output = Subprocess.run 'ssh-keygen', '-lf', file.path
     end
-
-    if $?.to_i.zero?
-      output.gsub /([\d\h]{2}:)+[\d\h]{2}/ do |match|
-        self.fingerprint = match.gsub(":","")
-      end
-    else
-      errors[:key] << output.split("\n").last.split(" ",2).last
+    output.gsub /([\d\h]{2}:)+[\d\h]{2}/ do |match|
+      self.fingerprint = match.gsub(":","")
     end
+  rescue Subprocess::Error => e
+    errors[:key] << e.output.split("\n").last.split(" ",2).last
   end
 
 end
