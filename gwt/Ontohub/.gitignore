@@ -1,0 +1,8 @@
+# Ignore gwt temporary and compiled files
+/.gwt
+/gwt-unitCache
+/test-classes
+/war/ontohub
+/war/ontologies
+/war/WEB-INF/classes
+/war/WEB-INF/deploy
