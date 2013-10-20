@@ -5,7 +5,7 @@ module OntologyVersion::Parsing
     @queue = 'hets'
     
     async_method :parse
-    after_create :parse_async, :if => :commit_oid?
+    after_create :async_parse, :if => :commit_oid?
   end
 
   def parse
