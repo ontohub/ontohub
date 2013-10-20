@@ -32,8 +32,7 @@ tmp/*
 
 # Ignore packaged assets and uploads
 /public/assets
-/public/repositories
-/public/uploads
+/data
 
 # Ignore folder attribute files
 .DS_Store
