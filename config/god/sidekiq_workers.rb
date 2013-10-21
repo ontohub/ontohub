@@ -13,11 +13,14 @@ class SidekiqWorkers
   
   def watch(queues, concurrency)
     queues = [queues] unless queues.is_a?(Array)
+    @count += 1
 
     God.watch do |w|
       w.dir           = RAILS_ROOT
       w.group         = 'workers'
-      w.name          = "worker-#{@count+=1}"
+      w.name          = "worker-#{@count}"
+      w.pid_file      = File.join(RAILS_ROOT, "tmp/pids/sidekiq-#{@count}.pid")
+
       w.interval      = 30.seconds
       w.start         = "nice bin/sidekiq -c #{concurrency} --logfile log/sidekiq.log" << queues.map{|q| " -q '#{q}'"}.join
       w.start_grace   = 10.seconds
