@@ -10,7 +10,7 @@
 - unless parent.is_a?(DistributedOntology)
   Depth of
   .btn-group#graph_depth_setting
-    %a.btn.dropdown-toggle(data-toggle="dropdown" href="#")
+    %a.btn.btn-default.dropdown-toggle(data-toggle="dropdown" href="#")
       = @depth
       %span.caret
 
@@ -21,12 +21,13 @@
   - if parent.is_a?(Ontology)
     and show
     .btn-group#ontology_selections
-      = link_to 'all links', '#all', class: 'btn mode', id: 'all'
-      = link_to 'only imports', '#ontology_selections', class: 'btn mode', id: 'import'
+      = link_to 'all links', '#all', class: 'btn btn-default mode', id: 'all'
+      = link_to 'only imports', '#ontology_selections', class: 'btn  btn-default mode', id: 'import'
 
   from
 = fancy_link parent
 
 %div#graph_content.row.well.well-large
-  %div#d3_graph.span6
-  %div#d3_context.well.well-small.span5
+  .row
+    %div#d3_graph.col-md-5
+    %div#d3_context.well.well-small.col-md-7
