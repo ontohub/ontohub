@@ -64,7 +64,7 @@ class GraphDataFetcher
     if @center.is_a?(DistributedOntology)
       @source.
         connection.
-        select_all("EXPLAIN (SELECT fetch_distributed_graph_data(#{@center.id}))")
+        select_all("EXPLAIN (FORMAT JSON) (SELECT fetch_distributed_graph_data(#{@center.id}))")
     else
       @source.
         connection.
