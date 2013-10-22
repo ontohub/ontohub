@@ -12,4 +12,9 @@ class RepositoriesController < ApplicationController
   def show
     @content_kind = :repositories
   end
+
+  def create
+    resource.user = current_user
+    super
+  end
 end

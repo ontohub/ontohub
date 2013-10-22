@@ -19,7 +19,7 @@ module RemoteRepository
 
     def initialize(repository)
       @repository = repository
-      @user = repository.permissions.where(subject_type: User, role: 'editor').first!
+      @user = repository.permissions.where(subject_type: User, role: 'owner').first!.subject
     end
 
     def clone
