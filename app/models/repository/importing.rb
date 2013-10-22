@@ -50,7 +50,7 @@ module Repository::Importing
   end
 
   def remote_repository
-    RemoteRepository.instance(self, user)
+    RemoteRepository.instance(self)
   end
 
   module ClassMethods
