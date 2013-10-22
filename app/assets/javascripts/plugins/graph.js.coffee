@@ -1,7 +1,10 @@
 return unless $("div#d3_graph")[0]
 
-width = 500
+
+
+width = $('div#d3_graph').width()
 height = 350
+$('div#d3_context').height(height)
 distance = 60
 force_charge = -400
 colors = d3.scale.category10()
