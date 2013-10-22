@@ -12,6 +12,7 @@ module OntologyVersion::Files
   end
 
   def commit_raw_file
+    return true if ontology.parent
     raise "raw file missing" unless @raw_file
     ontology.path = @raw_file.original_filename if ontology.path.nil?
     # otherwise the file upload is broken (no implicit conversion of ActionDispatch::Http::UploadedFile into String):
