@@ -99,13 +99,57 @@ class GraphDataFetcher
     @target.where("\"#{@target_table}\".#{portion} #{stmt}")
   end
 
-  def build_statement(type = :node)
+  def build_statement(type = :node, use = :optimized)
     type = type.to_s
+    if use == :optimized
+      <<-SQL
+      (
+      #{optimized_statement}
+      SELECT DISTINCT "graph_data"."#{type}_id" FROM "graph_data"
+      )
+      SQL
+    else
+      <<-SQL
+      (
+      #{init_statement}
+      #{gather_statement}
+      SELECT DISTINCT "loop_#{@depth-1}"."#{type}_id" FROM "loop_#{@depth-1}"
+      )
+      SQL
+    end
+  end
+
+  def optimized_statement
     <<-SQL
-    (
-    #{init_statement}
-    #{gather_statement}
-    SELECT DISTINCT "loop_#{@depth-1}"."#{type}_id" FROM "loop_#{@depth-1}"
+    WITH RECURSIVE graph_data(node_id, edge_id, depth) AS (
+        (WITH mergeable AS (
+          SELECT ("#{@source_table}"."source_id") AS source_id,
+            ("#{@source_table}"."target_id") AS target_id,
+            ("#{@source_table}"."id") AS edge_id,
+            1 AS depth
+          FROM "#{@source_table}"
+          WHERE ("#{@source_table}"."source_id" = #{@center.id} OR
+            "#{@source_table}"."target_id" = #{@center.id})
+          )
+          SELECT (source_id) AS node_id, edge_id, depth FROM mergeable
+          UNION
+          SELECT (target_id) AS node_id, edge_id, depth FROM mergeable
+        )
+      UNION ALL
+        (WITH mergeable AS (
+          SELECT ("#{@source_table}"."source_id") AS source_id,
+            ("#{@source_table}"."target_id") AS target_id,
+            ("#{@source_table}"."id") AS edge_id,
+            (graph_data.depth+1) AS depth
+          FROM "#{@source_table}"
+          INNER JOIN graph_data
+          ON ("#{@source_table}"."source_id" = "graph_data"."node_id" OR
+            "#{@source_table}"."target_id" = "graph_data"."node_id")
+          WHERE graph_data.depth < #{@depth})
+        SELECT (source_id) AS node_id, edge_id, depth FROM mergeable
+        UNION
+        SELECT (target_id) AS node_id, edge_id, depth FROM mergeable
+      )
     )
     SQL
   end
