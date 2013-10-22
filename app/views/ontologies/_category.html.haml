@@ -1,6 +1,6 @@
 - if category then
-  %li{ :id => category[0].id }
+  %li{ :id => category.id }
     %a
-      = category[0].name.gsub(/_/, ' ')
+      = category.name.gsub(/_/, ' ')
     %ul 
-      = render :partial => 'category', :collection => category[1].to_a
+      = render :partial => 'category', :collection => category.descendants.to_a
