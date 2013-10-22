@@ -1,7 +1,7 @@
 module RemoteRepository
 
-  def self.instance(repository, user)
-    "#{to_s}::#{repository.source_type.camelcase}".constantize.new(repository, user)
+  def self.instance(repository)
+    "#{to_s}::#{repository.source_type.camelcase}".constantize.new(repository)
   end
 
   class Base
@@ -12,14 +12,14 @@ module RemoteRepository
       :source_address,
       :local_path,
       :local_path_working_copy,
-      :save_current_ontologies, 
+      :save_current_ontologies,
       to: :repository
 
     class_attribute :sync_method
 
-    def initialize(repository, user)
+    def initialize(repository)
       @repository = repository
-      @user = user
+      @user = repository.permissions.where(subject_type: User, role: 'owner').first!.subject
     end
 
     def clone

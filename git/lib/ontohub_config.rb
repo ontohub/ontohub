@@ -39,7 +39,7 @@ class OntohubConfig
   end
 
   def redis_namespace
-    redis['namespace'] || 'resque:ontohub'
+    redis['namespace'] || 'ontohub'
   end
 
   def log_file
