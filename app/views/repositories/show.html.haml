@@ -11,5 +11,6 @@
 - if resource.recent_changes.empty?
   %p No changes.
 - else
-  - resource.recent_changes.each do |commit|
-    = render partial: 'files/commit', locals: { repository: resource, commit: commit }
+  %ul.repository-commits
+    - resource.recent_changes.each do |commit|
+      = render partial: 'files/commit', locals: { repository: resource, commit: commit }

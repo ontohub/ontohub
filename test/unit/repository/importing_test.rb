@@ -27,7 +27,6 @@ class Repository::ImportingTest < ActiveSupport::TestCase
         @repository = Repository.import_remote('git', @user, "file://#{@source_path}", 'local import', description: 'just an imported repo')
         
         @repository.remote_repository.clone
-        @repository.suspended_save_ontologies(@user)
       end
 
       should 'be read_only' do
@@ -66,6 +65,9 @@ class Repository::ImportingTest < ActiveSupport::TestCase
           end
           @head_oid_post = @repository_source.head_oid
 
+          @repository = Repository.find_by_path(@repository.path)#reload the repository
+          @repository.user = @user # it's crucial to set the user to the current user when synchronizing a repository
+
           @result = @repository.remote_repository.synchronize
         end
 
@@ -75,21 +77,13 @@ class Repository::ImportingTest < ActiveSupport::TestCase
           assert_equal @head_oid_post, @result[:head_oid_post]
         end
 
-        context 'adding new ontologies' do
-          setup do
-            @repository.suspended_save_ontologies(@user,
-              stop_oid:  @head_oid_pre,
-              start_oid: @head_oid_post)
-          end
+        should 'save the ontologies in the database' do
+          assert_equal 2*@commit_count, @repository.ontologies.count
+        end
 
-          should 'save the ontologies in the database' do
-            assert_equal 2*@commit_count, @repository.ontologies.count
-          end
-
-          should 'save ontology versions in the database' do
-            @repository.ontologies.each do |o|
-              assert_equal(o.path == 'file-0.clif' ? 2 : 1, o.versions.count)
-            end
+        should 'save ontology versions in the database' do
+          @repository.ontologies.each do |o|
+            assert_equal(o.path == 'file-0.clif' ? 2 : 1, o.versions.count)
           end
         end
       end
@@ -129,6 +123,16 @@ class Repository::ImportingTest < ActiveSupport::TestCase
 
       should 'be successful' do
         assert @repository.remote_repository.synchronize[:success], 'sync failed'
+      end
+
+      should 'save the ontologies in the database' do
+        assert_equal @commit_count, @repository.ontologies.count
+      end
+
+      should 'save ontology versions in the database' do
+        @repository.ontologies.each do |o|
+          assert_equal 1, o.versions.count
+        end
       end
     end
   end

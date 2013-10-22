@@ -2,8 +2,10 @@ module OntologyVersion::Parsing
   extend ActiveSupport::Concern
   
   included do
-    @queue = 'parsing'
-    after_create :parse_async, :if => :commit_oid?
+    @queue = 'hets'
+    
+    async_method :parse
+    after_create :async_parse, :if => :commit_oid?
   end
 
   def parse
@@ -17,6 +19,8 @@ module OntologyVersion::Parsing
     update_state! :processing
 
     do_or_set_failed do
+      refresh_checksum! unless checksum?
+      
       @path = Hets.parse(self.raw_path!, File.dirname(self.xml_path))
       
       # move generated file to destination
@@ -28,7 +32,4 @@ module OntologyVersion::Parsing
     end
   end
   
-  def parse_async
-    async :parse
-  end
 end

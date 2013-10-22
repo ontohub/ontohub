@@ -6,7 +6,9 @@ require 'test_helper'
 
 class GitRepositoryTest < ActiveSupport::TestCase
 
-  DIR = File.dirname(__FILE__)
+  ENV['LANG'] = 'C'
+
+  DIR = Rails.root.join('test', 'unit')
   SCRIPT_GIT_REMOTE_V = "#{DIR}/git_repository_remote_v.sh"
   SCRIPT_SVN_CREATE_REPO = "#{DIR}/git_repository_svn_create_repo.sh"
   SCRIPT_SVN_ADD_COMMITS = "#{DIR}/git_repository_svn_add_commits.sh"
@@ -276,6 +278,23 @@ class GitRepositoryTest < ActiveSupport::TestCase
 
       should 'read the right contents in the root folder after deleting the third file' do
         assert_equal @repository.folder_contents(@commit_del3), []
+      end
+
+      should 'process all files by files method' do
+        files = []
+        @repository.files do |filepath,commit_oid|
+          files << [filepath,commit_oid]
+        end
+        assert_equal [], files
+
+        @repository.files(@commit_add3) do |filepath,commit_oid|
+          files << [filepath,commit_oid]
+        end
+
+        assert_equal [
+          [@filepath1, @commit_add1],
+          [@filepath2, @commit_add2],
+          [@filepath3, @commit_add3] ], files
       end
     end
 
@@ -590,6 +609,25 @@ class GitRepositoryTest < ActiveSupport::TestCase
 
         should 'create the same branches in the clone' do
           assert(@repository.branches & @repository_clone.branches == @repository.branches, 'The original branches are not a subset of the clone branches.')
+        end
+
+        context 'should produce the typical git errors' do
+          setup {} #needed for teardown
+
+          teardown do
+            @repository_clone = nil
+          end
+
+          should '(not a repository)' do
+            result = GitRepository.clone_git('/', @path_clone)
+            assert_equal "fatal: repository '/' does not exist\n", result[:err]
+          end
+
+          should '(already exists)' do
+            GitRepository.clone_git(@path, @path_clone)
+            result = GitRepository.clone_git(@path, @path_clone)
+            assert_equal "fatal: destination path '#{@path_clone}' already exists and is not an empty directory.\n", result[:err]
+          end
         end
 
         should 'be able to pull new changes' do

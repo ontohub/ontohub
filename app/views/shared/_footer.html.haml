@@ -1,8 +1,13 @@
-%footer
-  %ul
-    - Settings.footer.each do |entry|
-      %li>
-        - if entry.href
-          = link_to entry.text, entry.href
-        - else
-          = entry.text
+%nav.navbar.navbar-default.navbar-fixed-bottom{role:'navigation',style:'box-shadow:0 0 5px #888888;'}
+  %div.content
+    %ul.nav.navbar-nav
+      - Settings.footer.each do |entry|
+        %li>
+          - if entry.href
+            = link_to entry.text, entry.href
+          - else
+            = link_to entry.text, '#'
+    %div.pull-right
+      %ul.nav.navbar-nav
+        %li
+          = link_to 'Open Ontology Repository (OOR) Initiative', 'http://ontolog.cim3.net/cgi-bin/wiki.pl?OpenOntologyRepository', target: '_new'

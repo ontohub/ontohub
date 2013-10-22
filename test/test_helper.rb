@@ -24,6 +24,10 @@ class Test::Unit::TestCase
   extend StripAttributes::Matchers
 end
 
+# For Sidekiq
+require 'sidekiq/testing'
+Sidekiq::Testing.fake!
+
 # Recording HTTP Requests
 VCR.configure do |c|  
   c.cassette_library_dir = 'test/fixtures/vcr'

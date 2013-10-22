@@ -5,13 +5,21 @@ module RemoteRepository
   end
 
   class Base
-    attr_accessor :repository
-    delegate :git, :git!, :destroy_git, :source_address, :local_path, :local_path_working_copy, to: :repository
+    attr_accessor :repository, :user
+    delegate :git,
+      :git!,
+      :destroy_git,
+      :source_address,
+      :local_path,
+      :local_path_working_copy,
+      :save_current_ontologies,
+      to: :repository
 
     class_attribute :sync_method
 
     def initialize(repository)
       @repository = repository
+      @user = repository.permissions.where(subject_type: User, role: 'owner').first!.subject
     end
 
     def clone
@@ -23,6 +31,8 @@ module RemoteRepository
       
       result_pull = repo_working_copy.send sync_method
       result_push = repo_working_copy.push
+
+      save_current_ontologies(user)
 
       {
         success: result_pull[:success] && result_push[:success],
@@ -39,6 +49,8 @@ module RemoteRepository
     def clone
       destroy_git
 
+      FileUtils.mkdir_p(Ontohub::Application.config.git_working_copies_root)
+
       result_wc   = GitRepository.clone_git(source_address, local_path_working_copy, false)
       result_bare = GitRepository.clone_git(local_path_working_copy, local_path, true)
 
@@ -51,6 +63,8 @@ module RemoteRepository
       unless result_wc[:success] && result_bare[:success] && result_remote_rm[:success] && result_remote_set[:success]
         raise Repository::ImportError, 'could not import repository'
       end
+
+      save_current_ontologies(user)
     end
   end
 
@@ -61,10 +75,14 @@ module RemoteRepository
     def clone
       destroy_git
       
+      FileUtils.mkdir_p(Ontohub::Application.config.git_working_copies_root)
+
       result_clone = GitRepository.clone_svn(source_address, local_path, local_path_working_copy)
       unless result_clone[:success]
         raise Repository::ImportError, "could not import repository: #{result_clone[:err]}"
       end
+
+      save_current_ontologies(user)
 
       git!
     end

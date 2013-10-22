@@ -14,7 +14,7 @@ en:
   devise:
     failure:
       already_authenticated: 'You are already logged in.'
-      unauthenticated: 'You need to log in or register before continuing.'
+      unauthenticated: 'You have to sign in or sign up to access this page.'
       unconfirmed: 'You have to confirm your account before continuing.'
       locked: 'Your account is locked.'
       invalid: 'Invalid email or password.'
@@ -22,8 +22,8 @@ en:
       timeout: 'Your session expired, please log in again to continue.'
       inactive: 'Your account was not activated yet.'
     sessions:
-      signed_in: 'Logged in successfully.'
-      signed_out: 'Logged out successfully.'
+      signed_in: ''
+      signed_out: ''
     passwords:
       send_instructions: 'You will receive an email with instructions about how to reset your password in a few minutes.'
       updated: 'Your password was changed successfully. You are now logged in.'

@@ -7,8 +7,6 @@ module Repository::Importing
   included do
     include StateUpdater
 
-    @queue = 'import'
-
     validates_inclusion_of :state,       in: STATES
     validates_inclusion_of :source_type, in: SOURCE_TYPES, if: :remote?
 
@@ -30,6 +28,8 @@ module Repository::Importing
   end
 
   # enqueues a synchronize job
+  # IMPORTANT: before calling this function, the user of the
+  # ontology versions created by the synchronization must be set!
   def async_synchronize
     async_remote :synchronize
   end

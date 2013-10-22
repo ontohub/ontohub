@@ -4,10 +4,14 @@ FactoryGirl.define do
     "gopher://host/ontology/#{n}"
   end
 
+  sequence :name do |n|
+    "#{Faker::Name.name}#{n}"
+  end
+
   factory :ontology do
     association :repository
     iri { FactoryGirl.generate :iri }
-    name { Faker::Name.name }
+    name { FactoryGirl.generate :name }
     basepath { SecureRandom.hex(10) }
     file_extension { '.owl' }
     description { Faker::Lorem.paragraph }

@@ -9,15 +9,25 @@
     = render :partial => '/shared/navbar'
     = flash_messages
     %div.content
-      - if (@content_kind == :jobs) or (!@content_kind and !user_signed_in?)
-        = yield
-      - else
-        %div.content-padding
+      - if cover_visible?
+        = render :partial => '/shared/cover'
+      %div.content-padding
+      - if context_pane_visible?
         %div.col-md-8
           = yield
+        - if user_signed_in?
+          %div.col-md-4
+            = render partial: '/shared/user_content'
+        - else
+          %div{style: 'position: absolute; top: 83px; right:15px; width: 303px;'}
+            = render partial: '/shared/signin'
+            %div.content-padding
+            = render partial: '/shared/signup' 
+      - else
+        %div.col-md-12
+          = yield
       %div{style: 'clear:both;'}
-      - if ! user_signed_in?
-        %div{style: 'position: absolute; top: 83px; right:15px; width: 303px;'}
-          = render :partial => '/shared/signin'
+    %div{style:'height:30px;'}
     = render :partial => '/shared/footer'
     = javascript_include_tag "application"
+    = javascript_include_tag "/static/gwt/ontohub.nocache.js"

@@ -1,20 +1,11 @@
-/ = repository_nav parent, :ontologies
-
-/ - if can? :create, Ontology
-/   %ul.actions.pull-right
-/     %li= link_to 'Create Ontology', new_resource_path
-/    %li= link_to 'Bulk Upload', [:bulk, parent, :ontologies]
-
-=# format_links
-= render :partial => 'filter'
-
-/ %p
-/   = pluralize(collection.total_count, 'Ontology')
-/   found
-/   - if @search
-/     for
-/     %strong= @search
-
-/ = pagination do
-/   %ul.ontologies
-/     = render collection.list
+- if in_repository?
+  = repository_nav parent, :ontologies
+  .col-md-8
+    .pull-right
+      = link_to 'Upload an ontology file', new_repository_file_path(parent, 'upload_file[path]' => params[:path]), class: 'btn'
+    .clearfix
+    #OntologySearch
+- else
+  %h2= @page_title = 'Ontologies'
+  .clearfix
+  #OntologySearch

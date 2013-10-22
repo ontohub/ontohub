@@ -12,8 +12,26 @@ module GitRepository::GetFolderContents
     end
   end
 
+  # iterates over all files in the repository, passing the filepath and the oid of the last change to the block
+  def files(commit_oid=nil, &block)
+    files_recursive('', commit_oid, &block)
+  end
+
 
   protected
+
+  def files_recursive(folder, commit_oid=nil, &block)
+    contents = folder_contents(commit_oid, folder)
+    contents.each do |entry|
+      case entry[:type]
+      when :dir
+        files_recursive(entry[:path], commit_oid, &block)
+      when :file
+        last_changing_commit_oid = entry_info(entry[:path], commit_oid)[:oid]
+        block.call(entry[:path], last_changing_commit_oid)
+      end
+    end
+  end
 
   def folder_contents_rugged(rugged_commit, url='')
     url = '' if url == '/' || url.nil?

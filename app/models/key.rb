@@ -2,6 +2,7 @@
 class Key < ActiveRecord::Base
   
   include Key::Fingerprint
+  include Key::Filesystem
 
   belongs_to :user
 

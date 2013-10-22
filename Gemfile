@@ -17,7 +17,7 @@ gem 'rdf-n3'
 # in production environments by default.
 group :assets do
   gem 'sass-rails',   '~> 3.2.3'
-  gem 'bootstrap-sass', "~> 2.3.2.2"
+  gem 'bootstrap-sass', github: 'thomas-mcdonald/bootstrap-sass'
   gem 'coffee-rails', '~> 3.2.1'
   gem 'compass',      '~> 0.12.1'
   gem 'font_awesome'
@@ -67,9 +67,9 @@ gem 'carrierwave', "~> 0.9.0"
 # HTTP Client
 gem "rest-client"
 
-# Async jobs
-gem 'resque'
-gem 'redis-namespace'
+# Background-Jobs
+gem 'sidekiq', '~> 2.15'
+gem 'sinatra', require: false, group: [:development, :production]
 
 # Search engine
 gem 'sunspot_rails', :git => 'git://github.com/digineo/sunspot.git'
@@ -91,9 +91,12 @@ gem 'diffy'
 gem 'codemirror-rails'
 gem 'js-routes'
 
+group :development, :test do
+  gem 'byebug'
+end
+
 group :test do
   gem 'mocha', require: 'mocha/setup'
-  gem 'resque_unit'
   gem 'shoulda'
   gem "shoulda_routing_macros", "~> 0.1.2"
   gem "factory_girl_rails"
@@ -125,7 +128,7 @@ end
 
 group :production do
   gem 'god'
-  gem 'exception_notification', '~> 2.6.1'
+  gem 'exception_notification', '~> 4.0'
 end
 
 group :documentation do

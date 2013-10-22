@@ -1,8 +1,9 @@
 #!/bin/sh
 
-rake sunspot:solr:start
-rake resque:work &
-resque_pid=$!
-rails s
-kill $resque_pid
-rake sunspot:solr:stop
+rake sunspot:solr:start &
+bin/sidekiq -q default,hets -c 1 -v &
+rails s &
+
+trap "rake sunspot:solr:stop" INT
+
+wait

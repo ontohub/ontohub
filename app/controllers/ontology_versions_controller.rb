@@ -8,9 +8,11 @@ class OntologyVersionsController < InheritedResources::Base
   respond_to :json, :xml
 
   before_filter :check_changeable, only: [:new, :create]
+  before_filter :content_kind
 
   # TODO Needs testing !!!
   def show
+    @content_object = :ontology
     resource.checkout_raw!
     
     send_file resource.raw_path, filename: File.basename(resource.ontology.path)
@@ -33,6 +35,10 @@ class OntologyVersionsController < InheritedResources::Base
   end
   
 protected
+  def content_kind
+    @content_kind = :ontologies
+  end
+
   def collection
     if parent.parent
       @versions = parent.parent.versions

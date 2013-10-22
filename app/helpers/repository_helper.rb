@@ -12,7 +12,7 @@ module RepositoryHelper
 
   def get_message(commit)
     title = commit[:message].split("\n").first
-    short_title = word_wrap(title, line_width: 80)
+    short_title = word_wrap(title, line_width: 70)
     body = commit[:message].split("\n")[1..-1].join("\n")
     if short_title != title
       parts = short_title.split("\n")
@@ -21,13 +21,17 @@ module RepositoryHelper
     end
 
     {
-      title: title,
+      title: short_title,
       body: body
     }
+  end
+
+  def current_commit_id(oid)
+    oid[0..6]
   end
 
   def short_oid(commit)
     commit[:oid][0..6]
   end
-  
+
 end

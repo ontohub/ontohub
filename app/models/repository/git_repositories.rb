@@ -27,6 +27,10 @@ module Repository::GitRepositories
     FileUtils.rmtree local_path_working_copy
   end
 
+  def empty?
+    git.empty?
+  end
+
   def is_head?(commit_oid=nil)
     git.is_head?(commit_oid)
   end
@@ -46,10 +50,12 @@ module Repository::GitRepositories
     o = ontologies.where(basepath: basepath).first
 
     if o
-      # update existing ontology
-      version = o.versions.build({ :commit_oid => commit_oid, :user => user }, { without_protection: true })
-      o.ontology_version = version
-      o.save!
+      unless o.versions.find_by_commit_oid(commit_oid)
+        # update existing ontology
+        version = o.versions.build({ :commit_oid => commit_oid, :user => user }, { without_protection: true })
+        o.ontology_version = version
+        o.save!
+      end
     else
       # create new ontology
       clazz      = %w{.dol .casl}.include?(File.extname(filepath)) ? DistributedOntology : SingleOntology
@@ -149,6 +155,10 @@ module Repository::GitRepositories
     end
   end
 
+  def commit_message(oid=nil)
+    git.commit_message(oid)
+  end
+
   def entries_info(oid=nil, path=nil)
     dirpath = git.get_path_of_dir(oid, path)
     git.entries_info(oid,dirpath)
@@ -178,6 +188,13 @@ module Repository::GitRepositories
         end
       }
     }
+  end
+
+  # saves all ontologies at the current state in the database
+  def save_current_ontologies(user)
+    git.files do |filepath, commit_oid|
+      save_ontology(commit_oid, filepath, user)
+    end
   end
 
 end

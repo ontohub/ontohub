@@ -1,11 +1,18 @@
-%div.col-md-8
-  %div.panel.panel-default
-    %div.panel-heading
-      %h3.panel-title='Trending Ontologies'
-    %div.panel-body
-      - @versions.each do |version|
-        %div
-          = fancy_link version.ontology
-          by
-          = fancy_link version.user
-          = timestamp version
+
+%h2='Recently Updated Repositories'
+%div.pull-right
+  = link_to 'Browse Repositories', repositories_path, {class: 'btn btn-primary', type: 'button'}
+- @repositories.each do |repository|
+  %div
+    = fancy_link repository
+    = timestamp repository.updated_at
+
+%h2='Recently Updated Ontologies'
+%div.pull-right
+  = link_to 'Browse Ontologies', ontologies_path, {class: 'btn btn-primary', type: 'button'}
+- @versions.each do |version|
+  %div
+    = fancy_link version.ontology
+    by
+    = fancy_link version.user
+    = timestamp version

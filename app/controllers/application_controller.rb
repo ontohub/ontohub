@@ -9,7 +9,7 @@ class ApplicationController < ActionController::Base
   rescue_from CanCan::AccessDenied do |exception|
     redirect_to root_url, :alert => exception.message
   end
-  
+ 
   if defined? PG
     # A foreign key constraint exception from the database
     rescue_from PG::Error do |exception|
@@ -27,7 +27,7 @@ class ApplicationController < ActionController::Base
       end
     end
   end
-  
+
   protected
   
   helper_method :admin?
@@ -46,7 +46,12 @@ class ApplicationController < ActionController::Base
   def resource_chain
     return @resource_chain if @resource_chain
 
-    if !params[:repository_id]
+    if params[:logic_id]
+      @resource_chain = []
+      return @resource_chain      
+    end
+
+    if !params[:repository_id] && !(params[:controller] == 'repositories' && params[:id])
       @resource_chain = []
       return @resource_chain
     end
@@ -64,4 +69,39 @@ class ApplicationController < ActionController::Base
     @resource_chain
   end
   
+  def after_sign_in_path_for(resource)
+    request.referrer
+  end
+
+  def after_sign_out_path_for(resource)
+    request.referrer
+  end
+
+  helper_method :cover_visible?
+  def cover_visible?
+    params[:controller] == 'home' && !user_signed_in?
+  end
+
+  helper_method :context_pane_visible?
+  def context_pane_visible?
+    if params[:controller] == 'home'
+      return true
+    end
+    if params[:action] != 'index'
+      return false
+    end
+    if %w(search logics repositories).include? params[:controller]
+      return true
+    end
+    if params[:controller] == 'ontologies' && !in_repository?
+      return true
+    end
+    return false 
+  end 
+
+  helper_method :in_repository?
+  def in_repository?
+    params[:repository_id] || params[:controller] == 'repositories'
+  end
+
 end
