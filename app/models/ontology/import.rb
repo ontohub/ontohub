@@ -62,7 +62,7 @@ module Ontology::Import
           conditions = ['updated_at < ?', now]
           ontology.entities.where(conditions).destroy_all
           ontology.sentences.where(conditions).delete_all
-          #ontology.save!
+          ontology.save!
         },
         symbol:   Proc.new { |h|
           ontology.entities.update_or_create_from_hash(h, now)
