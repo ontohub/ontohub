@@ -1,15 +1,17 @@
 require 'date'
 
 module Hets
+
+  EXTENSIONS = %w(casl clf clif dg dol het hol hs kif owl rdf spcf thy)
+  EXTENSIONS_DIST = %w(casl dol hascasl het)
+
+
   class HetsError < Exception; end
   class HetsDeploymentError < Exception; end
   class HetsNotFoundError < HetsError; end
   class HetsVersionOutdatedError < HetsError; end
   class HetsConfigDateFormatError < HetsError; end
   class HetsVersionDateFormatError < HetsError; end
-
-  EXTENSIONS = %w(casl clf clif dg dol het hol hs kif owl rdf spcf thy)
-  EXTENSIONS_DIST = %w(casl dol hascasl het)
 
   class Config
     attr_reader :path, :library_path
@@ -37,7 +39,8 @@ module Hets
       raise HetsDeploymentError, 'Hets library not found.' unless @library_path
     end
 
-  private
+
+    private
 
     # Checks Hets installation compatibility by its version date
     # 
@@ -110,53 +113,31 @@ module Hets
   # extension.
   #
   # @param user [User] the user that imports the ontology files
+  # @param repo [Repository] Repository, the files shall be saved in
   # @param dir  [String] the path to the ontology library
   #
-  def self.import_ontologies(user, dir)
-    find_ontologies(dir) { |path| import_ontology(user, path) }
+  def self.import_ontologies(user, repo, dir)
+    find_ontologies(dir) { |path| import_ontology(user, repo, dir, path) }
   end
 
   # Imports an ontology in demand of a user.
   #
   # @param user [User] the user that imports the ontology file
-  # @param file_path [String] the path to the ontology file
-  # @param extension [String] the extension of the ontology file
+  # @param repo [Repository] Repository, the files shall be saved in
+  # @param path [String] the path to the ontology file
   #
-  def self.import_ontology(user, path)
-    puts path
-
-    ext = path.split('.').last
-
-    o = if EXTENSIONS_DIST.include? ext
-      DistributedOntology.new
-    else
-      SingleOntology.new
-    end
-
-    # TODO Use custom ontology iris detached from the local file system
-    o.iri = "file://#{path}"
-    o.name = File.basename(path, ".#{ext}")
-
-    begin
-      o.save!
-    rescue
-      puts "ERROR: " + o.name + " <" + o.iri + ">"
-      return
-    end
-
-    v = o.versions.build raw_file: File.open(path)
-    v.user = user
-    
-    o.save! 
-    o.ontology_version = v;
-    o.save!
+  def self.import_ontology(user, repo, dir, path)
+    relpath = File.relative_path(dir, path)
+    puts relpath
+    repo.save_file(path, relpath, "Added #{relpath}.", user)
   end
 
   def self.library_path
     (@@config ||= Config.new).library_path
   end
 
-private
+
+  private
 
   # Traverses a directory for ontologies with supported extensions recursively,
   # yielding their path.

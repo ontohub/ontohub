@@ -12,7 +12,17 @@ namespace :import do
     task :lib => :environment do
       user   = User.find_by_email! ENV['EMAIL'] unless ENV['EMAIL'].nil?
       user ||= User.find_all_by_admin(true).first
-      Hets.import_ontologies(user, Hets.library_path)
+
+      repo = Repository.new(name: 'Hets lib')
+      
+      begin
+        repo.save!
+      rescue ActiveRecord::RecordInvalid
+        $stderr << '"Hets lib" repository already existing.' << "\n"
+        return 1
+      end
+
+      Hets.import_ontologies(user, repo, Hets.library_path)
     end
   end
 
