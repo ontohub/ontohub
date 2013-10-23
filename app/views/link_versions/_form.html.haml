@@ -1,0 +1,7 @@
+= simple_form_for [parent, resource], html: { class: 'form-horizontal' } do |f|
+  = f.input :required_cons_status, :as => :select, :collection => Link::CONS_STATUSES, :include_blank => false
+  = f.input :proven_cons_status, :as => :select, :collection => Link::CONS_STATUSES, :include_blank => false
+  = f.input :proof_status, :as => :select, :collection => Link::CONS_STATUSES, :include_blank => false
+
+  .form-actions
+    = f.button :submit, class: 'btn-primary'

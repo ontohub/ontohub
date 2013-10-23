@@ -1,0 +1,11 @@
+%ul.nav
+  %li= link_to 'Ontologies', :ontologies
+  %li= link_to 'Symbols', :search
+  %li= link_to 'Logics', :logics
+  %li= link_to 'Languages', :languages
+  %li= link_to 'Links', :links
+  
+  - if admin?
+    %li.dropdown
+      = link_to 'Admin <b class="caret"></b>'.html_safe, '#', :class => 'dropdown-toggle', 'data-toggle' => 'dropdown'
+      = render :partial => '/shared/admin_navigation' 

@@ -24,7 +24,12 @@
         %li= link_to 'Logics', :logics
 
       / Mappings
-
+      - if :logics == @content_kind
+        %li.active= link_to 'Mappings', :links
+      - else
+        %li= link_to 'Mappings', :links
+        
+        
       / Repositories
       - if :repositories == @content_kind
         %li.active= link_to 'Repositories', :repositories
