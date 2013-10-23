@@ -10,7 +10,7 @@ module Ontology::Import
       ontology         = nil
       link             = nil
       ontologies_count = 0
-      version = nil
+      versions = []
       
       OntologyParser.parse io,
         root: Proc.new { |h|
@@ -37,8 +37,9 @@ module Ontology::Import
               self.children << ontology
             end
 	    
-            #version = ontology.versions.build
-            #version.user = user
+            version = ontology.versions.build
+            version.user = user
+            versions << version
           else
             raise "more than one ontology found" if ontologies_count > 1
             ontology = self
@@ -61,7 +62,7 @@ module Ontology::Import
           conditions = ['updated_at < ?', now]
           ontology.entities.where(conditions).destroy_all
           ontology.sentences.where(conditions).delete_all
-          #ontology.save!
+          ontology.save!
         },
         symbol:   Proc.new { |h|
           ontology.entities.update_or_create_from_hash(h, now)
@@ -75,7 +76,7 @@ module Ontology::Import
           self.links.update_or_create_from_hash(h, user, now)
         }
       save!
-      version.save! if version
+      versions.each { |version| version.save! }
 
     end
   end
