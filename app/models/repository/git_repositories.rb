@@ -47,6 +47,7 @@ module Repository::GitRepositories
 
   def save_ontology(commit_oid, filepath, user, iri=nil)
     return unless Ontology::FILE_EXTENSIONS.include?(File.extname(filepath))
+
     basepath = File.real_basepath(filepath)
     o = ontologies.where(basepath: basepath).first
 

@@ -13,6 +13,7 @@ class Ontology < ActiveRecord::Base
   include Ontology::Links
   include Ontology::Distributed
   include Ontology::Oops
+  include Ontology::FileExtensions
 
   # Multiple Class Features
   include Aggregatable
@@ -35,9 +36,6 @@ class Ontology < ActiveRecord::Base
 
   scope :search, ->(query) { where "ontologies.iri #{connection.ilike_operator} :term OR name #{connection.ilike_operator} :term", :term => "%" << query << "%" }
   scope :list, includes(:logic).order('ontologies.state asc, ontologies.entities_count desc')
-
-  FILE_EXTENSIONS_DISTRIBUTED = %w{casl dol hascasl het}.map{ |e| ".#{e}" }
-  FILE_EXTENSIONS = (FILE_EXTENSIONS_DISTRIBUTED + %w{owl hs exp maude elf hol isa thy prf omdoc hpf clf clif xml fcstd rdf gen_trm baf}).map{ |e| ".#{e}" }
 
   def to_s
     name? ? name : iri
