@@ -38,7 +38,7 @@ module Repository::GitRepositories
   def save_file(tmp_file, filepath, message, user, iri=nil)
     version = nil
 
-    git.add_file({email: user[:email], name: user[:name]}, tmp_file, filepath, message) do |commit_oid|
+    git.add_file({email: user.email, name: user.name}, tmp_file, filepath, message) do |commit_oid|
       version = save_ontology(commit_oid, filepath, user, iri)
     end
     touch
@@ -46,6 +46,7 @@ module Repository::GitRepositories
   end
 
   def save_ontology(commit_oid, filepath, user, iri=nil)
+    return unless Ontology::FILE_EXTENSIONS.include?(File.extname(filepath))
     basepath = File.real_basepath(filepath)
     o = ontologies.where(basepath: basepath).first
 
@@ -58,7 +59,7 @@ module Repository::GitRepositories
       end
     else
       # create new ontology
-      clazz      = %w{.dol .casl}.include?(File.extname(filepath)) ? DistributedOntology : SingleOntology
+      clazz      = Ontology::FILE_EXTENSIONS_DISTRIBUTED.include?(File.extname(filepath)) ? DistributedOntology : SingleOntology
       o          = clazz.new
       o.basepath = basepath
       o.file_extension = File.extname(filepath)
