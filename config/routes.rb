@@ -55,7 +55,7 @@ Ontohub::Application.routes.draw do
     end
   
     get 'autocomplete' => 'autocomplete#index'
-    get 'symbols'      => 'search#index'
+    get 'entities_search' => 'entities_search#index'
 
     resources :repositories do
       resources :ssh_access, :only => :index
@@ -87,16 +87,16 @@ Ontohub::Application.routes.draw do
 
       # action: history, diff, entries_info, files
       get ':ref/:action(/:path)',
-      controller:  :files,
-      as:          :ref,
-      constraints: { path: /.*/ }
+        controller:  :files,
+        as:          :ref,
+        constraints: { path: /.*/ }
     end
 
     get ':repository_id(/:path)',
-    controller:  :files,
-    action:      :files,
-    as:          :repository_tree,
-    constraints: { path: /.*/ }
+      controller:  :files,
+      action:      :files,
+      as:          :repository_tree,
+      constraints: { path: /.*/ }
 
     root :to => 'home#show'
 

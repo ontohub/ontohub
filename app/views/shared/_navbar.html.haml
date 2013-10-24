@@ -3,56 +3,17 @@
     %ul.nav.navbar-nav
       %li=link_to Settings.name, :root, {class: 'navbar-brand', style: 'color:white;font-weight:bold;font-size:24px;background:url(/assets/icons/ontohub3.png) no-repeat; padding-left: 55px'}
 
-      / FOR ANY VISITOR
+      / For any visitor
+      = menu_entry 'Repositories', :repositories
+      = menu_entry 'Ontologies',   :ontologies
+      = menu_entry 'Symbols',      :entities_search
+      = menu_entry 'Logics',       :logics
+      = menu_entry 'Mappings',     :links
 
-      / Ontologies
-      - if :ontologies == @content_kind
-        %li.active= link_to 'Ontologies', :ontologies
-      - else
-        %li= link_to 'Ontologies', :ontologies
+      / Only for admins
+      - if admin?
+        = menu_entry 'Users', :admin_users
+        = menu_entry 'Teams', :admin_teams
+        = menu_entry 'Jobs',  :admin_jobs
 
-      / Symbols
-      - if :symbols == @content_kind
-        %li.active= link_to 'Symbols', :symbols
-      - else
-        %li= link_to 'Symbols', :symbols
-
-      / Logics
-      - if :logics == @content_kind
-        %li.active= link_to 'Logics', :logics
-      - else
-        %li= link_to 'Logics', :logics
-
-      / Mappings
-      - if :links == @content_kind
-        %li.active= link_to 'Mappings', :links
-      - else
-        %li= link_to 'Mappings', :links
-      
-      / Repositories
-      - if :repositories == @content_kind
-        %li.active= link_to 'Repositories', :repositories
-      - else
-        %li= link_to 'Repositories', :repositories
-
-      / ONLY FOR ADMINS
-      -if admin?
-
-        / Users
-        - if :users == @content_kind
-          %li.active= link_to 'Users',  :admin_users
-        - else
-          %li= link_to 'Users',  :admin_users
-
-        / Teams
-        - if :teams == @content_kind
-          %li.active= link_to 'Teams',  :admin_teams
-        - else
-          %li= link_to 'Teams',  :admin_teams
-
-        / Job
-        - if :jobs == @content_kind
-          %li.active= link_to 'Jobs', :admin_jobs
-        - else
-          %li= link_to 'Jobs', :admin_jobs
     = render partial: 'shared/session'

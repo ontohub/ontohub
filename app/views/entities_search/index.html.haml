@@ -1,7 +1,7 @@
-%h2=@page_title = 'Symbols'
-= form_tag :symbols, :method => :get do
+%h2= @page_title = 'Symbols'
+= form_tag :entities_search, method: :get do
   .input-group
-    = text_field_tag :q, @query, :placeholder => 'Symbol', class: 'form-control'
+    = text_field_tag :q, @query, placeholder: 'Symbol', class: 'form-control'
     %span.input-group-btn
       %button.btn.btn-primary{type: 'submit'}
         %span.glyphicon.glyphicon-search
@@ -12,4 +12,4 @@
     = @max_groups > @groups.size ? 'found in' : 'found, displaying the first'
     %strong= pluralize @groups.size, 'Ontology'
   %ol.searchResult
-    = render :partial => 'group', :collection => @groups
+    = render partial: 'group', collection: @groups

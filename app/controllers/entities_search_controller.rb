@@ -1,7 +1,7 @@
 # 
-# Permissions list administration of a team, only accessible by ontology owners
+# Allow searching for entities
 # 
-class SearchController < ApplicationController
+class EntitiesSearchController < ApplicationController
 
   def index
     @content_kind = :symbols

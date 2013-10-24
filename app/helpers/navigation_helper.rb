@@ -84,5 +84,15 @@ module NavigationHelper
     
     subnavigation(team, pages, current_page)
   end
+
+  def active_navigation(controller)
+    'active' if [controller.to_s, controller.to_s.gsub('_', '/')].include? params[:controller]
+  end
+
+  def menu_entry(title, controller)
+    content_tag :li, class: active_navigation(controller) do
+      link_to title, controller
+    end
+  end
   
 end
