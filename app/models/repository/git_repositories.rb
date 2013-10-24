@@ -46,6 +46,7 @@ module Repository::GitRepositories
   end
 
   def save_ontology(commit_oid, filepath, user, iri=nil)
+    return unless Ontology::FILE_EXTENSIONS.include?(File.extname(filepath))
     basepath = File.real_basepath(filepath)
     o = ontologies.where(basepath: basepath).first
 
@@ -58,7 +59,7 @@ module Repository::GitRepositories
       end
     else
       # create new ontology
-      clazz      = %w[.casl .dol .hascasl .het].include?(File.extname(filepath)) ? DistributedOntology : SingleOntology
+      clazz      = Ontology::FILE_EXTENSIONS_DISTRIBUTED.include?(File.extname(filepath)) ? DistributedOntology : SingleOntology
       o          = clazz.new
       o.basepath = basepath
       o.file_extension = File.extname(filepath)
