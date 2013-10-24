@@ -5,6 +5,10 @@ if Rails.env.test?
 else
   Ontohub::Application.config.git_root = "#{Rails.root}/public/repositories"
   Ontohub::Application.config.git_working_copies_root = "#{Rails.root}/data/repositories_working_copies"
+  Ontohub::Application.config.git_home = File.join(Rails.root, 'tmp', 'git')
+  if Rails.env.production?
+    Ontohub::Application.config.git_home = "/srv/git/"
+  end
 end
 
 Ontohub::Application.config.max_read_filesize = 512 * 1024
