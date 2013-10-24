@@ -14,9 +14,9 @@ GIT
 
 GIT
   remote: git://github.com/thomas-mcdonald/bootstrap-sass.git
-  revision: 6cc04bda62ed7ccf71d445fa82e706cb696b4fdb
+  revision: e551ce0a8f3df19ebbac3fe053d4c2ba72d76a22
   specs:
-    bootstrap-sass (3.0.0.0)
+    bootstrap-sass (3.0.0.0.rc)
       sass (~> 3.2)
 
 GEM
@@ -127,7 +127,7 @@ GEM
       i18n (~> 0.5)
     fattr (2.2.1)
     font_awesome (3.101.0)
-    foreigner (1.5.0)
+    foreigner (1.6.0)
       activerecord (>= 3.0.0)
     fssm (0.2.10)
     god (0.13.3)
@@ -177,7 +177,7 @@ GEM
     metaclass (0.0.1)
     method_source (0.8.2)
     mime-types (1.25)
-    mini_portile (0.5.1)
+    mini_portile (0.5.2)
     mocha (0.14.0)
       metaclass (~> 0.0.1)
     momentjs-rails (2.2.1)
