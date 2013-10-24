@@ -6,8 +6,10 @@ else
   Ontohub::Application.config.git_root = "#{Rails.root}/public/repositories"
   Ontohub::Application.config.git_working_copies_root = "#{Rails.root}/data/repositories_working_copies"
   Ontohub::Application.config.git_home = File.join(Rails.root, 'tmp', 'git')
+  Ontohub::Application.config.git_user = %x[whoami]
   if Rails.env.production?
     Ontohub::Application.config.git_home = "/srv/git/"
+    Ontohub::Application.config.git_user = "git"
   end
 end
 
