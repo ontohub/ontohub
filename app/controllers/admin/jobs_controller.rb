@@ -1,9 +1,8 @@
-class Admin::JobsController < InheritedResources::Base
+class Admin::JobsController < ApplicationController
 
   before_filter :authenticate_admin!
-  
-  actions :index
-  respond_to :json, :xml
-  has_pagination
+
+  def index
+  end
 
 end
