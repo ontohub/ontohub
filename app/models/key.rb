@@ -2,7 +2,6 @@
 class Key < ActiveRecord::Base
   
   include Key::Fingerprint
-  include Key::Filesystem
 
   after_create :add_to_authorized_keys_file
   after_destroy :remove_from_authorized_key_file
