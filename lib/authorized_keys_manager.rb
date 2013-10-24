@@ -2,6 +2,7 @@ class AuthorizedKeysManager
 
   GIT_HOME = Ontohub::Application.config.git_home
   GIT_USER = Ontohub::Application.config.git_user
+  GIT_GROUP = Ontohub::Application.config.git_group
   GIT_SHELL_FILE = File.join(Rails.root, 'git', 'bin', 'git-shell')
   AUTHORIZED_KEYS_FILE = File.join(GIT_HOME, '.ssh', 'authorized_keys')
 
@@ -43,7 +44,8 @@ class AuthorizedKeysManager
 
     def ensure_permissions
       FileUtils.chmod(0600, AUTHORIZED_KEYS_FILE)
-      FileUtils.chown_R(GIT_USER, GIT_USER, GIT_HOME)
+      usergroup = [GIT_USER, GIT_GROUP].compact.join(':')
+      system("chown -R #{usergroup} #{GIT_HOME}")
     end
 
   end
