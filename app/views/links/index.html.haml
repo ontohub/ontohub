@@ -1,0 +1,55 @@
+-if @ontology
+  = ontology_nav @ontology, :links
+-else
+  %h2= @page_title = 'Links'
+
+%p
+  = pluralize(collection.count, resource_class.to_s)
+  found
+  
+= pagination do 
+  -if @ontology
+    .row.center
+      .span2
+        %h4 Link
+      .span2 
+        %h4 Source
+      .span2
+        %h4 Source-Entity
+      .span2
+        %h4 Target
+      .span2
+        %h4 Target-Entity
+    - hash = sort_link_list(@links)
+    - hash.each do |key, array|
+      .row.center
+        .span2
+          = link_to array.first[:link], array.first[:link]
+        .span2
+          = array.first[:link].source
+        .span2
+          -if key.to_s.include? "empty"
+            
+          -else
+            =key 
+        .span4
+          -array.each do |link|
+            .row.center
+              .span2
+                =link[:link].target
+              .span2
+                =link[:target]
+                
+  -else
+    %table.table.span8
+      %thead
+        %tr.center
+          %th
+          %th.span1 Name
+          %th.span2 Source
+          %th.span1
+          %th.span2 Target
+          %th Entites
+      %tbody
+        = render collection
+        

@@ -19,7 +19,7 @@ Ontohub::Application.routes.draw do
   resources :language_mappings
   resources :logic_mappings
 
-  resource :links
+  resources :links, :only => :index
 
   resources :language_adjoints
   resources :logic_adjoints
@@ -43,6 +43,11 @@ Ontohub::Application.routes.draw do
     end
   end
   
+  resources :links do
+    get 'update_version', :on => :member
+    resources :link_versions
+  end
+  
   resources :teams do
     resources :permissions, :only => [:index], :controller => 'teams/permissions'
     resources :team_users, :only => [:index, :create, :update, :destroy], :path => 'users'
@@ -60,7 +65,11 @@ Ontohub::Application.routes.draw do
         get 'keywords' => 'ontology_search#keywords'
         get 'search' => 'ontology_search#search'
       end
-       resources :children, :only => :index
+      resources :links do
+        get 'update_version', :on => :member
+        resources :link_versions
+      end
+      resources :children, :only => :index
       resources :entities, :only => :index
       resources :sentences, :only => :index
       resources :ontology_versions, :only => [:index, :show, :new, :create], :path => 'versions' do
