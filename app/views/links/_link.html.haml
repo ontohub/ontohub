@@ -1,9 +1,9 @@
-%tr.center
+%tr.center-row
   %td= link.kind
-  %td.span1.right= link_to "#{link}:" , link,{:class =>"iri", :"data-toggle"=>"tooltip", :"data-original-title" => "#{link.iri}"}
-  %td.span2.right= link.source
-  %td.span1
+  %td.col-md-1.right= link_to "#{link}:" , link,{:class =>"iri", :"data-toggle"=>"tooltip", :"data-original-title" => "#{link.iri}"}
+  %td.col-md-2.right= link.source
+  %td.col-md-1
     %span.bold{:class => "#{link.display_connection}"}
       &#8594;
-  %td.span2.left= link.target
+  %td.col-md-2.left= link.target
   %td= link.get_entity
