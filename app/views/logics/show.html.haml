@@ -3,9 +3,9 @@
 
 - if can? :update, Logic
   %ul.actions.pull-right
-    %li= link_to 'Edit Logic', :edit_logic
+    %li= link_to 'Edit Logic', resource, {}, :edit
     - if can? :delete, Logic
-      %li= link_to 'Delete Logic', :logic, :confirm => 'Are you sure?', :method => :delete
+      %li= link_to 'Delete Logic', resource, {:confirm => 'Are you sure?', :method => :delete}, :edit
 
 %p.definedBy 
   %h5 Defined by:
