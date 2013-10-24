@@ -4,9 +4,8 @@
 class EntitiesSearchController < ApplicationController
 
   def index
-    @content_kind = :symbols
-    @query        = params[:q]
-    @max_groups   = 100
+    @query      = params[:q]
+    @max_groups = 100
 
     if @query.blank?
       @query = nil

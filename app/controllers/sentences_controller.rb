@@ -9,9 +9,4 @@ class SentencesController < InheritedResources::Base
   respond_to :json, :xml
   has_pagination
 
-  def index
-    @content_kind = :ontologies
-    super.index
-  end
-    
 end
