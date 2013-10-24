@@ -1,6 +1,6 @@
 - unless resource.versions.current.nil?
   .btn-group
-    %button.btn.dropdown-toggle{'data-toggle' => 'dropdown'}
+    %button.btn.btn-default.dropdown-toggle{'data-toggle' => 'dropdown'}
       Evaluate
       %span.caret
     %ul.dropdown-menu
@@ -10,4 +10,4 @@
   
 .btn-group
   -if can? :edit, resource
-    = link_to 'Edit', [:edit, *resource_chain], class: 'btn'
+    = link_to 'Edit', [:edit, *resource_chain], class: 'btn btn-default'

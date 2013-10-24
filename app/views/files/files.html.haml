@@ -1,14 +1,14 @@
 = repository_nav repository, :files
 
 .pull-right
-  = link_to 'Upload file', new_repository_file_path(repository, 'upload_file[path]' => params[:path]), class: 'btn'
+  = link_to 'Upload file', new_repository_file_path(repository, 'upload_file[path]' => params[:path]), class: 'btn btn-link'
 
 = render partial: 'repositories/breadcrumbs'
 
 - case @info[:type]
 - when :file_base_ambiguous
-  =render partial: 'files_file_base_ambiguous'
+  = render partial: 'files_file_base_ambiguous'
 - when :file_base, :file
-  =render partial: 'files_file'
+  = render partial: 'files_file'
 - when :dir
-  =render partial: 'files_dir'
+  = render partial: 'files_dir'
