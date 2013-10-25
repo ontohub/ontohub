@@ -29,9 +29,10 @@ class OntologySearch
       text_list.add(ontology.name)
     end
 
-    Entity.select(:name).where("name ILIKE :prefix", prefix: "#{prefix}%").group("name").limit(5).each do |symbol|
-      #TODO Search only symbols of ontologies of the repository
-      #text_list.add(symbol.name)
+    repository.ontologies.each do |ontology|
+      ontology.entities.select(:name).where("name ILIKE :prefix", prefix: "#{prefix}%").group("name").limit(5).each do |symbol|
+        text_list.add(symbol.name)
+      end
     end
 
     Logic.select(:name).where("name ILIKE :prefix", prefix: "#{prefix}%").limit(5).each do |logic|
@@ -89,8 +90,9 @@ class OntologySearch
       end
 
       Entity.where("name = :name", name: "#{keyword}").limit(50).each do |symbol|
-        #TODO Activate when keywords can be correctly filtered
-        #keyword_hash[symbol.ontology.id] ||= symbol.ontology
+        if repository.id == symbol.ontology.repository.id
+          keyword_hash[symbol.ontology.id] ||= symbol.ontology
+        end
       end
 
       if logic = Logic.find_by_name(keyword)
