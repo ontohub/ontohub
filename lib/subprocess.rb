@@ -12,7 +12,9 @@ module Subprocess
   end
 
   def self.run(*args)
-    output = IO.popen args, err: [:child, :out] do |ls_io|
+    env    = args[0].is_a?(Hash) ? args.shift.stringify_keys : {}
+    args   = args.map(&:to_s)
+    output = IO.popen env, args, err: [:child, :out] do |ls_io|
       ls_io.read
     end
 

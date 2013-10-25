@@ -4,27 +4,13 @@ module GitRepository::Cloning
   extend ActiveSupport::Concern
 
   DIR = File.dirname(__FILE__)
-  SCRIPT_REMOTE_ADD = "#{DIR}/remote_add_origin.sh"
-  SCRIPT_REMOTE_RM  = "#{DIR}/remote_rm_origin.sh"
   SCRIPT_REMOTE_SET = "#{DIR}/remote_set_url_push.sh"
   SCRIPT_PUSH       = "#{DIR}/push.sh"
   SCRIPT_PULL       = "#{DIR}/pull.sh"
   SCRIPT_SVN_REBASE = "#{DIR}/svn_rebase.sh"
 
-  # runs `git push`
   def push
-    stdin, stdout, stderr, wait_thr = Open3.popen3 'bash', SCRIPT_PUSH, local_path
-
-    { out: stdout.gets(nil), err: stderr.gets(nil), success: wait_thr.value.success? }
-  end
-
-  # runs `git pull`
-  def pull
-    head_oid_pre = head_oid
-    stdin, stdout, stderr, wait_thr = Open3.popen3 'bash', SCRIPT_PULL, local_path
-
-    { out: stdout.gets(nil), err: stderr.gets(nil), success: wait_thr.value.success?,
-      head_oid_pre: head_oid_pre, head_oid_post: head_oid }
+    exec 'git', 'push'
   end
 
   # runs `git svn rebase`
@@ -40,22 +26,27 @@ module GitRepository::Cloning
     branches.map {|r| r[:refname]}.include? 'refs/remotes/git-svn'
   end
 
-  def remote_add_origin(target_path)
-    stdin, stdout, stderr, wait_thr = Open3.popen3 'bash', SCRIPT_REMOTE_ADD, local_path, target_path
+  def clone_from_origin(url, branch='master')
+    exec 'git', 'remote', 'add', 'origin', url
+    exec 'git', 'fetch', 'origin'
+    exec 'git', 'branch', branch, "origin/#{branch}"
+  end
 
-    { out: stdout.gets(nil), err:   stderr.gets(nil), success: wait_thr.value.success? }
+  def fetch_and_reset(branch='master')
+    exec 'git', 'fetch', 'origin'
+    exec_with_head_change 'git', 'branch', '-f', branch, "origin/#{branch}"
+  end
+
+  def remote_add_origin(target_path)
+    exec 'git', 'remote', 'add', 'origin', target_path
   end
 
   def remote_set_url_push(target_path)
-    stdin, stdout, stderr, wait_thr = Open3.popen3 'bash', SCRIPT_REMOTE_SET, local_path, target_path
-
-    { out: stdout.gets(nil), err:   stderr.gets(nil), success: wait_thr.value.success? }
+    exec 'git', 'remote', 'set-url', '--push', 'origin', target_path
   end
 
   def remote_rm_origin
-    stdin, stdout, stderr, wait_thr = Open3.popen3 'bash', SCRIPT_REMOTE_RM, local_path
-
-    { out: stdout.gets(nil), err: stderr.gets(nil), success: wait_thr.value.success? }
+    exec 'git', 'remote', 'rm', 'origin'
   end
 
   module ClassMethods
@@ -95,28 +86,37 @@ module GitRepository::Cloning
     end
 
     def is_git_repository?(address)
-      stdin, stdout, stderr, wait_thr = Open3.popen3 'git', 'ls-remote', address
-
-      wait_thr.value.success?
+      exec 'git', 'ls-remote', address
     end
 
     def is_svn_repository?(address)
-      stdin, stdout, stderr, wait_thr = Open3.popen3 'svn', 'ls', address
-
-      wait_thr.value.success?
+      exec 'svn', 'ls', address
     end
 
     protected
 
     def clone_svn_only(source_path, target_path, max_revision=nil)
       if max_revision.nil?
-        stdin, stdout, stderr, wait_thr = Open3.popen3 'git', 'svn', 'clone', source_path, target_path
+        exec 'git', 'svn', 'clone', source_path, target_path
       else
-        stdin, stdout, stderr, wait_thr = Open3.popen3 'git', 'svn', 'clone', '-r', "0:#{max_revision}", source_path, target_path
+        exec 'git', 'svn', 'clone', '-r', "0:#{max_revision}", source_path, target_path
       end
-
-      { out: stdout.gets(nil), err: stderr.gets(nil), success: wait_thr.value.success? }
     end
+
+    def exec(*args)
+      Subprocess.run *args
+    end
+  end
+
+
+  def exec(*args)
+    Subprocess.run({GIT_DIR: local_path.to_s}, *args)
+  end
+
+  def exec_with_head_change(*args)
+    head_oid_pre = head_oid
+    exec *args
+    { head_oid_pre: head_oid_pre, head_oid_post: head_oid }
   end
 
   protected

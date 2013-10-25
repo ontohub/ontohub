@@ -63,11 +63,10 @@ module Repository::Importing
       params[:source_type]    = type
       params[:source_address] = source
 
-      r = Repository.create!(params)
+      r = Repository.new(params)
       r.user = user
       r.save!
       r
-
     end
   end
   
