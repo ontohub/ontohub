@@ -68,11 +68,59 @@ class OntologySearch
   end
 
 
-  def make_bean_list_json(keyword_list)
-    JSON.generate(make_bean_list(keyword_list))
+  def make_repository_bean_list_json(repository, keyword_list)
+    JSON.generate(make_repository_bean_list(repository, keyword_list))
   end
 
-  def make_bean_list(keyword_list)
+  def make_global_bean_list_json(keyword_list)
+    JSON.generate(make_global_bean_list(keyword_list))
+  end
+
+
+  def make_repository_bean_list(repository, keyword_list)
+    ontology_hash = Hash.new
+    index = 0
+
+    keyword_list.each do |keyword|
+      keyword_hash = Hash.new
+
+      repository.ontologies.where("name = :name", name: "#{keyword}").limit(50).each do |ontology|
+        keyword_hash[ontology.id] ||= ontology
+      end
+
+      Entity.where("name = :name", name: "#{keyword}").limit(50).each do |symbol|
+        #TODO Activate when keywords can be correctly filtered
+        #keyword_hash[symbol.ontology.id] ||= symbol.ontology
+      end
+
+      if logic = Logic.find_by_name(keyword)
+        logic.ontologies.each { |o| keyword_hash[o.id] ||= o }
+      end
+
+      if index == 0
+        ontology_hash = keyword_hash
+      else
+        hash = Hash.new
+
+        keyword_hash.each_key do |key|
+          hash[key] ||= ontology_hash[key] if ontology_hash[key]
+        end
+
+        ontology_hash = hash
+      end
+
+      index += 1
+    end
+
+    bean_list_factory = OntologyBeanListFactory.new
+    ontology_hash.each_value do |ontology|
+      bean_list_factory.add_small_bean(ontology)
+    end
+
+    bean_list_factory.bean_list
+  end
+
+  def make_global_bean_list(keyword_list)
     ontology_hash = Hash.new
     index = 0
 
