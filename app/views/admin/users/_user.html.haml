@@ -4,7 +4,7 @@
   %td= highlight user.email, params[:email_search]
   %td= user.admin?
   %td
-    %ul.actions
-      %li= link_to 'show', resource_path(user)
-      %li= link_to 'edit', edit_resource_path(user)
-      %li= link_to 'delete', resource_path(user), :confirm => 'really delete?', :method => :delete
+    .btn-group
+      = link_to 'show', resource_path(user), class: 'btn btn-xs btn-default'
+      = link_to 'edit', edit_resource_path(user), class: 'btn btn-xs btn-default'
+      = link_to 'delete', resource_path(user), confirm: 'Really delete?', method: :delete, class: 'btn btn-xs btn-default'
