@@ -7,8 +7,8 @@ module Repository::Symlink
   PATH = Ontohub::Application.config.data_root.join("git_daemon")
 
   included do
-    after_save    :symlink_update, if: :path_changed?
-    after_destroy :symlink_remove
+    after_save     :symlink_update, if: :path_changed?
+    before_destroy :symlink_remove
   end
 
   def symlink_name
