@@ -166,12 +166,15 @@ public class OntologySearch extends Composite {
 			if (event.isLeftArrow()) {
 				focusLastConcept(event);
 				event.stopPropagation();
+				event.preventDefault();
 			} else if (ch == (char) KeyCodes.KEY_BACKSPACE) {
 				focusLastConcept(event);
 				event.stopPropagation();
+				event.preventDefault();
 			} else if (ch == (char) KeyCodes.KEY_DELETE) {
 				focusLastConcept(event);
 				event.stopPropagation();
+				event.preventDefault();
 			}
 		}
 	}
