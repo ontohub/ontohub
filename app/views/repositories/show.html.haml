@@ -4,6 +4,13 @@
   Clone URL:
   %code
     = repository_tree_url(resource, protocol: 'git', port: nil) << '.git'
+- if resource.source_address
+  %p
+    Imported from
+    = resource.source_type.upcase
+    URL:
+    %code
+      = resource.source_address
 
 %h2 Description
 %p
