@@ -9,32 +9,44 @@ module GitRepository::Cloning
   SCRIPT_PULL       = "#{DIR}/pull.sh"
   SCRIPT_SVN_REBASE = "#{DIR}/svn_rebase.sh"
 
+  # Struct for old and new OID
+  Ref = Struct.new(:previous, :current)
+
   def push
     exec 'git', 'push'
   end
 
-  # runs `git svn rebase`
-  def svn_rebase
-    head_oid_pre = head_oid
-    stdin, stdout, stderr, wait_thr = Open3.popen3 'bash', SCRIPT_SVN_REBASE, local_path
-
-    { out: stdout.gets(nil), err: stderr.gets(nil), success: wait_thr.value.success?,
-      head_oid_pre: head_oid_pre, head_oid_post: head_oid }
-  end
-
-  def is_svn_clone?
-    branches.map {|r| r[:refname]}.include? 'refs/remotes/git-svn'
-  end
-
-  def clone_from_origin(url, branch='master')
+  def clone(url, branch='master')
     exec 'git', 'remote', 'add', 'origin', url
-    exec 'git', 'fetch', 'origin'
-    exec 'git', 'branch', branch, "origin/#{branch}"
+    fetch_and_reset
   end
 
-  def fetch_and_reset(branch='master')
-    exec 'git', 'fetch', 'origin'
-    exec_with_head_change 'git', 'branch', '-f', branch, "origin/#{branch}"
+  def clone_svn(url)
+    File.open("#{local_path}/config","a") do |f|
+      f.puts '[svn-remote "svn"]'
+      f.puts 'url = ' << url
+      f.puts 'fetch = :refs/remotes/git-svn'
+    end
+    fetch_and_reset_svn
+  end
+
+  def fetch(remote='origin')
+    exec 'git', 'fetch', remote
+  end
+
+  def fetch_and_reset(remote='origin', branch='master')
+    fetch remote
+    reset_branch branch, "#{remote}/#{branch}"
+  end
+
+  def fetch_and_reset_svn
+    result = exec 'git', 'svn', 'fetch'
+    result = reset_branch 'master', "remotes/git-svn"
+    result
+  end
+
+  def reset_branch(branch, ref)
+    exec_with_head_change 'git', 'branch', '-f', branch, ref
   end
 
   def remote_add_origin(target_path)
@@ -53,12 +65,10 @@ module GitRepository::Cloning
     # clones a git repository into a bare git repository
     def clone_git(source_path, target_path, bare=false)
       if bare
-        stdin, stdout, stderr, wait_thr = Open3.popen3 'git', 'clone', '--bare', source_path, target_path
+        exec 'git', 'clone', '--bare', source_path, target_path
       else
-        stdin, stdout, stderr, wait_thr = Open3.popen3 'git', 'clone', source_path, target_path
+        exec 'git', 'clone', source_path, target_path
       end
-
-      { out: stdout.gets(nil), err: stderr.gets(nil), success: wait_thr.value.success? }
     end
 
     # clones a git repository into a bare git repository and one with a working copy
@@ -69,7 +79,7 @@ module GitRepository::Cloning
       elsif File.exists? target_path_working_copy
         { out: nil, err: "#{target_path_working_copy} already exists.", success: false }
       else
-        result_svn = clone_svn_only(source_path, target_path_working_copy, max_revision)
+        clone_svn_only(source_path, target_path_working_copy, max_revision)
         return result_svn unless result_svn[:success]
 
         result_git = clone_git(target_path_working_copy, target_path_bare, true)
@@ -114,9 +124,9 @@ module GitRepository::Cloning
   end
 
   def exec_with_head_change(*args)
-    head_oid_pre = head_oid
+    old_oid = head_oid rescue nil
     exec *args
-    { head_oid_pre: head_oid_pre, head_oid_post: head_oid }
+    Ref.new(old_oid, head_oid)
   end
 
   protected

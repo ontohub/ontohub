@@ -113,9 +113,7 @@ class GitRepository
   end
 
   def self.is_bare_repository?(path)
-    repo = Rugged::Repository.new(path)
-    
-    repo.bare?
+    Rugged::Repository.new(path).bare?
   rescue Rugged::RepositoryError
     false
   end
