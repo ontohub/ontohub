@@ -2,10 +2,10 @@ require 'spec_helper'
 
 describe "git import" do
 
-  let(:tmpdir){ Pathname.new("/tmp/ontohub/git_test") }
+  let(:tmpdir){  }
   
-  let(:remote_path){ tmpdir.join('remote').to_s }
-  let(:remote_repo){ GitRepository.new(remote_path) }
+  let(:remote_path){ Pathname.new("/tmp/ontohub/remote") }
+  let(:remote_repo){ GitRepository.new(remote_path.to_s) }
   let(:git_root){ Ontohub::Application.config.git_root }
 
   let(:commit_count){ 2 }
@@ -15,8 +15,7 @@ describe "git import" do
 
   before do
     # clean up
-    [tmpdir, git_root].each{|path| path=Pathname.new(path); path.rmtree if path.exist? }
-    tmpdir.mkpath
+    [remote_path, git_root].each{|path| path=Pathname.new(path); path.rmtree if path.exist? }
 
     # create remote repo
     remote_repo
@@ -26,12 +25,14 @@ describe "git import" do
     end
 
     @repository = Repository.import_remote('git', user, "file://#{remote_path}", 'local import', description: 'just an imported repo')
-    @repository.remote_repository.clone
+
+    OntologyParser.stubs(:parse)
+    
+    # Run clone job
+    Worker.drain
   end
 
-  it 'be read_only' do
-    assert false, 'Test not implemented yet' #TODO
-  end
+  pending 'read_only'
 
   it 'have all the commits' do
     assert_equal commit_count, @repository.commits.size
@@ -68,13 +69,13 @@ describe "git import" do
       @repository = Repository.find_by_path(@repository.path)#reload the repository
       @repository.user = user # it's crucial to set the user to the current user when synchronizing a repository
 
-      @result = @repository.remote_repository.synchronize
+      @result = @repository.remote_pull
     end
 
     it 'get the new changes' do
       assert_equal(2*commit_count+1, @repository.commits.size)
-      assert_equal @head_oid_pre, @result[:head_oid_pre]
-      assert_equal @head_oid_post, @result[:head_oid_post]
+      assert_equal @head_oid_pre,  @result.previous
+      assert_equal @head_oid_post, @result.current
     end
 
     it 'save the ontologies in the database' do

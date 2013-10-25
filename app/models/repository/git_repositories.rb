@@ -18,13 +18,8 @@ module Repository::GitRepositories
     "#{Ontohub::Application.config.git_root}/#{id}"
   end
 
-  def local_path_working_copy
-    "#{Ontohub::Application.config.git_working_copies_root}/#{id}"
-  end
-
   def destroy_git
     FileUtils.rmtree local_path
-    FileUtils.rmtree local_path_working_copy
   end
 
   def empty?
