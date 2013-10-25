@@ -2,10 +2,6 @@ require 'date'
 
 module Hets
 
-  EXTENSIONS = %w(casl clf clif dg dol het hol hs kif owl rdf spcf thy)
-  EXTENSIONS_DIST = %w(casl dol hascasl het)
-
-
   class HetsError < Exception; end
   class HetsDeploymentError < Exception; end
   class HetsNotFoundError < HetsError; end
@@ -142,7 +138,7 @@ module Hets
   # Traverses a directory for ontologies with supported extensions recursively,
   # yielding their path.
   def self.find_ontologies(dir)
-    Dir.glob("#{dir}/**/*.{#{EXTENSIONS.join(',')}}").each { |path| yield path }
+    Dir.glob("#{dir}/**/*.{#{Ontology::FILE_EXTENSIONS.join(',')}}").each { |path| yield path }
   end
 
 end

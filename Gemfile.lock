@@ -75,10 +75,6 @@ GEM
     capybara-webkit (1.0.0)
       capybara (~> 2.0, >= 2.0.2)
       json
-    carrierwave (0.9.0)
-      activemodel (>= 3.2.0)
-      activesupport (>= 3.2.0)
-      json (>= 1.7)
     celluloid (0.15.2)
       timers (~> 1.1.0)
     choice (0.1.6)
@@ -349,7 +345,6 @@ DEPENDENCIES
   capistrano
   capybara
   capybara-webkit
-  carrierwave (~> 0.9.0)
   codemirror-rails
   coffee-rails (~> 3.2.1)
   compass (~> 0.12.1)
