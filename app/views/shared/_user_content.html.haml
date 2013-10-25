@@ -2,11 +2,9 @@
 
 - if root_path == request.fullpath
   = render partial: '/shared/user_ontologies'
-- if @content_kind == :ontologies
-  = render partial: '/shared/user_ontologies'
-- if @content_kind == :symbols
-  = render partial: '/shared/user_ontologies'
-- if @content_kind == :logics
-  = render partial: '/shared/user_ontologies'
-- if @content_kind == :repositories
-  = render partial: '/shared/user_repositories'
+
+- case params[:controller].to_sym
+  - when :repositories
+    = render partial: 'shared/user_repositories'
+  - when :ontologies, :entities_search, :logics
+    = render partial: 'shared/user_ontologies'

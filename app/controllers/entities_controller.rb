@@ -11,7 +11,6 @@ class EntitiesController < InheritedResources::Base
   respond_to :json, :xml
 
   def index
-    @content_kind = :ontologies
     index! do |format|
       format.html do
         unless collection.blank?

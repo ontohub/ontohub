@@ -15,7 +15,8 @@
       = status resource
 
 %div.btn-group{'style' => 'display: inline-block'}
-  %a.btn.btn-mini.dropdown-toggle{'href' => '#', 'data-toggle' => 'dropdown'}
+  %a.btn.btn-xs.btn-default.dropdown-toggle{href: '#', 'data-toggle' => 'dropdown'}
+  %button.btn.btn-xs.btn-default.dropdown-toggle{href: '#', type: 'button', 'data-toggle' => 'dropdown'}
     %span.caret
   %ul.dropdown-menu
     -if can? :edit, resource

@@ -1,6 +1,6 @@
 = render partial: '/ontologies/menu', locals: {resource: resource}
-%br
-%h2#ontology_title
+
+%h1#ontology_title
   = ontology_link_to resource
   %small
     -if !resource.language_id.nil?
@@ -10,7 +10,7 @@
     - if resource.logic
       = '/'
       = link_to resource.logic.to_s, resource.logic
-%br
+
 - if resource.parent
   %small
     defined by

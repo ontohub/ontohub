@@ -1,12 +1,11 @@
 # 
-# Permissions list administration of a team, only accessible by ontology owners
+# Allow searching for entities
 # 
-class SearchController < ApplicationController
+class EntitiesSearchController < ApplicationController
 
   def index
-    @content_kind = :symbols
-    @query        = params[:q]
-    @max_groups   = 100
+    @query      = params[:q]
+    @max_groups = 100
 
     if @query.blank?
       @query = nil

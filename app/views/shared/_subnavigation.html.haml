@@ -1,9 +1,9 @@
 - if can? :edit, resource
-  %ul.actions.pull-right
+  .btn-group.pull-right
     - additional_actions.each do |action_link|
-      %li= action_link
-    %li= link_to 'Edit', [:edit, resource]
-    %li= link_to 'Delete', resource, :confirm => 'Really delete?', :method => :delete
+      = action_link
+    = link_to 'Edit', [:edit, resource], class: 'btn btn-default'
+    = link_to 'Delete', resource, confirm: 'Really delete?', method: :delete, class: 'btn btn-default'
 
 %h1
   = link_to resource, resource, 'data-type' => resource.class

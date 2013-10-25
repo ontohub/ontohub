@@ -1,4 +1,4 @@
-%h2= @page_title = current_user.first_name + "'s SSH Keys"
+%h2= @page_title = current_user.first_name + "'s SSH keys"
 
 - if collection.any?
   %table
@@ -12,6 +12,6 @@
 - else
   %p You have not added any keys yet.
 
-= link_to new_resource_path, class: 'btn' do
+= link_to new_resource_path, class: 'btn btn-default' do
   %i.icon-plus
-  Add new SSH Key
+  Add new SSH key

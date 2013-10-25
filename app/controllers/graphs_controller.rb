@@ -1,9 +1,7 @@
-class GraphsController < ApplicationController
-  respond_to :json, :html
-  inherit_resources
-  belongs_to :logic, :ontology, :single_ontology, :distributed_ontology, polymorphic: true
+class GraphsController < InheritedResources::Base
 
-  before_filter :content_kind
+  respond_to :json, :html
+  belongs_to :logic, :ontology, :single_ontology, :distributed_ontology, polymorphic: true
 
   def index
     respond_to do |format|
@@ -31,12 +29,6 @@ class GraphsController < ApplicationController
         respond_with data
       end
     end
-  end
-
-  protected
-
-  def content_kind
-    @content_kind = :ontologies
   end
 
 end

@@ -7,7 +7,6 @@ class FilesController < ApplicationController
   #load_and_authorize_resource :except => [:index, :show]
 
   def files
-    @content_kind = :repositories
     commit_id = repository.commit_id(params[:ref])
     @oid = commit_id[:oid]
     @branch_name = commit_id[:branch_name]
@@ -36,14 +35,12 @@ class FilesController < ApplicationController
   end
 
   def diff
-    @content_kind = :repositories
     @oid = repository.commit_id(params[:ref])[:oid]
     @message = repository.commit_message(@oid)
     @changed_files = repository.changed_files(@oid)
   end
 
   def history
-    @content_kind = :repositories
     @path = params[:path]
     if repository.empty?
       @commits = []
