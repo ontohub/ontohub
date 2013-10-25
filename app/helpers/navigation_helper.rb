@@ -86,7 +86,15 @@ module NavigationHelper
   end
 
   def active_navigation(controller)
-    'active' if [controller.to_s, controller.to_s.gsub('_', '/')].include? params[:controller]
+    if params[:repository_id]
+      if params[:ontology_id]
+        return 'active' if controller == :ontologies
+      else
+        return 'active' if controller == :repositories
+      end
+    else
+      return 'active' if [controller.to_s, controller.to_s.gsub('_', '/')].include? params[:controller]
+    end
   end
 
   def menu_entry(title, controller)
