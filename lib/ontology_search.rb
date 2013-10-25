@@ -15,21 +15,23 @@ class OntologySearch
 
   def make_repository_keyword_list(repository, prefix)
     text_list = Set.new
-
-    unless Ontology.where("name = :prefix", prefix: prefix).empty?
+    
+    unless repository.ontologies.where("name = :prefix", prefix: prefix, repository_id: repository).empty?
       text_list.add(prefix)
     end
-
+    
     unless Entity.where("name = :prefix", prefix: prefix).empty?
-      text_list.add(prefix)
+      #TODO Search only symbols of ontologies of the repository
+      #text_list.add(prefix)
     end
 
-    Ontology.select(:name).where("name ILIKE :prefix", prefix: "#{prefix}%").group("name").limit(5).each do |ontology|
+    repository.ontologies.select(:name).where("name ILIKE :prefix", prefix: "#{prefix}%").group("name").limit(5).each do |ontology|
       text_list.add(ontology.name)
     end
 
     Entity.select(:name).where("name ILIKE :prefix", prefix: "#{prefix}%").group("name").limit(5).each do |symbol|
-      text_list.add(symbol.name)
+      #TODO Search only symbols of ontologies of the repository
+      #text_list.add(symbol.name)
     end
 
     Logic.select(:name).where("name ILIKE :prefix", prefix: "#{prefix}%").limit(5).each do |logic|
