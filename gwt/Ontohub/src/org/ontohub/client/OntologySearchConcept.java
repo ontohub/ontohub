@@ -56,6 +56,7 @@ public class OntologySearchConcept extends Composite implements HasText {
 	@UiHandler("panel")
 	void onPanelClick(ClickEvent event) {
 		event.stopPropagation();
+		event.preventDefault();
 	}
 
 	@UiHandler("panel")
@@ -63,8 +64,12 @@ public class OntologySearchConcept extends Composite implements HasText {
 		char ch = (char) event.getNativeKeyCode();
 		if (ch == (char) KeyCodes.KEY_LEFT) {
 			selectPrevious();
+			event.stopPropagation();
+			event.preventDefault();
 		} else if (ch == (char) KeyCodes.KEY_RIGHT) {
 			selectNext();
+			event.stopPropagation();
+			event.preventDefault();
 		} else if (ch == (char) KeyCodes.KEY_BACKSPACE) {
 			removeFromParent(event);
 		} else if (ch == (char) KeyCodes.KEY_DELETE) {
