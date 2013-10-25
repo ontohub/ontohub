@@ -47,13 +47,13 @@ module RemoteRepository
     self.sync_method = :svn_rebase
 
     def clone
-      destroy_git
+      repository.destroy_git
       
       FileUtils.mkdir_p(Ontohub::Application.config.git_working_copies_root)
 
       result_clone = GitRepository.clone_svn(source_address, local_path, local_path_working_copy)
       unless result_clone[:success]
-        raise Repository::ImportError, "could not import repository: #{result_clone[:err]}"
+        raise Repository::ImportError, "Could not import repository: #{result_clone[:err]}"
       end
 
       save_current_ontologies(user)
