@@ -7,6 +7,7 @@ describe "git import" do
   let(:remote_path){ Pathname.new("/tmp/ontohub/remote") }
   let(:remote_repo){ GitRepository.new(remote_path.to_s) }
   let(:git_root){ Ontohub::Application.config.git_root }
+  let(:daemon_root){ Repository::Symlink::PATH }
 
   let(:commit_count){ 2 }
 
@@ -15,7 +16,7 @@ describe "git import" do
 
   before do
     # clean up
-    [remote_path, git_root].each{|path| path=Pathname.new(path); path.rmtree if path.exist? }
+    [remote_path, git_root, daemon_root].each{|path| path=Pathname.new(path); path.rmtree if path.exist? }
 
     # create remote repo
     remote_repo

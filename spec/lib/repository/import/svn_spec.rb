@@ -7,6 +7,8 @@ describe "svn import" do
   SCRIPT_SVN_ADD_COMMITS = SCRIPT_DIR.join("svn_add_commits.sh")
 
   let(:tmpdir){ Pathname.new("/tmp/ontohub/svn_test") }
+  let(:git_root){ Ontohub::Application.config.git_root }
+  let(:daemon_root){ Repository::Symlink::PATH }
   
   let(:svn_baredir){ tmpdir.join('svn_bare') }
   let(:svn_workdir){ tmpdir.join('svn_work') }
@@ -16,7 +18,8 @@ describe "svn import" do
   let(:commit_count){ 2 }
 
   before do
-    tmpdir.rmtree if tmpdir.exist?
+    # clean up
+    [git_root, daemon_root, tmpdir].each{|path| path=Pathname.new(path); path.rmtree if path.exist? }
 
     # create svn repo
     Subprocess.run SCRIPT_SVN_CREATE_REPO, svn_baredir, svn_workdir
