@@ -2,15 +2,16 @@
 
 %p
   Clone URL:
-  %code
-    = repository_tree_url(resource, protocol: 'git', port: nil) << '.git'
+  %input.form-control.clone-url{type: 'text', readonly: true, value: repository_tree_url(resource, protocol: 'git', port: nil) << '.git' }
+
 - if resource.source_address
   %p
     Imported from
     = resource.source_type.upcase
-    URL:
     %code
       = resource.source_address
+    - if resource.state != 'done'
+      (#{resource.state})
 
 %h2 Description
 %p
