@@ -1,8 +1,8 @@
 = format_links 
 %h2= @page_title = current_user.first_name + "'s Teams"
 
-%ul.actions
-  %li= link_to 'Create new Team', new_resource_path
+.pull-right
+  = link_to 'Create Team', new_resource_path, class: 'btn btn-primary'
 
 %p
   You are member of 

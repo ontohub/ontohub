@@ -1,8 +1,8 @@
 %h2= @page_title = 'Repositories'
 
 - if can? :create, Repository
-  %ul.actions.pull-right
-    %li= link_to 'Create Repository', :new_repository
+  .pull-right
+    = link_to 'Create Repository', :new_repository, class: 'btn btn-primary'
 
 %ul
   = render collection
