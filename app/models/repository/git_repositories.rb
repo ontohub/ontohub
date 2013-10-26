@@ -40,7 +40,7 @@ module Repository::GitRepositories
     version
   end
 
-  def save_ontology(commit_oid, filepath, user, iri=nil)
+  def save_ontology(commit_oid, filepath, user=nil, iri=nil)
     return unless Ontology::FILE_EXTENSIONS.include?(File.extname(filepath))
 
     basepath = File.real_basepath(filepath)
@@ -188,9 +188,9 @@ module Repository::GitRepositories
   end
 
   # saves all ontologies at the current state in the database
-  def save_current_ontologies(user)
-    git.files do |filepath, commit_oid|
-      save_ontology(commit_oid, filepath, user)
+  def save_current_ontologies(user=nil)
+    git.files do |entry|
+      save_ontology entry.last_change[:oid], entry.path, user
     end
   end
 

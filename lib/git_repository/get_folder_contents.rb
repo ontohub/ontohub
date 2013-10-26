@@ -2,6 +2,21 @@ module GitRepository::GetFolderContents
   # depends on GitRepository, GetCommit, GetObject
   extend ActiveSupport::Concern
 
+  # File entry
+  Entry = Struct.new(:git, :commit_oid, :type, :name, :path) do
+    def initialize(git, commit_oid, entry)
+      self.git        = git
+      self.commit_oid = commit_oid
+      entry.each do |key,val|
+        self[key] = val
+      end
+    end
+
+    def last_change
+      @last_change ||= git.entry_info(path, commit_oid)
+    end
+  end
+
   # returns the contents (files and subfolders) of a folder
   def folder_contents(commit_oid=nil, url='')
     rugged_commit = get_commit(commit_oid)
@@ -21,14 +36,12 @@ module GitRepository::GetFolderContents
   protected
 
   def files_recursive(folder, commit_oid=nil, &block)
-    contents = folder_contents(commit_oid, folder)
-    contents.each do |entry|
+    folder_contents(commit_oid, folder).each do |entry|
       case entry[:type]
       when :dir
         files_recursive(entry[:path], commit_oid, &block)
       when :file
-        last_changing_commit_oid = entry_info(entry[:path], commit_oid)[:oid]
-        block.call(entry[:path], last_changing_commit_oid)
+        block.call Entry.new(self, commit_oid, entry)
       end
     end
   end

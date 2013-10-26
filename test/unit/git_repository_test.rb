@@ -277,13 +277,13 @@ class GitRepositoryTest < ActiveSupport::TestCase
 
       should 'process all files by files method' do
         files = []
-        @repository.files do |filepath,commit_oid|
-          files << [filepath,commit_oid]
+        @repository.files do |entry|
+          files << [entry.path, entry.last_change[:oid]]
         end
         assert_equal [], files
 
-        @repository.files(@commit_add3) do |filepath,commit_oid|
-          files << [filepath,commit_oid]
+        @repository.files(@commit_add3) do |entry|
+          files << [entry.path, entry.last_change[:oid]]
         end
 
         assert_equal [
