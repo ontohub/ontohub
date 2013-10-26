@@ -35,6 +35,10 @@ describe "git import" do
 
   pending 'read_only'
 
+  it 'set imported_at' do
+    @repository.reload.imported_at.should_not == nil
+  end
+
   it 'have all the commits' do
     assert_equal commit_count, @repository.commits.size
   end

@@ -1,24 +1,18 @@
 = repository_nav resource, :overview
 
+- if resource.source_address
+  = render partial: 'source'
+
 %p
   Clone URL:
   %input.form-control.clone-url{type: 'text', readonly: true, value: repository_tree_url(resource, protocol: 'git', port: nil) << '.git' }
 
-- if resource.source_address
-  %p
-    Imported from
-    = resource.source_type.upcase
-    %code
-      = resource.source_address
-    - if resource.state != 'done'
-      (#{resource.state})
-
 %h2 Description
 %p
-  - if resource.description.present?
-    =resource.description
+  - if resource.description?
+    = resource.description
   - else
-    No description.
+    %em No description.
 
 %h2 Recent changes
 - if resource.recent_changes.empty?

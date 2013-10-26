@@ -63,6 +63,7 @@ module Repository::Importing
       update_state! 'processing'
       save_current_ontologies
 
+      self.imported_at = Time.now
       update_state! 'done'
 
       result
