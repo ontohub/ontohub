@@ -14,7 +14,13 @@ class OntologiesController < InheritedResources::Base
   before_filter :check_write_permission, :except => [:index, :show, :oops_state]
 
   def index
-    @search = nil
+    if in_repository?
+      @count = end_of_association_chain.total_count
+      render :index_ontology
+    else
+      @count = resource_class.count
+      render :index_global
+    end
   end
 
   def new

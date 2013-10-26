@@ -9,4 +9,10 @@ class RepositoriesController < InheritedResources::Base
     super
   end
 
+  protected
+
+  def collection
+    super.order(:name)
+  end
+
 end

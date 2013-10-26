@@ -1,0 +1,11 @@
+= repository_nav parent, :ontologies
+
+%p
+  = pluralize @count, 'Ontology'
+  found in this repository.
+
+.col-md-8
+  .pull-right
+    = link_to 'Upload an ontology file', new_repository_file_path(parent, 'upload_file[path]' => params[:path]), class: 'btn btn-link'
+  .clearfix
+  #OntologySearch
