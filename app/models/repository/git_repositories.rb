@@ -130,7 +130,10 @@ module Repository::GitRepositories
   end
 
   def read_file(filepath, commit_oid=nil)
-    git.get_file(filepath, commit_oid)
+    file = git.get_file(filepath, commit_oid)
+    file[:content] = file[:content].force_encoding("UTF-8")
+
+    file
   end
 
   # given a commit oid or a branch name, commit_id returns a hash of oid and branch name if existent
