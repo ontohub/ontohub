@@ -189,8 +189,8 @@ module Repository::GitRepositories
 
   # saves all ontologies at the current state in the database
   def save_current_ontologies(user=nil)
-    git.files do |filepath, commit_oid|
-      save_ontology(commit_oid, filepath, user)
+    git.files do |entry|
+      save_ontology entry.last_change[:oid], entry.path, user
     end
   end
 
