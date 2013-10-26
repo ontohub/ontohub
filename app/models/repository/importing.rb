@@ -1,8 +1,16 @@
+#
+# States:
+# * pending    - Job is enqueued.
+# * fetching   - Fetching new commits from the remote repository.
+# * processing - Inserting fetched commits into the local database-
+# * done       - Everthing is fine, nothing to do-
+# * failed     - Something has gone wrong.
+# 
 module Repository::Importing
   extend ActiveSupport::Concern
 
   SOURCE_TYPES = %w( git svn )
-  STATES = %w( pending processing done failed )
+  STATES = %w( pending fetching processing done failed )
 
   included do
     include StateUpdater
@@ -19,9 +27,9 @@ module Repository::Importing
     source_address?
   end
 
-  # do not allow new actions if running
+  # do not allow new actions in specific states
   def locked?
-    %w( pending processing ).include?(state)
+    !%w( done failed ).include?(state)
   end
 
   # enqueues a clone job
@@ -48,11 +56,13 @@ module Repository::Importing
     method  = method.to_s
     method += '_svn' if source_type=='svn'
 
-    update_state! 'processing'
     do_or_set_failed do
+      update_state! 'fetching'
       result = git.send(method, *args)
-      
-      save_current_ontologies(user)
+
+      update_state! 'processing'
+      save_current_ontologies
+
       update_state! 'done'
 
       result

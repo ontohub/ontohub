@@ -24,8 +24,8 @@ module GitRepository::Cloning
   def clone_svn(url)
     File.open("#{local_path}/config","a") do |f|
       f.puts '[svn-remote "svn"]'
-      f.puts 'url = ' << url
-      f.puts 'fetch = :refs/remotes/git-svn'
+      f.puts "\turl = #{url}"
+      f.puts "\tfetch = :refs/remotes/git-svn"
     end
     fetch_and_reset_svn
   end
@@ -40,9 +40,8 @@ module GitRepository::Cloning
   end
 
   def fetch_and_reset_svn
-    result = exec 'git', 'svn', 'fetch'
-    result = reset_branch 'master', "remotes/git-svn"
-    result
+    exec 'git', 'svn', 'fetch'
+    reset_branch 'master', "remotes/git-svn"
   end
 
   def reset_branch(branch, ref)
