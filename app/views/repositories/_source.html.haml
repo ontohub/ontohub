@@ -12,6 +12,7 @@
 
   - if resource.state != 'done'
     %br
+    Current state:
     %em= resource.state
     - if resource.last_error
-      %code= resource.last_error
+      %div.alert.alert-danger= resource.last_error
