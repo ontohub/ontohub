@@ -4,8 +4,6 @@ class RepositoriesController < InheritedResources::Base
 
   load_and_authorize_resource :except => [:index, :show]
 
-  actions :index, :show, :create, :destroy
-
   def create
     resource.user = current_user
     super
