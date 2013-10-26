@@ -2,6 +2,14 @@ en:
   simple_form:
     "yes": 'Yes'
     "no": 'No'
+    
+    creating: "Creating..."
+    updating: 'Updating...'
+
+    buttons:
+      or: 'or'
+      cancel: 'cancel'
+
     required:
       text: 'required'
       mark: '*'

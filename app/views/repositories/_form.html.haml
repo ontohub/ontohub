@@ -3,5 +3,4 @@
   = f.input :description, input_html: { class: 'input-xlarge' }
   = f.input :source_type, as: :radio_buttons, collection: [["don't import repository", nil], *(Repository::SOURCE_TYPES.map {|t| ["import from #{t}",t]})]
   = f.input :source_address
-  .control-group
-    .controls= f.button :submit, class: 'btn btn-primary'
+  = f.button :wrapped

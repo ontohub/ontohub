@@ -11,8 +11,7 @@
   = f.input :password_confirmation, :required => false
   = f.input :current_password, :required => true, :hint => "we need your current password to confirm your changes"
   
-  .form-actions
-    = f.button :submit, 'Update', disable_with: t(:wait), class: 'btn btn-primary'
+  = f.button :wrapped, 'Update'
 
 %h3 Cancel my account
 

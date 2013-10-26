@@ -6,8 +6,6 @@
   = f.input :name
   = f.input :password
   = f.input :password_confirmation, required: true
-  
-  .form-actions
-    = f.button :submit, 'Create Account', disable_with: t(:wait), class: 'btn-primary'
+  = f.button :wrapped, 'Create Account'
 
 = render "links"

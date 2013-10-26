@@ -140,3 +140,5 @@ SimpleForm.setup do |config|
   # Cache SimpleForm inputs discovery
   # config.cache_discovery = !Rails.env.development?
 end
+
+require 'simple_form_extensions'
