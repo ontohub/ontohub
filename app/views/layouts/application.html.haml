@@ -22,18 +22,15 @@
             = render partial: '/shared/cover'
 
           - if context_pane
-            %div.col-md-8
+            .col-md-8
               = yield
-            - if user_signed_in?
-              %div.col-md-4
+            .col-md-4
+              - if user_signed_in?
                 = render partial: '/shared/user_content'
-            - else
-              %div{style: 'position: absolute; top: 83px; right:15px; width: 303px;'}
-                = render partial: '/shared/signin'
-                %div.content-padding
-                = render partial: '/shared/signup' 
+              - elsif not cover_visible?
+                = render partial: '/shared/signin_or_signup'
           - else
-            %div.col-md-12
+            .col-md-12
               = yield
 
     = render partial: '/shared/footer'
