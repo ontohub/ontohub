@@ -1,7 +1,7 @@
 %tr
   %td= ontology_version.commit_oid[0..8]
   %td= timestamp ontology_version
-  %td= fancy_link ontology_version.user
+  %td= fancy_link ontology_version.user if ontology_version.user
   %td= status ontology_version
   %td= ontology_version.last_error
   %td= link_to 'Download', [*resource_chain, ontology_version], class: 'btn btn-xs btn-default'
