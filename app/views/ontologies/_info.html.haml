@@ -3,13 +3,10 @@
 %h1#ontology_title
   = ontology_link_to resource
   %small
-    -if !resource.language_id.nil?
-      = link_to resource.language, resource.language
-    - else
-      = 'unknown'
     - if resource.logic
-      = '/'
       = link_to resource.logic.to_s, resource.logic
+    - elsif resource.distributed?
+      DOL
 
 - if resource.parent
   %small
@@ -24,13 +21,13 @@
 
 = status_tag
 
-%nav
+%nav.nav_tab_level1
   %ul.nav.nav-tabs
     - @top_level_pages.each do |(page_title, page)|
       %li{class: page==current_page ? 'active' : nil}
         = link_to page_title, [*resource_chain, page]
-  - if controller_name == "entities" || controller_name == "sentences" || controller_name == "children" 
-    %nav
+  - if %w[entities sentences children].include? controller_name
+    %nav.nav_tab_level2
       %ul.nav.nav-tabs
         - @entities.each do |entity|
           %li{:class => (entity.kind == @active_kind ? 'active' : nil)}
@@ -43,4 +40,3 @@
               = page.to_s.capitalize
               - if count # hide counter if empty
                 %span.badge{:style => count==0 && 'display:none'}= count
-
