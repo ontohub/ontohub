@@ -22,7 +22,7 @@ class FilesController < ApplicationController
         @file = repository.read_file(@path, @oid)
       when :file_base
         ontologies = repository.ontologies.
-                      where(basepath: File.real_basepath(@info[:entry][:path])).
+                      where(basepath: File.basepath(@info[:entry][:path])).
                       order[id: :asc]
         redirect_to [repository, ontologies.first]
       end

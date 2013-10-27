@@ -108,7 +108,7 @@ class RepositoryTest < ActiveSupport::TestCase
         end
 
         should 'create a new ontology version' do
-          ontology = @repository.ontologies.where(basepath: File.real_basepath(@target_path)).first!
+          ontology = @repository.ontologies.where(basepath: File.basepath(@target_path)).first!
           assert_equal 2, ontology.versions.count
         end
       end
