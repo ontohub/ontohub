@@ -18,13 +18,8 @@ module Repository::GitRepositories
     "#{Ontohub::Application.config.git_root}/#{id}"
   end
 
-  def local_path_working_copy
-    "#{Ontohub::Application.config.git_working_copies_root}/#{id}"
-  end
-
   def destroy_git
     FileUtils.rmtree local_path
-    FileUtils.rmtree local_path_working_copy
   end
 
   def empty?
@@ -45,10 +40,10 @@ module Repository::GitRepositories
     version
   end
 
-  def save_ontology(commit_oid, filepath, user, iri=nil)
+  def save_ontology(commit_oid, filepath, user=nil, iri=nil)
     return unless Ontology::FILE_EXTENSIONS.include?(File.extname(filepath))
 
-    basepath = File.real_basepath(filepath)
+    basepath = File.basepath(filepath)
     o = ontologies.where(basepath: basepath).first
 
     if o
@@ -96,14 +91,15 @@ module Repository::GitRepositories
       if file
         {
           type: :file,
-          file: file
+          file: file,
+          ontologies: ontologies.where(basepath: File.basepath(path))
         }
       else
         entries = list_folder(path, commit_oid)
         entries.each do |name, es|
           es.each do |e|
-            o = ontologies.find_by_basepath(File.real_basepath(e[:path]))
-            e[:ontology] = o
+            o = ontologies.where(basepath: File.basepath(e[:path]))
+            e[:ontologies] = o
           end
         end
         {
@@ -135,7 +131,10 @@ module Repository::GitRepositories
   end
 
   def read_file(filepath, commit_oid=nil)
-    git.get_file(filepath, commit_oid)
+    file = git.get_file(filepath, commit_oid)
+    file[:content] = file[:content].force_encoding("UTF-8")
+
+    file
   end
 
   # given a commit oid or a branch name, commit_id returns a hash of oid and branch name if existent
@@ -193,9 +192,9 @@ module Repository::GitRepositories
   end
 
   # saves all ontologies at the current state in the database
-  def save_current_ontologies(user)
-    git.files do |filepath, commit_oid|
-      save_ontology(commit_oid, filepath, user)
+  def save_current_ontologies(user=nil)
+    git.files do |entry|
+      save_ontology entry.last_change[:oid], entry.path, user
     end
   end
 

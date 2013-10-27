@@ -8,6 +8,9 @@ ActiveRecord::Base.logger = Logger.new($stdout)
 require 'sidekiq/testing'
 Sidekiq::Testing.inline!
 
+# Purge data directory
+Ontohub::Application.config.data_root.rmtree
+
 # Include every .rb file inside db/seeds directory.
 Dir["#{Rails.root}/db/seeds/*.rb"].sort.each do |path|
   puts File.basename path

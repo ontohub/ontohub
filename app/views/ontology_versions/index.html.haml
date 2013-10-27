@@ -1,4 +1,6 @@
-= ontology_nav parent, :versions
+= repository_nav parent.repository, :ontologies
+
+= ontology_nav parent, :ontology_versions
 
 %table
   %thead
@@ -7,7 +9,6 @@
       %th Created
       %th Uploaded by
       %th State
-      %th Error
       %th
   %tbody
     = render collection.latest

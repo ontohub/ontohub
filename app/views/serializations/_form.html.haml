@@ -3,5 +3,4 @@
   = f.input :extension
   = f.input :mimetype, :as => :select, :collection => Serialization::MIMETYPES, :include_blank => false
   = f.association :language, :include_blank => false
-  .form-actions
-    = f.button :submit, class: 'btn-primary'
+  = f.button :wrapped

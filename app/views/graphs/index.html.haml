@@ -1,3 +1,5 @@
+= repository_nav parent.repository, :ontologies if parent.is_a?(Ontology)
+
 - @link_tab = :graphs
 - if parent.is_a?(Ontology)
   = ontology_nav parent, :graphs if respond_to?(:parent)
@@ -22,7 +24,7 @@
     and show
     .btn-group#ontology_selections
       = link_to 'all links', '#all', class: 'btn btn-default mode', id: 'all'
-      = link_to 'only imports', '#ontology_selections', class: 'btn  btn-default mode', id: 'import'
+      = link_to 'only imports', '#ontology_selections', class: 'btn btn-default mode', id: 'import'
 
   from
 = fancy_link parent

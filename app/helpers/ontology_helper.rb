@@ -1,4 +1,3 @@
-# encoding: utf-8
 module OntologyHelper
   
   def status(resource)
@@ -13,7 +12,7 @@ module OntologyHelper
 
       link = ' ('
       link << link_to('error',
-        ontology_ontology_versions_path(resource),
+        [resource.repository, resource, :ontology_versions],
         :'data-original-title' => version.last_error,
         class: 'help'
       )

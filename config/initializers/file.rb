@@ -1,6 +1,6 @@
 class File
 
-  def self.real_basepath(filepath)
+  def self.basepath(filepath)
     File.join(File.dirname(filepath),
       File.basename(filepath,
         File.extname(filepath))).sub('./', '')

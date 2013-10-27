@@ -1,5 +1,41 @@
-.ontology.actions
-  float: right
+.center-row
+  text-align: center
+  
+.center-row th
+  text-align: center
 
-aside .info .error
-  font-size: small
+.center-row td
+  text-align: center
+
+td.right
+  text-align: right
+th.right
+  text-align: right
+td.left
+  text-align: left
+  
+div#ontology_infos
+  padding: 0.2em
+  max-width: 620px
+  +background-image(linear-gradient(#FFFFBB, #FFFFEE))
+
+#ontology-state
+  span
+    font-weight: bold
+  
+  &.pending, &.downloading, &.processing
+    span
+    color: #999
+
+  &.done span
+    color: #090
+
+  &.failed span
+    color: #900
+
+img.spinner
+  margin-left: .4em
+  vertical-align: middle
+
+nav.nav_tab_level2
+  margin: .25em 0

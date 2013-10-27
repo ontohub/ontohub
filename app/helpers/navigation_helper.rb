@@ -5,10 +5,11 @@ module NavigationHelper
       [:overview,     resource]
     ]
     
-    pages << [:ontologies,  [*resource_chain, :ontologies]]
-    pages << [:files,       [*resource_chain, :tree]]
+    chain = resource_chain.last.is_a?(Ontology) ? resource_chain[0..-2] : resource_chain
+    pages << [:ontologies,  [*chain, :ontologies]]
+    pages << [:files,       [*chain, :tree]]
     pages << [:history,     repository_ref_path(resource, 'master', path: nil, action: :history)]
-    pages << [:permissions, [*resource_chain, :permissions]] if can? :permissions, resource
+    pages << [:permissions, [*chain, :permissions]] if can? :permissions, resource
     
     subnavigation(resource, pages, current_page)
   end
@@ -83,6 +84,24 @@ module NavigationHelper
     pages << [:members,     [team, :team_users]] if can? :edit, team
     
     subnavigation(team, pages, current_page)
+  end
+
+  def active_navigation(controller)
+    if params[:repository_id]
+      if params[:ontology_id]
+        return 'active' if controller == :ontologies
+      else
+        return 'active' if controller == :repositories
+      end
+    else
+      return 'active' if [controller.to_s, controller.to_s.gsub('_', '/')].include? params[:controller]
+    end
+  end
+
+  def menu_entry(title, controller)
+    content_tag :li, class: active_navigation(controller) do
+      link_to title, controller
+    end
   end
   
 end

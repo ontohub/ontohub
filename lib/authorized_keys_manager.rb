@@ -1,13 +1,12 @@
 class AuthorizedKeysManager
 
-  GIT_HOME = Ontohub::Application.config.git_home
-  GIT_USER = Ontohub::Application.config.git_user
-  GIT_GROUP = Ontohub::Application.config.git_group
-  GIT_SHELL_FILE = File.join(Rails.root, 'git', 'bin', 'git-shell')
-  AUTHORIZED_KEYS_FILE = File.join(GIT_HOME, '.ssh', 'authorized_keys')
+  Config               = Ontohub::Application.config
+  GIT_HOME             = Config.git_home
+  SSH_DIR              = GIT_HOME.join('.ssh')
+  AUTHORIZED_KEYS_FILE = SSH_DIR.join('authorized_keys')
+  GIT_SHELL_FILE       = Rails.root.join('git', 'bin', 'git-shell')
 
   class << self
-
     def add(key_id, key)
       ensure_existence
       key_line = build_key_line(key_id, key)
@@ -37,15 +36,15 @@ class AuthorizedKeysManager
     end
 
     def ensure_existence
-      FileUtils.mkdir_p(File.dirname(AUTHORIZED_KEYS_FILE))
+      SSH_DIR.mkpath
       FileUtils.touch(AUTHORIZED_KEYS_FILE)
-      ensure_permissions
+      ensure_permissions if Config.git_user
     end
 
     def ensure_permissions
       FileUtils.chmod(0600, AUTHORIZED_KEYS_FILE)
-      usergroup = [GIT_USER, GIT_GROUP].compact.join(':')
-      system("chown -R #{usergroup} #{GIT_HOME}")
+      usergroup = [Config.git_user, Config.git_group].compact.join(':')
+      system("chown -R #{Config.git_user} #{Config.git_home}")
     end
 
   end

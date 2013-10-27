@@ -10,7 +10,6 @@ class LogicsController < InheritedResources::Base
   load_and_authorize_resource :except => [:index, :show]
   
   def index
-    @content_kind = :logics
     super do |format|
       format.html do
         @search = params[:search]
@@ -20,14 +19,12 @@ class LogicsController < InheritedResources::Base
   end
 
   def create
-    @content_kind = :logics
     @logic.user = current_user
     super
   end
   
   def show
     @tab = params[:tab].try(:to_sym)
-    @content_kind = :logics
     super do |format|
       format.html do
         @depth = params[:depth] ? params[:depth].to_i : 3

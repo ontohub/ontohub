@@ -1,4 +1,6 @@
-= ontology_nav @ontology, :entities
+= repository_nav parent.repository, :ontologies
+
+= ontology_nav parent, :entities
 
 = pagination do
   - unless collection.blank?

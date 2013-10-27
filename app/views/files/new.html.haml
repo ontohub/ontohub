@@ -4,5 +4,5 @@
   = f.input :path
   = f.input :file, as: :file
   = f.input :message, as: :text, input_html: { rows: 5 }
-  .form-actions
-    %button.btn.btn-primary Upload File
+
+  = f.submit 'Upload File', class: 'btn btn-primary'

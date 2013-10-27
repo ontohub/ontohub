@@ -1,0 +1,18 @@
+%p
+  This is a mirror of
+  %code
+    = resource.source_address
+  %br
+
+  Last successful synchronisation:
+  - if resource.imported_at
+    = timestamp resource.imported_at
+  - else
+    never
+
+  - if resource.state != 'done'
+    %br
+    Current state:
+    %em= resource.state
+    - if resource.last_error
+      %div.alert.alert-danger= resource.last_error

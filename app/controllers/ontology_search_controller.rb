@@ -17,7 +17,12 @@ class OntologySearchController < ApplicationController
 
   def search
     keywords = params[:keywords] || []
-    respond_with OntologySearch.new.make_bean_list_json(keywords)
+    if in_repository?
+      repository = Repository.find_by_path params[:repository_id]
+      respond_with OntologySearch.new.make_repository_bean_list_json(repository, keywords)
+    else
+      respond_with OntologySearch.new.make_global_bean_list_json(keywords)
+    end
   end
   
 end

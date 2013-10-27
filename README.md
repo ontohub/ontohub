@@ -84,6 +84,21 @@ now enable the module an restart apache2:
       </Directory>
     </VirtualHost>
 
+### Git Daemon
+
+Create an upstart script (i.e. `/etc/init/git-daemon.conf`):
+
+    start on startup
+    stop on shutdown
+    setuid nobody
+    setgid nogroup
+    exec /usr/bin/git daemon \
+        --reuseaddr \
+        --export-all \
+        --syslog \
+        --base-path=/srv/http/ontohub/shared/data/git_daemon
+    respawn
+
 ### Tomcat with Solr
 
 Tomcat with Solr is only required in the production environment.

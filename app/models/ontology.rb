@@ -21,6 +21,8 @@ class Ontology < ActiveRecord::Base
   belongs_to :repository
   belongs_to :language
   belongs_to :logic, counter_cache: true
+  has_many :source_links, class_name: 'Link', foreign_key: 'source_id', dependent: :destroy
+  has_many :target_links, class_name: 'Link', foreign_key: 'target_id', dependent: :destroy
 
   attr_accessible :iri, :name, :description, :logic_id, :basepath, :file_extension
 

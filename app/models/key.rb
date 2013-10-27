@@ -3,8 +3,8 @@ class Key < ActiveRecord::Base
   
   include Key::Fingerprint
 
-  after_create :add_to_authorized_keys_file
-  after_destroy :remove_from_authorized_key_file
+  after_create :add_to_authorized_keys
+  after_destroy :remove_from_authorized_keys
 
   belongs_to :user
 
@@ -21,11 +21,12 @@ class Key < ActiveRecord::Base
 
 
   private
-  def add_to_authorized_keys_file
+
+  def add_to_authorized_keys
     AuthorizedKeysManager.add(self.id, self.key)
   end
 
-  def remove_from_authorized_keys_file
+  def remove_from_authorized_keys
     AuthorizedKeysManager.remove(self.id)
   end
 

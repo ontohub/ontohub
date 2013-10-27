@@ -6,7 +6,7 @@
     - elsif req.state == 'done'
       (#{req.responses.count} Responses)
       = link_to 'Show global issues', '#', class: 'pitfalls' unless req.responses.count == 0
-  %div.pitfalls{:style => "display:none"}
+  %div.pitfalls{style: 'display: none'}
     %dl.oops-responses
       - req.responses.global.each do |response|
         %dt{ title: response.element_type }
@@ -15,4 +15,3 @@
           %strong
             = response.name
           %p= response.description
-    

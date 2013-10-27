@@ -19,7 +19,8 @@ Ontohub::Application.routes.draw do
   resources :language_mappings
   resources :logic_mappings
 
-  resources :links, :only => :index
+  resources :links, :only => :index 
+
 
   resources :language_adjoints
   resources :logic_adjoints
@@ -43,59 +44,60 @@ Ontohub::Application.routes.draw do
     end
   end
   
-  resources :links do
-    get 'update_version', :on => :member
-    resources :link_versions
-  end
+    resources :links do
+      get 'update_version', :on => :member
+      resources :link_versions
+    end
   
-  resources :teams do
-    resources :permissions, :only => [:index], :controller => 'teams/permissions'
-    resources :team_users, :only => [:index, :create, :update, :destroy], :path => 'users'
-  end
+    resources :teams do
+      resources :permissions, :only => [:index], :controller => 'teams/permissions'
+      resources :team_users, :only => [:index, :create, :update, :destroy], :path => 'users'
+    end
   
-  get 'autocomplete' => 'autocomplete#index'
-  get 'symbols'      => 'search#index'
+    get 'autocomplete' => 'autocomplete#index'
+    get 'entities_search' => 'entities_search#index'
 
-  resources :repositories do
-    resources :ssh_access, :only => :index
-    resources :permissions, :only => [:index, :create, :update, :destroy]
+    resources :repositories do
+      resources :ssh_access, :only => :index
+      resources :permissions, :only => [:index, :create, :update, :destroy]
 
-    resources :ontologies, only: [:index, :show, :edit, :update] do
-      collection do
-        get 'keywords' => 'ontology_search#keywords'
-        get 'search' => 'ontology_search#search'
-      end
-      resources :links do
-        get 'update_version', :on => :member
-        resources :link_versions
-      end
-      resources :children, :only => :index
-      resources :entities, :only => :index
-      resources :sentences, :only => :index
-      resources :ontology_versions, :only => [:index, :show, :new, :create], :path => 'versions' do
-        resource :oops_request, :only => [:show, :create]
+      resources :ontologies, only: [:index, :show, :edit, :update] do
+        collection do
+          get 'keywords' => 'ontology_search#keywords'
+          get 'search' => 'ontology_search#search'
+        end
+        resources :children, :only => :index
+        resources :entities, :only => :index
+        resources :sentences, :only => :index
+        resources :links do
+          get 'update_version', :on => :member
+          resources :link_versions
+        end
+        resources :ontology_versions, :only => [:index, :show, :new, :create], :path => 'versions' do
+          resource :oops_request, :only => [:show, :create]
+        end
+
+        resources :metadata, :only => [:index, :create, :destroy]
+        resources :comments, :only => [:index, :create, :destroy]
+        resources :graphs, :only => [:index]
+
       end
 
-      resources :metadata, :only => [:index, :create, :destroy]
-      resources :comments, :only => [:index, :create, :destroy]
-      resources :graphs, :only => [:index]
+      resources :files, only: [:new, :create]
+
+      # action: history, diff, entries_info, files
+      get ':ref/:action(/:path)',
+        controller:  :files,
+        as:          :ref,
+        constraints: { path: /.*/ }
     end
 
-    resources :files, only: [:new, :create]
-
-    # action: history, diff, entries_info, files
-    get ':ref/:action(/:path)',
+    get ':repository_id(/:path)',
       controller:  :files,
-      as:          :ref,
+      action:      :files,
+      as:          :repository_tree,
       constraints: { path: /.*/ }
+
+    root :to => 'home#show'
+
   end
-
-  get ':repository_id(/:path)',
-    controller:  :files,
-    action:      :files,
-    as:          :repository_tree,
-    constraints: { path: /.*/ }
-
-  root :to => 'home#show'
-
-end

@@ -15,34 +15,27 @@ class OntologiesController < InheritedResources::Base
 
   def index
     if in_repository?
-      @content_kind = :repositories
+      @count = end_of_association_chain.total_count
+      render :index_ontology
     else
-      @content_kind = :ontologies
+      @count = resource_class.count
+      render :index_global
     end
-    @search = nil
-    #super do |format|
-    #  format.html do
-    #    @search = params[:search]
-    #    @search = nil if @search.blank?
-    #  end
-    #end
   end
 
   def new
-    @content_kind = ":ontologies"
     @ontology_version = build_resource.versions.build
   end
 
   def create
-    @content_kind = :ontologies
     @version = build_resource.versions.first
     @version.user = current_user
     super
   end
   
   def show
-    @content_kind = :ontologies
     @content_object = :ontology
+
     if !params[:repository_id]
       # redirect for legacy routing
       ontology = Ontology.find params[:id]
@@ -66,14 +59,14 @@ class OntologiesController < InheritedResources::Base
   end
   
   def oops_state
-    @content_kind = :ontologies
     respond_to do |format|
       format.json do
         respond_with resource.versions.current.try(:request)
       end
     end
   end
-  
+
+
   protected
   
   def build_resource

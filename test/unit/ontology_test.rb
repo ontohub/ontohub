@@ -10,7 +10,6 @@ class OntologyTest < ActiveSupport::TestCase
   should have_many :entities
   
   should have_db_index(:iri).unique(true)
-  should have_db_index([:repository_id, :basepath]).unique(true)
   should have_db_index(:state)
   should have_db_index(:language_id)
   should have_db_index(:logic_id)

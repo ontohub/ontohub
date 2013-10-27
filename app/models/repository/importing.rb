@@ -1,8 +1,16 @@
+#
+# States:
+# * pending    - Job is enqueued.
+# * fetching   - Fetching new commits from the remote repository.
+# * processing - Inserting fetched commits into the local database-
+# * done       - Everthing is fine, nothing to do-
+# * failed     - Something has gone wrong.
+# 
 module Repository::Importing
   extend ActiveSupport::Concern
 
   SOURCE_TYPES = %w( git svn )
-  STATES = %w( pending processing done failed )
+  STATES = %w( pending fetching processing done failed )
 
   included do
     include StateUpdater
@@ -10,47 +18,56 @@ module Repository::Importing
     validates_inclusion_of :state,       in: STATES
     validates_inclusion_of :source_type, in: SOURCE_TYPES, if: :remote?
 
-    after_create :async_clone, if: :remote?
+    after_create :async_remote_clone, if: :remote?
+
+    async_method :remote_clone, :remote_pull
   end
 
   def remote?
     source_address?
   end
 
-  # do not allow new actions if running
+  # do not allow new actions in specific states
   def locked?
-    %w( pending processing ).include?(state)
+    !%w( done failed ).include?(state)
   end
 
   # enqueues a clone job
-  def async_clone
-    async_remote :clone
+  def remote_clone
+    remote_send :clone, source_address
   end
 
-  # enqueues a synchronize job
-  # IMPORTANT: before calling this function, the user of the
-  # ontology versions created by the synchronization must be set!
-  def async_synchronize
-    async_remote :synchronize
+  # enqueues a pull job
+  def remote_pull
+    remote_send :pull
   end
 
+=begin
   # enqueues a remote job
   def async_remote(method)
     raise "object is #{state}" if locked?
     update_state! 'pending'
     async :remote_send, method
   end
+=end
 
-  def remote_send(method)
-    update_state! 'processing'
+  def remote_send(method, *args)
+    user    = permissions.where(subject_type: User, role: 'owner').first!.subject
+    method  = method.to_s
+    method += '_svn' if source_type=='svn'
+
     do_or_set_failed do
-      remote_repository.send method
-      update_state! 'done'
-    end
-  end
+      update_state! 'fetching'
+      result = git.send(method, *args)
 
-  def remote_repository
-    RemoteRepository.instance(self)
+      update_state! 'processing'
+      save_current_ontologies
+
+      self.imported_at = Time.now
+      update_state! 'done'
+
+      result
+    end
   end
 
   module ClassMethods

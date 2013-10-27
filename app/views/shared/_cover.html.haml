@@ -1,20 +1,29 @@
-%div.jumbotron
-  %div.container
-    %h1 Ontohub
-    %p
-      %strong="Open"
-      ="- based on open source software"
-      %br
-      %strong="Flexible"
-      ="- combine different logics in the same ontology"
-      %br
-      %strong="Distributed"
-      ="- combine distinct ontologies into a single one"
-      %br
-      %br
-      ="With "
-      =Ontology.all.size
-      =" ontologies and "
-      =Repository.all.size
-      =" repositories, continuously growing!"
-    %p= link_to 'Learn more', "http://ontohub.blogspot.de",{class: "btn btn-primary btn-lg"}
+.jumbotron
+  .container
+    .col-md-8
+      %h1 Ontohub
+
+      .features
+        %p
+          %strong Open
+          \- based on open source software
+        %p
+          %strong Flexible
+          \- combine different logics in the same ontology
+        %p
+          %strong Distributed
+          \- combine distinct ontologies into a single one
+
+      .numbers
+        %p
+          With
+          = Ontology.all.size
+          ontologies and
+          = Repository.all.size
+          repositories, continuously growing!
+
+      %p
+        = link_to 'Learn more', 'http://about.ontohub.org', class: 'btn btn-primary btn-lg'
+
+    .col-md-4
+      = render partial: 'shared/signin_or_signup'

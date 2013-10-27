@@ -4,8 +4,16 @@ require 'sidekiq/worker'
 class Worker
   include Sidekiq::Worker
 
-  def perform(clazz, id, method, *args)
-    clazz.constantize.find(id).send method, *args
+  def perform(type, clazz, method, *args)
+    case type
+    when 'class'
+      clazz.constantize.send method, *args
+    when 'record'
+      id = args.shift
+      clazz.constantize.find(id).send method, *args
+    else
+      raise ArgumentError, "unsupported type: #{type}"
+    end
   end
 
   # This method definition is required by sidekiq

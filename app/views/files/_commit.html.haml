@@ -9,23 +9,23 @@
     .pull-right
       .btn-group
         - if @current_file && repository.path_exists?(@path, commit[:oid])
-          = link_to fancy_repository_path(repository, ref: commit[:oid], path: @path), class: 'btn', 'data-toggle' => 'tooltip', 'data-original-title' => 'View file contents' do
+          = link_to fancy_repository_path(repository, ref: commit[:oid], path: @path), class: 'btn btn-sm btn-default', 'data-toggle' => 'tooltip', 'data-original-title' => 'View file contents' do
             %i.icon-file
             Show file
         - elsif @current_file
-          = link_to '#', class: 'btn disabled', 'data-toggle' => 'tooltip', 'data-original-title' => 'You cannot view a deleted file' do
+          = link_to '#', class: 'btn btn-sm btn-default disabled', 'data-toggle' => 'tooltip', 'data-original-title' => 'You cannot view a deleted file' do
             %i.icon-file
             Show file
 
         - if @current_file
-          = link_to short_oid(commit), fancy_repository_path(repository, ref: commit[:oid], action: :diff), class: 'btn'
+          = link_to short_oid(commit), fancy_repository_path(repository, ref: commit[:oid], action: :diff), class: 'btn btn-sm btn-default'
           .pull-right
-            = link_to fancy_repository_path(repository, ref: commit[:oid]), class: 'btn btn-small btn-inverse' do
+            = link_to fancy_repository_path(repository, ref: commit[:oid]), class: 'btn btn-sm btn-primary' do
               %i.icon-chevron-right
               Browse Files  
         - else
-          = link_to short_oid(commit), fancy_repository_path(repository, ref: commit[:oid], action: :diff), class: 'btn'
-          = link_to fancy_repository_path(repository, ref: commit[:oid]), class: 'btn btn-inverse' do
+          = link_to short_oid(commit), fancy_repository_path(repository, ref: commit[:oid], action: :diff), class: 'btn btn-sm btn-default'
+          = link_to fancy_repository_path(repository, ref: commit[:oid]), class: 'btn btn-sm btn-primary' do
             %i.icon-chevron-right
             Browse Files
   .clearfix

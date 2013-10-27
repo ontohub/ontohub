@@ -32,8 +32,7 @@ tmp/*
 
 # Ignore packaged assets and uploads
 /public/assets
-/public/repositories
-/public/uploads
+/data
 
 # Ignore folder attribute files
 .DS_Store
@@ -56,12 +55,3 @@ config/environments/*.local.yml
 
 # Ignore sass cache
 .sass-cache
-
-# Ignore gwt temporary and compiled files
-gwt/Ontohub/.gwt
-gwt/Ontohub/gwt-unitCache
-gwt/Ontohub/test-classes
-gwt/Ontohub/war/ontohub
-gwt/Ontohub/war/ontologies
-gwt/Ontohub/war/WEB-INF/classes
-gwt/Ontohub/war/WEB-INF/deploy

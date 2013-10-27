@@ -1,33 +1,39 @@
-!!!
+!!! 5
 %html
+
   %head
     %title #{page_title} · #{Settings.name}
-    %meta{"http-equiv" => "Content-Type", :content => "text/html; charset=utf-8"}
-    = stylesheet_link_tag "application", :media => "all"
+
+    %meta{charset: 'utf-8'}
+    %meta{name: 'viewport', content: 'width=device-width, initial-scale=1.0'}
+
+    = stylesheet_link_tag 'application', media: 'all'
     = csrf_meta_tags
+
   %body
-    = render :partial => '/shared/navbar'
-    = flash_messages
-    %div.content
-      - if cover_visible?
-        = render :partial => '/shared/cover'
-      %div.content-padding
-      - if context_pane_visible?
-        %div.col-md-8
-          = yield
-        - if user_signed_in?
-          %div.col-md-4
-            = render partial: '/shared/user_content'
-        - else
-          %div{style: 'position: absolute; top: 83px; right:15px; width: 303px;'}
-            = render partial: '/shared/signin'
-            %div.content-padding
-            = render partial: '/shared/signup' 
-      - else
-        %div.col-md-12
-          = yield
-      %div{style: 'clear:both;'}
-    %div{style:'height:30px;'}
-    = render :partial => '/shared/footer'
-    = javascript_include_tag "application"
-    = javascript_include_tag "/static/gwt/ontohub.nocache.js"
+    = render partial: '/shared/navbar'
+
+    %main#content
+      .container
+        .row.flash-messages
+          = flash_messages
+        .row
+          - if cover_visible?
+            = render partial: '/shared/cover'
+
+          - if context_pane
+            .col-md-8
+              = yield
+            .col-md-4
+              - if user_signed_in?
+                = render partial: '/shared/user_content'
+              - elsif not cover_visible?
+                = render partial: '/shared/signin_or_signup'
+          - else
+            .col-md-12
+              = yield
+
+    = render partial: '/shared/footer'
+
+    = javascript_include_tag 'application'
+    = javascript_include_tag '/static/gwt/ontohub.nocache.js'

@@ -1,20 +1,23 @@
-class RepositoriesController < ApplicationController
+class RepositoriesController < InheritedResources::Base
 
-  inherit_resources
   defaults finder: :find_by_path!
 
   load_and_authorize_resource :except => [:index, :show]
-
-  def index
-    @content_kind = :repositories
-  end
-
-  def show
-    @content_kind = :repositories
-  end
 
   def create
     resource.user = current_user
     super
   end
+
+  def update
+    params[:repository].except! :source_address, :source_type
+    super
+  end
+
+  protected
+
+  def collection
+    super.order(:name)
+  end
+
 end
