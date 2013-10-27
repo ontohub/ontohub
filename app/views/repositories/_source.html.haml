@@ -14,5 +14,4 @@
     %br
     Current state:
     %em= resource.state
-    - if resource.last_error
-      %div.alert.alert-danger= resource.last_error
+    = format_error_message resource.last_error
