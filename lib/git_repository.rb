@@ -1,8 +1,10 @@
 # Wrapper for access to the local Git repository
+# requires git and git-svn to be installed for the functions clone_git and clone_svn to work
 class GitRepository
-#requires git and git-svn to be installed for the functions clone_git and clone_svn to work
+  require 'git_repository/config'
   
   include \
+    Config,
     Cloning,
     GetCommit,
     GetObject,

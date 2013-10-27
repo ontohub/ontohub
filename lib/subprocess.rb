@@ -11,8 +11,10 @@ module Subprocess
     end
   end
 
+  # Runs a command
+  # The optional hash contains environment variables
   def self.run(*args)
-    env    = args[0].is_a?(Hash) ? args.shift.stringify_keys : {}
+    env    = args.extract_options!.stringify_keys
     args   = args.map(&:to_s)
     output = IO.popen env, args, err: [:child, :out] do |ls_io|
       ls_io.read

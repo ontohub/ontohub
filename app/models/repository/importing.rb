@@ -39,7 +39,7 @@ module Repository::Importing
 
   # enqueues a pull job
   def remote_pull
-    remote_send :fetch_and_reset
+    remote_send :pull
   end
 
 =begin

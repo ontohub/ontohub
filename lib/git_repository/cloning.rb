@@ -1,99 +1,48 @@
-require 'open3'
+require 'subprocess'
 
 module GitRepository::Cloning
   extend ActiveSupport::Concern
 
-  DIR = File.dirname(__FILE__)
-  SCRIPT_REMOTE_SET = "#{DIR}/remote_set_url_push.sh"
-  SCRIPT_PUSH       = "#{DIR}/push.sh"
-  SCRIPT_PULL       = "#{DIR}/pull.sh"
-  SCRIPT_SVN_REBASE = "#{DIR}/svn_rebase.sh"
-
   # Struct for old and new OID
   Ref = Struct.new(:previous, :current)
 
-  def push
-    exec 'git', 'push'
-  end
-
-  def clone(url, branch='master')
-    exec 'git', 'remote', 'add', 'origin', url
-    fetch_and_reset
+  def clone(url)
+    set_section %w( remote origin ),
+      url:    url,
+      fetch:  '+refs/*:refs/*',
+      mirror: 'true'
+    
+    pull
   end
 
   def clone_svn(url)
-    File.open("#{local_path}/config","a") do |f|
-      f.puts '[svn-remote "svn"]'
-      f.puts "\turl = #{url}"
-      f.puts "\tfetch = :refs/remotes/git-svn"
+    set_section %w( svn-remote svn ),
+      url:   url,
+      fetch: ':refs/remotes/git-svn'
+    
+    pull_svn
+  end
+
+  def pull
+    with_head_change do
+      git_exec 'remote', 'update'
     end
-    fetch_and_reset_svn
   end
 
-  def fetch(remote='origin')
-    exec 'git', 'fetch', remote
-  end
-
-  def fetch_and_reset(remote='origin', branch='master')
-    fetch remote
-    reset_branch branch, "#{remote}/#{branch}"
-  end
-
-  def fetch_and_reset_svn
-    exec 'git', 'svn', 'fetch'
+  # Fetches the latest commits and resets the local master
+  def pull_svn
+    git_exec 'svn', 'fetch'
     reset_branch 'master', "remotes/git-svn"
   end
 
+  # Sets the reference of a local branch 
   def reset_branch(branch, ref)
-    exec_with_head_change 'git', 'branch', '-f', branch, ref
-  end
-
-  def remote_add_origin(target_path)
-    exec 'git', 'remote', 'add', 'origin', target_path
-  end
-
-  def remote_set_url_push(target_path)
-    exec 'git', 'remote', 'set-url', '--push', 'origin', target_path
-  end
-
-  def remote_rm_origin
-    exec 'git', 'remote', 'rm', 'origin'
+    with_head_change do
+      git_exec 'branch', '-f', branch, ref
+    end
   end
 
   module ClassMethods
-    # clones a git repository into a bare git repository
-    def clone_git(source_path, target_path, bare=false)
-      if bare
-        exec 'git', 'clone', '--bare', source_path, target_path
-      else
-        exec 'git', 'clone', source_path, target_path
-      end
-    end
-
-    # clones a git repository into a bare git repository and one with a working copy
-    # last parameter (max_revision) is used for testing only
-    def clone_svn(source_path, target_path_bare, target_path_working_copy, max_revision=nil)
-      if File.exists? target_path_bare
-        { out: nil, err: "#{target_path_bare} already exists.", success: false }
-      elsif File.exists? target_path_working_copy
-        { out: nil, err: "#{target_path_working_copy} already exists.", success: false }
-      else
-        clone_svn_only(source_path, target_path_working_copy, max_revision)
-        return result_svn unless result_svn[:success]
-
-        result_git = clone_git(target_path_working_copy, target_path_bare, true)
-        return result_git unless result_git[:success]
-
-        result_remote_rm = GitRepository.new(target_path_bare).remote_rm_origin
-        return result_remote_rm unless result_remote_rm[:success]
-
-        result_remote_add = GitRepository.new(target_path_working_copy).remote_add_origin(target_path_bare)
-        return result_remote_add unless result_remote_add[:success]
-
-        result_git
-      end
-    end
-
     def is_git_repository?(address)
       exec 'git', 'ls-remote', address
     end
@@ -102,39 +51,32 @@ module GitRepository::Cloning
       exec 'svn', 'ls', address
     end
 
-    protected
-
-    def clone_svn_only(source_path, target_path, max_revision=nil)
-      if max_revision.nil?
-        exec 'git', 'svn', 'clone', source_path, target_path
-      else
-        exec 'git', 'svn', 'clone', '-r', "0:#{max_revision}", source_path, target_path
-      end
-    end
-
     def exec(*args)
       Subprocess.run *args
     end
   end
 
+  protected
 
-  def exec(*args)
-    Subprocess.run({GIT_DIR: local_path.to_s}, *args)
+  # Executes a git command
+  def git_exec(*args)
+    args.unshift 'git'
+    args.push \
+      GIT_DIR: local_path.to_s,
+      LANG:    'C'
+
+    Subprocess.run *args
   end
 
-  def exec_with_head_change(*args)
+  # Yields the given block and returns the head OID
+  # before and after yielding the block.
+  def with_head_change(*args)
     old_oid = head_oid rescue nil
-    exec *args
+    yield
     Ref.new(old_oid, head_oid)
   end
 
-  protected
-
   def local_path
-    if repo.bare?
-      repo.path
-    else
-      repo.path.split('/')[0..-2].join('/')
-    end
+    repo.path
   end
 end
