@@ -12,7 +12,10 @@
                 - unless entry[:type] == :dir || entry[:ontologies].empty?
                   %ul.ontology-list
                     - entry[:ontologies].each do |ontology|
-                      %li= fancy_link ontology
+                      %li
+                        = fancy_link ontology
+                        - if ontology.state=='failed'
+                          %i.icon-bolt{ title: "processing #{ontology.state}" }
             %td.icon
               - if entry[:type] == :dir
                 %i.icon-folder-close
