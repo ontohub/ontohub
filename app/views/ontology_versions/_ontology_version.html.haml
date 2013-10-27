@@ -4,6 +4,5 @@
   %td= ontology_version.user ? fancy_link(ontology_version.user) : '-'
   %td
     = status ontology_version
-    - if ontology_version.last_error?
-      %div.alert.alert-danger= ontology_version.last_error
+    = format_error_message ontology_version.last_error
   %td= link_to 'Download', [*resource_chain, ontology_version], class: 'btn btn-xs btn-default'
