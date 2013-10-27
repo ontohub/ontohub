@@ -23,7 +23,7 @@ class FilesController < ApplicationController
       when :file_base
         ontologies = repository.ontologies.
                       where(basepath: File.basepath(@info[:entry][:path])).
-                      order[id: :asc]
+                      order('id asc')
         redirect_to [repository, ontologies.first]
       end
     else
