@@ -76,33 +76,41 @@ module Hets
   def self.parse(input_file, output_path = nil)
     @@config ||= Config.new
 
+    # Arguments to run the subprocess
+    args = [@@config.path, *%w( -o xml --full-signatures -a none -v2 )]
+
     if output_path
       FileUtils.mkdir_p output_path
-      output_path = "-O \"#{output_path}\""
+      args += ["-O", output_path]
     end
 
-
-    command = "#{@@config.path} -o xml --full-signatures -a none -v2 #{output_path} '#{input_file}' 2>&1"
-
-    Rails.logger.debug command
+    # add the path to the input file as last argument
+    args << input_file
 
     # Executes command with low priority
-    output = `nice #{command}`
+    Rails.logger.debug "Running hets with: #{args.inspect}"
+    output = Subprocess.run :nice, *args
+
+    if output.starts_with? '*** Error'
+      # some error occured
+      raise HetsError, output 
+    elsif match = output.lines.last.match(/Writing file: (.+)/)
+      # successful execution
+      match[1]
+    else
+      # we can not handle this response
+      raise HetsError, "Unexpected output:\n#{output}"
+    end
+
+  rescue Subprocess::Error => e
+    output = e.output
 
     # Exclude usage message if exit status equals 2
-    if $?.exitstatus == 2 and output.include? 'Usage:'
-      output = output.split("Usage:").first
+    if e.status == 2 and output.include? 'Usage:'
+      raise HetsError, output.split("Usage:").first
+    else
+      raise HetsError, "Hets exited with status #{e.status}:\n#{output}"
     end
-
-    output = output.split("\n").last
-    Rails.logger.debug output
-
-    # Raise error if exit status different from 0
-    if $?.exitstatus != 0 or output.starts_with? '*** Error'
-      raise HetsError.new(output)
-    end
-
-    return output.split(': ').last
   end
 
   # Traverses a directory recursively, importing ontology file with supported

@@ -3,7 +3,7 @@ require 'test_helper'
 class HetsTest < ActiveSupport::TestCase
   context 'Output directory parameter' do
     setup do
-      @xml_path = Hets.parse 'test/fixtures/ontologies/owl/pizza.owl', '/tmp'
+      @xml_path = Hets.parse Rails.root.join('test/fixtures/ontologies/owl/pizza.owl'), '/tmp'
     end
 
     should 'correctly be used' do
@@ -19,7 +19,7 @@ class HetsTest < ActiveSupport::TestCase
     context path do
       setup do
         assert_nothing_raised do
-          @xml_path = Hets.parse "test/fixtures/ontologies/#{path}", '/tmp'
+          @xml_path = Hets.parse Rails.root.join("test/fixtures/ontologies/#{path}"), '/tmp'
         end
       end
 
@@ -44,7 +44,7 @@ class HetsTest < ActiveSupport::TestCase
 
   should 'raise exception if provided with wrong file-format' do
     assert_raise Hets::HetsError do
-      Hets.parse 'test/fixtures/ontologies/xml/valid.xml'
+      Hets.parse Rails.root.join('test/fixtures/ontologies/xml/valid.xml')
     end
   end
 end
