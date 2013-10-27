@@ -41,7 +41,7 @@ describe "svn import" do
 
   context 'synchronizing without new commits' do
     before do
-      @result = @repository.remote_pull
+      @result = @repository.remote_send :pull
     end
 
     it 'unchaned HEAD' do
@@ -54,7 +54,7 @@ describe "svn import" do
     before do
       Subprocess.run SCRIPT_SVN_ADD_COMMITS, svn_workdir, commit_count, 'new_'
       
-      @result = @repository.remote_pull
+      @result = @repository.remote_send :pull
     end
 
     it 'get the new commits' do

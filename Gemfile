@@ -66,6 +66,7 @@ gem "rest-client"
 
 # Background-Jobs
 gem 'sidekiq', '~> 2.15'
+gem 'sidetiq'
 gem 'sinatra', require: false, group: [:development, :production]
 
 # Search engine
