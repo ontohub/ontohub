@@ -9,8 +9,10 @@
           %tr{"data-id" => entry[:index]}
             - if i == 0
               %td.ontology{rowspan: entries.size}
-                = fancy_link entry[:ontology] unless entry[:type] == :dir || entry[:ontology].nil?
-                =# link_to name, fancy_repository_path(repository, path: basepath(entry[:path]), oid: @oid) unless entry[:type] == :dir
+                - unless entry[:type] == :dir || entry[:ontologies].empty?
+                  %ul.ontology-list
+                    - entry[:ontologies].each do |ontology|
+                      %li= fancy_link ontology
             %td.icon
               - if entry[:type] == :dir
                 %i.icon-folder-close

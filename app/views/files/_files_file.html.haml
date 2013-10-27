@@ -1,9 +1,15 @@
 %h3 
   =@path
-- if @info[:ontology]
-  %p
-    defining ontology
-    = fancy_link @info[:ontology]
+- unless @info[:ontologies].empty?
+  - if @info[:ontologies].size == 1
+    %p
+      Defining ontology:
+      = fancy_link @info[:ontologies][0]
+  - else
+    %p Defining ontologies:
+    %ul.ontology-list
+      - @info[:ontologies].each do |ontology|
+        %li= fancy_link ontology
 
 -if @file[:size] <= Ontohub::Application.config.max_read_filesize
   %pre=@file[:content]
