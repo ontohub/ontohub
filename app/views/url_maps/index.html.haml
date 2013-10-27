@@ -1,0 +1,18 @@
+= repository_nav parent, :"URL Maps"
+
+- if can? :create, UrlMap
+  .pull-right
+    = link_to 'Create URL Map', new_repository_url_map_path(parent), class: 'btn btn-primary'
+
+= pagination do
+  %table.table.table-condensed.table-hover.url_maps
+    %thead
+      %tr
+        %th.source Source
+        %th.symbol
+        %th.target Target
+        - if can? :edit, UrlMap
+          %th.edit Edit
+          %th.delete Delete
+    %tbody
+      = render collection

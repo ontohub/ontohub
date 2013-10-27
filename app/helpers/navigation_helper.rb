@@ -9,6 +9,7 @@ module NavigationHelper
     pages << [:ontologies,  [*chain, :ontologies]]
     pages << [:files,       [*chain, :tree]]
     pages << [:history,     repository_ref_path(resource, 'master', path: nil, action: :history)]
+    pages << [:"URL Maps",  repository_url_maps_path(resource)]
     pages << [:permissions, [*chain, :permissions]] if can? :permissions, resource
     
     subnavigation(resource, pages, current_page)
