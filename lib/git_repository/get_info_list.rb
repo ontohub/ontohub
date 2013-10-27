@@ -40,8 +40,7 @@ module GitRepository::GetInfoList
   end
 
   def entry_info_rugged(rugged_commit, path)
-    object = get_object(rugged_commit, path)
-    changing_rugged_commit = get_commit_of_last_change(path, object.oid, rugged_commit)
+    changing_rugged_commit = get_commit_of_last_change(path, rugged_commit)
     build_entry_info(changing_rugged_commit, path)
   end
 
@@ -59,7 +58,7 @@ module GitRepository::GetInfoList
   def entry_info_list_rugged(rugged_commit, path)
     entries = []
 
-    changing_rugged_commit = get_commit_of_last_change(path, nil, rugged_commit)
+    changing_rugged_commit = get_commit_of_last_change(path, rugged_commit)
     previous_rugged_commit = nil
 
     until changing_rugged_commit == previous_rugged_commit || !changing_rugged_commit do
@@ -68,7 +67,7 @@ module GitRepository::GetInfoList
       previous_rugged_commit = changing_rugged_commit
 
       unless changing_rugged_commit.parents.empty?
-        changing_rugged_commit = get_commit_of_last_change(path, nil, changing_rugged_commit.parents.first)
+        changing_rugged_commit = get_commit_of_last_change(path, changing_rugged_commit.parents.first)
       end
     end
 
@@ -80,22 +79,14 @@ module GitRepository::GetInfoList
     end
   end
 
-  def get_commit_of_last_change(path, previous_entry_oid=nil, rugged_commit=nil, previous_rugged_commit=nil)
+  def get_commit_of_last_change(path, rugged_commit=nil)
     rugged_commit ||= head
+    object          = get_object(rugged_commit, path)
 
-    object = get_object(rugged_commit, path)
-    object_oid = object ? object.oid : nil
-
-    previous_entry_oid ||= object_oid unless previous_rugged_commit
-
-    if object_oid == previous_entry_oid
-      if rugged_commit.parents.empty?
-        rugged_commit
-      else
-        get_commit_of_last_change(path, previous_entry_oid, rugged_commit.parents[-1], rugged_commit)
-      end
-    else
-      previous_rugged_commit
+    while (parent = rugged_commit.parents[-1]) && get_object(parent, path) == object do
+      rugged_commit = parent
     end
+
+    rugged_commit
   end
 end
