@@ -1,5 +1,3 @@
-
-
 @mixin data-icon($name)
   background:
     image: image-url('icons/'+$name+'.png')
@@ -22,6 +20,9 @@
   
   &[data-type=User]
     +data-icon(user)
+
+  &[data-type=Repository]
+    +data-icon(repository)
   
   &[data-ontologyclass=Ontology]
     +data-icon(ontology)

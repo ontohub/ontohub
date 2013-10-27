@@ -1,8 +1,9 @@
-= repository_nav parent.repository, :ontologies
+- if parent
+  = repository_nav parent.repository, :ontologies
 
--if @ontology
+- if @ontology
   = ontology_nav @ontology, :links
--else
+- else
   %h2= @page_title = 'Links'
 
 %p

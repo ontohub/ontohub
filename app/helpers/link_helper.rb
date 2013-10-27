@@ -24,28 +24,20 @@ module LinkHelper
     clazz = resource.class
     clazz = 'Ontology' if clazz.to_s.include?('Ontology')
     data_type, value = determine_image_type(resource)
+
+    name = block_given? ? yield(resource) : resource
     
     unless resource.is_a? Array then
-      title = nil
-
-      if block_given?
-        name = yield resource
-      else
-        name = resource
-      end
       title = resource.respond_to?(:title) ? resource.title : nil
     else
-
-      if block_given?
-        name = yield resource
-      else
-        name = resource
-      end
       title = resource.last.respond_to?(:title) ? resource.last.title : nil
     end
 
-    linked_to = resource
-    linked_to = repository_ontology_path(resource.repository, resource) if resource.is_a?(Ontology)
+    if resource.is_a? Ontology
+      linked_to = repository_ontology_path(resource.repository, resource)
+    else
+      linked_to = resource
+    end
 
     link_to name, linked_to,
       data_type => value,
@@ -103,4 +95,5 @@ module LinkHelper
     
     content_tag('ul', links.html_safe, :class => 'formats')
   end
+
 end
