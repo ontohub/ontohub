@@ -9,6 +9,11 @@ class RepositoriesController < InheritedResources::Base
     super
   end
 
+  def update
+    params[:repository].except! :source_address, :source_type
+    super
+  end
+
   protected
 
   def collection
