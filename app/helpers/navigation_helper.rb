@@ -16,16 +16,16 @@ module NavigationHelper
 
   def ontology_nav(ontology, current_page)
     @top_level_pages = [
-          ['Content', ontology.distributed? ? :children : :entities],
-          ['Comments', :comments],
-          ['Metadata', :metadata],
-          ['Versions', :ontology_versions],
-          ['Graphs', :graphs],
-          ['Links', :links]
-        ]
+      ['Content', ontology.distributed? ? :children : :entities],
+      ['Comments', :comments],
+      ['Metadata', :metadata],
+      ['Versions', :ontology_versions],
+      ['Graphs', :graphs],
+      ['Links', :links]
+    ]
+
     @entities = ontology.distributed? ? [] : ontology.entities.groups_by_kind
 
-    @active_kind = nil
     @active_kind = @entities.first.kind if current_page == :entities
     @active_kind = params[:kind] if params[:kind]
 
@@ -39,7 +39,7 @@ module NavigationHelper
 
     actions = []
     
-    # add counters
+    # Add counters
     pages.each do |row|
       counter_key = "#{row[0]}_count"
       row << ontology.send(counter_key) if ontology.respond_to?(counter_key)
@@ -57,8 +57,7 @@ module NavigationHelper
   end
      
   def subnavigation(resource, pages, current_page, additional_actions = [])
-    
-    # add counters
+    # Add counters
     pages.each do |row|
       counter_key = "#{row[0]}_count"
       row << resource.send(counter_key) if resource.respond_to?(counter_key)
