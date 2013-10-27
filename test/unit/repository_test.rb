@@ -164,25 +164,27 @@ class RepositoryTest < ActiveSupport::TestCase
         assert_equal 4, path_infos_entries.size
 
         selected_entry = path_infos_entries["folder1"]
-        assert_equal 1, selected_entry.size
-        selected_entry[0][:ontology] = !selected_entry[0][:ontology].nil?
-        assert_equal [{:type=>:dir, :name=>"folder1", :path=>"folder1", :index=>0, :ontology => false}], selected_entry
+        assert_equal [{
+            :type=>:dir,
+            :name=>"folder1",
+            :path=>"folder1",
+            :index=>0,
+            :ontologies => []
+          }], selected_entry
 
         selected_entry = path_infos_entries["inroot2"]
-        assert_equal 2, selected_entry.size
-        selected_entry[0][:ontology] = !selected_entry[0][:ontology].nil?
-        selected_entry[1][:ontology] = !selected_entry[1][:ontology].nil?
         assert_equal [
-                {:type=>:file, :name=>"inroot2.clf", :path=>"inroot2.clf", :index=>3, :ontology => true},
-                {:type=>:file, :name=>"inroot2.clif", :path=>"inroot2.clif", :index=>4, :ontology => true}
-              ], selected_entry
-
+                {:type=>:file, :name=>"inroot2.clf", :path=>"inroot2.clf", :index=>3},
+                {:type=>:file, :name=>"inroot2.clif", :path=>"inroot2.clif", :index=>4}
+              ], selected_entry.map{ |e| e.except(:ontologies) }
+        assert_equal(['Inroot2', 'Inroot2'], selected_entry.map{ |e| e[:ontologies].map(&:to_s) }.flatten)
 
         path_infos_entries = @repository.path_info('folder2')[:entries]
         assert_equal 1, path_infos_entries.size
         selected_entry = path_infos_entries["file3"]
-        selected_entry[0][:ontology] = !selected_entry[0][:ontology].nil?
-        assert_equal([{:type=>:file, :name=>"file3.clf", :path=>"folder2/file3.clf", :index=>0, :ontology => true}], selected_entry)
+        assert_equal([{:type=>:file, :name=>"file3.clf", :path=>"folder2/file3.clf", :index=>0}],
+          selected_entry.map{ |e| e.except(:ontologies) })
+        assert_equal(['File3'], selected_entry.map{ |e| e[:ontologies].map(&:to_s) }.flatten)
       end
 
       should 'list files with given basename' do
