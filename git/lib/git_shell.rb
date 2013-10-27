@@ -62,21 +62,7 @@ class GitShell
     OntohubNet.new
   end
 
-  def user
-    # Can't use "@user ||=" because that will keep hitting the API when @user is really nil!
-    if instance_variable_defined?("@user")
-      @user
-    else
-      @user ||= api.discover(@key_id)
-    end
-  end
-
-  def username
-    user && user['name'] || 'Anonymous'
-  end
-
-  # User identifier to be used in log messages.
   def log_username
-    @config.audit_usernames ? username : "user with key #{@key_id}"
+    "user with key #{@key_id}"
   end
 end

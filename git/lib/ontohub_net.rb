@@ -26,18 +26,9 @@ class OntohubNet
     @ref = ref
 
     resp = get(build_url)
+    resp_hash = JSON.parse(resp.body)
 
-    !!(resp.code == '200' && resp.body == 'true')
-  end
-
-  def discover(key)
-    key_id = key.gsub("key-", "")
-    resp = get("#{host}/discover?key_id=#{key_id}")
-    JSON.parse(resp.body) rescue nil
-  end
-
-  def check
-    get("#{host}/check")
+    !!(resp.code == '200' && resp_hash['allowed'])
   end
 
   protected
@@ -47,7 +38,7 @@ class OntohubNet
   end
 
   def host
-    "#{config.ontohub_url}/api/v3/internal"
+    config.ontohub_url
   end
 
   def get(url)
@@ -66,17 +57,18 @@ class OntohubNet
     end
 
     request = Net::HTTP::Get.new(url.request_uri)
-    if config.http_settings['user'] && config.http_settings['password']
-      request.basic_auth config.http_settings['user'], config.http_settings['password']
-    end
+
+    response = nil
 
     http.start {|http| http.request(request) }.tap do |resp|
+      response = resp
       if resp.code == "200"
         $logger.debug { "Received response #{resp.code} => <#{resp.body}>." }
       else
         $logger.error { "API call <GET #{url}> failed: #{resp.code} => <#{resp.body}>." }
       end
     end
+    response
   end
 
   def cert_store
@@ -96,7 +88,7 @@ class OntohubNet
   private
   def build_url
     access_url = "#{host}/repositories/#{project_name}/ssh_access"
-    options = "?key_id=#{key_id}&permission=#{GIT_CMD_MAP[cmd]}"
+    options = "?key_id=#{key_id}&permission=#{access_right}"
     "#{access_url}#{options}"
   end
 end
