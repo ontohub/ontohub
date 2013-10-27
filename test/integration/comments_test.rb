@@ -29,7 +29,7 @@ class CommentsTest < ActionController::IntegrationTest
     end
     
     # is the text too short?
-    assert_equal "is too short (minimum is 10 characters)", find(".help-block").text
+    assert_equal "is too short (minimum is 10 characters)", find(".help-inline").text
     
     within '#new_comment' do
       # fill in the autocomplete input
