@@ -11,11 +11,11 @@ class OntohubConfig
   end
 
   def git_user
-    @config['git_user'] ||= "git"
+    @config['git_user'] ||= %x[whoami]
   end
 
   def git_home
-    @config['git_home'] ||= "/home/#{git_user}"
+    @config['git_home'] ||= File.expand_path("~/")
   end
 
   def repos_path

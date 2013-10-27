@@ -22,7 +22,7 @@ class OntohubNet
     project_name = project_name.gsub(/\.git\Z/, "")
     @project_name = project_name.gsub(/\A\//, "")
 
-    @key_id = key.gsub("key-", "")
+    @key_id = key
     @ref = ref
 
     resp = get(build_url)

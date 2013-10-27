@@ -6,8 +6,7 @@ class GitShell
   GIT_CMDS = %w( git-upload-pack git-receive-pack git-upload-archive )
 
   def initialize(key_id, command)
-    raise ArgumentError, "invalid key: #{key_id}" if key_id !~ /^key-\d+$/
-    @key_id  = key_id 
+    @key_id  = key_id
     @command = command
 
     @config     = OntohubConfig.instance
