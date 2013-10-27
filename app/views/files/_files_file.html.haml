@@ -1,5 +1,9 @@
 %h3 
   =@path
+- if @info[:ontology]
+  %p
+    defining ontology
+    = fancy_link @info[:ontology]
 
 -if @file[:size] <= Ontohub::Application.config.max_read_filesize
   %pre=@file[:content]

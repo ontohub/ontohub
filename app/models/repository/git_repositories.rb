@@ -91,7 +91,8 @@ module Repository::GitRepositories
       if file
         {
           type: :file,
-          file: file
+          file: file,
+          ontology: ontologies.find_by_basepath(File.real_basepath(path))
         }
       else
         entries = list_folder(path, commit_oid)
