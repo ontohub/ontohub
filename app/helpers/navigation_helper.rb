@@ -5,10 +5,11 @@ module NavigationHelper
       [:overview,     resource]
     ]
     
-    pages << [:ontologies,  [*resource_chain, :ontologies]]
-    pages << [:files,       [*resource_chain, :tree]]
+    chain = resource_chain.last.is_a?(Ontology) ? resource_chain[0..-2] : resource_chain
+    pages << [:ontologies,  [*chain, :ontologies]]
+    pages << [:files,       [*chain, :tree]]
     pages << [:history,     repository_ref_path(resource, 'master', path: nil, action: :history)]
-    pages << [:permissions, [*resource_chain, :permissions]] if can? :permissions, resource
+    pages << [:permissions, [*chain, :permissions]] if can? :permissions, resource
     
     subnavigation(resource, pages, current_page)
   end

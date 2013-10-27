@@ -1,3 +1,5 @@
+= repository_nav parent.repository, :ontologies if parent.is_a?(Ontology)
+
 - @link_tab = :graphs
 - if parent.is_a?(Ontology)
   = ontology_nav parent, :graphs if respond_to?(:parent)
