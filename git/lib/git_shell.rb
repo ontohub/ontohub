@@ -54,8 +54,8 @@ class GitShell
     api.allowed?(@git_cmd, @repo_name, @key_id, '_any')
   end
 
-  def exec_cmd args
-    Kernel::exec args
+  def exec_cmd(cmd)
+    Kernel::exec(cmd)
   end
 
   def api
