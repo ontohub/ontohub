@@ -1,0 +1,12 @@
+%tr
+  %td.source= url_map.source
+  %td.symbol ↦
+  %td.target= url_map.target
+  - if can? :edit, UrlMap
+    %td.edit
+      = link_to [:edit, url_map.repository, url_map] do
+        %i.glyphicon.glyphicon-edit
+  - if can? :destroy, UrlMap
+    %td.delete
+      = link_to [url_map.repository, url_map], method: :delete, confirm: 'Really delete this URL Map?' do
+        %i.glyphicon.glyphicon-trash
