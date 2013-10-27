@@ -8,6 +8,6 @@ class UrlMap < ActiveRecord::Base
   validates :source, presence: true, uniqueness: { scope: :repository_id }
 
   def to_s
-    "#{source} ↦ #{target}"
+    "#{source}=#{target}"
   end
 end

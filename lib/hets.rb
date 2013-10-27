@@ -73,7 +73,7 @@ module Hets
   end
 
   # Runs hets with input_file and returns XML output file path.
-  def self.parse(input_file, output_path = nil)
+  def self.parse(input_file, url_catalog = [], output_path = nil)
     @@config ||= Config.new
 
     # Arguments to run the subprocess
@@ -84,13 +84,15 @@ module Hets
       args += ["-O", output_path]
     end
 
+    args += ["-C", url_catalog.join(',')] unless url_catalog.empty?
+
     # add the path to the input file as last argument
     args << input_file
 
     # Executes command with low priority
     Rails.logger.debug "Running hets with: #{args.inspect}"
-    output = Subprocess.run :nice, *args
 
+    output = Subprocess.run :nice, *args
     if output.starts_with? '*** Error'
       # some error occured
       raise HetsError, output 
