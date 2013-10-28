@@ -1,3 +1,5 @@
+require 'json'
+require 'subprocess'
 require 'ontohub_net'
 
 class GitUpdate
@@ -21,10 +23,6 @@ class GitUpdate
   end
 
   def exec
-    # reset KEY_ID env since we already
-    # get value from it
-    ENV['KEY_ID'] = nil
-
     # If its push over ssh
     # we need to check user persmission per branch first
     if ssh?
@@ -32,7 +30,7 @@ class GitUpdate
         update_redis
         exit 0
       else
-        puts "Git: You are not allowed to access #{@branch_name}! "
+        puts "Git: You are not allowed to access #{@branch_name}!"
         exit 1
       end
     else
@@ -52,7 +50,9 @@ class GitUpdate
   end
 
   def update_redis
-    command = "#{config.redis_command} rpush '#{config.redis_namespace}:queue:post_receive' '{\"class\":\"PostReceive\",\"args\":[\"#{@repo_path}\",\"#{@oldrev}\",\"#{@newrev}\",\"#{@refname}\",\"#{@key_id}\"]}' > /dev/null 2>&1"
-    system(command)
+    Subproces.run 'redis-cli', 'rpush', "#{config.redis_namespace}:queue:default", {
+      class: 'RepositoryUpdateWorker',
+      args: [@repo_path, @oldrev, @newrev, @refname, @key_id]
+    }.to_json
   end
 end

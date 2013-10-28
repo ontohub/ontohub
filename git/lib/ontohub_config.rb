@@ -11,11 +11,11 @@ class OntohubConfig
   end
 
   def git_user
-    @config['git_user'] ||= "git"
+    @config['git_user'] ||= %x[whoami]
   end
 
   def git_home
-    @config['git_home'] ||= "/home/#{git_user}"
+    @config['git_home'] ||= File.expand_path("~/")
   end
 
   def repos_path
@@ -40,14 +40,6 @@ class OntohubConfig
 
   def redis_namespace
     redis['namespace'] || 'ontohub'
-  end
-
-  def log_file
-    @config['log_file'] ||= File.join(ROOT_PATH, '../log/git.log')
-  end
-
-  def log_level
-    @config['log_level'] ||= 'INFO'
   end
 
   def audit_usernames

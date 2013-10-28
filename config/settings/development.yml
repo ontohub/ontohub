@@ -1,2 +1,5 @@
 # Put your development specific settings into this file
 hostname: "localhost:3000"
+
+git:
+  verify_url: http://localhost:3000/
