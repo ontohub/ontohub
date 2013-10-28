@@ -6,34 +6,32 @@ class GitShell
   GIT_CMDS = %w( git-upload-pack git-receive-pack git-upload-archive )
 
   def initialize(key_id, command)
-    @key_id  = key_id
-    @command = command
-
+    @key_id     = key_id
+    @command    = command
     @config     = OntohubConfig.instance
     @repos_path = @config.repos_path
   end
 
   def exec
-    if @command
-      parse_cmd
+    exit 1 unless @command
+    
+    parse_cmd
 
-      if GIT_CMDS.include?(@git_cmd)
-        ENV['KEY_ID'] = @key_id
+    if GIT_CMDS.include?(@git_cmd)
+      # required to pass the ID to the update hook
+      ENV['KEY_ID'] = @key_id
 
-        if validate_access
-          process_cmd
-        else
-          message = "git-shell: Access denied for git command <#{@command}> by #{log_username}."
-          $logger.warn message
-          $stderr.puts "Access denied."
-        end
+      if validate_access
+        process_cmd
       else
-        message = "git-shell: Attempt to execute disallowed command <#{@command}> by #{log_username}."
-        $logger.warn message
-        puts 'Not allowed command'
+        message = "git-shell: Access denied for git command <#{@command}> by #{log_username}."
+        Rails.logger.warn message
+        $stderr.puts "Access denied."
       end
     else
-      exit(1)
+      message = "git-shell: Attempt to execute disallowed command <#{@command}> by #{log_username}."
+      Rails.logger.warn message
+      puts 'Not allowed command'
     end
   end
 
@@ -46,7 +44,7 @@ class GitShell
   def process_cmd
     repo_full_path = File.join(repos_path, repo_name)
     cmd = "#{@git_cmd} #{repo_full_path}"
-    $logger.info "git-shell: executing git command <#{cmd}> for #{log_username}."
+    Rails.logger.info "git-shell: executing git command <#{cmd}> for #{log_username}."
     exec_cmd(cmd)
   end
 

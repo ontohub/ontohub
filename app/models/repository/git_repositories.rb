@@ -2,24 +2,27 @@ module Repository::GitRepositories
   extend ActiveSupport::Concern
 
   included do
-    after_create  :git
+    after_create  :create_and_init_git
     after_destroy :destroy_git
   end
 
-  def git(reset=false)
-    @git ||= GitRepository.new(local_path)
-  end
-
-  def git!
-    @git = GitRepository.new(local_path)
+  def git
+    @git ||= GitRepository.new(local_path.to_s)
   end
 
   def local_path
-    "#{Ontohub::Application.config.git_root}/#{id}"
+    Ontohub::Application.config.git_root.join(id.to_s)
+  end
+
+  def create_and_init_git
+    git
+    symlink_name = local_path.join("hooks")
+    symlink_name.rmtree
+    symlink_name.make_symlink Rails.root.join('git','hooks')
   end
 
   def destroy_git
-    FileUtils.rmtree local_path
+    local_path.rmtree
   end
 
   def empty?
@@ -181,11 +184,11 @@ module Repository::GitRepositories
     git.commits(options, &block)
   end
 
-  def suspended_save_ontologies(user, options={})
+  def suspended_save_ontologies(options={})
     commits(options) { |commit_oid|
       git.changed_files(commit_oid).each { |f|
         if f[:type] == :add || f[:type] == :change
-          save_ontology(commit_oid, f[:path], user)
+          save_ontology(commit_oid, f[:path], options.delete(:user))
         end
       }
     }

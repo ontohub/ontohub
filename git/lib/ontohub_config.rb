@@ -42,14 +42,6 @@ class OntohubConfig
     redis['namespace'] || 'ontohub'
   end
 
-  def log_file
-    @config['log_file'] ||= File.join(ROOT_PATH, '../log/git.log')
-  end
-
-  def log_level
-    @config['log_level'] ||= 'INFO'
-  end
-
   def audit_usernames
     @config['audit_usernames'] ||= false
   end

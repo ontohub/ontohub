@@ -40,6 +40,9 @@ exception_notifier:
   exception_recipients:
     - exception-recipient@example.com
 
+git:
+  verify_url: http://localhost/
+
 allowed_iri_schemes:
   - http
   - https

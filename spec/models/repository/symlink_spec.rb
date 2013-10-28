@@ -6,7 +6,7 @@ describe Repository::Symlink do
     let(:repository){ create :repository }
     let(:link){ File.readlink(repository.symlink_name) }
 
-    it("symlink created"){ link.should == repository.local_path }
+    it("symlink created"){ link.should == repository.local_path.to_s }
 
     describe 'repository destroy' do
       before { repository.destroy }

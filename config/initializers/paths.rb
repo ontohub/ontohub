@@ -12,10 +12,10 @@ Ontohub::Application.configure do |app|
   c.git_working_copies_root = c.data_root.join('working_copies')
   c.max_read_filesize       = 512 * 1024
 
-  if (settings = Settings.git) && settings.user
+  if (settings = Settings.git).try(:user)
     c.git_user  = settings.user
     c.git_group = settings.group
-    c.git_home  = %x[echo ~#{c.git_user}].strip
+    c.git_home  = File.expand_path("~#{c.git_user}")
   else
     c.git_user  = nil
     c.git_group = nil

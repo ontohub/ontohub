@@ -10,17 +10,16 @@ class OntohubNet
     'git-receive-pack' => 'write',
   }
 
-  attr_reader :cmd, :access_right, :repo, :project_name, :key_id, :ref
+  attr_reader :cmd, :access_right, :repo_path, :key_id, :ref
 
-  def allowed?(cmd, repo, key, ref)
+  def allowed?(cmd, repo_path, key, ref)
     @cmd = cmd
     @access_right = GIT_CMD_MAP[cmd]
     raise ArgumentError, "unknown cmd: #{cmd}" if access_right.nil?
 
-    @repo = repo
-    project_name = repo.gsub("'", "")
-    project_name = project_name.gsub(/\.git\Z/, "")
-    @project_name = project_name.gsub(/\A\//, "")
+    repo_path  = repo_path.gsub("'", "")
+    repo_path  = repo_path.gsub(/\.git\Z/, "")
+    @repo_path = repo_path.gsub(/\A\//, "")
 
     @key_id = key
     @ref = ref
@@ -33,27 +32,19 @@ class OntohubNet
 
   protected
 
-  def config
-    @config ||= OntohubConfig.instance
-  end
-
   def host
-    config.ontohub_url
+    Settings.git.verify_url
   end
 
   def get(url)
-    $logger.debug "Performing GET #{url}"
+    Rails.logger.debug "Performing GET #{url}"
 
-    url = URI.parse(url)
+    url  = URI.parse(url)
     http = Net::HTTP.new(url.host, url.port)
 
     if URI::HTTPS === url
       http.use_ssl = true
-      http.cert_store = cert_store
-
-      if config.http_settings['self_signed_cert']
-        http.verify_mode = OpenSSL::SSL::VERIFY_NONE
-      end
+      http.verify_mode = OpenSSL::SSL::VERIFY_NONE
     end
 
     request = Net::HTTP::Get.new(url.request_uri)
@@ -63,31 +54,18 @@ class OntohubNet
     http.start {|http| http.request(request) }.tap do |resp|
       response = resp
       if resp.code == "200"
-        $logger.debug { "Received response #{resp.code} => <#{resp.body}>." }
+        Rails.logger.debug { "Received response #{resp.code} => <#{resp.body}>." }
       else
-        $logger.error { "API call <GET #{url}> failed: #{resp.code} => <#{resp.body}>." }
+        Rails.logger.error { "API call <GET #{url}> failed: #{resp.code} => <#{resp.body}>." }
       end
     end
     response
   end
 
-  def cert_store
-    @cert_store ||= OpenSSL::X509::Store.new.tap { |store|
-      store.set_default_paths
-
-      if ca_file = config.http_settings['ca_file']
-        store.add_file(ca_file)
-      end
-
-      if ca_path = config.http_settings['ca_path']
-        store.add_path(ca_path)
-      end
-    }
-  end
-
   private
+
   def build_url
-    access_url = "#{host}/repositories/#{project_name}/ssh_access"
+    access_url = "#{host}/repositories/#{repo_path}/ssh_access"
     options = "?key_id=#{key_id}&permission=#{access_right}"
     "#{access_url}#{options}"
   end
