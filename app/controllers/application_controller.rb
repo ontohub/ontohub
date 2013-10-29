@@ -9,7 +9,14 @@ class ApplicationController < ActionController::Base
   
   # CanCan Authorization
   rescue_from CanCan::AccessDenied do |exception|
-    redirect_to root_url, alert: exception.message
+    if request.format.html?
+      redirect_to root_url, alert: exception.message
+    else
+      render \
+        status:       :forbidden,
+        content_type: 'text/plain',
+        text:         exception.message
+    end
   end
  
   if defined? PG
