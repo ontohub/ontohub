@@ -1,3 +1,5 @@
+require 'git_repository'
+
 module Repository::GitRepositories
   extend ActiveSupport::Concern
 
