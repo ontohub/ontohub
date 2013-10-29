@@ -1,6 +1,5 @@
 class User < ActiveRecord::Base
   
-  include Common::Scopes
   include User::Authentication
   
   has_many :comments
