@@ -36,6 +36,13 @@ Ontohub::Application.routes.draw do
   authenticate :user, lambda { |u| u.admin? } do
     mount Sidekiq::Web => 'admin/sidekiq'
   end
+
+  namespace :api, defaults: { format: 'json' } do
+    namespace :v1 do
+      resources :repositories, only: [:index, :update]
+      resources :ontologies,   only: [:index, :update]
+    end
+  end
   
   resources :ontologies, only: [:index] do
     collection do

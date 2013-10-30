@@ -6,6 +6,7 @@ class Ontology < ActiveRecord::Base
 
   # Ontology Model Includes
   include Ontology::Import
+  include Ontology::Scopes
   include Ontology::States
   include Ontology::Versions
   include Ontology::Entities

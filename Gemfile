@@ -43,6 +43,9 @@ gem 'simple_form'
 gem 'inherited_resources', '~> 1.4.0'
 gem 'has_scope'
 
+# JSON views
+gem 'rabl'
+
 # XML Parser
 gem 'nokogiri', '~> 1.6'
 
