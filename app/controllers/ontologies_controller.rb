@@ -21,7 +21,7 @@ class OntologiesController < InheritedResources::Base
 
   def new
     @ontology_version = build_resource.versions.build
-    @c_vertices = build_categories_tree(CVertex.first.roots[0])
+    @c_vertices = CVertex.first.roots.first.children
   end
 
   def edit
@@ -75,8 +75,8 @@ class OntologiesController < InheritedResources::Base
   end
 
   def build_categories_tree(vertex)
-    @a = []
-    vertex.descendants.each { |child| build_categories_tree(child) unless child.children.empty?; @a << child }
+    @a ||= []
+    vertex.children.each { |child| build_categories_tree(child) unless child.children.empty?; @a << child }
     @a
   end
 

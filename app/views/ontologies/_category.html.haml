@@ -3,4 +3,4 @@
     %a
       = category.name.gsub(/_/, ' ')
     %ul 
-      = render :partial => 'category', :collection => category.descendants.to_a
+      = render :partial => 'category', :collection => category.children.to_a

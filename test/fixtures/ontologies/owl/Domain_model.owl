@@ -7,43 +7,23 @@
     <!ENTITY owl2xml "http://www.w3.org/2006/12/owl2-xml#" >
     <!ENTITY rdfs "http://www.w3.org/2000/01/rdf-schema#" >
     <!ENTITY rdf "http://www.w3.org/1999/02/22-rdf-syntax-ns#" >
-    <!ENTITY Ontology1374165292250 "https://github.com/ontohub/OOR_Ontohub_API/blob/master/Domain_fields.owl#" >
-    <!ENTITY Hotel "https://github.com/ontohub/OOR_Ontohub_API/blob/master/Domain_fields.owl#Hotel," >
-    <!ENTITY Travel "https://github.com/ontohub/OOR_Ontohub_API/blob/master/Domain_fields.owl#Travel," >
-    <!ENTITY Fashion "https://github.com/ontohub/OOR_Ontohub_API/blob/master/Domain_fields.owl#Fashion," >
-    <!ENTITY Library "https://github.com/ontohub/OOR_Ontohub_API/blob/master/Domain_fields.owl#Library," >
-    <!ENTITY Business "https://github.com/ontohub/OOR_Ontohub_API/blob/master/Domain_fields.owl#Business," >
-    <!ENTITY Engineering "https://github.com/ontohub/OOR_Ontohub_API/blob/master/Domain_fields.owl#Engineering," >
-    <!ENTITY Motor_vehicles "https://github.com/ontohub/OOR_Ontohub_API/blob/master/Domain_fields.owl#Motor_vehicles," >
-    <!ENTITY Social_sciences "https://github.com/ontohub/OOR_Ontohub_API/blob/master/Domain_fields.owl#Social_sciences," >
-    <!ENTITY Natural_sciences "https://github.com/ontohub/OOR_Ontohub_API/blob/master/Domain_fields.owl#Natural_sciences," >
-    <!ENTITY _forestry "https://github.com/ontohub/OOR_Ontohub_API/blob/master/Domain_fields.owl#Agriculture,_forestry," >
+    <!ENTITY Domain_fields "https://raw.github.com/ontohub/OOR_Ontohub_API/master/Domain_Fields_Core.owl#" >
 ]>
 
 
-<rdf:RDF xmlns="https://github.com/ontohub/OOR_Ontohub_API/blob/master/Domain_fields.owl#"
-     xml:base="https://github.com/ontohub/OOR_Ontohub_API/blob/master/Domain_fields.owl"
-     xmlns:owl2xml="http://www.w3.org/2006/12/owl2-xml#"
-     xmlns:Ontology1374165292250="https://github.com/ontohub/OOR_Ontohub_API/blob/master/Domain_fields.owl#"
-     xmlns:Travel="&Ontology1374165292250;Travel,"
-     xmlns:_forestry="&Ontology1374165292250;Agriculture,_forestry,"
-     xmlns:xsd="http://www.w3.org/2001/XMLSchema#"
-     xmlns:Business="&Ontology1374165292250;Business,"
-     xmlns:Social_sciences="&Ontology1374165292250;Social_sciences,"
+<rdf:RDF xmlns="https://raw.github.com/ontohub/OOR_Ontohub_API/master/Domain_Fields_Core.owl#"
+     xml:base="https://raw.github.com/ontohub/OOR_Ontohub_API/master/Domain_Fields_Core.owl"
+     xmlns:Domain_fields="https://raw.github.com/ontohub/OOR_Ontohub_API/master/Domain_Fields_Core.owl#"
      xmlns:rdfs="http://www.w3.org/2000/01/rdf-schema#"
+     xmlns:owl2xml="http://www.w3.org/2006/12/owl2-xml#"
      xmlns:owl="http://www.w3.org/2002/07/owl#"
-     xmlns:Library="&Ontology1374165292250;Library,"
-     xmlns:Hotel="&Ontology1374165292250;Hotel,"
-     xmlns:Natural_sciences="&Ontology1374165292250;Natural_sciences,"
-     xmlns:Fashion="&Ontology1374165292250;Fashion,"
-     xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#"
-     xmlns:Motor_vehicles="&Ontology1374165292250;Motor_vehicles,"
-     xmlns:Engineering="&Ontology1374165292250;Engineering,">
-    <owl:Ontology rdf:about=""/>
+     xmlns:xsd="http://www.w3.org/2001/XMLSchema#"
+     xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#">
+    <owl:Ontology rdf:about="https://raw.github.com/ontohub/OOR_Ontohub_API/master/Domain_Fields_Core.owl"/>
     
 
 
-    <!-- 
+    <!--
     ///////////////////////////////////////////////////////////////////////////////////////
     //
     // Classes
@@ -54,819 +34,1125 @@
     
 
 
-    <!-- https://github.com/ontohub/OOR_Ontohub_API/blob/master/Domain_fields.owl#Agriculture -->
+    <!-- https://raw.github.com/ontohub/OOR_Ontohub_API/master/Domain_Fields_Core.owl#Accounting_and_taxation -->
 
-    <owl:Class rdf:about="#Agriculture">
-        <rdfs:subClassOf rdf:resource="#Agriculture,_forestry,_fisheries_and_veterinary"/>
+    <owl:Class rdf:about="&Domain_fields;Accounting_and_taxation">
+        <rdfs:label rdf:datatype="&xsd;string">AccountingAndTaxation</rdfs:label>
+        <rdfs:subClassOf rdf:resource="&Domain_fields;Business_and_administration"/>
     </owl:Class>
     
 
 
-    <!-- https://github.com/ontohub/OOR_Ontohub_API/blob/master/Domain_fields.owl#Agriculture,_forestry,_fisheries_and_veterinary -->
+    <!-- https://raw.github.com/ontohub/OOR_Ontohub_API/master/Domain_Fields_Core.owl#Agriculture -->
 
-    <owl:Class rdf:about="#Agriculture,_forestry,_fisheries_and_veterinary">
-        <rdfs:subClassOf rdf:resource="#Domain_fields"/>
+    <owl:Class rdf:about="&Domain_fields;Agriculture">
+        <rdfs:label rdf:datatype="&xsd;string">Agriculture</rdfs:label>
+        <rdfs:subClassOf rdf:resource="&Domain_fields;AgricultureForestryFsheriesVeterinary"/>
+        <rdfs:comment rdf:datatype="&xsd;string">It includes ontologies that are dealing with the domain subjects related to agriculture.</rdfs:comment>
     </owl:Class>
     
 
 
-    <!-- https://github.com/ontohub/OOR_Ontohub_API/blob/master/Domain_fields.owl#Architecture_and_construction -->
+    <!-- https://raw.github.com/ontohub/OOR_Ontohub_API/master/Domain_Fields_Core.owl#AgricultureForestryFsheriesVeterinary -->
 
-    <owl:Class rdf:about="#Architecture_and_construction">
-        <rdfs:subClassOf rdf:resource="#Engineering,_manufacturing_and_construction"/>
+    <owl:Class rdf:about="&Domain_fields;AgricultureForestryFsheriesVeterinary">
+        <rdfs:label rdf:datatype="&xsd;string">AgricultureForestryFisheriesVeterinary</rdfs:label>
+        <rdfs:subClassOf rdf:resource="&Domain_fields;Domain_Field"/>
+        <rdfs:comment rdf:datatype="&xsd;string">It includes ontologies that are dealing with the domain subjects related to agriculture, forestry, fisheries, and veterinary. A closer specification of an ontology domain can facilitate a more accurate ontology search, retrieval, and reuse. Thus, it is recommended to specify the domain-field as specific as possible.</rdfs:comment>
     </owl:Class>
     
 
 
-    <!-- https://github.com/ontohub/OOR_Ontohub_API/blob/master/Domain_fields.owl#Architecture_and_town_planning -->
+    <!-- https://raw.github.com/ontohub/OOR_Ontohub_API/master/Domain_Fields_Core.owl#Architecture_and_construction -->
 
-    <owl:Class rdf:about="#Architecture_and_town_planning">
-        <rdfs:subClassOf rdf:resource="#Architecture_and_construction"/>
+    <owl:Class rdf:about="&Domain_fields;Architecture_and_construction">
+        <rdfs:label rdf:datatype="&xsd;string">ArchitectureAndConstruction</rdfs:label>
+        <rdfs:subClassOf rdf:resource="&Domain_fields;Engineering_manufacturing_and_construction"/>
     </owl:Class>
     
 
 
-    <!-- https://github.com/ontohub/OOR_Ontohub_API/blob/master/Domain_fields.owl#Arts -->
+    <!-- https://raw.github.com/ontohub/OOR_Ontohub_API/master/Domain_Fields_Core.owl#Architecture_and_town_planning -->
 
-    <owl:Class rdf:about="#Arts">
-        <rdfs:subClassOf rdf:resource="#Arts_and_humanities"/>
+    <owl:Class rdf:about="&Domain_fields;Architecture_and_town_planning">
+        <rdfs:label rdf:datatype="&xsd;string">ArchitectureAndTownPlanning</rdfs:label>
+        <rdfs:subClassOf rdf:resource="&Domain_fields;Architecture_and_construction"/>
     </owl:Class>
     
 
 
-    <!-- https://github.com/ontohub/OOR_Ontohub_API/blob/master/Domain_fields.owl#Arts_and_humanities -->
+    <!-- https://raw.github.com/ontohub/OOR_Ontohub_API/master/Domain_Fields_Core.owl#Arts -->
 
-    <owl:Class rdf:about="#Arts_and_humanities">
-        <rdfs:subClassOf rdf:resource="#Domain_fields"/>
+    <owl:Class rdf:about="&Domain_fields;Arts">
+        <rdfs:label rdf:datatype="&xsd;string">Arts</rdfs:label>
+        <rdfs:subClassOf rdf:resource="&Domain_fields;Arts_and_humanities"/>
+        <rdfs:comment rdf:datatype="&xsd;string">It includes ontologies that are dealing with the domain subjects related to arts.</rdfs:comment>
     </owl:Class>
     
 
 
-    <!-- https://github.com/ontohub/OOR_Ontohub_API/blob/master/Domain_fields.owl#Audio-visual_techniques_and_media_production -->
+    <!-- https://raw.github.com/ontohub/OOR_Ontohub_API/master/Domain_Fields_Core.owl#Arts_and_humanities -->
 
-    <owl:Class rdf:about="#Audio-visual_techniques_and_media_production">
-        <rdfs:subClassOf rdf:resource="#Arts"/>
+    <owl:Class rdf:about="&Domain_fields;Arts_and_humanities">
+        <rdfs:label rdf:datatype="&xsd;string">ArtsAndHumanities</rdfs:label>
+        <rdfs:subClassOf rdf:resource="&Domain_fields;Domain_Field"/>
+        <rdfs:comment rdf:datatype="&xsd;string">It includes ontologies that are dealing with the domain subjects related to arts and humanities.</rdfs:comment>
     </owl:Class>
     
 
 
-    <!-- https://github.com/ontohub/OOR_Ontohub_API/blob/master/Domain_fields.owl#Biochemistry -->
+    <!-- https://raw.github.com/ontohub/OOR_Ontohub_API/master/Domain_Fields_Core.owl#Audio-visual_and_media_production -->
 
-    <owl:Class rdf:about="#Biochemistry">
-        <rdfs:subClassOf rdf:resource="#Biological_and_related_sciences"/>
+    <owl:Class rdf:about="&Domain_fields;Audio-visual_and_media_production">
+        <rdfs:label rdf:datatype="&xsd;string">AudioVisualAndMediaProduction</rdfs:label>
+        <rdfs:subClassOf rdf:resource="&Domain_fields;Arts"/>
+        <rdfs:comment rdf:datatype="&xsd;string">It includes ontologies that are dealing with the subjects related to the audio-visual domain and media production.</rdfs:comment>
     </owl:Class>
     
 
 
-    <!-- https://github.com/ontohub/OOR_Ontohub_API/blob/master/Domain_fields.owl#Biological_and_related_sciences -->
+    <!-- https://raw.github.com/ontohub/OOR_Ontohub_API/master/Domain_Fields_Core.owl#Biochemistry -->
 
-    <owl:Class rdf:about="#Biological_and_related_sciences">
-        <rdfs:subClassOf rdf:resource="#Natural_sciences,_mathematics_and_statistics"/>
+    <owl:Class rdf:about="&Domain_fields;Biochemistry">
+        <rdfs:label rdf:datatype="&xsd;string">Biochemistry</rdfs:label>
+        <rdfs:subClassOf rdf:resource="&Domain_fields;Biology_broad"/>
     </owl:Class>
     
 
 
-    <!-- https://github.com/ontohub/OOR_Ontohub_API/blob/master/Domain_fields.owl#Biology -->
+    <!-- https://raw.github.com/ontohub/OOR_Ontohub_API/master/Domain_Fields_Core.owl#Biology -->
 
-    <owl:Class rdf:about="#Biology">
-        <rdfs:subClassOf rdf:resource="#Biological_and_related_sciences"/>
+    <owl:Class rdf:about="&Domain_fields;Biology">
+        <rdfs:label rdf:datatype="&xsd;string">Biology</rdfs:label>
+        <rdfs:subClassOf rdf:resource="&Domain_fields;Biology_broad"/>
     </owl:Class>
     
 
 
-    <!-- https://github.com/ontohub/OOR_Ontohub_API/blob/master/Domain_fields.owl#Building_and_civil_engineering -->
+    <!-- https://raw.github.com/ontohub/OOR_Ontohub_API/master/Domain_Fields_Core.owl#Biology_broad -->
 
-    <owl:Class rdf:about="#Building_and_civil_engineering">
-        <rdfs:subClassOf rdf:resource="#Architecture_and_construction"/>
+    <owl:Class rdf:about="&Domain_fields;Biology_broad">
+        <rdfs:label rdf:datatype="&xsd;string">BiologyBroad</rdfs:label>
+        <rdfs:subClassOf rdf:resource="&Domain_fields;Natural_science_mathematics_and_statistics"/>
     </owl:Class>
     
 
 
-    <!-- https://github.com/ontohub/OOR_Ontohub_API/blob/master/Domain_fields.owl#Business,_administration_and_law -->
+    <!-- https://raw.github.com/ontohub/OOR_Ontohub_API/master/Domain_Fields_Core.owl#Building_and_civil_engineering -->
 
-    <owl:Class rdf:about="#Business,_administration_and_law">
-        <rdfs:subClassOf rdf:resource="#Domain_fields"/>
+    <owl:Class rdf:about="&Domain_fields;Building_and_civil_engineering">
+        <rdfs:label rdf:datatype="&xsd;string">BuildingAndCivilEngineering</rdfs:label>
+        <rdfs:subClassOf rdf:resource="&Domain_fields;Architecture_and_construction"/>
     </owl:Class>
     
 
 
-    <!-- https://github.com/ontohub/OOR_Ontohub_API/blob/master/Domain_fields.owl#Business_and_administration -->
+    <!-- https://raw.github.com/ontohub/OOR_Ontohub_API/master/Domain_Fields_Core.owl#Business_administration_and_law -->
 
-    <owl:Class rdf:about="#Business_and_administration">
-        <rdfs:subClassOf rdf:resource="#Business,_administration_and_law"/>
+    <owl:Class rdf:about="&Domain_fields;Business_administration_and_law">
+        <rdfs:label rdf:datatype="&xsd;string">BusinessAdministrationAndLaw</rdfs:label>
+        <rdfs:subClassOf rdf:resource="&Domain_fields;Domain_Field"/>
     </owl:Class>
     
 
 
-    <!-- https://github.com/ontohub/OOR_Ontohub_API/blob/master/Domain_fields.owl#Care_of_the_elderly_and_of_disabled_adults -->
+    <!-- https://raw.github.com/ontohub/OOR_Ontohub_API/master/Domain_Fields_Core.owl#Business_and_administration -->
 
-    <owl:Class rdf:about="#Care_of_the_elderly_and_of_disabled_adults">
-        <rdfs:subClassOf rdf:resource="#Welfare"/>
+    <owl:Class rdf:about="&Domain_fields;Business_and_administration">
+        <rdfs:label rdf:datatype="&xsd;string">BusinessAndAdministration</rdfs:label>
+        <rdfs:subClassOf rdf:resource="&Domain_fields;Business_administration_and_law"/>
     </owl:Class>
     
 
 
-    <!-- https://github.com/ontohub/OOR_Ontohub_API/blob/master/Domain_fields.owl#Chemical_engineering_and_processes -->
+    <!-- https://raw.github.com/ontohub/OOR_Ontohub_API/master/Domain_Fields_Core.owl#Care_of_the_elderly_and_of_disabled_adults -->
 
-    <owl:Class rdf:about="#Chemical_engineering_and_processes">
-        <rdfs:subClassOf rdf:resource="#Engineering,_manufacturing_and_construction"/>
+    <owl:Class rdf:about="&Domain_fields;Care_of_the_elderly_and_of_disabled_adults">
+        <rdfs:label rdf:datatype="&xsd;string">CareOfElderlyAndDisabledAdults</rdfs:label>
+        <rdfs:subClassOf rdf:resource="&Domain_fields;Welfare"/>
     </owl:Class>
     
 
 
-    <!-- https://github.com/ontohub/OOR_Ontohub_API/blob/master/Domain_fields.owl#Chemistry -->
+    <!-- https://raw.github.com/ontohub/OOR_Ontohub_API/master/Domain_Fields_Core.owl#Chemical_engineering_and_process -->
 
-    <owl:Class rdf:about="#Chemistry">
-        <rdfs:subClassOf rdf:resource="#Physical_sciences"/>
+    <owl:Class rdf:about="&Domain_fields;Chemical_engineering_and_process">
+        <rdfs:label rdf:datatype="&xsd;string">ChemicalEngineeringAndProcess</rdfs:label>
+        <rdfs:subClassOf rdf:resource="&Domain_fields;Engineering_and_engineering_trade"/>
     </owl:Class>
     
 
 
-    <!-- https://github.com/ontohub/OOR_Ontohub_API/blob/master/Domain_fields.owl#Child_care_and_youth_services -->
+    <!-- https://raw.github.com/ontohub/OOR_Ontohub_API/master/Domain_Fields_Core.owl#Chemistry -->
 
-    <owl:Class rdf:about="#Child_care_and_youth_services">
-        <rdfs:subClassOf rdf:resource="#Welfare"/>
+    <owl:Class rdf:about="&Domain_fields;Chemistry">
+        <rdfs:label rdf:datatype="&xsd;string">Chemistry</rdfs:label>
+        <rdfs:subClassOf rdf:resource="&Domain_fields;Physical_science"/>
     </owl:Class>
     
 
 
-    <!-- https://github.com/ontohub/OOR_Ontohub_API/blob/master/Domain_fields.owl#Community_sanitation -->
+    <!-- https://raw.github.com/ontohub/OOR_Ontohub_API/master/Domain_Fields_Core.owl#Child_care_and_youth_services -->
 
-    <owl:Class rdf:about="#Community_sanitation">
-        <rdfs:subClassOf rdf:resource="#Hygiene_and_occupational_health_services"/>
+    <owl:Class rdf:about="&Domain_fields;Child_care_and_youth_services">
+        <rdfs:label rdf:datatype="&xsd;string">ChildCareAndYouthServices</rdfs:label>
+        <rdfs:subClassOf rdf:resource="&Domain_fields;Welfare"/>
     </owl:Class>
     
 
 
-    <!-- https://github.com/ontohub/OOR_Ontohub_API/blob/master/Domain_fields.owl#Computer_use -->
+    <!-- https://raw.github.com/ontohub/OOR_Ontohub_API/master/Domain_Fields_Core.owl#Community_sanitation -->
 
-    <owl:Class rdf:about="#Computer_use">
-        <rdfs:subClassOf rdf:resource="#Information_and_Communication_Technologies_(ICTs)_(narrow)"/>
+    <owl:Class rdf:about="&Domain_fields;Community_sanitation">
+        <rdfs:label rdf:datatype="&xsd;string">CommunitySanitation</rdfs:label>
+        <rdfs:subClassOf rdf:resource="&Domain_fields;Hygiene_and_occupational_health_services"/>
     </owl:Class>
     
 
 
-    <!-- https://github.com/ontohub/OOR_Ontohub_API/blob/master/Domain_fields.owl#Crop_and_livestock_production -->
+    <!-- https://raw.github.com/ontohub/OOR_Ontohub_API/master/Domain_Fields_Core.owl#Computer_science -->
 
-    <owl:Class rdf:about="#Crop_and_livestock_production">
-        <rdfs:subClassOf rdf:resource="#Agriculture"/>
+    <owl:Class rdf:about="&Domain_fields;Computer_science">
+        <rdfs:label rdf:datatype="&xsd;string">ComputerScience</rdfs:label>
+        <rdfs:subClassOf rdf:resource="&Domain_fields;Information_and_Communication_Technology"/>
     </owl:Class>
     
 
 
-    <!-- https://github.com/ontohub/OOR_Ontohub_API/blob/master/Domain_fields.owl#Database_and_network_design_and_administration -->
+    <!-- https://raw.github.com/ontohub/OOR_Ontohub_API/master/Domain_Fields_Core.owl#Computer_use -->
 
-    <owl:Class rdf:about="#Database_and_network_design_and_administration">
-        <rdfs:subClassOf rdf:resource="#Information_and_Communication_Technologies_(ICTs)_(narrow)"/>
+    <owl:Class rdf:about="&Domain_fields;Computer_use">
+        <rdfs:label rdf:datatype="&xsd;string">ComputerUse</rdfs:label>
+        <rdfs:subClassOf rdf:resource="&Domain_fields;Information_and_Communication_Technology_narrow"/>
     </owl:Class>
     
 
 
-    <!-- https://github.com/ontohub/OOR_Ontohub_API/blob/master/Domain_fields.owl#Dental_studies -->
+    <!-- https://raw.github.com/ontohub/OOR_Ontohub_API/master/Domain_Fields_Core.owl#Crop_and_livestock_production -->
 
-    <owl:Class rdf:about="#Dental_studies">
-        <rdfs:subClassOf rdf:resource="#Health"/>
+    <owl:Class rdf:about="&Domain_fields;Crop_and_livestock_production">
+        <rdfs:label rdf:datatype="&xsd;string">CropAndLivestockProduction</rdfs:label>
+        <rdfs:subClassOf rdf:resource="&Domain_fields;Agriculture"/>
+        <rdfs:comment rdf:datatype="&xsd;string">It includes ontologies that are dealing with the domain subjects related to the crop and livestock production.</rdfs:comment>
     </owl:Class>
     
 
 
-    <!-- https://github.com/ontohub/OOR_Ontohub_API/blob/master/Domain_fields.owl#Domain_fields -->
+    <!-- https://raw.github.com/ontohub/OOR_Ontohub_API/master/Domain_Fields_Core.owl#Database_and_network_design_and_administration -->
 
-    <owl:Class rdf:about="#Domain_fields"/>
+    <owl:Class rdf:about="&Domain_fields;Database_and_network_design_and_administration">
+        <rdfs:label rdf:datatype="&xsd;string">DatabaseAndNetworkDesignAndAdministration</rdfs:label>
+        <rdfs:subClassOf rdf:resource="&Domain_fields;Information_and_Communication_Technology_narrow"/>
+    </owl:Class>
+    
+
+
+    <!-- https://raw.github.com/ontohub/OOR_Ontohub_API/master/Domain_Fields_Core.owl#Dentistry -->
+
+    <owl:Class rdf:about="&Domain_fields;Dentistry">
+        <rdfs:label rdf:datatype="&xsd;string">Dentistry</rdfs:label>
+        <rdfs:subClassOf rdf:resource="&Domain_fields;Health"/>
+    </owl:Class>
+    
+
+
+    <!-- https://raw.github.com/ontohub/OOR_Ontohub_API/master/Domain_Fields_Core.owl#Domain_Field -->
+
+    <owl:Class rdf:about="&Domain_fields;Domain_Field">
+        <rdfs:label rdf:datatype="&xsd;string">DomainField</rdfs:label>
+        <rdfs:comment>The Domain Field consists of pre-defined domain-specific classes that cluster ontologies according to the domain-subject. As some ontologies cover several domains, an ontology can belong to more than one domain field. The OMV recommendation, to follow the DMOZ and ACM specifications of domain subject, is advised in those cases in which none of pre-defined fields captures the ontology subject, in which case such an ontology should be clustered under the field named &apos;unclassified&apos;.</rdfs:comment>
+    </owl:Class>
+    
+
+
+    <!-- https://raw.github.com/ontohub/OOR_Ontohub_API/master/Domain_Fields_Core.owl#Domestic_services -->
+
+    <owl:Class rdf:about="&Domain_fields;Domestic_services">
+        <rdfs:label rdf:datatype="&xsd;string">DomesticServices</rdfs:label>
+        <rdfs:subClassOf rdf:resource="&Domain_fields;Personal_services"/>
+    </owl:Class>
+    
+
+
+    <!-- https://raw.github.com/ontohub/OOR_Ontohub_API/master/Domain_Fields_Core.owl#Earth_science -->
+
+    <owl:Class rdf:about="&Domain_fields;Earth_science">
+        <rdfs:label rdf:datatype="&xsd;string">EarthScience</rdfs:label>
+        <rdfs:subClassOf rdf:resource="&Domain_fields;Physical_science"/>
+    </owl:Class>
+    
+
+
+    <!-- https://raw.github.com/ontohub/OOR_Ontohub_API/master/Domain_Fields_Core.owl#Economics -->
+
+    <owl:Class rdf:about="&Domain_fields;Economics">
+        <rdfs:label rdf:datatype="&xsd;string">Economics</rdfs:label>
+        <rdfs:subClassOf rdf:resource="&Domain_fields;Social_and_behavioural_science"/>
+    </owl:Class>
+    
+
+
+    <!-- https://raw.github.com/ontohub/OOR_Ontohub_API/master/Domain_Fields_Core.owl#Education -->
+
+    <owl:Class rdf:about="&Domain_fields;Education">
+        <rdfs:label rdf:datatype="&xsd;string">Education</rdfs:label>
+        <rdfs:subClassOf rdf:resource="&Domain_fields;Domain_Field"/>
+    </owl:Class>
+    
+
+
+    <!-- https://raw.github.com/ontohub/OOR_Ontohub_API/master/Domain_Fields_Core.owl#Education_narrow -->
+
+    <owl:Class rdf:about="&Domain_fields;Education_narrow">
+        <rdfs:label rdf:datatype="&xsd;string">EducationNarrow</rdfs:label>
+        <rdfs:subClassOf rdf:resource="&Domain_fields;Education"/>
+        <rdfs:comment rdf:datatype="&xsd;string">It includes ontologies that are dealing with the education of teachers.</rdfs:comment>
+    </owl:Class>
+    
+
+
+    <!-- https://raw.github.com/ontohub/OOR_Ontohub_API/master/Domain_Fields_Core.owl#Education_science -->
+
+    <owl:Class rdf:about="&Domain_fields;Education_science">
+        <rdfs:label rdf:datatype="&xsd;string">EducationScience</rdfs:label>
+        <rdfs:subClassOf rdf:resource="&Domain_fields;Education_narrow"/>
+    </owl:Class>
+    
+
+
+    <!-- https://raw.github.com/ontohub/OOR_Ontohub_API/master/Domain_Fields_Core.owl#Electricity_and_energy -->
+
+    <owl:Class rdf:about="&Domain_fields;Electricity_and_energy">
+        <rdfs:label rdf:datatype="&xsd;string">ElectricityAndEnergy</rdfs:label>
+        <rdfs:subClassOf rdf:resource="&Domain_fields;Engineering_and_engineering_trade"/>
+    </owl:Class>
+    
+
+
+    <!-- https://raw.github.com/ontohub/OOR_Ontohub_API/master/Domain_Fields_Core.owl#Electronics_and_automation -->
+
+    <owl:Class rdf:about="&Domain_fields;Electronics_and_automation">
+        <rdfs:label rdf:datatype="&xsd;string">ElectronicsAndAutomation</rdfs:label>
+        <rdfs:subClassOf rdf:resource="&Domain_fields;Engineering_and_engineering_trade"/>
+    </owl:Class>
+    
+
+
+    <!-- https://raw.github.com/ontohub/OOR_Ontohub_API/master/Domain_Fields_Core.owl#Engineering_and_engineering_trade -->
+
+    <owl:Class rdf:about="&Domain_fields;Engineering_and_engineering_trade">
+        <rdfs:label rdf:datatype="&xsd;string">EngineeringAndEngineeringTrade</rdfs:label>
+        <rdfs:subClassOf rdf:resource="&Domain_fields;Engineering_manufacturing_and_construction"/>
+    </owl:Class>
+    
+
+
+    <!-- https://raw.github.com/ontohub/OOR_Ontohub_API/master/Domain_Fields_Core.owl#Engineering_manufacturing_and_construction -->
+
+    <owl:Class rdf:about="&Domain_fields;Engineering_manufacturing_and_construction">
+        <rdfs:label rdf:datatype="&xsd;string">EngineeringManufacturingAndConstruction</rdfs:label>
+        <rdfs:subClassOf rdf:resource="&Domain_fields;Domain_Field"/>
+    </owl:Class>
+    
+
+
+    <!-- https://raw.github.com/ontohub/OOR_Ontohub_API/master/Domain_Fields_Core.owl#Environment -->
+
+    <owl:Class rdf:about="&Domain_fields;Environment">
+        <rdfs:label rdf:datatype="&xsd;string">Environment</rdfs:label>
+        <rdfs:subClassOf rdf:resource="&Domain_fields;Natural_science_mathematics_and_statistics"/>
+    </owl:Class>
+    
+
+
+    <!-- https://raw.github.com/ontohub/OOR_Ontohub_API/master/Domain_Fields_Core.owl#Environmental_protection_technology -->
+
+    <owl:Class rdf:about="&Domain_fields;Environmental_protection_technology">
+        <rdfs:label rdf:datatype="&xsd;string">EnvironmentalProtectionTechnology</rdfs:label>
+        <rdfs:subClassOf rdf:resource="&Domain_fields;Engineering_and_engineering_trade"/>
+    </owl:Class>
+    
+
+
+    <!-- https://raw.github.com/ontohub/OOR_Ontohub_API/master/Domain_Fields_Core.owl#Environmental_science -->
+
+    <owl:Class rdf:about="&Domain_fields;Environmental_science">
+        <rdfs:label rdf:datatype="&xsd;string">EnvironmentalScience</rdfs:label>
+        <rdfs:subClassOf rdf:resource="&Domain_fields;Environment"/>
+    </owl:Class>
+    
+
+
+    <!-- https://raw.github.com/ontohub/OOR_Ontohub_API/master/Domain_Fields_Core.owl#Fashion_interior_and_industrial_design -->
+
+    <owl:Class rdf:about="&Domain_fields;Fashion_interior_and_industrial_design">
+        <rdfs:label rdf:datatype="&xsd;string">FashionAndInteriorAndIndustrialDesign</rdfs:label>
+        <rdfs:subClassOf rdf:resource="&Domain_fields;Arts"/>
+        <rdfs:comment rdf:datatype="&xsd;string">The class includes ontologies that deal with design in general, while further specification of the spatial design categories can be found under the class Space, subclass Design.</rdfs:comment>
+    </owl:Class>
+    
+
+
+    <!-- https://raw.github.com/ontohub/OOR_Ontohub_API/master/Domain_Fields_Core.owl#Finance_banking_and_insurance -->
+
+    <owl:Class rdf:about="&Domain_fields;Finance_banking_and_insurance">
+        <rdfs:label rdf:datatype="&xsd;string">FinanceBankingAndInsurance</rdfs:label>
+        <rdfs:subClassOf rdf:resource="&Domain_fields;Business_and_administration"/>
+    </owl:Class>
+    
+
+
+    <!-- https://raw.github.com/ontohub/OOR_Ontohub_API/master/Domain_Fields_Core.owl#Fine_arts -->
+
+    <owl:Class rdf:about="&Domain_fields;Fine_arts">
+        <rdfs:label rdf:datatype="&xsd;string">FineArts</rdfs:label>
+        <rdfs:subClassOf rdf:resource="&Domain_fields;Arts"/>
+    </owl:Class>
+    
+
+
+    <!-- https://raw.github.com/ontohub/OOR_Ontohub_API/master/Domain_Fields_Core.owl#Fisheries -->
+
+    <owl:Class rdf:about="&Domain_fields;Fisheries">
+        <rdfs:label rdf:datatype="&xsd;string">Fisheries</rdfs:label>
+        <rdfs:subClassOf rdf:resource="&Domain_fields;AgricultureForestryFsheriesVeterinary"/>
+        <rdfs:comment rdf:datatype="&xsd;string">It includes ontologies that are dealing with the domain subjects related to fisheries.</rdfs:comment>
+    </owl:Class>
+    
+
+
+    <!-- https://raw.github.com/ontohub/OOR_Ontohub_API/master/Domain_Fields_Core.owl#Food_processing -->
+
+    <owl:Class rdf:about="&Domain_fields;Food_processing">
+        <rdfs:label rdf:datatype="&xsd;string">FoodProcessing</rdfs:label>
+        <rdfs:subClassOf rdf:resource="&Domain_fields;ManufacturingAndProcessing"/>
+    </owl:Class>
+    
+
+
+    <!-- https://raw.github.com/ontohub/OOR_Ontohub_API/master/Domain_Fields_Core.owl#Forestry -->
+
+    <owl:Class rdf:about="&Domain_fields;Forestry">
+        <rdfs:label rdf:datatype="&xsd;string">Forestry</rdfs:label>
+        <rdfs:subClassOf rdf:resource="&Domain_fields;AgricultureForestryFsheriesVeterinary"/>
+        <rdfs:comment rdf:datatype="&xsd;string">It includes ontologies that are dealing with the domain subjects related to forestry.</rdfs:comment>
+    </owl:Class>
     
 
 
-    <!-- https://github.com/ontohub/OOR_Ontohub_API/blob/master/Domain_fields.owl#Domestic_services -->
+    <!-- https://raw.github.com/ontohub/OOR_Ontohub_API/master/Domain_Fields_Core.owl#Glass_processing -->
 
-    <owl:Class rdf:about="#Domestic_services">
-        <rdfs:subClassOf rdf:resource="#Personal_services"/>
+    <owl:Class rdf:about="&Domain_fields;Glass_processing">
+        <rdfs:label rdf:datatype="&xsd;string">GlassProcessing</rdfs:label>
+        <rdfs:subClassOf rdf:resource="&Domain_fields;Material_processing"/>
     </owl:Class>
     
 
 
-    <!-- https://github.com/ontohub/OOR_Ontohub_API/blob/master/Domain_fields.owl#Earth_sciences -->
+    <!-- https://raw.github.com/ontohub/OOR_Ontohub_API/master/Domain_Fields_Core.owl#Hair_and_beauty_services -->
 
-    <owl:Class rdf:about="#Earth_sciences">
-        <rdfs:subClassOf rdf:resource="#Physical_sciences"/>
+    <owl:Class rdf:about="&Domain_fields;Hair_and_beauty_services">
+        <rdfs:label rdf:datatype="&xsd;string">HairAndBeautyServices</rdfs:label>
+        <rdfs:subClassOf rdf:resource="&Domain_fields;Personal_services"/>
     </owl:Class>
     
 
 
-    <!-- https://github.com/ontohub/OOR_Ontohub_API/blob/master/Domain_fields.owl#Economics -->
+    <!-- https://raw.github.com/ontohub/OOR_Ontohub_API/master/Domain_Fields_Core.owl#Handicrafts -->
 
-    <owl:Class rdf:about="#Economics">
-        <rdfs:subClassOf rdf:resource="#Social_and_behavioural_sciences"/>
+    <owl:Class rdf:about="&Domain_fields;Handicrafts">
+        <rdfs:label rdf:datatype="&xsd;string">Handicrafts</rdfs:label>
+        <rdfs:subClassOf rdf:resource="&Domain_fields;Arts"/>
     </owl:Class>
     
 
 
-    <!-- https://github.com/ontohub/OOR_Ontohub_API/blob/master/Domain_fields.owl#Education -->
+    <!-- https://raw.github.com/ontohub/OOR_Ontohub_API/master/Domain_Fields_Core.owl#Health -->
 
-    <owl:Class rdf:about="#Education">
-        <rdfs:subClassOf rdf:resource="#Domain_fields"/>
+    <owl:Class rdf:about="&Domain_fields;Health">
+        <rdfs:label rdf:datatype="&xsd;string">Health</rdfs:label>
+        <rdfs:subClassOf rdf:resource="&Domain_fields;Health_and_welfare"/>
     </owl:Class>
     
 
 
-    <!-- https://github.com/ontohub/OOR_Ontohub_API/blob/master/Domain_fields.owl#Education_(narrow) -->
+    <!-- https://raw.github.com/ontohub/OOR_Ontohub_API/master/Domain_Fields_Core.owl#Health_and_welfare -->
 
-    <owl:Class rdf:about="#Education_(narrow)">
-        <rdfs:subClassOf rdf:resource="#Education"/>
+    <owl:Class rdf:about="&Domain_fields;Health_and_welfare">
+        <rdfs:label rdf:datatype="&xsd;string">HealthAndWelfare</rdfs:label>
+        <rdfs:subClassOf rdf:resource="&Domain_fields;Domain_Field"/>
     </owl:Class>
     
 
 
-    <!-- https://github.com/ontohub/OOR_Ontohub_API/blob/master/Domain_fields.owl#Education_science -->
+    <!-- https://raw.github.com/ontohub/OOR_Ontohub_API/master/Domain_Fields_Core.owl#History_and_archaeology -->
 
-    <owl:Class rdf:about="#Education_science">
-        <rdfs:subClassOf rdf:resource="#Education_(narrow)"/>
+    <owl:Class rdf:about="&Domain_fields;History_and_archaeology">
+        <rdfs:label rdf:datatype="&xsd;string">HistoryAndArchaeology</rdfs:label>
+        <rdfs:subClassOf rdf:resource="&Domain_fields;Humanities"/>
     </owl:Class>
     
 
 
-    <!-- https://github.com/ontohub/OOR_Ontohub_API/blob/master/Domain_fields.owl#Electricity_and_energy -->
+    <!-- https://raw.github.com/ontohub/OOR_Ontohub_API/master/Domain_Fields_Core.owl#Horticulture -->
 
-    <owl:Class rdf:about="#Electricity_and_energy">
-        <rdfs:subClassOf rdf:resource="#Engineering,_manufacturing_and_construction"/>
+    <owl:Class rdf:about="&Domain_fields;Horticulture">
+        <rdfs:label rdf:datatype="&xsd;string">Horticulture</rdfs:label>
+        <rdfs:subClassOf rdf:resource="&Domain_fields;Agriculture"/>
+        <rdfs:comment rdf:datatype="&xsd;string">It includes ontologies that are dealing with the domain subjects related to horticulture.</rdfs:comment>
     </owl:Class>
     
 
 
-    <!-- https://github.com/ontohub/OOR_Ontohub_API/blob/master/Domain_fields.owl#Electronics_and_automation -->
+    <!-- https://raw.github.com/ontohub/OOR_Ontohub_API/master/Domain_Fields_Core.owl#Hotel_restaurant_and_catering -->
 
-    <owl:Class rdf:about="#Electronics_and_automation">
-        <rdfs:subClassOf rdf:resource="#Engineering,_manufacturing_and_construction"/>
+    <owl:Class rdf:about="&Domain_fields;Hotel_restaurant_and_catering">
+        <rdfs:label rdf:datatype="&xsd;string">HotelRestaurantAndCatering</rdfs:label>
+        <rdfs:subClassOf rdf:resource="&Domain_fields;Personal_services"/>
     </owl:Class>
     
 
 
-    <!-- https://github.com/ontohub/OOR_Ontohub_API/blob/master/Domain_fields.owl#Engineering,_manufacturing_and_construction -->
+    <!-- https://raw.github.com/ontohub/OOR_Ontohub_API/master/Domain_Fields_Core.owl#Humanities -->
 
-    <owl:Class rdf:about="#Engineering,_manufacturing_and_construction">
-        <rdfs:subClassOf rdf:resource="#Domain_fields"/>
+    <owl:Class rdf:about="&Domain_fields;Humanities">
+        <rdfs:label rdf:datatype="&xsd;string">Humanities</rdfs:label>
+        <rdfs:subClassOf rdf:resource="&Domain_fields;Arts_and_humanities"/>
     </owl:Class>
     
 
 
-    <!-- https://github.com/ontohub/OOR_Ontohub_API/blob/master/Domain_fields.owl#Engineering_and_engineering_trades -->
+    <!-- https://raw.github.com/ontohub/OOR_Ontohub_API/master/Domain_Fields_Core.owl#Hygiene_and_occupational_health_services -->
 
-    <owl:Class rdf:about="#Engineering_and_engineering_trades">
-        <rdfs:subClassOf rdf:resource="#Engineering,_manufacturing_and_construction"/>
+    <owl:Class rdf:about="&Domain_fields;Hygiene_and_occupational_health_services">
+        <rdfs:label rdf:datatype="&xsd;string">HygieneAndOccupationalHealthServices</rdfs:label>
+        <rdfs:subClassOf rdf:resource="&Domain_fields;Services"/>
     </owl:Class>
     
 
 
-    <!-- https://github.com/ontohub/OOR_Ontohub_API/blob/master/Domain_fields.owl#Environment -->
+    <!-- https://raw.github.com/ontohub/OOR_Ontohub_API/master/Domain_Fields_Core.owl#ISO -->
 
-    <owl:Class rdf:about="#Environment">
-        <rdfs:subClassOf rdf:resource="#Natural_sciences,_mathematics_and_statistics"/>
+    <owl:Class rdf:about="&Domain_fields;ISO">
+        <rdfs:label rdf:datatype="&xsd;string">ISO</rdfs:label>
+        <rdfs:subClassOf rdf:resource="&Domain_fields;Standard"/>
     </owl:Class>
     
 
 
-    <!-- https://github.com/ontohub/OOR_Ontohub_API/blob/master/Domain_fields.owl#Environmental_protection_technology -->
+    <!-- https://raw.github.com/ontohub/OOR_Ontohub_API/master/Domain_Fields_Core.owl#Information_and_Communication_Technology -->
 
-    <owl:Class rdf:about="#Environmental_protection_technology">
-        <rdfs:subClassOf rdf:resource="#Engineering,_manufacturing_and_construction"/>
+    <owl:Class rdf:about="&Domain_fields;Information_and_Communication_Technology">
+        <rdfs:label rdf:datatype="&xsd;string">InformationAndCommunicationTechnology</rdfs:label>
+        <rdfs:subClassOf rdf:resource="&Domain_fields;Domain_Field"/>
     </owl:Class>
     
 
 
-    <!-- https://github.com/ontohub/OOR_Ontohub_API/blob/master/Domain_fields.owl#Environmental_sciences -->
+    <!-- https://raw.github.com/ontohub/OOR_Ontohub_API/master/Domain_Fields_Core.owl#Information_and_Communication_Technology_narrow -->
 
-    <owl:Class rdf:about="#Environmental_sciences">
-        <rdfs:subClassOf rdf:resource="#Environment"/>
+    <owl:Class rdf:about="&Domain_fields;Information_and_Communication_Technology_narrow">
+        <rdfs:label rdf:datatype="&xsd;string">InformationAndCommunicationTechnologyNarrow</rdfs:label>
+        <rdfs:subClassOf rdf:resource="&Domain_fields;Information_and_Communication_Technology"/>
     </owl:Class>
     
 
 
-    <!-- https://github.com/ontohub/OOR_Ontohub_API/blob/master/Domain_fields.owl#Fashion,_interior_and_industrial_design -->
+    <!-- https://raw.github.com/ontohub/OOR_Ontohub_API/master/Domain_Fields_Core.owl#Journalism_and_information -->
 
-    <owl:Class rdf:about="#Fashion,_interior_and_industrial_design">
-        <rdfs:subClassOf rdf:resource="#Arts"/>
+    <owl:Class rdf:about="&Domain_fields;Journalism_and_information">
+        <rdfs:label rdf:datatype="&xsd;string">JournalismAndInformation</rdfs:label>
+        <rdfs:subClassOf rdf:resource="&Domain_fields;Social_science_journalism_and_information"/>
     </owl:Class>
     
 
 
-    <!-- https://github.com/ontohub/OOR_Ontohub_API/blob/master/Domain_fields.owl#Fine_arts -->
+    <!-- https://raw.github.com/ontohub/OOR_Ontohub_API/master/Domain_Fields_Core.owl#Journalism_and_reporting -->
 
-    <owl:Class rdf:about="#Fine_arts">
-        <rdfs:subClassOf rdf:resource="#Arts"/>
+    <owl:Class rdf:about="&Domain_fields;Journalism_and_reporting">
+        <rdfs:label rdf:datatype="&xsd;string">JournalismAndReporting</rdfs:label>
+        <rdfs:subClassOf rdf:resource="&Domain_fields;Journalism_and_information"/>
     </owl:Class>
     
 
 
-    <!-- https://github.com/ontohub/OOR_Ontohub_API/blob/master/Domain_fields.owl#Fisheries -->
+    <!-- https://raw.github.com/ontohub/OOR_Ontohub_API/master/Domain_Fields_Core.owl#Language -->
 
-    <owl:Class rdf:about="#Fisheries">
-        <rdfs:subClassOf rdf:resource="#Agriculture,_forestry,_fisheries_and_veterinary"/>
+    <owl:Class rdf:about="&Domain_fields;Language">
+        <rdfs:label rdf:datatype="&xsd;string">Language</rdfs:label>
+        <rdfs:subClassOf rdf:resource="&Domain_fields;Arts_and_humanities"/>
     </owl:Class>
     
 
 
-    <!-- https://github.com/ontohub/OOR_Ontohub_API/blob/master/Domain_fields.owl#Food_processing -->
+    <!-- https://raw.github.com/ontohub/OOR_Ontohub_API/master/Domain_Fields_Core.owl#Language_acquisition -->
 
-    <owl:Class rdf:about="#Food_processing">
-        <rdfs:subClassOf rdf:resource="#Manufacturing_and_processing"/>
+    <owl:Class rdf:about="&Domain_fields;Language_acquisition">
+        <rdfs:label rdf:datatype="&xsd;string">LanguageAcquisition</rdfs:label>
+        <rdfs:subClassOf rdf:resource="&Domain_fields;Language"/>
     </owl:Class>
     
 
 
-    <!-- https://github.com/ontohub/OOR_Ontohub_API/blob/master/Domain_fields.owl#Forestry -->
+    <!-- https://raw.github.com/ontohub/OOR_Ontohub_API/master/Domain_Fields_Core.owl#Law -->
 
-    <owl:Class rdf:about="#Forestry">
-        <rdfs:subClassOf rdf:resource="#Agriculture,_forestry,_fisheries_and_veterinary"/>
+    <owl:Class rdf:about="&Domain_fields;Law">
+        <rdfs:label rdf:datatype="&xsd;string">Law</rdfs:label>
+        <rdfs:subClassOf rdf:resource="&Domain_fields;Business_administration_and_law"/>
     </owl:Class>
     
 
 
-    <!-- https://github.com/ontohub/OOR_Ontohub_API/blob/master/Domain_fields.owl#Hair_and_beauty_services -->
+    <!-- https://raw.github.com/ontohub/OOR_Ontohub_API/master/Domain_Fields_Core.owl#Library_information_and_archive -->
 
-    <owl:Class rdf:about="#Hair_and_beauty_services">
-        <rdfs:subClassOf rdf:resource="#Personal_services"/>
+    <owl:Class rdf:about="&Domain_fields;Library_information_and_archive">
+        <rdfs:label rdf:datatype="&xsd;string">LibraryInformationAndArchive</rdfs:label>
+        <rdfs:subClassOf rdf:resource="&Domain_fields;Journalism_and_information"/>
     </owl:Class>
     
 
 
-    <!-- https://github.com/ontohub/OOR_Ontohub_API/blob/master/Domain_fields.owl#Handicrafts -->
+    <!-- https://raw.github.com/ontohub/OOR_Ontohub_API/master/Domain_Fields_Core.owl#Literature_and_linguistics -->
 
-    <owl:Class rdf:about="#Handicrafts">
-        <rdfs:subClassOf rdf:resource="#Arts"/>
+    <owl:Class rdf:about="&Domain_fields;Literature_and_linguistics">
+        <rdfs:label rdf:datatype="&xsd;string">LiteratureAndLinguistics</rdfs:label>
+        <rdfs:subClassOf rdf:resource="&Domain_fields;Language"/>
     </owl:Class>
     
 
 
-    <!-- https://github.com/ontohub/OOR_Ontohub_API/blob/master/Domain_fields.owl#Health -->
+    <!-- https://raw.github.com/ontohub/OOR_Ontohub_API/master/Domain_Fields_Core.owl#Management_and_administration -->
 
-    <owl:Class rdf:about="#Health">
-        <rdfs:subClassOf rdf:resource="#Health_and_welfare"/>
+    <owl:Class rdf:about="&Domain_fields;Management_and_administration">
+        <rdfs:label rdf:datatype="&xsd;string">ManagementAndAdministration</rdfs:label>
+        <rdfs:subClassOf rdf:resource="&Domain_fields;Business_and_administration"/>
     </owl:Class>
     
 
 
-    <!-- https://github.com/ontohub/OOR_Ontohub_API/blob/master/Domain_fields.owl#Health_and_welfare -->
+    <!-- https://raw.github.com/ontohub/OOR_Ontohub_API/master/Domain_Fields_Core.owl#ManufacturingAndProcessing -->
 
-    <owl:Class rdf:about="#Health_and_welfare">
-        <rdfs:subClassOf rdf:resource="#Domain_fields"/>
+    <owl:Class rdf:about="&Domain_fields;ManufacturingAndProcessing">
+        <rdfs:subClassOf rdf:resource="&Domain_fields;Engineering_manufacturing_and_construction"/>
     </owl:Class>
     
 
 
-    <!-- https://github.com/ontohub/OOR_Ontohub_API/blob/master/Domain_fields.owl#History_and_archaeology -->
+    <!-- https://raw.github.com/ontohub/OOR_Ontohub_API/master/Domain_Fields_Core.owl#Marketing_and_advertising -->
 
-    <owl:Class rdf:about="#History_and_archaeology">
-        <rdfs:subClassOf rdf:resource="#Humanities_(except_languages)"/>
+    <owl:Class rdf:about="&Domain_fields;Marketing_and_advertising">
+        <rdfs:label rdf:datatype="&xsd;string">MarketingAndAdvertising</rdfs:label>
+        <rdfs:subClassOf rdf:resource="&Domain_fields;Business_and_administration"/>
     </owl:Class>
     
 
 
-    <!-- https://github.com/ontohub/OOR_Ontohub_API/blob/master/Domain_fields.owl#Horticulture -->
+    <!-- https://raw.github.com/ontohub/OOR_Ontohub_API/master/Domain_Fields_Core.owl#Material_processing -->
 
-    <owl:Class rdf:about="#Horticulture">
-        <rdfs:subClassOf rdf:resource="#Agriculture"/>
+    <owl:Class rdf:about="&Domain_fields;Material_processing">
+        <rdfs:label rdf:datatype="&xsd;string">MaterialProcessing</rdfs:label>
+        <rdfs:subClassOf rdf:resource="&Domain_fields;ManufacturingAndProcessing"/>
     </owl:Class>
     
 
 
-    <!-- https://github.com/ontohub/OOR_Ontohub_API/blob/master/Domain_fields.owl#Hotel,_restaurants_and_catering -->
+    <!-- https://raw.github.com/ontohub/OOR_Ontohub_API/master/Domain_Fields_Core.owl#Mathematics -->
 
-    <owl:Class rdf:about="#Hotel,_restaurants_and_catering">
-        <rdfs:subClassOf rdf:resource="#Personal_services"/>
+    <owl:Class rdf:about="&Domain_fields;Mathematics">
+        <rdfs:label rdf:datatype="&xsd;string">Mathematics</rdfs:label>
+        <rdfs:subClassOf rdf:resource="&Domain_fields;Mathematics_and_statistics"/>
     </owl:Class>
     
 
 
-    <!-- https://github.com/ontohub/OOR_Ontohub_API/blob/master/Domain_fields.owl#Humanities_(except_languages) -->
+    <!-- https://raw.github.com/ontohub/OOR_Ontohub_API/master/Domain_Fields_Core.owl#Mathematics_and_statistics -->
 
-    <owl:Class rdf:about="#Humanities_(except_languages)">
-        <rdfs:subClassOf rdf:resource="#Arts_and_humanities"/>
+    <owl:Class rdf:about="&Domain_fields;Mathematics_and_statistics">
+        <rdfs:label rdf:datatype="&xsd;string">MathematicsAndStatistics</rdfs:label>
+        <rdfs:subClassOf rdf:resource="&Domain_fields;Natural_science_mathematics_and_statistics"/>
     </owl:Class>
     
 
 
-    <!-- https://github.com/ontohub/OOR_Ontohub_API/blob/master/Domain_fields.owl#Hygiene_and_occupational_health_services -->
+    <!-- https://raw.github.com/ontohub/OOR_Ontohub_API/master/Domain_Fields_Core.owl#Mechanics_and_metal_trade -->
 
-    <owl:Class rdf:about="#Hygiene_and_occupational_health_services">
-        <rdfs:subClassOf rdf:resource="#Services"/>
+    <owl:Class rdf:about="&Domain_fields;Mechanics_and_metal_trade">
+        <rdfs:label rdf:datatype="&xsd;string">MechanicsAndMetalTrade</rdfs:label>
+        <rdfs:subClassOf rdf:resource="&Domain_fields;Engineering_and_engineering_trade"/>
     </owl:Class>
     
 
 
-    <!-- https://github.com/ontohub/OOR_Ontohub_API/blob/master/Domain_fields.owl#Information_and_Communication_Technologies_(ICTs) -->
+    <!-- https://raw.github.com/ontohub/OOR_Ontohub_API/master/Domain_Fields_Core.owl#Medical_diagnostic_and_treatment_technology -->
 
-    <owl:Class rdf:about="#Information_and_Communication_Technologies_(ICTs)">
-        <rdfs:subClassOf rdf:resource="#Domain_fields"/>
+    <owl:Class rdf:about="&Domain_fields;Medical_diagnostic_and_treatment_technology">
+        <rdfs:label rdf:datatype="&xsd;string">MedicalDiagnosticAndTreatmentTechnology</rdfs:label>
+        <rdfs:subClassOf rdf:resource="&Domain_fields;Health"/>
     </owl:Class>
     
 
 
-    <!-- https://github.com/ontohub/OOR_Ontohub_API/blob/master/Domain_fields.owl#Information_and_Communication_Technologies_(ICTs)_(narrow) -->
+    <!-- https://raw.github.com/ontohub/OOR_Ontohub_API/master/Domain_Fields_Core.owl#Medicine -->
 
-    <owl:Class rdf:about="#Information_and_Communication_Technologies_(ICTs)_(narrow)">
-        <rdfs:subClassOf rdf:resource="#Information_and_Communication_Technologies_(ICTs)"/>
+    <owl:Class rdf:about="&Domain_fields;Medicine">
+        <rdfs:label rdf:datatype="&xsd;string">Medicine</rdfs:label>
+        <rdfs:subClassOf rdf:resource="&Domain_fields;Health"/>
     </owl:Class>
     
 
 
-    <!-- https://github.com/ontohub/OOR_Ontohub_API/blob/master/Domain_fields.owl#Journalism_and_information -->
+    <!-- https://raw.github.com/ontohub/OOR_Ontohub_API/master/Domain_Fields_Core.owl#Method_and_research_technique -->
 
-    <owl:Class rdf:about="#Journalism_and_information">
-        <rdfs:subClassOf rdf:resource="#Social_sciences,_journalism_and_information"/>
+    <owl:Class rdf:about="&Domain_fields;Method_and_research_technique">
+        <rdfs:label rdf:datatype="&xsd;string">MethodAndResearchTechnique</rdfs:label>
+        <rdfs:subClassOf rdf:resource="&Domain_fields;Standard_method_and_research_technique"/>
     </owl:Class>
     
 
 
-    <!-- https://github.com/ontohub/OOR_Ontohub_API/blob/master/Domain_fields.owl#Journalism_and_reporting -->
+    <!-- https://raw.github.com/ontohub/OOR_Ontohub_API/master/Domain_Fields_Core.owl#Military_and_defence -->
 
-    <owl:Class rdf:about="#Journalism_and_reporting">
-        <rdfs:subClassOf rdf:resource="#Journalism_and_information"/>
+    <owl:Class rdf:about="&Domain_fields;Military_and_defence">
+        <rdfs:label rdf:datatype="&xsd;string">MilitaryAndDefence</rdfs:label>
+        <rdfs:subClassOf rdf:resource="&Domain_fields;Security_services"/>
     </owl:Class>
     
 
 
-    <!-- https://github.com/ontohub/OOR_Ontohub_API/blob/master/Domain_fields.owl#Language_acquisition -->
+    <!-- https://raw.github.com/ontohub/OOR_Ontohub_API/master/Domain_Fields_Core.owl#Mining_and_extraction -->
 
-    <owl:Class rdf:about="#Language_acquisition">
-        <rdfs:subClassOf rdf:resource="#Languages"/>
+    <owl:Class rdf:about="&Domain_fields;Mining_and_extraction">
+        <rdfs:label rdf:datatype="&xsd;string">MiningAndExtraction</rdfs:label>
+        <rdfs:subClassOf rdf:resource="&Domain_fields;ManufacturingAndProcessing"/>
     </owl:Class>
     
 
 
-    <!-- https://github.com/ontohub/OOR_Ontohub_API/blob/master/Domain_fields.owl#Languages -->
+    <!-- https://raw.github.com/ontohub/OOR_Ontohub_API/master/Domain_Fields_Core.owl#Motor_vehicle_ship_and_aircraft -->
 
-    <owl:Class rdf:about="#Languages">
-        <rdfs:subClassOf rdf:resource="#Arts_and_humanities"/>
+    <owl:Class rdf:about="&Domain_fields;Motor_vehicle_ship_and_aircraft">
+        <rdfs:label rdf:datatype="&xsd;string">MotorVehicleShipAircraft</rdfs:label>
+        <rdfs:subClassOf rdf:resource="&Domain_fields;Engineering_and_engineering_trade"/>
     </owl:Class>
     
 
 
-    <!-- https://github.com/ontohub/OOR_Ontohub_API/blob/master/Domain_fields.owl#Law -->
+    <!-- https://raw.github.com/ontohub/OOR_Ontohub_API/master/Domain_Fields_Core.owl#Music_and_performing_arts -->
 
-    <owl:Class rdf:about="#Law">
-        <rdfs:subClassOf rdf:resource="#Business,_administration_and_law"/>
+    <owl:Class rdf:about="&Domain_fields;Music_and_performing_arts">
+        <rdfs:label rdf:datatype="&xsd;string">MusicAndPerformingArts</rdfs:label>
+        <rdfs:subClassOf rdf:resource="&Domain_fields;Arts"/>
     </owl:Class>
     
 
 
-    <!-- https://github.com/ontohub/OOR_Ontohub_API/blob/master/Domain_fields.owl#Library,_information_and_archival_studies -->
+    <!-- https://raw.github.com/ontohub/OOR_Ontohub_API/master/Domain_Fields_Core.owl#Natural_environment_and_wildlife -->
 
-    <owl:Class rdf:about="#Library,_information_and_archival_studies">
-        <rdfs:subClassOf rdf:resource="#Journalism_and_information"/>
+    <owl:Class rdf:about="&Domain_fields;Natural_environment_and_wildlife">
+        <rdfs:label rdf:datatype="&xsd;string">NaturalEnvironmentAndWildlife</rdfs:label>
+        <rdfs:subClassOf rdf:resource="&Domain_fields;Environment"/>
     </owl:Class>
     
 
 
-    <!-- https://github.com/ontohub/OOR_Ontohub_API/blob/master/Domain_fields.owl#Literature_and_linguistics -->
+    <!-- https://raw.github.com/ontohub/OOR_Ontohub_API/master/Domain_Fields_Core.owl#Natural_science_mathematics_and_statistics -->
 
-    <owl:Class rdf:about="#Literature_and_linguistics">
-        <rdfs:subClassOf rdf:resource="#Languages"/>
+    <owl:Class rdf:about="&Domain_fields;Natural_science_mathematics_and_statistics">
+        <rdfs:label rdf:datatype="&xsd;string">NaturalScienceMathematicsAndStatistics</rdfs:label>
+        <rdfs:subClassOf rdf:resource="&Domain_fields;Domain_Field"/>
     </owl:Class>
     
 
 
-    <!-- https://github.com/ontohub/OOR_Ontohub_API/blob/master/Domain_fields.owl#Manufacturing_and_processing -->
+    <!-- https://raw.github.com/ontohub/OOR_Ontohub_API/master/Domain_Fields_Core.owl#Nursing_and_midwifery -->
 
-    <owl:Class rdf:about="#Manufacturing_and_processing">
-        <rdfs:subClassOf rdf:resource="#Engineering,_manufacturing_and_construction"/>
+    <owl:Class rdf:about="&Domain_fields;Nursing_and_midwifery">
+        <rdfs:label rdf:datatype="&xsd;string">NursingAndMidwifery</rdfs:label>
+        <rdfs:subClassOf rdf:resource="&Domain_fields;Health"/>
     </owl:Class>
     
 
 
-    <!-- https://github.com/ontohub/OOR_Ontohub_API/blob/master/Domain_fields.owl#Materials_(glass,_paper,_plastic_and_wood) -->
+    <!-- https://raw.github.com/ontohub/OOR_Ontohub_API/master/Domain_Fields_Core.owl#Occupational_health_and_safety -->
 
-    <owl:Class rdf:about="#Materials_(glass,_paper,_plastic_and_wood)">
-        <rdfs:subClassOf rdf:resource="#Manufacturing_and_processing"/>
+    <owl:Class rdf:about="&Domain_fields;Occupational_health_and_safety">
+        <rdfs:label rdf:datatype="&xsd;string">OccupationalHealthAndSafety</rdfs:label>
+        <rdfs:subClassOf rdf:resource="&Domain_fields;Hygiene_and_occupational_health_services"/>
     </owl:Class>
     
 
 
-    <!-- https://github.com/ontohub/OOR_Ontohub_API/blob/master/Domain_fields.owl#Mathematics -->
+    <!-- https://raw.github.com/ontohub/OOR_Ontohub_API/master/Domain_Fields_Core.owl#Paper_processing -->
 
-    <owl:Class rdf:about="#Mathematics">
-        <rdfs:subClassOf rdf:resource="#Mathematics_and_statistics"/>
+    <owl:Class rdf:about="&Domain_fields;Paper_processing">
+        <rdfs:label rdf:datatype="&xsd;string">PaperProcessing</rdfs:label>
+        <rdfs:subClassOf rdf:resource="&Domain_fields;Material_processing"/>
     </owl:Class>
     
 
 
-    <!-- https://github.com/ontohub/OOR_Ontohub_API/blob/master/Domain_fields.owl#Mathematics_and_statistics -->
+    <!-- https://raw.github.com/ontohub/OOR_Ontohub_API/master/Domain_Fields_Core.owl#Personal_services -->
 
-    <owl:Class rdf:about="#Mathematics_and_statistics">
-        <rdfs:subClassOf rdf:resource="#Natural_sciences,_mathematics_and_statistics"/>
+    <owl:Class rdf:about="&Domain_fields;Personal_services">
+        <rdfs:label rdf:datatype="&xsd;string">PersonalServices</rdfs:label>
+        <rdfs:subClassOf rdf:resource="&Domain_fields;Services"/>
     </owl:Class>
     
 
 
-    <!-- https://github.com/ontohub/OOR_Ontohub_API/blob/master/Domain_fields.owl#Mechanics_and_metal_trades -->
+    <!-- https://raw.github.com/ontohub/OOR_Ontohub_API/master/Domain_Fields_Core.owl#Pharmacy -->
 
-    <owl:Class rdf:about="#Mechanics_and_metal_trades">
-        <rdfs:subClassOf rdf:resource="#Engineering,_manufacturing_and_construction"/>
+    <owl:Class rdf:about="&Domain_fields;Pharmacy">
+        <rdfs:label rdf:datatype="&xsd;string">Pharmacy</rdfs:label>
+        <rdfs:subClassOf rdf:resource="&Domain_fields;Health"/>
     </owl:Class>
     
 
 
-    <!-- https://github.com/ontohub/OOR_Ontohub_API/blob/master/Domain_fields.owl#Medical_diagnostic_and_treatment_technology -->
+    <!-- https://raw.github.com/ontohub/OOR_Ontohub_API/master/Domain_Fields_Core.owl#Philosophy_and_ethics -->
 
-    <owl:Class rdf:about="#Medical_diagnostic_and_treatment_technology">
-        <rdfs:subClassOf rdf:resource="#Health"/>
+    <owl:Class rdf:about="&Domain_fields;Philosophy_and_ethics">
+        <rdfs:label rdf:datatype="&xsd;string">PhilosophyAndEthics</rdfs:label>
+        <rdfs:subClassOf rdf:resource="&Domain_fields;Humanities"/>
     </owl:Class>
     
 
 
-    <!-- https://github.com/ontohub/OOR_Ontohub_API/blob/master/Domain_fields.owl#Medicine -->
+    <!-- https://raw.github.com/ontohub/OOR_Ontohub_API/master/Domain_Fields_Core.owl#Physical_science -->
 
-    <owl:Class rdf:about="#Medicine">
-        <rdfs:subClassOf rdf:resource="#Health"/>
+    <owl:Class rdf:about="&Domain_fields;Physical_science">
+        <rdfs:label rdf:datatype="&xsd;string">PhysicalScience</rdfs:label>
+        <rdfs:subClassOf rdf:resource="&Domain_fields;Natural_science_mathematics_and_statistics"/>
     </owl:Class>
     
 
 
-    <!-- https://github.com/ontohub/OOR_Ontohub_API/blob/master/Domain_fields.owl#Military_and_defence -->
+    <!-- https://raw.github.com/ontohub/OOR_Ontohub_API/master/Domain_Fields_Core.owl#Physics -->
 
-    <owl:Class rdf:about="#Military_and_defence">
-        <rdfs:subClassOf rdf:resource="#Security_services"/>
+    <owl:Class rdf:about="&Domain_fields;Physics">
+        <rdfs:label rdf:datatype="&xsd;string">Physics</rdfs:label>
+        <rdfs:subClassOf rdf:resource="&Domain_fields;Physical_science"/>
     </owl:Class>
     
 
 
-    <!-- https://github.com/ontohub/OOR_Ontohub_API/blob/master/Domain_fields.owl#Mining_and_extraction -->
+    <!-- https://raw.github.com/ontohub/OOR_Ontohub_API/master/Domain_Fields_Core.owl#Plastic_processing -->
 
-    <owl:Class rdf:about="#Mining_and_extraction">
-        <rdfs:subClassOf rdf:resource="#Manufacturing_and_processing"/>
+    <owl:Class rdf:about="&Domain_fields;Plastic_processing">
+        <rdfs:label rdf:datatype="&xsd;string">PlasticProcessing</rdfs:label>
+        <rdfs:subClassOf rdf:resource="&Domain_fields;Material_processing"/>
     </owl:Class>
     
 
 
-    <!-- https://github.com/ontohub/OOR_Ontohub_API/blob/master/Domain_fields.owl#Motor_vehicles,_ships_and_aircraft -->
+    <!-- https://raw.github.com/ontohub/OOR_Ontohub_API/master/Domain_Fields_Core.owl#Politics_and_civics -->
 
-    <owl:Class rdf:about="#Motor_vehicles,_ships_and_aircraft">
-        <rdfs:subClassOf rdf:resource="#Engineering,_manufacturing_and_construction"/>
+    <owl:Class rdf:about="&Domain_fields;Politics_and_civics">
+        <rdfs:label rdf:datatype="&xsd;string">PoliticsAndCivics</rdfs:label>
+        <rdfs:subClassOf rdf:resource="&Domain_fields;Social_and_behavioural_science"/>
     </owl:Class>
     
 
 
-    <!-- https://github.com/ontohub/OOR_Ontohub_API/blob/master/Domain_fields.owl#Music_and_performing_arts -->
+    <!-- https://raw.github.com/ontohub/OOR_Ontohub_API/master/Domain_Fields_Core.owl#Process -->
 
-    <owl:Class rdf:about="#Music_and_performing_arts">
-        <rdfs:subClassOf rdf:resource="#Arts"/>
+    <owl:Class rdf:about="&Domain_fields;Process">
+        <rdfs:label rdf:datatype="&xsd;string">Process</rdfs:label>
+        <rdfs:subClassOf rdf:resource="&Domain_fields;Space_Time_and_Process"/>
     </owl:Class>
     
 
 
-    <!-- https://github.com/ontohub/OOR_Ontohub_API/blob/master/Domain_fields.owl#Natural_environments_and_wildlife -->
+    <!-- https://raw.github.com/ontohub/OOR_Ontohub_API/master/Domain_Fields_Core.owl#Protection_of_persons_and_property -->
 
-    <owl:Class rdf:about="#Natural_environments_and_wildlife">
-        <rdfs:subClassOf rdf:resource="#Environment"/>
+    <owl:Class rdf:about="&Domain_fields;Protection_of_persons_and_property">
+        <rdfs:label rdf:datatype="&xsd;string">ProtectionOfPersonsAndProperty</rdfs:label>
+        <rdfs:subClassOf rdf:resource="&Domain_fields;Security_services"/>
     </owl:Class>
     
 
 
-    <!-- https://github.com/ontohub/OOR_Ontohub_API/blob/master/Domain_fields.owl#Natural_sciences,_mathematics_and_statistics -->
+    <!-- https://raw.github.com/ontohub/OOR_Ontohub_API/master/Domain_Fields_Core.owl#Psychology -->
 
-    <owl:Class rdf:about="#Natural_sciences,_mathematics_and_statistics">
-        <rdfs:subClassOf rdf:resource="#Domain_fields"/>
+    <owl:Class rdf:about="&Domain_fields;Psychology">
+        <rdfs:label rdf:datatype="&xsd;string">Psychology</rdfs:label>
+        <rdfs:subClassOf rdf:resource="&Domain_fields;Social_and_behavioural_science"/>
     </owl:Class>
     
 
 
-    <!-- https://github.com/ontohub/OOR_Ontohub_API/blob/master/Domain_fields.owl#Nursing_and_midwifery -->
+    <!-- https://raw.github.com/ontohub/OOR_Ontohub_API/master/Domain_Fields_Core.owl#Religion_and_theology -->
 
-    <owl:Class rdf:about="#Nursing_and_midwifery">
-        <rdfs:subClassOf rdf:resource="#Health"/>
+    <owl:Class rdf:about="&Domain_fields;Religion_and_theology">
+        <rdfs:label rdf:datatype="&xsd;string">ReligionAndTheology</rdfs:label>
+        <rdfs:subClassOf rdf:resource="&Domain_fields;Humanities"/>
     </owl:Class>
     
 
 
-    <!-- https://github.com/ontohub/OOR_Ontohub_API/blob/master/Domain_fields.owl#Occupational_health_and_safety -->
+    <!-- https://raw.github.com/ontohub/OOR_Ontohub_API/master/Domain_Fields_Core.owl#Secretarial_and_office_work -->
 
-    <owl:Class rdf:about="#Occupational_health_and_safety">
-        <rdfs:subClassOf rdf:resource="#Hygiene_and_occupational_health_services"/>
+    <owl:Class rdf:about="&Domain_fields;Secretarial_and_office_work">
+        <rdfs:label rdf:datatype="&xsd;string">SecretarialAndOfficeWork</rdfs:label>
+        <rdfs:subClassOf rdf:resource="&Domain_fields;Business_and_administration"/>
     </owl:Class>
     
 
 
-    <!-- https://github.com/ontohub/OOR_Ontohub_API/blob/master/Domain_fields.owl#Personal_services -->
+    <!-- https://raw.github.com/ontohub/OOR_Ontohub_API/master/Domain_Fields_Core.owl#Security_services -->
 
-    <owl:Class rdf:about="#Personal_services">
-        <rdfs:subClassOf rdf:resource="#Services"/>
+    <owl:Class rdf:about="&Domain_fields;Security_services">
+        <rdfs:label rdf:datatype="&xsd;string">SecurityServices</rdfs:label>
+        <rdfs:subClassOf rdf:resource="&Domain_fields;Services"/>
     </owl:Class>
     
 
 
-    <!-- https://github.com/ontohub/OOR_Ontohub_API/blob/master/Domain_fields.owl#Pharmacy -->
+    <!-- https://raw.github.com/ontohub/OOR_Ontohub_API/master/Domain_Fields_Core.owl#Services -->
 
-    <owl:Class rdf:about="#Pharmacy">
-        <rdfs:subClassOf rdf:resource="#Health"/>
+    <owl:Class rdf:about="&Domain_fields;Services">
+        <rdfs:label rdf:datatype="&xsd;string">Services</rdfs:label>
+        <rdfs:subClassOf rdf:resource="&Domain_fields;Domain_Field"/>
     </owl:Class>
     
 
 
-    <!-- https://github.com/ontohub/OOR_Ontohub_API/blob/master/Domain_fields.owl#Philosophy_and_ethics -->
+    <!-- https://raw.github.com/ontohub/OOR_Ontohub_API/master/Domain_Fields_Core.owl#Social_and_behavioural_science -->
 
-    <owl:Class rdf:about="#Philosophy_and_ethics">
-        <rdfs:subClassOf rdf:resource="#Humanities_(except_languages)"/>
+    <owl:Class rdf:about="&Domain_fields;Social_and_behavioural_science">
+        <rdfs:label rdf:datatype="&xsd;string">SocialAndBehaviouralScience</rdfs:label>
+        <rdfs:subClassOf rdf:resource="&Domain_fields;Social_science_journalism_and_information"/>
     </owl:Class>
     
 
 
-    <!-- https://github.com/ontohub/OOR_Ontohub_API/blob/master/Domain_fields.owl#Physical_sciences -->
+    <!-- https://raw.github.com/ontohub/OOR_Ontohub_API/master/Domain_Fields_Core.owl#Social_science_journalism_and_information -->
 
-    <owl:Class rdf:about="#Physical_sciences">
-        <rdfs:subClassOf rdf:resource="#Natural_sciences,_mathematics_and_statistics"/>
+    <owl:Class rdf:about="&Domain_fields;Social_science_journalism_and_information">
+        <rdfs:label rdf:datatype="&xsd;string">SocialScienceJournalismAndInformation</rdfs:label>
+        <rdfs:subClassOf rdf:resource="&Domain_fields;Domain_Field"/>
     </owl:Class>
     
 
 
-    <!-- https://github.com/ontohub/OOR_Ontohub_API/blob/master/Domain_fields.owl#Physics -->
+    <!-- https://raw.github.com/ontohub/OOR_Ontohub_API/master/Domain_Fields_Core.owl#Social_work_and_counselling -->
 
-    <owl:Class rdf:about="#Physics">
-        <rdfs:subClassOf rdf:resource="#Physical_sciences"/>
+    <owl:Class rdf:about="&Domain_fields;Social_work_and_counselling">
+        <rdfs:label rdf:datatype="&xsd;string">SocialWorkAndCounselling</rdfs:label>
+        <rdfs:subClassOf rdf:resource="&Domain_fields;Welfare"/>
     </owl:Class>
     
 
 
-    <!-- https://github.com/ontohub/OOR_Ontohub_API/blob/master/Domain_fields.owl#Political_sciences_and_civics -->
+    <!-- https://raw.github.com/ontohub/OOR_Ontohub_API/master/Domain_Fields_Core.owl#Sociology_and_culture -->
 
-    <owl:Class rdf:about="#Political_sciences_and_civics">
-        <rdfs:subClassOf rdf:resource="#Social_and_behavioural_sciences"/>
+    <owl:Class rdf:about="&Domain_fields;Sociology_and_culture">
+        <rdfs:label rdf:datatype="&xsd;string">SociologyAndCulture</rdfs:label>
+        <rdfs:subClassOf rdf:resource="&Domain_fields;Social_and_behavioural_science"/>
     </owl:Class>
     
 
 
-    <!-- https://github.com/ontohub/OOR_Ontohub_API/blob/master/Domain_fields.owl#Protection_of_persons_and_property -->
+    <!-- https://raw.github.com/ontohub/OOR_Ontohub_API/master/Domain_Fields_Core.owl#Software_and_application_development_and_analysis -->
 
-    <owl:Class rdf:about="#Protection_of_persons_and_property">
-        <rdfs:subClassOf rdf:resource="#Security_services"/>
+    <owl:Class rdf:about="&Domain_fields;Software_and_application_development_and_analysis">
+        <rdfs:label rdf:datatype="&xsd;string">SoftwareAndApplicationDevelopmentAndAnalysis</rdfs:label>
+        <rdfs:subClassOf rdf:resource="&Domain_fields;Information_and_Communication_Technology_narrow"/>
     </owl:Class>
     
 
 
-    <!-- https://github.com/ontohub/OOR_Ontohub_API/blob/master/Domain_fields.owl#Psychology -->
+    <!-- https://raw.github.com/ontohub/OOR_Ontohub_API/master/Domain_Fields_Core.owl#Space -->
 
-    <owl:Class rdf:about="#Psychology">
-        <rdfs:subClassOf rdf:resource="#Social_and_behavioural_sciences"/>
+    <owl:Class rdf:about="&Domain_fields;Space">
+        <rdfs:label rdf:datatype="&xsd;string">Space</rdfs:label>
+        <rdfs:subClassOf rdf:resource="&Domain_fields;Space_Time_and_Process"/>
+        <rdfs:comment rdf:datatype="&xsd;string">Class &apos;Space&apos; includes domain ontologies that are dealing with any of space related topics, e.g. geography, architecture etc.</rdfs:comment>
     </owl:Class>
     
 
 
-    <!-- https://github.com/ontohub/OOR_Ontohub_API/blob/master/Domain_fields.owl#Religion_and_theology -->
+    <!-- https://raw.github.com/ontohub/OOR_Ontohub_API/master/Domain_Fields_Core.owl#Space_Time_and_Process -->
 
-    <owl:Class rdf:about="#Religion_and_theology">
-        <rdfs:subClassOf rdf:resource="#Humanities_(except_languages)"/>
+    <owl:Class rdf:about="&Domain_fields;Space_Time_and_Process">
+        <rdfs:label rdf:datatype="&xsd;string">SpaceTimeAndProcess</rdfs:label>
+        <rdfs:subClassOf rdf:resource="&Domain_fields;Domain_Field"/>
     </owl:Class>
     
 
 
-    <!-- https://github.com/ontohub/OOR_Ontohub_API/blob/master/Domain_fields.owl#Security_services -->
+    <!-- https://raw.github.com/ontohub/OOR_Ontohub_API/master/Domain_Fields_Core.owl#Sport -->
 
-    <owl:Class rdf:about="#Security_services">
-        <rdfs:subClassOf rdf:resource="#Services"/>
+    <owl:Class rdf:about="&Domain_fields;Sport">
+        <rdfs:label rdf:datatype="&xsd;string">Sport</rdfs:label>
+        <rdfs:subClassOf rdf:resource="&Domain_fields;Personal_services"/>
     </owl:Class>
     
 
 
-    <!-- https://github.com/ontohub/OOR_Ontohub_API/blob/master/Domain_fields.owl#Services -->
+    <!-- https://raw.github.com/ontohub/OOR_Ontohub_API/master/Domain_Fields_Core.owl#Standard -->
 
-    <owl:Class rdf:about="#Services">
-        <rdfs:subClassOf rdf:resource="#Domain_fields"/>
+    <owl:Class rdf:about="&Domain_fields;Standard">
+        <rdfs:label rdf:datatype="&xsd;string">Standard</rdfs:label>
+        <rdfs:subClassOf rdf:resource="&Domain_fields;Standard_method_and_research_technique"/>
     </owl:Class>
     
 
 
-    <!-- https://github.com/ontohub/OOR_Ontohub_API/blob/master/Domain_fields.owl#Social_and_behavioural_sciences -->
+    <!-- https://raw.github.com/ontohub/OOR_Ontohub_API/master/Domain_Fields_Core.owl#Standard_method_and_research_technique -->
 
-    <owl:Class rdf:about="#Social_and_behavioural_sciences">
-        <rdfs:subClassOf rdf:resource="#Social_sciences,_journalism_and_information"/>
+    <owl:Class rdf:about="&Domain_fields;Standard_method_and_research_technique">
+        <rdfs:label rdf:datatype="&xsd;string">StandardMethodAndResearchTechnique</rdfs:label>
+        <rdfs:subClassOf rdf:resource="&Domain_fields;Domain_Field"/>
     </owl:Class>
     
 
 
-    <!-- https://github.com/ontohub/OOR_Ontohub_API/blob/master/Domain_fields.owl#Social_sciences,_journalism_and_information -->
+    <!-- https://raw.github.com/ontohub/OOR_Ontohub_API/master/Domain_Fields_Core.owl#Statistics -->
 
-    <owl:Class rdf:about="#Social_sciences,_journalism_and_information">
-        <rdfs:subClassOf rdf:resource="#Domain_fields"/>
+    <owl:Class rdf:about="&Domain_fields;Statistics">
+        <rdfs:label rdf:datatype="&xsd;string">Statistics</rdfs:label>
+        <rdfs:subClassOf rdf:resource="&Domain_fields;Mathematics_and_statistics"/>
     </owl:Class>
     
 
 
-    <!-- https://github.com/ontohub/OOR_Ontohub_API/blob/master/Domain_fields.owl#Social_work_and_counselling -->
+    <!-- https://raw.github.com/ontohub/OOR_Ontohub_API/master/Domain_Fields_Core.owl#Teacher_training_with_subject_specialisation -->
 
-    <owl:Class rdf:about="#Social_work_and_counselling">
-        <rdfs:subClassOf rdf:resource="#Welfare"/>
+    <owl:Class rdf:about="&Domain_fields;Teacher_training_with_subject_specialisation">
+        <rdfs:label rdf:datatype="&xsd;string">TeacherTrainingWithSubjectSpecialisation</rdfs:label>
+        <rdfs:subClassOf rdf:resource="&Domain_fields;Education_narrow"/>
     </owl:Class>
     
 
 
-    <!-- https://github.com/ontohub/OOR_Ontohub_API/blob/master/Domain_fields.owl#Sociology_and_cultural_studies -->
+    <!-- https://raw.github.com/ontohub/OOR_Ontohub_API/master/Domain_Fields_Core.owl#Teacher_training_without_subject_specialisation -->
 
-    <owl:Class rdf:about="#Sociology_and_cultural_studies">
-        <rdfs:subClassOf rdf:resource="#Social_and_behavioural_sciences"/>
+    <owl:Class rdf:about="&Domain_fields;Teacher_training_without_subject_specialisation">
+        <rdfs:label rdf:datatype="&xsd;string">TeacherTrainingWithoutSubjectSpecialisation</rdfs:label>
+        <rdfs:subClassOf rdf:resource="&Domain_fields;Education_narrow"/>
     </owl:Class>
     
 
 
-    <!-- https://github.com/ontohub/OOR_Ontohub_API/blob/master/Domain_fields.owl#Software_and_applications_development_and_analysis -->
+    <!-- https://raw.github.com/ontohub/OOR_Ontohub_API/master/Domain_Fields_Core.owl#Textile_clothes_footwear_and_leather -->
 
-    <owl:Class rdf:about="#Software_and_applications_development_and_analysis">
-        <rdfs:subClassOf rdf:resource="#Information_and_Communication_Technologies_(ICTs)_(narrow)"/>
+    <owl:Class rdf:about="&Domain_fields;Textile_clothes_footwear_and_leather">
+        <rdfs:label rdf:datatype="&xsd;string">TextileClothesFootwearLeather</rdfs:label>
+        <rdfs:subClassOf rdf:resource="&Domain_fields;ManufacturingAndProcessing"/>
     </owl:Class>
     
 
 
-    <!-- https://github.com/ontohub/OOR_Ontohub_API/blob/master/Domain_fields.owl#Sports -->
+    <!-- https://raw.github.com/ontohub/OOR_Ontohub_API/master/Domain_Fields_Core.owl#Therapy_and_rehabilitation -->
 
-    <owl:Class rdf:about="#Sports">
-        <rdfs:subClassOf rdf:resource="#Personal_services"/>
+    <owl:Class rdf:about="&Domain_fields;Therapy_and_rehabilitation">
+        <rdfs:label rdf:datatype="&xsd;string">TherapyAndRehabilitation</rdfs:label>
+        <rdfs:subClassOf rdf:resource="&Domain_fields;Health"/>
     </owl:Class>
     
 
 
-    <!-- https://github.com/ontohub/OOR_Ontohub_API/blob/master/Domain_fields.owl#Statistics -->
+    <!-- https://raw.github.com/ontohub/OOR_Ontohub_API/master/Domain_Fields_Core.owl#Time -->
 
-    <owl:Class rdf:about="#Statistics">
-        <rdfs:subClassOf rdf:resource="#Mathematics_and_statistics"/>
+    <owl:Class rdf:about="&Domain_fields;Time">
+        <rdfs:label rdf:datatype="&xsd;string">Time</rdfs:label>
+        <rdfs:subClassOf rdf:resource="&Domain_fields;Space_Time_and_Process"/>
     </owl:Class>
     
 
 
-    <!-- https://github.com/ontohub/OOR_Ontohub_API/blob/master/Domain_fields.owl#Teacher_training_with_subject_specialisation -->
+    <!-- https://raw.github.com/ontohub/OOR_Ontohub_API/master/Domain_Fields_Core.owl#Traditional_and_complementary_medicine_and_therapy -->
 
-    <owl:Class rdf:about="#Teacher_training_with_subject_specialisation">
-        <rdfs:subClassOf rdf:resource="#Education_(narrow)"/>
+    <owl:Class rdf:about="&Domain_fields;Traditional_and_complementary_medicine_and_therapy">
+        <rdfs:label rdf:datatype="&xsd;string">TraditionalAndComplementaryMedicineAndTherapy</rdfs:label>
+        <rdfs:subClassOf rdf:resource="&Domain_fields;Health"/>
     </owl:Class>
     
 
 
-    <!-- https://github.com/ontohub/OOR_Ontohub_API/blob/master/Domain_fields.owl#Teacher_training_without_subject_specialisation -->
+    <!-- https://raw.github.com/ontohub/OOR_Ontohub_API/master/Domain_Fields_Core.owl#Training_pre-school_teachers -->
 
-    <owl:Class rdf:about="#Teacher_training_without_subject_specialisation">
-        <rdfs:subClassOf rdf:resource="#Education_(narrow)"/>
+    <owl:Class rdf:about="&Domain_fields;Training_pre-school_teachers">
+        <rdfs:label rdf:datatype="&xsd;string">TrainingPreSchoolTeachers</rdfs:label>
+        <rdfs:subClassOf rdf:resource="&Domain_fields;Education_narrow"/>
     </owl:Class>
     
 
 
-    <!-- https://github.com/ontohub/OOR_Ontohub_API/blob/master/Domain_fields.owl#Textiles_(clothes,_footwear_and_leather) -->
+    <!-- https://raw.github.com/ontohub/OOR_Ontohub_API/master/Domain_Fields_Core.owl#Transport_services -->
 
-    <owl:Class rdf:about="#Textiles_(clothes,_footwear_and_leather)">
-        <rdfs:subClassOf rdf:resource="#Manufacturing_and_processing"/>
+    <owl:Class rdf:about="&Domain_fields;Transport_services">
+        <rdfs:label rdf:datatype="&xsd;string">TransportServices</rdfs:label>
+        <rdfs:subClassOf rdf:resource="&Domain_fields;Services"/>
     </owl:Class>
     
 
 
-    <!-- https://github.com/ontohub/OOR_Ontohub_API/blob/master/Domain_fields.owl#Therapy_and_rehabilitation -->
+    <!-- https://raw.github.com/ontohub/OOR_Ontohub_API/master/Domain_Fields_Core.owl#Travel_tourism_and_leisure -->
 
-    <owl:Class rdf:about="#Therapy_and_rehabilitation">
-        <rdfs:subClassOf rdf:resource="#Health"/>
+    <owl:Class rdf:about="&Domain_fields;Travel_tourism_and_leisure">
+        <rdfs:label rdf:datatype="&xsd;string">TravelTourismAndLeisure</rdfs:label>
+        <rdfs:subClassOf rdf:resource="&Domain_fields;Personal_services"/>
     </owl:Class>
     
 
 
-    <!-- https://github.com/ontohub/OOR_Ontohub_API/blob/master/Domain_fields.owl#Traditional_and_complementary_medicine_and_therapy -->
+    <!-- https://raw.github.com/ontohub/OOR_Ontohub_API/master/Domain_Fields_Core.owl#Unclassified -->
 
-    <owl:Class rdf:about="#Traditional_and_complementary_medicine_and_therapy">
-        <rdfs:subClassOf rdf:resource="#Health"/>
+    <owl:Class rdf:about="&Domain_fields;Unclassified">
+        <rdfs:label rdf:datatype="&xsd;string">Unclassified</rdfs:label>
+        <rdfs:subClassOf rdf:resource="&Domain_fields;Domain_Field"/>
+        <rdfs:comment rdf:datatype="&xsd;string">The unclassified domain includes ontologies whose domain-subject is not captured by any of pre-defined classes. The annotation of such an ontology should include either a DMOZ or an ACM specification of domain subject, thus providing a tentative subject-field that can be included in the future revisions of the domain-field classes.</rdfs:comment>
     </owl:Class>
     
 
 
-    <!-- https://github.com/ontohub/OOR_Ontohub_API/blob/master/Domain_fields.owl#Training_for_pre-school_teachers -->
+    <!-- https://raw.github.com/ontohub/OOR_Ontohub_API/master/Domain_Fields_Core.owl#Veterinary -->
 
-    <owl:Class rdf:about="#Training_for_pre-school_teachers">
-        <rdfs:subClassOf rdf:resource="#Education_(narrow)"/>
+    <owl:Class rdf:about="&Domain_fields;Veterinary">
+        <rdfs:label rdf:datatype="&xsd;string">Veterinary</rdfs:label>
+        <rdfs:subClassOf rdf:resource="&Domain_fields;AgricultureForestryFsheriesVeterinary"/>
+        <rdfs:comment rdf:datatype="&xsd;string">It includes ontologies that are dealing with the domain subjects related to veterinary.</rdfs:comment>
     </owl:Class>
     
 
 
-    <!-- https://github.com/ontohub/OOR_Ontohub_API/blob/master/Domain_fields.owl#Transport_services -->
+    <!-- https://raw.github.com/ontohub/OOR_Ontohub_API/master/Domain_Fields_Core.owl#Welfare -->
 
-    <owl:Class rdf:about="#Transport_services">
-        <rdfs:subClassOf rdf:resource="#Services"/>
+    <owl:Class rdf:about="&Domain_fields;Welfare">
+        <rdfs:label rdf:datatype="&xsd;string">Welfare</rdfs:label>
+        <rdfs:subClassOf rdf:resource="&Domain_fields;Health_and_welfare"/>
     </owl:Class>
     
 
 
-    <!-- https://github.com/ontohub/OOR_Ontohub_API/blob/master/Domain_fields.owl#Travel,_tourism_and_leisure -->
+    <!-- https://raw.github.com/ontohub/OOR_Ontohub_API/master/Domain_Fields_Core.owl#Wholesale_and_retail_sales -->
 
-    <owl:Class rdf:about="#Travel,_tourism_and_leisure">
-        <rdfs:subClassOf rdf:resource="#Personal_services"/>
+    <owl:Class rdf:about="&Domain_fields;Wholesale_and_retail_sales">
+        <rdfs:label rdf:datatype="&xsd;string">WholesaleAndRetailSales</rdfs:label>
+        <rdfs:subClassOf rdf:resource="&Domain_fields;Business_and_administration"/>
     </owl:Class>
     
 
 
-    <!-- https://github.com/ontohub/OOR_Ontohub_API/blob/master/Domain_fields.owl#Veterinary -->
+    <!-- https://raw.github.com/ontohub/OOR_Ontohub_API/master/Domain_Fields_Core.owl#Wood_processing -->
 
-    <owl:Class rdf:about="#Veterinary">
-        <rdfs:subClassOf rdf:resource="#Agriculture,_forestry,_fisheries_and_veterinary"/>
+    <owl:Class rdf:about="&Domain_fields;Wood_processing">
+        <rdfs:label rdf:datatype="&xsd;string">WoodProcessing</rdfs:label>
+        <rdfs:subClassOf rdf:resource="&Domain_fields;Material_processing"/>
     </owl:Class>
     
 
 
-    <!-- https://github.com/ontohub/OOR_Ontohub_API/blob/master/Domain_fields.owl#Welfare -->
+    <!-- https://raw.github.com/ontohub/OOR_Ontohub_API/master/Domain_Fields_Core.owl#Work_skill -->
 
-    <owl:Class rdf:about="#Welfare">
-        <rdfs:subClassOf rdf:resource="#Health_and_welfare"/>
+    <owl:Class rdf:about="&Domain_fields;Work_skill">
+        <rdfs:label rdf:datatype="&xsd;string">WorkSkill</rdfs:label>
+        <rdfs:subClassOf rdf:resource="&Domain_fields;Business_and_administration"/>
     </owl:Class>
 </rdf:RDF>
 
 
 
-<!-- Generated by the OWL API (version 2.2.1.1138) http://owlapi.sourceforge.net -->
+<!-- Generated by the OWL API (version 3.4.2) http://owlapi.sourceforge.net -->
