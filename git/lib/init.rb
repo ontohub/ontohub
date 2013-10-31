@@ -1,8 +1,14 @@
-require File.dirname(__FILE__) << "/../../lib/environment_light"
+require File.expand_path(
+  File.join(File.dirname(__FILE__), "/../../lib/environment_light"))
 
 $:.unshift File.dirname(__FILE__)
 $:.unshift Rails.root.join("lib")
 
-require 'ontohub_config'
-require 'ontohub_logger'
+require 'logger'
+
+# Configuration #
+#################
+
+Rails.logger = Logger.new Rails.root.join('log','git.log')
+
 require 'ontohub_net'
