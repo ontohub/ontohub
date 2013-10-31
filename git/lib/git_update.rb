@@ -3,16 +3,12 @@ require 'subprocess'
 require 'ontohub_net'
 
 class GitUpdate
-  attr_reader :config
 
   def initialize(repo_path, key_id, refs)
-    @config = OntohubConfig.instance
-
     @repo_path = repo_path.strip
-    @repo_name = repo_path
-    @repo_name.gsub!(config.repos_path.to_s, "")
-    @repo_name.gsub!(/\.git$/, "")
-    @repo_name.gsub!(/^\//, "")
+    @repo_name = repo_path.delete(Settings.git_root).
+      gsub(/\.git$/, "").
+      gsub(/^\//, "")
 
     @refname = refs[0]
     @oldrev  = refs[1]
@@ -50,7 +46,7 @@ class GitUpdate
   end
 
   def update_redis
-    Subproces.run 'redis-cli', 'rpush', "#{config.redis_namespace}:queue:default", {
+    Subproces.run 'redis-cli', 'rpush', "#{Settings.redis_namespace}:queue:default", {
       class: 'RepositoryUpdateWorker',
       args: [@repo_path, @oldrev, @newrev, @refname, @key_id]
     }.to_json
