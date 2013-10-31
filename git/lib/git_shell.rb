@@ -8,8 +8,7 @@ class GitShell
   def initialize(key_id, command)
     @key_id     = key_id
     @command    = command
-    @config     = OntohubConfig.instance
-    @repos_path = @config.repos_path
+    @repos_path = Settings.git_root
   end
 
   def exec
