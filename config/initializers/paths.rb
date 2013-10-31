@@ -10,6 +10,7 @@ module PathsInitializer
       end
 
       config.git_root = config.data_root.join('repositories')
+      config.git_working_copies_root = config.data_root.join('working_copies')
       config.max_read_filesize = 512 * 1024
 
       settings = Settings.git
