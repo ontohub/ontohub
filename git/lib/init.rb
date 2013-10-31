@@ -7,14 +7,12 @@ $:.unshift File.dirname(__FILE__)
 $:.unshift Rails.root.join("lib")
 
 require 'logger'
-require 'ostruct'
 
 # Configuration #
 #################
 
 Settings.redis_namespace = 'ontohub'
 Rails.logger = Logger.new Rails.root.join('log','git.log')
-Settings.git_working_config = OpenStruct.new
 PathsInitializer.perform_initialization(Settings)
 
 require 'ontohub_net'
