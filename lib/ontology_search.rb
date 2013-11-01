@@ -29,14 +29,23 @@ class OntologySearch
       text_list.add(ontology.name)
     end
 
-    repository.ontologies.each do |ontology|
+    ontologies = repository.ontologies
+    ontology_ids = Set.new
+    ontologies.each do |ontology|
       ontology.entities.select(:name).where("name ILIKE :prefix", prefix: "#{prefix}%").group("name").limit(5).each do |symbol|
         text_list.add(symbol.name)
       end
+      ontology_ids.add(ontology.id)
     end
 
-    Logic.select(:name).where("name ILIKE :prefix", prefix: "#{prefix}%").limit(5).each do |logic|
-      text_list.add(logic.name)
+    Logic.where("name ILIKE :prefix", prefix: "#{prefix}%").limit(5).each do |logic|
+       logic_ontology_ids = Set.new
+       logic.ontologies.each do |ontology|
+         logic_ontology_ids.add(ontology.id)
+       end
+       if (ontology_ids & logic_ontology_ids).size != 0
+         text_list.add(logic.name)
+       end
     end
 
     text_list.to_a.sort.map { |x| {text: x} }
