@@ -1,8 +1,10 @@
 %h2= @page_title = 'Repositories'
 
-- if can? :create, Repository
-  .pull-right
-    = link_to 'Create Repository', :new_repository, class: 'btn btn-primary'
+.col-md-9
+  %ul.list-group
+    = render collection
 
-%ul.list-group
-  = render collection
+.col-md-3
+  - if can? :create, Repository
+    .pull-right
+      = link_to 'Create Repository', :new_repository, class: 'btn btn-primary'
