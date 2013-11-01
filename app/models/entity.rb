@@ -15,5 +15,9 @@ class Entity < ActiveRecord::Base
     groups << Struct.new(:kind, :count).new("Symbol",0) if groups.empty?
     groups
   end
-
+  
+  def to_s
+    self.text
+  end
+  
 end

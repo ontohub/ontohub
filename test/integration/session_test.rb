@@ -4,15 +4,11 @@ class SessionTest < ActionController::IntegrationTest
 
   test 'registration' do
     visit '/'
-    click_link 'Register'
-    assert_equal new_user_registration_path, current_path
-    
     within "#new_user" do
-      fill_in 'E-Mail',   :with => 'foobar@example.com'
-      fill_in 'Name',     :with => 'Foo Bar'
+      fill_in 'user_email',    :with => 'foobar@example.com'
+      fill_in 'user_name',     :with => 'Foo Bar'
       fill_in 'user_password', :with => 'simple-password'
-      fill_in 'Password confirmation', :with => 'simple-password'
-      click_on 'Create Account'
+      click_on 'Sign Up'
     end
     
     assert_equal "/", current_path
@@ -27,17 +23,14 @@ class SessionTest < ActionController::IntegrationTest
     user.save!
     
     visit '/'
-    click_link 'Log in'
-    assert_equal new_user_session_path, current_path
-    
-    within '#new_user' do
-      fill_in 'E-Mail',   :with => user.email
-      fill_in 'Password', :with => password
-      click_on 'Log in'
+    within '#sign_in' do
+      fill_in 'user_email',    :with => user.email
+      fill_in 'user_password', :with => password
+      click_on 'Sign In'
     end
     
     assert_equal "/", current_path
-    assert_match /Logged in successfully/, find(".alert-info").text
+    assert_match /#{user.name}/, find("nav .dropdown a").text
   end
   
 end

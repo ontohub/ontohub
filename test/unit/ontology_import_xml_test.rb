@@ -57,24 +57,24 @@ class OntologyImportXMLTest < ActiveSupport::TestCase
     end
     
     should 'have no entities' do
-      assert_nil @ontology.entities_count
+      assert_equal 0, @ontology.entities.count
     end
     
     should 'have no sentences' do
-      assert_nil @ontology.sentences_count
+      assert_equal 0, @ontology.sentences.count
     end
     
     context 'first child ontology' do
       setup do
-        @child = @ontology.children.first
+        @child = @ontology.children.where(name: 'sp__E1').first
       end
       
       should 'have entities' do
-        assert_equal 2, @child.entities_count
+        assert_equal 2, @child.entities.count
       end
       
       should 'have sentences' do
-        assert_equal 1, @child.sentences_count
+        assert_equal 1, @child.sentences.count
       end
     end
 

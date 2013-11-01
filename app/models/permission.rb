@@ -7,8 +7,13 @@ class Permission < ActiveRecord::Base
   
   attr_accessible :subject, :subject_id, :subject_type, :role
   
+  # user/team that receives the permission
   belongs_to :subject, :polymorphic => true
+
+  # item that the user/team is permitted to
   belongs_to :item, :polymorphic => true
+
+  # the user who created the permission
   belongs_to :creator, :class_name => 'User'
   
   validates_inclusion_of :role, :in => ROLES

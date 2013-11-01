@@ -15,8 +15,6 @@ module Ontology::Versions
 
     attr_accessible :versions_attributes
     accepts_nested_attributes_for :versions
-    
-    after_create :create_permission_for_first_version
 
     def active_version
       return self.ontology_version if self.state == 'done'
@@ -60,10 +58,9 @@ module Ontology::Versions
 
   end
   
-protected
-  
-  def create_permission_for_first_version
-    version = versions.first
-    permissions.create! :subject => version.user, :role => 'owner' if version
+  # Updates the ontology and returns the new version
+  def save_file(file, message, user)
+    repository.save_file(file, path, message, user)
   end
+
 end

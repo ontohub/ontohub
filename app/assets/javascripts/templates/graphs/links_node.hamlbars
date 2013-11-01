@@ -1,0 +1,17 @@
+%ul#node_info
+  %li
+    %span Ontology:
+    %a{href: '{{url}}'} {{node.info.name}}
+  %li
+    %span IRI:
+    %a{href: '{{node.info.iri}}'} {{node.info.iri}}
+  %li
+    %span Description:
+    %p {{node.info.description}}
+  %li
+    Symbols:
+    %ul#symbols_list
+      = hb 'each node.aggregates.counts' do
+        %li
+          %a{href: "#{hb('../url')}entities?kind=#{hb('name')}"}= hb('name') + ": "
+          %span= hb 'count'

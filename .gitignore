@@ -32,7 +32,7 @@ tmp/*
 
 # Ignore packaged assets and uploads
 /public/assets
-/public/uploads
+/data
 
 # Ignore folder attribute files
 .DS_Store
@@ -48,6 +48,10 @@ tmp/*
 *.toc
 *~
 
+# Ignore local configuration files
 config/settings.local.yml
 config/settings/*.local.yml
 config/environments/*.local.yml
+
+# Ignore sass cache
+.sass-cache

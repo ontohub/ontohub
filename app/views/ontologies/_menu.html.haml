@@ -1,17 +1,19 @@
-%div.btn-group{'style' => 'display: inline-block'}
-  %a.btn.btn-mini.dropdown-toggle{'href' => '#', 'data-toggle' => 'dropdown'}
-    %span.caret
-  %ul.dropdown-menu
-    - if can? :edit, resource
-      %li= link_to 'Edit', [:edit, resource]
-      %li= link_to 'Delete', resource, confirm: 'Do you really want to delete this ontology?', method: :delete
-      %li.divider
-    %li= link_to 'Comments', [resource, :comments]
-    %li= link_to 'Metadata', [resource, :metadata]
-    - if can? :permissions, resource
-      %li= link_to 'Permissions', [resource, :permissions]
-    - if can? :edit, resource
-      %li.divider
-      %li= link_to 'Upload new version from my computer', new_ontology_ontology_version_path(resource, :from => 'http-client')
-      %li= link_to 'Import new version from other website', new_ontology_ontology_version_path(resource, :from => 'http-server')
-    %li= link_to 'Browse Versions', [resource, :ontology_versions]
+- show_oops = resource.oops_supported? && !resource.versions.current.try(:request)
+- if show_oops
+  - version = resource.parent ? resource.parent.versions.current : resource.versions.current
+
+- show_evaluate = show_oops #|| show_foo
+
+- unless resource.versions.current.nil?
+  .pull-right
+    .btn-group
+      - if show_evaluate
+        .btn-group
+          %button.btn.btn-default.dropdown-toggle{'data-toggle' => 'dropdown'}
+            Evaluate
+            %span.caret
+          %ul.dropdown-menu{role: 'menu'}
+            - if show_oops
+              %li= link_to 'design with OOPS', repository_ontology_ontology_version_oops_request_path(*resource_chain, version), method: 'post'
+      -if can? :edit, resource
+        = link_to 'Edit', [:edit, *resource_chain], class: 'btn btn-default'

@@ -2,7 +2,7 @@
   %td= team.name
   %td= team.users.count
   %td
-    %ul.actions
-      %li= link_to 'show', team
-      %li= link_to 'permissions', [team, :permissions]
-      %li= link_to 'members', [team, :team_users]
+    .btn-group
+      = link_to 'show', team, class: 'btn btn-xs btn-default'
+      = link_to 'permissions', [team, :permissions], class: 'btn btn-xs btn-default'
+      = link_to 'members', [team, :team_users], class: 'btn btn-xs btn-default'

@@ -1,12 +1,11 @@
 %h2- @page_title = 'Change your password'
 
-= simple_form_for resource, :url => password_path(resource_name), :method => :put, html: { class: 'form-horizontal' } do |f|
+= simple_form_for resource, :url => password_path(resource_name), :method => :put do |f|
   = f.hidden_field :reset_password_token
   
   = f.input :password,              :label => 'New password',         :required => false, :input_html => {:required => true, :autofocus => true}
   = f.input :password_confirmation, :label => 'Confirm new password', :required => false, :input_html => {:required => true}
   
-  .form-actions
-    = f.button :submit, "Change my password", disable_with: t(:wait), class: 'btn-primary'
+  = f.button :wrapped, "Change my password"
 
 = render "links"

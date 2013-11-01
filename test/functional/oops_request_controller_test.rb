@@ -3,13 +3,13 @@ require 'test_helper'
 class OopsRequestsControllerTest < ActionController::TestCase
   context 'OntologyVersion OOPS-Integration' do
     
-    should route(:get, "/ontologies/12/versions/45/oops_request").to(:controller => :oops_requests, :action => :show, :ontology_id => '12', :ontology_version_id => '45' )
-    should route(:post, "/ontologies/12/versions/45/oops_request").to(:controller => :oops_requests, :action => :create, :ontology_id => '12', :ontology_version_id => '45')
+    should route(:get, "/repositories/1/ontologies/12/versions/45/oops_request").to(:controller => :oops_requests, :action => :show, :repository_id => '1', :ontology_id => '12', :ontology_version_id => '45' )
+    should route(:post, "/repositories/1/ontologies/12/versions/45/oops_request").to(:controller => :oops_requests, :action => :create, :repository_id => '1', :ontology_id => '12', :ontology_version_id => '45')
 
     setup do
-      OntologyVersion.any_instance.expects(:parse_async).once
-      @version  = FactoryGirl.create :ontology_version_with_file
-      @ontology = @version.ontology
+      @version    = FactoryGirl.create :ontology_version_with_file
+      @ontology   = @version.ontology
+      @repository = @ontology.repository
     end
     
     context 'on GET to oops' do
@@ -20,7 +20,7 @@ class OopsRequestsControllerTest < ActionController::TestCase
       
       context 'test with OOPS!' do
         setup do
-          post :create, :ontology_id => @ontology.to_param, :ontology_version_id => @version.number, :format => :json
+          post :create, :repository_id => @repository.to_param, :ontology_id => @ontology.to_param, :ontology_version_id => @version.number, :format => :json
         end
         
         should respond_with :created
@@ -31,7 +31,7 @@ class OopsRequestsControllerTest < ActionController::TestCase
         context 'while pending, processing or done' do
           setup do
             FactoryGirl.create :oops_request, state: :pending, ontology_version: @version
-            post :create, :ontology_id => @ontology.to_param, :ontology_version_id => @version.number, :format => :json
+            post :create, :repository_id => @repository.to_param, :ontology_id => @ontology.to_param, :ontology_version_id => @version.number, :format => :json
           end
         
           should respond_with :forbidden
@@ -41,7 +41,7 @@ class OopsRequestsControllerTest < ActionController::TestCase
         context 'when failed' do
           setup do
            FactoryGirl.create :oops_request, ontology_version: @version, state: :failed
-           post :create, :ontology_id => @ontology.to_param, :ontology_version_id => @version.number, :format => :json
+           post :create, :repository_id => @repository.to_param, :ontology_id => @ontology.to_param, :ontology_version_id => @version.number, :format => :json
           end
           
           should respond_with :created
@@ -52,7 +52,7 @@ class OopsRequestsControllerTest < ActionController::TestCase
         context 'with OopsRequest' do
           setup do
             FactoryGirl.create :oops_request, ontology_version: @version, state: :pending
-            get :show, :ontology_id => @ontology.to_param, :ontology_version_id => @version.number, :format => :json
+            get :show, :repository_id => @repository.to_param, :ontology_id => @ontology.to_param, :ontology_version_id => @version.number, :format => :json
           end
           
           should respond_with :success
@@ -61,7 +61,7 @@ class OopsRequestsControllerTest < ActionController::TestCase
         context 'without OopsRequest' do
           should "raise not found" do
             assert_raises ActiveRecord::RecordNotFound do 
-              get :show, :ontology_id => @ontology.to_param, :ontology_version_id => @version.number, :format => :json
+              get :show, :repository_id => @repository.to_param, :ontology_id => @ontology.to_param, :ontology_version_id => @version.number, :format => :json
             end
           end
           

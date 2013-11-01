@@ -1,0 +1,14 @@
+%ul#node_info
+  %li
+    %span Logic:
+    %a{href: '{{node_url}}/{{node.info.id}}'} {{node.info.name}}
+  %li
+    %span IRI:
+    %a{href: '{{node.info.iri}}'} {{node.info.iri}}
+  %li
+    %span Description:
+    %p {{node.info.description}}
+  %li
+    %span Number of Ontologies:
+    %span {{node.info.ontologies_count}}
+

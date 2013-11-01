@@ -1,11 +1,12 @@
-- @page_title = resource
+- lh = LogicViewhelper.new(resource)
 %h2= link_to resource, resource, 'data-type' => resource_class
 
 - if can? :update, Logic
-  %ul.actions.pull-right
-    %li= link_to 'Edit Logic', :edit_logic
-    - if can? :delete, Logic
-      %li= link_to 'Delete Logic', :logic, :confirm => 'Are you sure?', :method => :delete
+  .pull-right
+    .btn-group
+      = link_to 'Edit', [:edit, resource], class: 'btn btn-default'
+      - if can? :delete, Logic
+        = link_to 'Delete', resource, confirm: 'Are you sure?', method: :delete, class: 'btn btn-default'
 
 %p.definedBy 
   %h5 Defined by:
@@ -18,10 +19,16 @@
   %h5 Description
   = resource.description
 
-= render :partial => "mappings"
+%nav
+  %ul.nav.nav-tabs
+    - lh.available_tabs.each do |(tab_title, tab, number)|
+      %li{class: tab==@tab ? 'active' : nil}
+        = link_to logic_path(resource, tab: tab) do
+          = tab_title
+          - if number
+            %span.badge= number
+    - lh.available_tab_links.each do |(tab_title, tab)|
+      %li{class: tab==@link_tab ? 'active' : nil}
+        = link_to tab_title, [resource, tab]
 
-= render :partial => "supports"
-
-= render :partial => "ontologies"
-    
-= render :partial => "graph"
+= render partial: @tab.to_s unless @tab.nil?

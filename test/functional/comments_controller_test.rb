@@ -1,13 +1,16 @@
 require 'test_helper'
 
 class CommentsControllerTest < ActionController::TestCase
-  
-  should route(:get,  "/ontologies/ontology_id/comments").to(:controller=> :comments, :action => :index, :ontology_id => 'ontology_id')
-  should route(:post, "/ontologies/ontology_id/comments").to(:controller=> :comments, :action => :create, :ontology_id => 'ontology_id')
+
+  should route(:get,  "/repositories/repository_id/ontologies/ontology_id/comments").
+    to(:controller=> :comments, :action => :index, :ontology_id => 'ontology_id', :repository_id => 'repository_id')
+  should route(:post, "/repositories/repository_id/ontologies/ontology_id/comments").
+    to(:controller=> :comments, :action => :create, :ontology_id => 'ontology_id', :repository_id => 'repository_id')
   
   context 'ontology' do
     setup do
       @ontology = FactoryGirl.create :ontology
+      @repository = @ontology.repository
       @user     = FactoryGirl.create :user
     end
     
@@ -16,7 +19,7 @@ class CommentsControllerTest < ActionController::TestCase
       context 'on GET to index' do
         context 'without comment' do
           setup do
-            get :index, :ontology_id => @ontology.to_param
+            get :index, :ontology_id => @ontology.to_param, :repository_id => @repository.to_param
           end
           
           should respond_with :success
@@ -26,7 +29,7 @@ class CommentsControllerTest < ActionController::TestCase
         context 'with comment' do
           setup do
             @comment = FactoryGirl.create :comment, :commentable => @ontology
-            get :index, :ontology_id => @ontology.to_param
+            get :index, :ontology_id => @ontology.to_param, :repository_id => @repository.to_param
           end
           
           should respond_with :success
@@ -44,7 +47,7 @@ class CommentsControllerTest < ActionController::TestCase
       context 'on GET to index' do
         context 'without comment' do
           setup do
-            get :index, :ontology_id => @ontology.to_param
+            get :index, :ontology_id => @ontology.to_param, :repository_id => @repository.to_param
           end
           
           should respond_with :success
@@ -54,7 +57,7 @@ class CommentsControllerTest < ActionController::TestCase
         context 'with comment' do
           setup do
             @comment = FactoryGirl.create :comment, :commentable => @ontology
-            get :index, :ontology_id => @ontology.to_param
+            get :index, :ontology_id => @ontology.to_param, :repository_id => @repository.to_param
           end
           
           should respond_with :success
@@ -64,7 +67,7 @@ class CommentsControllerTest < ActionController::TestCase
         context 'on POST to delete' do
           setup do
             @comment = FactoryGirl.create :comment, :commentable => @ontology, :user => @user
-            xhr :delete, :destroy, :ontology_id => @ontology.to_param, :id => @comment.id
+            xhr :delete, :destroy, :ontology_id => @ontology.to_param, :repository_id => @repository.to_param, :id => @comment.id
           end
           
           should respond_with :success
@@ -76,6 +79,7 @@ class CommentsControllerTest < ActionController::TestCase
           setup do
             xhr :post, :create,
               ontology_id: @ontology.to_param,
+              repository_id: @repository.to_param,
               comment:     {text: 'foo'}
           end
           should respond_with :unprocessable_entity
@@ -85,6 +89,7 @@ class CommentsControllerTest < ActionController::TestCase
           setup do
             xhr :post, :create,
               ontology_id: @ontology.to_param,
+              repository_id: @repository.to_param,
               comment:     {text: 'fooo baaaaaaaaaaaaaaar'}
           end
           

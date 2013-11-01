@@ -1,9 +1,8 @@
 %tr
+  %td= link_to ontology_version.commit_oid[0..8], repository_ref_path(ontology_version.repository, ontology_version.commit_oid, :diff)
   %td= timestamp ontology_version
-  %td= ontology_version.source_name
-  %td= fancy_link ontology_version.user
-  %td= status ontology_version
-  %td= ontology_version.last_error
+  %td= ontology_version.user ? fancy_link(ontology_version.user) : '-'
   %td
-    - if ontology_version.raw_file?
-      = link_to "Download", [ontology_version.ontology, ontology_version], :class => 'btn'
+    = status ontology_version
+    = format_error_message ontology_version.last_error
+  %td= link_to 'Download', [*resource_chain, ontology_version], class: 'btn btn-xs btn-default'

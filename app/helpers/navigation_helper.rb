@@ -1,26 +1,46 @@
 module NavigationHelper
 
-  def ontology_nav(ontology, current_page)
-    @entities = ontology.entities.groups_by_kind
+  def repository_nav(resource, current_page)
+    pages = [
+      [:overview,     resource]
+    ]
+    
+    chain = resource_chain.last.is_a?(Ontology) ? resource_chain[0..-2] : resource_chain
+    pages << [:ontologies,  [*chain, :ontologies]]
+    pages << [:files,       [*chain, :tree]]
+    pages << [:history,     repository_ref_path(resource, 'master', path: nil, action: :history)]
+    pages << [:"URL Maps",  repository_url_maps_path(resource)]
+    pages << [:permissions, [*chain, :permissions]] if can? :permissions, resource
+    
+    subnavigation(resource, pages, current_page)
+  end
 
-    @active_kind = nil
+  def ontology_nav(ontology, current_page)
+    @top_level_pages = [
+      ['Content', ontology.distributed? ? :children : :entities],
+      ['Comments', :comments],
+      ['Metadata', :metadata],
+      ['Versions', :ontology_versions],
+      ['Graphs', :graphs],
+      ['Links', :links]
+    ]
+
+    @entities = ontology.distributed? ? [] : ontology.entities.groups_by_kind
+
     @active_kind = @entities.first.kind if current_page == :entities
     @active_kind = params[:kind] if params[:kind]
 
     pages = []
     
     if ontology.distributed?
-      pages << [:children,  [ontology, :children]]
+      pages << [:children,  [*resource_chain, :children]]
     else
-      pages << [:sentences, [ontology, :sentences]]
+      pages << [:sentences, [*resource_chain, :sentences]]
     end
 
     actions = []
-
-    # action link to new version
-    actions << link_to('New version', [:new, ontology, :ontology_version ]) if can? :edit, ontology
     
-    # add counters
+    # Add counters
     pages.each do |row|
       counter_key = "#{row[0]}_count"
       row << ontology.send(counter_key) if ontology.respond_to?(counter_key)
@@ -38,8 +58,7 @@ module NavigationHelper
   end
      
   def subnavigation(resource, pages, current_page, additional_actions = [])
-    
-    # add counters
+    # Add counters
     pages.each do |row|
       counter_key = "#{row[0]}_count"
       row << resource.send(counter_key) if resource.respond_to?(counter_key)
@@ -65,6 +84,24 @@ module NavigationHelper
     pages << [:members,     [team, :team_users]] if can? :edit, team
     
     subnavigation(team, pages, current_page)
+  end
+
+  def active_navigation(controller)
+    if params[:repository_id]
+      if params[:ontology_id]
+        return 'active' if controller == :ontologies
+      else
+        return 'active' if controller == :repositories
+      end
+    else
+      return 'active' if [controller.to_s, controller.to_s.gsub('_', '/')].include? params[:controller]
+    end
+  end
+
+  def menu_entry(title, controller)
+    content_tag :li, class: active_navigation(controller) do
+      link_to title, controller
+    end
   end
   
 end

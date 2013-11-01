@@ -1,4 +1,11 @@
 %tr
   %td= fancy_link logic
   %td= logic.iri
-  %td= pluralize(logic.ontologies.count, Ontology.to_s)
+  %td= link_to |
+        pluralize(logic.ontologies.size, Ontology.to_s), |
+        resource_path(logic, tab: 'ontologies') |
+  %td
+    = link_to |
+      "with " + |
+      pluralize(Ontology.distributed_in(logic).size, "distributed #{Ontology}"), |
+      resource_path(logic, tab: 'distributed') |
