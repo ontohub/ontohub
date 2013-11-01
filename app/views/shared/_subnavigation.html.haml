@@ -1,21 +1,23 @@
 - if can? :edit, resource
-  %ul.actions.pull-right
+  .btn-group.pull-right
     - additional_actions.each do |action_link|
-      %li= action_link
-    %li= link_to 'Edit', [:edit, resource]
-    %li= link_to 'Delete', resource, :confirm => 'Really delete?', :method => :delete
+      = action_link
+    = link_to 'Edit', [:edit, resource], class: 'btn btn-default'
+    = link_to 'Delete', resource, confirm: 'Really delete?', method: :delete, class: 'btn btn-default'
 
-%h2
-  = link_to resource, resource, 'data-type' => resource.class
+%h1
+  = fancy_link resource
 
 %nav
   %ul.nav.nav-tabs
     - pages.each do |page, path, count|
-      %li{:class => (page==current_page ? 'active' : nil)}
-        %a{:href => url_for(path)}
+      %li{class: (page == current_page ? 'active' : nil)}
+        = link_to url_for(path) do
           = page.to_s.capitalize
-          - if count # hide counter if empty
-            %span.badge{:style => count==0 && 'display:none'}= count
+          - if count
+            %span.badge{style: count == 0 && 'display: none'}= count
 
 = format_links
-%h3= current_page.to_s.capitalize
+
+- unless params[:ontology_id]
+  %h2= current_page.to_s.capitalize

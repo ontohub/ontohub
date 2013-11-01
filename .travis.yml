@@ -21,7 +21,7 @@ before_install:
   - 'gem install bundler'
 
 script:
-  - bundle exec rake test
+  - bundle exec rake
 
 before_script:
   - psql -c 'create database ontohub_test;' -U postgres
@@ -29,6 +29,6 @@ before_script:
   - sudo apt-add-repository -y 'deb http://archive.canonical.com/ubuntu precise partner'
   - sudo apt-add-repository -y 'deb http://archive.ubuntu.com/ubuntu precise-updates main restricted universe multiverse'
   - sudo apt-get update
-  - sudo apt-get install ia32-libs libsane libgphoto2-2 hets-core subversion udrawgraph
+  - sudo apt-get install ia32-libs libsane libgphoto2-2 hets-core subversion udrawgraph git-svn
   - sudo hets -update
   - bundle exec rake db:migrate || true

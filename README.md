@@ -33,11 +33,11 @@ Installation
 
 These commands should work on Ubuntu 12.04. First of all you need a root shell.
 
-### RVM with Ruby 1.9.3
+### RVM with Ruby 2.0
 
-Installation of [RVM](https://rvm.beginrescueend.com/ "Ruby Version Manager"):
+Installation of [RVM](https://rvm.io/ "Ruby Version Manager"):
 
-    apt-get install -y build-essential openssl libreadline6 libreadline6-dev curl git-core zlib1g zlib1g-dev libssl-dev libyaml-dev libsqlite3-0 libsqlite3-dev sqlite3 libxml2-dev libxslt-dev autoconf libc6-dev ncurses-dev automake libtool bison subversion
+    apt-get install -y curl
     curl -L https://get.rvm.io | bash -s stable --ruby
 
 If you have a desktop installation, you should "run command as a login shell" to
@@ -59,13 +59,13 @@ this section, if you are preparing your development setup.)
 Depending on the installed ruby and passenger version you need to create a
 `/etc/apache2/mods-available/passenger.load` with the LoadModule directive:
 
-    LoadModule passenger_module /usr/local/rvm/gems/ruby-1.9.3-p<version>/gems/passenger-<version>/ext/apache2/mod_passenger.so
+    LoadModule passenger_module /usr/local/rvm/gems/ruby-2.0.0-p<version>/gems/passenger-<version>/ext/apache2/mod_passenger.so
 
 and a `/etc/apache2/mods-available/passenger.conf` with the global passenger
 configuration:
 
-    PassengerRoot /usr/local/rvm/gems/ruby-1.9.3-p<version>/gems/passenger-<version>
-    PassengerRuby /usr/local/rvm/wrappers/ruby-1.9.3-p<version>/ruby
+    PassengerRoot /usr/local/rvm/gems/ruby-2.0.0-p<version>/gems/passenger-<version>
+    PassengerRuby /usr/local/rvm/wrappers/ruby-2.0.0-p<version>/ruby
 
 now enable the module an restart apache2:
 
@@ -83,6 +83,21 @@ now enable the module an restart apache2:
         Options -MultiViews
       </Directory>
     </VirtualHost>
+
+### Git Daemon
+
+Create an upstart script (i.e. `/etc/init/git-daemon.conf`):
+
+    start on startup
+    stop on shutdown
+    setuid nobody
+    setgid nogroup
+    exec /usr/bin/git daemon \
+        --reuseaddr \
+        --export-all \
+        --syslog \
+        --base-path=/srv/http/ontohub/shared/data/git_daemon
+    respawn
 
 ### Tomcat with Solr
 
@@ -158,13 +173,6 @@ The Hets installation path and environment variables are to be set in
 
 Allowed URI schemas are to be set in `config/initializers/ontohub_config.rb`.
 
-### Clean upload cache
-
-You can run the following command periodically to delete temporary files
-from uploads.
-
-    rails runner CarrierWave.clean_cached_files!
-
 Development
 -----------
 
@@ -202,11 +210,6 @@ After configuring your `config/database.yml` you have to create the tables:
 
     rake db:migrate:reset
 
-### Solr and Resque
-
-    rake sunspot:solr:start
-    rake resque:work
-
 ### Seeds
 
 Fill the database with dummy data:
@@ -215,21 +218,14 @@ Fill the database with dummy data:
 
 ### Start the rails server
 
-Start the rails server. It will be available at http://localhost:3000/ until you
-stop it by pressing `CTRL+C`.
+Start the rails server and background processes.
+The server will be available at http://localhost:3000/ until you stop it by pressing `CTRL+C`.
 
-    rails s
+    script/start-development
 
 Now you can log in as *admin@example.com* with password *foobar*.
 *Alice, Bob, Carol, Dave, Ted* @example.com can also be used (with the same
 password).
-
-### Stopping Solr and Resque
-
-Resque has to be stopped with `CTRL+C` on the terminal you typed `rake
-resque:work`. Solr is to be stopped as follows:
-
-    rake sunspot:solr:stop
 
 License
 -------

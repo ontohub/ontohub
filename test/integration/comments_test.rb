@@ -7,17 +7,17 @@ class CommentsTest < ActionController::IntegrationTest
     @ontology.state = 'done'
     @ontology.save
     @user     = FactoryGirl.create :user
+    @repository = @ontology.repository
     
     # Add user as owner to the ontology
-    FactoryGirl.create :permission, subject: @user, item: @ontology
+    FactoryGirl.create :permission, subject: @user, item: @ontology.repository
     login_as @user, :scope => :user
   end
   
   test 'create a comment' do
     comment_text = 'very loooooooong comment'
     
-    visit ontology_comments_path(@ontology)
-    find_link "Log out"
+    visit repository_ontology_comments_path(@repository, @ontology)
     
     # zero comments at the beginning
     assert_equal 0, all('.comments > ol > li').count
@@ -53,7 +53,7 @@ class CommentsTest < ActionController::IntegrationTest
   test 'delete a comment' do
     comment = FactoryGirl.create :comment, commentable: @ontology
     
-    visit ontology_comments_path(@ontology)
+    visit repository_ontology_comments_path(@repository, @ontology)
     
     # does one comment exist?
     assert_equal 1, all('.comments > ol > li').count

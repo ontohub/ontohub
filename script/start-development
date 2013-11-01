@@ -1,0 +1,9 @@
+#!/bin/sh
+
+rake sunspot:solr:start &
+bin/sidekiq -q default,hets -c 1 -v &
+rails s &
+
+trap "rake sunspot:solr:stop" INT
+
+wait

@@ -1,14 +1,14 @@
-require File.expand_path('../resque_workers',  __FILE__)
+require File.expand_path('../sidekiq_workers',  __FILE__)
 
-ResqueWorkers.configure do
+SidekiqWorkers.configure do
   if ENV['RAILS_ENV']=='production'
-    # one dedicated worker for oops
-    watch 'oops'
+    # one worker for the hets queue
+    watch 'hets', 2
     
-    # two workers for all jobs
-    watch '*', 2
+    # one worker for the default queue
+    watch 'default', 5
   else
-    # one worker for all jobs
-    watch '*'
+    # one worker for all queues
+    watch %w( hets default ), 1
   end
 end

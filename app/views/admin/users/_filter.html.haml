@@ -1,4 +1,6 @@
-= form_tag '', :method => :get, :class => 'filter form-search' do
-  .input-append
-    = text_field_tag :email_search, params[:email_search], :placeholder => 'E-Mail address', class: 'search-query'
-    %button.btn{type: 'submit'} Show
+= form_tag '', :method => :get do
+  .input-group
+    = text_field_tag :email_search, params[:email_search], :placeholder => 'User e-mail', class: 'form-control'
+    %span.input-group-btn
+      %button.btn.btn-primary{type: 'submit'}
+        %span.glyphicon.glyphicon-search

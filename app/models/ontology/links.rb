@@ -13,20 +13,25 @@ module Ontology::Links
     
     def update_or_create_from_hash(hash, user, timestamp = Time.now)
       raise ArgumentError, 'No hash given.' unless hash.is_a? Hash
-
       # hash['name'] # maybe nil, in this case, we need to generate a name
       link_iri   = iri_for_child(hash['name'] || hash['linkid'])
+      link_name  = hash['name']
       source_iri = iri_for_child(hash['source'])
       target_iri = iri_for_child(hash['target'])
       
       source = Ontology.find_by_iri(source_iri) || (raise ArgumentError, "source ontology not found: #{source_iri}")
       target = Ontology.find_by_iri(target_iri) || (raise ArgumentError, "target ontology not found: #{target_iri}")
       
+      
       # linktype
       linktype = hash['type']
       raise "link type missing" if linktype.blank?
       kind   = Link::KINDS.find {|k| linktype.downcase.include?(k) }
-      kind ||= Link::KIND_DEFAULT
+      if linktype.include?("Thm")
+        kind ||= "view"
+      else
+        kind ||= "import"
+      end
       
       # morphism
       gmorphism = hash['morphism']
@@ -46,6 +51,7 @@ module Ontology::Links
       # finally, create or update the link
       link = find_or_initialize_by_iri(link_iri)
       link.attributes = {
+        name:          link_name, 
         source:        source,
         target:        target,
         kind:          kind,
@@ -57,6 +63,17 @@ module Ontology::Links
       }
       link.updated_at = timestamp
       link.save!
+      link.versions << LinkVersion.create(link: link,
+                                          source: source.versions.current,
+                                          target: target.versions.current)
+                                                    
+      # entity mapping
+      if hash["map"]
+        source = Entity.where(text: hash["map"].first["text"],ontology_id: link.source.id).first
+        target = Entity.where(text: hash["map"].second["text"], ontology_id: link.target.id).first
+        entity_mapping = EntityMapping.first_or_initialize(source: source, target: target, link: link)
+        entity_mapping.save!
+      end
     end
   end
 end

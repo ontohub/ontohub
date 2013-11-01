@@ -1,0 +1,170 @@
+$commit_blue: #F9FAFC
+$grayLighter: #ddd
+
+.clone-url
+  cursor: text !important
+
+.url_maps
+  .source
+    text-align: right
+    width: 50%
+  .symbol
+    text-align: center
+    width: 1ex
+  .target
+    text-align: left
+    width: 50%
+  .edit
+    text-align: center
+    width: 6ex
+  .delete
+    text-align: center
+    width: 6ex
+
+.ontology-list
+  list-style: none
+  margin: 0
+  padding: 0
+  li + li::before
+    margin-top: 5px
+
+// files
+.file-table
+  min-width:  800px
+
+  .ontology
+    min-width: 120px
+
+  .icon
+    width: 16px
+
+  .name
+    min-width: 184px
+
+  .last-commit
+    min-width: 320px
+
+    .message
+      color: black
+
+  .last-modified
+    min-width: 160px
+    text-align: right
+
+// breadcrumbs
+.breadcrumb
+  .commit-oid
+    margin-right: 2em
+    background-color: #3a87ad
+    border-radius: 3px
+    padding: 2px 4px
+    color: white
+    text-shadow: 0 -1px 0 rgba(0, 0, 0, 0.25)
+
+// diff
+.changed-file
+  h2
+    @extend h4
+    margin-top: 0px
+
+  .diff-code
+    background: white
+    padding: 10px
+
+.diff 
+  overflow: auto
+
+.diff ul
+  background: #fff
+  overflow: auto
+  font-size: 13px
+  list-style: none
+  margin: 0
+  padding: 0
+  display: table
+  width: 100%
+
+
+.diff del, .diff ins
+  display: block
+  text-decoration: none
+
+.diff li
+  padding: 0
+  display: table-row
+  margin:  0
+  height: 1em
+
+.diff li.ins
+  background: #dfd
+  color: #080
+
+.diff li.del
+  background: #fee
+  color: #b00
+
+.diff li:hover
+  blackground: #ffc
+/* try 'whitespace: pre;' if you don't want lines to wrap */
+
+.diff del, .diff ins, .diff span
+  white-space: pre-wrap
+  font-family: courier
+
+.diff del strong
+  font-weight: normal
+  background: #fcc
+
+.diff ins strong
+  font-weight: normal
+  background: #9f9
+
+.diff li.diff-comment 
+  display:  none
+
+.diff li.diff-block-info 
+  background:  none repeat scroll 0 0 #ccc
+
+.diff .symbol 
+  margin-right: 10px
+
+.changed-files-list
+  margin: 10px 0px
+  padding-bottom: 10px
+
+// commit
+.repository-commits
+  list-style: none
+  margin-left: 0
+  padding-left: 0
+  .top
+    margin: -10px -10px 10px -10px
+    padding: 5px 9px
+    background: white
+    @include border-top-radius(4px)
+    border: 1px solid $grayLighter
+    h1
+      @extend h4
+      a
+        @extend .btn
+        @extend .btn-primary
+    .path
+      padding-top: 12px
+  .commit
+    @include border-radius(4px)
+    background: $commit_blue
+    border: 1px solid darken($commit_blue, 5%)
+    @include box-shadow(inset 0 1px 1px rgba(0, 0, 0, 0.05))
+    adding: 10px
+    margin: 10px 0px
+    padding: 5px 0
+    &:hover
+      background: darken($commit_blue, 10%)
+  .browse-history
+    text-align: center
+    margin-right: -40px
+  ol
+    margin-left: 0px
+
+.repository-index
+  margin-top: 1em

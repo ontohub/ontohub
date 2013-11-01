@@ -22,6 +22,21 @@ class GraphDataFetcherTest < ActiveSupport::TestCase
 
   end
 
+  context 'query for mapping-type correctly' do
+
+    should 'produce the correct type on known mapping' do
+      assert_equal :Link, GraphDataFetcher.link_for(Ontology)
+      assert_equal :LogicMapping, GraphDataFetcher.link_for(Logic)
+    end
+
+    should 'raise the correct error on unknown mapping' do
+      assert_raises GraphDataFetcher::UnknownMapping do
+        GraphDataFetcher.link_for(LogicMapping)
+      end
+    end
+
+  end
+
   context 'logic specific tests' do
 
     setup do
@@ -79,6 +94,34 @@ class GraphDataFetcherTest < ActiveSupport::TestCase
 
       should 'edges should include the mapping' do
         assert_includes @edges, @mapping
+      end
+
+    end
+
+  end
+
+  context 'distributed ontology specific tests' do
+
+    setup do
+      @distributed = FactoryGirl.create(:linked_distributed_ontology)
+      @links = Link.where(ontology_id: @distributed.id)
+      @fetcher = GraphDataFetcher.new(center: @distributed)
+      @nodes, @edges = @fetcher.fetch
+    end
+
+    context 'with valid request:' do
+
+      should 'include all children in the node list' do
+        children = @distributed.children.map{|o| Ontology.find(o.id)}
+        children.each do |child|
+          assert_includes @nodes, child
+        end
+      end
+
+      should 'include all links defined by the DO in the edge list' do
+        @links.each do |link|
+          assert @edges.include?(link)
+        end
       end
 
     end

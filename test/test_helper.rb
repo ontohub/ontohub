@@ -4,6 +4,14 @@ require 'rails/test_help'
 
 class ActiveSupport::TestCase
   # Add more helper methods to be used by all tests here...
+  
+  setup do
+    # clean git repositories
+    FileUtils.rmtree Ontohub::Application.config.git_root
+    FileUtils.rmtree Ontohub::Application.config.git_working_copies_root
+    FileUtils.rmtree Repository::Symlink::PATH
+  end
+
 end
 
 # for devise
@@ -16,6 +24,10 @@ require "strip_attributes/matchers"
 class Test::Unit::TestCase
   extend StripAttributes::Matchers
 end
+
+# For Sidekiq
+require 'sidekiq/testing'
+Sidekiq::Testing.fake!
 
 # Recording HTTP Requests
 VCR.configure do |c|  

@@ -4,6 +4,8 @@ gem 'rails', '~> 3.2.13'
 gem 'rack-protection'
 gem 'secure_headers'
 
+gem 'pry-rails'
+
 gem 'pg'
 gem 'foreigner'
 
@@ -14,10 +16,10 @@ gem 'rdf-n3'
 # Gems used only for assets and not required
 # in production environments by default.
 group :assets do
-  gem 'sass-rails',   '~> 3.2.3'
-  gem 'bootstrap-sass', "~> 2.3.2"
-  gem 'coffee-rails', '~> 3.2.1'
-  gem 'compass',      '~> 0.12.1'
+  gem 'sass-rails',     '~> 3.2.3'
+  gem 'bootstrap-sass', '~> 3.0.0'
+  gem 'coffee-rails',   '~> 3.2.1'
+  gem 'compass',        '~> 0.12.1'
   gem 'font_awesome'
   gem 'jquery-rails'
   gem 'jquery-ui-rails'
@@ -25,6 +27,8 @@ group :assets do
   gem 'd3_rails'
   gem 'therubyracer'
   gem 'uglifier', '>= 1.0.3'
+  gem 'handlebars_assets', '~> 0.14.1'
+  gem 'hamlbars', '~> 2.0'
 end
 
 gem 'haml-rails'
@@ -38,6 +42,9 @@ gem 'simple_form'
 # Inherited Resources
 gem 'inherited_resources', '~> 1.4.0'
 gem 'has_scope'
+
+# JSON views
+gem 'rabl'
 
 # XML Parser
 gem 'nokogiri', '~> 1.6'
@@ -57,15 +64,13 @@ gem "strip_attributes", "~> 1.0"
 # For distributed ontologies
 gem 'acts_as_tree'
 
-# Manage uploads
-gem 'carrierwave', "~> 0.8.0"
-
 # HTTP Client
 gem "rest-client"
 
-# Async jobs
-gem 'resque'
-gem 'redis-namespace'
+# Background-Jobs
+gem 'sidekiq', '~> 2.15'
+gem 'sidetiq'
+gem 'sinatra', require: false, group: [:development, :production]
 
 # Search engine
 gem 'sunspot_rails', :git => 'git://github.com/digineo/sunspot.git'
@@ -77,12 +82,28 @@ gem 'ruby-graphviz', "~> 1.0.8"
 # Fake-inputs for tests and seeds
 gem "faker", "~> 1.1.2"
 
+group :development, :test do
+  gem 'byebug'
+end
+
+# Git
+gem 'rugged'
+gem 'diffy'
+gem 'codemirror-rails'
+gem 'js-routes'
+
+group :development, :test do
+  gem 'byebug'
+  gem 'better_errors'
+  gem 'binding_of_caller'
+end
+
 group :test do
   gem 'mocha', require: 'mocha/setup'
   gem 'shoulda'
   gem "shoulda_routing_macros", "~> 0.1.2"
   gem "factory_girl_rails"
-  
+
   # Required for integration tests
   gem "capybara"
   gem "capybara-webkit"
@@ -103,9 +124,14 @@ group :development do
   gem 'quiet_assets'
 end
 
+group :development, :test do
+  gem 'byebug'
+  gem 'rspec-rails', '~> 2.0'
+end
+
 group :production do
   gem 'god'
-  gem 'exception_notification', '~> 2.6.1'
+  gem 'exception_notification', '~> 4.0'
 end
 
 group :documentation do

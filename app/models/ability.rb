@@ -9,14 +9,19 @@ class Ability
     if user.admin?
       can { true }
     elsif user.id
-      # Ontologies
-      can [:edit, :update], Ontology do |subject|
+      # Repositories
+      can [:new, :create], Repository
+      can [:write], Repository do |subject|
         subject.permission?(:editor, user)
       end
-      can [:destroy, :permissions], Ontology do |subject|
+      can [:edit, :update, :destroy, :permissions], Repository do |subject|
         subject.permission?(:owner, user)
       end
-      can [:new, :create, :bulk], Ontology
+
+      # Ontology
+      can :manage, Ontology do |subject|
+        subject.permission?(:editor, user)
+      end
       
       # Logics
       can [:edit, :update], Logic do |subject|

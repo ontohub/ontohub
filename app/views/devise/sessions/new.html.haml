@@ -4,9 +4,8 @@
   
   = f.input :email,    :required => false, :input_html => {:required => true, :autofocus => true}
   = f.input :password, :required => false, :input_html => {:required => true}
-  = f.input :remember_me, :as => :boolean, label: false, inline_label: true if devise_mapping.rememberable?
+  = f.input :remember_me, :as => :boolean if devise_mapping.rememberable?
   
-  .form-actions
-    = f.button :submit, 'Log in', disable_with: t(:wait), class: 'btn-primary'
+  = f.button :wrapped, 'Log in', disable_with: t(:wait), class: 'btn-primary'
 
 = render "links"

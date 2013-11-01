@@ -1,8 +1,21 @@
-%h3 Latest ontologies
-%ol.latest
-  - @versions.each do |version|
-    %li
-      = fancy_link version.ontology
-      by
-      = fancy_link version.user
-      = timestamp version
+%h2 Recently Updated Repositories
+
+.pull-right
+  = link_to 'Browse Repositories', repositories_path, class: 'btn btn-primary', type: 'button'
+
+- @repositories.each do |repository|
+  %div
+    = fancy_link repository
+    = timestamp repository.updated_at
+
+%h2 Recently Updated Ontologies
+
+.pull-right
+  = link_to 'Browse Ontologies', ontologies_path, class: 'btn btn-primary', type: 'button'
+
+- @versions.each do |version|
+  %div
+    = fancy_link version.ontology
+    by
+    = fancy_link version.user
+    = timestamp version

@@ -3,13 +3,14 @@ class EntityDisplayTest < ActionController::IntegrationTest
   context 'When text' do
     context 'does not contain name' do
       setup do
-        # HACK setting state of ontology to 'done'
-        # so the ajax polling won't intere this test
+        # HACK setting state of ontology to 'done' so the ajax polling won't
+        # interfere this test
         @entity = FactoryGirl.create :entity_with_ontology_version
         @entity.ontology.state = 'done'
         @entity.ontology.save
+        @repository = @entity.ontology.repository
 
-        visit ontology_entities_path(@entity.ontology)
+        visit repository_ontology_entities_path(@repository, @entity.ontology)
         @ths = all('th')
       end
 
@@ -39,8 +40,9 @@ class EntityDisplayTest < ActionController::IntegrationTest
           text: 'Foo Bar'
         @entity.ontology.state = 'done'
         @entity.ontology.save
+        @repository = @entity.ontology.repository
 
-        visit ontology_entities_path(@entity.ontology)
+        visit repository_ontology_entities_path(@repository, @entity.ontology)
       end
 
       context 'page' do
@@ -48,8 +50,8 @@ class EntityDisplayTest < ActionController::IntegrationTest
           @ths = all('th')
         end
 
-        should 'have 2 <th> tag' do
-          assert_equal 2, @ths.size
+        should 'have 0 <th> tag' do
+          assert_equal 0, @ths.size
         end
       end
 
@@ -61,20 +63,21 @@ class EntityDisplayTest < ActionController::IntegrationTest
               text: 'Foo'
             @entity.ontology.state = 'done'
             @entity.ontology.save
+            @repository = @entity.ontology.repository
             
-            visit ontology_entities_path(@entity.ontology)
+            visit repository_ontology_entities_path(@repository, @entity.ontology)
           end
 
           should 'be no highlighting' do
             assert_raise Capybara::ElementNotFound do
-              find('span.entity_highlight')
+              find('strong.entity_highlight')
             end
           end
         end
 
         context 'name' do
           should 'be highlighted' do
-            assert_equal find('span.entity_highlight').text, @entity.name
+            assert_equal find('strong.entity_highlight').text, @entity.name
           end
         end
       end
@@ -86,18 +89,9 @@ class EntityDisplayTest < ActionController::IntegrationTest
             name: '<http://example.com/foo_class>'
           @entity.ontology.state = 'done'
           @entity.ontology.save
+          @repository = @entity.ontology.repository
 
-          visit ontology_entities_path(@entity.ontology)
-        end
-
-        context 'tooltip' do
-          should 'exist for display_name' do
-            assert_equal find('span.entity_tooltip').text, @entity.display_name
-          end
-          should 'be iri' do
-            tooltip_title = find('span.entity_tooltip')[:'data-original-title']
-            assert_equal tooltip_title, @entity.iri
-          end
+          visit repository_ontology_entities_path(@repository, @entity.ontology)
         end
       end
     end

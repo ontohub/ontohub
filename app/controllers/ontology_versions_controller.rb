@@ -1,7 +1,8 @@
 # 
-# Displays versions of a ontology
+# Displays versions of an ontology
 # 
 class OntologyVersionsController < InheritedResources::Base
+
   defaults :collection_name => :versions, :finder => :find_by_number!
   actions :index, :show, :new, :create
   belongs_to :ontology
@@ -11,15 +12,11 @@ class OntologyVersionsController < InheritedResources::Base
 
   # TODO Needs testing !!!
   def show
-    file = resource.raw_file
+    resource.checkout_raw!
     
-    send_file file.current_path, filename: file.identifier
+    send_file resource.raw_path, filename: File.basename(resource.ontology.path)
   rescue Errno::ENOENT, NoMethodError => e
     redirect_to collection_path, flash: { error: "The file was not found: #{e.message}" }
-  end
-
-  def new
-    build_resource.source_url = collection.latest.first.source_url
   end
 
   def create
@@ -36,7 +33,9 @@ class OntologyVersionsController < InheritedResources::Base
     redirect_to ontology_entities_path(resource.ontology)
   end
   
-protected
+
+  protected
+
   def collection
     if parent.parent
       @versions = parent.parent.versions

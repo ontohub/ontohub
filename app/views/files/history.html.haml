@@ -1,0 +1,8 @@
+= repository_nav repository, :history
+
+= render partial: 'repositories/breadcrumbs'
+
+=# paginate @commits
+
+- group_commits(@commits).each do |group| 
+  = render partial: 'history_commit_group', locals: { group: group }

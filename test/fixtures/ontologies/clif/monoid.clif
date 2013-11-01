@@ -1,0 +1,10 @@
+(cl-text http://colore.oor.net/magma/monoid.clif
+
+(cl-imports http://colore.oor.net/magma/semigroup.clif)
+
+(exists (e)
+  (forall (x)
+    (and  (= x (op e x))
+      (= x (op x e)))))
+
+)
