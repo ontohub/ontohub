@@ -54,6 +54,11 @@ GEM
     addressable (2.3.5)
     arel (3.0.2)
     bcrypt-ruby (3.1.2)
+    better_errors (1.0.1)
+      coderay (>= 1.0.0)
+      erubis (>= 2.6.6)
+    binding_of_caller (0.7.2)
+      debug_inspector (>= 0.0.1)
     brwsr (1.1.1)
     builder (3.0.4)
     byebug (2.3.1)
@@ -100,6 +105,7 @@ GEM
     d3_rails (3.3.9)
       railties (>= 3.1.0)
     database_cleaner (1.2.0)
+    debug_inspector (0.0.2)
     debugger-linecache (1.2.0)
     devise (2.2.7)
       bcrypt-ruby (~> 3.0)
@@ -346,6 +352,8 @@ PLATFORMS
 
 DEPENDENCIES
   acts_as_tree
+  better_errors
+  binding_of_caller
   bootstrap-sass!
   byebug
   cancan (~> 1.6.7)
