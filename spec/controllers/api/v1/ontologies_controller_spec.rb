@@ -32,7 +32,7 @@ describe Api::V1::OntologiesController do
         put :update, params
           
       end
-      it{ byebug; should respond_with :forbidden }
+      it{ should respond_with :forbidden }
     end
 
     context 'with permission' do
