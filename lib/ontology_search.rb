@@ -61,8 +61,10 @@ class OntologySearch
       text_list.add(symbol.name)
     end
 
-    Logic.select(:name).where("name ILIKE :prefix", prefix: "#{prefix}%").limit(5).each do |logic|
-      text_list.add(logic.name)
+    Logic.where("name ILIKE :prefix", prefix: "#{prefix}%").limit(5).each do |logic|
+      if logic.ontologies.size != 0
+        text_list.add(logic.name)
+      end
     end
 
     text_list.to_a.sort.map { |x| {text: x} }
