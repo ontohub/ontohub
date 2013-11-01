@@ -5,8 +5,8 @@
     = link_to 'Create Logic', :new_logic, class: 'btn btn-primary'
 
 %p
-  = pluralize(collection.count, resource_class.to_s)
-  found
+  = pluralize(Logic.all.size, "logic")
+  currently available
 
 = pagination do
   %table

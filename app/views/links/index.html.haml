@@ -4,11 +4,11 @@
 - if @ontology
   = ontology_nav @ontology, :links
 - else
-  %h2= @page_title = 'Links'
+  %h2= @page_title = 'Mappings'
 
 %p
-  = pluralize(collection.count, resource_class.to_s)
-  found
+  = pluralize(Link.all.size, "ontology mapping")
+  currently available
   
 = pagination do 
   -if @ontology

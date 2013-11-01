@@ -1,5 +1,10 @@
 %h2= @page_title = 'Repositories'
 
+%p
+  = pluralize Entity.all.size, "symbol"
+  currently available
+%div.clearfix
+
 .row
   .col-md-12
     - if can? :create, Repository
