@@ -16,10 +16,10 @@ gem 'rdf-n3'
 # Gems used only for assets and not required
 # in production environments by default.
 group :assets do
-  gem 'sass-rails',   '~> 3.2.3'
-  gem 'bootstrap-sass', github: 'thomas-mcdonald/bootstrap-sass'
-  gem 'coffee-rails', '~> 3.2.1'
-  gem 'compass',      '~> 0.12.1'
+  gem 'sass-rails',     '~> 3.2.3'
+  gem 'bootstrap-sass', '~> 3.0.0'
+  gem 'coffee-rails',   '~> 3.2.1'
+  gem 'compass',        '~> 0.12.1'
   gem 'font_awesome'
   gem 'jquery-rails'
   gem 'jquery-ui-rails'
