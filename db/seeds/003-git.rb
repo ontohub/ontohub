@@ -17,9 +17,18 @@ Repository.first.permissions.create! \
   role: 'editor'
 
 # Import ontologies
-Dir["#{Rails.root}/test/fixtures/ontologies/*/*.{casl,clf,clif,owl}"].each do |file|
-  basename = File.basename(file)
+ontologies = %w[
+  casl/partial_order.casl
+  casl/test1.casl
+  casl/test2.casl
+  clif/cat.clif
+  owl/generations.owl
+  owl/pizza.owl
+]
+ontologies.each do |path|
+  path = File.join(Rails.root, 'test', 'fixtures', 'ontologies', path)
+  basename = File.basename(path)
   
-  version = repository.save_file file, basename, "#{basename} added", @user
+  version = repository.save_file path, basename, "#{basename} added", @user
   version.ontology.update_attribute :description, Faker::Lorem.paragraph
 end
