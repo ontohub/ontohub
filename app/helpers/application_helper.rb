@@ -62,4 +62,15 @@ module ApplicationHelper
     @resource_chain
   end
 
+  def display_commit?
+    !! Settings.display_head_commit
+  end
+
+  def display_commit
+    return $commit_oid if $commit_oid
+    $commit_oid = Subprocess.run(
+      *%w(git rev-parse --short HEAD),
+      GIT_DIR: Rails.root.join(".git").to_s).strip
+  end
+
 end
