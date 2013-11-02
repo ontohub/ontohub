@@ -1,6 +1,8 @@
 %nav.navbar.navbar-default.navbar-fixed-bottom{role: 'navigation'}
   %div.content
     %ul.nav.navbar-nav
+      - if display_commit?
+        %li= link_to display_commit, "https://github.com/ontohub/ontohub/tree/#{display_commit}"
       - Settings.footer.each do |entry|
         %li>
           - if entry.href

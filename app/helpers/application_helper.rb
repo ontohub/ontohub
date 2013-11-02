@@ -62,4 +62,13 @@ module ApplicationHelper
     @resource_chain
   end
 
+  def display_commit?
+    !! Settings.display_head_commit
+  end
+
+  def display_commit
+    return $commit_oid if $commit_oid
+    $commit_oid = %x[cd #{Rails.root} && git rev-parse --short HEAD]
+  end
+
 end

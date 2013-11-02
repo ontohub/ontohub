@@ -49,3 +49,5 @@ allowed_iri_schemes:
   - file
   - gopher
   - urn
+
+display_head_commit: false
