@@ -222,7 +222,7 @@ class RepositoryTest < ActiveSupport::TestCase
         assert_equal(['inroot1.clif', 'inroot2.clf', 'inroot2.clif'],
           @repository.paths_starting_with('inroot'))
 
-        assert_equal(['folder1/file1.clif', 'folder1/file2.clif'],
+        assert_equal(['folder1/file1.clif', 'folder1/file2.clf'],
           @repository.paths_starting_with('folder1/file'))
       end
 

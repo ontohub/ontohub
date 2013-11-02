@@ -86,9 +86,9 @@ module Repository::GitRepositories
     git.path_exists?(path, commit_oid)
   end
 
-  def paths_starting_with(path)
-    dir = dir?(path) ? path : path.split('/')[0..-2].join('/')
-    contents = git.folder_contents(nil, dir)
+  def paths_starting_with(path, commit_oid=nil)
+    dir = dir?(path, commit_oid) ? path : path.split('/')[0..-2].join('/')
+    contents = git.folder_contents(commit_oid, dir)
 
     contents.map{ |entry| entry[:path] }.select{ |p| p.starts_with?(path) }
   end
