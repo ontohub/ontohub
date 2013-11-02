@@ -3,6 +3,8 @@ require 'git_repository'
 module Repository::GitRepositories
   extend ActiveSupport::Concern
 
+  delegate :dir?, to: :git
+
   included do
     after_create  :create_and_init_git
     after_destroy :destroy_git
@@ -24,7 +26,7 @@ module Repository::GitRepositories
   end
 
   def destroy_git
-    local_path.rmtree
+    git.destroy
   end
 
   def empty?
@@ -82,6 +84,13 @@ module Repository::GitRepositories
   def path_exists?(path, commit_oid=nil)
     path ||= '/'
     git.path_exists?(path, commit_oid)
+  end
+
+  def paths_starting_with(path)
+    dir = dir?(path) ? path : path.split('/')[0..-2].join('/')
+    contents = git.folder_contents(nil, dir)
+
+    contents.map{ |entry| entry[:path] }.select{ |p| p.starts_with?(path) }
   end
 
   def path_info(path=nil, commit_oid=nil)
