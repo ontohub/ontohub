@@ -98,6 +98,12 @@ group :development, :test do
   gem 'binding_of_caller'
 end
 
+# Ancestry enabling tree structure in category model
+# gem 'ancestry'
+
+# Use dagnabit to model categories
+gem 'dagnabit'
+
 group :test do
   gem 'mocha', require: 'mocha/setup'
   gem 'shoulda'

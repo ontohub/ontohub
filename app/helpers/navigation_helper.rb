@@ -1,3 +1,4 @@
+# encoding: UTF-8
 module NavigationHelper
 
   def repository_nav(resource, current_page)
