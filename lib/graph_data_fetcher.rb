@@ -30,8 +30,8 @@ class GraphDataFetcher
     @center = center
     @depth = depth
     @source, @target = source, target
-    determine_target(target)
-    determine_source(target) unless source
+    determine_target(@target)
+    determine_source(@target) unless @source
     @source_table, @target_table = @source.table_name, @target.table_name
   end
 
