@@ -68,7 +68,9 @@ module ApplicationHelper
 
   def display_commit
     return $commit_oid if $commit_oid
-    $commit_oid = %x[cd #{Rails.root} && git rev-parse --short HEAD]
+    $commit_oid = Subprocess.run(
+      *%w(git rev-parse --short HEAD),
+      GIT_DIR: Rails.root.join(".git").to_s).strip
   end
 
 end
