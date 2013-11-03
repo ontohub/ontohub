@@ -5,7 +5,7 @@ module BreadcrumbsHelper
     result = [{ 
         name: 'Home',
         last: false,
-        path: fancy_repository_path(repository, path: nil, oid: oid)
+        path: fancy_repository_path(repository, path: nil, ref: oid)
     }]
 
     crumbs.each_with_index do | c, i |
@@ -13,7 +13,7 @@ module BreadcrumbsHelper
       result << {
         name: c,
         last: false,
-        path: fancy_repository_path(repository, path: segment, oid: oid)
+        path: fancy_repository_path(repository, path: segment, ref: oid)
       }
     end
 
