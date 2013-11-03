@@ -13,10 +13,14 @@
   - if resource.parent
     by
     %span= fancy_link(resource.parent)
-  in the files
-  %ul
-    - files.each do |f|
-      %li= fancy_link repository_tree_path(resource.repository, f)
+  - if files.size > 1
+    in one of the files
+    %ul
+      - files.each do |f|
+        %li= fancy_link repository_tree_path(resource.repository, f)
+  - else
+    in the file
+    = fancy_link repository_tree_path(resource.repository, files[0])
 
 
 %p= link_to resource.iri, download_path(resource) if download_path(resource)
