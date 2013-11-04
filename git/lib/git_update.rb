@@ -6,7 +6,7 @@ class GitUpdate
 
   def initialize(repo_path, key_id, refs)
     @repo_path = repo_path.strip
-    @repo_name = repo_path.delete(Settings.git_root).
+    @repo_name = repo_path.sub(Settings.git_root, '').
       gsub(/\.git$/, "").
       gsub(/^\//, "")
 
