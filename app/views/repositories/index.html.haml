@@ -6,7 +6,7 @@
       .pull-right
         = link_to 'Create Repository', :new_repository, class: 'btn btn-primary'
     %p
-      = pluralize Entity.all.size, "symbol"
+      = pluralize Repository.count, "repository"
       currently available
 
 .row
