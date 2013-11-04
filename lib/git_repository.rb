@@ -36,6 +36,13 @@ class GitRepository
     @repo.empty?
   end
 
+  def dir?(path, commit_oid=nil)
+    rugged_commit = repo.lookup(commit_oid || head_oid)
+    object = get_object(rugged_commit, path)
+
+    !object.nil? && object.type == :tree
+  end
+
   def path_exists?(url, commit_oid=nil)
     rugged_commit = get_commit(commit_oid)
     if !rugged_commit && url.empty?
