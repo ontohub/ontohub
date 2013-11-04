@@ -18,6 +18,7 @@ Repository.first.permissions.create! \
 
 # Import ontologies
 ontologies = %w[
+  owl/Domain_model.owl
   casl/partial_order.casl
   casl/test1.casl
   casl/test2.casl

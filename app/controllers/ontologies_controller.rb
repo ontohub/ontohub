@@ -30,7 +30,8 @@ class OntologiesController < InheritedResources::Base
   end
 
   def edit
-    @c_vertices = build_categories_tree(CVertex.first.roots[0])
+    @ontology = resource
+    @c_vertices = CVertex.first.roots.first.children
   end
 
   def update
