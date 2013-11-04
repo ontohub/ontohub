@@ -7,12 +7,12 @@ module NavigationHelper
     ]
     
     chain = resource_chain.last.is_a?(Ontology) ? resource_chain[0..-2] : resource_chain
-    pages << [:ontologies,  [*chain, :ontologies]]
-    pages << [:files,       [*chain, :tree]]
-    pages << [:history,     repository_ref_path(resource, 'master', path: nil, action: :history)]
-    pages << [:"URL Maps",  repository_url_maps_path(resource)]
-    pages << [:permissions, [*chain, :permissions]] if can? :permissions, resource
-    
+    pages << [:ontologies,       [*chain, :ontologies]]
+    pages << [:"Ontology files", [*chain, :tree]]
+    pages << [:"Ontology urls",  repository_url_maps_path(resource)]
+    pages << [:history,          repository_ref_path(resource, 'master', path: nil, action: :history)]
+    pages << [:permissions,      [*chain, :permissions]] if can? :permissions, resource
+ 
     subnavigation(resource, pages, current_page)
   end
 
@@ -66,7 +66,7 @@ module NavigationHelper
       row << resource.send(counter_key) if resource.respond_to?(counter_key)
     end
     
-    @page_title = resource.to_s
+    @page_title = current_page
     @page_title = "#{current_page.capitalize} · #{@page_title}" if current_page != pages[0][0]
     
     render :partial => '/shared/subnavigation', :locals => {
