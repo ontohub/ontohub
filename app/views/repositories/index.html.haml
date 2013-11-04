@@ -5,9 +5,9 @@
     - if can? :create, Repository
       .pull-right
         = link_to 'Create Repository', :new_repository, class: 'btn btn-primary'
-    /%p
-    /  = pluralize Entity.all.size, "symbol"
-    /  currently available
+    %p
+      = pluralize Repository.count, "repository"
+      currently available
 
 .row
   .col-md-12.repository-index

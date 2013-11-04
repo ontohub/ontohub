@@ -1,9 +1,9 @@
 %h2= @page_title = 'Symbols'
 
-/%p
-/  = pluralize Entity.all.size, "symbol"
-/  currently available
-/.clearfix
+%p
+  = pluralize Entity.count, "symbol"
+  currently available
+.clearfix
 
 = form_tag :entities_search, method: :get do
   .input-group
