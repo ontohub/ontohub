@@ -1,16 +1,22 @@
 %nav.navbar.navbar-default.navbar-fixed-bottom{role: 'navigation'}
-  %div.content
-    %ul.nav.navbar-nav
-      - if display_commit?
-        %li= link_to display_commit, "https://github.com/ontohub/ontohub/tree/#{display_commit}"
-      - Settings.footer.each do |entry|
-        %li>
-          - if entry.href
-            = link_to entry.text, entry.href
-          - else
-            = link_to entry.text, '#'
-
-    %div.pull-right
+  .container
+    %button.navbar-toggle{type: 'button', :'data-toggle' => 'collapse', :'data-target' => '.navbar-footer-collapse'}
+      %span.sr-only Toggle footer navigation
+      %span.icon-bar
+      %span.icon-bar
+      %span.icon-bar
+    
+    .collapse.navbar-collapse.navbar-footer-collapse
       %ul.nav.navbar-nav
+        - if display_commit?
+          %li= link_to display_commit, "https://github.com/ontohub/ontohub/tree/#{display_commit}"
+        - Settings.footer.each do |entry|
+          %li
+            - if entry.href
+              = link_to entry.text, entry.href
+            - else
+              = link_to entry.text, '#'
+
+      %ul.nav.navbar-nav.navbar-right
         %li
           = link_to 'Open Ontology Repository (OOR) Initiative', 'http://ontolog.cim3.net/cgi-bin/wiki.pl?OpenOntologyRepository', target: '_new'
