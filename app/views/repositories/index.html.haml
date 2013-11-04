@@ -1,15 +1,13 @@
 %h2= @page_title = 'Repositories'
 
-%p
-  = pluralize Entity.all.size, "symbol"
-  currently available
-%div.clearfix
-
 .row
   .col-md-12
     - if can? :create, Repository
       .pull-right
         = link_to 'Create Repository', :new_repository, class: 'btn btn-primary'
+    %p
+      = pluralize Entity.all.size, "symbol"
+      currently available
 
 .row
   .col-md-12.repository-index

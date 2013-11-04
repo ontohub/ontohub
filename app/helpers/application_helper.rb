@@ -6,14 +6,14 @@ module ApplicationHelper
 
   def context_pane
     if params[:controller] == 'home'
-      return 'shared/user_ontologies'
+      return 'shared/user_repositories'
     end
 
     if params[:action] != 'index'
       return false
     end
 
-    if %w[entities_search logics].include? params[:controller]
+    if %w[entities_search logics links].include? params[:controller]
       return 'shared/user_ontologies'
     end
 
