@@ -7,3 +7,4 @@ exception_notifier:
 git:
   user: 'git'
   group: 'git'
+display_head_commit: true
