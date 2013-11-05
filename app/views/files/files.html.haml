@@ -1,4 +1,18 @@
-= repository_nav repository, :files
+= repository_nav repository, :"Ontology files"
+
+%p
+  In this page, you have direct access to the file system where this repository are stored.
+  - case @info[:type]
+  - when :file_base, :file
+    %br
+    Below are the contents of the file presented as text as well as its path relative to the repository home directory.
+    %br
+    If you want to see the contents of this file as ontologies, click on the ontology links above the text box.
+  - when :dir
+    %br
+    Below is the list of files in this repository directory, ranked by the number of commited changes.
+    %br
+    In order to find a particular file, you can navigate through the file system.
 
 .pull-right
   = link_to new_repository_file_path(repository, 'upload_file[path]' => params[:path]), class: 'btn btn-link' do
