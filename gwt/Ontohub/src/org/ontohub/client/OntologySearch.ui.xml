@@ -12,6 +12,9 @@
 	      padding: 4px 3px;
 	      z-index: 3;
         }
+        .form-control.ontohub-SearchBar {
+	      cursor: text;
+        }
         .form-control.ontohub-SearchBar:focus {
 	      border-color: #ccc;
           outline: 0;
