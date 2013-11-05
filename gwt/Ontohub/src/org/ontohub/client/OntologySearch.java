@@ -10,6 +10,8 @@ import org.ontohub.client.KeywordListRequester.Keyword;
 import org.ontohub.client.KeywordListRequester.KeywordList;
 import org.ontohub.client.KeywordListRequester.Ontology;
 import org.ontohub.client.KeywordListRequester.OntologyList;
+import org.ontohub.client.Pagination.PaginateEvent;
+import org.ontohub.client.Pagination.PaginateHandler;
 
 import com.google.gwt.core.client.GWT;
 import com.google.gwt.event.dom.client.ClickEvent;
@@ -46,6 +48,8 @@ public class OntologySearch extends Composite {
 
 	interface OntologySearchUiBinder extends UiBinder<Widget, OntologySearch> {}
 
+	@UiField
+	Pagination pagination;
 
 	@UiField
 	FlowPanel conceptPanel;
@@ -56,7 +60,9 @@ public class OntologySearch extends Composite {
 	@UiField
 	FlowPanel ontologyWidgetPanel;
 
-	private KeywordListRequester requester;
+	private final KeywordListRequester requester;
+
+	private int page = 1;
 
 	/**
 	 * Because this class has a default constructor, it can
@@ -73,6 +79,15 @@ public class OntologySearch extends Composite {
 	public OntologySearch() {
 		requester = new KeywordListRequester();
 		initWidget(uiBinder.createAndBindUi(this));
+		pagination.setPageRange(0, 0);
+		pagination.addPaginateHandler(new PaginateHandler() {
+
+			@Override
+			public void onPaginate(PaginateEvent event) {
+				page = event.getPage();
+				updateOntologyWidgetList();
+			}
+		});
 	}
 
 	@UiFactory
@@ -119,6 +134,7 @@ public class OntologySearch extends Composite {
 				Suggestion suggestion = event.getSelectedItem();
 				conceptPanel.add(new OntologySearchConcept(OntologySearch.this, "Category", suggestion.getReplacementString()));
 				box.setText("");
+				page = 1;
 				updateOntologyWidgetList();
 			}
 			
@@ -126,7 +142,7 @@ public class OntologySearch extends Composite {
 		return box;
 	}
 
-	private final void updateOntologyWidgetList() {
+	public final void updateOntologyWidgetList() {
 		List<String> stringArray = new ArrayList<String>();
 		for (Widget widget : conceptPanel) {
 			if (widget instanceof OntologySearchConcept) {
@@ -134,7 +150,7 @@ public class OntologySearch extends Composite {
 				stringArray.add(concept.getItemLabel());
 			}
 		}
-		requester.requestOntologyList(stringArray.toArray(new String[stringArray.size()]), new AsyncCallback<OntologyList>() {
+		requester.requestOntologyList(stringArray.toArray(new String[stringArray.size()]), page, new AsyncCallback<OntologyList>() {
 
 			@Override
 			public void onFailure(Throwable caught) {
@@ -148,6 +164,9 @@ public class OntologySearch extends Composite {
 					OntologyWidget ontologyWidget = new OntologyWidget(ontology);
 					ontologyWidgetPanel.add(ontologyWidget);
 				}
+				int index = ontologyList.getPage();
+				int length = (int)Math.ceil((double)ontologyList.getOntologiesInSet() / (double)ontologyList.getOntologiesPerPage());
+				pagination.setPageRange(index, length);
 			}
 			
 		});
@@ -205,7 +224,12 @@ public class OntologySearch extends Composite {
 	}
 
 	public void onConceptDeleted() {
+		page = 1;
 		updateOntologyWidgetList();
+	}
+
+	public final void setPaginated(boolean paginated) {
+		pagination.setVisible(paginated);
 	}
 
 }

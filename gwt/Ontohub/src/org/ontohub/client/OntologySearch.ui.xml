@@ -1,6 +1,7 @@
 <!DOCTYPE ui:UiBinder SYSTEM "http://dl.google.com/gwt/DTD/xhtml.ent">
 <ui:UiBinder xmlns:ui="urn:ui:com.google.gwt.uibinder"
-	xmlns:g="urn:import:com.google.gwt.user.client.ui">
+	xmlns:g="urn:import:com.google.gwt.user.client.ui"
+	xmlns:o="urn:import:org.ontohub.client">
 	<ui:style>
 	    @external .gwt-SuggestBoxPopup .item .item-selected, .input-group, .form-control, .input-group-btn, .btn, .btn-primary, .glyphicon, .glyphicon-search;
 	    .input-group, .form-control, .input-group-btn, .btn, .btn-primary, .glyphicon, .glyphicon-search {};
@@ -9,6 +10,7 @@
 	      border: 1px solid #cccccc;
 	      border-radius: 4px;
 	      padding: 4px 3px;
+	      z-index: 3;
         }
         .gwt-SuggestBoxPopup table tbody tr td {
 	      padding: 0;
@@ -81,6 +83,7 @@
 	      </g:SimplePanel>
 	    </g:SimplePanel>
 	  </g:FlowPanel>
+	  <o:Pagination ui:field="pagination" />
 	  <g:FlowPanel ui:field="ontologyWidgetPanel"></g:FlowPanel>
 	</g:FlowPanel>
 </ui:UiBinder> 
