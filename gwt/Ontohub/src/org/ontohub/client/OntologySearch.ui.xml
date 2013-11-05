@@ -3,7 +3,7 @@
 	xmlns:g="urn:import:com.google.gwt.user.client.ui"
 	xmlns:o="urn:import:org.ontohub.client">
 	<ui:style>
-	    @external .gwt-SuggestBoxPopup .item .item-selected, .input-group, .form-control, .input-group-btn, .btn, .btn-primary, .glyphicon, .glyphicon-search;
+	    @external .gwt-SuggestBoxPopup .item .item-selected, .ontohub-SearchBar-focus, .input-group, .form-control, .input-group-btn, .btn, .btn-primary, .glyphicon, .glyphicon-search;
 	    .input-group, .form-control, .input-group-btn, .btn, .btn-primary, .glyphicon, .glyphicon-search {};
 	    .gwt-SuggestBoxPopup {
 	      background-color: white;
@@ -11,6 +11,20 @@
 	      border-radius: 4px;
 	      padding: 4px 3px;
 	      z-index: 3;
+        }
+        .form-control.ontohub-SearchBar:focus {
+	      border-color: #ccc;
+          outline: 0;
+          -webkit-box-shadow: inset 0 1px 1px rgba(0, 0, 0, 0.075);
+          -moz-box-shadow: inset 0 1px 1px rgba(0, 0, 0, 0.075);
+          box-shadow: inset 0 1px 1px rgba(0, 0, 0, 0.075);
+        }
+        .form-control.ontohub-SearchBar-focus {
+          border-color: rgba(82, 168, 236, 0.8);
+          outline: 0;
+          -webkit-box-shadow: inset 0 1px 1px rgba(0, 0, 0, 0.075), 0 0 8px rgba(82, 168, 236, 0.6);
+          -moz-box-shadow: inset 0 1px 1px rgba(0, 0, 0, 0.075), 0 0 8px rgba(82, 168, 236, 0.6);
+          box-shadow: inset 0 1px 1px rgba(0, 0, 0, 0.075), 0 0 8px rgba(82, 168, 236, 0.6);
         }
         .gwt-SuggestBoxPopup table tbody tr td {
 	      padding: 0;
@@ -68,10 +82,13 @@
           white-space: nowrap;
           height: 20px;
         }
+        .OntologySearch .form-control {
+          padding: 6px;
+        }
 	</ui:style>
-	<g:FlowPanel>
+	<g:FlowPanel styleName="{style.OntologySearch}">
 	  <g:FlowPanel styleName="input-group">
-	    <g:FocusPanel styleName="form-control" ui:field="bar">
+	    <g:FocusPanel styleName="form-control {style.ontohub-SearchBar}" ui:field="bar">
 	      <g:FlowPanel styleName="{style.nobreak}">
 	        <g:FlowPanel styleName="{style.conceptPanel}" ui:field="conceptPanel"/>
 	        <g:SuggestBox styleName="{style.box}" ui:field="box"/>
