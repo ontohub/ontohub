@@ -13,12 +13,8 @@ module ApplicationHelper
       return false
     end
 
-    if %w[entities_search logics links].include? params[:controller]
-      return 'shared/user_ontologies'
-    end
-
-    if params[:controller] == 'ontologies' && !in_repository?
-      return 'shared/user_ontologies'
+    if %w[entities_search logics links ontologies].include? params[:controller]
+      return 'shared/user_ontologies' unless in_repository?
     end
 
     if params[:controller] == 'repositories'
