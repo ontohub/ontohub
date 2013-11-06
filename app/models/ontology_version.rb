@@ -15,7 +15,6 @@ class OntologyVersion < ActiveRecord::Base
     :with => URI::regexp(Settings.allowed_iri_schemes), :if => :source_url?
 
   scope :latest, order('id DESC')
-  scope :state, ->(state) { where :state => state }
   scope :done, state('done')
   scope :failed, state('failed')
 

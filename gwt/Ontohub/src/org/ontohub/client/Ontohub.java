@@ -14,8 +14,22 @@ public class Ontohub implements EntryPoint {
 	public void onModuleLoad() {
 		RootPanel rootPanel = RootPanel.get("OntologySearch");
 		if (rootPanel != null) {
+			boolean asFilter = rootPanel.getElement().getAttribute("role").equals("filter");
+			boolean paginated = rootPanel.getElement().getAttribute("pagination").equals("paginated");
+			
+			// Add search bar
 			OntologySearch ontologySearchBar = new OntologySearch();
 			rootPanel.add(ontologySearchBar);
+			
+			// If it works as filter
+			if (asFilter) {
+
+				// Display initial list
+				ontologySearchBar.updateOntologyWidgetList();
+			}
+
+			// Set pagination
+			ontologySearchBar.setPaginated(paginated);
 		}
 	}
 }

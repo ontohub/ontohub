@@ -7,7 +7,7 @@
   %h2= @page_title = 'Mappings'
 
 %p
-  = pluralize(Link.all.size, "ontology mapping")
+  = pluralize(Link.count, "ontology mapping")
   currently available
   
 = pagination do 
