@@ -1,5 +1,9 @@
 = repository_nav parent, :ontologies
 
+- if can?(:edit, parent)
+  = render 'states'
+  .clearfix
+
 %p
   This repository contains
   = pluralize @count, 'Ontology'

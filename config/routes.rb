@@ -71,6 +71,7 @@ Ontohub::Application.routes.draw do
 
     resources :ontologies, only: [:index, :show, :edit, :update] do
       collection do
+        post 'retry_failed' => 'ontologies#retry_failed'
         get 'keywords' => 'ontology_search#keywords'
         get 'search' => 'ontology_search#search'
       end

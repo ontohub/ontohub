@@ -70,6 +70,11 @@ class OntologiesController < InheritedResources::Base
       end
     end
   end
+
+  def retry_failed
+    end_of_association_chain.retry_failed
+    redirect_to [parent, :ontologies]
+  end
   
   def oops_state
     respond_to do |format|
