@@ -84,6 +84,11 @@ gem "faker", "~> 1.1.2"
 group :development, :test do
   gem 'byebug'
 end
+# Ancestry enabling tree structure in category model
+# gem 'ancestry'
+
+# Use dagnabit to model categories
+gem 'dagnabit'
 
 group :test do
   gem 'mocha', require: 'mocha/setup'

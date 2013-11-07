@@ -41,6 +41,7 @@ Ontohub::Application.routes.draw do
     resources :users
   end
 
+
   constraints auth_resque do
     mount Resque::Server, :at => "/admin/resque"
   end

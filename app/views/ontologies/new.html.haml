@@ -10,6 +10,9 @@
       \- OR -
       = vf.input :source_url, :as => :url
   
+    / = f.collection_select :parent_id, Category.all, :id, :name_for_selects, { :include_blank => true }, { :multiple => true }
+  Choose one ore more categories:
+  = render :partial => 'categories'
   = f.input :iri
   = f.input :name
   = f.input :description, input_html: { class: 'span8' }

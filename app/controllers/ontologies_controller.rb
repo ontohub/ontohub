@@ -17,15 +17,27 @@ class OntologiesController < InheritedResources::Base
       end
     end
   end
+  
 
   def new
     @ontology_version = build_resource.versions.build
+    @c_vertices = CVertex.first.roots.first.children
+  end
+
+  def edit
+    @c_vertices = build_categories_tree(CVertex.first.roots[0])
+  end
+
+  def update
+    resource.category_ids = user_selected_categories
+    super
   end
 
   def create
     @version = build_resource.versions.first
     @version.user = current_user
     super
+    resource.category_ids = user_selected_categories
   end
   
   def show
@@ -62,4 +74,15 @@ class OntologiesController < InheritedResources::Base
     @ontology = clazz.new params[:ontology]
   end
 
+  def build_categories_tree(vertex)
+    @a ||= []
+    vertex.children.each { |child| build_categories_tree(child) unless child.children.empty?; @a << child }
+    @a
+  end
+
+  def user_selected_categories
+    params[:category_ids].keys unless params[:category_ids].nil?
+  end
+
 end
+

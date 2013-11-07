@@ -13,6 +13,7 @@ class Ontology < ActiveRecord::Base
   include Ontology::Sentences
   include Ontology::Links
   include Ontology::Distributed
+  include Ontology::CVertices
   include Ontology::Oops
   include Ontology::OntologyTypes
   include Ontology::Projects
@@ -27,7 +28,8 @@ class Ontology < ActiveRecord::Base
   belongs_to :language
   belongs_to :logic, counter_cache: true
 
-  attr_accessible :iri, :name, :description, :logic_id, :documentation, :acronym
+  attr_accessible :iri, :name, :description, :logic_id, :category_ids, :documentation, :acronym
+
 
   validates_uniqueness_of :iri, :if => :iri_changed?
   validates_format_of :iri, :with => URI::regexp(Settings.allowed_iri_schemes)
