@@ -9,7 +9,8 @@ class OntologyImportXMLTest < ActiveSupport::TestCase
     setup do
       @user = FactoryGirl.create :user
       @ontology = FactoryGirl.create :single_ontology
-      @ontology.import_xml_from_file fixture_file('test1.xml'), @user
+      @ontology.import_xml_from_file fixture_file('test1.xml'),
+       fixture_file('test1.pp.xml'), @user
     end
 
     should 'save logic' do
@@ -37,7 +38,8 @@ class OntologyImportXMLTest < ActiveSupport::TestCase
     setup do
       @user = FactoryGirl.create :user
       @ontology = FactoryGirl.create :distributed_ontology
-      @ontology.import_xml_from_file fixture_file('test2.xml'), @user
+      @ontology.import_xml_from_file fixture_file('test2.xml'),
+        fixture_file('test2.pp.xml'), @user
     end
     
     should 'create single ontologies' do
