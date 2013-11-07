@@ -16,6 +16,7 @@ gem 'rdf-n3'
 # Gems used only for assets and not required
 # in production environments by default.
 group :assets do
+  gem 'jstree-rails', :git => 'git://github.com/tristanm/jstree-rails.git'
   gem 'sass-rails',     '~> 3.2.3'
   gem 'bootstrap-sass', '~> 3.0.0'
   gem 'coffee-rails',   '~> 3.2.1'
