@@ -15,18 +15,19 @@ module Ontology::Searching
   end
 
   module ClassMethods
-    def search_by_keywords_in_repository(keywords, page, repository)
+    def search_by_keyword_in_repository(keyword, repository)
       search = Ontology.search do
-        fulltext keywords[0].downcase
+        fulltext keyword
+        with(:repository_id, repository.id)
       end
       search.results
     end
 
-    def search_by_keywords(keywords, page)
-      Ontology.search do
-        fulltext keywords[0]
-        paginate page: page
+    def search_by_keyword(keyword)
+      search = Ontology.search do
+        fulltext keyword
       end
+      search.results
     end
   end
 

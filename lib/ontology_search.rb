@@ -178,16 +178,8 @@ class OntologySearch
     keyword_list.each do |keyword|
       keyword_hash = Hash.new
 
-      Ontology.where("name = :name", name: "#{keyword}").limit(50).each do |ontology|
+      Ontology.search_by_keyword(keyword).each do |ontology|
         keyword_hash[ontology.id] ||= ontology
-      end
-
-      Entity.where("name = :name", name: "#{keyword}").limit(50).each do |symbol|
-        keyword_hash[symbol.ontology.id] ||= symbol.ontology
-      end
-
-      if logic = Logic.find_by_name(keyword)
-        logic.ontologies.each { |o| keyword_hash[o.id] ||= o }
       end
 
       if index == 0
