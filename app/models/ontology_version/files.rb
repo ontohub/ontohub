@@ -44,6 +44,12 @@ module OntologyVersion::Files
     tmp_dir.join("xml", ontology.path)
   end
 
+  # path to xml file (hets output) with code positions
+  def code_reference_path
+    tmp_dir.join("xml",
+                 ontology.path.sub(ontology.file_extension, '.pp.xml'))
+  end
+
   def xml_file?
     File.exists? xml_path
   end
