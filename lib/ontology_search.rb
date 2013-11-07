@@ -24,11 +24,6 @@ class OntologySearch
       text_list.add(prefix)
     end
     
-    unless Entity.where("name = :prefix", prefix: prefix).empty?
-      #TODO Search only symbols of ontologies of the repository
-      #text_list.add(prefix)
-    end
-
     repository.ontologies.select(:name).where("name ILIKE :prefix", prefix: "#{prefix}%").group("name").limit(5).each do |ontology|
       text_list.add(ontology.name)
     end
@@ -36,8 +31,9 @@ class OntologySearch
     ontologies = repository.ontologies
     ontology_ids = Set.new
     ontologies.each do |ontology|
-      ontology.entities.select(:text).where("text ILIKE :prefix", prefix: "#{prefix}%").group("text").limit(5).each do |symbol|
-        text_list.add(symbol.text)
+      ontology.entities.select("display_name, name").where("display_name ILIKE :prefix or name ILIKE :prefix", prefix: "#{prefix}%").group("display_name, name").limit(5).each do |symbol|
+        text_list.add(symbol.display_name) if symbol.display_name
+        text_list.add(symbol.name) if symbol.display_name.nil?
       end
       ontology_ids.add(ontology.id)
     end
@@ -62,7 +58,7 @@ class OntologySearch
       text_list.add(prefix)
     end
 
-    unless Entity.where("name = :prefix", prefix: prefix).empty?
+    unless Entity.where("display_name ILIKE :prefix or name ILIKE :prefix", prefix: prefix).empty?
       text_list.add(prefix)
     end
 
@@ -70,8 +66,9 @@ class OntologySearch
       text_list.add(ontology.name)
     end
 
-    Entity.select(:name).where("name ILIKE :prefix", prefix: "#{prefix}%").group("name").limit(5).each do |symbol|
-      text_list.add(symbol.name)
+    Entity.select("display_name, name").where("display_name ILIKE :prefix or name ILIKE :prefix", prefix: "#{prefix}%").group("display_name, name").limit(5).each do |symbol|
+      text_list.add(symbol.display_name) if symbol.display_name
+      text_list.add(symbol.name) if symbol.display_name.nil?
     end
 
     Logic.where("name ILIKE :prefix", prefix: "#{prefix}%").limit(5).each do |logic|
@@ -92,72 +89,16 @@ class OntologySearch
   end
 
   def make_repository_bean_list_response(repository, keyword_list, page)
-    ontology_hash = Hash.new
-    index = 0
-
-    # Display all repository ontologies for empty keyword list
-    if keyword_list.size == 0
-      offset = (page - 1) * @limit
-      bean_list_factory = OntologyBeanListFactory.new
-      repository.ontologies.limit(@limit).offset(offset).each do |ontology|
-        bean_list_factory.add_small_bean(ontology)
-      end
-      return {
-        page: page,
-        resultsInPage: @limit,
-        resultsInSet: repository.ontologies.count,
-        results: bean_list_factory.bean_list
-      }
-    end
-
-    keyword_list.each do |keyword|
-      keyword_hash = Hash.new
-
-      repository.ontologies.where("name = :name", name: "#{keyword}").limit(50).each do |ontology|
-        keyword_hash[ontology.id] ||= ontology
-      end
-
-      Entity.where("name = :name", name: "#{keyword}").limit(50).each do |symbol|
-        if repository.id == symbol.ontology.repository.id
-          keyword_hash[symbol.ontology.id] ||= symbol.ontology
-        end
-      end
-
-      if logic = Logic.find_by_name(keyword)
-        logic.ontologies.each { |o| keyword_hash[o.id] ||= o }
-      end
-
-      if index == 0
-        ontology_hash = keyword_hash
-      else
-        hash = Hash.new
-
-        keyword_hash.each_key do |key|
-          hash[key] ||= ontology_hash[key] if ontology_hash[key]
-        end
-
-        ontology_hash = hash
-      end
-
-      index += 1
-    end
-
-    count = ontology_hash.size
-    max = page * @limit
-    min = max - @limit
-    index = 0
     bean_list_factory = OntologyBeanListFactory.new
-    ontology_hash.each_value do |ontology|
-      if index >= min && index < max
-        bean_list_factory.add_small_bean(ontology)
-      end
-      index = index + 1
+    search = Ontology.search_by_keywords_in_repository(keyword_list, page, repository)
+    search.results.each do |ontology|
+      bean_list_factory.add_small_bean(ontology)
     end
-
+    bean_list_factory.bean_list
     {
       page: page,
-      resultsInPage: @limit,
-      resultsInSet: count,
+      resultsInPage: 20,
+      resultsInSet: search.total,
       results: bean_list_factory.bean_list
     }
   end
@@ -172,36 +113,10 @@ class OntologySearch
   end
 
   def make_global_bean_list(keyword_list, page)
-    ontology_hash = Hash.new
-    index = 0
-
-    keyword_list.each do |keyword|
-      keyword_hash = Hash.new
-
-      Ontology.search_by_keyword(keyword).each do |ontology|
-        keyword_hash[ontology.id] ||= ontology
-      end
-
-      if index == 0
-        ontology_hash = keyword_hash
-      else
-        hash = Hash.new
-
-        keyword_hash.each_key do |key|
-          hash[key] ||= ontology_hash[key] if ontology_hash[key]
-        end
-
-        ontology_hash = hash
-      end
-
-      index += 1
-    end
-
     bean_list_factory = OntologyBeanListFactory.new
-    ontology_hash.each_value do |ontology|
+    Ontology.search_by_keywords(keyword_list, page).results.each do |ontology|
       bean_list_factory.add_small_bean(ontology)
     end
-
     bean_list_factory.bean_list
   end
 

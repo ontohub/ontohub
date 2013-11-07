@@ -5,7 +5,14 @@ module Ontology::Searching
     searchable do
       text :name
       text :entities do
-        entities.map { |symbol| symbol.text }
+        names = Array.new
+        entities.each { |symbol| names.push symbol.display_name if symbol.display_name }
+        names
+      end
+      text :entities do
+        names = Array.new
+        entities.each { |symbol| names.push symbol.name if symbol.name }
+        names
       end
       text :logic do
         logic.name if logic
@@ -15,19 +22,19 @@ module Ontology::Searching
   end
 
   module ClassMethods
-    def search_by_keyword_in_repository(keyword, repository)
-      search = Ontology.search do
-        fulltext keyword
+    def search_by_keywords_in_repository(keywords, page, repository)
+      Ontology.search do
+        keywords.each { |keyword| fulltext keyword }
         with(:repository_id, repository.id)
+        paginate page: page, per_page: 20
       end
-      search.results
     end
 
-    def search_by_keyword(keyword)
-      search = Ontology.search do
-        fulltext keyword
+    def search_by_keywords(keywords, page)
+      Ontology.search do
+        keywords.each { |keyword| fulltext keyword }
+        paginate page: page, per_page: 20
       end
-      search.results
     end
   end
 
