@@ -89,4 +89,11 @@ module Ontology::Import
     return if versions.last.nil?
     import_xml_from_file versions.last.xml_path, user
   end
+
+  def code_position_for(ontology_name, code_doc)
+    elements = code_doc.xpath("//*[contains(@name, '##{ontology_name}')]")
+    code_range = elements.first.try(:attr, "range")
+    code_position = CodeReference.from_range(code_range, nil)
+  end
+
 end
