@@ -6,12 +6,11 @@ module Ontology::Searching
       text :name
       text :entities do
         names = Array.new
-        entities.each { |symbol| names.push symbol.display_name if symbol.display_name }
-        names
-      end
-      text :entities do
-        names = Array.new
-        entities.each { |symbol| names.push symbol.name if symbol.name }
+        entities.each do |symbol|
+          names.push symbol.display_name if symbol.display_name
+          names.push symbol.name if symbol.name
+          names.push symbol.text if symbol.text
+        end
         names
       end
       text :logic do
