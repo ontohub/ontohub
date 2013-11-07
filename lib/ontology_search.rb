@@ -83,7 +83,6 @@ class OntologySearch
     text_list.to_a.sort.map { |x| {text: x} }
   end
 
-
   def make_repository_bean_list_json(repository, keyword_list, page)
     JSON.generate(make_repository_bean_list_response(repository, keyword_list, page))
   end

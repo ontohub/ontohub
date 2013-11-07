@@ -16,6 +16,7 @@ class Ontology < ActiveRecord::Base
   include Ontology::CVertices
   include Ontology::Oops
   include Ontology::FileExtensions
+  include Ontology::Searching
 
   # Multiple Class Features
   include Aggregatable
@@ -38,7 +39,6 @@ class Ontology < ActiveRecord::Base
 
   strip_attributes :only => [:name, :iri]
 
-  scope :search, ->(query) { where "ontologies.iri #{connection.ilike_operator} :term OR name #{connection.ilike_operator} :term", :term => "%" << query << "%" }
   scope :list, includes(:logic).order('ontologies.state asc, ontologies.entities_count desc')
 
   def to_s
