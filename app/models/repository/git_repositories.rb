@@ -191,6 +191,7 @@ module Repository::GitRepositories
   #                     :stop_oid (first commit to hide)
   #                     :path (file to show changes for)
   #                     :limit (max number of commits)
+  #                     :offset (number of commits to skip)
   def commits(options={}, &block)
     git.commits(options, &block)
   end
