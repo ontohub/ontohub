@@ -1,15 +1,19 @@
 class OntologyVersion < ActiveRecord::Base
+
   include OntologyVersion::Files
   include OntologyVersion::States
   include OntologyVersion::Parsing
   include OntologyVersion::Numbers
   include OntologyVersion::OopsRequests
+
+  include Rails.application.routes.url_helpers
+  include ActionDispatch::Routing::UrlFor
   
   belongs_to :user
   belongs_to :ontology, :counter_cache => :versions_count
 
-#  before_validation :set_checksum
-#  validate :raw_file_size_maximum
+# before_validation :set_checksum
+# validate :raw_file_size_maximum
 
   validates_format_of :source_url,
     :with => URI::regexp(Settings.allowed_iri_schemes), :if => :source_url?
@@ -29,12 +33,21 @@ class OntologyVersion < ActiveRecord::Base
     self.number
   end
   
-  # public URL to this version
+  # Public URL to this version
+  #
+  # TODO: This returns a path without the commit id and filename for now,
+  # because the FilesController or the routes were not supporting it.
   def url(params={})
-    Rails.application.routes.url_helpers.repository_ref_path(repository, commit_oid, ontology.path, params.reverse_merge(host: Settings.hostname, only_path: false))
+    #Rails.application.routes.url_helpers.repository_ref_path(repository, commit_oid, ontology.path, params.reverse_merge(host: Settings.hostname, only_path: false))
+    url_for [repository, ontology, self]
+  end
+
+  def default_url_options
+    {host: Settings.hostname}
   end
  
-protected
+
+  protected
 
   def raw_file_size_maximum
     if raw_file.size > 10.megabytes.to_i
@@ -46,4 +59,5 @@ protected
     self.checksum = Digest::SHA1.file(raw_path!).hexdigest
     save! if checksum_changed?
   end
+
 end
