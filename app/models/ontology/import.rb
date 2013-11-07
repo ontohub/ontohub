@@ -1,10 +1,11 @@
 module Ontology::Import
 	extend ActiveSupport::Concern
 
-  def import_xml(io, user)
+  def import_xml(io, code_io, user)
     now = Time.now
 
     transaction do
+      code_doc = Nokogiri::XML(code_io)
       
       root             = nil
       ontology         = nil
@@ -39,6 +40,8 @@ module Ontology::Import
 	    
             version = ontology.versions.build
             version.user = user
+            version.code_reference = code_position_for(ontology.name, code_doc)
+
             versions << version
           else
             raise "more than one ontology found" if ontologies_count > 1
@@ -81,13 +84,15 @@ module Ontology::Import
     end
   end
 
-  def import_xml_from_file(path, user)
-    import_xml File.open(path), user
+  def import_xml_from_file(path, code_path, user)
+    import_xml File.open(path), File.open(code_path), user
   end
 
   def import_latest_version(user)
-    return if versions.last.nil?
-    import_xml_from_file versions.last.xml_path, user
+    latest_version = versions.last
+    return if latest_version.nil?
+    import_xml_from_file latest_version.xml_path,
+      latest_version.code_reference_path, user
   end
 
   def code_position_for(ontology_name, code_doc)
