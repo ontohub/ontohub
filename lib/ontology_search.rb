@@ -28,18 +28,14 @@ class OntologySearch
       text_list.add(ontology.name)
     end
 
-    ontologies = repository.ontologies
+    Entity.collect_keywords(prefix, repository).each do |symbol|
+      text_list.add(symbol.display_name) if symbol.display_name
+      text_list.add(symbol.name) if symbol.name
+      text_list.add(symbol.text) if symbol.text
+    end
+
     ontology_ids = Set.new
-    ontologies.each do |ontology|
-      ontology.entities.select("display_name").where("display_name ILIKE :prefix", prefix: "#{prefix}%").group("display_name").limit(5).each do |symbol|
-        text_list.add(symbol.display_name)
-      end
-      ontology.entities.select("name").where("name ILIKE :prefix", prefix: "#{prefix}%").group("name").limit(5).each do |symbol|
-        text_list.add(symbol.name)
-      end
-      ontology.entities.select("text").where("text ILIKE :prefix", prefix: "#{prefix}%").group("text").limit(5).each do |symbol|
-        text_list.add(symbol.text)
-      end
+    repository.ontologies.select(:id).each do |ontology|
       ontology_ids.add(ontology.id)
     end
 
