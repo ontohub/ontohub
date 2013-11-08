@@ -25,7 +25,6 @@ module NavigationHelper
       ['Graphs', :graphs],
       ['Links', :links]
     ]
-
     @metadatas = [
       ['Projects', repository_ontology_projects_path],
       ['Categories', repository_ontology_categories_path],
