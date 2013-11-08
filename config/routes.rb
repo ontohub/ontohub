@@ -97,7 +97,7 @@ Ontohub::Application.routes.draw do
       resources :tasks, :only => :index
       resources :license_models, :only => :index
       resources :tools, :only => :index
-      resources :projects, :only => [:index, :show]
+      resources :projects, :only => :index
       
       resources :metadata, :only => [:index, :create, :destroy]
       resources :comments, :only => [:index, :create, :destroy]
