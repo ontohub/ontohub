@@ -1,4 +1,4 @@
-class CVertex < ActiveRecord::Base
+class Category < ActiveRecord::Base
 
   extend Dagnabit::Vertex::Activation
   
