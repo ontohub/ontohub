@@ -93,7 +93,12 @@ Ontohub::Application.routes.draw do
       resources :ontology_versions, :only => [:index, :show, :new, :create], :path => 'versions' do
         resource :oops_request, :only => [:show, :create]
       end
-
+      resources :categories, :only => :index
+      resources :tasks, :only => :index
+      resources :license_models, :only => :index
+      resources :tools, :only => :index
+      resources :projects, :only => [:index, :show]
+      
       resources :metadata, :only => [:index, :create, :destroy]
       resources :comments, :only => [:index, :create, :destroy]
       resources :graphs, :only => [:index]

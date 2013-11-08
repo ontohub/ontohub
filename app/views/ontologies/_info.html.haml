@@ -55,4 +55,4 @@
       %ul.nav.nav-tabs
         - @metadatas.each do |(page_title, page)|
           %li{class: page==current_page ? 'active' : nil}
-            = link_to page_title, "#"
+            = link_to page_title, page
