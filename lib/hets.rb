@@ -1,15 +1,13 @@
 require 'date'
 
 module Hets
+
   class HetsError < Exception; end
   class HetsDeploymentError < Exception; end
   class HetsNotFoundError < HetsError; end
   class HetsVersionOutdatedError < HetsError; end
   class HetsConfigDateFormatError < HetsError; end
   class HetsVersionDateFormatError < HetsError; end
-
-  EXTENSIONS = %w(casl clf clif dg dol het hol hs kif owl rdf spcf thy)
-  EXTENSIONS_DIST = %w(casl dol hascasl het)
 
   class Config
     attr_reader :path, :library_path
@@ -37,7 +35,8 @@ module Hets
       raise HetsDeploymentError, 'Hets library not found.' unless @library_path
     end
 
-  private
+
+    private
 
     # Checks Hets installation compatibility by its version date
     # 
@@ -74,90 +73,82 @@ module Hets
   end
 
   # Runs hets with input_file and returns XML output file path.
-  def self.parse(input_file, output_path = '')
+  def self.parse(input_file, url_catalog = [], output_path = nil)
     @@config ||= Config.new
 
-    output_path = "-O \"#{output_path}\"" unless output_path.blank?
+    # Arguments to run the subprocess
+    args = [@@config.path, *%w( -o xml --full-signatures -a none -v2 )]
 
-    command = "#{@@config.path} -o xml --full-signatures -a none -v2 #{output_path} '#{input_file}' 2>&1"
+    if output_path
+      FileUtils.mkdir_p output_path
+      args += ["-O", output_path]
+    end
 
-    Rails.logger.debug command
+    args += ["-C", url_catalog.join(',')] unless url_catalog.empty?
+
+    # add the path to the input file as last argument
+    args << input_file
 
     # Executes command with low priority
-    output = `nice #{command}`
+    Rails.logger.debug "Running hets with: #{args.inspect}"
+
+    output = Subprocess.run :nice, *args
+    if output.starts_with? '*** Error'
+      # some error occured
+      raise HetsError, output 
+    elsif match = output.lines.last.match(/Writing file: (.+)/)
+      # successful execution
+      match[1]
+    else
+      # we can not handle this response
+      raise HetsError, "Unexpected output:\n#{output}"
+    end
+
+  rescue Subprocess::Error => e
+    output = e.output
 
     # Exclude usage message if exit status equals 2
-    if $?.exitstatus == 2 and output.include? 'Usage:'
-      output = output.split("Usage:").first
+    if e.status == 2 and output.include? 'Usage:'
+      raise HetsError, output.split("Usage:").first
+    else
+      raise HetsError, "Hets exited with status #{e.status}:\n#{output}"
     end
-
-    output = output.split("\n").last
-    Rails.logger.debug output
-
-    # Raise error if exit status different from 0
-    if $?.exitstatus != 0 or output.starts_with? '*** Error'
-      raise HetsError.new(output)
-    end
-
-    return output.split(': ').last
   end
 
   # Traverses a directory recursively, importing ontology file with supported
   # extension.
   #
   # @param user [User] the user that imports the ontology files
+  # @param repo [Repository] Repository, the files shall be saved in
   # @param dir  [String] the path to the ontology library
   #
-  def self.import_ontologies(user, dir)
-    find_ontologies(dir) { |path| import_ontology(user, path) }
+  def self.import_ontologies(user, repo, dir)
+    find_ontologies(dir) { |path| import_ontology(user, repo, dir, path) }
   end
 
   # Imports an ontology in demand of a user.
   #
   # @param user [User] the user that imports the ontology file
-  # @param file_path [String] the path to the ontology file
-  # @param extension [String] the extension of the ontology file
+  # @param repo [Repository] Repository, the files shall be saved in
+  # @param path [String] the path to the ontology file
   #
-  def self.import_ontology(user, path)
-    puts path
-
-    ext = path.split('.').last
-
-    o = if EXTENSIONS_DIST.include? ext
-      DistributedOntology.new
-    else
-      SingleOntology.new
-    end
-
-    # TODO Use custom ontology iris detached from the local file system
-    o.iri = "file://#{path}"
-    o.name = File.basename(path, ".#{ext}")
-
-    begin
-      o.save!
-    rescue
-      puts "ERROR: " + o.name + " <" + o.iri + ">"
-      return
-    end
-
-    v = o.versions.build raw_file: File.open(path)
-    v.user = user
-    
-    o.save! 
-    o.ontology_version = v;
-    o.save!
+  def self.import_ontology(user, repo, dir, path)
+    relpath = File.relative_path(dir, path)
+    puts relpath
+    repo.save_file(path, relpath, "Added #{relpath}.", user)
   end
 
   def self.library_path
     (@@config ||= Config.new).library_path
   end
 
-private
+
+  private
 
   # Traverses a directory for ontologies with supported extensions recursively,
   # yielding their path.
   def self.find_ontologies(dir)
-    Dir.glob("#{dir}/**/*.{#{EXTENSIONS.join(',')}}").each { |path| yield path }
+    Dir.glob("#{dir}/**/*.{#{Ontology::FILE_EXTENSIONS.join(',')}}").each { |path| yield path }
   end
 
 end

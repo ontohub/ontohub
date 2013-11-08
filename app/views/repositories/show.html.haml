@@ -1,0 +1,23 @@
+= repository_nav resource, :overview
+
+- if resource.remote?
+  = render partial: 'source'
+
+%p
+  Clone URL:
+  %input.form-control.clone-url{type: 'text', readonly: true, value: repository_tree_url(resource, protocol: 'git', port: nil) << '.git' }
+
+%h2 Description
+%p
+  - if resource.description?
+    = resource.description
+  - else
+    %em No description.
+
+%h2 Recent changes
+- if resource.recent_changes.empty?
+  %p No changes.
+- else
+  %ul.repository-commits
+    - resource.recent_changes.each do |commit|
+      = render partial: 'files/commit', locals: { repository: resource, commit: commit }

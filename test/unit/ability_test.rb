@@ -2,7 +2,7 @@ require 'test_helper'
 
 class AbilityTest < ActiveSupport::TestCase
   
-  context 'Ontology' do
+  context 'Repository' do
     setup do
       @owner  = FactoryGirl.create :user # owner
       @editor = FactoryGirl.create :user # editor
@@ -12,6 +12,24 @@ class AbilityTest < ActiveSupport::TestCase
       FactoryGirl.create(:permission, subject: @editor, role: 'editor', item: @item)
     end
 
+    context 'guest' do
+      setup do
+        @ability = Ability.new(User.new)
+      end
+      
+      should 'not be allowed: new, create' do
+        [:new, :create].each do |perm|
+          assert @ability.cannot?(perm, Repository.new)
+        end
+      end
+
+      should 'not be allowed some actions' do
+        [:edit, :update, :destroy, :write].each do |perm|
+          assert @ability.cannot?(perm, @item)
+        end
+      end
+    end
+
     context 'owner' do
       setup do
         @ability = Ability.new(@owner)
@@ -19,11 +37,11 @@ class AbilityTest < ActiveSupport::TestCase
       
       should 'be allowed: new, create' do
         [:new, :create].each do |perm|
-          assert @ability.can?(perm, Ontology.new)
+          assert @ability.can?(perm, Repository.new)
         end
       end
 
-      should 'be allowed: edit, update, destroy, permissions' do
+      should 'be allowed: edit, update, destroy, permissions, write' do
         [:edit, :update, :destroy, :permissions].each do |perm|
           assert @ability.can?(perm, @item)
         end
@@ -31,7 +49,7 @@ class AbilityTest < ActiveSupport::TestCase
 
       should 'not be allowed on other: edit, update, destroy, permissions' do
         [:edit, :update, :destroy, :permissions].each do |perm|
-          assert @ability.cannot?(perm, FactoryGirl.create(:ontology))
+          assert @ability.cannot?(perm, FactoryGirl.create(:repository))
         end
       end
     end
@@ -41,14 +59,14 @@ class AbilityTest < ActiveSupport::TestCase
         @ability = Ability.new(@editor)
       end
       
-      should 'be allowed: edit, update' do
-        [:edit, :update].each do |perm|
+      should 'be allowed: write' do
+        [:write].each do |perm|
           assert @ability.can?(perm, @item)
         end
       end
 
-      should 'not be allowed: destroy, permissions' do
-        [:destroy, :permissions].each do |perm|
+      should 'not be allowed: edit, update, destroy, permissions' do
+        [:edit, :update, :destroy, :permissions].each do |perm|
           assert @ability.cannot?(perm, @item)
         end
       end
@@ -124,28 +142,28 @@ class AbilityTest < ActiveSupport::TestCase
       end
     end
     
-    context 'comments ontology owner' do
+    context 'comments repository owner' do
       setup do
         @owner = FactoryGirl.create :user
-        FactoryGirl.create(:permission, subject: @owner, role: 'owner', item: @comment.commentable)
+        FactoryGirl.create(:permission, subject: @owner, role: 'owner', item: @comment.commentable.repository)
         
         @ability = Ability.new(@owner)
       end
       
-      should 'destroy others comments for his ontology' do
+      should 'destroy others comments for his repository' do
         assert @ability.can?(:destroy, @comment)
       end
     end
     
-    context 'comments ontology editor' do
+    context 'comments repository editor' do
       setup do
         @owner = FactoryGirl.create :user
-        FactoryGirl.create(:permission, subject: @owner, role: 'editor', item: @comment.commentable)
+        FactoryGirl.create(:permission, subject: @owner, role: 'editor', item: @comment.commentable.repository)
         
         @ability = Ability.new(@owner)
       end
       
-      should 'not destroy others comments for his ontology' do
+      should 'not destroy others comments for his repository' do
         assert @ability.cannot?(:destroy, @comment)
       end
     end

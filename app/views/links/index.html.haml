@@ -1,54 +1,57 @@
--if @ontology
+- if parent
+  = repository_nav parent.repository, :ontologies
+
+- if @ontology
   = ontology_nav @ontology, :links
--else
-  %h2= @page_title = 'Links'
+- else
+  %h2= @page_title = 'Mappings'
 
 %p
-  = pluralize(collection.count, resource_class.to_s)
-  found
+  = pluralize(Link.count, "ontology mapping")
+  currently available
   
 = pagination do 
   -if @ontology
-    .row.center
-      .span2
+    .row.center-row
+      .col-md-2
         %h4 Link
-      .span2 
+      .col-md-2 
         %h4 Source
-      .span2
+      .col-md-2
         %h4 Source-Entity
-      .span2
+      .col-md-2
         %h4 Target
-      .span2
+      .col-md-2
         %h4 Target-Entity
     - hash = sort_link_list(@links)
     - hash.each do |key, array|
-      .row.center
-        .span2
+      .row.center-row
+        .col-md-2
           = link_to array.first[:link], array.first[:link]
-        .span2
+        .col-md-2
           = array.first[:link].source
-        .span2
+        .col-md-2
           -if key.to_s.include? "empty"
             
           -else
             =key 
-        .span4
+        .col-md-4
           -array.each do |link|
-            .row.center
-              .span2
+            .row.center-row
+              .col-md-6
                 =link[:link].target
-              .span2
+              .col-md-6
                 =link[:target]
                 
   -else
-    %table.table.span8
+    %table.table.col-md-8
       %thead
         %tr.center
           %th
-          %th.span1 Name
-          %th.span2 Source
-          %th.span1
-          %th.span2 Target
+          %th.col-md-1.right Name
+          %th.col-md-2.right Source
+          %th.col-md-1
+          %th.col-md-2 Target
           %th Entites
       %tbody
         = render collection

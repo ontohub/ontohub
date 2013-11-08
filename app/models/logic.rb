@@ -11,7 +11,6 @@
 class Logic < ActiveRecord::Base
   include Resourcable
   include Permissionable
-  include Common::Scopes
 
   # Multiple Class Features
   include Aggregatable

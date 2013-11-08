@@ -1,13 +1,11 @@
-%h2= @page_title = "Edit Link-Metadata" 
+%h2= @page_title = 'Edit Link-Metadata'
 
-= simple_form_for resource, html: { class: 'form-horizontal' } do |f|
+= simple_form_for resource do |f|
   = f.input :iri
-  = f.input :kind, :as => :select, :collection => Link::KINDS, :include_blank => false
+  = f.input :kind, as: :select, collection: Link::KINDS, include_blank: false
   = f.input :theorem
   = f.input :proven
   = f.input :local
   = f.input :inclusion
 
-  .form-actions
-    = f.button :submit, class: 'btn-primary'
-
+  = f.button :submit, class: 'btn btn-primary'

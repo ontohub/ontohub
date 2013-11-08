@@ -15,5 +15,10 @@ module FlashHelper
     end
     out.html_safe
   end
+
+  def format_error_message(msg)
+    return if msg.blank?
+    preserve content_tag(:div, msg, class: 'alert alert-danger error-message')
+  end
   
 end

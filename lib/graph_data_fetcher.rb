@@ -30,8 +30,8 @@ class GraphDataFetcher
     @center = center
     @depth = depth
     @source, @target = source, target
-    determine_target(target)
-    determine_source(target) unless source
+    determine_target(@target)
+    determine_source(@target) unless @source
     @source_table, @target_table = @source.table_name, @target.table_name
   end
 
@@ -48,13 +48,37 @@ class GraphDataFetcher
   end
 
   def fetch
-    return fetch_for_distributed if @center.is_a?(DistributedOntology)
-    node_stmt = build_statement(:node)
-    nodes = on_target(node_stmt)
+    if @center.is_a?(DistributedOntology)
+      nodes, edges = fetch_for_distributed
+    else
+      node_stmt = build_statement(:node)
+      nodes = on_target(node_stmt)
+      edge_stmt = build_statement(:edge)
+      edges = on_source(edge_stmt)
+    end
     nodes = [@center] if nodes.empty?
-    edge_stmt = build_statement(:edge)
-    edges = on_source(edge_stmt)
     [nodes, edges]
+  end
+
+  def explain
+    if @center.is_a?(DistributedOntology)
+      @source.
+        connection.
+        select_all("EXPLAIN (SELECT fetch_distributed_graph_data(#{@center.id}))")
+    else
+      @source.
+        connection.
+        select_all("EXPLAIN (FORMAT JSON) (#{build_statement(:node)})")
+    end
+  end
+
+  def query_cost
+    response = explain
+    cost = JSON.parse(response.first["QUERY PLAN"]).
+        first["Plan"]["Total Cost"]
+    return cost
+  rescue NoMethodError
+    return nil
   end
 
   private
@@ -81,7 +105,7 @@ class GraphDataFetcher
     (
     #{init_statement}
     #{gather_statement}
-    SELECT "loop_#{@depth-1}"."#{type}_id" FROM "loop_#{@depth-1}"
+    SELECT DISTINCT "loop_#{@depth-1}"."#{type}_id" FROM "loop_#{@depth-1}"
     )
     SQL
   end
@@ -89,13 +113,13 @@ class GraphDataFetcher
   def init_statement
     <<-SQL
     WITH "loop_0" AS (SELECT "ids".* FROM
-      (SELECT ("#{@source_table}"."source_id") AS node_id,
+      (SELECT DISTINCT ("#{@source_table}"."source_id") AS node_id,
         ("#{@source_table}"."id") AS edge_id
         FROM "#{@source_table}"
         WHERE ("#{@source_table}"."source_id" = #{@center.id} OR
           "#{@source_table}"."target_id" = #{@center.id})
       UNION
-      SELECT ("#{@source_table}"."target_id") AS node_id,
+      SELECT DISTINCT ("#{@source_table}"."target_id") AS node_id,
         ("#{@source_table}"."id") AS edge_id
         FROM "#{@source_table}"
         WHERE ("#{@source_table}"."source_id" = #{@center.id} OR
@@ -108,14 +132,14 @@ class GraphDataFetcher
       before = depth - 1
       stmt = <<-SQL
       "loop_#{depth}" AS (
-      SELECT ("#{@source_table}"."source_id") AS node_id,
+      SELECT DISTINCT ("#{@source_table}"."source_id") AS node_id,
         ("#{@source_table}"."id") AS edge_id
         FROM "#{@source_table}"
       INNER JOIN "loop_#{before}"
       ON ("#{@source_table}"."source_id" = "loop_#{before}"."node_id" OR
         "#{@source_table}"."target_id" = "loop_#{before}"."node_id")
       UNION
-      SELECT ("#{@source_table}"."target_id") AS node_id,
+      SELECT DISTINCT ("#{@source_table}"."target_id") AS node_id,
         ("#{@source_table}"."id") AS edge_id
         FROM "#{@source_table}"
       INNER JOIN "loop_#{before}"

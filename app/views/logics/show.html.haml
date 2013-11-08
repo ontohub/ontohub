@@ -2,10 +2,11 @@
 %h2= link_to resource, resource, 'data-type' => resource_class
 
 - if can? :update, Logic
-  %ul.actions.pull-right
-    %li= link_to 'Edit Logic', :edit_logic
-    - if can? :delete, Logic
-      %li= link_to 'Delete Logic', :logic, :confirm => 'Are you sure?', :method => :delete
+  .pull-right
+    .btn-group
+      = link_to 'Edit', [:edit, resource], class: 'btn btn-default'
+      - if can? :delete, Logic
+        = link_to 'Delete', resource, confirm: 'Are you sure?', method: :delete, class: 'btn btn-default'
 
 %p.definedBy 
   %h5 Defined by:

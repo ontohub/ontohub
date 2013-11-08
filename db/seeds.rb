@@ -4,12 +4,17 @@
 
 ActiveRecord::Base.logger = Logger.new($stdout)
 
-# Do not create background jobs.
-OntologyVersion.send :alias_method, :parse_async, :parse
-OopsRequest.send :define_method, :async_run, ->{}
+# Run background jobs inline
+require 'sidekiq/testing'
+Sidekiq::Testing.inline!
+
+# Purge data directory
+data_root = Ontohub::Application.config.data_root
+data_root.rmtree if data_root.exist?
 
 # Include every .rb file inside db/seeds directory.
 Dir["#{Rails.root}/db/seeds/*.rb"].sort.each do |path|
   puts File.basename path
   require path
 end
+

@@ -1,18 +1,18 @@
 - if req = resource.versions.current.try(:request)
-  %div.state{ class: req.state, 'data-uri' => ontology_ontology_version_oops_request_path(resource, resource.versions.current), 'data-button' => "show results", 'data-reload_uri' => url_for(resource) }
-    %span.oops OOPS State: #{status(req)}
+  - repo    = resource.repository
+  - version = resource.versions.current
+  .state{class: req.state, 'data-uri' => url_for([repo, resource, version, :oops_request]), 'data-button' => 'Show results', 'data-reload_uri' => url_for([repo, resource]) }
+    %span.oops OOPS state: #{status(req)}
     - if req.state == 'failed'
       (#{req.last_error})
     - elsif req.state == 'done'
       (#{req.responses.count} Responses)
       = link_to 'Show global issues', '#', class: 'pitfalls' unless req.responses.count == 0
-  %div.pitfalls{:style => "display:none"}
+  .pitfalls{style: 'display: none'}
     %dl.oops-responses
       - req.responses.global.each do |response|
-        %dt{ title: response.element_type }
-          %i{ class: oops_icon(response.element_type) }
+        %dt{title: response.element_type}
+          %i{class: oops_icon(response.element_type)}
         %dd
-          %strong
-            = response.name
+          %strong= response.name
           %p= response.description
-    

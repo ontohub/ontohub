@@ -2,18 +2,24 @@ require 'test_helper'
 
 class EntitiesControllerTest < ActionController::TestCase
   
-  should route(:get, "/ontologies/id/entities").to(:controller=> :entities, :action => :index, :ontology_id => 'id')
+  should route(:get, "/repositories/path/ontologies/id/entities").to(
+    :controller => :entities,
+    :action => :index,
+    :repository_id => 'path',
+    :ontology_id => 'id'
+  )
   
   context 'Ontology Instance' do
     setup do
       @user = FactoryGirl.create :user
       @logic = FactoryGirl.create :logic, :user => @user
       @ontology = FactoryGirl.create :single_ontology, :logic => @logic
+      @repository = @ontology.repository
     end
     
     context 'on GET to index' do
       setup do
-        get :index, :ontology_id => @ontology.to_param
+        get :index, repository_id: @repository.to_param, ontology_id: @ontology.to_param
       end
       
       should respond_with :success
@@ -27,11 +33,12 @@ class EntitiesControllerTest < ActionController::TestCase
       @user = FactoryGirl.create :user
       @logic = FactoryGirl.create :logic, :name => 'OWL2', :user => @user
       @ontology = FactoryGirl.create :single_ontology, :logic => @logic
+      @repository = @ontology.repository
     end
 
     context 'on GET to index' do
       setup do
-        get :index, :ontology_id => @ontology.id
+        get :index, repository_id: @repository.to_param, ontology_id: @ontology.to_param
       end
 
       should respond_with :success

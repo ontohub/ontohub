@@ -1,24 +1,26 @@
 - @page_title = resource.iri
+
 %h2= link_to resource, resource, 'data-type' => resource_class
 %p= fancy_tag(resource, [:theorem, :local, :proven, :inclusion]) { |a| ' | ' + a}
 
 - if can? :update, Link
-  %ul.actions.pull-right
-    %li= link_to 'Edit Metadata', :edit_link
-    %li= link_to 'Update Link', :update_version_link
-    - if can? :delete, Link
-      %li= link_to 'Delete Link', :link, :confirm => 'Are you sure?', :method => :delete
+  .pull-right
+    .btn-group
+      = link_to 'Edit Metadata', :edit_link, class: 'btn btn-default'
+      = link_to 'Update Link', :update_version_link, class: 'btn btn-default'
+      - if can? :delete, Link
+        = link_to 'Delete Link', :link, confirm: 'Are you sure?', method: :delete, class: 'btn btn-default'
 
 %h5 Links
 = fancy_link resource.source
 to
 = fancy_link resource.target
 
--if !resource.entity_mappings.empty?
+- if !resource.entity_mappings.empty?
   %h5 Entities
   %table
     %thead
-      %tr
+      %t
         %th Source
         %th Target
     %tbody
@@ -26,6 +28,7 @@ to
         %tr
           %td= mapping.source
           %td= mapping.target
+
 %h5 Status
 %p 
   Proven:  
@@ -34,5 +37,5 @@ to
   Required Consstatus: 
   = resource.versions.current.required_cons_status
 %p 
-  Prooven Consstatus: 
+  Proven Consstatus: 
   = resource.versions.current.proven_cons_status

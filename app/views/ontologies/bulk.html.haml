@@ -5,7 +5,7 @@
   Currently http:// and https:// is supported as schema.
   You do not need a specific delimiter like newlines. We find all URLs in this field.
 
-%form#bulkupload{:action => ontologies_path(:format => :json)}
+%form#bulkupload{:action => repository_ontologies_path(parent, :format => :json)}
   .inputs
     %textarea{:required => true, :placeholder => 'Paste any http:// or https:// URIs in this area.'}
   
@@ -29,4 +29,4 @@
       .progressbar
       = submit_tag "Cancel Upload"
     %ul.restart.actions
-      %li= link_to "Start new bulk upload", :bulk_ontologies
+      %li= link_to "Start new bulk upload", repository_ontologies_path(parent)

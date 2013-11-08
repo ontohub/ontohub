@@ -1,9 +1,5 @@
 = ontology_nav parent, 'New ontology version'
 
 = simple_form_for [:ontology, resource] do |f|
-  -if params[:from] == 'http-client'
-    = f.input :raw_file, :as => :file
-    = f.button :submit, 'Upload from my computer', disable_with: t(:wait)
-  -if params[:from] == 'http-server'
-    = f.input :source_url, :as => :url
-    = f.button :submit, 'Import from website', disable_with: t(:wait)
+  = f.input :raw_file, :as => :file
+  = f.button :submit, 'Upload from my computer', disable_with: t(:wait)

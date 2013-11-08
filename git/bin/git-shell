@@ -1,0 +1,17 @@
+#!/usr/bin/env ruby
+# 
+# Git shell, invoked from ~/.ssh/authorized_keys
+# 
+
+unless ENV['SSH_CONNECTION']
+  puts "Only ssh allowed"
+  exit 1
+end
+
+require File.expand_path('../../lib/init',  __FILE__)
+require 'git_shell'
+
+key_id  = ARGV[0]
+command = ENV['SSH_ORIGINAL_COMMAND']
+
+GitShell.new(key_id, command).exec

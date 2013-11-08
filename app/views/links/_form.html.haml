@@ -12,5 +12,4 @@
     = vf.input :proof_status, :as => :select, :collection => Link::CONS_STATUSES, :include_blank => false
   = f.association :source, :include_blank => false
   = f.association :target, :include_blank => false
-  .form-actions
-    = f.button :submit, class: 'btn-primary'
+  = f.button :wrapped
