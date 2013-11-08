@@ -2,6 +2,7 @@
 # Controller for Links
 # 
 class LinksController < InheritedResources::Base
+
   respond_to :json, :xml
   has_pagination
   has_scope :search
@@ -35,7 +36,8 @@ class LinksController < InheritedResources::Base
     redirect_to edit_link_link_version_path(resource, @version)
   end
   
-private
+
+  private
   
   def collection
     if params[:ontology_id]
