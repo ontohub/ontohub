@@ -18,9 +18,7 @@ class HetsTest < ActiveSupport::TestCase
   %w(owl/pizza.owl owl/generations.owl clif/cat.clif).each do |path|
     context path do
       setup do
-        assert_nothing_raised do
-          @xml_path = Hets.parse Rails.root.join("test/fixtures/ontologies/#{path}"), [], '/tmp'
-        end
+        @xml_path = Hets.parse Rails.root.join("test/fixtures/ontologies/#{path}"), [], '/tmp'
       end
 
       should 'have created output file' do
@@ -44,12 +42,10 @@ class HetsTest < ActiveSupport::TestCase
 
   context 'with url-catalog' do
     setup do
-      assert_nothing_raised do
-        @xml_path = Hets.parse \
-          Rails.root.join("test/fixtures/ontologies/clif/monoid.clif"),
-          ["http://colore.oor.net/magma=file://#{Rails.root.join('test/fixtures/ontologies/clif')}"],
-          '/tmp'
-      end
+      @xml_path = Hets.parse \
+        Rails.root.join("test/fixtures/ontologies/clif/monoid.clif"),
+        ["http://colore.oor.net/magma=file://#{Rails.root.join('test/fixtures/ontologies/clif')}"],
+        '/tmp'
     end
 
     should 'have created output file' do
