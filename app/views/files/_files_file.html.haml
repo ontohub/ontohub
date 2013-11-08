@@ -1,16 +1,21 @@
 %h3 
   =@path
-- unless @info[:ontologies].empty?
-  = "Defining #{pluralize @info[:ontologies].size, 'ontology'}:"
-  %ul.ontology-list
-    - @info[:ontologies].each do |ontology|
-      %li= fancy_link ontology
 
--if @file[:size] <= Ontohub::Application.config.max_read_filesize
-  %pre=@file[:content]
-  -# =form_for(repository, url: fancy_repository_path(repository, path: @info[:entry][:path], oid: @oid), method: :post, html: {class: 'form-horizontal edit-form'}) do |f|
-  -#   =text_area_tag 'content', @file[:content], class: 'input-xxlarge', id: 'code-area', 'data-mime-type' => get_mime_string(@file[:name], @file[:mime_type])
--else
-  %p
-    File too large to display.
-    =link_to "Download #{@file[:name]}.", fancy_repository_path(repository, path: @path, oid: @oid)
+.col-md-9
+  - if @file[:size] <= Ontohub::Application.config.max_read_filesize
+    %pre= @file[:content]
+    -# = form_for(repository, url: fancy_repository_path(repository, path: @info[:entry][:path], oid: @oid), method: :post, html: {class: 'form-horizontal edit-form'}) do |f|
+    -#   = text_area_tag 'content', @file[:content], class: 'input-xxlarge', id: 'code-area', 'data-mime-type' => get_mime_string(@file[:name], @file[:mime_type])
+  - else
+    %p
+      File too large to display.
+      = link_to "Download #{@file[:name]}.", fancy_repository_path(repository, path: @path, oid: @oid)
+
+.col-md-3
+  - unless @info[:ontologies].empty?
+    %h4
+      Defining
+      = pluralize @info[:ontologies].size, 'ontology'
+    %ul.ontology-list
+      - @info[:ontologies].each do |ontology|
+        %li= fancy_link ontology
