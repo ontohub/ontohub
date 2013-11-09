@@ -9,7 +9,16 @@
 
 = render partial: 'repositories/breadcrumbs'
 
-=# paginate @commits
+%ul.pagination
+  - unless @page == 1
+    %li.first
+      = link_to raw(t 'views.pagination.first'), "?page=1"
+    %li.prev
+      = link_to raw(t 'views.pagination.previous'), "?page=#{@page-1}", :rel => 'prev'
+  %li.active
+    = link_to @page, "?page=#{@page}"
+  %li.next_page
+    = link_to raw(t 'views.pagination.next'), "?page=#{@page+1}", :rel => 'next'
 
-- group_commits(@commits).each do |group| 
+- group_commits(@commits).each do |group|
   = render partial: 'history_commit_group', locals: { group: group }
