@@ -36,7 +36,7 @@ class Ontology < ActiveRecord::Base
 
   validates_uniqueness_of :iri, :if => :iri_changed?
   validates_format_of :iri, :with => URI::regexp(Settings.allowed_iri_schemes)
-
+  validates :documentation, format: { with: URI::regexp(Settings.allowed_iri_schemes) }, allow_blank: true
   validates_presence_of :basepath
 
   delegate :permission?, to: :repository
