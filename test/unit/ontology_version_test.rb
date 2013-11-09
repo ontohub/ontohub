@@ -28,7 +28,7 @@ class OntologyVersionTest < ActiveSupport::TestCase
       @ontology_version = FactoryGirl.create :ontology_version
     end
     should 'have url' do
-      assert_match %r(http://example\.com/repositories/#{@ontology_version.repository.path}/[0-9a-f]{40}/\w+\.owl$), @ontology_version.url
+      assert_match %r(http://example\.com/repositories/#{@ontology_version.repository.path}/ontologies/\d+/versions/\d+$), @ontology_version.url
     end
   end
   
