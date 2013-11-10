@@ -45,16 +45,16 @@ class FilesController < ApplicationController
   def history
     @path = params[:path]
 
-    per_page = 50
-    page = @page = params[:page].to_i || 1
-    offset = page > 0 ? (page - 1) * per_page : 0
+    @per_page = 25
+    page = @page = params[:page].nil? ? 1 : params[:page].to_i
+    offset = page > 0 ? (page - 1) * @per_page : 0
 
     if repository.empty?
       @commits = []
     else
       @oid = repository.commit_id(params[:ref])[:oid]
       @current_file = repository.read_file(@path, @oid) if @path
-      @commits = repository.commits(start_oid: @oid, path: @path, offset: offset, limit: per_page)
+      @commits = repository.commits(start_oid: @oid, path: @path, offset: offset, limit: @per_page)
     end
   end
 

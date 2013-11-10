@@ -9,16 +9,8 @@
 
 = render partial: 'repositories/breadcrumbs'
 
-%ul.pagination
-  - unless @page == 1
-    %li.first
-      = link_to raw(t 'views.pagination.first'), "?page=1"
-    %li.prev
-      = link_to raw(t 'views.pagination.previous'), "?page=#{@page-1}", :rel => 'prev'
-  %li.active
-    = link_to @page, "?page=#{@page}"
-  %li.next_page
-    = link_to raw(t 'views.pagination.next'), "?page=#{@page+1}", :rel => 'next'
+.history-pagination
+  = paginate Kaminari.paginate_array(@commits, total_count: ((params[:page] || 1)*(@per_page+1))).page(params[:page]).per(@per_page), window: 0, outer_window: 0, exclude: [:first, :last, :gap, :per_page]
 
 - group_commits(@commits).each do |group|
   = render partial: 'history_commit_group', locals: { group: group }
