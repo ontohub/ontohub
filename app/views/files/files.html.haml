@@ -19,6 +19,16 @@
     = @info[:type] == :file ? 'Update file' : 'Upload file'
 
 = render partial: 'repositories/breadcrumbs'
+.pull-right
+  = link_to fancy_repository_path(repository, action: :history, path: @path, ref: ref) do
+    .files-buttons.btn.btn-default
+      History of this
+      - case @info[:type]
+      - when :file_base, :file
+        File
+      - when :dir
+        Directory
+
 
 - case @info[:type]
 - when :file_base_ambiguous

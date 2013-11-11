@@ -41,7 +41,7 @@ describe Hets do
     before do
       @xml_path = Hets.parse \
         Rails.root.join("test/fixtures/ontologies/clif/monoid.clif"),
-        ["http://colore.oor.net/magma=file://#{Rails.root.join('test/fixtures/ontologies/clif')}"],
+        ["http://colore.oor.net=http://develop.ontohub.org/colore/ontologies"],
         '/tmp'
     end
 
