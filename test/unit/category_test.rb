@@ -13,16 +13,16 @@ class CategoryTest < ActiveSupport::TestCase
 
   context 'Validations' do
     setup do
-      Category.create!(:name => 'node1', :parent => Category.create(:name => 'root'))
+      FactoryGirl.create :category, name: 'node1', parent: FactoryGirl.create(:category, name: 'root')
     end
     should 'trigger when identical node is created' do
-      assert_raise(ActiveRecord::RecordInvalid) { Category.create!(:name => 'node1', :parent => Category.find_by_name('root')) }
+      assert_raise(ActiveRecord::RecordInvalid) { FactoryGirl.create :category, name: 'node1', parent: Category.find_by_name('root') }
     end
     should 'let identical name but different ancestry (nil) pass' do
-      assert_nothing_raised { Category.create!(:name => 'node1')}
+      assert_nothing_raised { FactoryGirl.create :category, name: 'node1' }
     end
     should 'let different name but identical ancestry pass' do
-      assert_nothing_raised { Category.create!(:name => 'node2', :parent => Category.find_by_name('root')) }
+      assert_nothing_raised { FactoryGirl.create :category, name: 'node2', parent: Category.find_by_name('root') }
     end
   end
 
