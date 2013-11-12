@@ -33,7 +33,8 @@
 - if resource.oops_supported?
   = render partial: '/ontologies/oops_state', locals: {resource: resource}
 
-= status_tag
+- if resource.non_current_active_version?(current_user)
+  = render partial: '/ontologies/status'
 
 %nav.nav_tab_level1
   %ul.nav.nav-tabs
