@@ -4,4 +4,4 @@
     %li
       #{entry.count} #{entry.state}
       - if entry.state=='failed'
-        = link_to 'Retry', [:retry_failed, parent, :ontologies], method: :post, class: 'btn btn-xs btn-primary'
+        = link_to 'Retry them', [:retry_failed, parent, :ontologies], method: :post, class: 'btn btn-xs btn-primary', data: { disable_with: t(:wait) }
