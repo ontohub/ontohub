@@ -29,16 +29,6 @@ module OntologyHelper
     repository_ontology_ontology_version_path(*resource_chain, resource.versions.done.latest.first)
   end
 
-  def in_process_tag
-    ontologies = collection.in_process(admin? || current_user)
-    content_tag(:div, class: 'well', id: 'ontology_infos') do
-      content_tag(:h5, t(:in_process_ontologies)) +
-      content_tag(:ul, id: 'in_process', class: 'ontologies') do
-        render ontologies
-      end
-    end if ontologies.any?
-  end
-
   def status_tag
     content_tag(:div, class: 'well', id: 'ontology_infos') do
       content_tag(:small, id: 'ontology-state',
