@@ -1,5 +1,5 @@
 $(function () {
-  $.jstree._themes = "/assets/jstree-themes/";
+  $.jstree._themes = "assets/jstree-themes/";
   $(".selector").jstree({
     "plugins" : [ "search", "themes", "html_data", "checkbox", "sort", "ui" ],
     "checkbox": {
