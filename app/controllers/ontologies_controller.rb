@@ -8,7 +8,7 @@ class OntologiesController < InheritedResources::Base
   belongs_to :repository, finder: :find_by_path!
   respond_to :json, :xml
   has_pagination
-  has_scope :search
+  has_scope :search, :state
   actions :index, :show, :edit, :update
 
   before_filter :check_write_permission, :except => [:index, :show, :oops_state]
@@ -80,8 +80,16 @@ class OntologiesController < InheritedResources::Base
   end
 
   def retry_failed
-    end_of_association_chain.retry_failed
-    redirect_to [parent, :ontologies]
+    scope = end_of_association_chain
+    
+    if id = params[:id]
+      # retry a specific ontology
+      scope = scope.where(id: id)
+    end
+
+    scope.retry_failed
+
+    redirect_to (id ? [parent, scope.first!, :ontology_versions] : [parent, :ontologies])
   end
   
   def oops_state

@@ -83,6 +83,9 @@ Ontohub::Application.routes.draw do
         get 'keywords' => 'ontology_search#keywords'
         get 'search' => 'ontology_search#search'
       end
+      member do
+        post 'retry_failed' => 'ontologies#retry_failed'
+      end
       resources :children, :only => :index
       resources :entities, :only => :index
       resources :sentences, :only => :index
