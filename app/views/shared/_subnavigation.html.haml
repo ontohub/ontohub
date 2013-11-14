@@ -1,4 +1,4 @@
-- if can? :edit, resource
+- if can? :edit, resource and not options[:disable_actions]
   .btn-group.pull-right
     - additional_actions.each do |action_link|
       = action_link

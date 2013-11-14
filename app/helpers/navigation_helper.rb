@@ -1,7 +1,7 @@
 # encoding: UTF-8
 module NavigationHelper
 
-  def repository_nav(resource, current_page)
+  def repository_nav(resource, current_page, options = {})
     pages = [
       [:overview,     resource]
     ]
@@ -14,7 +14,7 @@ module NavigationHelper
     pages << [:history,          repository_ref_path(resource, 'master', path: nil, action: :history)]
     pages << [:permissions,      [*chain, :permissions]] if can? :permissions, resource
  
-    subnavigation(resource, pages, current_page)
+    subnavigation(resource, pages, current_page, [], options)
   end
 
   def ontology_nav(ontology, current_page)
@@ -69,7 +69,7 @@ module NavigationHelper
     }
   end
      
-  def subnavigation(resource, pages, current_page, additional_actions = [])
+  def subnavigation(resource, pages, current_page, additional_actions = [], options = {})
     # Add counters
     pages.each do |row|
       counter_key = "#{row[0]}_count"
@@ -83,7 +83,8 @@ module NavigationHelper
       resource:           resource,
       current_page:       current_page,
       pages:              pages,
-      additional_actions: additional_actions
+      additional_actions: additional_actions,
+      options:            options
     }
   end
 
