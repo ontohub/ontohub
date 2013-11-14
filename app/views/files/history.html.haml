@@ -1,16 +1,23 @@
 = repository_nav repository, :history
 
-%p
-  The versions of this repository are maintained by GIT Version Control Software.
-  %br
-  Below you have access to the history of changes commited to this repository
-  %br
-  as well as to any particular past version of it.
+.row
+  .col-md-6
+    %p
+      The version history of this repository is maintained by
+      = link_to('the Git version control system', 'http://git-scm.com/') + '.'
+      Below you have access to the history of changes commited to this
+      repository as well as to any particular past version of it.
 
-= render partial: 'repositories/breadcrumbs'
+.row
+  .col-md-12
+    - if @oid
+      = render partial: 'repositories/breadcrumbs'
 
-.history-pagination
-  = paginate Kaminari.paginate_array(@commits, total_count: ((params[:page] || 1)*(@per_page+1))).page(params[:page]).per(@per_page), window: 0, outer_window: 0, exclude: [:first, :last, :gap, :per_page]
+      .history-pagination
+        = paginate Kaminari.paginate_array(@commits, total_count: ((params[:page] || 1)*(@per_page+1))).page(params[:page]).per(@per_page), window: 0, outer_window: 0, exclude: [:first, :last, :gap, :per_page]
 
-- group_commits(@commits).each do |group|
-  = render partial: 'history_commit_group', locals: { group: group }
+      - group_commits(@commits).each do |group| 
+        = render partial: 'history_commit_group', locals: { group: group }
+
+    - else
+      %p This repository is empty.
