@@ -1,6 +1,6 @@
 class FilesController < ApplicationController
 
-  helper_method :repository
+  helper_method :repository, :ref
   before_filter :check_permissions, only: [:new, :create]
 
   # FIXME
@@ -71,6 +71,10 @@ class FilesController < ApplicationController
 
   def repository
     @repository ||= Repository.find_by_path!(params[:repository_id])
+  end
+
+  def ref
+    params[:ref] || 'master'
   end
 
   def build_file
