@@ -74,11 +74,7 @@ class FilesController < ApplicationController
   end
 
   def ref
-    if params[:ref]
-      params[:ref]
-    else
-      'master'
-    end
+    params[:ref] || 'master'
   end
 
   def build_file
