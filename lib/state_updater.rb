@@ -1,5 +1,12 @@
 module StateUpdater
+  extend ActiveSupport::Concern
   
+  included do
+    scope :state, ->(*states){
+      where state: states.map(&:to_s)
+    }
+  end
+
   protected
   
   def after_failed

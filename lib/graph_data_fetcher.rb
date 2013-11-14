@@ -48,12 +48,15 @@ class GraphDataFetcher
   end
 
   def fetch
-    return fetch_for_distributed if @center.is_a?(DistributedOntology)
-    node_stmt = build_statement(:node)
-    nodes = on_target(node_stmt)
+    if @center.is_a?(DistributedOntology)
+      nodes, edges = fetch_for_distributed
+    else
+      node_stmt = build_statement(:node)
+      nodes = on_target(node_stmt)
+      edge_stmt = build_statement(:edge)
+      edges = on_source(edge_stmt)
+    end
     nodes = [@center] if nodes.empty?
-    edge_stmt = build_statement(:edge)
-    edges = on_source(edge_stmt)
     [nodes, edges]
   end
 

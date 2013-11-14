@@ -1,5 +1,5 @@
 %ul.breadcrumb
-  - unless @repository.is_head?(@oid)
+  - if in_ref_path?
     %span.commit-oid= current_commit_id(@oid)
   -repository_breadcrumbs(@repository, @path,@oid).each do |crumb|
     -if crumb[:last]

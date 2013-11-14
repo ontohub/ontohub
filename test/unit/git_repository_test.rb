@@ -379,7 +379,7 @@ class GitRepositoryTest < ActiveSupport::TestCase
         ], @repository.commits(path: @filepath) { |commit_oid| commit_oid }
       end
 
-      should 'only list the newest commits if a limit is specified' do
+      should 'only list the newest commits if a limit (and offset) is specified' do
         assert_equal([
           @commit_delete2,
           @commit_change2,
@@ -394,6 +394,18 @@ class GitRepositoryTest < ActiveSupport::TestCase
           @commit_other1,
           @commit_change1,
           @commit_add1], @repository.commits(limit: 30) { |commit_oid| commit_oid })
+        assert_equal([
+          @commit_add2,
+          @commit_other3,
+          @commit_other2], @repository.commits(limit: 3, offset: 2) { |commit_oid| commit_oid })
+        assert_equal([
+          @commit_other1,
+          @commit_change1,
+          @commit_add1], @repository.commits(limit: 3, offset: 6) { |commit_oid| commit_oid })
+        assert_equal([
+          @commit_other1,
+          @commit_change1,
+          @commit_add1], @repository.commits(limit: 4, offset: 6) { |commit_oid| commit_oid })
         assert_equal([
           @commit_delete2,
           @commit_change2,
@@ -417,6 +429,9 @@ class GitRepositoryTest < ActiveSupport::TestCase
           @commit_change1,
           @commit_add1
         ], @repository.commits(path: @filepath, limit: 7) { |commit_oid| commit_oid })
+        assert_equal([
+          @commit_add1
+        ], @repository.commits(path: @filepath, limit: 7, offset: 5) { |commit_oid| commit_oid })
       end
     end
 

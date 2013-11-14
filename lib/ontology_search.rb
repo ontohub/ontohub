@@ -36,8 +36,8 @@ class OntologySearch
     ontologies = repository.ontologies
     ontology_ids = Set.new
     ontologies.each do |ontology|
-      ontology.entities.select(:name).where("name ILIKE :prefix", prefix: "#{prefix}%").group("name").limit(5).each do |symbol|
-        text_list.add(symbol.name)
+      ontology.entities.select(:text).where("text ILIKE :prefix", prefix: "#{prefix}%").group("text").limit(5).each do |symbol|
+        text_list.add(symbol.text)
       end
       ontology_ids.add(ontology.id)
     end

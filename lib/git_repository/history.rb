@@ -2,29 +2,36 @@ module GitRepository::History
   # depends on GitRepository
   extend ActiveSupport::Concern
 
-  def commits(start_oid: nil, stop_oid: nil, path: nil, limit: nil, &block)
+  def commits(start_oid: nil, stop_oid: nil, path: nil, limit: nil, offset: 0, &block)
     return [] if @repo.empty?
     start_oid ||= head_oid
+    offset = 0 if offset < 0
 
     walker = Rugged::Walker.new(@repo)
     walker.push(start_oid)
     walker.hide(stop_oid) if stop_oid
 
     if path
-      commits_path(walker, limit, path, &block)
+      commits_path(walker, limit, offset, path, &block)
     else
-      commits_all(walker, limit, &block)
+      commits_all(walker, limit, offset, &block)
     end
   end
 
 
   protected
 
-  def commits_all(walker, limit, &block)
+  def commits_all(walker, limit, offset, &block)
     commits = []
+    offset_original = offset
 
     walker.each_with_index do |c,i|
-      break if limit && i == limit
+      if offset > 0
+        offset = offset - 1
+        next
+      end
+
+      break if limit && i-offset_original == limit
 
       if block_given?
         commits << block.call(c.oid)
@@ -38,7 +45,7 @@ module GitRepository::History
     commits
   end
 
-  def commits_path(walker, limit, path, &block)
+  def commits_path(walker, limit, offset, path, &block)
     commits = []
 
     object = nil
@@ -50,15 +57,20 @@ module GitRepository::History
       break if limit && added_commits == limit
       previous_object = get_object(previous_commit, path)
 
-      if object_added(object, previous_object, !commit.nil?) || 
-      object_changed(object, previous_object, !commit.nil?) || 
-      object_deleted(object, previous_object, !commit.nil?)
-        if block_given?
-          commits << block.call(commit.oid)
+      if object_added(object, previous_object, !commit.nil?) ||
+         object_changed(object, previous_object, !commit.nil?) ||
+         object_deleted(object, previous_object, !commit.nil?)
+
+        if offset > 0
+          offset = offset - 1
         else
-          commits << to_hash(commit)
+          if block_given?
+            commits << block.call(commit.oid)
+          else
+            commits << to_hash(commit)
+          end
+          added_commits = added_commits + 1
         end
-        added_commits = added_commits + 1
       end
 
       object = previous_object

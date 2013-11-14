@@ -16,6 +16,7 @@ gem 'rdf-n3'
 # Gems used only for assets and not required
 # in production environments by default.
 group :assets do
+  gem 'jstree-rails', :git => 'git://github.com/tristanm/jstree-rails.git'
   gem 'sass-rails',     '~> 3.2.3'
   gem 'bootstrap-sass', '~> 3.0.0'
   gem 'coffee-rails',   '~> 3.2.1'
@@ -69,7 +70,7 @@ gem "rest-client"
 
 # Background-Jobs
 gem 'sidekiq', '~> 2.15'
-gem 'sidetiq'
+gem 'sidetiq', '~> 0.4.3'
 gem 'sinatra', require: false, group: [:development, :production]
 
 # Search engine
@@ -81,10 +82,6 @@ gem 'ruby-graphviz', "~> 1.0.8"
 
 # Fake-inputs for tests and seeds
 gem "faker", "~> 1.1.2"
-
-group :development, :test do
-  gem 'byebug'
-end
 
 # Git
 gem 'rugged'

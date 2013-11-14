@@ -34,4 +34,8 @@ module RepositoryHelper
     commit[:oid][0..6]
   end
 
+  def in_ref_path?
+    !params[:ref].nil?
+  end
+
 end
