@@ -1,15 +1,22 @@
 = repository_nav repository, :history
 
-%p
-  The versions of this repository are maintained by GIT Version Control Software.
-  %br
-  Below you have access to the history of changes commited to this repository
-  %br
-  as well as to any particular past version of it.
+.row
+  .col-md-6
+    %p
+      The version history of this repository is maintained by
+      = link_to('the Git version control system', 'http://git-scm.com/') + '.'
+      Below you have access to the history of changes commited to this
+      repository as well as to any particular past version of it.
 
-= render partial: 'repositories/breadcrumbs'
+.row
+  .col-md-12
+    - if @oid
+      = render partial: 'repositories/breadcrumbs'
 
-=# paginate @commits
+      =# paginate @commits
 
-- group_commits(@commits).each do |group| 
-  = render partial: 'history_commit_group', locals: { group: group }
+      - group_commits(@commits).each do |group| 
+        = render partial: 'history_commit_group', locals: { group: group }
+
+    - else
+      %p This repository is empty.
