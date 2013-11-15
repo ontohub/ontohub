@@ -1,9 +1,9 @@
-= repository_nav repository, :"Ontology files"
+= repository_nav repository, :"Ontology files and related files"
 
 .row
   .col-md-6
     %p
-      In this page, you have direct access to the file system where this
+      In this page, you have direct access to the file system where the
       repository is stored.
 
       - case @info[:type]
@@ -14,9 +14,9 @@
           the text box.
 
         - when :dir
-          Below is the list of files in this repository directory, ranked by the
-          number of commited changes. In order to find a particular file, you
-          can navigate through the file system.
+          Below is the list of files in the current directory, independent of
+          whether they contain ontologies or not. In order to find a particular
+          file, you can navigate through the file system.
 
 .pull-right.btn-group.files-buttons
   = link_to new_repository_file_path(repository, 'upload_file[path]' => params[:path]), class: 'btn btn-default btn-sm' do
