@@ -3,8 +3,8 @@
     .message= link_to get_message(commit)[:title], fancy_repository_path(repository, ref: commit[:oid], action: :diff)
     .time-author
       by
-      = commit[:committer][:name]
-      = timestamp(commit[:committer][:time])
+      = commit[:author][:name]
+      = timestamp(commit[:author][:time])
   .col-md-5
     .pull-right
       .btn-group
