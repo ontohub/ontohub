@@ -53,7 +53,7 @@ class FilesController < ApplicationController
       @commits = []
     else
       @oid = repository.commit_id(params[:ref])[:oid]
-      @current_file = repository.read_file(@path, @oid) if @path
+      @current_file = repository.read_file(@path, @oid) if @path && !repository.dir?(@path)
       @commits = repository.commits(start_oid: @oid, path: @path, offset: offset, limit: @per_page)
     end
   end
