@@ -26,6 +26,10 @@ class FilesController < ApplicationController
     end
   end
 
+  def download
+    send_download(path, oid)
+  end
+
   def entries_info
     render json: repository.entries_info(oid, path)
   end
