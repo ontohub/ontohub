@@ -9,7 +9,7 @@
   - else
     %p
       File too large to display.
-      = link_to "Download #{@file[:name]}.", fancy_repository_path(repository, path: path, ref: oid)
+      = link_to "Download #{@file[:name]}.", fancy_repository_path(repository, path: path, ref: oid, action: :download)
 
 .col-md-3
   - unless @info[:ontologies].empty?
