@@ -146,7 +146,7 @@ module Repository::GitRepositories
 
   def read_file(filepath, commit_oid=nil)
     file = git.get_file(filepath, commit_oid)
-    file[:content] = file[:content].force_encoding("UTF-8")
+    file[:content] = file[:content]
 
     file
   end
