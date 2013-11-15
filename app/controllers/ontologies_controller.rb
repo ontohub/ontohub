@@ -26,12 +26,20 @@ class OntologiesController < InheritedResources::Base
 
   def new
     @ontology_version = build_resource.versions.build
-    @c_vertices = CVertex.first.roots.first.children
+    @c_vertices = []
+    vert = Category.first
+    if vert
+      @c_vertices = vert.roots.first.children
+    end
   end
 
   def edit
     @ontology = resource
-    @c_vertices = CVertex.first.roots.first.children
+    @c_vertices = []
+    vert = Category.first
+    if vert
+      @c_vertices = vert.roots.first.children
+    end
   end
 
   def update
@@ -69,6 +77,11 @@ class OntologiesController < InheritedResources::Base
         respond_with resource
       end
     end
+  end
+
+  def retry_failed
+    end_of_association_chain.retry_failed
+    redirect_to [parent, :ontologies]
   end
   
   def oops_state

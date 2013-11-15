@@ -1,4 +1,4 @@
-- if can? :edit, resource
+- if can? :edit, resource and not options[:disable_actions]
   .btn-group.pull-right
     - additional_actions.each do |action_link|
       = action_link
@@ -16,8 +16,6 @@
           = page.to_s.capitalize
           - if count
             %span.badge{style: count == 0 && 'display: none'}= count
-
-= format_links
 
 - unless params[:ontology_id]
   %h2= current_page.to_s.capitalize

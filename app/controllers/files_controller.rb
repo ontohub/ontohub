@@ -1,6 +1,6 @@
 class FilesController < ApplicationController
 
-  helper_method :repository
+  helper_method :repository, :ref
   before_filter :check_permissions, only: [:new, :create]
 
   # FIXME
@@ -44,12 +44,17 @@ class FilesController < ApplicationController
 
   def history
     @path = params[:path]
+
+    @per_page = 25
+    page = @page = params[:page].nil? ? 1 : params[:page].to_i
+    offset = page > 0 ? (page - 1) * @per_page : 0
+
     if repository.empty?
       @commits = []
     else
       @oid = repository.commit_id(params[:ref])[:oid]
       @current_file = repository.read_file(@path, @oid) if @path
-      @commits = repository.commits(start_oid: @oid, path: @path)
+      @commits = repository.commits(start_oid: @oid, path: @path, offset: offset, limit: @per_page)
     end
   end
 
@@ -71,6 +76,10 @@ class FilesController < ApplicationController
 
   def repository
     @repository ||= Repository.find_by_path!(params[:repository_id])
+  end
+
+  def ref
+    params[:ref] || 'master'
   end
 
   def build_file

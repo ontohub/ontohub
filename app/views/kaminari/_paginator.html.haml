@@ -6,20 +6,22 @@
 -#    remote:        data-remote
 -#    paginator:     the paginator that renders the pagination tags inside
 = paginator.render do
+  - exclude ||= []
   %nav
     %ul.pagination
-      = first_page_tag unless current_page.first?
+      = first_page_tag unless current_page.first? || exclude.include?(:first)
       = prev_page_tag unless current_page.first?
       - each_page do |page|
         - if page.left_outer? || page.right_outer? || page.inside_window?
           = page_tag page
         - elsif !page.was_truncated?
-          = gap_tag
+          = gap_tag unless exclude.include?(:gap)
       = next_page_tag unless current_page.last?
-      = last_page_tag unless current_page.last?
-    %form
-      %label
-        %select{:name => 'per_page'}
-          - [25, 50, 100, 500].each do |num|
-            %option{:selected => (per_page==num)}= num
-        per page
+      = last_page_tag unless current_page.last? || exclude.include?(:last)
+    - unless exclude.include?(:per_page)
+      %form
+        %label
+          %select{:name => 'per_page'}
+            - [25, 50, 100, 500].each do |num|
+              %option{:selected => (per_page==num)}= num
+          per page

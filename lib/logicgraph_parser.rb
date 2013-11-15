@@ -126,8 +126,6 @@ module LogicgraphParser
         when COMORPHISM
           hash = Hash[*[attributes]]
           @current_comorphism = make_mapping(hash['name'])
-          print hash['name']
-          print "\n"
           if @path[-2] == SOURCE_SUBLOGIC
             @current_comorphism.source = @current_source_sublogic
           elsif @path[-2] == TARGET_SUBLOGIC
@@ -145,20 +143,9 @@ module LogicgraphParser
               @current_comorphism.faithfulness = LogicMapping::FAITHFULNESSES[0]
             end
           end
-          print "- source "
-          print !@current_comorphism.source.nil?
-          print "\n"
-          print "- target "
-          print !@current_comorphism.target.nil?
-          print "\n"
-          print "- size "
-          print @mappings.size
-          print "\n"
           if !@current_comorphism.source.nil? && !@current_comorphism.target.nil?
             callback(:logic_mapping, @current_comorphism)
-            print "- saved!\n"
           end
-          print "\n"
         when SOURCE_SUBLOGIC
           hash = Hash[*[attributes]]
           @current_source_sublogic = make_logic(hash['name'])
@@ -179,8 +166,6 @@ module LogicgraphParser
         when PROVER
         when CONSERVATIVITY
         when CONSISTENCY
-        else
-          print "Non-Caught:" + name
       end
     end
 

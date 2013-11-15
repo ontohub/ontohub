@@ -6,8 +6,25 @@ module Ontology::States
   included do
     validates_inclusion_of :state, :in => STATES
 
+    scope :state, ->(*states){
+      where state: states.map(&:to_s)
+    }
+
     STATES.each do |state|
       eval "def #{state}?; state == '#{state}'; end"
+    end
+  end
+
+  module ClassMethods
+    # Enqueues new parse jobs for all failed ontologies
+    def retry_failed
+      state(:failed).find_each do |ontology|
+        ontology.versions.last.try :async_parse
+      end
+    end
+
+    def count_by_state
+      select("state, count(*) AS count").group(:state)
     end
   end
 
