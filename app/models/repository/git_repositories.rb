@@ -145,10 +145,7 @@ module Repository::GitRepositories
   end
 
   def read_file(filepath, commit_oid=nil)
-    file = git.get_file(filepath, commit_oid)
-    file[:content] = file[:content]
-
-    file
+    git.get_file(filepath, commit_oid)
   end
 
   # given a commit oid or a branch name, commit_id returns a hash of oid and branch name if existent
