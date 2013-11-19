@@ -11,6 +11,12 @@ class EntitiesController < InheritedResources::Base
   respond_to :json, :xml
 
   def index
+    ontology = Ontology.find params[:ontology_id]
+    if ontology.logic.name == "OWL2"
+      if ontology  
+        @nodes = ontology.entities.first.roots.first.children
+      end
+    end
     index! do |format|
       format.html do
         unless collection.blank?

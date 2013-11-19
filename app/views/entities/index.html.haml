@@ -1,9 +1,11 @@
 = repository_nav parent.repository, :ontologies
 
 = ontology_nav parent, :entities
-
-= pagination do
-  - unless collection.blank?
-    = render :partial => 'list'
-  - else
-    %h3 No entities found
+- if parent.logic.name != "OWL2"
+  = pagination do
+    - unless collection.blank?
+      = render :partial => 'list'
+    - else
+      %h3 No entities found
+-else
+  = render :partial => 'treeview'

@@ -1,5 +1,8 @@
 class Entity < ActiveRecord::Base
+  extend Dagnabit::Vertex::Activation
 
+    acts_as_vertex
+    connected_by 'EEdge'
   include Metadatable
   include Entity::Searching
   include Entity::Readability
