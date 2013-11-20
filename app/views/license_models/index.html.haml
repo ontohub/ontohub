@@ -1,2 +1,16 @@
-%h1 LicenseModel#index
-%p Find me in app/views/license_model/index.html.haml
+= repository_nav parent.repository, :ontologies
+
+= ontology_nav parent, :license_models
+  
+%table.table
+  %thead
+    %tr
+      %th License Model
+      %th Description
+      %th URL
+  %tbody
+    - @license_models.each do |license|
+      %tr
+        %td= license.name
+        %td= license.description
+        %td= license.url
