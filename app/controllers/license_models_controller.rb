@@ -3,8 +3,7 @@ class LicenseModelsController < InheritedResources::Base
   def index
     @ontology = Ontology.find(params[:ontology_id])
     @license_models = @ontology.license_models
-    @repo = Repository.find_by_path(params[:repository_id])
-    
+    @repo = Repository.find_by_path(params[:repository_id])  
   end
   
   def new
