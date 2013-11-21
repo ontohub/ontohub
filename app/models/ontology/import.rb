@@ -5,7 +5,7 @@ module Ontology::Import
     now = Time.now
 
     transaction do
-      code_doc = Nokogiri::XML(code_io)
+      code_doc = code_io ? Nokogiri::XML(code_io) : nil
       
       root             = nil
       ontology         = nil
@@ -85,7 +85,8 @@ module Ontology::Import
   end
 
   def import_xml_from_file(path, code_path, user)
-    import_xml File.open(path), File.open(code_path), user
+    code_io = code_path ? File.open(code_path) : nil
+    import_xml File.open(path), code_io, user
   end
 
   def import_latest_version(user)
@@ -96,6 +97,7 @@ module Ontology::Import
   end
 
   def code_position_for(ontology_name, code_doc)
+    return nil unless code_doc
     elements = code_doc.xpath("//*[contains(@name, '##{ontology_name}')]")
     code_range = elements.first.try(:attr, "range")
     code_position = CodeReference.from_range(code_range, nil)
