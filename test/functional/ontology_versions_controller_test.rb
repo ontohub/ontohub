@@ -14,7 +14,7 @@ class OntologyVersionsControllerTest < ActionController::TestCase
     setup do
       @user = FactoryGirl.create :user
       @ontology = FactoryGirl.create :distributed_ontology
-      @ontology.import_xml_from_file fixture_file('test2.xml'), @user
+      @ontology.import_xml_from_file fixture_file('test2.xml'), fixture_file('test2.pp.xml'), @user
       @version  = FactoryGirl.create :ontology_version, ontology: @ontology
       @ontology.reload
       @ontology_child = @ontology.children.first

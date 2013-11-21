@@ -2,6 +2,10 @@ require 'test_helper'
 
 class SentenceTest < ActiveSupport::TestCase
 
+  def fixture_file(name)
+    Rails.root + 'test/fixtures/ontologies/xml/' + name
+  end
+
   context 'Migrations' do
     %w( ontology_id comments_count ).each do |column|
       should have_db_column(column).of_type(:integer)
@@ -56,7 +60,9 @@ class SentenceTest < ActiveSupport::TestCase
       setup do
         @ontology = FactoryGirl.create :single_ontology
         user = FactoryGirl.create :user
-        @ontology.import_xml_from_file Rails.root + 'test/fixtures/ontologies/xml/generations.xml', user
+        @ontology.import_xml_from_file fixture_file('generations.xml'),
+          fixture_file('generations.pp.xml'),
+          user
         @sentence = @ontology.sentences.first
       end
 
