@@ -2,6 +2,10 @@ module GitRepository::Config
 
   protected
 
+  def get_config(key)
+    git_exec 'config', key
+  end
+
   def set_section(section, options)
     section = Array.wrap(section)
 

@@ -45,9 +45,5 @@ class OntologyParser::SimpleTest < ActiveSupport::TestCase
     end
     
   end
-  
-  def open_fixture(name)
-    File.open("#{Rails.root}/test/fixtures/ontologies/xml/#{name}")
-  end
-  
+
 end
