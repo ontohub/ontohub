@@ -38,6 +38,7 @@ class OntologySearchTest < ActiveSupport::TestCase
       @ontologies.map(&:save)
       @entities.map(&:save)
       @logics.map(&:save)
+      Ontology.reindex
     end
 
     context 'keyword list' do
