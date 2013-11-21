@@ -71,7 +71,7 @@ class OntologyParser::ComplexTest < ActiveSupport::TestCase
     setup do
       @user = FactoryGirl.create :user
       @ontology = FactoryGirl.create :distributed_ontology
-      @ontology.import_xml open_fixture('links.xml'), open_fixture('links.pp.xml'), @user
+      @ontology.import_xml open_fixture('links.xml'), nil, @user
     end
     
     
