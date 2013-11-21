@@ -10,7 +10,7 @@ module Hets
   class HetsVersionDateFormatError < HetsError; end
 
   class Config
-    attr_reader :path, :library_path
+    attr_reader :path, :library_path, :stack_size
 
     def initialize
       yaml = YAML.load_file(File.join(Rails.root, 'config', 'hets.yml'))
@@ -31,6 +31,8 @@ module Hets
       end
 
       @library_path = first_which_exists yaml['hets_lib']
+
+      @stack_size = yaml['hets_stack_size'] || '1G'
 
       raise HetsDeploymentError, 'Hets library not found.' unless @library_path
     end
@@ -81,10 +83,13 @@ module Hets
 
     if output_path
       FileUtils.mkdir_p output_path
-      args += ["-O", output_path]
+      args += ['-O', output_path]
     end
 
-    args += ["-C", url_catalog.join(',')] unless url_catalog.empty?
+    args += ['-C', url_catalog.join(',')] unless url_catalog.empty?
+
+    # Configure stack size
+    args += ['+RTS', "-K#{@@config.stack_size}", '-RTS']
 
     # add the path to the input file as last argument
     args << input_file
@@ -93,6 +98,7 @@ module Hets
     Rails.logger.debug "Running hets with: #{args.inspect}"
 
     output = Subprocess.run :nice, *args
+
     if output.starts_with? '*** Error'
       # some error occured
       raise HetsError, output 

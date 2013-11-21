@@ -19,3 +19,5 @@ hets_owl_tools:
   - /Applications/Hets.app/Contents/Resources/hets-owl-tools
 
 hets_version_minimum_date: 2013-11-21
+
+hets_stack_size: 1G
