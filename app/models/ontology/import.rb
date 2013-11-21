@@ -100,7 +100,23 @@ module Ontology::Import
     return nil unless code_doc
     elements = code_doc.xpath("//*[contains(@name, '##{ontology_name}')]")
     code_range = elements.first.try(:attr, "range")
-    code_position = CodeReference.from_range(code_range, nil)
+    code_position = code_reference_from_range(code_range)
+  end
+
+  def code_reference_from_range(range)
+    return if range.nil?
+    match = range.match( %r{
+      (?<begin_line>\d+)\.
+      (?<begin_column>\d+)
+      -
+      (?<end_line>\d+)\.
+      (?<end_column>\d+)}x)
+    if match
+      reference = CodeReference.new(begin_line: match[:begin_line].to_i,
+        begin_column: match[:begin_column].to_i,
+        end_line: match[:end_line].to_i,
+        end_column: match[:end_column].to_i)
+    end
   end
 
 end
