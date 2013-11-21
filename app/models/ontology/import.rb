@@ -40,7 +40,7 @@ module Ontology::Import
 	    
             version = ontology.versions.build
             version.user = user
-            version.code_reference = code_position_for(ontology.name, code_doc)
+            version.code_reference = code_reference_for(ontology.name, code_doc)
 
             versions << version
           else
@@ -96,11 +96,11 @@ module Ontology::Import
       latest_version.code_reference_path, user
   end
 
-  def code_position_for(ontology_name, code_doc)
-    return nil unless code_doc
+  def code_reference_for(ontology_name, code_doc)
+    return if code_doc.nil?
     elements = code_doc.xpath("//*[contains(@name, '##{ontology_name}')]")
     code_range = elements.first.try(:attr, "range")
-    code_position = code_reference_from_range(code_range)
+    code_reference_from_range(code_range)
   end
 
   def code_reference_from_range(range)
