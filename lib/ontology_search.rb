@@ -7,6 +7,7 @@ class OntologySearch
 
   def initialize
     @limit = 20
+    @response = Struct.new(:page,:resultsInPage,:resultsInSet,:results)
   end
 
   def make_repository_keyword_list_json(repository, prefix)
@@ -102,30 +103,28 @@ class OntologySearch
     search.results.each do |ontology|
       bean_list_factory.add_small_bean(ontology)
     end
-    bean_list_factory.bean_list
-    {
-      page: page,
-      resultsInPage: 20,
-      resultsInSet: search.total,
-      results: bean_list_factory.bean_list
-    }
+
+    @response.new(page, @limit, count, bean_list_factory.bean_list)
   end
 
   def make_global_bean_list_response(keyword_list, page)
-    {
-      page: 0,
-      resultsInPage: 50,
-      resultsInSet: 0,
-      results: make_global_bean_list(keyword_list, page)
-    }
-  end
 
-  def make_global_bean_list(keyword_list, page)
+    # Display all ontologies for empty keyword list
+    if keyword_list.size == 0
+      offset = (page - 1) * @limit
+      bean_list_factory = OntologyBeanListFactory.new
+      Ontology.limit(@limit).offset(offset).each do |ontology|
+        bean_list_factory.add_small_bean(ontology)
+      end
+      return @response.new(page, @limit, Ontology.count, bean_list_factory.bean_list)
+    end
+
     bean_list_factory = OntologyBeanListFactory.new
     Ontology.search_by_keywords(keyword_list, page).results.each do |ontology|
       bean_list_factory.add_small_bean(ontology)
     end
-    bean_list_factory.bean_list
+
+    @response.new(0, 50, 0, bean_list_factory.bean_list)
   end
 
 end

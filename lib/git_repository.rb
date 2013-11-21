@@ -37,6 +37,10 @@ class GitRepository
   end
 
   def dir?(path, commit_oid=nil)
+    if empty?
+      return false
+    end
+
     rugged_commit = repo.lookup(commit_oid || head_oid)
     object = get_object(rugged_commit, path)
 

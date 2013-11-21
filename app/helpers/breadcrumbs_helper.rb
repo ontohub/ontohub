@@ -1,4 +1,5 @@
 module BreadcrumbsHelper
+
   def repository_breadcrumbs(repository, path, oid)
     path ||= ''
     crumbs = path.split('/')
@@ -21,4 +22,5 @@ module BreadcrumbsHelper
 
     result
   end
+
 end
