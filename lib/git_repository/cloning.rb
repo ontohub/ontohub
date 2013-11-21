@@ -63,7 +63,13 @@ module GitRepository::Cloning
 
   module ClassMethods
     def is_git_repository?(address)
-      exec 'git', 'ls-remote', address
+      !!(exec 'git', 'ls-remote', address)
+    rescue Subprocess::Error => e
+      if e.status == 128
+        false
+      else
+        raise e
+      end
     end
 
     def svn_ls(address)
