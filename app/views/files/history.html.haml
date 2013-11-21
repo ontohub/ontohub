@@ -11,6 +11,10 @@
 .row
   .col-md-12
     - if oid
+      - if @ontology
+        .pull-right.btn-group.breadcrumbs-buttons
+          = link_to 'Show Ontology versions', repository_ontology_ontology_versions_path(repository, @ontology), class: 'btn btn-default btn-sm'
+
       = render partial: 'files/breadcrumbs'
 
       .history-pagination

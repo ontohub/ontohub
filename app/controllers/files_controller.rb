@@ -44,6 +44,8 @@ class FilesController < ApplicationController
     page = @page = params[:page].nil? ? 1 : params[:page].to_i
     offset = page > 0 ? (page - 1) * @per_page : 0
 
+    @ontology = repository.primary_ontology(path)
+
     if repository.empty?
       @commits = []
     else
