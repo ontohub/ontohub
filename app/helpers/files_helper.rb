@@ -1,8 +1,8 @@
-module RepositoryHelper
+module FilesHelper
 
   def basepath(path)
     splitpath = path.split('/')
-    
+
     (splitpath[0..-2] << splitpath[-1].split('.')[0]).join('/')
   end
 
@@ -36,6 +36,18 @@ module RepositoryHelper
 
   def in_ref_path?
     !params[:ref].nil?
+  end
+
+  def history_pagination(commits, current_page, per_page)
+    Kaminari.paginate_array(commits, total_count: ensure_next_page_exists(current_page, per_page)).page(current_page).per(per_page)
+  end
+
+  def ensure_next_page_exists(current_page, per_page)
+    (current_page || 1)*(per_page+1)
+  end
+
+  def proper_encoding(string)
+    string.force_encoding("UTF-8").encode("utf-8", "binary", :undef => :replace)
   end
 
 end

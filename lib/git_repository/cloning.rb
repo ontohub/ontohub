@@ -16,10 +16,20 @@ module GitRepository::Cloning
   end
 
   def clone_svn(url)
-    set_section %w( svn-remote svn ),
-      url:   url,
-      fetch: ':refs/remotes/git-svn'
+    options = { url: url }
     
+    # Do we have a standard layout?
+    if self.class.svn_ls(url).split("\n") == %w( branches/ tags/ trunk/ )
+      options.merge! \
+        fetch:    'trunk:refs/remotes/trunk',
+        branches: 'branches/*:refs/remotes/*',
+        tags:     'tags/*:refs/remotes/tags/*'
+    else
+      options.merge! \
+        fetch:    ':refs/remotes/git-svn'
+    end
+
+    set_section %w( svn-remote svn ), options
     pull_svn
   end
 
@@ -32,7 +42,16 @@ module GitRepository::Cloning
   # Fetches the latest commits and resets the local master
   def pull_svn
     git_exec 'svn', 'fetch'
-    reset_branch 'master', "remotes/git-svn"
+
+    if svn_has_trunk?
+      reset_branch 'master', "remotes/trunk"
+    else
+      reset_branch 'master', "remotes/git-svn"
+    end
+  end
+
+  def svn_has_trunk?
+    get_config('svn-remote.svn.fetch').starts_with?('trunk:')
   end
 
   # Sets the reference of a local branch 
@@ -47,8 +66,15 @@ module GitRepository::Cloning
       exec 'git', 'ls-remote', address
     end
 
-    def is_svn_repository?(address)
+    def svn_ls(address)
       exec 'svn', 'ls', address
+    end
+
+    def is_svn_repository?(address)
+      svn_ls address
+      true
+    rescue Subprocess::Error
+      false
     end
 
     def exec(*args)

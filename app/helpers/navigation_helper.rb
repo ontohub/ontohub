@@ -1,19 +1,20 @@
 # encoding: UTF-8
 module NavigationHelper
 
-  def repository_nav(resource, current_page)
+  def repository_nav(resource, current_page, options = {})
     pages = [
       [:overview,     resource]
     ]
     
     chain = resource_chain.last.is_a?(Ontology) ? resource_chain[0..-2] : resource_chain
+
     pages << [:ontologies,       [*chain, :ontologies]]
     pages << [:"Ontology files", [*chain, :tree]]
     pages << [:"Ontology urls",  repository_url_maps_path(resource)]
     pages << [:history,          repository_ref_path(resource, 'master', path: nil, action: :history)]
     pages << [:permissions,      [*chain, :permissions]] if can? :permissions, resource
  
-    subnavigation(resource, pages, current_page)
+    subnavigation(resource, pages, current_page, [], options)
   end
 
   def ontology_nav(ontology, current_page)
@@ -25,14 +26,16 @@ module NavigationHelper
       ['Graphs', :graphs],
       ['Links', :links]
     ]
-    if params[:action]!= "edit"
-    @metadatas = [
-      ['Projects', repository_ontology_projects_path],
-      ['Categories', repository_ontology_categories_path],
-      ['Tasks', repository_ontology_tasks_path],
-      ['License Model', repository_ontology_license_models_path]
-    ]
-  end
+
+    if params[:action] != "edit"
+      @metadatas = [
+        ['Projects', repository_ontology_projects_path],
+        ['Categories', repository_ontology_categories_path],
+        ['Tasks', repository_ontology_tasks_path],
+        ['License Model', repository_ontology_license_models_path]
+      ]
+    end
+
     @entities = ontology.distributed? ? [] : ontology.entities.groups_by_kind
 
     @active_kind = @entities.first.kind if current_page == :entities
@@ -66,7 +69,7 @@ module NavigationHelper
     }
   end
      
-  def subnavigation(resource, pages, current_page, additional_actions = [])
+  def subnavigation(resource, pages, current_page, additional_actions = [], options = {})
     # Add counters
     pages.each do |row|
       counter_key = "#{row[0]}_count"
@@ -80,7 +83,8 @@ module NavigationHelper
       resource:           resource,
       current_page:       current_page,
       pages:              pages,
-      additional_actions: additional_actions
+      additional_actions: additional_actions,
+      options:            options
     }
   end
 
