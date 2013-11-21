@@ -1,10 +1,11 @@
 module Ontology::Import
 	extend ActiveSupport::Concern
 
-  def import_xml(io, user)
+  def import_xml(io, code_io, user)
     now = Time.now
 
     transaction do
+      code_doc = code_io ? Nokogiri::XML(code_io) : nil
       
       root             = nil
       ontology         = nil
@@ -39,6 +40,8 @@ module Ontology::Import
 	    
             version = ontology.versions.build
             version.user = user
+            version.code_reference = code_reference_for(ontology.name, code_doc)
+
             versions << version
           else
             raise "more than one ontology found" if ontologies_count > 1
@@ -81,12 +84,39 @@ module Ontology::Import
     end
   end
 
-  def import_xml_from_file(path, user)
-    import_xml File.open(path), user
+  def import_xml_from_file(path, code_path, user)
+    code_io = code_path ? File.open(code_path) : nil
+    import_xml File.open(path), code_io, user
   end
 
   def import_latest_version(user)
-    return if versions.last.nil?
-    import_xml_from_file versions.last.xml_path, user
+    latest_version = versions.last
+    return if latest_version.nil?
+    import_xml_from_file latest_version.xml_path,
+      latest_version.code_reference_path, user
   end
+
+  def code_reference_for(ontology_name, code_doc)
+    return if code_doc.nil?
+    elements = code_doc.xpath("//*[contains(@name, '##{ontology_name}')]")
+    code_range = elements.first.try(:attr, "range")
+    code_reference_from_range(code_range)
+  end
+
+  def code_reference_from_range(range)
+    return if range.nil?
+    match = range.match( %r{
+      (?<begin_line>\d+)\.
+      (?<begin_column>\d+)
+      -
+      (?<end_line>\d+)\.
+      (?<end_column>\d+)}x)
+    if match
+      reference = CodeReference.new(begin_line: match[:begin_line].to_i,
+        begin_column: match[:begin_column].to_i,
+        end_line: match[:end_line].to_i,
+        end_column: match[:end_column].to_i)
+    end
+  end
+
 end

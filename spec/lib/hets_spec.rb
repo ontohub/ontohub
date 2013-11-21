@@ -20,6 +20,7 @@ describe Hets do
     context path do
       before do
         @xml_path = Hets.parse Rails.root.join("test/fixtures/ontologies/#{path}"), [], '/tmp'
+        @pp_path = @xml_path.sub(/\.[^.]*$/, '.pp.xml')
       end
 
       it 'have created output file' do
@@ -30,7 +31,7 @@ describe Hets do
         assert_nothing_raised do
           ontology = FactoryGirl.create :ontology
           user = FactoryGirl.create :user
-          ontology.import_xml_from_file @xml_path, user
+          ontology.import_xml_from_file @pp_path, @xml_path, user
           `git checkout #{@xml_path} 2>/dev/null`
         end
       end
@@ -43,6 +44,7 @@ describe Hets do
         Rails.root.join("test/fixtures/ontologies/clif/monoid.clif"),
         ["http://colore.oor.net=http://develop.ontohub.org/colore/ontologies"],
         '/tmp'
+      @pp_path = @xml_path.sub(/\.[^.]*$/, '.pp.xml')
     end
 
     it 'have created output file' do
@@ -60,7 +62,7 @@ describe Hets do
       assert_nothing_raised do
         ontology = FactoryGirl.create :ontology
         user = FactoryGirl.create :user
-        ontology.import_xml_from_file @xml_path, user
+        ontology.import_xml_from_file @pp_path, @xml_path, user
         `git checkout #{@xml_path} 2>/dev/null`
       end
     end
