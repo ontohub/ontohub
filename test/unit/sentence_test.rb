@@ -2,10 +2,6 @@ require 'test_helper'
 
 class SentenceTest < ActiveSupport::TestCase
 
-  def fixture_file(name)
-    Rails.root + 'test/fixtures/ontologies/xml/' + name
-  end
-
   context 'Migrations' do
     %w( ontology_id comments_count ).each do |column|
       should have_db_column(column).of_type(:integer)

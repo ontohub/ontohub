@@ -2,10 +2,6 @@ require 'test_helper'
 
 class OntologyVersionsControllerTest < ActionController::TestCase
 
-  def fixture_file(name)
-    Rails.root + 'test/fixtures/ontologies/xml/' + name
-  end
-  
   should_map_nested_resources :repositories, :ontologies, :ontology_versions,
     :as     => 'versions',
     :except => [:show, :edit, :update, :destroy]

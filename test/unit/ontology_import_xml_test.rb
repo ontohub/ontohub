@@ -1,9 +1,6 @@
 require 'test_helper'
 
 class OntologyImportXMLTest < ActiveSupport::TestCase
-  def fixture_file(name)
-    Rails.root + 'test/fixtures/ontologies/xml/' + name
-  end
 
   context 'Import single Ontology' do
     setup do
