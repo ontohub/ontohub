@@ -3,7 +3,7 @@
 # 
 class OntologiesController < InheritedResources::Base
 
-  include RepositoryHelper
+  include FilesHelper
 
   belongs_to :repository, finder: :find_by_path!
   respond_to :json, :xml
@@ -27,7 +27,7 @@ class OntologiesController < InheritedResources::Base
   def new
     @ontology_version = build_resource.versions.build
     @c_vertices = []
-    vert = CVertex.first
+    vert = Category.first
     if vert
       @c_vertices = vert.roots.first.children
     end
@@ -36,7 +36,7 @@ class OntologiesController < InheritedResources::Base
   def edit
     @ontology = resource
     @c_vertices = []
-    vert = CVertex.first
+    vert = Category.first
     if vert
       @c_vertices = vert.roots.first.children
     end

@@ -2,6 +2,9 @@
 
 = ontology_nav parent, :ontology_versions
 
+.pull-right
+  = link_to 'Show File history', fancy_repository_path(parent.repository, path: parent.path, ref: 'master', action: :history), class: 'btn btn-default'
+
 %table
   %thead
     %tr

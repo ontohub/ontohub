@@ -51,3 +51,5 @@ allowed_iri_schemes:
   - urn
 
 display_head_commit: false
+display_symbols_tab: false
+

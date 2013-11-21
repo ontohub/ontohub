@@ -1,8 +1,9 @@
-class CVertex < ActiveRecord::Base
+class Category < ActiveRecord::Base
 
   extend Dagnabit::Vertex::Activation
   
   attr_accessible :name
+  attr_accessor :parent
 
   acts_as_vertex
   connected_by 'CEdge'

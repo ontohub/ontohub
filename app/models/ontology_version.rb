@@ -1,4 +1,5 @@
 class OntologyVersion < ActiveRecord::Base
+  include CodeReferencable
 
   include OntologyVersion::Files
   include OntologyVersion::States

@@ -7,6 +7,7 @@
       = link_to resource.logic.to_s, resource.logic
     - elsif resource.distributed?
       DOL
+  = resource.acronym
 
 %small
   Defined
@@ -21,6 +22,9 @@
   - else
     in the file
     = fancy_link repository_tree_path(resource.repository, files[0])
+  - if resource.documentation
+    See for detailed documentation
+    = link_to resource.documentation, resource.documentation
 
 
 %p= link_to resource.iri, download_path(resource) if download_path(resource)
@@ -50,3 +54,9 @@
               = page.to_s.capitalize
               - if count # hide counter if empty
                 %span.badge{:style => count==0 && 'display:none'}= count
+  - if controller_name == "metadata"
+    %nav
+      %ul.nav.nav-tabs
+        - @metadatas.each do |(page_title, page)|
+          %li{class: page==current_page ? 'active' : nil}
+            = link_to page_title, page

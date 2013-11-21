@@ -98,7 +98,7 @@ displayGraph = (data) ->
     else if the_mode == "import"
       import_edges = []
       for import_edge in edges
-        if import_edge.info.kind == "import_or_view"
+        if import_edge.info.kind == "import"
           import_edges.push(import_edge)
       import_edges
 

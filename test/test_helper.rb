@@ -4,7 +4,15 @@ require 'rails/test_help'
 
 class ActiveSupport::TestCase
   # Add more helper methods to be used by all tests here...
-  
+
+  def fixture_file(name)
+    Rails.root + 'test/fixtures/ontologies/xml/' + name
+  end
+
+  def open_fixture(name)
+    File.open(fixture_file(name))
+  end
+
   setup do
     # clean git repositories
     FileUtils.rmtree Ontohub::Application.config.git_root
