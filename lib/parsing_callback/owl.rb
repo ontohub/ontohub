@@ -11,6 +11,14 @@ module ParsingCallback::OWL
     def axiom(hash, axiom)
     end
 
+    private
+    def is_annotation_sentence?(axiom_hash)
+      axiom_hash['symbol_hashes'].each do |hash|
+        return true if hash['kind'] == 'AnnotationProperty'
+      end
+      false
+    end
+
   end
 
 end
