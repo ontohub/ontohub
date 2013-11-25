@@ -35,12 +35,13 @@ class OntologyParser::SimpleTest < ActiveSupport::TestCase
       end
       
       should 'have correct axioms' do
-        assert_equal [{
+        assert_equal 1, @axioms.count
+        assert ({
           "name"    => "Ax1",
           "range"   => "/home/till/CASL/Hets-lib/test/test1.casl:3.8-4.25",
           "symbols" => ["op f : s -> s", "sort s"],
           "text"    => "forall x : <s . >f(x) = x %(Ax1)%>"
-        }], @axioms
+        }.to_a - @axioms.first.to_a).empty?
       end
     end
     
