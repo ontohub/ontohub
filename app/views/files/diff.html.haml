@@ -31,7 +31,7 @@
         File was deleted
     - elsif file[:editable]
       .diff-code
-        = proper_encoding(file[:diff]).html_safe
+        = file[:diff].encoding_utf8.html_safe
     - elsif file[:mime_category] == 'image'
       = image_tag fancy_repository_path(repository.path, ref: oid, path: file[:path]), alt: file[:name]
     - else
