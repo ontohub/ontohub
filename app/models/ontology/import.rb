@@ -9,6 +9,7 @@ module Ontology::Import
       
       root             = nil
       ontology         = nil
+      logic_callback   = nil
       link             = nil
       ontologies_count = 0
       versions = []
@@ -57,8 +58,12 @@ module Ontology::Import
             .first_or_create(user: user, name: h['logic'])
           end
 
+          logic_callback = ParsingCallback.determine_for(ontology)
+
           ontology.entities_count  = 0
           ontology.sentences_count = 0
+
+          logic_callback.ontology(h, ontology)
         },
         ontology_end: Proc.new {
           # remove outdated sentences and entities
@@ -66,17 +71,25 @@ module Ontology::Import
           ontology.entities.where(conditions).destroy_all
           ontology.sentences.where(conditions).delete_all
           ontology.save!
+
+          logic_callback.ontology_end({}, ontology)
         },
         symbol:   Proc.new { |h|
-          ontology.entities.update_or_create_from_hash(h, now)
+          entity = ontology.entities.update_or_create_from_hash(h, now)
           ontology.entities_count += 1
+
+          logic_callback.symbol(h, entity)
         },
         axiom: Proc.new { |h|
-          ontology.sentences.update_or_create_from_hash(h, now)
+          sentence = ontology.sentences.update_or_create_from_hash(h, now)
           ontology.sentences_count += 1
+
+          logic_callback.axiom(h, sentence)
         },
         link: Proc.new { |h|
-          self.links.update_or_create_from_hash(h, user, now)
+          link = self.links.update_or_create_from_hash(h, user, now)
+
+          logic_callback.link(h, link)
         }
       save!
       versions.each { |version| version.save! }
