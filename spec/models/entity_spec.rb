@@ -2,7 +2,8 @@ require 'spec_helper'
 
 describe Entity do
 
-  it { should have_db_column('description').of_type(:text) }
+  it { should have_db_column('label').of_type(:string) }
+  it { should have_db_column('comment').of_type(:text) }
 
   it { should belong_to(:ontology) }
 
@@ -15,10 +16,13 @@ describe Entity do
       ontology.import_xml_from_file xml_path, nil, user
     end
 
-    it 'should have the correct number of described entitites' do
-      described_entities = ontology.entities.
-        where('description IS NOT NULL')
-      described_entities.size.should be_equal(96)
+    it 'should have the correct number of described entities' do
+      labeled_entities = ontology.entities.
+        where('label IS NOT NULL')
+      commented_entities = ontology.entities.
+        where('comment IS NOT NULL')
+      described_entities_count = labeled_entities.size + commented_entities.size
+      described_entities_count.should be_equal(115)
     end
 
   end
