@@ -20,10 +20,13 @@ module ParsingCallback::OWL
           (?<additionals>[^\s].*) # optional, e.g. a language tag like @pt}xm)
         if m
           entity = Entity.where(name: m['entity_name']).first
-          if entity
-            entity.description = m['annotation']
-            entity.save
-          end
+          case m['annotation_type']
+          when 'label'
+            entity.label = m['annotation']
+          when 'comment'
+            entity.comment = m['annotation']
+          end if entity
+          entity.save
         end
         false
       else
