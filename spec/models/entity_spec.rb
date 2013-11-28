@@ -22,7 +22,7 @@ describe Entity do
       commented_entities = ontology.entities.
         where('comment IS NOT NULL')
       described_entities_count = labeled_entities.size + commented_entities.size
-      described_entities_count.should be_equal(115)
+      described_entities_count.should be(115)
     end
 
   end
