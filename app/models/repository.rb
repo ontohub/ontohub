@@ -1,6 +1,7 @@
 class Repository < ActiveRecord::Base
 
   include Permissionable
+  include Repository::Ontologies
   include Repository::GitRepositories
   include Repository::FilesList
   include Repository::Validations
