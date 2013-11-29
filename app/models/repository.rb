@@ -12,7 +12,7 @@ class Repository < ActiveRecord::Base
   has_many :ontologies, dependent: :destroy
   has_many :url_maps, dependent: :destroy
 
-  attr_accessible :name, :description, :source_type, :source_address
+  attr_accessible :name, :description, :source_type, :source_address, :private_flag
   attr_accessor :user
 
   scope :latest, order('updated_at DESC')
