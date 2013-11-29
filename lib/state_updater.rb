@@ -1,3 +1,5 @@
+require 'sidekiq/cli'
+
 module StateUpdater
   extend ActiveSupport::Concern
   
@@ -22,6 +24,10 @@ module StateUpdater
       update_state! :failed, e.message
       after_failed
       raise e
+    rescue Sidekiq::Shutdown
+      # Sidekiq requeues the current job automatically
+      update_state! :pending
+      raise
     end
   end
 
