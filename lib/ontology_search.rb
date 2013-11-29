@@ -117,7 +117,7 @@ class OntologySearch
       bean_list_factory.add_small_bean(ontology)
     end
 
-    Response.new(page, @limit, count, bean_list_factory.bean_list)
+    Response.new(page, @limit, search.total, bean_list_factory.bean_list)
   end
 
   def make_global_bean_list_response(keyword_list, page)
@@ -133,11 +133,12 @@ class OntologySearch
     end
 
     bean_list_factory = OntologyBeanListFactory.new
-    Ontology.search_by_keywords(keyword_list, page).results.each do |ontology|
+    search = Ontology.search_by_keywords(keyword_list, page)
+    search.results.each do |ontology|
       bean_list_factory.add_small_bean(ontology)
     end
 
-    Response.new(0, 50, 0, bean_list_factory.bean_list)
+    Response.new(page, @limit, search.total, bean_list_factory.bean_list)
   end
 
 end
