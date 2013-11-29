@@ -8,4 +8,20 @@
     - else
       %h3 No entities found
 -else
-  = render :partial => 'treeview'
+  .btn-group#ontology_selections
+    = link_to 'Class Hirechy', '#hierachy', class: 'btn btn-default mode btn-primary', id: 'hierachy'
+    = link_to 'Class Details', '#detail', class: 'btn btn-default mode', id: 'detail'
+  .owl_entities
+    .class-hierachy
+      = render :partial => 'treeview'
+    .entities-detail
+      = pagination do
+        - unless collection.blank?
+          = render :partial => 'list'
+        - else
+          %h3 No entities found
+    
+:javascript
+  $("#hierachy").click(function(){
+    $(".entities-detail").toggle();
+  });
