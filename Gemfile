@@ -89,12 +89,6 @@ gem 'diffy'
 gem 'codemirror-rails'
 gem 'js-routes'
 
-group :development, :test do
-  gem 'byebug'
-  gem 'better_errors'
-  gem 'binding_of_caller'
-end
-
 # Ancestry enabling tree structure in category model
 # gem 'ancestry'
 
@@ -130,6 +124,8 @@ end
 group :development, :test do
   gem 'byebug'
   gem 'rspec-rails', '~> 2.0'
+  gem 'better_errors'
+  gem 'binding_of_caller'
 end
 
 group :production do

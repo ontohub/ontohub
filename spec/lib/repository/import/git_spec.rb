@@ -33,6 +33,14 @@ describe "git import" do
     Worker.drain
   end
 
+  it 'detect that it is not an svn repo' do
+    assert !GitRepository.is_svn_repository?(remote_path)
+  end
+
+  it 'detect that it is a git repo' do
+    assert GitRepository.is_git_repository?(remote_path)
+  end
+
   pending 'read_only'
 
   it 'set imported_at' do
