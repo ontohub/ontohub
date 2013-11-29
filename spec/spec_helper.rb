@@ -16,12 +16,7 @@ RSpec.configure do |config|
   # config.mock_with :rr
 
   config.before(:suite) do
-    DatabaseCleaner.strategy = :transaction
-    DatabaseCleaner.clean_with(:truncation)
-  end
-
-  config.before(:each) do
-    DatabaseCleaner.start
+    DatabaseCleaner.strategy = :truncation
   end
 
   config.after(:each) do
