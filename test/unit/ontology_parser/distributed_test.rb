@@ -62,16 +62,12 @@ class OntologyParser::ComplexTest < ActiveSupport::TestCase
     end
     
   end
-  
-  def open_fixture(name)
-    File.open("#{Rails.root}/test/fixtures/ontologies/xml/#{name}")
-  end
-  
+
   context "Bulding Links with Link version" do
     setup do
       @user = FactoryGirl.create :user
       @ontology = FactoryGirl.create :distributed_ontology
-      @ontology.import_xml open_fixture('links.xml'), @user
+      @ontology.import_xml open_fixture('links.xml'), nil, @user
     end
     
     

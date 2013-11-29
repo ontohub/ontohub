@@ -19,7 +19,6 @@
 //= require d3
 //= require handlebars.runtime
 //= require codemirror
-//= require js-routes
 
 // ----------------------------------------------
 // Application
