@@ -69,8 +69,8 @@ gem 'acts_as_tree'
 gem "rest-client"
 
 # Background-Jobs
-gem 'sidekiq', '~> 2.15'
-gem 'sidetiq', '~> 0.4.3'
+gem 'sidekiq', '~> 2.17'
+gem 'sidetiq', '~> 0.5'
 gem 'sinatra', require: false, group: [:development, :production]
 
 # Search engine
