@@ -31,7 +31,7 @@ describe Hets do
         assert_nothing_raised do
           ontology = FactoryGirl.create :ontology
           user = FactoryGirl.create :user
-          ontology.import_xml_from_file @pp_path, @xml_path, user
+          ontology.import_xml_from_file @xml_path, @pp_path, user
           `git checkout #{@xml_path} 2>/dev/null`
         end
       end
@@ -62,7 +62,7 @@ describe Hets do
       assert_nothing_raised do
         ontology = FactoryGirl.create :ontology
         user = FactoryGirl.create :user
-        ontology.import_xml_from_file @pp_path, @xml_path, user
+        ontology.import_xml_from_file @xml_path, @pp_path, user
         `git checkout #{@xml_path} 2>/dev/null`
       end
     end
