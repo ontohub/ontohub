@@ -33,6 +33,10 @@ describe "git import" do
     Worker.drain
   end
 
+  after do
+    OntologyParser.unstub(:parse)
+  end
+
   it 'detect that it is not an svn repo' do
     assert !GitRepository.is_svn_repository?(remote_path)
   end
