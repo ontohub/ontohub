@@ -1,5 +1,9 @@
+require 'git_repository'
+
 module Repository::GitRepositories
   extend ActiveSupport::Concern
+
+  delegate :dir?, to: :git
 
   included do
     after_create  :create_and_init_git
@@ -22,7 +26,7 @@ module Repository::GitRepositories
   end
 
   def destroy_git
-    local_path.rmtree
+    git.destroy
   end
 
   def empty?
@@ -82,6 +86,13 @@ module Repository::GitRepositories
     git.path_exists?(path, commit_oid)
   end
 
+  def paths_starting_with(path, commit_oid=nil)
+    dir = dir?(path, commit_oid) ? path : path.split('/')[0..-2].join('/')
+    contents = git.folder_contents(commit_oid, dir)
+
+    contents.map{ |entry| entry[:path] }.select{ |p| p.starts_with?(path) }
+  end
+
   def path_info(path=nil, commit_oid=nil)
     path ||= '/'
 
@@ -134,10 +145,7 @@ module Repository::GitRepositories
   end
 
   def read_file(filepath, commit_oid=nil)
-    file = git.get_file(filepath, commit_oid)
-    file[:content] = file[:content].force_encoding("UTF-8")
-
-    file
+    git.get_file(filepath, commit_oid)
   end
 
   # given a commit oid or a branch name, commit_id returns a hash of oid and branch name if existent
@@ -180,6 +188,7 @@ module Repository::GitRepositories
   #                     :stop_oid (first commit to hide)
   #                     :path (file to show changes for)
   #                     :limit (max number of commits)
+  #                     :offset (number of commits to skip)
   def commits(options={}, &block)
     git.commits(options, &block)
   end

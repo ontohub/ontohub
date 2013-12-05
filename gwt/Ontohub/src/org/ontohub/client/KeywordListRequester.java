@@ -34,6 +34,29 @@ public class KeywordListRequester {
 		 * Generated serial version
 		 */
 		private static final long serialVersionUID = -3165438086598414639L;
+		
+		private final Integer page;
+		private final Integer ontologiesPerPage;
+		private final Integer ontologiesInSet;
+
+		public OntologyList(Integer page, Integer ontologiesPerPage, Integer ontologiesInSet) {
+			this.page = page;
+			this.ontologiesPerPage = ontologiesPerPage;
+			this.ontologiesInSet = ontologiesInSet;
+		}
+
+		public final Integer getPage() {
+			return page;
+		}
+
+		public final Integer getOntologiesPerPage() {
+			return ontologiesPerPage;
+		}
+
+		public final Integer getOntologiesInSet() {
+			return ontologiesInSet;
+		}
+
 	};
 
 	public static class Ontology extends JavaScriptObject {
@@ -45,6 +68,14 @@ public class KeywordListRequester {
 		public final native String getIri() /*-{ return this.iri; }-*/;
 		public final native String getHref() /*-{ return this.url; }-*/; 
 		public final native String getDescription() /*-{ return this.description; }-*/;
+	}
+
+	public static class SearchResponse extends JavaScriptObject {
+		protected SearchResponse() {}
+		public final native int getPage() /*-{ return this.page; }-*/;
+		public final native int getResultsInPage() /*-{ return this.resultsInPage; }-*/;
+		public final native int getResultsInSet() /*-{ return this.resultsInSet; }-*/;
+		public final native JsArray<Ontology> getResults() /*-{ return this.results; }-*/;
 	}
 
 	public void requestKeywordList(final String prefix, final AsyncCallback<KeywordList> keywordListCallback) {
@@ -79,18 +110,15 @@ public class KeywordListRequester {
 		}
 	}
 
-	public void requestOntologyList(final String[] keywordList, final AsyncCallback<OntologyList> keywordListCallback) {
+	public void requestOntologyList(final String[] keywordList, final int page, final AsyncCallback<OntologyList> keywordListCallback) {
 		String requestData;
 		StringBuffer requestDataBuffer = new StringBuffer();
 		for (String keyword : keywordList) {
 			requestDataBuffer.append("keywords[]=" + URL.encodeQueryString(keyword));
 			requestDataBuffer.append("&");
 		}
-		if (keywordList.length > 0) {
-			requestData = requestDataBuffer.toString().substring(0, requestDataBuffer.length() - 1);
-		} else {
-			requestData = "";
-		}
+		requestDataBuffer.append("page=" + page);
+		requestData = requestDataBuffer.toString();
 		RequestBuilder builder = new RequestBuilder(RequestBuilder.GET, "ontologies/search?" + requestData);
 		builder.setHeader("Content-Type", "application/json");
 		builder.setHeader("Accept", "application/json");
@@ -104,8 +132,10 @@ public class KeywordListRequester {
 				public void onResponseReceived(Request request, Response response) {
 					if (200 == response.getStatusCode()) {
 						@SuppressWarnings("unchecked")
-						JsArray<Ontology> array = (JsArray<Ontology>)JsonUtils.safeEval(response.getText());
-						OntologyList ontologyList = new OntologyList();
+						SearchResponse searchResponse = (SearchResponse)JsonUtils.safeEval(response.getText());
+						JsArray<Ontology> array = searchResponse.getResults();
+						OntologyList ontologyList = new OntologyList(searchResponse.getPage(),
+								searchResponse.getResultsInPage(), searchResponse.getResultsInSet());
 						for (int i = 0; i < (int)array.length(); i++) {
 							Ontology ontology = array.get(i);
 							ontologyList.add(ontology);

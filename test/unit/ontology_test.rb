@@ -4,6 +4,8 @@ class OntologyTest < ActiveSupport::TestCase
   should belong_to :language
   should belong_to :logic
   should belong_to :ontology_version
+  should belong_to :ontology_type
+  should belong_to :project
   should have_many :versions
   should have_many :comments
   should have_many :sentences
@@ -22,12 +24,16 @@ class OntologyTest < ActiveSupport::TestCase
     ['http://example.com/', 'https://example.com/', 'file://path/to/file'].each do |val|
       should allow_value(val).for :iri
     end
+
+    should_not allow_value(nil).for :iri
+
+    ['http://example.com/', 'https://example.com/', 'file://path/to/file', '', nil].each do |val|
+      should allow_value(val).for :documentation
+    end
+
+    should_not allow_value('fooo').for :documentation
   end
 
-  [nil, '', 'fooo'].each do |val|
-    should_not allow_value(val).for :iri
-  end
-  
   context 'ontology instance' do
     setup do
       @ontology = FactoryGirl.create :ontology

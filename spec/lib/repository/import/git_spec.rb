@@ -33,6 +33,18 @@ describe "git import" do
     Worker.drain
   end
 
+  after do
+    OntologyParser.unstub(:parse)
+  end
+
+  it 'detect that it is not an svn repo' do
+    assert !GitRepository.is_svn_repository?(remote_path)
+  end
+
+  it 'detect that it is a git repo' do
+    assert GitRepository.is_git_repository?(remote_path)
+  end
+
   pending 'read_only'
 
   it 'set imported_at' do
@@ -74,7 +86,7 @@ describe "git import" do
       @repository = Repository.find_by_path(@repository.path)#reload the repository
       @repository.user = user # it's crucial to set the user to the current user when synchronizing a repository
 
-      @result = @repository.remote_pull
+      @result = @repository.remote_send :pull
     end
 
     it 'get the new changes' do

@@ -12,15 +12,25 @@ module Repository::Importing
   SOURCE_TYPES = %w( git svn )
   STATES = %w( pending fetching processing done failed )
 
+  IMPORT_INTERVAL = 15.minutes
+
   included do
     include StateUpdater
 
+    scope :with_source, where("source_type IS NOT null")
+
+    # Ready for pulling
+    scope :outdated, ->{
+      with_source
+      .where("imported_at IS NULL or imported_at < ?", IMPORT_INTERVAL.ago )
+      .where(state: 'done')
+    }
+
     validates_inclusion_of :state,       in: STATES
-    validates_inclusion_of :source_type, in: SOURCE_TYPES, if: :remote?
+    validates_with SourceTypeValidator, if: :remote?
 
-    after_create :async_remote_clone, if: :remote?
-
-    async_method :remote_clone, :remote_pull
+    before_validation ->{ detect_source_type }
+    after_create ->{ async_remote :clone }, if: :remote?
   end
 
   def remote?
@@ -32,29 +42,22 @@ module Repository::Importing
     !%w( done failed ).include?(state)
   end
 
-  # enqueues a clone job
-  def remote_clone
-    remote_send :clone, source_address
-  end
-
-  # enqueues a pull job
-  def remote_pull
-    remote_send :pull
-  end
-
-=begin
-  # enqueues a remote job
+  # enqueues a pull/clone job
   def async_remote(method)
     raise "object is #{state}" if locked?
     update_state! 'pending'
     async :remote_send, method
   end
-=end
 
-  def remote_send(method, *args)
-    user    = permissions.where(subject_type: User, role: 'owner').first!.subject
+  # executes a pull/clone job
+  def remote_send(method)
+    # build arguments
+    args    = []
+    args   << source_address if method == 'clone'
+
+    # build method name
     method  = method.to_s
-    method += '_svn' if source_type=='svn'
+    method += '_svn' if source_type == 'svn'
 
     do_or_set_failed do
       update_state! 'fetching'
@@ -86,5 +89,23 @@ module Repository::Importing
       r
     end
   end
-  
+
+  protected
+
+  def detect_source_type
+    if GitRepository.is_git_repository?(source_address)
+      self.source_type = 'git'
+    elsif GitRepository.is_svn_repository?(source_address)
+      self.source_type = 'svn'
+    end
+  end
+
+  class SourceTypeValidator < ActiveModel::Validator
+    def validate(record)
+      if record.remote? && !record.source_type.present?
+        record.errors[:source_address] = "not a valid remote repository (types supported: #{SOURCE_TYPES.join(', ')})"
+        record.errors[:source_type] = "not present"
+      end
+    end
+  end
 end

@@ -35,13 +35,21 @@ describe "svn import" do
     tmpdir.rmtree
   end
 
+  it 'detect that it is an svn repo' do
+    assert GitRepository.is_svn_repository?(svn_url)
+  end
+
+  it 'detect that it is not a git repo' do
+    assert !GitRepository.is_git_repository?(svn_url)
+  end
+
   it 'have all the commits' do
     assert_equal commit_count, @repository.commits.size
   end
 
   context 'synchronizing without new commits' do
     before do
-      @result = @repository.remote_pull
+      @result = @repository.remote_send :pull
     end
 
     it 'unchaned HEAD' do
@@ -54,7 +62,7 @@ describe "svn import" do
     before do
       Subprocess.run SCRIPT_SVN_ADD_COMMITS, svn_workdir, commit_count, 'new_'
       
-      @result = @repository.remote_pull
+      @result = @repository.remote_send :pull
     end
 
     it 'get the new commits' do

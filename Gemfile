@@ -16,10 +16,11 @@ gem 'rdf-n3'
 # Gems used only for assets and not required
 # in production environments by default.
 group :assets do
-  gem 'sass-rails',   '~> 3.2.3'
-  gem 'bootstrap-sass', github: 'thomas-mcdonald/bootstrap-sass'
-  gem 'coffee-rails', '~> 3.2.1'
-  gem 'compass',      '~> 0.12.1'
+  gem 'jstree-rails', :git => 'git://github.com/tristanm/jstree-rails.git'
+  gem 'sass-rails',     '~> 3.2.3'
+  gem 'bootstrap-sass', '~> 3.0.0'
+  gem 'coffee-rails',   '~> 3.2.1'
+  gem 'compass',        '~> 0.12.1'
   gem 'font_awesome'
   gem 'jquery-rails'
   gem 'jquery-ui-rails'
@@ -43,6 +44,9 @@ gem 'simple_form'
 gem 'inherited_resources', '~> 1.4.0'
 gem 'has_scope'
 
+# JSON views
+gem 'rabl'
+
 # XML Parser
 gem 'nokogiri', '~> 1.6'
 
@@ -65,7 +69,8 @@ gem 'acts_as_tree'
 gem "rest-client"
 
 # Background-Jobs
-gem 'sidekiq', '~> 2.15'
+gem 'sidekiq', '~> 2.17'
+gem 'sidetiq', '~> 0.5'
 gem 'sinatra', require: false, group: [:development, :production]
 
 # Search engine
@@ -78,19 +83,17 @@ gem 'ruby-graphviz', "~> 1.0.8"
 # Fake-inputs for tests and seeds
 gem "faker", "~> 1.1.2"
 
-group :development, :test do
-  gem 'byebug'
-end
-
 # Git
 gem 'rugged'
 gem 'diffy'
 gem 'codemirror-rails'
 gem 'js-routes'
 
-group :development, :test do
-  gem 'byebug'
-end
+# Ancestry enabling tree structure in category model
+# gem 'ancestry'
+
+# Use dagnabit to model categories
+gem 'dagnabit'
 
 group :test do
   gem 'mocha', require: 'mocha/setup'
@@ -121,6 +124,8 @@ end
 group :development, :test do
   gem 'byebug'
   gem 'rspec-rails', '~> 2.0'
+  gem 'better_errors'
+  gem 'binding_of_caller'
 end
 
 group :production do

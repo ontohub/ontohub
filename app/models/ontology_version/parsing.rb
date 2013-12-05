@@ -4,8 +4,12 @@ module OntologyVersion::Parsing
   included do
     @queue = 'hets'
     
-    async_method :parse
     after_create :async_parse, :if => :commit_oid?
+  end
+
+  def async_parse
+    update_state! :pending
+    async :parse
   end
 
   def parse
@@ -21,7 +25,7 @@ module OntologyVersion::Parsing
     do_or_set_failed do
       refresh_checksum! unless checksum?
       
-      @path = Hets.parse(self.raw_path!, File.dirname(self.xml_path))
+      @path = Hets.parse(self.raw_path!, self.ontology.repository.url_maps, File.dirname(self.xml_path))
       
       # move generated file to destination
       File.rename @path, self.xml_path

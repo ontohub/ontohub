@@ -1,13 +1,14 @@
-= repository_nav parent.repository, :ontologies
+- if parent
+  = repository_nav parent.repository, :ontologies
 
--if @ontology
+- if @ontology
   = ontology_nav @ontology, :links
--else
-  %h2= @page_title = 'Links'
+- else
+  %h2= @page_title = 'Mappings'
 
 %p
-  = pluralize(collection.count, resource_class.to_s)
-  found
+  = pluralize(collection.count, "ontology mapping")
+  currently available
   
 = pagination do 
   -if @ontology

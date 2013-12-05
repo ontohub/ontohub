@@ -1,1 +1,11 @@
-[{"name":"A","acronym":"B","language":"C","logic":"D","iri":"E","url":"F","description":"G"},{"name":"A","acronym":"B","language":"C","logic":"D","iri":"E","url":"F","description":"G"},{"name":"A","acronym":"B","language":"C","logic":"D","iri":"E","url":"F","description":"G"}]
+{
+ "page":5,
+ "resultsInPage":20,
+ "resultsInSet":200,
+ "results":
+  [
+   {"name":"A","acronym":"B","language":"C","logic":"D","iri":"E","url":"F","description":"G"},
+   {"name":"A","acronym":"B","language":"C","logic":"D","iri":"E","url":"F","description":"G"},
+   {"name":"A","acronym":"B","language":"C","logic":"D","iri":"E","url":"F","description":"G"}
+  ]
+}

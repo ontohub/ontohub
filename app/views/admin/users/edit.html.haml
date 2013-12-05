@@ -1,3 +1,3 @@
-%h2= @page_title = "Edit user: #{resource.name}" 
+%h2= @page_title = "Edit #{resource.class.name.downcase}: #{resource.name}" 
 
 = render :partial => 'form'

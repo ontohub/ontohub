@@ -63,10 +63,14 @@ module LogicgraphParser
     # Make a logic singleton for a given key
     def make_logic(key)
       if @logics[key] == nil
-        logic = Logic.new
-        logic.iri = "http://purl.net/dol/logics/" + key
-        logic.name = key
-        logic.standardization_status = "Unofficial"
+        iri = "http://purl.net/dol/logics/" + key
+        logic = Logic.find_by_iri iri
+        if logic.nil?
+          logic = Logic.new
+          logic.iri = iri
+          logic.name = key
+          logic.standardization_status = "Unofficial"
+        end
         @logics[key] = logic
       end
       return @logics[key]
@@ -75,25 +79,34 @@ module LogicgraphParser
     # Make a language singleton for a given key
     def make_language(key)
       if @languages[key] == nil
-        language = Language.new
-        language.iri = "http://purl.net/dol/language/" + key
-        language.name = key
+        iri = "http://purl.net/dol/language/" + key
+        language = Language.find_by_iri iri
+        if language.nil?
+          language = Language.new
+          language.iri = iri
+          language.name = key
+        end
         @languages[key] = language
       end
       return @languages[key]
     end
 
-    def make_support(logicKey, languageKey)
-      if @supports[logicKey] == nil
-        @supports[logicKey] = Hash.new
+    def make_support(logic_key, language_key)
+      if @supports[logic_key] == nil
+        @supports[logic_key] = Hash.new
       end
-      if @supports[logicKey][languageKey] == nil
-        support = Support.new
-        support.logic = @logics[logicKey]
-        support.language = @languages[languageKey]
-        @supports[logicKey][languageKey] = support
+      if @supports[logic_key][language_key] == nil
+        logic = @logics[logic_key]
+        language = @languages[language_key]
+        support = Support.where(logic_id: logic, language_id: language).first
+        if support.nil?
+          support = Support.new
+          support.logic = @logics[logic_key]
+          support.language = @languages[language_key]
+        end
+        @supports[logic_key][language_key] = support
       end
-      return @supports[logicKey][languageKey]
+      return @supports[logic_key][language_key]
     end
     
     # Parses the element opening tag
@@ -129,6 +142,9 @@ module LogicgraphParser
             else
               @current_comorphism.faithfulness = LogicMapping::FAITHFULNESSES[0]
             end
+          end
+          if !@current_comorphism.source.nil? && !@current_comorphism.target.nil?
+            callback(:logic_mapping, @current_comorphism)
           end
         when SOURCE_SUBLOGIC
           hash = Hash[*[attributes]]

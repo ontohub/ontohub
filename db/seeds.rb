@@ -9,7 +9,8 @@ require 'sidekiq/testing'
 Sidekiq::Testing.inline!
 
 # Purge data directory
-Ontohub::Application.config.data_root.rmtree
+data_root = Ontohub::Application.config.data_root
+data_root.rmtree if data_root.exist?
 
 # Include every .rb file inside db/seeds directory.
 Dir["#{Rails.root}/db/seeds/*.rb"].sort.each do |path|

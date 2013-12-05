@@ -3,6 +3,14 @@ require 'sidekiq/web' if defined? Sidekiq
 
 Ontohub::Application.routes.draw do
 
+  get "tasks/index"
+
+  get "project/index"
+
+  get "license_model/index"
+
+  get "tools/index"
+
   devise_for :users, :controllers => { :registrations => "users/registrations" }
   resources :users, :only => :show
   resources :keys, except: [:show, :edit, :update]
@@ -36,6 +44,13 @@ Ontohub::Application.routes.draw do
   authenticate :user, lambda { |u| u.admin? } do
     mount Sidekiq::Web => 'admin/sidekiq'
   end
+
+  namespace :api, defaults: { format: 'json' } do
+    namespace :v1 do
+      resources :repositories, only: [:index, :update]
+      resources :ontologies,   only: [:index, :update]
+    end
+  end
   
   resources :ontologies, only: [:index] do
     collection do
@@ -43,61 +58,68 @@ Ontohub::Application.routes.draw do
       get 'search' => 'ontology_search#search'
     end
   end
-  
-    resources :links do
-      get 'update_version', :on => :member
-      resources :link_versions
-    end
-  
-    resources :teams do
-      resources :permissions, :only => [:index], :controller => 'teams/permissions'
-      resources :team_users, :only => [:index, :create, :update, :destroy], :path => 'users'
-    end
-  
-    get 'autocomplete' => 'autocomplete#index'
-    get 'entities_search' => 'entities_search#index'
 
-    resources :repositories do
-      resources :ssh_access, :only => :index
-      resources :permissions, :only => [:index, :create, :update, :destroy]
-
-      resources :ontologies, only: [:index, :show, :edit, :update] do
-        collection do
-          get 'keywords' => 'ontology_search#keywords'
-          get 'search' => 'ontology_search#search'
-        end
-        resources :children, :only => :index
-        resources :entities, :only => :index
-        resources :sentences, :only => :index
-        resources :links do
-          get 'update_version', :on => :member
-          resources :link_versions
-        end
-        resources :ontology_versions, :only => [:index, :show, :new, :create], :path => 'versions' do
-          resource :oops_request, :only => [:show, :create]
-        end
-
-        resources :metadata, :only => [:index, :create, :destroy]
-        resources :comments, :only => [:index, :create, :destroy]
-        resources :graphs, :only => [:index]
-
-      end
-
-      resources :files, only: [:new, :create]
-
-      # action: history, diff, entries_info, files
-      get ':ref/:action(/:path)',
-        controller:  :files,
-        as:          :ref,
-        constraints: { path: /.*/ }
-    end
-
-    get ':repository_id(/:path)',
-      controller:  :files,
-      action:      :files,
-      as:          :repository_tree,
-      constraints: { path: /.*/ }
-
-    root :to => 'home#show'
-
+  resources :links do
+    get 'update_version', :on => :member
+    resources :link_versions
   end
+
+  resources :teams do
+    resources :permissions, :only => [:index], :controller => 'teams/permissions'
+    resources :team_users, :only => [:index, :create, :update, :destroy], :path => 'users'
+  end
+
+  get 'autocomplete' => 'autocomplete#index'
+  get 'entities_search' => 'entities_search#index'
+
+  resources :repositories do
+    resources :ssh_access, :only => :index
+    resources :permissions, :only => [:index, :create, :update, :destroy]
+    resources :url_maps, except: :show
+
+    resources :ontologies, only: [:index, :show, :edit, :update] do
+      collection do
+        post 'retry_failed' => 'ontologies#retry_failed'
+        get 'keywords' => 'ontology_search#keywords'
+        get 'search' => 'ontology_search#search'
+      end
+      resources :children, :only => :index
+      resources :entities, :only => :index
+      resources :sentences, :only => :index
+      resources :links do
+        get 'update_version', :on => :member
+        resources :link_versions
+      end
+      resources :ontology_versions, :only => [:index, :show, :new, :create], :path => 'versions' do
+        resource :oops_request, :only => [:show, :create]
+      end
+      resources :categories, :only => :index
+      resources :tasks, :only => :index
+      resources :license_models, :only => :index
+      resources :tools, :only => :index
+      resources :projects, :only => :index
+      
+      resources :metadata, :only => [:index, :create, :destroy]
+      resources :comments, :only => [:index, :create, :destroy]
+      resources :graphs, :only => [:index]
+
+    end
+
+    resources :files, only: [:new, :create]
+
+    # action: history, diff, entries_info, files
+    get ':ref/:action(/:path)',
+      controller:  :files,
+      as:          :ref,
+      constraints: { path: /.*/ }
+  end
+
+  get ':repository_id(/:path)',
+    controller:  :files,
+    action:      :files,
+    as:          :repository_tree,
+    constraints: { path: /.*/ }
+
+  root :to => 'home#show'
+
+end
