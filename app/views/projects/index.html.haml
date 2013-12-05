@@ -11,10 +11,10 @@
         %th Contact
         %th Homepage
     %tbody
-      - if @project
+      - @projects.each do |project|
         %tr
-          %td= @project.name
-          %td= @project.description
-          %td= @project.institution
-          %td= @project.contact
-          %td= @project.homepage
+          %td= project.name
+          %td= project.description
+          %td= project.institution
+          %td= project.contact
+          %td= project.homepage

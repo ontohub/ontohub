@@ -25,6 +25,7 @@ module NavigationHelper
       ['Graphs', :graphs],
       ['Links', :links]
     ]
+    @metadatas = []
     if params[:action]!= "edit"
     @metadatas = [
       ['Projects', repository_ontology_projects_path],
