@@ -20,7 +20,6 @@ class Repository < ActiveRecord::Base
   scope :latest, order('updated_at DESC')
   scope :pub, where(private_flag: false)
   scope :accessible_by, ->(user) do
-    user.permissions.where(item_type: 'Repository').map(&:item)
     if user
       where("private_flag = false
         OR id IN (SELECT item_id FROM permissions WHERE item_type = 'Repository' AND subject_type = 'User' AND subject_id = ?)
