@@ -1,16 +1,16 @@
 module OntologyParser
-  
+
   class ParseException < Exception; end
-  
+
   # Parses the given string and executes the callback for each symbol
   def self.parse(input, callbacks)
     # Create a new parser
     parser = Nokogiri::XML::SAX::Parser.new(Listener.new(callbacks))
-    
+
     # Feed the parser some XML
     parser.parse(input)
   end
-  
+
   # Listener for the SAX Parser
   class Listener < Nokogiri::XML::SAX::Document
     MAP      = "map"
@@ -22,7 +22,8 @@ module OntologyParser
     TEXT     = 'Text'
     TYPE     = 'Type'
     MORPHISM = 'GMorphism'
-    
+    IMPORT   = 'Reference'
+
     # the callback function is called for each Symbol tag
     def initialize(callbacks)
       @callbacks        = callbacks
@@ -32,7 +33,7 @@ module OntologyParser
       @current_axiom    = nil
       @current_link     = nil
     end
-    
+
     # a tag
     def start_element(name, attributes)
       @path << name
@@ -41,6 +42,8 @@ module OntologyParser
           callback(:root, Hash[*[attributes]])
         when ONTOLOGY
           callback(:ontology, Hash[*[attributes]])
+        when IMPORT
+          callback(:import, Hash[*[attributes]])
         when SYMBOL
           @current_symbol = Hash[*[attributes]]
           @current_symbol['text'] = ''
@@ -61,7 +64,7 @@ module OntologyParser
           @current_link['map'] = []
       end
     end
-    
+
     # a text node
     def characters(text)
       case @path.last
@@ -73,18 +76,18 @@ module OntologyParser
           @current_link['type'] = text if @current_link
       end
     end
-    
+
     # closing tag
     def end_element(name)
       @path.pop
-      
+
       case name
         when ONTOLOGY
           callback(:ontology_end, @current_ontology)
           @current_ontology = nil
         when SYMBOL
           return if @path.last == 'Hidden'
-          
+
           if @current_axiom
             # add to current axiom
             @current_axiom['symbols'] << @current_symbol['text']
@@ -103,20 +106,20 @@ module OntologyParser
           @current_link = nil
       end
     end
-    
+
     # error handler for parsing problems
     # this exception is not being used so far
     def error(string)
       raise ParseException, 'cannot parse: ' + string
     end
-    
+
     private
-    
+
     def callback(name, args)
       block = @callbacks[name]
       block.call(args) if block
     end
-  
+
   end
-  
+
 end

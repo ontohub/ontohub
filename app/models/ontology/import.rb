@@ -6,26 +6,27 @@ module Ontology::Import
 
     transaction do
       code_doc = code_io ? Nokogiri::XML(code_io) : nil
-      
+
       root             = nil
       ontology         = nil
       logic_callback   = nil
       link             = nil
       ontologies_count = 0
       versions = []
-      
+
       OntologyParser.parse io,
         root: Proc.new { |h|
           root = h
         },
         ontology: Proc.new { |h|
           ontologies_count += 1
-          
+          child_name = h['name']
+
           if distributed?
             # generate IRI for sub-ontology
-            child_name = h['name']
+
             child_iri  = iri_for_child(child_name)
-            
+
             # find or create sub-ontology by IRI
             ontology   = self.children.find_by_iri(child_iri)
             if ontology.nil?
@@ -38,15 +39,27 @@ module Ontology::Import
                 without_protection: true)
               self.children << ontology
             end
-	    
+
+            ontology.present = true
             version = ontology.versions.build
             version.user = user
             version.code_reference = code_reference_for(ontology.name, code_doc)
 
             versions << version
           else
-            raise "more than one ontology found" if ontologies_count > 1
-            ontology = self
+            if ontologies_count > 1
+              ontology = self.repository.ontologies.find_by_name(child_name)
+              if ontology.nil?
+                ontology = SingleOntology.new({name: child_name,
+                                              repository_id: repository_id},
+                                              without_protection: true
+                                              )
+              end
+            else
+            #raise "more than one ontology found"
+              ontology = self
+              ontology.present = true
+            end
           end
 
           if h['language']
@@ -96,6 +109,9 @@ module Ontology::Import
 
             logic_callback.link(h, link)
           end
+        },
+        import: Proc.new { |h|
+          ontology.iri = h['library']
         }
       save!
       versions.each { |version| version.save! }

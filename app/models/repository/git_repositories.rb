@@ -52,12 +52,14 @@ module Repository::GitRepositories
 
     basepath = File.basepath(filepath)
     o = ontologies.where(basepath: basepath).first
-
     if o
+      return unless o.present
       unless o.versions.find_by_commit_oid(commit_oid)
         # update existing ontology
-        version = o.versions.build({ :commit_oid => commit_oid, :user => user }, { without_protection: true })
-        o.ontology_version = version
+        if o.present
+          version = o.versions.build({ :commit_oid => commit_oid, :user => user }, { without_protection: true })
+          o.ontology_version = version
+        end
         o.save!
       end
     else
