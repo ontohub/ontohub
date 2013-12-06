@@ -37,6 +37,33 @@ class RepositoryTest < ActiveSupport::TestCase
       end
     end
 
+    context 'made private' do
+      setup do
+        @repository.private_flag = true
+        @repository.save
+
+        editor = FactoryGirl.create :user
+        readers = [FactoryGirl.create(:user), FactoryGirl.create(:user), FactoryGirl.create(:user)]
+
+        FactoryGirl.create(:permission, subject: editor, role: 'editor', item: @repository)
+        readers.each { |r| FactoryGirl.create(:permission, subject: r, role: 'reader', item: @repository) }
+      end
+
+      should 'not clear reader premissions when saved, but not set public' do
+        assert_equal 3, @repository.permissions.where(role: 'reader').count
+        @repository.name += "_foo"
+        @repository.save
+        assert_equal 3, @repository.permissions.where(role: 'reader').count
+      end
+
+      should 'clear reader premissions when set public' do
+        assert_equal 3, @repository.permissions.where(role: 'reader').count
+        @repository.private_flag = false
+        @repository.save
+        assert_equal 0, @repository.permissions.where(role: 'reader').count
+      end
+    end
+
     context 'saving a file' do
       setup do 
         @file_path = '/tmp/ontohub/test/git_repository/save_file.txt'
