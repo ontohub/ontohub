@@ -3,7 +3,7 @@
 # 
 class OntologiesController < InheritedResources::Base
 
-  include RepositoryHelper
+  include FilesHelper
 
   belongs_to :repository, finder: :find_by_path!
   respond_to :json, :xml
@@ -22,15 +22,36 @@ class OntologiesController < InheritedResources::Base
       render :index_global
     end
   end
+  
 
   def new
     @ontology_version = build_resource.versions.build
+    @c_vertices = []
+    vert = Category.first
+    if vert
+      @c_vertices = vert.roots.first.children
+    end
+  end
+
+  def edit
+    @ontology = resource
+    @c_vertices = []
+    vert = Category.first
+    if vert
+      @c_vertices = vert.roots.first.children
+    end
+  end
+
+  def update
+    resource.category_ids = user_selected_categories
+    super
   end
 
   def create
     @version = build_resource.versions.first
     @version.user = current_user
     super
+    resource.category_ids = user_selected_categories
   end
   
   def show
@@ -56,6 +77,11 @@ class OntologiesController < InheritedResources::Base
         respond_with resource
       end
     end
+  end
+
+  def retry_failed
+    end_of_association_chain.retry_failed
+    redirect_to [parent, :ontologies]
   end
   
   def oops_state
@@ -83,4 +109,15 @@ class OntologiesController < InheritedResources::Base
     authorize! :write, parent
   end
 
+  def build_categories_tree(vertex)
+    @a ||= []
+    vertex.children.each { |child| build_categories_tree(child) unless child.children.empty?; @a << child }
+    @a
+  end
+
+  def user_selected_categories
+    params[:category_ids].keys unless params[:category_ids].nil?
+  end
+
 end
+

@@ -1,5 +1,14 @@
+require 'sidekiq/cli'
+
 module StateUpdater
+  extend ActiveSupport::Concern
   
+  included do
+    scope :state, ->(*states){
+      where state: states.map(&:to_s)
+    }
+  end
+
   protected
   
   def after_failed
@@ -15,6 +24,10 @@ module StateUpdater
       update_state! :failed, e.message
       after_failed
       raise e
+    rescue Sidekiq::Shutdown
+      # Sidekiq requeues the current job automatically
+      update_state! :pending
+      raise
     end
   end
 

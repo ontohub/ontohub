@@ -1,0 +1,7 @@
+%tr
+  %td= category.id
+  %td= link_to(category.name, admin_category_path(category))
+  %td
+    %ul.actions
+      %li= link_to 'edit', edit_resource_path(category)
+      %li= link_to 'delete', resource_path(category), :confirm => 'really delete?', :method => :delete

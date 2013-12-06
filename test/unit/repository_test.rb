@@ -216,6 +216,21 @@ class RepositoryTest < ActiveSupport::TestCase
       should 'be nil on non-existent file/folder' do
         assert_nil @repository.path_info('dolfer1')
       end
+
+      should 'paths_starting_with?' do
+        assert_equal(['inroot2.clf', 'inroot2.clif'], @repository.paths_starting_with('inroot2'))
+        assert_equal(['inroot1.clif', 'inroot2.clf', 'inroot2.clif'],
+          @repository.paths_starting_with('inroot'))
+
+        assert_equal(['folder1/file1.clif', 'folder1/file2.clf'],
+          @repository.paths_starting_with('folder1/file'))
+      end
+
+      should 'dir?' do
+        assert !@repository.dir?('non-existent')
+        assert !@repository.dir?('inroot1.clif')
+        assert @repository.dir?('folder1')
+      end
     end
   end
 

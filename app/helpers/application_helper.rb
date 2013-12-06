@@ -6,19 +6,15 @@ module ApplicationHelper
 
   def context_pane
     if params[:controller] == 'home'
-      return 'shared/user_ontologies'
+      return 'shared/user_repositories'
     end
 
     if params[:action] != 'index'
       return false
     end
 
-    if %w[entities_search logics].include? params[:controller]
-      return 'shared/user_ontologies'
-    end
-
-    if params[:controller] == 'ontologies' && !in_repository?
-      return 'shared/user_ontologies'
+    if %w[entities_search logics links ontologies].include? params[:controller]
+      return 'shared/user_ontologies' unless in_repository?
     end
 
     if params[:controller] == 'repositories'
@@ -60,6 +56,17 @@ module ApplicationHelper
     end
 
     @resource_chain
+  end
+
+  def display_commit?
+    !! Settings.display_head_commit
+  end
+
+  def display_commit
+    return $commit_oid if $commit_oid
+    $commit_oid = Subprocess.run(
+      *%w(git rev-parse --short HEAD),
+      GIT_DIR: Rails.root.join(".git").to_s).strip
   end
 
 end

@@ -56,7 +56,9 @@ class SentenceTest < ActiveSupport::TestCase
       setup do
         @ontology = FactoryGirl.create :single_ontology
         user = FactoryGirl.create :user
-        @ontology.import_xml_from_file Rails.root + 'test/fixtures/ontologies/xml/generations.xml', user
+        @ontology.import_xml_from_file fixture_file('generations.xml'),
+          fixture_file('generations.pp.xml'),
+          user
         @sentence = @ontology.sentences.first
       end
 
@@ -69,6 +71,17 @@ class SentenceTest < ActiveSupport::TestCase
           assert !(@sentence.display_text.include? x.iri)
         end
       end
+    end
+  end
+
+  context 'extracted names' do
+    setup do
+      sentence = FactoryGirl.create :sentence, :of_meta_ontology
+      @name1,@name2 = sentence.extract_class_names
+    end
+    should "match iris\' fragments" do
+      assert_equal @name1, 'Accounting_and_taxation'
+      assert_equal @name2, 'Business_and_administration'
     end
   end
 

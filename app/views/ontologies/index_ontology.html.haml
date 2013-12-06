@@ -1,11 +1,24 @@
 = repository_nav parent, :ontologies
 
-%p
-  = pluralize @count, 'Ontology'
-  found in this repository.
+- if can?(:edit, parent) and parent.ontologies.count > 0
+  .row
+    .col-md-12
+      = render 'states'
 
-.col-md-8
-  .pull-right
-    = link_to 'Upload an ontology file', new_repository_file_path(parent, 'upload_file[path]' => params[:path]), class: 'btn btn-link'
+.row
+  .col-md-6
+    %p
+      This repository contains
+      = pluralize @count, 'ontology'
+      ranked according to the number of comitted changes.
+      You can search for a particular ontology by filtering the list using the
+      ontology name, the logic name, or the name of logical symbols such as
+      classes, individuals, and properties.
+
   .clearfix
-  #OntologySearch
+
+  .col-md-8
+    .pull-right
+      = link_to 'Upload an ontology file', new_repository_file_path(parent, 'upload_file[path]' => params[:path]), class: 'btn btn-link' if can? :create, File
+    .clearfix
+    #OntologySearch{pagination: 'paginated', role: 'filter'}
