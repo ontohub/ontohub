@@ -8,7 +8,6 @@ class AuthorizedKeysManager
 
   class << self
     def add(key_id, key)
-      ensure_existence
       key_line = build_key_line(key_id, key)
       File.open(AUTHORIZED_KEYS_FILE, 'a') { |f| f.write(key_line) }
     end
@@ -21,7 +20,6 @@ class AuthorizedKeysManager
         lines.each { |line| is?(line, key_id) ? nil : f.write(line) }
       end
 
-      ensure_existence
     end
 
     def build_key_line(key_id, key)
@@ -36,18 +34,6 @@ class AuthorizedKeysManager
     private
     def is?(line, key_id)
       !! line.match(/#{key_id},/)
-    end
-
-    def ensure_existence
-      SSH_DIR.mkpath
-      FileUtils.touch(AUTHORIZED_KEYS_FILE)
-      ensure_permissions if CONFIG.git_user
-    end
-
-    def ensure_permissions
-      FileUtils.chmod(0600, AUTHORIZED_KEYS_FILE)
-      usergroup = [CONFIG.git_user, CONFIG.git_group].compact.join(':')
-      system("chown -R #{CONFIG.git_user} #{CONFIG.git_home}")
     end
 
   end
