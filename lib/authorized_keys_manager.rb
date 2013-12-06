@@ -13,13 +13,13 @@ class AuthorizedKeysManager
   class << self
     def add(key_id, key)
       key_line = build_key_line(key_id, key)
-      File.open(AUTHORIZED_KEYS_FILE, 'a') { |f| f.write(key_line) }
+      in_authorized_keys('a') { |f| f.write(key_line) }
     end
 
     def remove(key_id)
       return if !AUTHORIZED_KEYS_FILE.exist?
 
-      File.open(AUTHORIZED_KEYS_FILE, 'r+') do |f|
+      in_authorized_keys('r+') do |f|
         lines = []
         f.each_line { |l| lines << l }
         f.rewind
@@ -41,6 +41,13 @@ class AuthorizedKeysManager
     private
     def is?(line, key_id)
       !! line.match(/#{key_id},/)
+    end
+
+    def in_authorized_keys(mode)
+      File.open(AUTHORIZED_KEYS_FILE, mode) do |file|
+        file.flock(File::LOCK_EX)
+        yield file
+      end
     end
 
   end
