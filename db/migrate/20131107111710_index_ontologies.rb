@@ -8,6 +8,5 @@ class IndexOntologies < ActiveRecord::Migration
       t.index :display_name
       t.index :text
     end
-    Ontology.reindex
   end
 end
