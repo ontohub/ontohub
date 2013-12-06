@@ -60,7 +60,7 @@ public class Pagination extends Composite {
 			setItemEnabled(1, length);
 			setItemActive(index);
 			setAnchorMid(3);
-		} else if (index + 2 <= length) {
+		} else if (index + 2 < length) {
 			setItemEnabled(0, 6);
 			setItemActive(3);
 			setAnchorMid(index);
