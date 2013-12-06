@@ -2,7 +2,7 @@ class RepositoriesController < InheritedResources::Base
 
   defaults finder: :find_by_path!
 
-  load_and_authorize_resource :except => [:index, :show]
+  load_and_authorize_resource :except => [:index]
 
   def create
     resource.user = current_user

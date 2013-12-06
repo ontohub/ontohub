@@ -33,5 +33,6 @@ class Permission < ActiveRecord::Base
   scope :role, ->(role) { where :role => role }
   scope :owner, role(:owner)
   scope :editor, role(:editor)
+  scope :reader, role(:reader)
   
 end

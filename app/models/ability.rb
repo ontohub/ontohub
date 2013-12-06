@@ -11,18 +11,20 @@ class Ability
     elsif user.id
       # Repositories
       can [:create], Repository
+      can :show, Repository do |subject|
+        if subject.private_flag
+          subject.permission?(:reader, user) ||
+          subject.permission?(:editor, user) ||
+          subject.permission?(:owner, user)
+        else
+          true
+        end
+      end
       can [:write], Repository do |subject|
         subject.permission?(:editor, user)
       end
       can [:update, :destroy, :permissions], Repository do |subject|
         subject.permission?(:owner, user)
-      end
-
-      # Files
-      manage  = [:new, :create]
-      reading = [:files, :download, :entries_info, :diff, :history]
-      can manage, Repository do |subject|#TODO
-        subject.permission?(:editor, user)
       end
 
       # Ontology
@@ -104,6 +106,10 @@ class Ability
         subject.user == user || subject.metadatable.permission?(:editor, user)
       end
       
+    else
+      can :show, Repository do |subject|
+        !subject.private_flag
+      end
     end
     
     # See the wiki for details: https://github.com/ryanb/cancan/wiki/Defining-Abilities
