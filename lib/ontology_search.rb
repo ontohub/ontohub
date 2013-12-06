@@ -58,26 +58,44 @@ class OntologySearch
   def make_global_keyword_list(prefix)
     text_list = Set.new
 
-    Ontology.select(:name).where("name ILIKE :prefix", prefix: "#{prefix}%").limit(25).group("name").limit(5).each do |ontology|
+    Ontology.select("DISTINCT name").where("name = :prefix", prefix: prefix).each do |ontology|
       text_list.add(ontology.name)
     end
 
-    Entity.select("display_name").where("display_name ILIKE :prefix", prefix: "#{prefix}%").limit(25).group("display_name").limit(5).each do |symbol|
+    Entity.select("DISTINCT display_name").where("display_name = :prefix", prefix: prefix).each do |symbol|
       text_list.add(symbol.display_name)
     end
 
-    Entity.select("name").where("name ILIKE :prefix", prefix: "#{prefix}%").limit(25).group("name").limit(5).each do |symbol|
+    Entity.select("DISTINCT name").where("name = :prefix", prefix: prefix).each do |symbol|
       text_list.add(symbol.name)
     end
 
-    Entity.select("text").where("text ILIKE :prefix", prefix: "#{prefix}%").limit(25).group("text").limit(5).each do |symbol|
+    Entity.select("DISTINCT text").where("text = :prefix", prefix: prefix).each do |symbol|
       text_list.add(symbol.text)
     end
 
-    Logic.where("name ILIKE :prefix", prefix: "#{prefix}%").limit(5).each do |logic|
-      if logic.ontologies.size != 0
-        text_list.add(logic.name)
-      end
+    Logic.select("name").where("name = :prefix", prefix: prefix).each do |logic|
+      text_list.add(logic.name)
+    end
+
+    Ontology.select("DISTINCT name").where("name ILIKE :prefix", prefix: "#{prefix}%").limit(5).each do |ontology|
+      text_list.add(ontology.name)
+    end
+
+    Entity.select("DISTINCT display_name").where("display_name ILIKE :prefix", prefix: "#{prefix}%").limit(5).each do |symbol|
+      text_list.add(symbol.display_name)
+    end
+
+    Entity.select("DISTINCT name").where("name ILIKE :prefix", prefix: "#{prefix}%").limit(5).each do |symbol|
+      text_list.add(symbol.name)
+    end
+
+    Entity.select("DISTINCT text").where("text ILIKE :prefix", prefix: "#{prefix}%").limit(5).each do |symbol|
+      text_list.add(symbol.text)
+    end
+
+    Logic.select("name").where("name ILIKE :prefix", prefix: "#{prefix}%").limit(5).each do |logic|
+      text_list.add(logic.name)
     end
 
     text_list.to_a.sort.map { |x| {text: x} }
