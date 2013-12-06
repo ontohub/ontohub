@@ -15,6 +15,8 @@ class Repository < ActiveRecord::Base
   attr_accessible :name, :description, :source_type, :source_address, :private_flag
   attr_accessor :user
 
+  after_save :clear_readers
+
   scope :latest, order('updated_at DESC')
 
   def to_s
@@ -23,6 +25,14 @@ class Repository < ActiveRecord::Base
 
   def to_param
     path
+  end
+
+  private
+
+  def clear_readers
+    if private_flag_changed?
+      permissions.where(role: 'reader').each { |p| p.destroy }
+    end
   end
   
 end
