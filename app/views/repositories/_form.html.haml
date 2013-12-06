@@ -3,7 +3,6 @@
   = f.input :description, input_html: { class: 'input-xlarge' }
   
   - if resource.new_record?
-    = f.input :source_type, as: :radio_buttons, collection: [["don't import repository", nil], *(Repository::SOURCE_TYPES.map {|t| ["import from #{t}",t]})]
     = f.input :source_address
   
   = f.button :wrapped

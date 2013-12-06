@@ -5,9 +5,9 @@ rvm:
 
 branches:
   except:
-    - deployment
     - ontohub.org
     - staging.ontohub.org
+    - develop.ontohub.org
 
 services:
   - redis-server

@@ -1,7 +1,7 @@
 require 'test_helper'
 
-class OntologySearchTest < ActiveSupport::TestCase
-  
+class OntologySearchTest < ActiveSupport::TestCase 
+
   context 'OntologySearch' do
     setup do
       @os = OntologySearch.new
@@ -38,7 +38,12 @@ class OntologySearchTest < ActiveSupport::TestCase
       @ontologies.map(&:save)
       @entities.map(&:save)
       @logics.map(&:save)
+      ::Sunspot.session = ::Sunspot.session.original_session
       Ontology.reindex
+    end
+
+    teardown do
+      ::Sunspot.session = ::Sunspot::Rails::StubSessionProxy.new(::Sunspot.session)     
     end
 
     context 'keyword list' do

@@ -47,9 +47,11 @@ module OntologyParser
           if @current_link && @current_link['map']
             @current_link['map'] << @current_symbol
           end
+          @current_axiom['symbol_hashes'] << @current_symbol if @current_axiom
         when AXIOM
           @current_axiom = Hash[*[attributes]]
           @current_axiom['symbols'] = []
+          @current_axiom['symbol_hashes'] = []
           @current_axiom['text'] = ''
         when LINK
           @current_link = Hash[*[attributes]]

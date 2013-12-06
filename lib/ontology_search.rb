@@ -5,9 +5,11 @@ require 'json'
 #
 class OntologySearch
 
+  class Response < Struct.new(:page,:resultsInPage,:resultsInSet,:results)
+  end
+
   def initialize
     @limit = 20
-    @response = Struct.new(:page,:resultsInPage,:resultsInSet,:results)
   end
 
   def make_repository_keyword_list_json(repository, prefix)
@@ -90,13 +92,24 @@ class OntologySearch
   end
 
   def make_repository_bean_list_response(repository, keyword_list, page)
+    # Display all repository ontologies for empty keyword list
+    if keyword_list.size == 0
+      offset = (page - 1) * @limit
+      bean_list_factory = OntologyBeanListFactory.new
+      repository.ontologies.limit(@limit).offset(offset).each do |ontology|
+        bean_list_factory.add_small_bean(ontology)
+      end
+      return Response.new(page, @limit, repository.ontologies.count, bean_list_factory.bean_list)
+    end
+
+    index = 0
     bean_list_factory = OntologyBeanListFactory.new
     search = Ontology.search_by_keywords_in_repository(keyword_list, page, repository)
     search.results.each do |ontology|
       bean_list_factory.add_small_bean(ontology)
     end
 
-    @response.new(page, @limit, count, bean_list_factory.bean_list)
+    Response.new(page, @limit, search.total, bean_list_factory.bean_list)
   end
 
   def make_global_bean_list_response(keyword_list, page)
@@ -108,15 +121,16 @@ class OntologySearch
       Ontology.limit(@limit).offset(offset).each do |ontology|
         bean_list_factory.add_small_bean(ontology)
       end
-      return @response.new(page, @limit, Ontology.count, bean_list_factory.bean_list)
+      return Response.new(page, @limit, Ontology.count, bean_list_factory.bean_list)
     end
 
     bean_list_factory = OntologyBeanListFactory.new
-    Ontology.search_by_keywords(keyword_list, page).results.each do |ontology|
+    search = Ontology.search_by_keywords(keyword_list, page)
+    search.results.each do |ontology|
       bean_list_factory.add_small_bean(ontology)
     end
 
-    @response.new(0, 50, 0, bean_list_factory.bean_list)
+    Response.new(page, @limit, search.total, bean_list_factory.bean_list)
   end
 
 end
