@@ -30,12 +30,13 @@ class AuthorizedKeysManager
     end
 
     def build_key_line(key_id, key)
-      cmd = <<-KEY
-        command=\"#{GIT_SHELL_FILE} #{key_id}\",
-        no-port-forwarding,no-x11-forwarding,
-        no-agent-forwarding,no-pty #{key}
-      KEY
-      cmd.gsub("\n",'').gsub(/\s+/,' ') + "\n"
+      cmd = "command=\"#{GIT_SHELL_FILE} #{key_id}\","+
+        %w{
+          no-port-forwarding
+          no-x11-forwarding
+          no-agent-forwarding
+          no-pty
+        }.join(',') + " #{key}\n"
     end
 
     private
