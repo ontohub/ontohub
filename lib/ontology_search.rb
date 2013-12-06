@@ -21,11 +21,11 @@ class OntologySearch
   def make_repository_keyword_list(repository, prefix)
     text_list = Set.new
     
-    unless repository.ontologies.where("name = :prefix", prefix: prefix, repository_id: repository).empty?
-      text_list.add(prefix)
-    end
+    #unless repository.ontologies.where("name = :prefix", prefix: prefix, repository_id: repository).empty?
+    #  text_list.add(prefix)
+    #end
     
-    repository.ontologies.select(:name).where("name ILIKE :prefix", prefix: "#{prefix}%").group("name").limit(5).each do |ontology|
+    repository.ontologies.select(:name).where("name ILIKE :prefix", prefix: "#{prefix}%").limit(25).group("name").limit(5).each do |ontology|
       text_list.add(ontology.name)
     end
 
@@ -56,27 +56,19 @@ class OntologySearch
   def make_global_keyword_list(prefix)
     text_list = Set.new
 
-    unless Ontology.where("name = :prefix", prefix: prefix).empty?
-      text_list.add(prefix)
-    end
-
-    unless Entity.where("display_name ILIKE :prefix or name ILIKE :prefix", prefix: prefix).empty?
-      #text_list.add(prefix)
-    end
-
-    Ontology.select(:name).where("name ILIKE :prefix", prefix: "#{prefix}%").group("name").limit(5).each do |ontology|
+    Ontology.select(:name).where("name ILIKE :prefix", prefix: "#{prefix}%").limit(25).group("name").limit(5).each do |ontology|
       text_list.add(ontology.name)
     end
 
-    Entity.select("display_name").where("display_name ILIKE :prefix", prefix: "#{prefix}%").group("display_name").limit(5).each do |symbol|
+    Entity.select("display_name").where("display_name ILIKE :prefix", prefix: "#{prefix}%").limit(25).group("display_name").limit(5).each do |symbol|
       text_list.add(symbol.display_name)
     end
 
-    Entity.select("name").where("name ILIKE :prefix", prefix: "#{prefix}%").group("name").limit(5).each do |symbol|
+    Entity.select("name").where("name ILIKE :prefix", prefix: "#{prefix}%").limit(25).group("name").limit(5).each do |symbol|
       text_list.add(symbol.name)
     end
 
-    Entity.select("text").where("text ILIKE :prefix", prefix: "#{prefix}%").group("text").limit(5).each do |symbol|
+    Entity.select("text").where("text ILIKE :prefix", prefix: "#{prefix}%").limit(25).group("text").limit(5).each do |symbol|
       text_list.add(symbol.text)
     end
 
