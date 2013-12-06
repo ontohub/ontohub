@@ -16,6 +16,8 @@ module Ontology::Entities
       e.updated_at = timestamp
 
       unless hash['name'] || hash['kind']
+        Rails.logger.warn "Using work-around to determine entity name and kind: #{e.inspect}"
+
         if e2 = Entity.where(text: hash['text']).first
           e.name = e2.name
           e.kind = e2.kind
