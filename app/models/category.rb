@@ -9,8 +9,11 @@ class Category < ActiveRecord::Base
   connected_by 'CEdge'
   
   def relatedOntologies
-    categories = [self]+[self.children] 
-    Ontology.where(:category => [categories])
+    categories = [self.id]
+    self.children.each do |cate|
+      categories << cate.id
+    end
+    ontologies = Ontology.find(:all, :joins => :categories, :conditions => "categories.id IN (#{categories *","})")
   end
 
 # has_and_belongs_to_many :ontologies

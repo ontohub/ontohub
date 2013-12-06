@@ -15,11 +15,7 @@ class CategoriesController < InheritedResources::Base
     
     def show
       @category = Category.find(params[:id])
-      categories = [@category.id]
-      @category.children.each do |cate|
-        categories << cate.id
-      end
-      @ontologies = Ontology.find(:all, :joins => :categories, :conditions => "categories.id IN (#{categories *","})")
+      @ontologies = @category.related_ontologies
     end
     
 end
