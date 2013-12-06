@@ -18,6 +18,18 @@ class Repository < ActiveRecord::Base
   after_save :clear_readers
 
   scope :latest, order('updated_at DESC')
+  scope :pub, where(private_flag: false)
+  scope :accessible_by, ->(user) do
+    user.permissions.where(item_type: 'Repository').map(&:item)
+    if user
+      where("private_flag = false
+        OR id IN (SELECT item_id FROM permissions WHERE item_type = 'Repository' AND subject_type = 'User' AND subject_id = ?)
+        OR id IN (SELECT item_id FROM permissions INNER JOIN team_users ON team_users.team_id = permissions.subject_id AND team_users.user_id = ?
+          WHERE  item_type = 'Repository' AND subject_type = 'Team')", user, user)
+    else
+      pub
+    end
+  end
 
   def to_s
     name

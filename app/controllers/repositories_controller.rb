@@ -14,6 +14,11 @@ class RepositoriesController < InheritedResources::Base
     super
   end
 
+  def index
+    @repositories = Repository.accessible_by(current_user)
+    super
+  end
+
   protected
 
   def collection
