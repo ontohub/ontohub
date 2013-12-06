@@ -6,7 +6,9 @@ class AuthorizedKeysManager
   GIT_HOME             = Pathname.new(CONFIG.git_home)
   SSH_DIR              = GIT_HOME.join('.ssh')
   AUTHORIZED_KEYS_FILE = SSH_DIR.join('authorized_keys')
-  GIT_SHELL_FILE       = Rails.root.join('git', 'bin', 'git-shell')
+  GIT_SHELL_FILE       = Rails.root.join('git', 'bin', 'git-shell').
+    # replace capistrano-style release with 'current'-symlink
+    sub(%r{/releases/\d+/}, '/current/')
 
   class << self
     def add(key_id, key)
