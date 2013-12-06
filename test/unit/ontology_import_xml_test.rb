@@ -90,7 +90,8 @@ class OntologyImportXMLTest < ActiveSupport::TestCase
     setup do
       @user = FactoryGirl.create :user
       @ontology = FactoryGirl.create :distributed_ontology
-      @ontology.import_xml_from_file fixture_file('align.xml'), @user
+      @ontology.import_xml_from_file fixture_file('align.xml'),
+        fixture_file('align.pp.xml'), @user
       @combined = @ontology.children.where(name: 'VAlignedOntology').first
     end
     

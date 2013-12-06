@@ -74,7 +74,7 @@ module Ontology::Import
 
           logic_callback.ontology_end({}, ontology)
         },
-        symbol:   Proc.new { |h|
+        symbol: Proc.new { |h|
           if logic_callback.pre_symbol(h)
             entity = ontology.entities.update_or_create_from_hash(h, now)
             ontology.entities_count += 1
