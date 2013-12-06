@@ -17,7 +17,7 @@ class AuthorizedKeysManager
     end
 
     def remove(key_id)
-      return if AUTHORIZED_KEYS_FILE.exist?
+      return if !AUTHORIZED_KEYS_FILE.exist?
 
       lines = File.readlines(AUTHORIZED_KEYS_FILE)
       File.open(AUTHORIZED_KEYS_FILE, 'w') do |f|
