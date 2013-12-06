@@ -18,6 +18,13 @@ class Ability
         subject.permission?(:owner, user)
       end
 
+      # Files
+      manage  = [:new, :create]
+      reading = [:files, :download, :entries_info, :diff, :history]
+      can manage, Repository do |subject|#TODO
+        subject.permission?(:editor, user)
+      end
+
       # Ontology
       can :manage, Ontology do |subject|
         subject.permission?(:editor, user)

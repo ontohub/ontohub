@@ -3,6 +3,7 @@ class FilesController < ApplicationController
   helper_method :repository, :ref, :oid, :path, :branch_name
   before_filter :check_permissions, only: [:new, :create]
 
+
   def files
     @info = repository.path_info(params[:path], oid)
 
