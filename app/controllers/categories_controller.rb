@@ -8,8 +8,7 @@ class CategoriesController < InheritedResources::Base
       @categories = Kaminari.paginate_array(@ontology.categories).page(params[:page])
     else
       @c_vertices = []
-      vert = Category.first
-      if vert
+      if vert = Category.first
         @c_vertices = vert.roots.first.children
       end
     end
