@@ -41,7 +41,7 @@ class AuthorizedKeysManager
 
     private
     def is?(line, key_id)
-      !! line.match(/#{key_id},/)
+      !! line.match(/#{key_id}",/)
     end
 
     def in_authorized_keys(mode)
