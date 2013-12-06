@@ -3,6 +3,7 @@ require 'sidekiq/web' if defined? Sidekiq
 
 Ontohub::Application.routes.draw do
   
+  resources :categories, :only => [:index, :show]
 
   devise_for :users, :controllers => { :registrations => "users/registrations" }
   resources :users, :only => :show
