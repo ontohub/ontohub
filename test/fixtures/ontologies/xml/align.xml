@@ -1,0 +1,108 @@
+<?xml version='1.0' ?>
+<DGraph filename="/home/henning/downloads/align.het" libname="home/henning/downloads/align" dgnodes="4" dgedges="5" nextlinkid="5">
+  <DGNode name="Source" logic="OWL2" refname="Source" relxpath="/">
+    <Declarations>
+      <Symbol kind="Class" name="Person" range="/home/henning/downloads/align.het:4.10-4.15">Class Person</Symbol>
+      <Symbol kind="Class" name="Woman" range="/home/henning/downloads/align.het:5.10-5.14">Class Woman</Symbol>
+    </Declarations>
+    <Symbols>
+      <Symbol kind="Class" name="Person" range="/home/henning/downloads/align.het:4.10-4.15">Class Person</Symbol>
+      <Symbol kind="Class" name="Woman" range="/home/henning/downloads/align.het:5.10-5.14">Class Woman</Symbol>
+    </Symbols>
+    <Axioms>
+      <Axiom name="Ax1" range="/home/henning/downloads/align.het:5.10-5.33">
+        <Text>Class: Woman
+       SubClassOf: Person</Text>
+        <Symbol kind="Class" name="Person" range="/home/henning/downloads/align.het:5.28-5.33">Class Person</Symbol>
+        <Symbol kind="Class" name="Woman" range="/home/henning/downloads/align.het:5.10-5.14">Class Woman</Symbol>
+      </Axiom>
+    </Axioms>
+  </DGNode>
+  <DGNode name="Onto1" logic="OWL2" refname="Onto1" relxpath="/">
+    <Declarations>
+      <Symbol kind="Class" name="Bank" range="/home/henning/downloads/align.het:11.10-11.13">Class Bank</Symbol>
+      <Symbol kind="Class" name="Person" range="/home/henning/downloads/align.het:9.10-9.15">Class Person</Symbol>
+      <Symbol kind="Class" name="Woman" range="/home/henning/downloads/align.het:10.10-10.14">Class Woman</Symbol>
+    </Declarations>
+    <Symbols>
+      <Symbol kind="Class" name="Bank" range="/home/henning/downloads/align.het:11.10-11.13">Class Bank</Symbol>
+      <Symbol kind="Class" name="Person" range="/home/henning/downloads/align.het:9.10-9.15">Class Person</Symbol>
+      <Symbol kind="Class" name="Woman" range="/home/henning/downloads/align.het:10.10-10.14">Class Woman</Symbol>
+    </Symbols>
+    <Axioms>
+      <Axiom name="Ax1" range="/home/henning/downloads/align.het:10.10-10.33">
+        <Text>Class: Woman
+       SubClassOf: Person</Text>
+        <Symbol kind="Class" name="Person" range="/home/henning/downloads/align.het:10.28-10.33">Class Person</Symbol>
+        <Symbol kind="Class" name="Woman" range="/home/henning/downloads/align.het:10.10-10.14">Class Woman</Symbol>
+      </Axiom>
+    </Axioms>
+  </DGNode>
+  <DGNode name="Onto2" logic="OWL2" refname="Onto2" relxpath="/">
+    <Declarations>
+      <Symbol kind="Class" name="Bank" range="/home/henning/downloads/align.het:22.10-22.13">Class Bank</Symbol>
+      <Symbol kind="Class" name="HumanBeing" range="/home/henning/downloads/align.het:20.10-20.19">Class HumanBeing</Symbol>
+      <Symbol kind="Class" name="Woman" range="/home/henning/downloads/align.het:21.10-21.14">Class Woman</Symbol>
+    </Declarations>
+    <Symbols>
+      <Symbol kind="Class" name="Bank" range="/home/henning/downloads/align.het:22.10-22.13">Class Bank</Symbol>
+      <Symbol kind="Class" name="HumanBeing" range="/home/henning/downloads/align.het:20.10-20.19">Class HumanBeing</Symbol>
+      <Symbol kind="Class" name="Woman" range="/home/henning/downloads/align.het:21.10-21.14">Class Woman</Symbol>
+    </Symbols>
+    <Axioms>
+      <Axiom name="Ax1" range="/home/henning/downloads/align.het:21.10-21.37">
+        <Text>Class: Woman
+       SubClassOf: HumanBeing</Text>
+        <Symbol kind="Class" name="HumanBeing" range="/home/henning/downloads/align.het:21.28-21.37">Class HumanBeing</Symbol>
+        <Symbol kind="Class" name="Woman" range="/home/henning/downloads/align.het:21.10-21.14">Class Woman</Symbol>
+      </Axiom>
+    </Axioms>
+  </DGNode>
+  <DGNode name="VAlignedOntology" logic="OWL2">
+    <Symbols>
+      <Symbol kind="Class" name="1:Bank" range="/home/henning/downloads/align.het:11.10-11.15">Class 1:Bank</Symbol>
+      <Symbol kind="Class" name="2:Bank" range="/home/henning/downloads/align.het:22.10-22.15">Class 2:Bank</Symbol>
+      <Symbol kind="Class" name="Person" range="/home/henning/downloads/align.het:4.10-4.15">Class Person</Symbol>
+      <Symbol kind="Class" name="Woman" range="/home/henning/downloads/align.het:5.10-5.14">Class Woman</Symbol>
+    </Symbols>
+  </DGNode>
+  <DGLink source="Source" target="Onto1" linkid="0" name="V1">
+    <Type>GlobalUnprovenThmInc</Type>
+    <GMorphism name="id_OWL.NP-sROIQ-D|-|" />
+  </DGLink>
+  <DGLink source="Source" target="Onto2" linkid="1" name="V2">
+    <Type>GlobalUnprovenThm</Type>
+    <GMorphism name="id_OWL.NP-sROIQ-D|-|">
+      <map>
+        <Symbol kind="Class" name="Person" range="/home/henning/downloads/align.het:4.10-4.15">Class Person</Symbol>
+        <Symbol kind="Class" name="HumanBeing" range="/home/henning/downloads/align.het:26.14-26.23">Class HumanBeing</Symbol>
+      </map>
+    </GMorphism>
+  </DGLink>
+  <DGLink source="Source" target="VAlignedOntology" linkid="4">
+    <Type>GlobalDef</Type>
+    <GMorphism name="id_OWL.NP-sROIQ-D|-|" />
+  </DGLink>
+  <DGLink source="Onto1" target="VAlignedOntology" linkid="3">
+    <Type>GlobalDef</Type>
+    <GMorphism name="id_OWL.NP-sROIQ-D|-|">
+      <map>
+        <Symbol kind="Class" name="Bank" range="/home/henning/downloads/align.het:11.10-11.13">Class Bank</Symbol>
+        <Symbol kind="Class" name="1:Bank" range="/home/henning/downloads/align.het:11.10-11.15">Class 1:Bank</Symbol>
+      </map>
+    </GMorphism>
+  </DGLink>
+  <DGLink source="Onto2" target="VAlignedOntology" linkid="2">
+    <Type>GlobalDef</Type>
+    <GMorphism name="id_OWL.NP-sROIQ-D|-|">
+      <map>
+        <Symbol kind="Class" name="Bank" range="/home/henning/downloads/align.het:22.10-22.13">Class Bank</Symbol>
+        <Symbol kind="Class" name="2:Bank" range="/home/henning/downloads/align.het:22.10-22.15">Class 2:Bank</Symbol>
+      </map>
+      <map>
+        <Symbol kind="Class" name="HumanBeing" range="/home/henning/downloads/align.het:20.10-20.19">Class HumanBeing</Symbol>
+        <Symbol kind="Class" name="Person" range="/home/henning/downloads/align.het:4.10-4.15">Class Person</Symbol>
+      </map>
+    </GMorphism>
+  </DGLink>
+</DGraph>
