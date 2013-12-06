@@ -36,7 +36,7 @@ module StateUpdater
     self.last_error = error_message
 
     save!
-  rescue PG::Error
+  rescue ActiveRecord::StatementInvalid, PG::Error
     # Can happen on save!
     self.class.where(id: id).update_all \
       state:      state.to_s, 
