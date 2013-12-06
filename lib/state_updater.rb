@@ -42,6 +42,8 @@ module StateUpdater
       state:      state.to_s, 
       last_error: error_message
 
+    after_update_state if respond_to?(:after_update_state)
+    
     raise
   end
 end
