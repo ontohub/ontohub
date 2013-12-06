@@ -30,7 +30,7 @@ module OntologyVersion::Files
 
   # path to the raw file
   def raw_path
-    tmp_dir.join("raw",ontology.path)
+    tmp_dir.join("raw",commit_oid,ontology.path)
   end
 
   # path to the raw file, checks out the raw file if is missing
