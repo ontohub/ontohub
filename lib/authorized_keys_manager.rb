@@ -19,9 +19,12 @@ class AuthorizedKeysManager
     def remove(key_id)
       return if !AUTHORIZED_KEYS_FILE.exist?
 
-      lines = File.readlines(AUTHORIZED_KEYS_FILE)
-      File.open(AUTHORIZED_KEYS_FILE, 'w') do |f|
+      File.open(AUTHORIZED_KEYS_FILE, 'r+') do |f|
+        lines = []
+        f.each_line { |l| lines << l }
+        f.rewind
         lines.each { |line| is?(line, key_id) ? nil : f.write(line) }
+        f.truncate(f.pos)
       end
 
     end
