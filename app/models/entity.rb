@@ -8,6 +8,8 @@ class Entity < ActiveRecord::Base
   has_and_belongs_to_many :sentences
   has_and_belongs_to_many :oops_responses
 
+  attr_accessible :label, :comment
+
   scope :kind, ->(kind) { where :kind => kind }
 
   def self.groups_by_kind

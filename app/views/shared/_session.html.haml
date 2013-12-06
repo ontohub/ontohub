@@ -1,5 +1,5 @@
-- if user_signed_in?
-  %ul.nav.navbar-nav.navbar-right
+%ul.nav.navbar-nav.navbar-right
+  - if user_signed_in?
     %li.dropdown
       = link_to '#', {class: 'dropdown-toggle', 'data-toggle' => 'dropdown'} do
         #{current_user.name}
@@ -14,3 +14,6 @@
         %li= link_to "SSH Keys", :keys
         %li.divider{role: 'presentation'}
         %li= link_to 'Sign out', :destroy_user_session, method: :delete
+  - else
+    %li= link_to 'Sign in', [:new, :user, :session]
+    %li= link_to 'Sign up', [:new, :user, :registration]

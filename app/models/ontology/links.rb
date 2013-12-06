@@ -37,17 +37,7 @@ module Ontology::Links
       gmorphism = hash['morphism']
       raise "gmorphism missing" if gmorphism.blank?
       gmorphism = 'http://purl.net/dol/translations/' + gmorphism unless gmorphism.include?('://')
-      
-      # logic mapping
-      if source.logic and target.logic
-        logic_mapping   = LogicMapping.find_by_iri gmorphism
-        logic_mapping ||= LogicMapping.create! \
-          source: source.logic,
-          target: target.logic,
-          iri: link_iri,
-          user: user
-      end
-      
+
       # finally, create or update the link
       link = find_or_initialize_by_iri(link_iri)
       link.attributes = {
@@ -59,7 +49,6 @@ module Ontology::Links
         proven:        linktype.include?("Proven"),
         local:         linktype.include?("Local"),
         inclusion:     linktype.include?("Inc"),
-        logic_mapping: logic_mapping
       }
       link.updated_at = timestamp
       link.save!
