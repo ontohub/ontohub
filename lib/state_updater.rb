@@ -36,5 +36,12 @@ module StateUpdater
     self.last_error = error_message
 
     save!
+  rescue PG::Error
+    # Can happen on save!
+    self.class.where(id: id).update_all \
+      state:      state.to_s, 
+      last_error: error_message
+
+    raise
   end
 end
