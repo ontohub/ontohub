@@ -1,8 +1,8 @@
 require 'spec_helper'
 
 describe Category do
-  
-  
+
+
   context "get ontologies of a category and subcategories" do
    before{ edge = FactoryGirl.create(:c_edge)
       onto1 = FactoryGirl.create(:ontology)
@@ -13,13 +13,13 @@ describe Category do
       onto2.save!
       @parent_category = Category.find(edge.parent_id)
       @child_category = Category.find(edge.child_id)
-      
+
     }
     it{
-      @parent_category.relatedOntologies.count.should == 2
+      @parent_category.related_ontologies.count.should == 2
       }
     it{
-      @child_category.relatedOntologies.count.should == 1    
+      @child_category.related_ontologies.count.should == 1
       }
   end
 
