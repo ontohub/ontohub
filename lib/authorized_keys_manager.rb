@@ -1,7 +1,9 @@
+require 'pathname'
+
 class AuthorizedKeysManager
 
   CONFIG               = Ontohub::Application.config
-  GIT_HOME             = CONFIG.git_home
+  GIT_HOME             = Pathname.new(CONFIG.git_home)
   SSH_DIR              = GIT_HOME.join('.ssh')
   AUTHORIZED_KEYS_FILE = SSH_DIR.join('authorized_keys')
   GIT_SHELL_FILE       = Rails.root.join('git', 'bin', 'git-shell')
