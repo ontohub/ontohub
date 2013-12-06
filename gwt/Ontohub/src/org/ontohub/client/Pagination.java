@@ -67,7 +67,9 @@ public class Pagination extends Composite {
 		} else {
 			int min = length >= 6 ? 0 : 1;
 			setItemEnabled(min, 5);
-			if (index + 1 == length) {
+			if (index + 2 == length) {
+				setItemActive(3);
+			} else if (index + 1 == length) {
 				setItemActive(4);
 			} else {
 				setItemActive(5);
