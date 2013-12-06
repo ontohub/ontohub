@@ -1,8 +1,8 @@
 = repository_nav parent.repository, :ontologies
 
 = ontology_nav parent, :license_models
-  
-  
+
+
 =link_to "Add license model" ,new_repository_ontology_license_model_path, class: "btn"
 %table.table
   %thead
@@ -18,4 +18,4 @@
         %td= license.description
         %td= license.url
         %td=link_to 'edit license model', edit_repository_ontology_license_model_path(@repo, @ontology, license)
-  
+
