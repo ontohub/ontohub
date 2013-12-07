@@ -5,7 +5,7 @@ FactoryGirl.define do
   end
 
   sequence :name do |n|
-    "#{Faker::Name.name}#{n}"
+    "#{Faker::Lorem.word}_#{n}"
   end
 
   factory :ontology do

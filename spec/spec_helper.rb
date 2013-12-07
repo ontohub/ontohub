@@ -9,6 +9,16 @@ require 'database_cleaner'
 # in spec/support/ and its subdirectories.
 Dir[Rails.root.join("spec/support/**/*.rb")].each { |f| require f }
 
+class ActionController::TestRequest
+
+  attr_writer :query_string
+
+  def query_string
+    @query_string.to_s
+  end
+
+end
+
 RSpec.configure do |config|
   # ## Mock Framework
   # config.mock_with :mocha
