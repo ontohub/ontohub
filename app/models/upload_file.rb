@@ -16,7 +16,7 @@ class UploadFile
   attr_accessor :path, :message, :file, :repository
 
   validates :message, :file, presence: true
-  validates_with PathValidator
+  validates_with PathValidator, :if => :file_exists?
 
   def initialize(attributes = nil)
     attributes ||= {}
@@ -39,6 +39,10 @@ class UploadFile
     str  = str[0,-2] if path.ends_with?("/")
     str += "/" unless path.empty?
     str += filename
+  end
+
+  def file_exists?
+    file.present?
   end
 end
 
