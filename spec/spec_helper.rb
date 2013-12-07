@@ -11,9 +11,7 @@ Dir[Rails.root.join("spec/support/**/*.rb")].each { |f| require f }
 
 class ActionController::TestRequest
 
-  def query_string=(query_string)
-    @query_string = query_string
-  end
+  attr_writer :query_string
 
   def query_string
     @query_string.to_s
