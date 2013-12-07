@@ -1,5 +1,7 @@
 class SshAccessController < InheritedResources::Base
 
+  belongs_to :repository, finder: :find_by_path!
+
   def index
     allowed = false
     key_id = params[:key_id]
