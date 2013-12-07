@@ -8,6 +8,18 @@ require 'rspec/autorun'
 # in spec/support/ and its subdirectories.
 Dir[Rails.root.join("spec/support/**/*.rb")].each { |f| require f }
 
+class ActionController::TestRequest
+
+  def query_string=(query_string)
+    @query_string = query_string
+  end
+
+  def query_string
+    @query_string.to_s
+  end
+
+end
+
 RSpec.configure do |config|
   # ## Mock Framework
   # config.mock_with :mocha
