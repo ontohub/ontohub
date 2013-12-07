@@ -117,7 +117,7 @@ module Hets
     if e.status == 2 and output.include? 'Usage:'
       raise HetsError, output.split("Usage:").first
     else
-      raise HetsError, "Hets exited with status #{e.status}:\n#{output}"
+      raise HetsError, e.message
     end
   end
 
