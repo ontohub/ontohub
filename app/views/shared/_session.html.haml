@@ -14,6 +14,5 @@
         %li= link_to "SSH Keys", :keys
         %li.divider{role: 'presentation'}
         %li= link_to 'Sign out', :destroy_user_session, method: :delete
-  - else
-    %li= link_to 'Sign in', [:new, :user, :session]
-    %li= link_to 'Sign up', [:new, :user, :registration]
+  - elsif not cover_visible?
+    %li= link_to 'Sign in/up', [:root]
