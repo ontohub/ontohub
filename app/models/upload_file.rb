@@ -1,12 +1,22 @@
 class UploadFile
 
+  class PathValidator < ActiveModel::Validator
+    def validate(record)
+      if record.repository.is_below_file?(record.filepath)
+        record.errors[:path] = "Error! This path points to a file."
+      end
+    end
+  end
+
+
   include ActiveModel::Conversion
   include ActiveModel::Validations
   extend ActiveModel::Naming
 
-  attr_accessor :path, :message, :file
+  attr_accessor :path, :message, :file, :repository
 
   validates :message, :file, presence: true
+  validates_with PathValidator
 
   def initialize(attributes = nil)
     attributes ||= {}
@@ -14,7 +24,7 @@ class UploadFile
       send("#{name}=", value)
     end
   end
-  
+
   def persisted?
     false
   end
@@ -30,5 +40,5 @@ class UploadFile
     str += "/" unless path.empty?
     str += filename
   end
-
 end
+

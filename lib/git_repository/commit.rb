@@ -69,6 +69,9 @@ module GitRepository::Commit
 =end
   end
 
+  # true for "file.txt"
+  #          "file.txt/foo"
+  # iff "file.txt" is a file in the repository
   def is_below_file?(target_path)
     return false if empty?
 
