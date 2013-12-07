@@ -91,6 +91,13 @@ class GitRepositoryTest < ActiveSupport::TestCase
         assert_not_equal first_commit_oid, @repository.head_oid
       end
 
+      should 'throw Exception on erroneous paths' do
+        @repository.commit_file(@userinfo, @content, @filepath, @message)
+        assert_raise GitRepository::PathBelowFileException do
+          @repository.commit_file(@userinfo, @content, "#{@filepath}/foo", @message)
+        end
+      end
+
       should 'reset state on empty repository with failing commit block' do
         assert @repository.empty?
         assert_raise Exception do
