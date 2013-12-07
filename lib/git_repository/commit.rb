@@ -14,6 +14,9 @@ module GitRepository::Commit
 
   # change a single file and commit the change
   def commit_file(userinfo, file_contents, target_path, message, &block)
+    # throw exception if path is below a file
+    raise GitRepository::PathBelowFileException if is_below_file?(target_path)
+
     # save current head oid in case of an emergency
     old_head = head_oid unless @repo.empty?
 
@@ -64,6 +67,22 @@ module GitRepository::Commit
 
     raise e
 =end
+  end
+
+  def is_below_file?(target_path)
+    return false if empty?
+
+    path_parts = target_path.split('/')
+    path_parts.each_with_index do |part, i|
+      if i < path_parts.size - 1
+        rugged_commit = @repo.lookup(head_oid)
+        object = get_object(rugged_commit, path_parts[0..i].join('/'))
+
+        return true if !object.nil? && object.type == :blob
+      end
+    end
+
+    false
   end
 
 
