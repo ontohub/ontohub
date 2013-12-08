@@ -1,6 +1,6 @@
 class FilesController < ApplicationController
 
-  helper_method :repository, :ref, :oid, :path, :branch_name, :dirpath
+  helper_method :repository, :ref, :oid, :path, :branch_name
   before_filter :check_permissions, only: [:new, :create]
 
   def files
@@ -73,19 +73,6 @@ class FilesController < ApplicationController
 
   def ref
     params[:ref] || 'master'
-  end
-
-  def dirpath
-    return '' if params[:path].nil?
-    parts = params[:path].split('/')
-    dir = []
-    parts.each_with_index do |part, i|
-      unless repository.is_below_file?(parts[0..i].join('/'))
-        dir << part
-      end
-    end
-
-    dir.join('/')
   end
 
   def build_file

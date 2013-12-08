@@ -46,4 +46,18 @@ module FilesHelper
     (current_page || 1)*(per_page+1)
   end
 
+  def dirpath(repository)
+    return '' if params[:path].nil?
+    parts = params[:path].split('/')
+    dir = []
+    raise ''
+    parts.each_with_index do |part, i|
+      unless repository.is_below_file?(parts[0..i].join('/'))
+        dir << part
+      end
+    end
+
+    dir.join('/')
+  end
+
 end
