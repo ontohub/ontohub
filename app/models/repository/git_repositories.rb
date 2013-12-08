@@ -22,7 +22,9 @@ module Repository::GitRepositories
     git
     symlink_name = local_path.join("hooks")
     symlink_name.rmtree
-    symlink_name.make_symlink Rails.root.join('git','hooks')
+    symlink_name.make_symlink(Rails.root.join('git','hooks').
+      # replace capistrano-style release with 'current'-symlink
+      sub(%r{/releases/\d+/}, '/current/'))
   end
 
   def destroy_git
