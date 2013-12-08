@@ -12,7 +12,7 @@ class Ability
       # Repositories
       can [:create], Repository
       can :show, Repository do |subject|
-        if subject.private_flag
+        if subject.is_private
           subject.permission?(:reader, user) ||
           subject.permission?(:editor, user) ||
           subject.permission?(:owner, user)
@@ -108,7 +108,7 @@ class Ability
       
     else
       can :show, Repository do |subject|
-        !subject.private_flag
+        !subject.is_private
       end
     end
     
