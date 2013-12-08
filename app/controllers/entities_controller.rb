@@ -4,6 +4,7 @@
 class EntitiesController < InheritedResources::Base
   
   belongs_to :ontology
+  before_filter :check_read_permissions
 
   actions :index
   has_scope :kind
@@ -19,5 +20,11 @@ class EntitiesController < InheritedResources::Base
         end
       end
     end
+  end
+
+  protected
+
+  def check_read_permissions
+    authorize! :show, parent.repository if false
   end
 end
