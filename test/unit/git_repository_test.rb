@@ -91,6 +91,14 @@ class GitRepositoryTest < ActiveSupport::TestCase
         assert_not_equal first_commit_oid, @repository.head_oid
       end
 
+      should 'have test if path points to a file' do
+        folder = "folder/1"
+        @repository.commit_file(@userinfo, @content, "#{folder}/#{@filepath}", @message)
+        assert !@repository.is_below_file?(folder)
+        assert @repository.is_below_file?("#{folder}#{@filepath}")
+        assert @repository.is_below_file?("#{folder}#{@filepath}/foo")
+      end
+
       should 'throw Exception on erroneous paths' do
         @repository.commit_file(@userinfo, @content, @filepath, @message)
         assert_raise GitRepository::PathBelowFileException do
