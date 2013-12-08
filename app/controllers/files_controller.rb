@@ -89,7 +89,7 @@ class FilesController < ApplicationController
     authorize! :write, repository
   end
 
-  def send_download(path, oid)oid)
+  def send_download(path, oid)
     render text: repository.read_file(path, oid)[:content],
            content_type: Mime::Type.lookup('application/force-download')
   end
