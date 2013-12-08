@@ -50,7 +50,6 @@ module FilesHelper
     return '' if params[:path].nil?
     parts = params[:path].split('/')
     dir = []
-    raise ''
     parts.each_with_index do |part, i|
       unless repository.is_below_file?(parts[0..i].join('/'))
         dir << part
