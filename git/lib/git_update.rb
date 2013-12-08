@@ -46,7 +46,7 @@ class GitUpdate
   end
 
   def update_redis
-    Subproces.run 'redis-cli', 'rpush', "#{Settings.redis_namespace}:queue:default", {
+    Subprocess.run 'redis-cli', 'rpush', "#{Settings.redis_namespace}:queue:default", {
       class: 'RepositoryUpdateWorker',
       args: [@repo_path, @oldrev, @newrev, @refname, @key_id]
     }.to_json
