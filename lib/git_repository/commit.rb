@@ -15,7 +15,7 @@ module GitRepository::Commit
   # change a single file and commit the change
   def commit_file(userinfo, file_contents, target_path, message, &block)
     # throw exception if path is below a file
-    raise GitRepository::PathBelowFileException if is_below_file?(target_path)
+    raise GitRepository::PathBelowFileException if points_through_file?(target_path)
 
     # save current head oid in case of an emergency
     old_head = head_oid unless @repo.empty?
@@ -69,23 +69,25 @@ module GitRepository::Commit
 =end
   end
 
-  # true for "file.txt"
-  #          "file.txt/foo"
+  # true for "file.txt/foo"
   # iff "file.txt" is a file in the repository
-  def is_below_file?(target_path)
+  def points_through_file?(target_path)
     return false if empty?
+    return false unless target_path
 
-    path_parts = target_path.split('/')
-    path_parts.each_with_index do |part, i|
-      if i < path_parts.size - 1
-        rugged_commit = @repo.lookup(head_oid)
-        object = get_object(rugged_commit, path_parts[0..i].join('/'))
+    parts = target_path.split('/')
 
-        return true if !object.nil? && object.type == :blob
-      end
+    rugged_commit = @repo.lookup(head_oid)
+    object = get_object(rugged_commit, parts[0..-2].join('/'))
+
+    !object.nil? && object.type == :blob
+  rescue NoMethodError => e
+    if e.message.match(/undefined method.`\[\]'/) &&
+        e.message.match(/Rugged..Blob./)
+      true
+    else
+      raise e
     end
-
-    false
   end
 
 

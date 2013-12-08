@@ -51,12 +51,24 @@ module FilesHelper
     parts = params[:path].split('/')
     dir = []
     parts.each_with_index do |part, i|
-      unless repository.is_below_file?(parts[0..i].join('/'))
+      if repository.dir?(parts[0..i].join('/'))
         dir << part
       end
     end
 
     dir.join('/')
+  end
+
+  def file_exists?
+    @info[:type] == :file
+  end
+
+  def update_file
+    if file_exists?
+      { 'upload_file[target_filename]' => @info[:file][:name] }
+    else
+      { }
+    end
   end
 
 end
