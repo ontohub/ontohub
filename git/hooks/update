@@ -4,7 +4,7 @@
 # It makes sure that your pushed commits will be processed properly.
 # 
 
-require File.expand_path('../../lib/init',  __FILE__)
+require File.expand_path('../../lib/init',  File.realdirpath(__FILE__))
 require 'git_update'
 
 key_id    = ENV['KEY_ID']

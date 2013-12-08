@@ -1,5 +1,5 @@
 require 'json'
-require 'subprocess'
+require File.join(File.expand_path('../../../lib', __FILE__), 'subprocess')
 require 'ontohub_net'
 
 class GitUpdate
