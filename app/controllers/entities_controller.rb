@@ -25,6 +25,6 @@ class EntitiesController < InheritedResources::Base
   protected
 
   def check_read_permissions
-    authorize! :show, parent.repository if false
+    authorize! :show, parent.repository
   end
 end

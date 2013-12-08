@@ -56,6 +56,15 @@ class LinksController < InheritedResources::Base
   end
   
   def check_read_permissions
-    authorize! :show, parent.repository if parent.is_a? Ontology
+    if params[:action] == 'index'
+      authorize! :show, Repository.find_by_path(params[:repository_id])
+    else
+      if resource.source
+        authorize! :show, resource.source.repository
+      end
+      if resource.target
+        authorize! :show, resource.target.repository
+      end
+    end
   end
 end
