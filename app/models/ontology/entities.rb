@@ -28,7 +28,7 @@ module Ontology::Entities
   end
 
   def create_entity_tree
-    if self.logic.name != 'OWL2' then
+    if !self.is?('OWL2')
       raise Exception.new('Error: No OWL2')
     end
     # Delete previous set of categories
