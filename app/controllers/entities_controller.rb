@@ -1,8 +1,8 @@
-# 
+#
 # Lists entities of an ontology
-# 
+#
 class EntitiesController < InheritedResources::Base
-  
+
   belongs_to :ontology
 
   actions :index
@@ -11,6 +11,18 @@ class EntitiesController < InheritedResources::Base
   respond_to :json, :xml
 
   def index
+    ontology = Ontology.find params[:ontology_id]
+    logic = ontology.logic
+    if logic.is?('OWL2') || logic.is?('OWL')
+      if ontology
+        begin
+          @nodes = ontology.entities.where(kind: 'Class').first.roots.first.children
+        rescue
+          @nodes = []
+        end
+        @hierarchy_exists = !@nodes.empty?
+      end
+    end
     index! do |format|
       format.html do
         unless collection.blank?

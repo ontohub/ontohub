@@ -75,4 +75,8 @@ class Ontology < ActiveRecord::Base
     child_name.include?("://") ? child_name : "#{iri}?#{child_name}"
   end
 
+  def is?(logic_name)
+    self.logic ? (self.logic.name == logic_name) : false
+  end
+
 end
