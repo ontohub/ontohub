@@ -71,4 +71,8 @@ class Ontology < ActiveRecord::Base
     "#{basepath}#{file_extension}"
   end
 
+  def iri_for_child(child_name)
+    child_name.include?("://") ? child_name : "#{iri}?#{child_name}"
+  end
+
 end
