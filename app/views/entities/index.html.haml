@@ -10,7 +10,7 @@
 -else
   .btn-group#ontology_selections
     = link_to 'Class Hirechy', '#hierachy', class: 'btn btn-default mode btn-primary', id: 'hierachy'
-    = link_to 'Class Details', '#detail', class: 'btn btn-default mode', id: 'detail'
+    = link_to 'Class Details', '#detail', class: 'btn btn-default mode', id: 'detail-page'
   .owl_entities
     .class-hierachy
       = render :partial => 'treeview'
@@ -20,8 +20,3 @@
           = render :partial => 'list'
         - else
           %h3 No entities found
-    
-:javascript
-  $("#hierachy").click(function(){
-    $(".entities-detail").toggle();
-  });

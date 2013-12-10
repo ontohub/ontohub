@@ -12,4 +12,17 @@ $(function () {
       icons: false
     }
   });
-}); 
+});
+$(function () {
+        $("#tree").jstree({
+          "plugins" : [  "themes", "html_data", "sort", "ui" ],
+          "themes": {
+            theme: "classic",
+            icons: false,
+            dots: false
+          }
+    });
+});
+$("#tree").delegate("a","click", function(e) {
+  document.location.href = this;
+});
