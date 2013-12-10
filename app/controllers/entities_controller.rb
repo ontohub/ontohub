@@ -1,8 +1,8 @@
-# 
+#
 # Lists entities of an ontology
-# 
+#
 class EntitiesController < InheritedResources::Base
-  
+
   belongs_to :ontology
 
   actions :index
@@ -12,9 +12,14 @@ class EntitiesController < InheritedResources::Base
 
   def index
     ontology = Ontology.find params[:ontology_id]
-    if ontology.logic.name == "OWL2"
-      if ontology  
-        @nodes = ontology.entities.first.roots.first.children
+    if ontology.logic.name == "OWL2" || ontology.logic.name == "OWL"
+      if ontology
+        begin
+          @nodes = ontology.entities.first.roots.first.children
+        rescue
+          @nodes = []
+        end
+        @hierarchy_exists = !@nodes.empty?
       end
     end
     index! do |format|

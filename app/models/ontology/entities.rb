@@ -32,7 +32,9 @@ module Ontology::Entities
       raise Exception.new('Error: No OWL2')
     end
     # Delete previous set of categories
-    EEdge.delete_all(EEdge.all)
+    %i[parent_id child_id].each do |key|
+      EEdge.where(key => self.entities.where(kind:'Class')).delete_all
+    end
     classes = self.entities.where(kind:'Class')
     subclasses = self.sentences.where("text LIKE '%SubClassOf%'")
 
