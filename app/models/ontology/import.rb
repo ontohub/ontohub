@@ -6,7 +6,7 @@ module Ontology::Import
 
     transaction do
       code_doc = code_io ? Nokogiri::XML(code_io) : nil
-
+      self.present     = true
       root             = nil
       ontology         = nil
       logic_callback   = nil
@@ -50,7 +50,9 @@ module Ontology::Import
             if ontologies_count > 1
               ontology = self.repository.ontologies.find_by_name(child_name)
               if ontology.nil?
-                ontology = SingleOntology.new({name: child_name,
+                ontology = SingleOntology.create!({name: child_name,
+                                              iri: "http://fake_iri.com/#{Time.now.to_f}",
+                                              basepath: "basepath.foo",
                                               repository_id: repository_id},
                                               without_protection: true
                                               )
@@ -111,6 +113,7 @@ module Ontology::Import
           end
         },
         import: Proc.new { |h|
+          Rails.logger.warn "OntI: #{h.inspect}"
           ontology.iri = h['library']
         }
       save!

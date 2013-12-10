@@ -48,18 +48,18 @@ module Repository::GitRepositories
   end
 
   def save_ontology(commit_oid, filepath, user=nil, iri=nil)
-    return unless Ontology::FILE_EXTENSIONS.include?(File.extname(filepath))
+    # we expect that this method is only called, when the ontology is 'present'
 
+    return unless Ontology::FILE_EXTENSIONS.include?(File.extname(filepath))
+    version = nil
     basepath = File.basepath(filepath)
     o = ontologies.where(basepath: basepath).first
     if o
-      return unless o.present
+      o.present = true
       unless o.versions.find_by_commit_oid(commit_oid)
         # update existing ontology
-        if o.present
-          version = o.versions.build({ :commit_oid => commit_oid, :user => user }, { without_protection: true })
-          o.ontology_version = version
-        end
+        version = o.versions.build({ :commit_oid => commit_oid, :user => user }, { without_protection: true })
+        o.ontology_version = version
         o.save!
       end
     else
@@ -73,6 +73,7 @@ module Repository::GitRepositories
       o.name = filepath.split('/')[-1].split(".")[0].capitalize
 
       o.repository = self
+      o.present = true
       o.save!
       version = o.versions.build({ :commit_oid => commit_oid, :user => user }, { without_protection: true })
       version.save!
