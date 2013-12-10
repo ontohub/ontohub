@@ -31,5 +31,7 @@ ontologies.each do |path|
   basename = File.basename(path)
 
   version = repository.save_file path, basename, "#{basename} added", @user
-  version.ontology.update_attribute :description, Faker::Lorem.paragraph
+  if version
+    version.ontology.update_attribute :description, Faker::Lorem.paragraph
+  end
 end
