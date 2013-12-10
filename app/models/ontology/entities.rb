@@ -16,7 +16,7 @@ module Ontology::Entities
       e.range      = hash['range']
       e.kind       = hash['kind'] || 'Undefined'
       e.updated_at = timestamp
-      
+
       if e.range.to_s.include?(":")
         # remove path from range
         # Examples/Reichel:28.9 -> 28.9
@@ -26,7 +26,7 @@ module Ontology::Entities
       e.save!
     end
   end
-  
+
   def create_entity_tree
     if self.logic.name != 'OWL2' then
       raise Exception.new('Error: No OWL2')
@@ -35,13 +35,11 @@ module Ontology::Entities
     EEdge.delete_all(EEdge.all)
     classes = self.entities.where(kind:'Class')
     subclasses = self.sentences.where("text LIKE '%SubClassOf%'")
-    
+
 
     subclasses.each do |s|
       c1,c2 = s.extract_class_names
-      if (c1.kind == "Class") && (c2.kind == "Class")    
         EEdge.create!(:child_id => Entity.where(display_name: c1, ontology_id: s.ontology.id).first.id, :parent_id => Entity.where(display_name: c2, ontology_id: s.ontology.id).first.id)
-      end
     end
   end
 end
