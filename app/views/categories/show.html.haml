@@ -1,0 +1,6 @@
+%h2= @category.name
+  
+Following ontologies are in this category
+%ul.ontology_list
+  -@ontologies.each do |ontology|
+    %li= fancy_link ontology
