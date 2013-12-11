@@ -6,6 +6,7 @@ module GitRepository::History
     return [] if @repo.empty?
     start_oid ||= head_oid
     offset = 0 if offset < 0
+    stop_oid = nil if stop_oid =~ /\A0+\z/
 
     walker = Rugged::Walker.new(@repo)
     walker.push(start_oid)
