@@ -9,8 +9,11 @@ namespace :generate do
     logics = Logic.where(name: ["OWL2", "OWL"])
     ontologies = Ontology.where(logic_id: logics)
     ontologies.each do |ontology|
-      puts ontology.name
-      ontology.create_entity_tree
+      begin
+        ontology.create_entity_tree
+      rescue StandardError => e
+        puts "Could not create entity tree for: #{ontology.name} (#{ontology.id})"
+      end
     end
   end
 end
