@@ -4,7 +4,7 @@ class TasksController < InheritedResources::Base
 
   def index
     @ontology = Ontology.find(params[:ontology_id])
-    @projects = Project.where(ontology: @ontology)
+    @tasks = @ontology.tasks
   end
 
   protected

@@ -4,7 +4,7 @@ class ProjectsController < InheritedResources::Base
 
   def index
     @ontology = Ontology.find(params[:ontology_id])
-    @projects = Project.where(ontology: @ontology)
+    @projects = @ontology.projects
   end
 
   protected

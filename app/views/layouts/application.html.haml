@@ -21,14 +21,11 @@
           - if cover_visible?
             = render partial: '/shared/cover'
 
-          - if context_pane
+          - if context_pane && user_signed_in?
             .col-md-8
               = yield
             .col-md-4
-              - if user_signed_in?
-                = render partial: '/shared/user_content'
-              - elsif not cover_visible?
-                = render partial: '/shared/signin_or_signup'
+              = render partial: '/shared/user_content'
           - else
             .col-md-12
               = yield

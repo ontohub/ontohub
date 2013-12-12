@@ -1,2 +1,20 @@
-%h1 Project#index
-%p Find me in app/views/project/index.html.haml
+- if parent
+  = repository_nav parent.repository, :ontologies
+
+  = ontology_nav parent, :projects
+  %table.table
+    %thead
+      %tr
+        %th Porject Name
+        %th Description
+        %th Institution
+        %th Contact
+        %th Homepage
+    %tbody
+      - @projects.each do |project|
+        %tr
+          %td= project.name
+          %td= project.description
+          %td= project.institution
+          %td= project.contact
+          %td= project.homepage

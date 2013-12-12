@@ -10,7 +10,7 @@ class DistributedOntologyTest < ActiveSupport::TestCase
     end
     
     should 'generate sub iri' do
-      assert_equal 'http://example.com/foo#bar', @ontology.iri_for_child('bar')
+      assert_equal 'http://example.com/foo?bar', @ontology.iri_for_child('bar')
     end
     
     should 'generate sub iri that already is an iri' do

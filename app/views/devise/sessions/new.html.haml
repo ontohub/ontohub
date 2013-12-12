@@ -1,11 +1,11 @@
-%h2= @page_title = 'Log in'
+%h2= @page_title = 'Sign in'
 
-= simple_form_for resource, :url => session_path(resource_name), html: { class: 'form-horizontal' } do |f|
-  
-  = f.input :email,    :required => false, :input_html => {:required => true, :autofocus => true}
-  = f.input :password, :required => false, :input_html => {:required => true}
-  = f.input :remember_me, :as => :boolean if devise_mapping.rememberable?
-  
-  = f.button :wrapped, 'Log in', disable_with: t(:wait), class: 'btn-primary'
+= simple_form_for resource, url: session_path(resource_name), html: {class: 'form-horizontal'} do |f|
 
-= render "links"
+  = f.input :email,    required: false, input_html: {required: true, autofocus: true}
+  = f.input :password, required: false, input_html: {required: true}
+  = f.input :remember_me, as: :boolean if devise_mapping.rememberable?
+  
+  = f.button :wrapped, 'Sign in', disable_with: t(:wait), class: 'btn btn-primary'
+
+= render 'links'

@@ -18,6 +18,6 @@ hets_owl_tools:
   - ~/ontohub/Hets/OWL2
   - /Applications/Hets.app/Contents/Resources/hets-owl-tools
 
-hets_version_minimum_date: 2013-11-21
+hets_version_minimum_date: 2013-12-06
 
 hets_stack_size: 1G

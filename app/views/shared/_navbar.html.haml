@@ -14,14 +14,9 @@
         / For any visitor
         = menu_entry 'Repositories', :repositories
         = menu_entry 'Ontologies',   :ontologies
+        = menu_entry 'Categories',   :categories
         = menu_entry 'Symbols',      :entities_search if !! Settings.display_symbols_tab
         = menu_entry 'Logics',       :logics
         = menu_entry 'Mappings',     :links
-
-        / Only for admins
-        - if admin?
-          = menu_entry 'Users', :admin_users
-          = menu_entry 'Teams', :admin_teams
-          = menu_entry 'Jobs',  :admin_jobs
 
       = render partial: 'shared/session'

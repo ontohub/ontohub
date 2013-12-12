@@ -2,14 +2,8 @@ require 'sidekiq/web' if defined? Sidekiq
 
 
 Ontohub::Application.routes.draw do
-
-  get "tasks/index"
-
-  get "project/index"
-
-  get "license_model/index"
-
-  get "tools/index"
+  
+  resources :categories, :only => [:index, :show]
 
   devise_for :users, :controllers => { :registrations => "users/registrations" }
   resources :users, :only => :show
@@ -93,11 +87,11 @@ Ontohub::Application.routes.draw do
       resources :ontology_versions, :only => [:index, :show, :new, :create], :path => 'versions' do
         resource :oops_request, :only => [:show, :create]
       end
-      resources :categories, :only => :index
-      resources :tasks, :only => :index
-      resources :license_models, :only => :index
-      resources :tools, :only => :index
-      resources :projects, :only => :index
+      resources :categories
+      resources :tasks
+      resources :license_models
+      resources :tools
+      resources :projects
       
       resources :metadata, :only => [:index, :create, :destroy]
       resources :comments, :only => [:index, :create, :destroy]
