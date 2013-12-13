@@ -38,11 +38,11 @@ class UploadFile
   end
 
   def filepath
-    target_directory ||= ''
+    self.target_directory ||= ''
     str  = target_directory
-    str  = str[1,-1] if target_directory.starts_with?("/")
-    str  = str[0,-2] if target_directory.ends_with?("/")
-    str += "/" unless target_directory.empty?
+    str  = str[1,-1] if self.target_directory.starts_with?("/")
+    str  = str[0,-2] if self.target_directory.ends_with?("/")
+    str += "/" unless self.target_directory.empty?
     str += filename
   end
 
