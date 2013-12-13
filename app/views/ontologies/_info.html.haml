@@ -54,7 +54,7 @@
               = page.to_s.capitalize
               - if count # hide counter if empty
                 %span.badge{:style => count==0 && 'display:none'}= count
-  - if controller_name == "metadata"
+  - if controller_name == "projects" || controller_name == "tasks" || controller_name == "projects" || controller_name == "categories" || controller_name == "license_models"
     %nav
       %ul.nav.nav-tabs
         - @metadatas.each do |(page_title, page)|

@@ -16,6 +16,10 @@ class FilesController < ApplicationController
         ontology = repository.ontologies.
                     where(basepath: File.basepath(@info[:entry][:path])).
                     order('id asc').first
+        if request.query_string.present?
+          ontology = ontology.children.
+            where(name: request.query_string).first
+        end
         redirect_to [repository, ontology]
       end
     else
