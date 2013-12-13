@@ -67,6 +67,9 @@ module Ontohub
 
     config.i18n.enforce_available_locales = true
     
+    # Including Jstree Themes Styles in Precompiling
+    config.assets.precompile += %w(jstree-themes/**/*)
+    
     config.before_initialize do
       # Enable serving of images, stylesheets, and JavaScripts from an asset server
       config.action_controller.asset_host = Settings.asset_host
