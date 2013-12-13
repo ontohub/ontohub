@@ -6,7 +6,9 @@ end
 module ParsingCallback
 
   def self.determine_for(ontology)
-    logic_name = ontology.logic.name
+    if ontology.logic
+      logic_name = ontology.logic.name
+    end
     self.constants.each do |constant|
       moddule = self.const_get(constant)
       if moddule.class == Module

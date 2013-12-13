@@ -79,4 +79,6 @@ class Ontology < ActiveRecord::Base
     self.logic ? (self.logic.name == logic_name) : false
   end
 
+  def generate_name
+
 end

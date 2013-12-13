@@ -63,7 +63,7 @@ module Ontology::Import
               ontology.present = true
             end
           end
-
+          ontology.name = Ontology.generate_name(h['name'])
           if h['language']
             ontology.language = Language.where(:iri => "http://purl.net/dol/language/#{h['language']}")
               .first_or_create(user: user, name: h['language'])
