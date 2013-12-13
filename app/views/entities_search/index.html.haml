@@ -1,0 +1,21 @@
+%h2= @page_title = 'Symbols'
+
+%p
+  = pluralize Entity.count, "symbol"
+  currently available
+.clearfix
+
+= form_tag :entities_search, method: :get do
+  .input-group
+    = text_field_tag :q, @query, placeholder: 'Symbol', class: 'form-control'
+    %span.input-group-btn
+      %button.btn.btn-primary{type: 'submit'}
+        %span.glyphicon.glyphicon-search
+
+- if @query
+  %p
+    %strong= pluralize @group.matches, 'Symbol'
+    = @max_groups > @groups.size ? 'found in' : 'found, displaying the first'
+    %strong= pluralize @groups.size, 'Ontology'
+  %ol.searchResult
+    = render partial: 'group', collection: @groups

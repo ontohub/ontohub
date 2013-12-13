@@ -34,7 +34,7 @@ module OopsRequest::Responses
   
   def execute
     if Rails.env.development?
-      r = Oops::Client.request :content => ontology_version.raw_file.read
+      r = Oops::Client.request :content => ontology_version.raw_data
     else
       r = Oops::Client.request :url => ontology_version.url
     end

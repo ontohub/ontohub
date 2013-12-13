@@ -1,0 +1,18 @@
+%h2= @page_title = current_user.first_name + "'s SSH keys"
+
+.pull-right
+  = link_to new_resource_path, class: 'btn btn-primary' do
+    %i.icon-plus
+    Add SSH key
+
+- if collection.any?
+  %table
+    %thead
+      %th Name
+      %th Fingerprint
+      %th 
+    %tbody
+      = render collection
+
+- else
+  %p You have not added any keys yet.

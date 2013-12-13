@@ -2,12 +2,17 @@ module OntologyVersion::Parsing
   extend ActiveSupport::Concern
   
   included do
-    after_create :parse_async, :if => :raw_file?
+    @queue = 'hets'
+    
+    after_create :async_parse, :if => :commit_oid?
+  end
+
+  def async_parse
+    update_state! :pending
+    async :parse
   end
 
   def parse
-    raise ArgumentError.new('No raw_file set.') unless raw_file?
-
 #    do_or_set_failed do
 #      condition = ['checksum = ? and id != ?', self.checksum, self.id]
 #      if OntologyVersion.where(condition).any?
@@ -18,19 +23,17 @@ module OntologyVersion::Parsing
     update_state! :processing
 
     do_or_set_failed do
-      @path = Hets.parse(self.raw_file.current_path)
+      refresh_checksum! unless checksum?
+      
+      @path = Hets.parse(self.raw_path!, self.ontology.repository.url_maps, File.dirname(self.xml_path))
+      
+      # move generated file to destination
+      File.rename @path, self.xml_path
 
-      self.xml_file = File.open(@path)
-      save!
-
-      File.delete(@path)
       self.ontology.import_latest_version self.user
       
       update_state! :done
     end
   end
   
-  def parse_async
-    async :parse
-  end
 end

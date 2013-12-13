@@ -5,6 +5,7 @@ class OopsRequest::StatesTest < ActiveSupport::TestCase
   context 'new oops request' do
     setup do
       OopsRequest.any_instance.stubs(:async_run).once
+      
       @request = FactoryGirl.create :oops_request
     end
     

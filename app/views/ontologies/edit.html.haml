@@ -1,8 +1,8 @@
 = ontology_nav resource, :edit
 
-= simple_form_for resource do |f|
+= simple_form_for resource, url: resource_path(resource) do |f|
   = f.input :iri
   = f.input :name
   = f.input :description
-  
-  = f.button :submit, disable_with: t(:wait)
+  = render :partial => 'categories'
+  = f.button :submit, disable_with: t(:wait), class: 'btn btn-primary'

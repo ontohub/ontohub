@@ -1,4 +1,5 @@
-//  = link_to resource, resource#, 'data-type' => resource.class
+= link_to resource.repository, resource.repository
+\/
 
 %h2{'style' => 'display: inline-block'}
   %span= link_to resource
@@ -14,7 +15,8 @@
       = status resource
 
 %div.btn-group{'style' => 'display: inline-block'}
-  %a.btn.btn-mini.dropdown-toggle{'href' => '#', 'data-toggle' => 'dropdown'}
+  %a.btn.btn-xs.btn-default.dropdown-toggle{href: '#', 'data-toggle' => 'dropdown'}
+  %button.btn.btn-xs.btn-default.dropdown-toggle{href: '#', type: 'button', 'data-toggle' => 'dropdown'}
     %span.caret
   %ul.dropdown-menu
     -if can? :edit, resource
@@ -22,8 +24,6 @@
       %li.divider
     %li= link_to 'Show comments', [resource, :comments]
     %li= link_to 'Show metadata', [resource, :metadata]
-    -if can? :permissions, resource
-      %li= link_to 'Show permissions', [resource, :permissions]
     -if can? :edit, resource
       %li.divider
       %li= link_to 'Upload new version from my computer', new_ontology_ontology_version_path(resource, :from => 'http-client')

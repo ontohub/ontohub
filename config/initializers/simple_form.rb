@@ -95,10 +95,10 @@ SimpleForm.setup do |config|
   # config.label_text = lambda { |label, required| "#{required} #{label}" }
 
   # You can define the class to use on all labels. Default is nil.
-  config.label_class = 'control-label'
+  config.label_class = 'col-lg-2 control-label'
 
   # You can define the class to use on all forms. Default is simple_form.
-  # config.form_class = :simple_form
+  config.form_class = 'simple_form form-horizontal'
 
   # You can define which elements should obtain additional classes
   # config.generate_additional_classes_for = [:wrapper, :label, :input]
@@ -140,3 +140,5 @@ SimpleForm.setup do |config|
   # Cache SimpleForm inputs discovery
   # config.cache_discovery = !Rails.env.development?
 end
+
+require 'simple_form_extensions'

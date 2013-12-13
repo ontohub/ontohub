@@ -5,8 +5,9 @@ class UsersController < InheritedResources::Base
   
   actions :show
   respond_to :json, :xml
-  
+
   def show
+    @content_type = :users
     super do |format|
       format.html do
         @versions = resource.ontology_versions.latest.limit(10).all

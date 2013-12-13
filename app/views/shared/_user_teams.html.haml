@@ -1,0 +1,7 @@
+/ User's Teams
+%div.panel.panel-default
+  %div.panel-heading
+    %h3.panel-title= current_user.first_name + "'s Teams"
+  %div.panel-body
+    = render collection: current_user.team_users.joins(:team).order(:name).all, partial: 'shared/team'
+

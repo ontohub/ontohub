@@ -9,75 +9,89 @@ class Ability
     if user.admin?
       can { true }
     elsif user.id
-      # Ontologies
-      can [:edit, :update], Ontology do |subject|
+      # Repositories
+      can [:create], Repository
+      can :show, Repository do |subject|
+        if subject.is_private
+          subject.permission?(:reader, user) ||
+          subject.permission?(:editor, user) ||
+          subject.permission?(:owner, user)
+        else
+          true
+        end
+      end
+      can [:write], Repository do |subject|
         subject.permission?(:editor, user)
       end
-      can [:destroy, :permissions], Ontology do |subject|
+      can [:update, :destroy, :permissions], Repository do |subject|
         subject.permission?(:owner, user)
       end
-      can [:new, :create, :bulk], Ontology
+
+      # Ontology
+      can :manage, Ontology do |subject|
+        subject.permission?(:editor, user)
+      end
       
       # Logics
-      can [:edit, :update], Logic do |subject|
+      can [:update], Logic do |subject|
         subject.permission?(:editor, user)
       end
       can [:destroy, :permissions], Logic do |subject|
         subject.permission?(:owner, user)
       end
-      can [:new, :create], Logic
+      can [:create], Logic
       
       # LogicMappings
-      can [:edit, :update], LogicMapping do |subject|
+      can [:update], LogicMapping do |subject|
         subject.permission?(:editor, user)
       end
       can [:destroy, :permissions], LogicMapping do |subject|
         subject.permission?(:owner, user)
       end
-      can [:new, :create], LogicMapping
+      can [:create], LogicMapping
       
       # LanguageMappings
-      can [:edit, :update], LanguageMapping do |subject|
+      can [:update], LanguageMapping do |subject|
         subject.permission?(:editor, user)
       end
       can [:destroy, :permissions], LanguageMapping do |subject|
         subject.permission?(:owner, user)
       end
-      can [:new, :create], LanguageMapping
+      can [:create], LanguageMapping
 
       # LogicAdjoints
-      can [:edit, :update], LogicAdjoint do |subject|
+      can [:update], LogicAdjoint do |subject|
         subject.permission?(:editor, user)
       end
       can [:destroy, :permissions], LogicAdjoint do |subject|
         subject.permission?(:owner, user)
       end
-      can [:new, :create], LogicAdjoint
+      can [:create], LogicAdjoint
 
       # LanguageAdjoints
-      can [:edit, :update], LanguageAdjoint do |subject|
+      can [:update], LanguageAdjoint do |subject|
         subject.permission?(:editor, user)
       end
       can [:destroy, :permissions], LanguageAdjoint do |subject|
         subject.permission?(:owner, user)
       end
-      can [:new, :create], LanguageAdjoint
+      can [:create], LanguageAdjoint
       
       # Languages
-      can [:edit, :update], Language do |subject|
+      can [:update], Language do |subject|
         subject.permission?(:editor, user)
       end
       can [:destroy, :permissions], Language do |subject|
         subject.permission?(:owner, user)
       end
-      can [:new, :create], Language
+      can [:create], Language
 
       # Serializations
-      can [:new, :create, :destroy, :edit, :update], Serialization
+      can [:create, :destroy, :update], Serialization
       
       # Team permissions
-      can [:create, :show, :index], Team
-      can [:edit, :update, :destroy], Team do |subject|
+      can [:create, :read], Team
+      can [:update, :destroy], Team do |subject|
         subject.admin?(user)
       end
       
@@ -92,6 +106,10 @@ class Ability
         subject.user == user || subject.metadatable.permission?(:editor, user)
       end
       
+    else
+      can :show, Repository do |subject|
+        !subject.is_private
+      end
     end
     
     # See the wiki for details: https://github.com/ryanb/cancan/wiki/Defining-Abilities
