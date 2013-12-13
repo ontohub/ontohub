@@ -16,7 +16,8 @@ class EntitiesController < InheritedResources::Base
     if ontology.is?('OWL2') || ontology.is?('OWL')
       if ontology
         begin
-          @nodes = ontology.entities.where(kind: 'Class').first.roots.first.children
+          entities = ontology.entities.where(kind: 'Class')
+          @nodes = Entity.roots_of(*entities).first.children
         rescue
           @nodes = []
         end
