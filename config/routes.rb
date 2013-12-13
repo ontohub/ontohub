@@ -70,6 +70,7 @@ Ontohub::Application.routes.draw do
     resources :ssh_access, :only => :index
     resources :permissions, :only => [:index, :create, :update, :destroy]
     resources :url_maps, except: :show
+    resources :errors
 
     resources :ontologies, only: [:index, :show, :edit, :update] do
       collection do

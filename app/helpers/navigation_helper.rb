@@ -13,6 +13,7 @@ module NavigationHelper
     pages << [:"Ontology urls",  repository_url_maps_path(resource)]
     pages << [:history,          repository_ref_path(resource, 'master', path: nil, action: :history)]
     pages << [:permissions,      [*chain, :permissions]] if can? :permissions, resource
+    pages << [:errors,           repository_errors_path(resource)] if can? :permissions, resource
  
     subnavigation(resource, pages, current_page, [], options)
   end
