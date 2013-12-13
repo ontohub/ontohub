@@ -19,6 +19,8 @@
           file, you can navigate through the file system.
 
 .pull-right.btn-group.breadcrumbs-buttons
+  - if @info[:type] == :file
+    = link_to 'Download file', fancy_repository_path(repository, path: path, ref: oid, action: :download), class: 'btn btn-default btn-sm'
   - if can? :write, repository
     = link_to new_repository_file_path(repository, 'upload_file[path]' => params[:path]), class: 'btn btn-default btn-sm' do
       = @info[:type] == :file ? 'Update file' : 'Upload file'
