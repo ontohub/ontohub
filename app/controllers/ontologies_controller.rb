@@ -97,7 +97,9 @@ class OntologiesController < InheritedResources::Base
   protected
   
   def check_read_permissions
-    authorize!(:show, Repository.find_by_path(params[:repository_id]))
+    unless params[:action] == 'index'
+      authorize!(:show, Repository.find_by_path(params[:repository_id]))
+    end
   end
 
   def build_resource
