@@ -10,6 +10,9 @@ class AuthorizedKeysManager
     # replace capistrano-style release with 'current'-symlink
     sub(%r{/releases/\d+/}, '/current/')
 
+  # make sure ssh-dir exists.
+  SSH_DIR.mkpath
+
   class << self
     def add(key_id, key)
       key_line = build_key_line(key_id, key)
