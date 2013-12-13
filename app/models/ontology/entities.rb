@@ -2,7 +2,9 @@ module Ontology::Entities
   extend ActiveSupport::Concern
 
   included do
-    has_many :entities, :extend => Methods
+    has_many :entities,
+    autosave: false,
+    extend:   Methods
   end
 
   module Methods

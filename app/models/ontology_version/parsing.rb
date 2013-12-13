@@ -30,6 +30,7 @@ module OntologyVersion::Parsing
       # move generated file to destination
       File.rename @path, self.xml_path
 
+      # Import version
       self.ontology.import_latest_version self.user
       
       update_state! :done
