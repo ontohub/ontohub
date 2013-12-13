@@ -40,7 +40,7 @@ class Repository < ActiveRecord::Base
 
   # list all failed versions, grouped by their errors
   def show_failed_ontology_versions
-    versions = self.ontologies.map{|o| o.versions.last}.select{|v| !v.nil?}
+    versions = self.ontologies.map{|o| o.versions.last}.compact
     failed_versions = versions.select{|v| v.state!="done"}.group_by do |v|
       err = v.state+": "+v.last_error.to_s
       if err.include?("exited with status")
@@ -48,7 +48,7 @@ class Repository < ActiveRecord::Base
       else err.split("\n").first
       end
     end
-    return failed_versions
+    failed_versions
   end
 
   private
