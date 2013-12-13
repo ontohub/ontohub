@@ -35,8 +35,7 @@ module Ontology::Entities
     %i[parent_id child_id].each do |key|
       EEdge.where(key => self.entities.where(kind:'Class')).delete_all
     end
-    classes = self.entities.where(kind:'Class')
-    subclasses = self.sentences.where("text LIKE '%SubClassOf%'")
+    subclasses = self.sentences.where("text LIKE '%SubClassOf%'").select { |sentence| sentence.text.split(" ").size == 4 }
 
 
     subclasses.each do |s|
