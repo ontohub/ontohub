@@ -14,14 +14,8 @@
   - if resource.parent
     by
     %span= fancy_link(resource.parent)
-  - if files.size > 1
-    in one of the files
-    %ul
-      - files.each do |f|
-        %li= fancy_link repository_tree_path(resource.repository, f)
-  - else
-    in the file
-    = fancy_link repository_tree_path(resource.repository, files[0])
+  in the file
+  = fancy_link repository_tree_path(resource.repository, resource.path)
   - if resource.documentation
     See for detailed documentation
     = link_to resource.documentation, resource.documentation
