@@ -82,7 +82,21 @@ class Ontology < ActiveRecord::Base
   end
 
   def generate_name(name)
-    name
+    match = name.match(%r{
+      \A
+      < # angle brackets denote a custom IRI
+      .+
+      (?:/|\#)
+        (?<filename>[^/]+) # Match filename after a slash/hash
+      > # end of IRI
+      \z
+    }x)
+    if match
+      filename = match[:filename].sub(/\.[\w\d]+\z/, '')
+      capitalized_name = filename.split(/([_ ])/).map(&:capitalize).join($1)
+    else
+      name
+    end
   end
 
   def self.find_with_iri(iri)
