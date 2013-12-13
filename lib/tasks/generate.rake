@@ -4,7 +4,7 @@ namespace :generate do
     Ontology.find_by_name('Domain_fields_core').create_categories
   end
 
-  desc 'generate the Entitie trees for ALL owl ontologies'
+  desc 'Generate entity trees for ALL OWL ontologies'
   task :owl_ontology_class_hierarchies => :environment do
     logics = Logic.where(name: ["OWL2", "OWL"])
     ontologies = Ontology.where(logic_id: logics)
