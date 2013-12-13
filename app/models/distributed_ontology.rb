@@ -8,7 +8,7 @@ class DistributedOntology < Ontology
   end
   
   def iri_for_child(child_name)
-    child_name.include?("://") ? child_name : "#{iri}##{child_name}"
+    child_name.include?("://") ? child_name : "#{iri}?#{child_name}"
   end
   
 end

@@ -44,6 +44,7 @@ module LinkHelper
   end
 
   def determine_image_type(resource)
+    return ['data-type', "Private#{resource.class.to_s}"] if resource.is_a?(Repository) && resource.is_private
     return ['data-type', resource.class.to_s] unless resource.is_a?(Ontology)
     data_type = 'data-ontologyclass'
     distributed_type = ->(distributed_ontology) do

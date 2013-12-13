@@ -3,7 +3,7 @@ module Ontology::Categories
 
   included do
     has_and_belongs_to_many :categories
-    attr_accessible :parent_id
+    attr_accessible :parent_id, :category_ids
   end
 
 

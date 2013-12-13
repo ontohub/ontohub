@@ -85,4 +85,33 @@ class OntologyImportXMLTest < ActiveSupport::TestCase
       end
     end
   end
+
+  context 'Import another distributed Ontology' do
+    setup do
+      @user = FactoryGirl.create :user
+      @ontology = FactoryGirl.create :distributed_ontology
+      @ontology.import_xml_from_file fixture_file('align.xml'),
+        fixture_file('align.pp.xml'), @user
+      @combined = @ontology.children.where(name: 'VAlignedOntology').first
+    end
+    
+    should 'create single ontologies' do
+      assert_equal 4, SingleOntology.count
+    end
+
+    should 'create combined ontology' do
+      assert @combined
+    end
+
+    context 'kinds' do
+      setup do
+        @kinds = @combined.entities.map(&:kind)
+      end
+
+      should 'be assigned to symbols of combined ontology' do
+        assert !(@kinds.include? 'Undefined'), 'There are undefined kinds.'
+      end
+    end
+  end
+
 end

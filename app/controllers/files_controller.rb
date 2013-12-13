@@ -1,10 +1,9 @@
 class FilesController < ApplicationController
 
   helper_method :repository, :ref, :oid, :path, :branch_name
-  before_filter :check_permissions, only: [:new, :create]
+  before_filter :check_write_permissions, only: [:new, :create]
+  before_filter :check_read_permissions
 
-  # FIXME
-  #load_and_authorize_resource :except => [:index, :show]
 
   def files
     @info = repository.path_info(params[:path], oid)
@@ -19,6 +18,10 @@ class FilesController < ApplicationController
         ontology = repository.ontologies.
                     where(basepath: File.basepath(@info[:entry][:path])).
                     order('id asc').first
+        if request.query_string.present?
+          ontology = ontology.children.
+            where(name: request.query_string).first
+        end
         redirect_to [repository, ontology]
       end
     else
@@ -82,7 +85,11 @@ class FilesController < ApplicationController
     @file ||= UploadFile.new(params[:upload_file])
   end
 
-  def check_permissions
+  def check_read_permissions
+    authorize! :show, repository
+  end
+
+  def check_write_permissions
     authorize! :write, repository
   end
 
