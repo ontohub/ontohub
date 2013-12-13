@@ -41,6 +41,7 @@ Ontohub::Application.routes.draw do
 
   namespace :api, defaults: { format: 'json' } do
     namespace :v1 do
+      resources :categories,   only: [:index]
       resources :repositories, only: [:index, :update]
       resources :ontologies,   only: [:index, :update]
     end
