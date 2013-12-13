@@ -2,7 +2,7 @@
   .muted
     This folder is empty
 - else
-  %table.table.table-condensed.table-hover.file-table{'data-id' => repository.path, 'data-path' => @path, 'data-oid' => @oid, 'data-ajax-path' => fancy_repository_path(repository, path: @path, ref: @oid, action: :entries_info), 'data-diff-path' => fancy_repository_path(repository, ref: '%s', action: :diff)}
+  %table.table.table-condensed.table-hover.file-table{'data-id' => repository.path, 'data-path' => path, 'data-oid' => oid, 'data-ajax-path' => fancy_repository_path(repository, path: path, ref: oid, action: :entries_info), 'data-diff-path' => fancy_repository_path(repository, ref: '%s', action: :diff)}
     %tbody
       - @info[:entries].each do |name, entries|
         - entries.each_with_index do |entry, i|
@@ -22,6 +22,6 @@
               - else
                 %i.icon-file
             %td.name
-              = link_to entry[:name].force_encoding('UTF-8'), fancy_repository_path(repository, path: entry[:path], ref: @oid) #FIXME force_encoding is needed due to errors in rugged
+              = link_to entry[:name].force_encoding('UTF-8'), fancy_repository_path(repository, path: entry[:path], ref: oid) #FIXME force_encoding is needed due to errors in rugged
             %td.last-commit.muted
             %td.last-modified.muted

@@ -2,10 +2,6 @@ require 'test_helper'
 
 class OntologyVersionsControllerTest < ActionController::TestCase
 
-  def fixture_file(name)
-    Rails.root + 'test/fixtures/ontologies/xml/' + name
-  end
-  
   should_map_nested_resources :repositories, :ontologies, :ontology_versions,
     :as     => 'versions',
     :except => [:show, :edit, :update, :destroy]
@@ -14,7 +10,7 @@ class OntologyVersionsControllerTest < ActionController::TestCase
     setup do
       @user = FactoryGirl.create :user
       @ontology = FactoryGirl.create :distributed_ontology
-      @ontology.import_xml_from_file fixture_file('test2.xml'), @user
+      @ontology.import_xml_from_file fixture_file('test2.xml'), fixture_file('test2.pp.xml'), @user
       @version  = FactoryGirl.create :ontology_version, ontology: @ontology
       @ontology.reload
       @ontology_child = @ontology.children.first

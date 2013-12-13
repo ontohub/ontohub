@@ -3,7 +3,7 @@
 # 
 class OntologiesController < InheritedResources::Base
 
-  include RepositoryHelper
+  include FilesHelper
 
   belongs_to :repository, finder: :find_by_path!
   respond_to :json, :xml

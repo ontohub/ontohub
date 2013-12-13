@@ -2,7 +2,7 @@ class LicenseModel < ActiveRecord::Base
 
   has_many :ontologies
 
-  attr_accessible :name, :description, :url
+  attr_accessible :name, :description, :url, :ontology_id
 
   validates :name,
     :presence => true,
