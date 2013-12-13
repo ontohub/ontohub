@@ -2,6 +2,7 @@ class GraphsController < InheritedResources::Base
 
   respond_to :json, :html
   belongs_to :logic, :ontology, :single_ontology, :distributed_ontology, polymorphic: true
+  before_filter :check_read_permissions
 
   def index
     respond_to do |format|
@@ -37,4 +38,9 @@ class GraphsController < InheritedResources::Base
     end
   end
 
+  protected
+
+  def check_read_permissions
+    authorize! :show, parent.repository if parent.is_a? Ontology
+  end
 end

@@ -32,3 +32,4 @@ before_script:
   - sudo apt-get install ia32-libs libsane libgphoto2-2 hets-core subversion udrawgraph git-svn
   - sudo hets -update
   - bundle exec rake db:migrate || true
+  - bundle exec rake sunspot:solr:start
