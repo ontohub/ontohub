@@ -30,7 +30,9 @@ module OntologyVersion::Parsing
       # move generated file to destination
       File.rename @path, self.xml_path
 
-      self.ontology.import_latest_version self.user
+      # do not use self.ontology because this could prevent
+      # self.ontology from beeing saved in case of invalid associated objects 
+      Ontology.find(ontology_id).import_version self, self.user
       
       update_state! :done
     end
