@@ -2,8 +2,11 @@
   = repository_nav parent.repository, :ontologies
 
   = ontology_nav parent, :categories
+
+- else 
+  %h2 Categories
   
-  These ontology is assigned to following Categories
-  %ul
-    - parent.categories.each do |cat|
-      %li= cat.name
+  click on one category to see the Ontologies which are in it
+  
+  .well 
+    = render partial: 'categories'

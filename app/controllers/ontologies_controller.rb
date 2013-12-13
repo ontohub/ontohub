@@ -3,7 +3,7 @@
 # 
 class OntologiesController < InheritedResources::Base
 
-  include RepositoryHelper
+  include FilesHelper
 
   belongs_to :repository, finder: :find_by_path!
   respond_to :json, :xml
@@ -12,6 +12,7 @@ class OntologiesController < InheritedResources::Base
   actions :index, :show, :edit, :update
 
   before_filter :check_write_permission, :except => [:index, :show, :oops_state]
+  before_filter :check_read_permissions
 
   def index
     if in_repository?
@@ -103,6 +104,12 @@ class OntologiesController < InheritedResources::Base
 
   protected
   
+  def check_read_permissions
+    unless params[:action] == 'index'
+      authorize!(:show, Repository.find_by_path(params[:repository_id]))
+    end
+  end
+
   def build_resource
     @ontology ||= begin
       type  = (params[:ontology] || {}).delete(:type)

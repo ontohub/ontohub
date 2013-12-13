@@ -1,23 +1,26 @@
-= repository_nav parent.repository, :ontologies
+= repository_nav parent.repository, :ontologies, disable_actions: true
 
 = ontology_nav parent, :entities
+
 - if !parent.is?('OWL2')
   = pagination do
     - unless collection.blank?
-      = render :partial => 'list'
+      = render partial: 'list'
     - else
       %h3 No entities found
--else
-  -if @hierarchy_exists
+
+- else
+  - if @hierarchy_exists
     .btn-group#ontology_selections
       = link_to 'Class Hierarchy', '#hierachy', class: 'btn btn-default mode btn-primary', id: 'hierachy'
       = link_to 'Class Details', '#detail', class: 'btn btn-default mode', id: 'detail-page'
     .owl_entities
       .class-hierachy
-        = render :partial => 'treeview'
+        = render partial: 'treeview'
+
   .entities-detail
     = pagination do
       - unless collection.blank?
-        = render :partial => 'list'
+        = render partial: 'list'
       - else
         %h3 No entities found

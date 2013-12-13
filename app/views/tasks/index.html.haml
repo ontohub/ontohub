@@ -1,2 +1,15 @@
-%h1 Tasks#index
-%p Find me in app/views/tasks/index.html.haml
+- if parent
+  = repository_nav parent.repository, :ontologies
+
+  = ontology_nav parent, :tasks
+  
+  %table.table
+    %thead
+      %tr
+        %th Task
+        %th Description
+    %tbody
+      - @tasks.each do |task|
+        %tr
+          %td= task.name
+          %td= task.description

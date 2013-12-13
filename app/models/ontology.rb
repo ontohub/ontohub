@@ -31,7 +31,6 @@ class Ontology < ActiveRecord::Base
   belongs_to :logic, counter_cache: true
   has_many :source_links, class_name: 'Link', foreign_key: 'source_id', dependent: :destroy
   has_many :target_links, class_name: 'Link', foreign_key: 'target_id', dependent: :destroy
-
   attr_accessible :iri, :name, :description, :logic_id, :category_ids, :documentation, :acronym, :file_extension, :projects
 
   validates_uniqueness_of :iri, :if => :iri_changed?

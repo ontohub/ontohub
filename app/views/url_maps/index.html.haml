@@ -1,28 +1,31 @@
 = repository_nav parent, :"Ontology urls"
 
-%p
-  The list below presents mappings from (source) prefixes of ontology IRIs in this repository
-  %br
-  to (target) prefixes of the actual urls where the ontologies are located.
-  %br
-  All iri-prefix url-prefix mappings of this repository are displayed below.
+.row
+  .col-md-6
+    %p
+      The list below presents mappings from (source) prefixes of ontology IRIs
+      in this repository to (target) prefixes of the actual urls where the
+      ontologies are located. All iri-prefix url-prefix mappings of this
+      repository are displayed below.
+  - if can? :create, UrlMap
+    .col-md-6
+      .pull-right
+        = link_to 'Add URL Map', new_repository_url_map_path(parent), class: 'btn btn-primary'
 
-- if can? :create, UrlMap
-  .pull-right
-    = link_to 'Add URL Map', new_repository_url_map_path(parent), class: 'btn btn-primary'
-
-- if collection.empty?
-  %p There are no URL Maps defined for this repository.
-- else
-  = pagination do
-    %table.table.table-condensed.table-hover.url_maps
-      %thead
-        %tr
-          %th.source Source
-          %th.symbol
-          %th.target Target
-          - if can? :edit, UrlMap
-            %th.edit Edit
-            %th.delete Delete
-      %tbody
-        = render collection
+.row
+  .col-md-12
+    - if collection.empty?
+      %p There are no URL Maps defined for this repository.
+    - else
+      = pagination do
+        %table.table.table-condensed.table-hover.url_maps
+          %thead
+            %tr
+              %th.source Source
+              %th.symbol
+              %th.target Target
+              - if can? :edit, UrlMap
+                %th.edit Edit
+                %th.delete Delete
+          %tbody
+            = render collection

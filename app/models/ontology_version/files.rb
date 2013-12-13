@@ -44,6 +44,12 @@ module OntologyVersion::Files
     tmp_dir.join("xml", ontology.path)
   end
 
+  # path to xml file (hets output) with code positions
+  def code_reference_path
+    tmp_dir.join("xml",
+                 ontology.path.sub(ontology.file_extension, '.pp.xml'))
+  end
+
   def xml_file?
     File.exists? xml_path
   end
@@ -62,7 +68,7 @@ module OntologyVersion::Files
 
   # returns the raw data directly from the repository
   def raw_data
-    repository.read_file(ontology.path, commit_oid)[:content]
+    repository.read_file(ontology.path, commit_oid)[:content].encoding_utf8
   end
   
 end
