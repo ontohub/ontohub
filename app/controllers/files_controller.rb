@@ -1,7 +1,9 @@
 class FilesController < ApplicationController
 
   helper_method :repository, :ref, :oid, :path, :branch_name
-  before_filter :check_permissions, only: [:new, :create]
+  before_filter :check_write_permissions, only: [:new, :create]
+  before_filter :check_read_permissions
+
 
   def files
     @info = repository.path_info(params[:path], oid)
@@ -83,7 +85,11 @@ class FilesController < ApplicationController
     @file ||= UploadFile.new(params[:upload_file])
   end
 
-  def check_permissions
+  def check_read_permissions
+    authorize! :show, repository
+  end
+
+  def check_write_permissions
     authorize! :write, repository
   end
 

@@ -2,10 +2,13 @@
 
 - if resource.remote?
   = render partial: 'source'
-
 %p
   Clone URL:
   %input.form-control.clone-url{type: 'text', readonly: true, value: repository_tree_url(resource, protocol: 'git', port: nil) << '.git' }
+
+- if resource.is_private
+  %h2 Private
+  %p This repository is private. Only users and teams with explicitly set permissions have access to this repository.
 
 %h2 Description
 %p

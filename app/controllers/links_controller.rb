@@ -8,6 +8,7 @@ class LinksController < InheritedResources::Base
   has_scope :search
   belongs_to :ontology, :optional => true
   load_and_authorize_resource :except => [:index, :show]
+  before_filter :check_read_permissions
 
   def index
     super do |format|
@@ -43,9 +44,10 @@ class LinksController < InheritedResources::Base
     if params[:ontology_id]
       onto = params[:ontology_id]
       @links = Link.where("ontology_id =#{onto} OR source_id = #{onto} OR target_id = #{onto}")
-      collection = Kaminari.paginate_array(Link.where("ontology_id =#{onto} OR source_id = #{onto} OR target_id = #{onto}")).page(params[:page])
+      collection = Kaminari.paginate_array(Link.where("ontology_id =#{onto} OR source_id = #{onto} OR target_id = #{onto}").
+          select { |link| can?(:show, link.source.repository) && can?(:show, link.target.repository) }).page(params[:page])
     else
-      super
+      Kaminari.paginate_array(super.select { |link| can?(:show, link.source.repository) && can?(:show, link.target.repository) }).page(params[:page])
     end
   end
   
@@ -54,4 +56,14 @@ class LinksController < InheritedResources::Base
     @link = Link.new params[:link]
   end
   
+  def check_read_permissions
+    unless params[:action] == 'index'
+      if resource.source
+        authorize! :show, resource.source.repository
+      end
+      if resource.target
+        authorize! :show, resource.target.repository
+      end
+    end
+  end
 end
