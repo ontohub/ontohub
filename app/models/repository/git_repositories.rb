@@ -191,6 +191,7 @@ module Repository::GitRepositories
   #                     :path (file to show changes for)
   #                     :limit (max number of commits)
   #                     :offset (number of commits to skip)
+  #                     :walk_order (Rugged-Walkorder)
   def commits(options={}, &block)
     git.commits(options, &block)
   end

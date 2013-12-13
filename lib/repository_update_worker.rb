@@ -7,7 +7,8 @@ class RepositoryUpdateWorker < Worker
     Repository.where(id: repo_id).first!
       .suspended_save_ontologies \
         start_oid: newrev,
-        stop_oid:  oldrev
+        stop_oid:  oldrev,
+        walk_order: Rugged::SORT_REVERSE
   end
 
 end
