@@ -1,0 +1,41 @@
+<?xml version='1.0' ?>
+<Lib name="home/henning/downloads/align">
+  <Logic name="OWL" range="1.1" />
+  <SpecDefn name="home/henning/downloads/align?Source" range="3.1-6.1">
+    <Basicspec range="4.3-6.1">Class: Woman
+       SubClassOf: Person</Basicspec>
+  </SpecDefn>
+  <SpecDefn name="home/henning/downloads/align?Onto1" range="8.1-12.1">
+    <Basicspec range="9.3-12.1">Class: Woman
+       SubClassOf: Person</Basicspec>
+  </SpecDefn>
+  <ViewDefn name="home/henning/downloads/align?V1" range="14.1-17.1">
+    <Source>
+      <Actuals name="Source" />
+    </Source>
+    <Target>
+      <Actuals name="Onto1" />
+    </Target>
+    <Mapping>
+      <SymbMapItems>Person |-&gt; Person, Woman |-&gt; Woman</SymbMapItems>
+    </Mapping>
+  </ViewDefn>
+  <SpecDefn name="home/henning/downloads/align?Onto2" range="19.1-23.1">
+    <Basicspec range="20.3-23.1">Class: Woman
+       SubClassOf: HumanBeing</Basicspec>
+  </SpecDefn>
+  <ViewDefn name="home/henning/downloads/align?V2" range="25.1-28.1">
+    <Source>
+      <Actuals name="Source" />
+    </Source>
+    <Target>
+      <Actuals name="Onto2" />
+    </Target>
+    <Mapping>
+      <SymbMapItems>Person |-&gt; HumanBeing, Woman |-&gt; Woman</SymbMapItems>
+    </Mapping>
+  </ViewDefn>
+  <SpecDefn name="home/henning/downloads/align?VAlignedOntology" range="30.1-32.1">
+    <Unsupported>combine Source, Onto1, Onto2, V1, V2</Unsupported>
+  </SpecDefn>
+</Lib>

@@ -9,7 +9,7 @@ module NavigationHelper
     chain = resource_chain.last.is_a?(Ontology) ? resource_chain[0..-2] : resource_chain
 
     pages << [:ontologies,       [*chain, :ontologies]]
-    pages << [:"Ontology files", [*chain, :tree]]
+    pages << [:"Ontology files and related files", [*chain, :tree]]
     pages << [:"Ontology urls",  repository_url_maps_path(resource)]
     pages << [:history,          repository_ref_path(resource, 'master', path: nil, action: :history)]
     pages << [:permissions,      [*chain, :permissions]] if can? :permissions, resource
@@ -26,6 +26,8 @@ module NavigationHelper
       ['Graphs', :graphs],
       ['Links', :links]
     ]
+
+    @metadatas = []
 
     if params[:action] != "edit"
       @metadatas = [
@@ -64,8 +66,7 @@ module NavigationHelper
       resource:           ontology,
       current_page:       current_page,
       pages:              pages,
-      additional_actions: [],
-      files:              ontology.repository.paths_starting_with(ontology.basepath)
+      additional_actions: []
     }
   end
      

@@ -1,8 +1,6 @@
-- @user = User.new
-= simple_form_for @user, :url => user_session_path, html: { class:'form-horizontal', id: 'sign_in' } do |f|
-  
-  = f.input_field :email, type: 'email', pattern: '[^@]*@[^@]*', class: 'form-control', required: true, placeholder: 'E-mail', style: 'margin: 0 0 2px;'
-  %div.input-group
+= simple_form_for User.new, :url => user_session_path, html: {class: 'form-horizontal', id: 'sign_in'} do |f|
+  = f.input_field :email, type: 'email', pattern: '[^@]*@[^@]*', class: 'form-control', required: true, placeholder: 'E-Mail'
+  .input-group
     = f.input_field :password, class: 'form-control', required: true, placeholder: 'Password'
     %span.input-group-btn
       %input.btn.btn-primary{type: 'submit', value: 'Sign In'}

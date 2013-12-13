@@ -32,8 +32,8 @@ class Link < ActiveRecord::Base
     if name 
       string = name
     else
-      array = iri.split("#")
-      string = array[1]
+      array = iri.split("?")
+      string = array.last
     end
     return string
   end
