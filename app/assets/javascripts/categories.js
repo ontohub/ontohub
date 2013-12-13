@@ -1,4 +1,4 @@
-$(function () {
+$(function() {
 	$.jstree._themes = "/assets/jstree-themes/";
 	$(".selector").jstree({
 		"plugins" : [ "search", "themes", "html_data", "checkbox", "sort", "ui" ],
@@ -14,9 +14,9 @@ $(function () {
 	});
 });
 
-$(function () {
+$(function() {
 	$("#tree").jstree({
-		"plugins" : [  "themes", "html_data", "sort", "ui" ],
+		"plugins" : [ "themes", "html_data", "sort", "ui" ],
 		"themes": {
 			theme: "classic",
 			icons: false,
@@ -25,6 +25,6 @@ $(function () {
 	});
 });
 
-$("#tree").delegate("a","click", function(e) {
+$("#tree").delegate("a", "click", function(e) {
 	document.location.href = this;
 });
