@@ -21,6 +21,7 @@ module Ontology::Import
         ontology: Proc.new { |h|
           ontologies_count += 1
           child_name = h['name']
+          internal_iri = h['name'][1..-2]
 
           if distributed?
             # generate IRI for sub-ontology
@@ -63,7 +64,7 @@ module Ontology::Import
               ontology.present = true
             end
           end
-          ontology.name = Ontology.generate_name(h['name'])
+          ontology.name = ontology.generate_name(h['name'])
           if h['language']
             ontology.language = Language.where(:iri => "http://purl.net/dol/language/#{h['language']}")
               .first_or_create(user: user, name: h['language'])
@@ -72,6 +73,11 @@ module Ontology::Import
             ontology.logic = Logic.where(:iri => "http://purl.net/dol/logics/#{h['logic']}")
             .first_or_create(user: user, name: h['logic'])
           end
+
+          altIri = ontology.alternative_iris.where(iri: internal_iri).
+            first_or_create(ontology: ontology)
+
+          Rails.logger.warn("found IRI: #{altIri.inspect}")
 
           logic_callback = ParsingCallback.determine_for(ontology)
 
