@@ -109,7 +109,7 @@ module Ontology::Import
   end
 
   def import_latest_version(user)
-    import_version(versions.last)
+    import_version(versions.last, user)
   end
 
   def import_version(version, user)
