@@ -15,8 +15,9 @@ class AuthorizedKeysManager
 
   class << self
     def add(key_id, key)
-      key_line = build_key_line(key_id, key)
-      in_authorized_keys('a') { |f| f.write(key_line) }
+      in_authorized_keys('a') do |f|
+        f << build_key_line(key_id, key)
+      end
     end
 
     def remove(key_id)
@@ -26,7 +27,7 @@ class AuthorizedKeysManager
         lines = []
         f.each_line { |l| lines << l }
         f.rewind
-        lines.each { |line| is?(line, key_id) ? nil : f.write(line) }
+        lines.each { |line| f << line if is?(line, key_id) }
         f.truncate(f.pos)
       end
 
@@ -43,8 +44,9 @@ class AuthorizedKeysManager
     end
 
     private
+
     def is?(line, key_id)
-      !! line.match(/#{key_id}",/)
+      line.include? " #{key_id}\","
     end
 
     def in_authorized_keys(mode)
