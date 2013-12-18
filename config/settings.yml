@@ -54,4 +54,6 @@ display_head_commit: false
 display_symbols_tab: false
 
 external_repository_name: 'External'
+fallback_commit_user: 'ontohub_system'
+fallback_commit_email: 'ontohub_system@ontohub.org'
 
