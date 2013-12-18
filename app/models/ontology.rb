@@ -102,7 +102,7 @@ class Ontology < ActiveRecord::Base
   def self.find_with_iri(iri)
     ontology = self.find_by_iri(iri)
     if ontology.nil?
-      ontology = AlternativeIri.find_by_iri(iri).ontology
+      ontology = AlternativeIri.find_by_iri(iri).try(:ontology)
     end
 
     ontology
