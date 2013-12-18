@@ -53,3 +53,5 @@ allowed_iri_schemes:
 display_head_commit: false
 display_symbols_tab: false
 
+external_repository_name: 'External'
+
