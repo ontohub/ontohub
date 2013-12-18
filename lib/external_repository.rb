@@ -50,9 +50,13 @@ class ExternalRepository
     # split iri into wget -r style
     def iri_split(iri)
       match = URI::regexp(['http','https']).match(iri)
-      host = match[4]
-      path = match[7]
-      File.join(host, path)
+      if match
+        host = match[4]
+        path = match[7]
+        File.join(host, path)
+      else
+        iri
+      end
     end
 
     def download_iri(external_iri)
