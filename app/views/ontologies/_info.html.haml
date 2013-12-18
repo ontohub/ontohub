@@ -14,14 +14,8 @@
   - if resource.parent
     by
     %span= fancy_link(resource.parent)
-  - if files.size > 1
-    in one of the files
-    %ul
-      - files.each do |f|
-        %li= fancy_link repository_tree_path(resource.repository, f)
-  - else
-    in the file
-    = fancy_link repository_tree_path(resource.repository, files[0])
+  in the file
+  = fancy_link repository_tree_path(resource.repository, resource.path)
   - if resource.documentation
     See for detailed documentation
     = link_to resource.documentation, resource.documentation
@@ -33,7 +27,8 @@
 - if resource.oops_supported?
   = render partial: '/ontologies/oops_state', locals: {resource: resource}
 
-= status_tag
+- if resource.non_current_active_version?(current_user)
+  = render partial: '/ontologies/status'
 
 %nav.nav_tab_level1
   %ul.nav.nav-tabs

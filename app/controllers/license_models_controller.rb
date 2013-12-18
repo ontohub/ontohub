@@ -2,6 +2,8 @@ class LicenseModelsController < InheritedResources::Base
 
   belongs_to :ontology
 
+  before_filter :check_read_permissions
+
   def index
     @ontology = Ontology.find(params[:ontology_id])
     @license_models = @ontology.license_models
@@ -62,4 +64,11 @@ class LicenseModelsController < InheritedResources::Base
       format.json { head :no_content }
     end
   end
+
+  protected
+
+  def check_read_permissions
+    authorize! :show, parent.repository
+  end
+
 end

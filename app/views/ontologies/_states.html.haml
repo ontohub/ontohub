@@ -1,8 +1,7 @@
 - # lisiting of ontologies count by state
-#ontologies-state.well
-  %ul
-    - parent.ontologies.count_by_state.each do |entry|
-      %li
-        #{entry.count} #{entry.state}
-        - if entry.state == 'failed'
-          = link_to 'Retry', [:retry_failed, parent, :ontologies], method: :post, class: 'btn btn-xs btn-primary'
+%ul
+  - parent.ontologies.count_by_state.each do |entry|
+    %li
+      #{entry.count} #{entry.state}
+      - if entry.state == 'failed'
+        = link_to 'Retry them', [:retry_failed, parent, :ontologies], method: :post, class: 'btn btn-xs btn-primary', data: { disable_with: t(:wait) }

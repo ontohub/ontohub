@@ -62,7 +62,8 @@ module Repository::GitRepositories
     return unless Ontology::FILE_EXTENSIONS.include?(File.extname(filepath))
     version = nil
     basepath = File.basepath(filepath)
-    o = ontologies.where(basepath: basepath).first
+    o = ontologies.without_parent.where(basepath: basepath).first
+
     if o
       o.present = true
       unless o.versions.find_by_commit_oid(commit_oid)

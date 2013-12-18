@@ -8,10 +8,12 @@ describe Ability do
 
   context 'Repository' do
     let(:editor){ create :user } # editor
+    let(:reader){ create :user } # reader
     let(:item){   create(:permission, subject: owner, role: 'owner').item }
 
     before do
       create(:permission, subject: editor, role: 'editor', item: item)
+      create(:permission, subject: reader, role: 'reader', item: item)
     end
 
     context 'guest' do
@@ -23,10 +25,34 @@ describe Ability do
         end
       end
 
+      it 'be allowed: show' do
+        should be_able_to(:show, Repository.new)
+      end
+
       it 'not be allowed some actions' do
         [:edit, :update, :destroy, :write].each do |perm|
           should_not be_able_to(perm, item)
         end
+      end
+    end
+
+    context 'reader' do
+      subject(:ability){ Ability.new(reader) }
+
+      it 'be allowed: new, create' do
+        [:new, :create].each do |perm|
+          should be_able_to(perm, Repository.new)
+        end
+      end
+
+      it 'not be allowed some actions' do
+        [:edit, :update, :destroy, :write].each do |perm|
+          should_not be_able_to(perm, item)
+        end
+      end
+
+      it 'be allowed: show' do
+        should be_able_to(:show, create(:repository))
       end
     end
 
@@ -40,7 +66,7 @@ describe Ability do
       end
 
       it 'be allowed: edit, update, destroy, permissions, write' do
-        [:edit, :update, :destroy, :permissions].each do |perm|
+        [:show, :edit, :update, :destroy, :permissions].each do |perm|
           should be_able_to(perm, item)
         end
       end
@@ -56,7 +82,7 @@ describe Ability do
       subject(:ability){ Ability.new(editor) }
       
       it 'be allowed: write' do
-        [:write].each do |perm|
+        [:show, :write].each do |perm|
           should be_able_to(perm, item)
         end
       end
@@ -67,6 +93,53 @@ describe Ability do
         end
       end
     end
+  end
+
+  context 'Private Repository' do
+    let(:editor){ create :user } # editor
+    let(:reader){ create :user } # reader
+    let(:item){   create(:repository, is_private: true, user: owner) }
+
+    before do
+      create(:permission, subject: editor, role: 'editor', item: item)
+      create(:permission, subject: reader, role: 'reader', item: item)
+    end
+
+    context 'guest' do
+      subject(:ability){ Ability.new(User.new) }
+
+      it 'not be allowed: anything' do
+        [:show, :update, :write].each do |perm|
+          should_not be_able_to(perm, item)
+        end
+      end
+    end
+
+    context 'reader' do
+      subject(:ability){ Ability.new(reader) }
+
+      it 'not be allowed: to manage' do
+        [:update, :write].each do |perm|
+          should_not be_able_to(perm, item)
+        end
+      end
+
+      it 'be allowed: to read' do
+        should be_able_to(:show, item)
+      end
+    end
+
+    context 'editor' do
+      subject(:ability){ Ability.new(editor) }
+
+      it 'be allowed: to read and manage' do
+        [:show, :write].each do |perm|
+          should be_able_to(perm, item)
+        end
+      end
+    end
+
+    pending 'add tests for all roles'
   end
 
   context 'Team' do

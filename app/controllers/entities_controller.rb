@@ -4,6 +4,7 @@
 class EntitiesController < InheritedResources::Base
 
   belongs_to :ontology
+  before_filter :check_read_permissions
 
   actions :index
   has_scope :kind
@@ -15,7 +16,8 @@ class EntitiesController < InheritedResources::Base
     if ontology.is?('OWL2') || ontology.is?('OWL')
       if ontology
         begin
-          @nodes = ontology.entities.where(kind: 'Class').first.roots.first.children
+          entities = ontology.entities.where(kind: 'Class')
+          @nodes = Entity.roots_of(*entities).first.children
         rescue
           @nodes = []
         end
@@ -30,5 +32,11 @@ class EntitiesController < InheritedResources::Base
         end
       end
     end
+  end
+
+  protected
+
+  def check_read_permissions
+    authorize! :show, parent.repository
   end
 end
