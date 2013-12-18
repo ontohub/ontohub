@@ -24,17 +24,24 @@ module Ontology::Import
 
           if h['reference'] == 'true'
             ontology = Ontology.find_with_iri(internal_iri)
+            commit_oid = ExternalRepository.add_to_repository(
+              internal_iri,
+              "add reference ontology: #{internal_iri}", user)
             if ontology.nil?
-              commit_oid = ExternalRepository.add_to_repository(
-                internal_iri,
-                "add reference ontology: #{internal_iri}", user)
               ontology = SingleOntology.create!({name: child_name,
                                                  iri: ExternalRepository.determine_iri(internal_iri),
                                                  basepath: ExternalRepository.determine_path(internal_iri, :basepath),
                                                  file_extension: ExternalRepository.determine_path(internal_iri, :extension),
+                                                 present: true,
                                                  repository_id: ExternalRepository.repository.id},
                                                  without_protection: true)
             end
+            version = ontology.versions.build
+            version.user = user
+            version.do_not_parse!
+            version.commit_oid = commit_oid
+            version.state = 'done'
+            versions << version
           else
             ontologies_count += 1
             if distributed?
