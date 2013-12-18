@@ -47,6 +47,15 @@ module Repository::GitRepositories
     version
   end
 
+  def save_file_only(tmp_file, filepath, message, user)
+    commit = nil
+    git.add_file({email: user.email, name: user.name}, tmp_file, filepath, message) do |commit_oid|
+      commit = commit_oid
+    end
+    touch
+    commit
+  end
+
   def save_ontology(commit_oid, filepath, user=nil, iri=nil)
     # we expect that this method is only called, when the ontology is 'present'
 
