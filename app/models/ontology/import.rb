@@ -19,49 +19,55 @@ module Ontology::Import
           root = h
         },
         ontology: Proc.new { |h|
-          ontologies_count += 1
           child_name = h['name']
           internal_iri = h['name'][1..-2]
 
-          if distributed?
-            # generate IRI for sub-ontology
-
-            child_iri  = iri_for_child(child_name)
-
-            # find or create sub-ontology by IRI
-            ontology   = self.children.find_by_iri(child_iri)
+          if h['reference'] == 'true'
+            ontology = Ontology.find_with_iri(internal_iri)
             if ontology.nil?
-
-              ontology = SingleOntology.create!({iri: child_iri,
-                  name: child_name,
-                  basepath: self.basepath,
-                  file_extension: self.file_extension,
-                  repository_id: repository_id},
-                without_protection: true)
-              self.children << ontology
+              commit_oid = ExternalRepository.add_to_repository(
+                internal_iri,
+                "add reference ontology: #{internal_iri}", user)
+              ontology = SingleOntology.create!({name: child_name,
+                                                 iri: ExternalRepository.determine_iri(internal_iri),
+                                                 basepath: ExternalRepository.determine_path(internal_iri, :basepath),
+                                                 file_extension: ExternalRepository.determine_path(internal_iri, :extension),
+                                                 repository_id: ExternalRepository.repository.id},
+                                                 without_protection: true)
             end
-
-            ontology.present = true
-            version = ontology.versions.build
-            version.user = user
-            version.code_reference = code_reference_for(ontology.name, code_doc)
-
-            versions << version
           else
-            if ontologies_count > 1
-              ontology = self.repository.ontologies.find_by_name(child_name)
+            ontologies_count += 1
+            if distributed?
+              # generate IRI for sub-ontology
+
+              child_iri  = iri_for_child(child_name)
+
+              # find or create sub-ontology by IRI
+              ontology   = self.children.find_by_iri(child_iri)
               if ontology.nil?
-                ontology = SingleOntology.create!({name: child_name,
-                                              iri: "http://fake_iri.com/#{Time.now.to_f}",
-                                              basepath: "basepath.foo",
-                                              repository_id: repository_id},
-                                              without_protection: true
-                                              )
+
+                ontology = SingleOntology.create!({iri: child_iri,
+                    name: child_name,
+                    basepath: self.basepath,
+                    file_extension: self.file_extension,
+                    repository_id: repository_id},
+                  without_protection: true)
+                self.children << ontology
               end
-            else
-            #raise "more than one ontology found"
-              ontology = self
+
               ontology.present = true
+              version = ontology.versions.build
+              version.user = user
+              version.code_reference = code_reference_for(ontology.name, code_doc)
+
+              versions << version
+            else
+              if ontologies_count > 1
+                raise "more than one ontology found"
+              else
+                ontology = self
+                ontology.present = true
+              end
             end
           end
           ontology.name = ontology.generate_name(h['name'])
@@ -119,8 +125,7 @@ module Ontology::Import
           end
         },
         import: Proc.new { |h|
-          Rails.logger.warn "OntI: #{h.inspect}"
-          ontology.iri = h['library']
+          ontology.iri = ExternalRepository.determine_iri(h['library'])
         }
       save!
       versions.each { |version| version.save! }
