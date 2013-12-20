@@ -123,10 +123,10 @@ module NavigationHelper
   # used for activating tabs in ontology view
   def in_subcontroller?(page, current_page)
     case page
-    when :entities
-      %w(classes sentences).include? controller_name
-    when :metadata
-      in_metadata?
+      when :entities
+        %w(classes sentences).include? controller_name
+      when :metadata
+        in_metadata?
     end
   end
 

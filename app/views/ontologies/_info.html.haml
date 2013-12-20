@@ -50,7 +50,7 @@
               - if count # hide counter if empty
                 %span.badge{:style => count==0 && 'display:none'}= count
   - if in_metadata?
-    %nav
+    %nav.nav_tab_level2
       %ul.nav.nav-tabs
         - @metadatas.each do |(page_title, page)|
           %li{class: page[-1]==current_page ? 'active' : nil}
