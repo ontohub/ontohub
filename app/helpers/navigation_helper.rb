@@ -32,10 +32,10 @@ module NavigationHelper
 
     if params[:action] != "edit"
       @metadatas = [
-        ['Projects', repository_ontology_projects_path],
-        ['Categories', repository_ontology_categories_path],
-        ['Tasks', repository_ontology_tasks_path],
-        ['License Model', repository_ontology_license_models_path]
+        ['Projects',      [*resource_chain, :projects]],
+        ['Categories',    [*resource_chain, :categories]],
+        ['Tasks',         [*resource_chain, :tasks]],
+        ['License Model', [*resource_chain, :license_models]]
       ]
     end
 
