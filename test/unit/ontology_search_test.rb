@@ -38,13 +38,13 @@ class OntologySearchTest < ActiveSupport::TestCase
       @ontologies.map(&:save)
       @entities.map(&:save)
       @logics.map(&:save)
-#     ::Sunspot.session = ::Sunspot.session.original_session
+      ::Sunspot.session = ::Sunspot.session.original_session
       Ontology.reindex
     end
 
-#   teardown do
-#     ::Sunspot.session = ::Sunspot::Rails::StubSessionProxy.new(::Sunspot.session)     
-#   end
+    teardown do
+      ::Sunspot.session = ::Sunspot::Rails::StubSessionProxy.new(::Sunspot.session)     
+    end
 
     #context 'keyword list' do
     #  should 'be generated correctly for ontologies' do
