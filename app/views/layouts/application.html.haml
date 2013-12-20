@@ -20,15 +20,16 @@
         .row
           - if cover_visible?
             = render partial: '/shared/cover'
-
-          - if context_pane && user_signed_in?
+          - else
             .col-md-8
               = yield
             .col-md-4
-              = render partial: '/shared/user_content'
-          - else
-            .col-md-12
-              = yield
+              - if context_pane 
+                - if user_signed_in?
+                  = render partial: '/shared/user_content'
+                - else
+                  = render partial: '/shared/signup_invitation'
+
 
     = render partial: '/shared/footer'
 
