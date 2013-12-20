@@ -57,6 +57,10 @@ class OntologyVersionTest < ActiveSupport::TestCase
       should 'have checksum' do
         assert_match /^[a-z0-9]{40}$/, @version.reload.checksum
       end
+
+      should 'have state_updated_at' do
+        assert_not_nil @version.state_updated_at
+      end
     end
 
     context 'on sidekiq shutdown' do

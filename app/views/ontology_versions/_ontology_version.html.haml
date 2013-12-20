@@ -4,5 +4,7 @@
   %td= ontology_version.user ? fancy_link(ontology_version.user) : '-'
   %td
     = status ontology_version
+    - if updated_at = ontology_version.state_updated_at
+      (#{timestamp updated_at})
     = format_error_message ontology_version.last_error
   %td= link_to 'Download', fancy_repository_path(resource_chain[0], path: resource_chain[1].path, ref: ontology_version.commit_oid, action: :download), class: 'btn btn-xs btn-default'

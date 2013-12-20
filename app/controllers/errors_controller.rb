@@ -4,9 +4,9 @@ class ErrorsController < InheritedResources::Base
   before_filter :index, :check_read_permissions
 
   def index
-    ontos = parent.ontologies
-    @orphans = ontos.select{|o| o.versions.empty? and o.parent.nil?}
-    @failed_versions = parent.show_failed_ontology_versions
+    ontos = parent.ontologies.without_parent
+    @orphans = ontos.select{|o| o.versions.empty? }
+    @failed_versions = parent.failed_ontology_versions
   end
 
   protected
