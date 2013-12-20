@@ -17,5 +17,5 @@
     - vs.each do |v|
       %li
         = fancy_link v.ontology
-        - if true || time = v.state_updated_at
-          = timestamp 3.minutes.ago
+        - if time = v.state_updated_at
+          = timestamp time
