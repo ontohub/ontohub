@@ -17,10 +17,10 @@ class OntologiesController < InheritedResources::Base
   def index
     if in_repository?
       @count = end_of_association_chain.total_count
-      render :index_for_a_repository
+      render :index_repository
     else
       @count = resource_class.count
-      render :index_for_the_whole_website
+      render :index_global
     end
   end
   

@@ -20,14 +20,14 @@ class OntologiesControllerTest < ActionController::TestCase
         end
 
         should respond_with :success
-        should render_template :index_for_a_repository
+        should render_template :index_repository
       end
       context 'for the whole website' do
         setup do
           get :index
         end
         should respond_with :success
-        should render_template :index_for_the_whole_website
+        should render_template :index_global
       end
     end
     
