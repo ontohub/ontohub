@@ -6,7 +6,7 @@
 DatabaseCleaner.clean_with :truncation
 
 # Output seed information iff environment variable VERBOSE_SEEDS is set to 1
-ActiveRecord::Base.logger = Logger.new($stdout) if ENV["VERBOSE_SEEDS"] = '1'
+ActiveRecord::Base.logger = Logger.new($stdout) if ENV["VERBOSE_SEEDS"] == '1'
 
 # Run background jobs inline
 require 'sidekiq/testing'
