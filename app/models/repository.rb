@@ -48,7 +48,7 @@ class Repository < ActiveRecord::Base
       if !(ind=errlines.index("*** Error:")).nil? and !errlines[ind+1].blank?
         out = errlines[ind+1]
         i=2
-        while !errlines[ind+i].include?("hets: user error") do
+        while !errlines[ind+i].nil? and !errlines[ind+i].include?("hets: user error") do
           out += " "+errlines[ind+i] 
           i+=1
         end
