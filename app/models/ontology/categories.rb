@@ -8,8 +8,8 @@ module Ontology::Categories
 
 
   def create_categories 
-    if !self.is?('OWL2')
-      raise Exception.new('Error: No OWL2')
+    if !self.is?('OWL')
+      raise Exception.new('Error: No OWL')
     end
     # Delete previous set of categories
     [ Category.all, CEdge.all ].flatten.each { |c| c.destroy }
