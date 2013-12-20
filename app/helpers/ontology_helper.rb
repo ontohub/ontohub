@@ -29,17 +29,4 @@ module OntologyHelper
     repository_ontology_ontology_version_path(*resource_chain, resource.versions.done.latest.first)
   end
 
-  def in_subcontroller?(page, current_page)
-    case page
-    when :entities
-      %w(classes sentences).include? controller_name
-    when :metadata
-      in_metadata?
-    end
-  end
-
-  def in_metadata?
-    %w(projects tasks categories license_models).include? controller_name
-  end
-
 end
