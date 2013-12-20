@@ -38,6 +38,7 @@ import com.google.gwt.user.client.ui.FocusPanel;
 import com.google.gwt.user.client.ui.MultiWordSuggestOracle;
 import com.google.gwt.user.client.ui.SuggestBox;
 import com.google.gwt.user.client.ui.SuggestOracle.Suggestion;
+import com.google.gwt.user.client.ui.TextBox;
 import com.google.gwt.user.client.ui.Widget;
 
 /**
@@ -57,7 +58,7 @@ public class OntologySearch extends Composite {
 	FlowPanel conceptPanel;
 
 	@UiField
-	SuggestBox box;
+	TextBox box;
 
 	@UiField
 	FlowPanel ontologyWidgetPanel;
@@ -95,6 +96,45 @@ public class OntologySearch extends Composite {
 		});
 	}
 
+	@UiFactory
+	public final TextBox makeTextBox() {
+		final TextBox box = new TextBox();
+		box.addKeyUpHandler(new KeyUpHandler() {
+
+			@Override
+			public void onKeyUp(KeyUpEvent event) {
+				if (KeyUpEvent.isArrow(event.getNativeKeyCode())) {
+					return;
+				}
+				char ch = (char) event.getNativeKeyCode();
+				if (box.getCursorPos() == 0) {
+					if (ch == (char) KeyCodes.KEY_BACKSPACE) {
+						return;
+					} else if (ch == (char) KeyCodes.KEY_DELETE) {
+						return;
+					}
+				}
+				if (ch == (char) KeyCodes.KEY_ENTER) {
+					selectKeyword();
+				}
+			}
+		});
+		return box;
+	}
+
+	private final void selectKeyword() {
+		String text = box.getText().trim();
+		if (text.length() == 0) {
+			return;
+		}
+		OntologySearchConcept concept = new OntologySearchConcept(OntologySearch.this, "Category", text);
+		conceptPanel.add(concept);
+		box.setText("");
+		page = 1;
+		updateOntologyWidgetList();
+	}
+
+	/*
 	@UiFactory
 	public final SuggestBox makeSuggestBox() {
 		final MultiWordSuggestOracle oracle = new MultiWordSuggestOracle();
@@ -146,6 +186,7 @@ public class OntologySearch extends Composite {
 		});
 		return box;
 	}
+	*/
 
 	public final void updateOntologyWidgetList() {
 		List<String> stringArray = new ArrayList<String>();
@@ -186,7 +227,7 @@ public class OntologySearch extends Composite {
 	@UiHandler("box")
 	public final void onBoxKeyDown(KeyDownEvent event) {
 		char ch = (char) event.getNativeKeyCode();
-		if (box.getTextBox().getCursorPos() == 0) {
+		if (box.getCursorPos() == 0) {
 			if (event.isLeftArrow()) {
 				focusLastConcept(event);
 				event.stopPropagation();
@@ -201,6 +242,11 @@ public class OntologySearch extends Composite {
 				event.preventDefault();
 			}
 		}
+	}
+
+	@UiHandler("searchButton")
+	public final void onSearchButtonClick(ClickEvent event) {
+		selectKeyword();
 	}
 
 	private final void focusLastConcept(KeyEvent<?> event) {
