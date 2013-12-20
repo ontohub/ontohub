@@ -3,20 +3,38 @@ module Entity::Searching
   
   included do
     searchable do
-      text    :text,
-        :stored => true # necessary for highlighting
-      
-      string( :kind) { |e| e.kind.to_s.downcase }
+      text :text, stored: true # necessary for highlighting
+      text :prefix do
+        prefixes = Array.new
+        (1 .. display_name.size).each { |length| prefixes.push display_name[0, length] } if display_name
+        (1 .. name.size).each { |length| prefixes.push name[0, length] } if name
+        (1 .. text.size).each { |length| prefixes.push text[0, length] } if text
+        prefixes
+      end
+
+      string( :kind) { |symbol| symbol.kind.to_s.downcase }
       integer :ontology_id
-      string( :ontology_id_str) { |e| e.ontology_id.to_s }
+      string( :ontology_id_str) { |symbol| symbol.ontology_id.to_s }
+      integer( :repository_id) { |symbol| symbol.ontology.repository.id }
     end
   end
   
   KIND_PATTERN = /kind:([\w\.-]+)/
   
   module ClassMethods
-    def search_with_ontologies(term, max)
-      term = term.dup
+    def collect_keywords(prefix, repository)
+      s = search do
+        fulltext prefix do
+          fields(:prefix)
+        end
+        with(:repository_id, repository.id)
+        paginate page: 1, per_page: 5
+      end
+      s.results
+    end
+
+    def search_with_ontologies(name, max)
+      name = name.dup
       
       # extract kind:<value>, if included
       if kind = KIND_PATTERN.match(term)
@@ -29,6 +47,7 @@ module Entity::Searching
         # search for text
         fulltext term do
           highlight :text
+          fields(:text)
         end
         
         # search for kind
