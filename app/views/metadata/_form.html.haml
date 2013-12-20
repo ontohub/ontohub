@@ -1,5 +1,0 @@
-= simple_form_for [*resource_chain, request.post? ? resource : Metadatum.new], remote: true do |f|
-  = f.input :key,   required: false, input_html: {required: true}, as: :url
-  = f.input :value, required: false, input_html: {required: true}
-
-  = f.button :submit, disable_with: t(:wait), class: 'btn btn-primary'
