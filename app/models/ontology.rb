@@ -80,6 +80,10 @@ class Ontology < ActiveRecord::Base
 
   protected
 
-  scope :s_find_by_file, ->(file) { where("ontologies.basepath = :basepath AND ontologies.file_extension = :file_extension AND parent_id IS NULL", basepath: File.basepath(file), file_extension: File.extname(file)) }
+  scope :s_find_by_file, ->(file) do
+    where "ontologies.basepath = :basepath AND ontologies.file_extension = :file_extension AND ontologies.parent_id IS NULL",
+      basepath: File.basepath(file),
+      file_extension: File.extname(file)
+  end
 
 end
