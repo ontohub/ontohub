@@ -260,7 +260,7 @@
 
     <owl:Class rdf:about="&Domain_fields;Domain_Field">
         <rdfs:label rdf:datatype="&xsd;string">DomainField</rdfs:label>
-        <rdfs:comment>The Domain Field consists of pre-defined domain-specific classes that cluster ontologies according to the domain-subject. As some ontologies cover several domains, an ontology can belong to more than one domain field. The OMV recommendation, to follow the DMOZ and ACM specifications of domain subject, is advised in those cases in which none of pre-defined fields captures the ontology subject, in which case such an ontology should be clustered under the field named &apos;unclassified&apos;.</rdfs:comment>
+        <rdfs:comment rdf:datatype="&xsd;string">The Domain Field consists of pre-defined domain-specific classes that cluster ontologies according to the domain-subject. As some ontologies cover several domains, an ontology can belong to more than one domain field. The OMV recommendation, to follow the DMOZ and ACM specifications of domain subject, is advised in those cases in which none of pre-defined fields captures the ontology subject, in which case such an ontology should be described in metadata during its upload.</rdfs:comment>
     </owl:Class>
     
 
@@ -536,6 +536,14 @@
     <owl:Class rdf:about="&Domain_fields;ISO">
         <rdfs:label rdf:datatype="&xsd;string">ISO</rdfs:label>
         <rdfs:subClassOf rdf:resource="&Domain_fields;Standard"/>
+    </owl:Class>
+    
+
+
+    <!-- https://raw.github.com/ontohub/OOR_Ontohub_API/master/Domain_Fields_Core.owl#Imaging -->
+
+    <owl:Class rdf:about="&Domain_fields;Imaging">
+        <rdfs:subClassOf rdf:resource="&Domain_fields;Method_and_research_technique"/>
     </owl:Class>
     
 
@@ -1094,16 +1102,6 @@
     <owl:Class rdf:about="&Domain_fields;Travel_tourism_and_leisure">
         <rdfs:label rdf:datatype="&xsd;string">TravelTourismAndLeisure</rdfs:label>
         <rdfs:subClassOf rdf:resource="&Domain_fields;Personal_services"/>
-    </owl:Class>
-    
-
-
-    <!-- https://raw.github.com/ontohub/OOR_Ontohub_API/master/Domain_Fields_Core.owl#Unclassified -->
-
-    <owl:Class rdf:about="&Domain_fields;Unclassified">
-        <rdfs:label rdf:datatype="&xsd;string">Unclassified</rdfs:label>
-        <rdfs:subClassOf rdf:resource="&Domain_fields;Domain_Field"/>
-        <rdfs:comment rdf:datatype="&xsd;string">The unclassified domain includes ontologies whose domain-subject is not captured by any of pre-defined classes.  The annotation of such an ontology should include either a DMOZ or an ACM specification of domain subject, thus providing a tentative subject-field that can be included in the future revisions of the domain-field classes.</rdfs:comment>
     </owl:Class>
     
 

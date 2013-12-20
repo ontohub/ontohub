@@ -14,14 +14,8 @@
   - if resource.parent
     by
     %span= fancy_link(resource.parent)
-  - if files.size > 1
-    in one of the files
-    %ul
-      - files.each do |f|
-        %li= fancy_link repository_tree_path(resource.repository, f)
-  - else
-    in the file
-    = fancy_link repository_tree_path(resource.repository, files[0])
+  in the file
+  = fancy_link repository_tree_path(resource.repository, resource.path)
   - if resource.documentation
     See for detailed documentation
     = link_to resource.documentation, resource.documentation
@@ -33,12 +27,13 @@
 - if resource.oops_supported?
   = render partial: '/ontologies/oops_state', locals: {resource: resource}
 
-= status_tag
+- if resource.non_current_active_version?(current_user)
+  = render partial: '/ontologies/status'
 
 %nav.nav_tab_level1
   %ul.nav.nav-tabs
     - @top_level_pages.each do |(page_title, page)|
-      %li{class: page==current_page ? 'active' : nil}
+      %li{class: page==current_page || in_subcontroller?(page, current_page) ? 'active' : nil}
         = link_to page_title, [*resource_chain, page]
   - if %w[entities sentences children].include? controller_name
     %nav.nav_tab_level2
@@ -54,9 +49,9 @@
               = page.to_s.capitalize
               - if count # hide counter if empty
                 %span.badge{:style => count==0 && 'display:none'}= count
-  - if controller_name == "projects" || controller_name == "tasks" || controller_name == "projects" || controller_name == "categories" || controller_name == "license_models"
-    %nav
+  - if in_metadata?
+    %nav.nav_tab_level2
       %ul.nav.nav-tabs
         - @metadatas.each do |(page_title, page)|
-          %li{class: page==current_page ? 'active' : nil}
+          %li{class: page[-1]==current_page ? 'active' : nil}
             = link_to page_title, page

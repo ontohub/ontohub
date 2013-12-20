@@ -1,4 +1,5 @@
-.well
-  .selector
-    %ul
-      = render :partial => 'category', :collection => @c_vertices.to_a
+= unless hide_well
+  .well
+.selector
+  %ul
+    = render :partial => 'category', :collection => @c_vertices.to_a

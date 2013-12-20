@@ -21,29 +21,26 @@ module StateUpdater
     begin
       yield
     rescue Exception => e
-      update_state! :failed, e.message
-      after_failed
+      begin
+        if Sidekiq::Shutdown === e
+          # Sidekiq requeues the current job automatically
+          update_state! :pending
+        else
+          update_state! :failed, e.message
+          after_failed
+        end
+      rescue Exception => ee
+        # Can really happen
+        Rails.logger.fatal "Unable to update state of #{self.class} #{id}"
+        raise
+      end
       raise e
-    rescue Sidekiq::Shutdown
-      # Sidekiq requeues the current job automatically
-      update_state! :pending
-      raise
     end
   end
 
   def update_state!(state, error_message = nil)
     self.state      = state.to_s
     self.last_error = error_message
-
     save!
-  rescue ActiveRecord::StatementInvalid, PG::Error
-    # Can happen on save!
-    self.class.where(id: id).update_all \
-      state:      state.to_s, 
-      last_error: error_message
-
-    after_update_state if respond_to?(:after_update_state, true)
-    
-    raise
   end
 end

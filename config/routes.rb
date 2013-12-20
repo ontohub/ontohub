@@ -41,6 +41,7 @@ Ontohub::Application.routes.draw do
 
   namespace :api, defaults: { format: 'json' } do
     namespace :v1 do
+      resources :categories,   only: [:index]
       resources :repositories, only: [:index, :update]
       resources :ontologies,   only: [:index, :update]
     end
@@ -70,12 +71,16 @@ Ontohub::Application.routes.draw do
     resources :ssh_access, :only => :index
     resources :permissions, :only => [:index, :create, :update, :destroy]
     resources :url_maps, except: :show
+    resources :errors, :only => :index
 
     resources :ontologies, only: [:index, :show, :edit, :update] do
       collection do
         post 'retry_failed' => 'ontologies#retry_failed'
         get 'keywords' => 'ontology_search#keywords'
         get 'search' => 'ontology_search#search'
+      end
+      member do
+        post 'retry_failed' => 'ontologies#retry_failed'
       end
       resources :children, :only => :index
       resources :entities, :only => :index

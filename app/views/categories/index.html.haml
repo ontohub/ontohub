@@ -2,11 +2,11 @@
   = repository_nav parent.repository, :ontologies
 
   = ontology_nav parent, :categories
+
 - else 
   %h2 Categories
   
   click on one category to see the Ontologies which are in it
   
   .well 
-    = render :partial => 'categories'
-  
+    = render partial: 'categories'

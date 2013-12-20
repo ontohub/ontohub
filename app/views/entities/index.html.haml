@@ -2,8 +2,25 @@
 
 = ontology_nav parent, :entities
 
-= pagination do
-  - unless collection.blank?
-    = render :partial => 'list'
-  - else
-    %h3 No entities found
+- if !parent.is?('OWL2')
+  = pagination do
+    - unless collection.blank?
+      = render partial: 'list'
+    - else
+      %h3 No entities found
+
+- else
+  - if @hierarchy_exists
+    .btn-group#ontology_selections
+      = link_to 'Class Hierarchy', '#hierachy', class: 'btn btn-default mode btn-primary', id: 'hierachy'
+      = link_to 'Class Details', '#detail', class: 'btn btn-default mode', id: 'detail-page'
+    .owl_entities
+      .class-hierachy
+        = render partial: 'treeview'
+
+  .entities-detail
+    = pagination do
+      - unless collection.blank?
+        = render partial: 'list'
+      - else
+        %h3 No entities found

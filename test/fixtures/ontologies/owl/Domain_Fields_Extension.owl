@@ -1,0 +1,1327 @@
+<?xml version="1.0"?>
+
+
+<!DOCTYPE rdf:RDF [
+    <!ENTITY owl "http://www.w3.org/2002/07/owl#" >
+    <!ENTITY xsd "http://www.w3.org/2001/XMLSchema#" >
+    <!ENTITY owl2xml "http://www.w3.org/2006/12/owl2-xml#" >
+    <!ENTITY rdfs "http://www.w3.org/2000/01/rdf-schema#" >
+    <!ENTITY rdf "http://www.w3.org/1999/02/22-rdf-syntax-ns#" >
+    <!ENTITY Domain_Fields_Core "https://raw.github.com/ontohub/OOR_Ontohub_API/master/Domain_Fields_Core.owl#" >
+    <!ENTITY Domain_fields "https://raw.github.com/ontohub/OOR_Ontohub_API/master/Domain_Fields_Extension.owl#" >
+]>
+
+
+<rdf:RDF xmlns="https://raw.github.com/ontohub/OOR_Ontohub_API/master/Domain_Fields_Extension.owl#"
+     xml:base="https://raw.github.com/ontohub/OOR_Ontohub_API/master/Domain_Fields_Extension.owl"
+     xmlns:Domain_fields="https://raw.github.com/ontohub/OOR_Ontohub_API/master/Domain_Fields_Extension.owl#"
+     xmlns:rdfs="http://www.w3.org/2000/01/rdf-schema#"
+     xmlns:owl2xml="http://www.w3.org/2006/12/owl2-xml#"
+     xmlns:owl="http://www.w3.org/2002/07/owl#"
+     xmlns:xsd="http://www.w3.org/2001/XMLSchema#"
+     xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#"
+     xmlns:Domain_Fields_Core="https://raw.github.com/ontohub/OOR_Ontohub_API/master/Domain_Fields_Core.owl#">
+    <owl:Ontology rdf:about="https://raw.github.com/ontohub/OOR_Ontohub_API/master/Domain_Fields_Extension.owl">
+        <owl:imports rdf:resource="https://raw.github.com/ontohub/OOR_Ontohub_API/master/Domain_Fields_Core.owl"/>
+    </owl:Ontology>
+    
+
+
+    <!-- 
+    ///////////////////////////////////////////////////////////////////////////////////////
+    //
+    // Classes
+    //
+    ///////////////////////////////////////////////////////////////////////////////////////
+     -->
+
+    
+
+
+    <!-- https://raw.github.com/ontohub/OOR_Ontohub_API/master/Domain_Fields_Core.owl#Biochemistry -->
+
+    <owl:Class rdf:about="&Domain_Fields_Core;Biochemistry"/>
+    
+
+
+    <!-- https://raw.github.com/ontohub/OOR_Ontohub_API/master/Domain_Fields_Core.owl#Biology -->
+
+    <owl:Class rdf:about="&Domain_Fields_Core;Biology"/>
+    
+
+
+    <!-- https://raw.github.com/ontohub/OOR_Ontohub_API/master/Domain_Fields_Core.owl#Biology_broad -->
+
+    <owl:Class rdf:about="&Domain_Fields_Core;Biology_broad"/>
+    
+
+
+    <!-- https://raw.github.com/ontohub/OOR_Ontohub_API/master/Domain_Fields_Core.owl#Medical_diagnostic_and_treatment_technology -->
+
+    <owl:Class rdf:about="&Domain_Fields_Core;Medical_diagnostic_and_treatment_technology"/>
+    
+
+
+    <!-- https://raw.github.com/ontohub/OOR_Ontohub_API/master/Domain_Fields_Core.owl#Medicine -->
+
+    <owl:Class rdf:about="&Domain_Fields_Core;Medicine"/>
+    
+
+
+    <!-- https://raw.github.com/ontohub/OOR_Ontohub_API/master/Domain_Fields_Core.owl#Natural_science_mathematics_and_statistics -->
+
+    <owl:Class rdf:about="&Domain_Fields_Core;Natural_science_mathematics_and_statistics"/>
+    
+
+
+    <!-- https://raw.github.com/ontohub/OOR_Ontohub_API/master/Domain_Fields_Core.owl#Space -->
+
+    <owl:Class rdf:about="&Domain_Fields_Core;Space"/>
+    
+
+
+    <!-- https://raw.github.com/ontohub/OOR_Ontohub_API/master/Domain_Fields_Extension.owl#Affordance -->
+
+    <owl:Class rdf:about="&Domain_fields;Affordance">
+        <rdfs:subClassOf rdf:resource="&Domain_fields;Spatial_intentionality"/>
+    </owl:Class>
+    
+
+
+    <!-- https://raw.github.com/ontohub/OOR_Ontohub_API/master/Domain_Fields_Extension.owl#Anaesthesiology_and_Critical_Care -->
+
+    <owl:Class rdf:about="&Domain_fields;Anaesthesiology_and_Critical_Care">
+        <rdfs:subClassOf rdf:resource="&Domain_Fields_Core;Medicine"/>
+    </owl:Class>
+    
+
+
+    <!-- https://raw.github.com/ontohub/OOR_Ontohub_API/master/Domain_Fields_Extension.owl#Anatomy -->
+
+    <owl:Class rdf:about="&Domain_fields;Anatomy">
+        <rdfs:subClassOf rdf:resource="&Domain_Fields_Core;Biology_broad"/>
+    </owl:Class>
+    
+
+
+    <!-- https://raw.github.com/ontohub/OOR_Ontohub_API/master/Domain_Fields_Extension.owl#Angiology -->
+
+    <owl:Class rdf:about="&Domain_fields;Angiology">
+        <rdfs:subClassOf rdf:resource="&Domain_Fields_Core;Medicine"/>
+    </owl:Class>
+    
+
+
+    <!-- https://raw.github.com/ontohub/OOR_Ontohub_API/master/Domain_Fields_Extension.owl#Animal_developmental_biology -->
+
+    <owl:Class rdf:about="&Domain_fields;Animal_developmental_biology">
+        <rdfs:subClassOf rdf:resource="&Domain_fields;Developmental_biology"/>
+    </owl:Class>
+    
+
+
+    <!-- https://raw.github.com/ontohub/OOR_Ontohub_API/master/Domain_Fields_Extension.owl#Animal_gross_anatomy -->
+
+    <owl:Class rdf:about="&Domain_fields;Animal_gross_anatomy">
+        <rdfs:subClassOf rdf:resource="&Domain_fields;Gross_anatomy"/>
+    </owl:Class>
+    
+
+
+    <!-- https://raw.github.com/ontohub/OOR_Ontohub_API/master/Domain_Fields_Extension.owl#Arabidopsis_study -->
+
+    <owl:Class rdf:about="&Domain_fields;Arabidopsis_study">
+        <rdfs:subClassOf rdf:resource="&Domain_fields;Model_organism_study"/>
+    </owl:Class>
+    
+
+
+    <!-- https://raw.github.com/ontohub/OOR_Ontohub_API/master/Domain_Fields_Extension.owl#Architectural_and_technological_design -->
+
+    <owl:Class rdf:about="&Domain_fields;Architectural_and_technological_design">
+        <rdfs:subClassOf rdf:resource="&Domain_Fields_Core;Space"/>
+    </owl:Class>
+    
+
+
+    <!-- https://raw.github.com/ontohub/OOR_Ontohub_API/master/Domain_Fields_Extension.owl#Architectural_design -->
+
+    <owl:Class rdf:about="&Domain_fields;Architectural_design">
+        <rdfs:subClassOf rdf:resource="&Domain_fields;Architectural_and_technological_design"/>
+    </owl:Class>
+    
+
+
+    <!-- https://raw.github.com/ontohub/OOR_Ontohub_API/master/Domain_Fields_Extension.owl#Astro_space -->
+
+    <owl:Class rdf:about="&Domain_fields;Astro_space">
+        <rdfs:subClassOf rdf:resource="&Domain_fields;Physical_space"/>
+    </owl:Class>
+    
+
+
+    <!-- https://raw.github.com/ontohub/OOR_Ontohub_API/master/Domain_Fields_Extension.owl#Behavioral_genetics -->
+
+    <owl:Class rdf:about="&Domain_fields;Behavioral_genetics">
+        <rdfs:subClassOf rdf:resource="&Domain_fields;Genetics"/>
+    </owl:Class>
+    
+
+
+    <!-- https://raw.github.com/ontohub/OOR_Ontohub_API/master/Domain_Fields_Extension.owl#Bioinorganic_chemistry -->
+
+    <owl:Class rdf:about="&Domain_fields;Bioinorganic_chemistry">
+        <rdfs:subClassOf rdf:resource="&Domain_Fields_Core;Biochemistry"/>
+    </owl:Class>
+    
+
+
+    <!-- https://raw.github.com/ontohub/OOR_Ontohub_API/master/Domain_Fields_Extension.owl#Biopharmaceutics -->
+
+    <owl:Class rdf:about="&Domain_fields;Biopharmaceutics">
+        <rdfs:subClassOf rdf:resource="&Domain_fields;Pharmacology"/>
+    </owl:Class>
+    
+
+
+    <!-- https://raw.github.com/ontohub/OOR_Ontohub_API/master/Domain_Fields_Extension.owl#Biophysics -->
+
+    <owl:Class rdf:about="&Domain_fields;Biophysics">
+        <rdfs:subClassOf rdf:resource="&Domain_Fields_Core;Biology_broad"/>
+    </owl:Class>
+    
+
+
+    <!-- https://raw.github.com/ontohub/OOR_Ontohub_API/master/Domain_Fields_Extension.owl#Biotechnological_design -->
+
+    <owl:Class rdf:about="&Domain_fields;Biotechnological_design">
+        <rdfs:subClassOf rdf:resource="&Domain_fields;Technological_design"/>
+    </owl:Class>
+    
+
+
+    <!-- https://raw.github.com/ontohub/OOR_Ontohub_API/master/Domain_Fields_Extension.owl#Biotechnology -->
+
+    <owl:Class rdf:about="&Domain_fields;Biotechnology">
+        <rdfs:subClassOf rdf:resource="&Domain_Fields_Core;Biology_broad"/>
+    </owl:Class>
+    
+
+
+    <!-- https://raw.github.com/ontohub/OOR_Ontohub_API/master/Domain_Fields_Extension.owl#Botany -->
+
+    <owl:Class rdf:about="&Domain_fields;Botany">
+        <rdfs:subClassOf rdf:resource="&Domain_Fields_Core;Biology"/>
+    </owl:Class>
+    
+
+
+    <!-- https://raw.github.com/ontohub/OOR_Ontohub_API/master/Domain_Fields_Extension.owl#Building_architecture -->
+
+    <owl:Class rdf:about="&Domain_fields;Building_architecture">
+        <rdfs:subClassOf rdf:resource="&Domain_fields;Architectural_design"/>
+    </owl:Class>
+    
+
+
+    <!-- https://raw.github.com/ontohub/OOR_Ontohub_API/master/Domain_Fields_Extension.owl#Carbohydrate_biochemistry -->
+
+    <owl:Class rdf:about="&Domain_fields;Carbohydrate_biochemistry">
+        <rdfs:subClassOf rdf:resource="&Domain_Fields_Core;Biochemistry"/>
+    </owl:Class>
+    
+
+
+    <!-- https://raw.github.com/ontohub/OOR_Ontohub_API/master/Domain_Fields_Extension.owl#Cardiology -->
+
+    <owl:Class rdf:about="&Domain_fields;Cardiology">
+        <rdfs:subClassOf rdf:resource="&Domain_Fields_Core;Medicine"/>
+    </owl:Class>
+    
+
+
+    <!-- https://raw.github.com/ontohub/OOR_Ontohub_API/master/Domain_Fields_Extension.owl#Cell_biology -->
+
+    <owl:Class rdf:about="&Domain_fields;Cell_biology">
+        <rdfs:subClassOf rdf:resource="&Domain_Fields_Core;Biology"/>
+    </owl:Class>
+    
+
+
+    <!-- https://raw.github.com/ontohub/OOR_Ontohub_API/master/Domain_Fields_Extension.owl#Cellular_anatomy -->
+
+    <owl:Class rdf:about="&Domain_fields;Cellular_anatomy">
+        <rdfs:subClassOf rdf:resource="&Domain_fields;Anatomy"/>
+    </owl:Class>
+    
+
+
+    <!-- https://raw.github.com/ontohub/OOR_Ontohub_API/master/Domain_Fields_Extension.owl#Clinical_pharmacology -->
+
+    <owl:Class rdf:about="&Domain_fields;Clinical_pharmacology">
+        <rdfs:subClassOf rdf:resource="&Domain_fields;Pharmacology"/>
+    </owl:Class>
+    
+
+
+    <!-- https://raw.github.com/ontohub/OOR_Ontohub_API/master/Domain_Fields_Extension.owl#Clinical_research -->
+
+    <owl:Class rdf:about="&Domain_fields;Clinical_research">
+        <rdfs:subClassOf rdf:resource="&Domain_Fields_Core;Natural_science_mathematics_and_statistics"/>
+    </owl:Class>
+    
+
+
+    <!-- https://raw.github.com/ontohub/OOR_Ontohub_API/master/Domain_Fields_Extension.owl#Clinical_trial -->
+
+    <owl:Class rdf:about="&Domain_fields;Clinical_trial">
+        <rdfs:subClassOf rdf:resource="&Domain_fields;Clinical_research"/>
+    </owl:Class>
+    
+
+
+    <!-- https://raw.github.com/ontohub/OOR_Ontohub_API/master/Domain_Fields_Extension.owl#Cognitive_space -->
+
+    <owl:Class rdf:about="&Domain_fields;Cognitive_space">
+        <rdfs:subClassOf rdf:resource="&Domain_Fields_Core;Space"/>
+    </owl:Class>
+    
+
+
+    <!-- https://raw.github.com/ontohub/OOR_Ontohub_API/master/Domain_Fields_Extension.owl#Computational_biology -->
+
+    <owl:Class rdf:about="&Domain_fields;Computational_biology">
+        <rdfs:subClassOf rdf:resource="&Domain_Fields_Core;Biology"/>
+    </owl:Class>
+    
+
+
+    <!-- https://raw.github.com/ontohub/OOR_Ontohub_API/master/Domain_Fields_Extension.owl#Computer_system_design -->
+
+    <owl:Class rdf:about="&Domain_fields;Computer_system_design">
+        <rdfs:subClassOf rdf:resource="&Domain_fields;Technological_design"/>
+    </owl:Class>
+    
+
+
+    <!-- https://raw.github.com/ontohub/OOR_Ontohub_API/master/Domain_Fields_Extension.owl#Cultural_heritage_space -->
+
+    <owl:Class rdf:about="&Domain_fields;Cultural_heritage_space">
+        <rdfs:subClassOf rdf:resource="&Domain_Fields_Core;Space"/>
+    </owl:Class>
+    
+
+
+    <!-- https://raw.github.com/ontohub/OOR_Ontohub_API/master/Domain_Fields_Extension.owl#Cytogenetics -->
+
+    <owl:Class rdf:about="&Domain_fields;Cytogenetics">
+        <rdfs:subClassOf rdf:resource="&Domain_fields;Genetics"/>
+    </owl:Class>
+    
+
+
+    <!-- https://raw.github.com/ontohub/OOR_Ontohub_API/master/Domain_Fields_Extension.owl#Dermatology -->
+
+    <owl:Class rdf:about="&Domain_fields;Dermatology">
+        <rdfs:subClassOf rdf:resource="&Domain_Fields_Core;Medicine"/>
+    </owl:Class>
+    
+
+
+    <!-- https://raw.github.com/ontohub/OOR_Ontohub_API/master/Domain_Fields_Extension.owl#Developmental_biology -->
+
+    <owl:Class rdf:about="&Domain_fields;Developmental_biology">
+        <rdfs:subClassOf rdf:resource="&Domain_Fields_Core;Biology"/>
+    </owl:Class>
+    
+
+
+    <!-- https://raw.github.com/ontohub/OOR_Ontohub_API/master/Domain_Fields_Extension.owl#Dirction -->
+
+    <owl:Class rdf:about="&Domain_fields;Dirction">
+        <rdfs:subClassOf rdf:resource="&Domain_fields;Spatial_relation"/>
+    </owl:Class>
+    
+
+
+    <!-- https://raw.github.com/ontohub/OOR_Ontohub_API/master/Domain_Fields_Extension.owl#Disease_distribution -->
+
+    <owl:Class rdf:about="&Domain_fields;Disease_distribution">
+        <rdfs:subClassOf rdf:resource="&Domain_fields;Epidemiology"/>
+        <rdfs:subClassOf rdf:resource="&Domain_fields;Health_related_space"/>
+    </owl:Class>
+    
+
+
+    <!-- https://raw.github.com/ontohub/OOR_Ontohub_API/master/Domain_Fields_Extension.owl#Distance -->
+
+    <owl:Class rdf:about="&Domain_fields;Distance">
+        <rdfs:subClassOf rdf:resource="&Domain_fields;Spatial_relation"/>
+    </owl:Class>
+    
+
+
+    <!-- https://raw.github.com/ontohub/OOR_Ontohub_API/master/Domain_Fields_Extension.owl#Drosophila_study -->
+
+    <owl:Class rdf:about="&Domain_fields;Drosophila_study">
+        <rdfs:subClassOf rdf:resource="&Domain_fields;Model_organism_study"/>
+    </owl:Class>
+    
+
+
+    <!-- https://raw.github.com/ontohub/OOR_Ontohub_API/master/Domain_Fields_Extension.owl#Drug_discovery -->
+
+    <owl:Class rdf:about="&Domain_fields;Drug_discovery">
+        <rdfs:subClassOf rdf:resource="&Domain_fields;Pharmaceutical_chemistry"/>
+    </owl:Class>
+    
+
+
+    <!-- https://raw.github.com/ontohub/OOR_Ontohub_API/master/Domain_Fields_Extension.owl#Ecology -->
+
+    <owl:Class rdf:about="&Domain_fields;Ecology">
+        <rdfs:subClassOf rdf:resource="&Domain_Fields_Core;Biology"/>
+    </owl:Class>
+    
+
+
+    <!-- https://raw.github.com/ontohub/OOR_Ontohub_API/master/Domain_Fields_Extension.owl#Ecotoxicology -->
+
+    <owl:Class rdf:about="&Domain_fields;Ecotoxicology">
+        <rdfs:subClassOf rdf:resource="&Domain_fields;Ecology"/>
+    </owl:Class>
+    
+
+
+    <!-- https://raw.github.com/ontohub/OOR_Ontohub_API/master/Domain_Fields_Extension.owl#Embedded_and_cyber-physical_system_design -->
+
+    <owl:Class rdf:about="&Domain_fields;Embedded_and_cyber-physical_system_design">
+        <rdfs:subClassOf rdf:resource="&Domain_fields;Computer_system_design"/>
+    </owl:Class>
+    
+
+
+    <!-- https://raw.github.com/ontohub/OOR_Ontohub_API/master/Domain_Fields_Extension.owl#Embryology -->
+
+    <owl:Class rdf:about="&Domain_fields;Embryology">
+        <rdfs:subClassOf rdf:resource="&Domain_fields;Developmental_biology"/>
+    </owl:Class>
+    
+
+
+    <!-- https://raw.github.com/ontohub/OOR_Ontohub_API/master/Domain_Fields_Extension.owl#Emergency_Medicine -->
+
+    <owl:Class rdf:about="&Domain_fields;Emergency_Medicine">
+        <rdfs:subClassOf rdf:resource="&Domain_Fields_Core;Medicine"/>
+    </owl:Class>
+    
+
+
+    <!-- https://raw.github.com/ontohub/OOR_Ontohub_API/master/Domain_Fields_Extension.owl#Endocrinology -->
+
+    <owl:Class rdf:about="&Domain_fields;Endocrinology">
+        <rdfs:subClassOf rdf:resource="&Domain_Fields_Core;Medicine"/>
+    </owl:Class>
+    
+
+
+    <!-- https://raw.github.com/ontohub/OOR_Ontohub_API/master/Domain_Fields_Extension.owl#Entomology -->
+
+    <owl:Class rdf:about="&Domain_fields;Entomology">
+        <rdfs:subClassOf rdf:resource="&Domain_fields;Zoology"/>
+    </owl:Class>
+    
+
+
+    <!-- https://raw.github.com/ontohub/OOR_Ontohub_API/master/Domain_Fields_Extension.owl#Epidemiology -->
+
+    <owl:Class rdf:about="&Domain_fields;Epidemiology">
+        <rdfs:subClassOf rdf:resource="&Domain_Fields_Core;Medicine"/>
+    </owl:Class>
+    
+
+
+    <!-- https://raw.github.com/ontohub/OOR_Ontohub_API/master/Domain_Fields_Extension.owl#Epigenomics -->
+
+    <owl:Class rdf:about="&Domain_fields;Epigenomics">
+        <rdfs:subClassOf rdf:resource="&Domain_fields;Genomics"/>
+    </owl:Class>
+    
+
+
+    <!-- https://raw.github.com/ontohub/OOR_Ontohub_API/master/Domain_Fields_Extension.owl#Ethnopharmacology -->
+
+    <owl:Class rdf:about="&Domain_fields;Ethnopharmacology">
+        <rdfs:subClassOf rdf:resource="&Domain_fields;Pharmacology"/>
+    </owl:Class>
+    
+
+
+    <!-- https://raw.github.com/ontohub/OOR_Ontohub_API/master/Domain_Fields_Extension.owl#Evolutionary_Biology -->
+
+    <owl:Class rdf:about="&Domain_fields;Evolutionary_Biology">
+        <rdfs:subClassOf rdf:resource="&Domain_Fields_Core;Biology"/>
+    </owl:Class>
+    
+
+
+    <!-- https://raw.github.com/ontohub/OOR_Ontohub_API/master/Domain_Fields_Extension.owl#Exobiology -->
+
+    <owl:Class rdf:about="&Domain_fields;Exobiology">
+        <rdfs:subClassOf rdf:resource="&Domain_Fields_Core;Biology"/>
+    </owl:Class>
+    
+
+
+    <!-- https://raw.github.com/ontohub/OOR_Ontohub_API/master/Domain_Fields_Extension.owl#Fish_anatomy -->
+
+    <owl:Class rdf:about="&Domain_fields;Fish_anatomy">
+        <rdfs:subClassOf rdf:resource="&Domain_fields;Animal_gross_anatomy"/>
+    </owl:Class>
+    
+
+
+    <!-- https://raw.github.com/ontohub/OOR_Ontohub_API/master/Domain_Fields_Extension.owl#Fish_study -->
+
+    <owl:Class rdf:about="&Domain_fields;Fish_study">
+        <rdfs:subClassOf rdf:resource="&Domain_fields;Model_organism_study"/>
+    </owl:Class>
+    
+
+
+    <!-- https://raw.github.com/ontohub/OOR_Ontohub_API/master/Domain_Fields_Extension.owl#Forensic_Medicine -->
+
+    <owl:Class rdf:about="&Domain_fields;Forensic_Medicine">
+        <rdfs:subClassOf rdf:resource="&Domain_Fields_Core;Medicine"/>
+    </owl:Class>
+    
+
+
+    <!-- https://raw.github.com/ontohub/OOR_Ontohub_API/master/Domain_Fields_Extension.owl#Freshwater_Biology -->
+
+    <owl:Class rdf:about="&Domain_fields;Freshwater_Biology">
+        <rdfs:subClassOf rdf:resource="&Domain_fields;Hydrobiology"/>
+    </owl:Class>
+    
+
+
+    <!-- https://raw.github.com/ontohub/OOR_Ontohub_API/master/Domain_Fields_Extension.owl#Gastroenterology -->
+
+    <owl:Class rdf:about="&Domain_fields;Gastroenterology">
+        <rdfs:subClassOf rdf:resource="&Domain_Fields_Core;Medicine"/>
+    </owl:Class>
+    
+
+
+    <!-- https://raw.github.com/ontohub/OOR_Ontohub_API/master/Domain_Fields_Extension.owl#General_Practice -->
+
+    <owl:Class rdf:about="&Domain_fields;General_Practice">
+        <rdfs:subClassOf rdf:resource="&Domain_Fields_Core;Medicine"/>
+    </owl:Class>
+    
+
+
+    <!-- https://raw.github.com/ontohub/OOR_Ontohub_API/master/Domain_Fields_Extension.owl#Genetics -->
+
+    <owl:Class rdf:about="&Domain_fields;Genetics">
+        <rdfs:subClassOf rdf:resource="&Domain_Fields_Core;Biology"/>
+    </owl:Class>
+    
+
+
+    <!-- https://raw.github.com/ontohub/OOR_Ontohub_API/master/Domain_Fields_Extension.owl#Genomics -->
+
+    <owl:Class rdf:about="&Domain_fields;Genomics">
+        <rdfs:subClassOf rdf:resource="&Domain_fields;Genetics"/>
+    </owl:Class>
+    
+
+
+    <!-- https://raw.github.com/ontohub/OOR_Ontohub_API/master/Domain_Fields_Extension.owl#Geoeconomic_space -->
+
+    <owl:Class rdf:about="&Domain_fields;Geoeconomic_space">
+        <rdfs:subClassOf rdf:resource="&Domain_fields;Geographic_space"/>
+    </owl:Class>
+    
+
+
+    <!-- https://raw.github.com/ontohub/OOR_Ontohub_API/master/Domain_Fields_Extension.owl#Geographic_space -->
+
+    <owl:Class rdf:about="&Domain_fields;Geographic_space">
+        <rdfs:subClassOf rdf:resource="&Domain_fields;Physical_space"/>
+    </owl:Class>
+    
+
+
+    <!-- https://raw.github.com/ontohub/OOR_Ontohub_API/master/Domain_Fields_Extension.owl#Geopolitical_space -->
+
+    <owl:Class rdf:about="&Domain_fields;Geopolitical_space">
+        <rdfs:subClassOf rdf:resource="&Domain_fields;Geographic_space"/>
+    </owl:Class>
+    
+
+
+    <!-- https://raw.github.com/ontohub/OOR_Ontohub_API/master/Domain_Fields_Extension.owl#Gerontology -->
+
+    <owl:Class rdf:about="&Domain_fields;Gerontology">
+        <rdfs:subClassOf rdf:resource="&Domain_Fields_Core;Medicine"/>
+    </owl:Class>
+    
+
+
+    <!-- https://raw.github.com/ontohub/OOR_Ontohub_API/master/Domain_Fields_Extension.owl#Gesture -->
+
+    <owl:Class rdf:about="&Domain_fields;Gesture">
+        <rdfs:subClassOf rdf:resource="&Domain_fields;Spatial_communication"/>
+    </owl:Class>
+    
+
+
+    <!-- https://raw.github.com/ontohub/OOR_Ontohub_API/master/Domain_Fields_Extension.owl#Glycomics -->
+
+    <owl:Class rdf:about="&Domain_fields;Glycomics">
+        <rdfs:subClassOf rdf:resource="&Domain_fields;Carbohydrate_biochemistry"/>
+    </owl:Class>
+    
+
+
+    <!-- https://raw.github.com/ontohub/OOR_Ontohub_API/master/Domain_Fields_Extension.owl#Gross_anatomy -->
+
+    <owl:Class rdf:about="&Domain_fields;Gross_anatomy">
+        <rdfs:subClassOf rdf:resource="&Domain_fields;Anatomy"/>
+    </owl:Class>
+    
+
+
+    <!-- https://raw.github.com/ontohub/OOR_Ontohub_API/master/Domain_Fields_Extension.owl#HapMap_Project -->
+
+    <owl:Class rdf:about="&Domain_fields;HapMap_Project">
+        <rdfs:subClassOf rdf:resource="&Domain_fields;Genomics"/>
+    </owl:Class>
+    
+
+
+    <!-- https://raw.github.com/ontohub/OOR_Ontohub_API/master/Domain_Fields_Extension.owl#Health_related_space -->
+
+    <owl:Class rdf:about="&Domain_fields;Health_related_space">
+        <rdfs:subClassOf rdf:resource="&Domain_fields;Physical_space"/>
+    </owl:Class>
+    
+
+
+    <!-- https://raw.github.com/ontohub/OOR_Ontohub_API/master/Domain_Fields_Extension.owl#Hematology -->
+
+    <owl:Class rdf:about="&Domain_fields;Hematology">
+        <rdfs:subClassOf rdf:resource="&Domain_Fields_Core;Medicine"/>
+    </owl:Class>
+    
+
+
+    <!-- https://raw.github.com/ontohub/OOR_Ontohub_API/master/Domain_Fields_Extension.owl#Histocytochemistry -->
+
+    <owl:Class rdf:about="&Domain_fields;Histocytochemistry">
+        <rdfs:subClassOf rdf:resource="&Domain_Fields_Core;Biochemistry"/>
+    </owl:Class>
+    
+
+
+    <!-- https://raw.github.com/ontohub/OOR_Ontohub_API/master/Domain_Fields_Extension.owl#Human_Genome_Project -->
+
+    <owl:Class rdf:about="&Domain_fields;Human_Genome_Project">
+        <rdfs:subClassOf rdf:resource="&Domain_fields;Genomics"/>
+    </owl:Class>
+    
+
+
+    <!-- https://raw.github.com/ontohub/OOR_Ontohub_API/master/Domain_Fields_Extension.owl#Human_developmental_anatomy -->
+
+    <owl:Class rdf:about="&Domain_fields;Human_developmental_anatomy">
+        <rdfs:subClassOf rdf:resource="&Domain_fields;Animal_gross_anatomy"/>
+    </owl:Class>
+    
+
+
+    <!-- https://raw.github.com/ontohub/OOR_Ontohub_API/master/Domain_Fields_Extension.owl#Hydrobiology -->
+
+    <owl:Class rdf:about="&Domain_fields;Hydrobiology">
+        <rdfs:subClassOf rdf:resource="&Domain_fields;Ecology"/>
+    </owl:Class>
+    
+
+
+    <!-- https://raw.github.com/ontohub/OOR_Ontohub_API/master/Domain_Fields_Extension.owl#Hydrology -->
+
+    <owl:Class rdf:about="&Domain_fields;Hydrology">
+        <rdfs:subClassOf rdf:resource="&Domain_fields;Ecology"/>
+    </owl:Class>
+    
+
+
+    <!-- https://raw.github.com/ontohub/OOR_Ontohub_API/master/Domain_Fields_Extension.owl#Immunochemistry -->
+
+    <owl:Class rdf:about="&Domain_fields;Immunochemistry">
+        <rdfs:subClassOf rdf:resource="&Domain_Fields_Core;Biochemistry"/>
+    </owl:Class>
+    
+
+
+    <!-- https://raw.github.com/ontohub/OOR_Ontohub_API/master/Domain_Fields_Extension.owl#Immunohistochemistry -->
+
+    <owl:Class rdf:about="&Domain_fields;Immunohistochemistry">
+        <rdfs:subClassOf rdf:resource="&Domain_fields;Immunochemistry"/>
+    </owl:Class>
+    
+
+
+    <!-- https://raw.github.com/ontohub/OOR_Ontohub_API/master/Domain_Fields_Extension.owl#Immunology -->
+
+    <owl:Class rdf:about="&Domain_fields;Immunology">
+        <rdfs:subClassOf rdf:resource="&Domain_Fields_Core;Medicine"/>
+    </owl:Class>
+    
+
+
+    <!-- https://raw.github.com/ontohub/OOR_Ontohub_API/master/Domain_Fields_Extension.owl#Industrial_design -->
+
+    <owl:Class rdf:about="&Domain_fields;Industrial_design">
+        <rdfs:subClassOf rdf:resource="&Domain_fields;Technological_design"/>
+    </owl:Class>
+    
+
+
+    <!-- https://raw.github.com/ontohub/OOR_Ontohub_API/master/Domain_Fields_Extension.owl#Infectology -->
+
+    <owl:Class rdf:about="&Domain_fields;Infectology">
+        <rdfs:subClassOf rdf:resource="&Domain_Fields_Core;Medicine"/>
+    </owl:Class>
+    
+
+
+    <!-- https://raw.github.com/ontohub/OOR_Ontohub_API/master/Domain_Fields_Extension.owl#Infrastructure_architecture -->
+
+    <owl:Class rdf:about="&Domain_fields;Infrastructure_architecture">
+        <rdfs:subClassOf rdf:resource="&Domain_fields;Architectural_design"/>
+    </owl:Class>
+    
+
+
+    <!-- https://raw.github.com/ontohub/OOR_Ontohub_API/master/Domain_Fields_Extension.owl#Interior_design -->
+
+    <owl:Class rdf:about="&Domain_fields;Interior_design">
+        <rdfs:subClassOf rdf:resource="&Domain_fields;Building_architecture"/>
+    </owl:Class>
+    
+
+
+    <!-- https://raw.github.com/ontohub/OOR_Ontohub_API/master/Domain_Fields_Extension.owl#Landscape_design -->
+
+    <owl:Class rdf:about="&Domain_fields;Landscape_design">
+        <rdfs:subClassOf rdf:resource="&Domain_fields;Architectural_design"/>
+    </owl:Class>
+    
+
+
+    <!-- https://raw.github.com/ontohub/OOR_Ontohub_API/master/Domain_Fields_Extension.owl#Marine_Biology -->
+
+    <owl:Class rdf:about="&Domain_fields;Marine_Biology">
+        <rdfs:subClassOf rdf:resource="&Domain_fields;Hydrobiology"/>
+    </owl:Class>
+    
+
+
+    <!-- https://raw.github.com/ontohub/OOR_Ontohub_API/master/Domain_Fields_Extension.owl#Mathematical_space -->
+
+    <owl:Class rdf:about="&Domain_fields;Mathematical_space">
+        <rdfs:subClassOf rdf:resource="&Domain_Fields_Core;Space"/>
+    </owl:Class>
+    
+
+
+    <!-- https://raw.github.com/ontohub/OOR_Ontohub_API/master/Domain_Fields_Extension.owl#Medical_genetics -->
+
+    <owl:Class rdf:about="&Domain_fields;Medical_genetics">
+        <rdfs:subClassOf rdf:resource="&Domain_fields;Genetics"/>
+    </owl:Class>
+    
+
+
+    <!-- https://raw.github.com/ontohub/OOR_Ontohub_API/master/Domain_Fields_Extension.owl#Medical_imaging -->
+
+    <owl:Class rdf:about="&Domain_fields;Medical_imaging">
+        <rdfs:subClassOf rdf:resource="&Domain_Fields_Core;Medical_diagnostic_and_treatment_technology"/>
+        <rdfs:subClassOf rdf:resource="&Domain_fields;Health_related_space"/>
+    </owl:Class>
+    
+
+
+    <!-- https://raw.github.com/ontohub/OOR_Ontohub_API/master/Domain_Fields_Extension.owl#Mereological -->
+
+    <owl:Class rdf:about="&Domain_fields;Mereological">
+        <rdfs:subClassOf rdf:resource="&Domain_fields;Spatial_relation"/>
+    </owl:Class>
+    
+
+
+    <!-- https://raw.github.com/ontohub/OOR_Ontohub_API/master/Domain_Fields_Extension.owl#Metabolomics -->
+
+    <owl:Class rdf:about="&Domain_fields;Metabolomics">
+        <rdfs:subClassOf rdf:resource="&Domain_Fields_Core;Biochemistry"/>
+    </owl:Class>
+    
+
+
+    <!-- https://raw.github.com/ontohub/OOR_Ontohub_API/master/Domain_Fields_Extension.owl#Metagenomics -->
+
+    <owl:Class rdf:about="&Domain_fields;Metagenomics">
+        <rdfs:subClassOf rdf:resource="&Domain_fields;Genomics"/>
+    </owl:Class>
+    
+
+
+    <!-- https://raw.github.com/ontohub/OOR_Ontohub_API/master/Domain_Fields_Extension.owl#Metrics -->
+
+    <owl:Class rdf:about="&Domain_fields;Metrics">
+        <rdfs:subClassOf rdf:resource="&Domain_fields;Topological_space"/>
+    </owl:Class>
+    
+
+
+    <!-- https://raw.github.com/ontohub/OOR_Ontohub_API/master/Domain_Fields_Extension.owl#Microbial_anatomy -->
+
+    <owl:Class rdf:about="&Domain_fields;Microbial_anatomy">
+        <rdfs:subClassOf rdf:resource="&Domain_fields;Gross_anatomy"/>
+    </owl:Class>
+    
+
+
+    <!-- https://raw.github.com/ontohub/OOR_Ontohub_API/master/Domain_Fields_Extension.owl#Microbial_genetics -->
+
+    <owl:Class rdf:about="&Domain_fields;Microbial_genetics">
+        <rdfs:subClassOf rdf:resource="&Domain_fields;Genetics"/>
+    </owl:Class>
+    
+
+
+    <!-- https://raw.github.com/ontohub/OOR_Ontohub_API/master/Domain_Fields_Extension.owl#Microbiology -->
+
+    <owl:Class rdf:about="&Domain_fields;Microbiology">
+        <rdfs:subClassOf rdf:resource="&Domain_Fields_Core;Biology"/>
+    </owl:Class>
+    
+
+
+    <!-- https://raw.github.com/ontohub/OOR_Ontohub_API/master/Domain_Fields_Extension.owl#Model_organism_study -->
+
+    <owl:Class rdf:about="&Domain_fields;Model_organism_study">
+        <rdfs:subClassOf rdf:resource="&Domain_Fields_Core;Biology_broad"/>
+    </owl:Class>
+    
+
+
+    <!-- https://raw.github.com/ontohub/OOR_Ontohub_API/master/Domain_Fields_Extension.owl#Molecular_and_Cellular_Pathology -->
+
+    <owl:Class rdf:about="&Domain_fields;Molecular_and_Cellular_Pathology">
+        <rdfs:subClassOf rdf:resource="&Domain_Fields_Core;Medicine"/>
+    </owl:Class>
+    
+
+
+    <!-- https://raw.github.com/ontohub/OOR_Ontohub_API/master/Domain_Fields_Extension.owl#Molecular_biology -->
+
+    <owl:Class rdf:about="&Domain_fields;Molecular_biology">
+        <rdfs:subClassOf rdf:resource="&Domain_Fields_Core;Biochemistry"/>
+    </owl:Class>
+    
+
+
+    <!-- https://raw.github.com/ontohub/OOR_Ontohub_API/master/Domain_Fields_Extension.owl#Molecular_epidemiology -->
+
+    <owl:Class rdf:about="&Domain_fields;Molecular_epidemiology">
+        <rdfs:subClassOf rdf:resource="&Domain_fields;Molecular_medicine"/>
+    </owl:Class>
+    
+
+
+    <!-- https://raw.github.com/ontohub/OOR_Ontohub_API/master/Domain_Fields_Extension.owl#Molecular_medicine -->
+
+    <owl:Class rdf:about="&Domain_fields;Molecular_medicine">
+        <rdfs:subClassOf rdf:resource="&Domain_fields;Molecular_biology"/>
+    </owl:Class>
+    
+
+
+    <!-- https://raw.github.com/ontohub/OOR_Ontohub_API/master/Domain_Fields_Extension.owl#Molecular_pathology -->
+
+    <owl:Class rdf:about="&Domain_fields;Molecular_pathology">
+        <rdfs:subClassOf rdf:resource="&Domain_fields;Molecular_medicine"/>
+    </owl:Class>
+    
+
+
+    <!-- https://raw.github.com/ontohub/OOR_Ontohub_API/master/Domain_Fields_Extension.owl#Mouse_anatomy -->
+
+    <owl:Class rdf:about="&Domain_fields;Mouse_anatomy">
+        <rdfs:subClassOf rdf:resource="&Domain_fields;Animal_gross_anatomy"/>
+    </owl:Class>
+    
+
+
+    <!-- https://raw.github.com/ontohub/OOR_Ontohub_API/master/Domain_Fields_Extension.owl#Mouse_study -->
+
+    <owl:Class rdf:about="&Domain_fields;Mouse_study">
+        <rdfs:subClassOf rdf:resource="&Domain_fields;Model_organism_study"/>
+    </owl:Class>
+    
+
+
+    <!-- https://raw.github.com/ontohub/OOR_Ontohub_API/master/Domain_Fields_Extension.owl#Navigation -->
+
+    <owl:Class rdf:about="&Domain_fields;Navigation">
+        <rdfs:subClassOf rdf:resource="&Domain_fields;Spatial_intentionality"/>
+    </owl:Class>
+    
+
+
+    <!-- https://raw.github.com/ontohub/OOR_Ontohub_API/master/Domain_Fields_Extension.owl#Nephrology -->
+
+    <owl:Class rdf:about="&Domain_fields;Nephrology">
+        <rdfs:subClassOf rdf:resource="&Domain_Fields_Core;Medicine"/>
+    </owl:Class>
+    
+
+
+    <!-- https://raw.github.com/ontohub/OOR_Ontohub_API/master/Domain_Fields_Extension.owl#Neurobiology -->
+
+    <owl:Class rdf:about="&Domain_fields;Neurobiology">
+        <rdfs:subClassOf rdf:resource="&Domain_Fields_Core;Biology"/>
+    </owl:Class>
+    
+
+
+    <!-- https://raw.github.com/ontohub/OOR_Ontohub_API/master/Domain_Fields_Extension.owl#Neurochemistry -->
+
+    <owl:Class rdf:about="&Domain_fields;Neurochemistry">
+        <rdfs:subClassOf rdf:resource="&Domain_Fields_Core;Biochemistry"/>
+    </owl:Class>
+    
+
+
+    <!-- https://raw.github.com/ontohub/OOR_Ontohub_API/master/Domain_Fields_Extension.owl#Neurology -->
+
+    <owl:Class rdf:about="&Domain_fields;Neurology">
+        <rdfs:subClassOf rdf:resource="&Domain_Fields_Core;Medicine"/>
+    </owl:Class>
+    
+
+
+    <!-- https://raw.github.com/ontohub/OOR_Ontohub_API/master/Domain_Fields_Extension.owl#Neuropharmacology -->
+
+    <owl:Class rdf:about="&Domain_fields;Neuropharmacology">
+        <rdfs:subClassOf rdf:resource="&Domain_fields;Pharmacology"/>
+    </owl:Class>
+    
+
+
+    <!-- https://raw.github.com/ontohub/OOR_Ontohub_API/master/Domain_Fields_Extension.owl#Neuroscience -->
+
+    <owl:Class rdf:about="&Domain_fields;Neuroscience">
+        <rdfs:subClassOf rdf:resource="&Domain_Fields_Core;Biology_broad"/>
+    </owl:Class>
+    
+
+
+    <!-- https://raw.github.com/ontohub/OOR_Ontohub_API/master/Domain_Fields_Extension.owl#Nutrigenomics -->
+
+    <owl:Class rdf:about="&Domain_fields;Nutrigenomics">
+        <rdfs:subClassOf rdf:resource="&Domain_fields;Genomics"/>
+    </owl:Class>
+    
+
+
+    <!-- https://raw.github.com/ontohub/OOR_Ontohub_API/master/Domain_Fields_Extension.owl#Obstetrics_and_Gynaecology -->
+
+    <owl:Class rdf:about="&Domain_fields;Obstetrics_and_Gynaecology">
+        <rdfs:subClassOf rdf:resource="&Domain_Fields_Core;Medicine"/>
+    </owl:Class>
+    
+
+
+    <!-- https://raw.github.com/ontohub/OOR_Ontohub_API/master/Domain_Fields_Extension.owl#Oncology -->
+
+    <owl:Class rdf:about="&Domain_fields;Oncology">
+        <rdfs:subClassOf rdf:resource="&Domain_Fields_Core;Medicine"/>
+    </owl:Class>
+    
+
+
+    <!-- https://raw.github.com/ontohub/OOR_Ontohub_API/master/Domain_Fields_Extension.owl#Otolaryngology -->
+
+    <owl:Class rdf:about="&Domain_fields;Otolaryngology">
+        <rdfs:subClassOf rdf:resource="&Domain_Fields_Core;Medicine"/>
+    </owl:Class>
+    
+
+
+    <!-- https://raw.github.com/ontohub/OOR_Ontohub_API/master/Domain_Fields_Extension.owl#Paediatrics_and_Child_Health -->
+
+    <owl:Class rdf:about="&Domain_fields;Paediatrics_and_Child_Health">
+        <rdfs:subClassOf rdf:resource="&Domain_Fields_Core;Medicine"/>
+    </owl:Class>
+    
+
+
+    <!-- https://raw.github.com/ontohub/OOR_Ontohub_API/master/Domain_Fields_Extension.owl#Parasitology -->
+
+    <owl:Class rdf:about="&Domain_fields;Parasitology">
+        <rdfs:subClassOf rdf:resource="&Domain_Fields_Core;Biology"/>
+    </owl:Class>
+    
+
+
+    <!-- https://raw.github.com/ontohub/OOR_Ontohub_API/master/Domain_Fields_Extension.owl#Pharmaceutical_chemistry -->
+
+    <owl:Class rdf:about="&Domain_fields;Pharmaceutical_chemistry">
+        <rdfs:subClassOf rdf:resource="&Domain_fields;Pharmacology"/>
+    </owl:Class>
+    
+
+
+    <!-- https://raw.github.com/ontohub/OOR_Ontohub_API/master/Domain_Fields_Extension.owl#Pharmacoepidemiology -->
+
+    <owl:Class rdf:about="&Domain_fields;Pharmacoepidemiology">
+        <rdfs:subClassOf rdf:resource="&Domain_fields;Pharmacology"/>
+    </owl:Class>
+    
+
+
+    <!-- https://raw.github.com/ontohub/OOR_Ontohub_API/master/Domain_Fields_Extension.owl#Pharmacogenetics -->
+
+    <owl:Class rdf:about="&Domain_fields;Pharmacogenetics">
+        <rdfs:subClassOf rdf:resource="&Domain_fields;Pharmacology"/>
+    </owl:Class>
+    
+
+
+    <!-- https://raw.github.com/ontohub/OOR_Ontohub_API/master/Domain_Fields_Extension.owl#Pharmacognosy -->
+
+    <owl:Class rdf:about="&Domain_fields;Pharmacognosy">
+        <rdfs:subClassOf rdf:resource="&Domain_fields;Pharmacology"/>
+    </owl:Class>
+    
+
+
+    <!-- https://raw.github.com/ontohub/OOR_Ontohub_API/master/Domain_Fields_Extension.owl#Pharmacology -->
+
+    <owl:Class rdf:about="&Domain_fields;Pharmacology">
+        <rdfs:subClassOf rdf:resource="&Domain_Fields_Core;Biology_broad"/>
+    </owl:Class>
+    
+
+
+    <!-- https://raw.github.com/ontohub/OOR_Ontohub_API/master/Domain_Fields_Extension.owl#Phenomics -->
+
+    <owl:Class rdf:about="&Domain_fields;Phenomics">
+        <rdfs:subClassOf rdf:resource="&Domain_Fields_Core;Biology_broad"/>
+    </owl:Class>
+    
+
+
+    <!-- https://raw.github.com/ontohub/OOR_Ontohub_API/master/Domain_Fields_Extension.owl#Photobiology -->
+
+    <owl:Class rdf:about="&Domain_fields;Photobiology">
+        <rdfs:subClassOf rdf:resource="&Domain_Fields_Core;Biology"/>
+    </owl:Class>
+    
+
+
+    <!-- https://raw.github.com/ontohub/OOR_Ontohub_API/master/Domain_Fields_Extension.owl#Physical_space -->
+
+    <owl:Class rdf:about="&Domain_fields;Physical_space">
+        <rdfs:subClassOf rdf:resource="&Domain_Fields_Core;Space"/>
+    </owl:Class>
+    
+
+
+    <!-- https://raw.github.com/ontohub/OOR_Ontohub_API/master/Domain_Fields_Extension.owl#Physiology -->
+
+    <owl:Class rdf:about="&Domain_fields;Physiology">
+        <rdfs:subClassOf rdf:resource="&Domain_Fields_Core;Biology_broad"/>
+    </owl:Class>
+    
+
+
+    <!-- https://raw.github.com/ontohub/OOR_Ontohub_API/master/Domain_Fields_Extension.owl#Plant_anatomy -->
+
+    <owl:Class rdf:about="&Domain_fields;Plant_anatomy">
+        <rdfs:subClassOf rdf:resource="&Domain_fields;Gross_anatomy"/>
+    </owl:Class>
+    
+
+
+    <!-- https://raw.github.com/ontohub/OOR_Ontohub_API/master/Domain_Fields_Extension.owl#Plant_developmental_biology -->
+
+    <owl:Class rdf:about="&Domain_fields;Plant_developmental_biology">
+        <rdfs:subClassOf rdf:resource="&Domain_fields;Developmental_biology"/>
+    </owl:Class>
+    
+
+
+    <!-- https://raw.github.com/ontohub/OOR_Ontohub_API/master/Domain_Fields_Extension.owl#Population_genetics -->
+
+    <owl:Class rdf:about="&Domain_fields;Population_genetics">
+        <rdfs:subClassOf rdf:resource="&Domain_fields;Genetics"/>
+    </owl:Class>
+    
+
+
+    <!-- https://raw.github.com/ontohub/OOR_Ontohub_API/master/Domain_Fields_Extension.owl#Position -->
+
+    <owl:Class rdf:about="&Domain_fields;Position">
+        <rdfs:subClassOf rdf:resource="&Domain_fields;Spatial_relation"/>
+    </owl:Class>
+    
+
+
+    <!-- https://raw.github.com/ontohub/OOR_Ontohub_API/master/Domain_Fields_Extension.owl#Proteomics -->
+
+    <owl:Class rdf:about="&Domain_fields;Proteomics">
+        <rdfs:subClassOf rdf:resource="&Domain_Fields_Core;Biochemistry"/>
+    </owl:Class>
+    
+
+
+    <!-- https://raw.github.com/ontohub/OOR_Ontohub_API/master/Domain_Fields_Extension.owl#Psychiatry -->
+
+    <owl:Class rdf:about="&Domain_fields;Psychiatry">
+        <rdfs:subClassOf rdf:resource="&Domain_Fields_Core;Medicine"/>
+    </owl:Class>
+    
+
+
+    <!-- https://raw.github.com/ontohub/OOR_Ontohub_API/master/Domain_Fields_Extension.owl#Psychopharmacology -->
+
+    <owl:Class rdf:about="&Domain_fields;Psychopharmacology">
+        <rdfs:subClassOf rdf:resource="&Domain_fields;Pharmacology"/>
+    </owl:Class>
+    
+
+
+    <!-- https://raw.github.com/ontohub/OOR_Ontohub_API/master/Domain_Fields_Extension.owl#Qualitative -->
+
+    <owl:Class rdf:about="&Domain_fields;Qualitative">
+        <rdfs:subClassOf rdf:resource="&Domain_fields;Spatial_relation"/>
+    </owl:Class>
+    
+
+
+    <!-- https://raw.github.com/ontohub/OOR_Ontohub_API/master/Domain_Fields_Extension.owl#Quantitative_space_dimension -->
+
+    <owl:Class rdf:about="&Domain_fields;Quantitative_space_dimension">
+        <rdfs:subClassOf rdf:resource="&Domain_fields;Space_dimension"/>
+    </owl:Class>
+    
+
+
+    <!-- https://raw.github.com/ontohub/OOR_Ontohub_API/master/Domain_Fields_Extension.owl#Radiobiology -->
+
+    <owl:Class rdf:about="&Domain_fields;Radiobiology">
+        <rdfs:subClassOf rdf:resource="&Domain_Fields_Core;Biology"/>
+    </owl:Class>
+    
+
+
+    <!-- https://raw.github.com/ontohub/OOR_Ontohub_API/master/Domain_Fields_Extension.owl#Rheumatology -->
+
+    <owl:Class rdf:about="&Domain_fields;Rheumatology">
+        <rdfs:subClassOf rdf:resource="&Domain_Fields_Core;Medicine"/>
+    </owl:Class>
+    
+
+
+    <!-- https://raw.github.com/ontohub/OOR_Ontohub_API/master/Domain_Fields_Extension.owl#Robotics -->
+
+    <owl:Class rdf:about="&Domain_fields;Robotics">
+        <rdfs:subClassOf rdf:resource="&Domain_fields;Embedded_and_cyber-physical_system_design"/>
+    </owl:Class>
+    
+
+
+    <!-- https://raw.github.com/ontohub/OOR_Ontohub_API/master/Domain_Fields_Extension.owl#Sensor_design -->
+
+    <owl:Class rdf:about="&Domain_fields;Sensor_design">
+        <rdfs:subClassOf rdf:resource="&Domain_fields;Embedded_and_cyber-physical_system_design"/>
+    </owl:Class>
+    
+
+
+    <!-- https://raw.github.com/ontohub/OOR_Ontohub_API/master/Domain_Fields_Extension.owl#Shape -->
+
+    <owl:Class rdf:about="&Domain_fields;Shape">
+        <rdfs:subClassOf rdf:resource="&Domain_fields;Space_dimension"/>
+    </owl:Class>
+    
+
+
+    <!-- https://raw.github.com/ontohub/OOR_Ontohub_API/master/Domain_Fields_Extension.owl#Sociobiology -->
+
+    <owl:Class rdf:about="&Domain_fields;Sociobiology">
+        <rdfs:subClassOf rdf:resource="&Domain_Fields_Core;Biology"/>
+    </owl:Class>
+    
+
+
+    <!-- https://raw.github.com/ontohub/OOR_Ontohub_API/master/Domain_Fields_Extension.owl#Space_dimension -->
+
+    <owl:Class rdf:about="&Domain_fields;Space_dimension">
+        <rdfs:subClassOf rdf:resource="&Domain_Fields_Core;Space"/>
+    </owl:Class>
+    
+
+
+    <!-- https://raw.github.com/ontohub/OOR_Ontohub_API/master/Domain_Fields_Extension.owl#Space_verbalisation -->
+
+    <owl:Class rdf:about="&Domain_fields;Space_verbalisation">
+        <rdfs:subClassOf rdf:resource="&Domain_fields;Spatial_communication"/>
+    </owl:Class>
+    
+
+
+    <!-- https://raw.github.com/ontohub/OOR_Ontohub_API/master/Domain_Fields_Extension.owl#Spatial_communication -->
+
+    <owl:Class rdf:about="&Domain_fields;Spatial_communication">
+        <rdfs:subClassOf rdf:resource="&Domain_fields;Spatial_intentionality"/>
+    </owl:Class>
+    
+
+
+    <!-- https://raw.github.com/ontohub/OOR_Ontohub_API/master/Domain_Fields_Extension.owl#Spatial_intentionality -->
+
+    <owl:Class rdf:about="&Domain_fields;Spatial_intentionality">
+        <rdfs:subClassOf rdf:resource="&Domain_fields;Cognitive_space"/>
+    </owl:Class>
+    
+
+
+    <!-- https://raw.github.com/ontohub/OOR_Ontohub_API/master/Domain_Fields_Extension.owl#Spatial_relation -->
+
+    <owl:Class rdf:about="&Domain_fields;Spatial_relation">
+        <rdfs:subClassOf rdf:resource="&Domain_fields;Space_dimension"/>
+    </owl:Class>
+    
+
+
+    <!-- https://raw.github.com/ontohub/OOR_Ontohub_API/master/Domain_Fields_Extension.owl#Surgery -->
+
+    <owl:Class rdf:about="&Domain_fields;Surgery">
+        <rdfs:subClassOf rdf:resource="&Domain_Fields_Core;Medicine"/>
+    </owl:Class>
+    
+
+
+    <!-- https://raw.github.com/ontohub/OOR_Ontohub_API/master/Domain_Fields_Extension.owl#Synthetic_Biology -->
+
+    <owl:Class rdf:about="&Domain_fields;Synthetic_Biology">
+        <rdfs:subClassOf rdf:resource="&Domain_Fields_Core;Biology"/>
+    </owl:Class>
+    
+
+
+    <!-- https://raw.github.com/ontohub/OOR_Ontohub_API/master/Domain_Fields_Extension.owl#Taxonomy_and_systematics -->
+
+    <owl:Class rdf:about="&Domain_fields;Taxonomy_and_systematics">
+        <rdfs:subClassOf rdf:resource="&Domain_fields;Evolutionary_Biology"/>
+    </owl:Class>
+    
+
+
+    <!-- https://raw.github.com/ontohub/OOR_Ontohub_API/master/Domain_Fields_Extension.owl#Technological_design -->
+
+    <owl:Class rdf:about="&Domain_fields;Technological_design">
+        <rdfs:subClassOf rdf:resource="&Domain_fields;Architectural_and_technological_design"/>
+    </owl:Class>
+    
+
+
+    <!-- https://raw.github.com/ontohub/OOR_Ontohub_API/master/Domain_Fields_Extension.owl#Teratology -->
+
+    <owl:Class rdf:about="&Domain_fields;Teratology">
+        <rdfs:subClassOf rdf:resource="&Domain_fields;Embryology"/>
+    </owl:Class>
+    
+
+
+    <!-- https://raw.github.com/ontohub/OOR_Ontohub_API/master/Domain_Fields_Extension.owl#Topological_space -->
+
+    <owl:Class rdf:about="&Domain_fields;Topological_space">
+        <rdfs:subClassOf rdf:resource="&Domain_fields;Mathematical_space"/>
+    </owl:Class>
+    
+
+
+    <!-- https://raw.github.com/ontohub/OOR_Ontohub_API/master/Domain_Fields_Extension.owl#Toxicology -->
+
+    <owl:Class rdf:about="&Domain_fields;Toxicology">
+        <rdfs:subClassOf rdf:resource="&Domain_fields;Pharmacology"/>
+    </owl:Class>
+    
+
+
+    <!-- https://raw.github.com/ontohub/OOR_Ontohub_API/master/Domain_Fields_Extension.owl#Urbanism -->
+
+    <owl:Class rdf:about="&Domain_fields;Urbanism">
+        <rdfs:subClassOf rdf:resource="&Domain_fields;Architectural_design"/>
+    </owl:Class>
+    
+
+
+    <!-- https://raw.github.com/ontohub/OOR_Ontohub_API/master/Domain_Fields_Extension.owl#Urology -->
+
+    <owl:Class rdf:about="&Domain_fields;Urology">
+        <rdfs:subClassOf rdf:resource="&Domain_Fields_Core;Medicine"/>
+    </owl:Class>
+    
+
+
+    <!-- https://raw.github.com/ontohub/OOR_Ontohub_API/master/Domain_Fields_Extension.owl#Vector_space -->
+
+    <owl:Class rdf:about="&Domain_fields;Vector_space">
+        <rdfs:subClassOf rdf:resource="&Domain_fields;Mathematical_space"/>
+    </owl:Class>
+    
+
+
+    <!-- https://raw.github.com/ontohub/OOR_Ontohub_API/master/Domain_Fields_Extension.owl#Water_Supply -->
+
+    <owl:Class rdf:about="&Domain_fields;Water_Supply">
+        <rdfs:subClassOf rdf:resource="&Domain_fields;Hydrology"/>
+    </owl:Class>
+    
+
+
+    <!-- https://raw.github.com/ontohub/OOR_Ontohub_API/master/Domain_Fields_Extension.owl#Web_space -->
+
+    <owl:Class rdf:about="&Domain_fields;Web_space">
+        <rdfs:subClassOf rdf:resource="&Domain_Fields_Core;Space"/>
+    </owl:Class>
+    
+
+
+    <!-- https://raw.github.com/ontohub/OOR_Ontohub_API/master/Domain_Fields_Extension.owl#Yeast_study -->
+
+    <owl:Class rdf:about="&Domain_fields;Yeast_study">
+        <rdfs:subClassOf rdf:resource="&Domain_fields;Model_organism_study"/>
+    </owl:Class>
+    
+
+
+    <!-- https://raw.github.com/ontohub/OOR_Ontohub_API/master/Domain_Fields_Extension.owl#Zoology -->
+
+    <owl:Class rdf:about="&Domain_fields;Zoology">
+        <rdfs:subClassOf rdf:resource="&Domain_Fields_Core;Biology"/>
+    </owl:Class>
+</rdf:RDF>
+
+
+
+<!-- Generated by the OWL API (version 3.4.2) http://owlapi.sourceforge.net -->
+
