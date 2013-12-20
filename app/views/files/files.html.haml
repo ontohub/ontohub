@@ -22,8 +22,8 @@
   - if @info[:type] == :file
     = link_to 'Download file', fancy_repository_path(repository, path: path, ref: oid, action: :download), class: 'btn btn-default btn-sm'
   - if can? :write, repository
-    = link_to new_repository_file_path(repository, 'upload_file[path]' => params[:path]), class: 'btn btn-default btn-sm' do
-      = @info[:type] == :file ? 'Update file' : 'Upload file'
+    = link_to new_repository_file_path(repository, {'upload_file[target_directory]' => dirpath(repository)}.merge(update_file)), class: 'btn btn-default btn-sm' do
+      = file_exists? ? 'Update file' : 'Upload file'
   = link_to fancy_repository_path(repository, action: :history, path: path, ref: ref), class: 'btn btn-default btn-sm' do
     = @info[:type] == :file ? 'History of this file' : 'History of this directory'
 

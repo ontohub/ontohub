@@ -1,8 +1,9 @@
 %h1 Upload file to repository
 
 = simple_form_for @file, url: repository_files_path(repository), html: { class: 'form-horizontal', multipart: true } do |f|
-  = f.input :path
   = f.input :file, as: :file
+  = f.input :target_directory
+  = f.input :target_filename
   = f.input :message, as: :text, input_html: { rows: 5 }
 
   = f.submit 'Upload File', class: 'btn btn-primary'

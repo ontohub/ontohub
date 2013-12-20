@@ -55,7 +55,8 @@ describe FilesController do
         describe "with file" do
           before {
             post :create, repository_id: repository.to_param, upload_file: {
-              path:    'my_path',
+              target_directory: 'my_dir',
+              target_filename:  'my_file',
               message: 'commit message',
               file:    Rack::Test::UploadedFile.new(Rails.root.join('test','fixtures','ontologies','owl','pizza.owl'),'image/jpg')
             }

@@ -1,6 +1,12 @@
 class AddCycleCheckerToEEdges < ActiveRecord::Migration
-  extend Dagnabit::Migration
-  def change
+  include Dagnabit::Migration
+
+  def up
+    create_cycle_check_trigger :e_edges
   end
-  create_cycle_check_trigger :e_edges
+
+  def down
+    drop_cycle_check_trigger :e_edges
+  end
+
 end
