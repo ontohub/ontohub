@@ -1,5 +1,6 @@
 class Repository < ActiveRecord::Base
 
+  require "uri"
   include Permissionable
   include Repository::Ontologies
   include Repository::GitRepositories
@@ -45,7 +46,13 @@ class Repository < ActiveRecord::Base
       err = v.state+": "+v.last_error.to_s
       errlines = err.split("\n")
       if !(ind=errlines.index("*** Error:")).nil? and !errlines[ind+1].blank?
-        errlines[ind+1]
+        out = errlines[ind+1]
+        i=2
+        while !errlines[ind+i].include?("hets: user error") do
+          out += " "+errlines[ind+i] 
+          i+=1
+        end
+        out.sub(URI.regexp,"...").sub(/ \/[A-Za-z0-9\/.]*/," ...")
       elsif err.include?("exited with status")
         then err[0,50]+" ... "+err.match("exited with status.*")[0]
       else errlines.first
