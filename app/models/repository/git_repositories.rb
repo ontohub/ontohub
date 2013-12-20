@@ -47,13 +47,27 @@ module Repository::GitRepositories
     version
   end
 
-  def save_ontology(commit_oid, filepath, user=nil, iri=nil)
-    return unless Ontology::FILE_EXTENSIONS.include?(File.extname(filepath))
+  def save_file_only(tmp_file, filepath, message, user)
+    commit = nil
+    name = user ? user.name : Settings.fallback_commit_user
+    email = user ? user.email : Settings.fallback_commit_email
+    git.add_file({email: email, name: name}, tmp_file, filepath, message) do |commit_oid|
+      commit = commit_oid
+    end
+    touch
+    commit
+  end
 
+  def save_ontology(commit_oid, filepath, user=nil, iri=nil)
+    # we expect that this method is only called, when the ontology is 'present'
+
+    return unless Ontology::FILE_EXTENSIONS.include?(File.extname(filepath))
+    version = nil
     basepath = File.basepath(filepath)
     o = ontologies.without_parent.where(basepath: basepath).first
 
     if o
+      o.present = true
       unless o.versions.find_by_commit_oid(commit_oid)
         # update existing ontology
         version = o.versions.build({ :commit_oid => commit_oid, :user => user }, { without_protection: true })
@@ -71,6 +85,7 @@ module Repository::GitRepositories
       o.name = filepath.split('/')[-1].split(".")[0].capitalize
 
       o.repository = self
+      o.present = true
       o.save!
       version = o.versions.build({ :commit_oid => commit_oid, :user => user }, { without_protection: true })
       version.save!

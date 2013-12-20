@@ -6,49 +6,82 @@ module Ontology::Import
 
     transaction do
       code_doc = code_io ? Nokogiri::XML(code_io) : nil
-      
+      self.present     = true
       root             = nil
       ontology         = nil
       logic_callback   = nil
       link             = nil
       ontologies_count = 0
       versions = []
-      
+
       OntologyParser.parse io,
         root: Proc.new { |h|
           root = h
         },
         ontology: Proc.new { |h|
-          ontologies_count += 1
-          
-          if distributed?
-            # generate IRI for sub-ontology
-            child_name = h['name']
-            child_iri  = iri_for_child(child_name)
-            
-            # find or create sub-ontology by IRI
-            ontology   = self.children.find_by_iri(child_iri)
+          child_name = h['name']
+          internal_iri = h['name'][1..-2]
+
+          if h['reference'] == 'true'
+            ontology = Ontology.find_with_iri(internal_iri)
             if ontology.nil?
-
-              ontology = SingleOntology.create!({iri: child_iri,
-                  name: child_name,
-                  basepath: self.basepath,
-                  file_extension: self.file_extension,
-                  repository_id: repository_id},
-                without_protection: true)
-              self.children << ontology
+              ontology = SingleOntology.create!({name: child_name,
+                                                 iri: ExternalRepository.determine_iri(internal_iri),
+                                                 basepath: ExternalRepository.determine_path(internal_iri, :basepath),
+                                                 file_extension: ExternalRepository.determine_path(internal_iri, :extension),
+                                                 present: true,
+                                                 repository_id: ExternalRepository.repository.id},
+                                                 without_protection: true)
             end
-	    
-            version = ontology.versions.build
-            version.user = user
-            version.code_reference = code_reference_for(ontology.name, code_doc)
-
-            versions << version
+            begin
+              commit_oid = ExternalRepository.add_to_repository(
+                internal_iri,
+                "add reference ontology: #{internal_iri}", user)
+              version = ontology.versions.build
+              version.user = user
+              version.do_not_parse!
+              version.commit_oid = commit_oid
+              version.state = 'done'
+              versions << version
+            rescue
+              ontology.present = false
+            end
           else
-            raise "more than one ontology found" if ontologies_count > 1
-            ontology = self
-          end
+            ontologies_count += 1
+            if distributed?
+              # generate IRI for sub-ontology
 
+              child_iri  = iri_for_child(child_name)
+
+              # find or create sub-ontology by IRI
+              ontology   = self.children.find_by_iri(child_iri)
+              if ontology.nil?
+
+                ontology = SingleOntology.create!({iri: child_iri,
+                    name: child_name,
+                    basepath: self.basepath,
+                    file_extension: self.file_extension,
+                    repository_id: repository_id},
+                  without_protection: true)
+                self.children << ontology
+              end
+
+              ontology.present = true
+              version = ontology.versions.build
+              version.user = user
+              version.code_reference = code_reference_for(ontology.name, code_doc)
+
+              versions << version
+            else
+              if ontologies_count > 1
+                raise "more than one ontology found"
+              else
+                ontology = self
+                ontology.present = true
+              end
+            end
+          end
+          ontology.name = ontology.generate_name(h['name'])
           if h['language']
             ontology.language = Language.where(:iri => "http://purl.net/dol/language/#{h['language']}")
               .first_or_create(user: user, name: h['language'])
@@ -57,6 +90,11 @@ module Ontology::Import
             ontology.logic = Logic.where(:iri => "http://purl.net/dol/logics/#{h['logic']}")
             .first_or_create(user: user, name: h['logic'])
           end
+
+          altIri = ontology.alternative_iris.where(iri: internal_iri).
+            first_or_create(ontology: ontology)
+
+          Rails.logger.warn("found IRI: #{altIri.inspect}")
 
           logic_callback = ParsingCallback.determine_for(ontology)
 
@@ -96,6 +134,9 @@ module Ontology::Import
 
             logic_callback.link(h, link)
           end
+        },
+        import: Proc.new { |h|
+          ontology.iri = ExternalRepository.determine_iri(h['library'])
         }
       save!
       versions.each { |version| version.save! }

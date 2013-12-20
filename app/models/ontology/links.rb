@@ -19,9 +19,10 @@ module Ontology::Links
       source_iri = iri_for_child(hash['source'])
       target_iri = iri_for_child(hash['target'])
       
-      source = Ontology.find_by_iri(source_iri) || (raise ArgumentError, "source ontology not found: #{source_iri}")
-      target = Ontology.find_by_iri(target_iri) || (raise ArgumentError, "target ontology not found: #{target_iri}")
-      
+      source = Ontology.find_with_iri(source_iri) || (raise ArgumentError, "source ontology not found: #{source_iri}")
+      target = Ontology.find_with_iri(target_iri) || (raise ArgumentError, "target ontology not found: #{target_iri}")
+      Rails.logger.warn("source: #{source.inspect}")
+      Rails.logger.warn("target: #{target.inspect}")
       
       # linktype
       linktype = hash['type']
@@ -42,8 +43,8 @@ module Ontology::Links
       link = find_or_initialize_by_iri(link_iri)
       link.attributes = {
         name:          link_name, 
-        source:        source,
-        target:        target,
+        source_id:     source.id,
+        target_id:     target.id,
         kind:          kind,
         theorem:       linktype.include?("Thm"),
         proven:        linktype.include?("Proven"),

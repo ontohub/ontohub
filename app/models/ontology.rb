@@ -31,7 +31,9 @@ class Ontology < ActiveRecord::Base
   belongs_to :logic, counter_cache: true
   has_many :source_links, class_name: 'Link', foreign_key: 'source_id', dependent: :destroy
   has_many :target_links, class_name: 'Link', foreign_key: 'target_id', dependent: :destroy
-  attr_accessible :iri, :name, :description, :logic_id, :category_ids, :documentation, :acronym, :file_extension, :projects
+  has_many :alternative_iris, dependent: :destroy
+
+  attr_accessible :iri, :name, :description, :logic_id, :category_ids, :documentation, :acronym, :file_extension, :projects, :present, :alternative_iris
 
   validates_uniqueness_of :iri, :if => :iri_changed?
   validates_format_of :iri, :with => URI::regexp(Settings.allowed_iri_schemes)
@@ -74,9 +76,43 @@ class Ontology < ActiveRecord::Base
     "#{basepath}#{file_extension}"
   end
 
+  def iri_for_child(child_name)
+    child_name = child_name[1..-2] if child_name[0] == '<'
+    child_name.include?("://") ? child_name : "#{iri}?#{child_name}"
+  end
+
   def is?(logic_name)
     self.logic ? (self.logic.name == logic_name) : false
   end
+
+<<<<<<< HEAD
+  def generate_name(name)
+    match = name.match(%r{
+      \A
+      < # angle brackets denote a custom IRI
+      .+
+      (?:/|\#)
+        (?<filename>[^/]+) # Match filename after a slash/hash
+      > # end of IRI
+      \z
+    }x)
+    if match
+      filename = match[:filename].sub(/\.[\w\d]+\z/, '')
+      capitalized_name = filename.split(/([_ ])/).map(&:capitalize).join($1)
+    else
+      name
+    end
+  end
+
+  def self.find_with_iri(iri)
+    ontology = self.find_by_iri(iri)
+    if ontology.nil?
+      ontology = AlternativeIri.find_by_iri(iri).try(:ontology)
+    end
+
+    ontology
+  end
+
 
   protected
 
