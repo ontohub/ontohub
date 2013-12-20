@@ -104,7 +104,6 @@ group :test do
   # Required for integration tests
   gem "capybara"
   gem "capybara-webkit"
-  gem 'database_cleaner'
   gem "launchy"
   
   # Recording of HTTP Requests
@@ -122,6 +121,7 @@ group :development do
 end
 
 group :development, :test do
+  gem 'database_cleaner'
   gem 'byebug'
   gem 'pry-byebug'
   gem 'rspec-rails', '~> 2.0'

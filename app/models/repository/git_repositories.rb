@@ -3,7 +3,7 @@ require 'git_repository'
 module Repository::GitRepositories
   extend ActiveSupport::Concern
 
-  delegate :dir?, to: :git
+  delegate :dir?, :points_through_file?, to: :git
 
   included do
     after_create  :create_and_init_git

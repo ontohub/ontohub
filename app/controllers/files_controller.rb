@@ -86,7 +86,8 @@ class FilesController < ApplicationController
   end
 
   def build_file
-    @file ||= UploadFile.new(params[:upload_file])
+    args = params[:upload_file].merge({repository: repository}) unless params[:upload_file].nil?
+    @file ||= UploadFile.new(args)
   end
 
   def check_read_permissions

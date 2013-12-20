@@ -1,8 +1,0 @@
-%tr
-  %td= metadatum.key
-  %td= metadatum.value
-  %td= fancy_link metadatum.user
-  %td= timestamp metadatum.updated_at
-  %td
-    - if can? :destroy, metadatum
-      = link_to 'delete', [*resource_chain, metadatum], method: :delete, remote: true, confirm: 'Really delete this entry?', class: 'btn btn-default btn-xs'
