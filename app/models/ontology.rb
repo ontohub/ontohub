@@ -85,7 +85,6 @@ class Ontology < ActiveRecord::Base
     self.logic ? (self.logic.name == logic_name) : false
   end
 
-<<<<<<< HEAD
   def generate_name(name)
     match = name.match(%r{
       \A
