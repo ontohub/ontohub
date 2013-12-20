@@ -1,0 +1,6 @@
+- if node
+  %li{id: node.id}
+    %a
+      = node.display_name.gsub(/_/, ' ')
+    %ul 
+      = render partial: 'node', collection: node.children.to_a

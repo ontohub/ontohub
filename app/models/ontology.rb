@@ -70,4 +70,8 @@ class Ontology < ActiveRecord::Base
     "#{basepath}#{file_extension}"
   end
 
+  def is?(logic_name)
+    self.logic ? (self.logic.name == logic_name) : false
+  end
+
 end

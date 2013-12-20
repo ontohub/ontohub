@@ -4,7 +4,7 @@
       %li distributed
       %li= link_to pluralize(ontology.children.count, 'Ontology'), [ontology, :children]
     - elsif ontology.logic
-      %li= link_to ontology.logic.name, ontology.logic
+      %li= link_to ontology.logic.to_s, ontology.logic
     - if ontology.language
       %li= ontology.language
     

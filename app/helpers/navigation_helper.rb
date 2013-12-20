@@ -12,6 +12,7 @@ module NavigationHelper
     pages << [:"Ontology files and related files", [*chain, :tree]]
     pages << [:"Ontology urls",  repository_url_maps_path(resource)]
     pages << [:history,          repository_ref_path(resource, 'master', path: nil, action: :history)]
+    pages << [:errors,           repository_errors_path(resource)]
     pages << [:permissions,      [*chain, :permissions]] if can? :permissions, resource
  
     subnavigation(resource, pages, current_page, [], options)
@@ -31,10 +32,10 @@ module NavigationHelper
 
     if params[:action] != "edit"
       @metadatas = [
-        ['Projects', repository_ontology_projects_path],
-        ['Categories', repository_ontology_categories_path],
-        ['Tasks', repository_ontology_tasks_path],
-        ['License Model', repository_ontology_license_models_path]
+        ['Projects',      [*resource_chain, :projects]],
+        ['Categories',    [*resource_chain, :categories]],
+        ['Tasks',         [*resource_chain, :tasks]],
+        ['License Model', [*resource_chain, :license_models]]
       ]
     end
 
@@ -117,5 +118,21 @@ module NavigationHelper
       link_to title, controller
     end
   end
-  
+
+
+  # used for activating tabs in ontology view
+  def in_subcontroller?(page, current_page)
+    case page
+      when :entities
+        %w(classes sentences).include? controller_name
+      when :metadata
+        in_metadata?
+    end
+  end
+
+  # used for activating tabs in ontology view
+  def in_metadata?
+    %w(projects tasks categories license_models).include? controller_name
+  end
+
 end

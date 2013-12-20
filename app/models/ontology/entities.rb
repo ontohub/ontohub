@@ -41,4 +41,33 @@ module Ontology::Entities
       e.save!
     end
   end
+
+  def delete_edges
+    %i[parent_id child_id].each do |key|
+      EEdge.where(key => self.entities.where(kind: 'Class')).delete_all
+    end
+  end
+
+  def create_entity_tree
+    if !self.is?('OWL2')
+      raise Exception.new('Error: No OWL2')
+    end
+
+    # Delete previous set of categories
+    delete_edges
+    subclasses = self.sentences.where("text LIKE '%SubClassOf%'").select { |sentence| sentence.text.split(" ").size == 4 }
+    transaction do
+      subclasses.each do |s|
+        c1, c2 = s.extract_class_names
+
+        child_id = Entity.where(display_name: c1, ontology_id: s.ontology.id).first.id
+        parent_id = Entity.where(display_name: c2, ontology_id: s.ontology.id).first.id
+
+        EEdge.create! child_id: child_id, parent_id: parent_id
+        if EEdge.where(child_id: child_id, parent_id: parent_id).first.nil?
+          raise Error "Circle Detected"
+        end
+      end
+    end
+  end
 end

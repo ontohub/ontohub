@@ -3,6 +3,6 @@
 = simple_form_for resource, url: resource_path(resource) do |f|
   = f.input :iri
   = f.input :name
-  = f.input :description
   = render :partial => 'categories'
+  = f.input :description
   = f.button :submit, disable_with: t(:wait), class: 'btn btn-primary'
