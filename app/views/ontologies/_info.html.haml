@@ -33,7 +33,7 @@
 %nav.nav_tab_level1
   %ul.nav.nav-tabs
     - @top_level_pages.each do |(page_title, page)|
-      %li{class: page==current_page ? 'active' : nil}
+      %li{class: page==current_page || (in_metadata? && page == :metadata) ? 'active' : nil}
         = link_to page_title, [*resource_chain, page]
   - if %w[entities sentences children].include? controller_name
     %nav.nav_tab_level2
@@ -49,7 +49,7 @@
               = page.to_s.capitalize
               - if count # hide counter if empty
                 %span.badge{:style => count==0 && 'display:none'}= count
-  - if %w(projects tasks categories license_models).include? controller_name
+  - if in_metadata?
     %nav
       %ul.nav.nav-tabs
         - @metadatas.each do |(page_title, page)|
