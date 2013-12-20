@@ -68,7 +68,7 @@ class FilesController < ApplicationController
       if ontology = repository.ontologies.find_by_file(@file.filepath)
         redirect_to edit_repository_ontology_path(repository, ontology)
       else
-        redirect_to fancy_repository_path(repository, path: @file.path)
+        redirect_to fancy_repository_path(repository, path: @file.filepath)
       end
     else
       render :new
