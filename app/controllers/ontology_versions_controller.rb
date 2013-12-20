@@ -9,6 +9,7 @@ class OntologyVersionsController < InheritedResources::Base
   respond_to :json, :xml
 
   before_filter :check_changeable, only: [:new, :create]
+  before_filter :check_read_permissions
 
   # TODO Needs testing !!!
   def show
@@ -48,5 +49,9 @@ class OntologyVersionsController < InheritedResources::Base
     unless parent.changeable?
       redirect_to collection_path, flash: { error: 'There are pending ontology versions.' }
     end
+  end
+
+  def check_read_permissions
+    authorize! :show, parent.repository
   end
 end

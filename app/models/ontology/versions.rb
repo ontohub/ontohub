@@ -7,6 +7,7 @@ module Ontology::Versions
     has_many :versions,
       :dependent  => :destroy,
       :order      => :number,
+      :autosave   => false,
       :class_name => 'OntologyVersion' do
         def current
           reorder('number DESC').first

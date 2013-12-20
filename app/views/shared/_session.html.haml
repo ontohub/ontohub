@@ -1,16 +1,27 @@
-- if user_signed_in?
-  %ul.nav.navbar-nav.navbar-right
+%ul.nav.navbar-nav.navbar-right
+  - if user_signed_in?
     %li.dropdown
       = link_to '#', {class: 'dropdown-toggle', 'data-toggle' => 'dropdown'} do
         #{current_user.name}
         %b.caret
+
       %ul.dropdown-menu
         %li
           = link_to edit_user_registration_path do
             Account
             - if current_user.display_alert?
               %strong.badge !
-        %li= link_to "Teams", :teams
-        %li= link_to "SSH Keys", :keys
+        %li= link_to admin? ? 'Your Teams' : 'Teams', :teams
+        %li= link_to 'SSH Keys', :keys
+
+        - if admin?
+          %li.divider{role: 'presentation'}
+          = menu_entry 'Users', :admin_users
+          = menu_entry 'Teams', :admin_teams
+          = menu_entry 'Jobs',  :admin_jobs
+
         %li.divider{role: 'presentation'}
         %li= link_to 'Sign out', :destroy_user_session, method: :delete
+
+  - elsif not cover_visible?
+    %li= link_to 'Sign in/up', [:root]

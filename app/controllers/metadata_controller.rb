@@ -9,4 +9,11 @@ class MetadataController < PolymorphicResource::Base
     redirect_to repository_ontology_projects_path
   end
 
+  before_filter :check_read_permissions
+
+  protected
+
+  def check_read_permissions
+    authorize! :show, parent.repository
+  end
 end

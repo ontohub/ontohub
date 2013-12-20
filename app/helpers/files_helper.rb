@@ -1,8 +1,8 @@
-module RepositoryHelper
+module FilesHelper
 
   def basepath(path)
     splitpath = path.split('/')
-    
+
     (splitpath[0..-2] << splitpath[-1].split('.')[0]).join('/')
   end
 
@@ -36,6 +36,39 @@ module RepositoryHelper
 
   def in_ref_path?
     !params[:ref].nil?
+  end
+
+  def history_pagination(commits, current_page, per_page)
+    Kaminari.paginate_array(commits, total_count: ensure_next_page_exists(current_page, per_page)).page(current_page).per(per_page)
+  end
+
+  def ensure_next_page_exists(current_page, per_page)
+    (current_page || 1)*(per_page+1)
+  end
+
+  def dirpath(repository)
+    return '' if params[:path].nil?
+    parts = params[:path].split('/')
+    dir = []
+    parts.each_with_index do |part, i|
+      if repository.dir?(parts[0..i].join('/'))
+        dir << part
+      end
+    end
+
+    dir.join('/')
+  end
+
+  def file_exists?
+    @info[:type] == :file
+  end
+
+  def update_file
+    if file_exists?
+      { 'upload_file[target_filename]' => @info[:file][:name] }
+    else
+      { }
+    end
   end
 
 end

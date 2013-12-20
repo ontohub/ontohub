@@ -1,0 +1,14 @@
+= repository_nav parent, :errors
+
+- if @orphans.any?
+  Orphaned ontologies (no version and no parent)
+  %ul
+    - @orphans.each do |o|
+      %li= fancy_link o
+- if @failed_versions.any?
+  %ul
+    - @failed_versions.each do |err,vs|
+      %li
+        = err
+        - vs.each do |v|
+          = fancy_link v.ontology

@@ -69,8 +69,8 @@ gem 'acts_as_tree'
 gem "rest-client"
 
 # Background-Jobs
-gem 'sidekiq', '~> 2.15'
-gem 'sidetiq'
+gem 'sidekiq', '~> 2.17'
+gem 'sidetiq', '~> 0.5'
 gem 'sinatra', require: false, group: [:development, :production]
 
 # Search engine
@@ -89,12 +89,6 @@ gem 'diffy'
 gem 'codemirror-rails'
 gem 'js-routes'
 
-group :development, :test do
-  gem 'byebug'
-  gem 'better_errors'
-  gem 'binding_of_caller'
-end
-
 # Ancestry enabling tree structure in category model
 # gem 'ancestry'
 
@@ -110,7 +104,6 @@ group :test do
   # Required for integration tests
   gem "capybara"
   gem "capybara-webkit"
-  gem 'database_cleaner'
   gem "launchy"
   
   # Recording of HTTP Requests
@@ -128,8 +121,12 @@ group :development do
 end
 
 group :development, :test do
+  gem 'database_cleaner'
   gem 'byebug'
+  gem 'pry-byebug'
   gem 'rspec-rails', '~> 2.0'
+  gem 'better_errors'
+  gem 'binding_of_caller'
 end
 
 group :production do

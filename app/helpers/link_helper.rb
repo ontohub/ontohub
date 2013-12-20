@@ -2,14 +2,12 @@ module LinkHelper
   
   def sort_link_list(collection)
     hash = {}
-    collection.each do |link|
-        i = 0
+    collection.each_with_index do |link, i|
       if link.entity_mappings.empty?
         hash["empty#{i}"] = [{link: link, target: ""}]
-        i += 1
-      end
-         link.entity_mappings.each do |mapping|
-         sym =  mapping.source.to_s.to_sym
+      else
+        link.entity_mappings.each do |mapping|
+          sym =  mapping.source.to_s.to_sym
           if hash[sym]
             hash[sym] << {link: link, target: mapping.target}
           else
@@ -17,7 +15,8 @@ module LinkHelper
           end
         end
       end
-      return hash
+    end
+    return hash
   end
   
   def fancy_link(resource)
@@ -45,6 +44,7 @@ module LinkHelper
   end
 
   def determine_image_type(resource)
+    return ['data-type', "Private#{resource.class.to_s}"] if resource.is_a?(Repository) && resource.is_private
     return ['data-type', resource.class.to_s] unless resource.is_a?(Ontology)
     data_type = 'data-ontologyclass'
     distributed_type = ->(distributed_ontology) do

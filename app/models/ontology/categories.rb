@@ -3,13 +3,13 @@ module Ontology::Categories
 
   included do
     has_and_belongs_to_many :categories
-    attr_accessible :parent_id
+    attr_accessible :parent_id, :category_ids
   end
 
 
   def create_categories 
-    if self.logic.name != 'OWL2' then
-      raise Exception.new('Error: No OWL2')
+    if !self.is?('OWL')
+      raise Exception.new('Error: No OWL')
     end
     # Delete previous set of categories
     [ Category.all, CEdge.all ].flatten.each { |c| c.destroy }

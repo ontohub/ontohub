@@ -36,6 +36,10 @@ class Ontology < ActiveRecord::Base
   validates_uniqueness_of :iri, :if => :iri_changed?
   validates_format_of :iri, :with => URI::regexp(Settings.allowed_iri_schemes)
 
+  validates :documentation,
+    allow_blank: true,
+    format: { with: URI::regexp(Settings.allowed_iri_schemes) }
+
   validates_presence_of :basepath
 
   delegate :permission?, to: :repository
@@ -64,6 +68,10 @@ class Ontology < ActiveRecord::Base
 
   def path
     "#{basepath}#{file_extension}"
+  end
+
+  def is?(logic_name)
+    self.logic ? (self.logic.name == logic_name) : false
   end
 
 end

@@ -33,4 +33,3 @@ ontologies.each do |path|
   version = repository.save_file path, basename, "#{basename} added", @user
   version.ontology.update_attribute :description, Faker::Lorem.paragraph
 end
-Rake::Task['generate:categories'].invoke

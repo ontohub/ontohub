@@ -2,7 +2,11 @@
 # with its default values. The data can then be loaded with the rake db:seed
 # (or created alongside the db with db:setup).
 
-ActiveRecord::Base.logger = Logger.new($stdout)
+# Clean the database
+DatabaseCleaner.clean_with :truncation
+
+# Output seed information iff environment variable VERBOSE_SEEDS is set to 1
+ActiveRecord::Base.logger = Logger.new($stdout) if ENV["VERBOSE_SEEDS"] == '1'
 
 # Run background jobs inline
 require 'sidekiq/testing'

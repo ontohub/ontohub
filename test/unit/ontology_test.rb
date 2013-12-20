@@ -1,15 +1,18 @@
 require 'test_helper'
 
 class OntologyTest < ActiveSupport::TestCase
+
   should belong_to :language
   should belong_to :logic
   should belong_to :ontology_version
   should belong_to :ontology_type
-  should belong_to :project
+
   should have_many :versions
   should have_many :comments
   should have_many :sentences
   should have_many :entities
+
+  should have_and_belong_to_many :projects
   
   should have_db_index(:iri).unique(true)
   should have_db_index(:state)

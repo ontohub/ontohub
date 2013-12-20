@@ -2,6 +2,7 @@ class UrlMapsController < InheritedResources::Base
 
   belongs_to :repository, finder: :find_by_path!
   before_filter :check_write_permission, :except => [:index, :show]
+  before_filter :check_read_permissions
   has_pagination
 
   def create
@@ -20,6 +21,10 @@ class UrlMapsController < InheritedResources::Base
 
   def check_write_permission
     authorize! :write, parent
+  end
+
+  def check_read_permissions
+    authorize! :show, Repository.find_by_path(params[:repository_id])
   end
 
   helper_method :repository

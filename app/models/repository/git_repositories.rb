@@ -3,7 +3,7 @@ require 'git_repository'
 module Repository::GitRepositories
   extend ActiveSupport::Concern
 
-  delegate :dir?, to: :git
+  delegate :dir?, :points_through_file?, to: :git
 
   included do
     after_create  :create_and_init_git
@@ -51,7 +51,7 @@ module Repository::GitRepositories
     return unless Ontology::FILE_EXTENSIONS.include?(File.extname(filepath))
 
     basepath = File.basepath(filepath)
-    o = ontologies.where(basepath: basepath).first
+    o = ontologies.without_parent.where(basepath: basepath).first
 
     if o
       unless o.versions.find_by_commit_oid(commit_oid)
@@ -145,10 +145,7 @@ module Repository::GitRepositories
   end
 
   def read_file(filepath, commit_oid=nil)
-    file = git.get_file(filepath, commit_oid)
-    file[:content] = file[:content].force_encoding("UTF-8")
-
-    file
+    git.get_file(filepath, commit_oid)
   end
 
   # given a commit oid or a branch name, commit_id returns a hash of oid and branch name if existent

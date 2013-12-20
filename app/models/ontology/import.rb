@@ -1,13 +1,15 @@
 module Ontology::Import
 	extend ActiveSupport::Concern
 
-  def import_xml(io, user)
+  def import_xml(io, code_io, user)
     now = Time.now
 
     transaction do
+      code_doc = code_io ? Nokogiri::XML(code_io) : nil
       
       root             = nil
       ontology         = nil
+      logic_callback   = nil
       link             = nil
       ontologies_count = 0
       versions = []
@@ -39,6 +41,8 @@ module Ontology::Import
 	    
             version = ontology.versions.build
             version.user = user
+            version.code_reference = code_reference_for(ontology.name, code_doc)
+
             versions << version
           else
             raise "more than one ontology found" if ontologies_count > 1
@@ -54,8 +58,12 @@ module Ontology::Import
             .first_or_create(user: user, name: h['logic'])
           end
 
+          logic_callback = ParsingCallback.determine_for(ontology)
+
           ontology.entities_count  = 0
           ontology.sentences_count = 0
+
+          logic_callback.ontology(h, ontology)
         },
         ontology_end: Proc.new {
           # remove outdated sentences and entities
@@ -63,17 +71,31 @@ module Ontology::Import
           ontology.entities.where(conditions).destroy_all
           ontology.sentences.where(conditions).delete_all
           ontology.save!
+
+          logic_callback.ontology_end({}, ontology)
         },
-        symbol:   Proc.new { |h|
-          ontology.entities.update_or_create_from_hash(h, now)
-          ontology.entities_count += 1
+        symbol: Proc.new { |h|
+          if logic_callback.pre_symbol(h)
+            entity = ontology.entities.update_or_create_from_hash(h, now)
+            ontology.entities_count += 1
+
+            logic_callback.symbol(h, entity)
+          end
         },
         axiom: Proc.new { |h|
-          ontology.sentences.update_or_create_from_hash(h, now)
-          ontology.sentences_count += 1
+          if logic_callback.pre_axiom(h)
+            sentence = ontology.sentences.update_or_create_from_hash(h, now)
+            ontology.sentences_count += 1
+
+            logic_callback.axiom(h, sentence)
+          end
         },
         link: Proc.new { |h|
-          self.links.update_or_create_from_hash(h, user, now)
+          if logic_callback.pre_link(h)
+            link = self.links.update_or_create_from_hash(h, user, now)
+
+            logic_callback.link(h, link)
+          end
         }
       save!
       versions.each { |version| version.save! }
@@ -81,12 +103,39 @@ module Ontology::Import
     end
   end
 
-  def import_xml_from_file(path, user)
-    import_xml File.open(path), user
+  def import_xml_from_file(path, code_path, user)
+    code_io = code_path ? File.open(code_path) : nil
+    import_xml File.open(path), code_io, user
   end
 
   def import_latest_version(user)
-    return if versions.last.nil?
-    import_xml_from_file versions.last.xml_path, user
+    latest_version = versions.last
+    return if latest_version.nil?
+    import_xml_from_file latest_version.xml_path,
+      latest_version.code_reference_path, user
   end
+
+  def code_reference_for(ontology_name, code_doc)
+    return if code_doc.nil?
+    elements = code_doc.xpath("//*[contains(@name, '##{ontology_name}')]")
+    code_range = elements.first.try(:attr, "range")
+    code_reference_from_range(code_range)
+  end
+
+  def code_reference_from_range(range)
+    return if range.nil?
+    match = range.match( %r{
+      (?<begin_line>\d+)\.
+      (?<begin_column>\d+)
+      -
+      (?<end_line>\d+)\.
+      (?<end_column>\d+)}x)
+    if match
+      reference = CodeReference.new(begin_line: match[:begin_line].to_i,
+        begin_column: match[:begin_column].to_i,
+        end_line: match[:end_line].to_i,
+        end_column: match[:end_column].to_i)
+    end
+  end
+
 end
