@@ -65,7 +65,11 @@ class FilesController < ApplicationController
     if build_file.valid?
       repository.save_file @file.file.path, @file.filepath, @file.message, current_user
       flash[:success] = "Successfully saved uploaded file."
-      redirect_to fancy_repository_path(repository, path: @file.path)
+      if ontology = repository.ontologies.find_by_file(@file.filepath)
+        redirect_to edit_repository_ontology_path(repository, ontology)
+      else
+        redirect_to fancy_repository_path(repository, path: @file.path)
+      end
     else
       render :new
     end
