@@ -21,12 +21,18 @@ module StateUpdater
     begin
       yield
     rescue Exception => e
-      if Sidekiq::Shutdown === e
-        # Sidekiq requeues the current job automatically
-        update_state! :pending
-      else
-        update_state! :failed, e.message
-        after_failed
+      begin
+        if Sidekiq::Shutdown === e
+          # Sidekiq requeues the current job automatically
+          update_state! :pending
+        else
+          update_state! :failed, e.message
+          after_failed
+        end
+      rescue Exception => ee
+        # Can really happen
+        Rails.logger.fatal "Unable to update state of #{self.class} #{id}"
+        raise
       end
       raise e
     end
