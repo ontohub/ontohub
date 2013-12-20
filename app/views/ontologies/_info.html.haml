@@ -33,7 +33,7 @@
 %nav.nav_tab_level1
   %ul.nav.nav-tabs
     - @top_level_pages.each do |(page_title, page)|
-      %li{class: page==current_page || (in_metadata? && page == :metadata) ? 'active' : nil}
+      %li{class: page==current_page || in_subcontroller?(page, current_page) ? 'active' : nil}
         = link_to page_title, [*resource_chain, page]
   - if %w[entities sentences children].include? controller_name
     %nav.nav_tab_level2
