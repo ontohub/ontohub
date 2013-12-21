@@ -104,6 +104,7 @@ Ontohub::Application.routes.draw do
       resources :metadata, :only => [:index, :create, :destroy]
       resources :comments, :only => [:index, :create, :destroy]
       resources :graphs, :only => [:index]
+      resources :formality_levels, :only => [:index]
 
     end
 
