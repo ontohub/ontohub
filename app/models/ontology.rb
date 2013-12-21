@@ -30,9 +30,9 @@ class Ontology < ActiveRecord::Base
   belongs_to :ontology_type
   has_many :source_links, class_name: 'Link', foreign_key: 'source_id', dependent: :destroy
   has_many :target_links, class_name: 'Link', foreign_key: 'target_id', dependent: :destroy
-  has_many :formality_levels
+  has_and_belongs_to_many :formality_levels
   attr_accessible :iri, :name, :description, :logic_id, :category_ids, :documentation,
-                  :acronym, :file_extension, :projects, :ontology_type_id, :formality_levels
+                  :acronym, :file_extension, :projects, :ontology_type_id, :formality_level_ids
 
   validates_uniqueness_of :iri, :if => :iri_changed?
   validates_format_of :iri, :with => URI::regexp(Settings.allowed_iri_schemes)
