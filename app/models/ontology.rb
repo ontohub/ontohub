@@ -34,7 +34,16 @@ class Ontology < ActiveRecord::Base
   has_many :alternative_iris, dependent: :destroy
   has_and_belongs_to_many :formality_levels
 
-  attr_accessible :iri, :name, :description, :logic_id, :category_ids, :documentation, :acronym, :file_extension, :projects, :present, :alternative_iris, :ontology_type_id, :formality_level_ids
+  attr_accessible :iri, :name, :description, :acronym, :documentation,
+                  :logic_id,
+                  :category_ids,
+                  :acronym,
+                  :file_extension,
+                  :projects,
+                  :present,
+                  :alternative_iris,
+                  :ontology_type_id,
+                  :formality_level_ids
 
   validates_uniqueness_of :iri, :if => :iri_changed?
   validates_format_of :iri, :with => URI::regexp(Settings.allowed_iri_schemes)
