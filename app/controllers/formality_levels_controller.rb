@@ -2,11 +2,11 @@ class FormalityLevelsController < InheritedResources::Base
   before_filter :check_read_permissions
   helper_method :repository, :ontology
 
+  protected
+
   def check_read_permissions
     authorize! :show, repository
   end
-
-  protected
 
   def repository
     @repository ||= Repository.find_by_path(params[:repository_id])
