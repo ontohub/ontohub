@@ -6,6 +6,7 @@ Ontohub::Application.routes.draw do
   resources :categories, :only => [:index, :show]
 
   resources :ontology_types, only: :show
+  resources :formality_levels, only: :show
 
   devise_for :users, :controllers => { :registrations => "users/registrations" }
   resources :users, :only => :show
