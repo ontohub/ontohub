@@ -31,12 +31,7 @@ module NavigationHelper
     @metadatas = []
 
     if params[:action] != "edit"
-      @metadatas = [
-        ['Projects',      [*resource_chain, :projects]],
-        ['Categories',    [*resource_chain, :categories]],
-        ['Tasks',         [*resource_chain, :tasks]],
-        ['License Model', [*resource_chain, :license_models]]
-      ]
+      @metadatas = ontology_nav_metadata
     end
 
     @entities = ontology.distributed? ? [] : ontology.entities.groups_by_kind
@@ -132,7 +127,19 @@ module NavigationHelper
 
   # used for activating tabs in ontology view
   def in_metadata?
-    %w(projects tasks categories license_models).include? controller_name
+    ontology_nav_metadata.map{ |m| m[1][-1].to_s }.include? controller_name
+  end
+
+  protected
+
+  def ontology_nav_metadata
+    [
+      ['Projects',         [*resource_chain, :projects]],
+      ['Categories',       [*resource_chain, :categories]],
+      ['Tasks',            [*resource_chain, :tasks]],
+      ['License Model',    [*resource_chain, :license_models]],
+      ['Formality Levels', [*resource_chain, :formality_levels]]
+    ]
   end
 
 end
