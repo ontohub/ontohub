@@ -1,14 +1,21 @@
 = repository_nav parent, :errors
 
 - if @orphans.any?
-  Orphaned ontologies (no version and no parent)
-  %ul
+  %h3
+    Orphaned ontologies
+    .badge= @orphans.count
+  %p no version and no parent
+  %ul.no-bullet
     - @orphans.each do |o|
       %li= fancy_link o
-- if @failed_versions.any?
-  %ul
-    - @failed_versions.each do |err,vs|
+
+- @failed_versions.each do |err,vs|
+  %h3
+    = err
+    .badge= vs.count
+  %ul.no-bullet
+    - vs.each do |v|
       %li
-        = err
-        - vs.each do |v|
-          = fancy_link v.ontology
+        = fancy_link v.ontology
+        - if time = v.state_updated_at
+          = timestamp time

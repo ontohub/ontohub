@@ -3,7 +3,9 @@
 = simple_form_for resource, url: resource_path(resource) do |f|
   = f.input :iri
   = f.input :name
-  = render :partial => 'categories'
+  = f.label :categories
+  .col-lg-10.well
+    = render :partial => 'categories', locals: { hide_well: true }
   = f.input :ontology_type_id, collection: OntologyType.all
   = f.association :formality_levels, collection: FormalityLevel.all, as: :check_boxes
   = f.input :description

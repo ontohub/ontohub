@@ -14,25 +14,20 @@ class OntologiesControllerTest < ActionController::TestCase
     end
     
     context 'on GET to index' do
-      context 'without search' do
+      context 'for a repository' do
         setup do
           get :index, repository_id: @repository.path
         end
 
         should respond_with :success
-        should render_template :index
+        should render_template :index_repository
       end
-      
-      context 'with search' do
+      context 'for the whole website' do
         setup do
-          @search = @ontology.name
-          get :index,
-            repository_id: @repository.path,
-            search:        @search
+          get :index
         end
-        
         should respond_with :success
-        should render_template :index
+        should render_template :index_global
       end
     end
     

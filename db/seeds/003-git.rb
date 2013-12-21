@@ -18,7 +18,7 @@ Repository.first.permissions.create! \
 
 # Import ontologies
 ontologies = %w[
-  owl/Domain_Fields_Core.owl
+  owl/Domain_Fields_Extension.owl
   casl/partial_order.casl
   casl/test1.casl
   casl/test2.casl
@@ -29,7 +29,9 @@ ontologies = %w[
 ontologies.each do |path|
   path = File.join(Rails.root, 'test', 'fixtures', 'ontologies', path)
   basename = File.basename(path)
-  
+
   version = repository.save_file path, basename, "#{basename} added", @user
-  version.ontology.update_attribute :description, Faker::Lorem.paragraph
+  if version
+    version.ontology.update_attribute :description, Faker::Lorem.paragraph
+  end
 end
