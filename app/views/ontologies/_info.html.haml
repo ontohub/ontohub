@@ -14,6 +14,15 @@
     %p
       Ontology Type:
       = fancy_link resource.ontology_type
+%small
+  %p
+    - if resource.formality_levels.present?
+      Formality levels:
+      %ul.formality_levels
+        - resource.formality_levels.each do |formality_level|
+          %li= formality_level
+    - else
+      No formality levels defined.
 
 %small
   Defined
