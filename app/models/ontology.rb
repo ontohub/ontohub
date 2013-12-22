@@ -25,13 +25,15 @@ class Ontology < ActiveRecord::Base
   # Multiple Class Features
   include Aggregatable
 
-  belongs_to :repository
   belongs_to :language
   belongs_to :logic, counter_cache: true
   belongs_to :ontology_type
+  belongs_to :repository
+
+  has_many :alternative_iris, dependent: :destroy
   has_many :source_links, class_name: 'Link', foreign_key: 'source_id', dependent: :destroy
   has_many :target_links, class_name: 'Link', foreign_key: 'target_id', dependent: :destroy
-  has_many :alternative_iris, dependent: :destroy
+
   has_and_belongs_to_many :formality_levels
 
   attr_accessible :iri, :name, :description, :acronym, :documentation,

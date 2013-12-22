@@ -1,8 +1,12 @@
-= repository_nav parent.repository, :ontologies
+= repository_nav parent.repository, :ontologies, disable_actions: true
 
 = ontology_nav parent, :license_models
 
-=link_to "Add license model" ,new_repository_ontology_license_model_path, class: "btn"
+-# if can? :create, LicenseModel
+- if signed_in?
+  .pull-right
+    = link_to 'Add License Model', [:new, :repository, :ontology, :license_model], class: 'btn btn-default'
+
 %table.table
   %thead
     %tr
@@ -16,5 +20,4 @@
         %td= license.name
         %td= license.description
         %td= license.url
-        %td=link_to 'edit license model', edit_repository_ontology_license_model_path(@repo, @ontology, license)
-
+        %td= link_to 'Edit', [:edit, @repo, @ontology, license]

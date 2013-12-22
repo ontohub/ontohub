@@ -1,0 +1,9 @@
+%tr
+  %td= link_to project.name, project.homepage
+  %td= project.description
+  %td= project.institution
+  %td= project.contact
+  %td
+    .btn-group
+      = link_to 'Edit', [:edit, parent.repository, parent, project], class: 'btn btn-default btn-xs'
+      = link_to 'Delete', [parent.repository, parent, project], class: 'btn btn-danger btn-xs', method: :delete, confirm: 'Really delete?'
