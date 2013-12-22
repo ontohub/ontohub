@@ -22,7 +22,9 @@ module Repository::GitRepositories
     git
     symlink_name = local_path.join("hooks")
     symlink_name.rmtree
-    symlink_name.make_symlink Rails.root.join('git','hooks')
+    symlink_name.make_symlink(Rails.root.join('git','hooks').
+      # replace capistrano-style release with 'current'-symlink
+      sub(%r{/releases/\d+/}, '/current/'))
   end
 
   def destroy_git
@@ -204,6 +206,7 @@ module Repository::GitRepositories
   #                     :path (file to show changes for)
   #                     :limit (max number of commits)
   #                     :offset (number of commits to skip)
+  #                     :walk_order (Rugged-Walkorder)
   def commits(options={}, &block)
     git.commits(options, &block)
   end
