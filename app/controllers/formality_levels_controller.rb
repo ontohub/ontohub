@@ -19,4 +19,10 @@ class FormalityLevelsController < InheritedResources::Base
   def collection
     ontology.formality_levels
   end
+
+  protected
+
+  def check_read_permissions
+    authorize! :show, repository if repository
+  end
 end
