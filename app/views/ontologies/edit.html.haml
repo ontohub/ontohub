@@ -6,5 +6,7 @@
   = f.label :categories
   .col-lg-10.well
     = render :partial => 'categories', locals: { hide_well: true }
+  = f.input :ontology_type_id, collection: OntologyType.all
+  = f.association :formality_levels, collection: FormalityLevel.all, as: :check_boxes
   = f.input :description
   = f.button :submit, disable_with: t(:wait), class: 'btn btn-primary'
