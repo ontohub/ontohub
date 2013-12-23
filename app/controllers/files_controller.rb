@@ -108,7 +108,7 @@ class FilesController < ApplicationController
   end
 
   def oid
-    @oid ||= commit_id[:oid]
+    @oid ||= commit_id[:oid] unless commit_id.nil?
   end
 
   def branch_name
