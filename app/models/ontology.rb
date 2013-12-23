@@ -15,26 +15,37 @@ class Ontology < ActiveRecord::Base
   include Ontology::Distributed
   include Ontology::Categories
   include Ontology::Oops
-  include Ontology::OntologyTypes
   include Ontology::Projects
   include Ontology::Tools
   include Ontology::Tasks
   include Ontology::LicenseModels
-  include Ontology::FormalityLevels
   include Ontology::FileExtensions
   include Ontology::Searching
 
   # Multiple Class Features
   include Aggregatable
 
-  belongs_to :repository
   belongs_to :language
   belongs_to :logic, counter_cache: true
+  belongs_to :ontology_type
+  belongs_to :repository
+
+  has_many :alternative_iris, dependent: :destroy
   has_many :source_links, class_name: 'Link', foreign_key: 'source_id', dependent: :destroy
   has_many :target_links, class_name: 'Link', foreign_key: 'target_id', dependent: :destroy
-  has_many :alternative_iris, dependent: :destroy
 
-  attr_accessible :iri, :name, :description, :logic_id, :category_ids, :documentation, :acronym, :file_extension, :projects, :present, :alternative_iris
+  has_and_belongs_to_many :formality_levels
+
+  attr_accessible :iri, :name, :description, :acronym, :documentation,
+                  :logic_id,
+                  :category_ids,
+                  :acronym,
+                  :file_extension,
+                  :projects,
+                  :present,
+                  :alternative_iris,
+                  :ontology_type_id,
+                  :formality_level_ids
 
   validates_uniqueness_of :iri, :if => :iri_changed?
   validates_format_of :iri, :with => URI::regexp(Settings.allowed_iri_schemes)

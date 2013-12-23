@@ -31,6 +31,20 @@ class SshAccess
       end
     end
 
+    def extract_permission_params(params, repository)
+      key_field = params[:key_id].sub("key-", "")
+      requested_permission = params[:permission]
+      user = User.joins(:keys).
+        where(keys: {id: key_field}).first
+      permission = nil
+      if user
+        permission = user.permissions.
+          where(item_id: repository.id,
+                item_type: repository.class).first
+      end
+      return [requested_permission, permission]
+    end
+
   end
 
 end

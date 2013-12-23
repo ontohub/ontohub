@@ -1,23 +1,10 @@
-= form_for(@license) do |f|
-  - if @license.errors.any?
-    #error_explanation
-      %h2
-        = pluralize(@license.errors.count, "error")
-        prohibited this restriction from being saved:
-      %ul
-        - @license.errors.full_messages.each do |msg|
-          %li= msg
-  .field
-    = f.label :name
-    %br/
-    = f.text_field :name
-  .field
-    = f.label :URL, "URL"
-    %br/
-    = f.text_field :url
-  .field
-    = f.label :descritpion
-    %br/
-    = f.text_area :description
-  .actions
-    = f.submit
+= simple_form_for [@ontology.repository, @ontology, resource] do |f|
+  = render partial: '/shared/form_errors'
+
+  = f.input :name
+  = f.input :institution
+  = f.input :homepage
+  = f.input :description, as: :text, input_html: {rows: 5}
+  = f.input :contact
+
+  = f.submit class: 'btn btn-primary'

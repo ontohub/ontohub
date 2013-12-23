@@ -13,4 +13,7 @@ class OntologyType < ActiveRecord::Base
   validates :documentation,
     :format => { :with => URI::regexp(Settings.allowed_iri_schemes) }
 
+  def to_s
+    name
+  end
 end

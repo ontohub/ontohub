@@ -8,7 +8,7 @@ class GitShell
   def initialize(key_id, command)
     @key_id     = key_id
     @command    = command
-    @repos_path = Settings.git_root
+    @repos_path = File.join(Settings.git_home, 'repositories')
   end
 
   def exec

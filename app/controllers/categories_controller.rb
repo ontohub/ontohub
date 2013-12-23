@@ -1,6 +1,7 @@
 class CategoriesController < InheritedResources::Base
 
   belongs_to :ontology, optional: true
+  before_filter :check_read_permissions
 
   load_and_authorize_resource
 
@@ -19,6 +20,12 @@ class CategoriesController < InheritedResources::Base
   def show
     @category = Category.find(params[:id])
     @ontologies = @category.related_ontologies
+  end
+
+  protected
+
+  def check_read_permissions
+    authorize! :show, parent.repository if parent.is_a? Ontology
   end
 
 end

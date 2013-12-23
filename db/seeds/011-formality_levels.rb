@@ -13,6 +13,8 @@ names_count.times do |n|
 end
 
 Ontology.all.each do |o|
-  o.formality_level_id = rand(FormalityLevel.count)+1
+  (1+rand(3)).times do
+    o.formality_levels << FormalityLevel.find(rand(FormalityLevel.count)+1)
+  end
   o.save!
 end

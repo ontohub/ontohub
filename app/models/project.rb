@@ -1,16 +1,17 @@
 class Project < ActiveRecord::Base
 
-  has_many :ontologies
+  has_and_belongs_to_many :ontologies
 
   attr_accessible :contact, :description, :homepage, :institution, :name
 
   validates :name,
-    :presence => true
-
-  validates :name,
-    :presence => true
+    presence: true,
+    uniqueness: true
 
   validates :homepage,
-    :format => { :with => URI::regexp(Settings.allowed_iri_schemes) }
+    format: {
+      with: URI::regexp(Settings.allowed_iri_schemes),
+      allow_blank: true
+    }
 
 end

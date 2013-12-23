@@ -35,7 +35,7 @@ class ExternalRepository
 
     def determine_basepath(external_iri, with_extension=true)
       basepath = iri_split(external_iri)
-      with_extension ? basepath : basepath.sub(/\.[^\.]+\z/, '')
+      with_extension ? basepath : basepath.sub(determine_extension(external_iri), '')
     end
 
     def determine_basename(external_iri, with_extension=true)
@@ -43,8 +43,7 @@ class ExternalRepository
     end
 
     def determine_extension(external_iri)
-      determine_basepath(external_iri) =~ /(\.[^\.]+)\z/
-      $1
+      File.extname(determine_basepath(external_iri))
     end
 
     # split iri into wget -r style
