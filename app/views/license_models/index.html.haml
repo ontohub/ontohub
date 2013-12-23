@@ -3,7 +3,7 @@
 = ontology_nav parent, :license_models
 
 -# if can? :create, LicenseModel
-- if signed_in?
+- if can? :write, parent.repository
   .pull-right
     = link_to 'Add License Model', [:new, :repository, :ontology, :license_model], class: 'btn btn-default'
 
@@ -15,9 +15,4 @@
       %th URL
       %th
   %tbody
-    - @license_models.each do |license|
-      %tr
-        %td= license.name
-        %td= license.description
-        %td= license.url
-        %td= link_to 'Edit', [:edit, @repo, @ontology, license]
+    = render collection

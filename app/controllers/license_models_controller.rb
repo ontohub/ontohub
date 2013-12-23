@@ -67,6 +67,10 @@ class LicenseModelsController < InheritedResources::Base
 
   protected
 
+  def collection
+    parent ? parent.license_models : LicenseModel.all
+  end
+
   def check_read_permissions
     authorize! :show, parent.repository
   end
