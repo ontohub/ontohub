@@ -2,9 +2,8 @@
 
 - if resource.remote?
   = render partial: 'source'
-%p
-  Clone URL:
-  %input.form-control.clone-url{type: 'text', readonly: true, value: repository_tree_url(resource, protocol: 'git', port: nil) << '.git' }
+
+= render partial: 'clone_url'
 
 - if resource.is_private
   %h2 Private
