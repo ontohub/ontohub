@@ -1,10 +1,9 @@
 / User's Ontologies
-%div.panel.panel-default
-  %div.panel-heading
+.panel.panel-default
+  .panel-heading
     %h3.panel-title= current_user.first_name + "'s Ontologies"
-  %div.panel-body
+  .panel-body
     - current_user.accessible_ontologies.each do |ontology|
       %div
         %span.glyphicon.glyphicon-hdd
         = link_to ontology.name, ontology
-

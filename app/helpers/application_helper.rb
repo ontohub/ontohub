@@ -13,7 +13,7 @@ module ApplicationHelper
       return false
     end
 
-    if %w[entities_search logics links ontologies].include? params[:controller]
+    if %w[categories logics links ontologies].include? params[:controller]
       return 'shared/user_ontologies' unless in_repository?
     end
 
