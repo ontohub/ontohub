@@ -15,11 +15,13 @@ FactoryGirl.define do
     basepath { SecureRandom.hex(10) }
     file_extension { '.owl' }
     description { Faker::Lorem.paragraph }
+    logic { FactoryGirl.create :logic }
 
     factory :single_ontology, class: SingleOntology do
     end
 
     factory :distributed_ontology, class: DistributedOntology do
+      logic { nil }
 
       # Should always be fully linked, so every child should
       # have a linked (defined by the DO) pointing or sourcing
