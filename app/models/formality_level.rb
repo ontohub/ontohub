@@ -8,4 +8,7 @@ class FormalityLevel < ActiveRecord::Base
     :presence => true,
     :uniqueness => true
 
+  def to_s
+    name
+  end
 end

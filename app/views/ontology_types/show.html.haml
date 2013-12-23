@@ -1,0 +1,9 @@
+%h1 Ontology Type
+
+%h2= link_to resource
+
+%h3 Documentation
+= link_to_if URI.valid?(resource.documentation), resource.documentation, resource.documentation
+
+%h3 Description
+= resource.description
