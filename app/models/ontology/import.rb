@@ -150,10 +150,13 @@ module Ontology::Import
   end
 
   def import_latest_version(user)
-    latest_version = versions.last
-    return if latest_version.nil?
-    import_xml_from_file latest_version.xml_path,
-      latest_version.code_reference_path, user
+    import_version(versions.last, user)
+  end
+
+  def import_version(version, user)
+    return if version.nil?
+    import_xml_from_file version.xml_path,
+      version.code_reference_path, user
   end
 
   def code_reference_for(ontology_name, code_doc)

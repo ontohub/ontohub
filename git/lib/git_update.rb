@@ -1,12 +1,12 @@
 require 'json'
-require 'subprocess'
+require File.join(File.expand_path('../../../lib', __FILE__), 'subprocess')
 require 'ontohub_net'
 
 class GitUpdate
 
   def initialize(repo_path, key_id, refs)
     @repo_path = repo_path.strip
-    @repo_name = repo_path.delete(Settings.git_root).
+    @repo_name = repo_path.sub(Settings.git_root.to_s, '').
       gsub(/\.git$/, "").
       gsub(/^\//, "")
 
@@ -46,7 +46,7 @@ class GitUpdate
   end
 
   def update_redis
-    Subproces.run 'redis-cli', 'rpush', "#{Settings.redis_namespace}:queue:default", {
+    Subprocess.run 'redis-cli', 'rpush', "#{Settings.redis_namespace}:queue:default", {
       class: 'RepositoryUpdateWorker',
       args: [@repo_path, @oldrev, @newrev, @refname, @key_id]
     }.to_json

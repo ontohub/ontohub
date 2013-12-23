@@ -55,3 +55,6 @@ config/environments/*.local.yml
 
 # Ignore sass cache
 .sass-cache
+
+# Ignore agignore (ignore file for ag (like grep or ack))
+.agignore
