@@ -3,12 +3,12 @@ class LicenseModelsController < InheritedResources::Base
   belongs_to :ontology
 
   before_filter :check_read_permissions
+  before_filter :check_write_permissions
 
   def index
     @ontology = Ontology.find(params[:ontology_id])
     @license_models = @ontology.license_models
-    @repo = Repository.find_by_path(params[:repository_id])
-    
+    @repo = Repository.find_by_path(params[:repository_id])  
   end
   
   def new
@@ -67,8 +67,18 @@ class LicenseModelsController < InheritedResources::Base
 
   protected
 
+  def collection
+    parent ? parent.license_models : LicenseModel.all
+  end
+
   def check_read_permissions
     authorize! :show, parent.repository
+  end
+
+  def check_write_permissions
+    unless %w(index show).include? params[:action]
+      authorize! :write, parent.repository if parent
+    end
   end
 
 end

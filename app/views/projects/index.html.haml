@@ -1,20 +1,19 @@
 - if parent
-  = repository_nav parent.repository, :ontologies
+  = repository_nav parent.repository, :ontologies, disable_actions: true
 
   = ontology_nav parent, :projects
+
+  -# if can? :create, Project
+  - if user_signed_in?
+    .pull-right
+      = link_to 'Add Project', [:new, :repository, :ontology, :project], class: 'btn btn-default'
+
   %table.table
     %thead
       %tr
-        %th Porject Name
+        %th Project Name
         %th Description
         %th Institution
         %th Contact
-        %th Homepage
     %tbody
-      - @projects.each do |project|
-        %tr
-          %td= project.name
-          %td= project.description
-          %td= project.institution
-          %td= project.contact
-          %td= project.homepage
+      = render collection

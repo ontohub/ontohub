@@ -34,7 +34,14 @@ module Permissionable
 
     # Allow if role matches any permission.
     @perms.flatten.each do |perm|
+      # Requested role exists exactly as permission.
       return true if perm.role == role.to_s
+
+      # editors have reader permissions.
+      return true if perm.role == 'editor' and role == :reader
+
+      # owners have reader and editor permissions.
+      return true if perm.role == 'owner' and role == :reader
       return true if perm.role == 'owner' and role == :editor
     end
 
