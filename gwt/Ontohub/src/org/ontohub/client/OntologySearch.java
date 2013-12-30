@@ -8,6 +8,7 @@ import java.util.List;
 
 import org.ontohub.client.Pagination.PaginateEvent;
 import org.ontohub.client.Pagination.PaginateHandler;
+import org.ontohub.shared.FiltersMap;
 import org.ontohub.shared.Ontology;
 import org.ontohub.shared.OntologyList;
 
@@ -22,6 +23,7 @@ import com.google.gwt.uibinder.client.UiBinder;
 import com.google.gwt.uibinder.client.UiFactory;
 import com.google.gwt.uibinder.client.UiField;
 import com.google.gwt.uibinder.client.UiHandler;
+import com.google.gwt.user.client.Window;
 import com.google.gwt.user.client.rpc.AsyncCallback;
 import com.google.gwt.user.client.ui.Composite;
 import com.google.gwt.user.client.ui.FlowPanel;
@@ -120,6 +122,9 @@ public class OntologySearch extends Composite {
 		return box;
 	}
 
+	/**
+	 * Selects a keyword
+	 */
 	private final void selectKeyword() {
 		String text = box.getText().trim();
 		if (text.length() == 0) {
@@ -244,15 +249,15 @@ public class OntologySearch extends Composite {
 		char ch = (char) event.getNativeKeyCode();
 		if (box.getCursorPos() == 0) {
 			if (event.isLeftArrow()) {
-				focusLastConcept(event);
+				focusLastConcept();
 				event.stopPropagation();
 				event.preventDefault();
 			} else if (ch == (char) KeyCodes.KEY_BACKSPACE) {
-				focusLastConcept(event);
+				focusLastConcept();
 				event.stopPropagation();
 				event.preventDefault();
 			} else if (ch == (char) KeyCodes.KEY_DELETE) {
-				focusLastConcept(event);
+				focusLastConcept();
 				event.stopPropagation();
 				event.preventDefault();
 			}
@@ -264,13 +269,21 @@ public class OntologySearch extends Composite {
 		selectKeyword();
 	}
 
-	private final void focusLastConcept(KeyEvent<?> event) {
+	/**
+	 * Focuses the last concept.
+	 */
+	private final void focusLastConcept() {
 		if (conceptPanel.getWidgetCount() > 0) {
 			OntologySearchConcept concept = (OntologySearchConcept)conceptPanel.getWidget(conceptPanel.getWidgetCount() - 1);
 			concept.setFocus(true);
 		}
 	}
 
+	/**
+	 * Selects the next search component
+	 * 
+	 * @param concept the concept in relation to which to select the next
+	 */
 	public final void selectNext(OntologySearchConcept concept) {
 		int index = conceptPanel.getWidgetIndex(concept);
 		if (index == conceptPanel.getWidgetCount() - 1) {
@@ -281,6 +294,11 @@ public class OntologySearch extends Composite {
 		}
 	}
 
+	/**
+	 * Selects the previous search component
+	 * 
+	 * @param concept the concept in relation to which to select the previous
+	 */
 	public final void selectPrevious(OntologySearchConcept concept) {
 		int index = conceptPanel.getWidgetIndex(concept);
 		if (index > 0) {
@@ -307,6 +325,21 @@ public class OntologySearch extends Composite {
 	 */
 	public final void setFilterSelectorsVisible(boolean visible) {
 		filterSelectorsPanel.setVisible(visible);
+		if (visible) {
+			updateFilterSelectors();
+		}
+	}
+
+	/**
+	 * Updates the filter selectors with the values embedded in the website
+	 */
+	private final void updateFilterSelectors() {
+		if (FiltersMap.existsWindowInstance()) {
+			FiltersMap map = FiltersMap.getWindowInstance();
+			// TODO Fill the filters
+		} else {
+			warningIcon.setVisible(true);
+		}
 	}
 
 }

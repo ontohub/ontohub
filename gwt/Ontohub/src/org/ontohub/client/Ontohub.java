@@ -1,6 +1,7 @@
 package org.ontohub.client;
 
 import org.ontohub.shared.Filter;
+import org.ontohub.shared.FiltersMap;
 
 import com.google.gwt.core.client.EntryPoint;
 import com.google.gwt.core.client.JsArray;
@@ -44,12 +45,6 @@ public class Ontohub implements EntryPoint {
 
 			// Set selector visible
 			ontologySearchBar.setFilterSelectorsVisible(filteringBySelectors);
-
-			Window.alert(getFilters().toString());
-			Window.alert(getFilters().length() + "");
-			Window.alert(getFilters().get(0).getName());
 		}
 	}
-	
-	public final native JsArray<Filter> getFilters() /*-{ return [ { 'name' : 'Distributed', 'value' : 'DistributedOntology' }, { 'name' : 'Single', 'value' : 'SingleOntology' } ]; }-*/;
 }
