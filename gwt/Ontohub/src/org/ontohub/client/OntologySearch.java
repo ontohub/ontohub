@@ -6,38 +6,27 @@ package org.ontohub.client;
 import java.util.ArrayList;
 import java.util.List;
 
-import org.ontohub.client.KeywordListRequester.Keyword;
-import org.ontohub.client.KeywordListRequester.KeywordList;
-import org.ontohub.client.KeywordListRequester.Ontology;
-import org.ontohub.client.KeywordListRequester.OntologyList;
 import org.ontohub.client.Pagination.PaginateEvent;
 import org.ontohub.client.Pagination.PaginateHandler;
+import org.ontohub.shared.Ontology;
+import org.ontohub.shared.OntologyList;
 
 import com.google.gwt.core.client.GWT;
 import com.google.gwt.event.dom.client.ClickEvent;
 import com.google.gwt.event.dom.client.KeyCodes;
 import com.google.gwt.event.dom.client.KeyDownEvent;
 import com.google.gwt.event.dom.client.KeyEvent;
-import com.google.gwt.event.dom.client.KeyPressEvent;
-import com.google.gwt.event.dom.client.KeyPressHandler;
 import com.google.gwt.event.dom.client.KeyUpEvent;
 import com.google.gwt.event.dom.client.KeyUpHandler;
-import com.google.gwt.event.logical.shared.SelectionEvent;
-import com.google.gwt.event.logical.shared.SelectionHandler;
-import com.google.gwt.event.logical.shared.ValueChangeEvent;
-import com.google.gwt.event.logical.shared.ValueChangeHandler;
 import com.google.gwt.uibinder.client.UiBinder;
 import com.google.gwt.uibinder.client.UiFactory;
 import com.google.gwt.uibinder.client.UiField;
 import com.google.gwt.uibinder.client.UiHandler;
-import com.google.gwt.user.client.Window;
 import com.google.gwt.user.client.rpc.AsyncCallback;
 import com.google.gwt.user.client.ui.Composite;
 import com.google.gwt.user.client.ui.FlowPanel;
 import com.google.gwt.user.client.ui.FocusPanel;
-import com.google.gwt.user.client.ui.MultiWordSuggestOracle;
-import com.google.gwt.user.client.ui.SuggestBox;
-import com.google.gwt.user.client.ui.SuggestOracle.Suggestion;
+import com.google.gwt.user.client.ui.InlineLabel;
 import com.google.gwt.user.client.ui.TextBox;
 import com.google.gwt.user.client.ui.Widget;
 
@@ -58,6 +47,9 @@ public class OntologySearch extends Composite {
 	FlowPanel conceptPanel;
 
 	@UiField
+	FlowPanel filterSelectorsPanel;
+
+	@UiField
 	TextBox box;
 
 	@UiField
@@ -66,7 +58,13 @@ public class OntologySearch extends Composite {
 	@UiField
 	FocusPanel bar;
 
-	private final KeywordListRequester requester;
+	@UiField
+	InlineLabel refreshIcon;
+
+	@UiField
+	InlineLabel warningIcon; 
+
+	private final OntohubServices requester;
 
 	private int page = 1;
 
@@ -83,7 +81,7 @@ public class OntologySearch extends Composite {
 	 * @param ontologySearchService 
 	 */
 	public OntologySearch() {
-		requester = new KeywordListRequester();
+		requester = new OntohubServices();
 		initWidget(uiBinder.createAndBindUi(this));
 		pagination.setPageRange(0, 0);
 		pagination.addPaginateHandler(new PaginateHandler() {
@@ -188,6 +186,17 @@ public class OntologySearch extends Composite {
 	}
 	*/
 
+	/**
+	 * Handle the deletion of a concept.
+	 */
+	public final void onConceptDeleted() {
+		page = 1;
+		updateOntologyWidgetList();
+	}
+
+	/**
+	 * Updates the ontology widget list to match the filters. 
+	 */
 	public final void updateOntologyWidgetList() {
 		List<String> stringArray = new ArrayList<String>();
 		for (Widget widget : conceptPanel) {
@@ -196,15 +205,21 @@ public class OntologySearch extends Composite {
 				stringArray.add(concept.getItemLabel());
 			}
 		}
+		refreshIcon.setVisible(true);
+		warningIcon.setVisible(false);
 		requester.requestOntologyList(stringArray.toArray(new String[stringArray.size()]), page, new AsyncCallback<OntologyList>() {
 
 			@Override
 			public void onFailure(Throwable caught) {
 				caught.printStackTrace();
+				refreshIcon.setVisible(false);
+				warningIcon.setVisible(true);
 			}
 
 			@Override
 			public void onSuccess(OntologyList ontologyList) {
+				refreshIcon.setVisible(false);
+				warningIcon.setVisible(false);
 				ontologyWidgetPanel.clear();
 				for (Ontology ontology : ontologyList) {
 					OntologyWidget ontologyWidget = new OntologyWidget(ontology);
@@ -274,13 +289,24 @@ public class OntologySearch extends Composite {
 		}
 	}
 
-	public void onConceptDeleted() {
-		page = 1;
-		updateOntologyWidgetList();
-	}
-
+	/**
+	 * Sets whether the results are paginated.
+	 * 
+	 * @param paginated <code>true</code> to make the results paginated and <code>false</code>
+	 *      otherwise
+	 */
 	public final void setPaginated(boolean paginated) {
 		pagination.setVisible(paginated);
+	}
+
+	/**
+	 * Sets whether filter selectors are visible.
+	 * 
+	 * @param visible <code>true</code> to make filter selector visible and <code>false</code>
+	 *      to make filter selectors invisible
+	 */
+	public final void setFilterSelectorsVisible(boolean visible) {
+		filterSelectorsPanel.setVisible(visible);
 	}
 
 }

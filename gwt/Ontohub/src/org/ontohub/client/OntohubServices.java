@@ -1,8 +1,11 @@
 package org.ontohub.client;
 
-import java.util.LinkedList;
+import org.ontohub.shared.Keyword;
+import org.ontohub.shared.KeywordList;
+import org.ontohub.shared.Ontology;
+import org.ontohub.shared.OntologyList;
+import org.ontohub.shared.SearchResponse;
 
-import com.google.gwt.core.client.JavaScriptObject;
 import com.google.gwt.core.client.JsArray;
 import com.google.gwt.core.client.JsonUtils;
 import com.google.gwt.http.client.Request;
@@ -13,70 +16,7 @@ import com.google.gwt.http.client.Response;
 import com.google.gwt.http.client.URL;
 import com.google.gwt.user.client.rpc.AsyncCallback;
 
-public class KeywordListRequester {
-
-	public static class KeywordList extends LinkedList<Keyword>{
-
-		/**
-		 * Generated serial version
-		 */
-		private static final long serialVersionUID = 228642039907595010L;
-	};
-
-	public static class Keyword extends JavaScriptObject {
-		protected Keyword() {}
-		public final native String getText() /*-{ return this.text; }-*/; 
-	}
-
-	public static class OntologyList extends LinkedList<Ontology>{
-
-		/**
-		 * Generated serial version
-		 */
-		private static final long serialVersionUID = -3165438086598414639L;
-		
-		private final Integer page;
-		private final Integer ontologiesPerPage;
-		private final Integer ontologiesInSet;
-
-		public OntologyList(Integer page, Integer ontologiesPerPage, Integer ontologiesInSet) {
-			this.page = page;
-			this.ontologiesPerPage = ontologiesPerPage;
-			this.ontologiesInSet = ontologiesInSet;
-		}
-
-		public final Integer getPage() {
-			return page;
-		}
-
-		public final Integer getOntologiesPerPage() {
-			return ontologiesPerPage;
-		}
-
-		public final Integer getOntologiesInSet() {
-			return ontologiesInSet;
-		}
-
-	};
-
-	public static class Ontology extends JavaScriptObject {
-		protected Ontology() {}
-		public final native String getName() /*-{ return this.name; }-*/;
-		public final native String getAcronym() /*-{ return this.acronym; }-*/;
-		public final native String getLanguage() /*-{ return this.language; }-*/;
-		public final native String getLogic() /*-{ return this.logic; }-*/;
-		public final native String getIri() /*-{ return this.iri; }-*/;
-		public final native String getHref() /*-{ return this.url; }-*/; 
-		public final native String getDescription() /*-{ return this.description; }-*/;
-	}
-
-	public static class SearchResponse extends JavaScriptObject {
-		protected SearchResponse() {}
-		public final native int getPage() /*-{ return this.page; }-*/;
-		public final native int getResultsInPage() /*-{ return this.resultsInPage; }-*/;
-		public final native int getResultsInSet() /*-{ return this.resultsInSet; }-*/;
-		public final native JsArray<Ontology> getResults() /*-{ return this.results; }-*/;
-	}
+public class OntohubServices {
 
 	public void requestKeywordList(final String prefix, final AsyncCallback<KeywordList> keywordListCallback) {
 		String requestData = "prefix=" + URL.encodeQueryString(prefix);
@@ -152,3 +92,4 @@ public class KeywordListRequester {
 	}
 
 }
+
