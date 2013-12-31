@@ -69,9 +69,21 @@ class OntologySearch
     JSON.generate(make_global_bean_list_response(keyword_list, page))
   end
 
+  def select_item_list(keyword_list, type)
+    item_list = Array.new
+    keyword_list.each do |keyword|
+      if keyword["type"] == type
+        item_list.push keyword["item"]
+      end
+    end
+    item_list
+  end
+
   def make_repository_bean_list_response(repository, keyword_list, page)
+    mixed_list = select_item_list(keyword_list, 'Mixed')
+
     # Display all repository ontologies for empty keyword list
-    if keyword_list.size == 0
+    if mixed_list.size == 0
       offset = (page - 1) * @limit
       bean_list_factory = OntologyBeanListFactory.new
       repository.ontologies.limit(@limit).offset(offset).each do |ontology|
@@ -82,7 +94,7 @@ class OntologySearch
 
     index = 0
     bean_list_factory = OntologyBeanListFactory.new
-    search = Ontology.search_by_keywords_in_repository(keyword_list, page, repository)
+    search = Ontology.search_by_keywords_in_repository(mixed_list, page, repository)
     search.results.each do |ontology|
       bean_list_factory.add_small_bean(ontology)
     end
@@ -91,9 +103,10 @@ class OntologySearch
   end
 
   def make_global_bean_list_response(keyword_list, page)
+    mixed_list = select_item_list(keyword_list, 'Mixed')
 
     # Display all ontologies for empty keyword list
-    if keyword_list.size == 0
+    if mixed_list.size == 0
       offset = (page - 1) * @limit
       bean_list_factory = OntologyBeanListFactory.new
       Ontology.limit(@limit).offset(offset).each do |ontology|
@@ -103,7 +116,7 @@ class OntologySearch
     end
 
     bean_list_factory = OntologyBeanListFactory.new
-    search = Ontology.search_by_keywords(keyword_list, page)
+    search = Ontology.search_by_keywords(mixed_list, page)
     search.results.each do |ontology|
       bean_list_factory.add_small_bean(ontology)
     end
