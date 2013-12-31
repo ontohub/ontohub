@@ -18,11 +18,11 @@ public class Keyword extends JavaScriptObject {
 	public final native static Keyword newInstance() /*-{ return {item: null, type: null, role: null}; }-*/;
 	public final String toJson() {
 		StringBuffer buffer = new StringBuffer();
-		buffer.append("{item:");
+		buffer.append("{\"item\":");
 		buffer.append(escape(getItem()));
-		buffer.append(",type:");
+		buffer.append(",\"type\":");
 		buffer.append(escape(getType()));
-		buffer.append(",role:");
+		buffer.append(",\"role\":");
 		buffer.append(escape(getRole()));
 		buffer.append("}");
 		return buffer.toString();
@@ -31,7 +31,7 @@ public class Keyword extends JavaScriptObject {
 		if (string == null) {
 			return "null";
 		}
-		return "'" +
+		return "\"" +
 			string
 			.replace("\\", "\\\\")
 	        .replace("'",  "\\'")
@@ -42,7 +42,7 @@ public class Keyword extends JavaScriptObject {
 	        .replace("\t", "\\t")
 	        .replace("\b", "\\b")
 	        .replace("\f", "\\f")
-	        + "'";
+	        + "\"";
 	}
 	
 }
