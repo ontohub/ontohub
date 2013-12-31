@@ -8,24 +8,25 @@ import java.util.List;
 
 import org.ontohub.client.Pagination.PaginateEvent;
 import org.ontohub.client.Pagination.PaginateHandler;
+import org.ontohub.shared.Filter;
 import org.ontohub.shared.FiltersMap;
 import org.ontohub.shared.Ontology;
 import org.ontohub.shared.OntologyList;
 
 import com.google.gwt.core.client.GWT;
+import com.google.gwt.core.client.JsArray;
 import com.google.gwt.event.dom.client.ClickEvent;
 import com.google.gwt.event.dom.client.KeyCodes;
 import com.google.gwt.event.dom.client.KeyDownEvent;
-import com.google.gwt.event.dom.client.KeyEvent;
 import com.google.gwt.event.dom.client.KeyUpEvent;
 import com.google.gwt.event.dom.client.KeyUpHandler;
 import com.google.gwt.uibinder.client.UiBinder;
 import com.google.gwt.uibinder.client.UiFactory;
 import com.google.gwt.uibinder.client.UiField;
 import com.google.gwt.uibinder.client.UiHandler;
-import com.google.gwt.user.client.Window;
 import com.google.gwt.user.client.rpc.AsyncCallback;
 import com.google.gwt.user.client.ui.Composite;
+import com.google.gwt.user.client.ui.FilterSelector;
 import com.google.gwt.user.client.ui.FlowPanel;
 import com.google.gwt.user.client.ui.FocusPanel;
 import com.google.gwt.user.client.ui.InlineLabel;
@@ -64,8 +65,23 @@ public class OntologySearch extends Composite {
 	InlineLabel refreshIcon;
 
 	@UiField
-	InlineLabel warningIcon; 
+	InlineLabel warningIcon;
 
+	@UiField
+	FilterSelector selector0;
+
+	@UiField
+	FilterSelector selector1;
+
+	@UiField
+	FilterSelector selector2;
+
+	@UiField
+	FilterSelector selector3;
+
+	@UiField
+	FilterSelector selector4;
+	
 	private final OntohubServices requester;
 
 	private int page = 1;
@@ -336,7 +352,7 @@ public class OntologySearch extends Composite {
 	private final void updateFilterSelectors() {
 		if (FiltersMap.existsWindowInstance()) {
 			FiltersMap map = FiltersMap.getWindowInstance();
-			// TODO Fill the filters
+			selector0.addAll(map.getOntologyTypeFilters());
 		} else {
 			warningIcon.setVisible(true);
 		}

@@ -94,6 +94,15 @@
         }
 	</ui:style>
 	<g:FlowPanel styleName="{style.OntologySearch}">
+	
+	  <g:FlowPanel styleName="btn-group btn-group-sm">
+	    <g:FilterSelector title="Ontologies" ui:field="selector0" />
+	    <g:FilterSelector title="from all projects" ui:field="selector1" />
+	    <g:FilterSelector title="in any formality" ui:field="selector2" />
+	    <g:FilterSelector title="under any license" ui:field="selector3" />
+	    <g:FilterSelector title="for any purpose" ui:field="selector4" />
+	  </g:FlowPanel>
+
 	  <g:FlowPanel styleName="input-group">
 	    <g:FocusPanel styleName="form-control {style.ontohub-SearchBar}" ui:field="bar">
 	      <g:FlowPanel styleName="{style.nobreak}">
@@ -111,6 +120,7 @@
 	      </g:FocusPanel>
 	    </g:SimplePanel>
 	  </g:FlowPanel>
+	  
 	  <g:FlowPanel ui:field="filterSelectorsPanel"></g:FlowPanel>
 	  <o:Pagination ui:field="pagination" />
 	  <g:FlowPanel ui:field="ontologyWidgetPanel"></g:FlowPanel>

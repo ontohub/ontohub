@@ -28,11 +28,11 @@ public class Ontohub implements EntryPoint {
 			boolean asFilter = ontologySearchBarHolder.getElement().getAttribute("role").equals("filter");
 			boolean paginated = ontologySearchBarHolder.getElement().getAttribute("pagination").equals("paginated");
 			boolean filteringBySelectors = ontologySearchBarHolder.getElement().getAttribute("filtering").equals("by-selectors");
-			
+
 			// Add search bar
 			OntologySearch ontologySearchBar = new OntologySearch();
 			ontologySearchBarHolder.add(ontologySearchBar);
-			
+
 			// If it works as filter
 			if (asFilter) {
 
