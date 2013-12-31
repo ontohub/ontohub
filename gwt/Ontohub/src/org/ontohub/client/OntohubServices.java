@@ -50,11 +50,11 @@ public class OntohubServices {
 		}
 	}
 
-	public void requestOntologyList(final String[] keywordList, final int page, final AsyncCallback<OntologyList> keywordListCallback) {
+	public void requestOntologyList(final Keyword[] keywordList, final int page, final AsyncCallback<OntologyList> keywordListCallback) {
 		String requestData;
 		StringBuffer requestDataBuffer = new StringBuffer();
-		for (String keyword : keywordList) {
-			requestDataBuffer.append("keywords[]=" + URL.encodeQueryString(keyword));
+		for (Keyword keyword : keywordList) {
+			requestDataBuffer.append("keywords[]=" + URL.encodeQueryString(keyword.toJson()));
 			requestDataBuffer.append("&");
 		}
 		requestDataBuffer.append("page=" + page);

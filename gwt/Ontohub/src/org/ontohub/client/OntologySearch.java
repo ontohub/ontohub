@@ -10,6 +10,7 @@ import org.ontohub.client.Pagination.PaginateEvent;
 import org.ontohub.client.Pagination.PaginateHandler;
 import org.ontohub.shared.Filter;
 import org.ontohub.shared.FiltersMap;
+import org.ontohub.shared.Keyword;
 import org.ontohub.shared.Ontology;
 import org.ontohub.shared.OntologyList;
 
@@ -147,7 +148,7 @@ public class OntologySearch extends Composite {
 		if (text.length() == 0) {
 			return;
 		}
-		OntologySearchConcept concept = new OntologySearchConcept(OntologySearch.this, "Category", text);
+		OntologySearchConcept concept = new OntologySearchConcept(OntologySearch.this, "Mixed", text);
 		conceptPanel.add(concept);
 		box.setText("");
 		page = 1;
@@ -197,7 +198,7 @@ public class OntologySearch extends Composite {
 			@Override
 			public void onSelection(SelectionEvent<Suggestion> event) {
 				Suggestion suggestion = event.getSelectedItem();
-				conceptPanel.add(new OntologySearchConcept(OntologySearch.this, "Category", suggestion.getReplacementString()));
+				conceptPanel.add(new OntologySearchConcept(OntologySearch.this, "Mixed", suggestion.getReplacementString()));
 				box.setText("");
 				page = 1;
 				updateOntologyWidgetList();
@@ -220,16 +221,21 @@ public class OntologySearch extends Composite {
 	 * Updates the ontology widget list to match the filters. 
 	 */
 	public final void updateOntologyWidgetList() {
-		List<String> stringArray = new ArrayList<String>();
+		List<Keyword> keywordArray = new ArrayList<Keyword>();
+		keywordArray.add(selector0.getKeyword());
+		keywordArray.add(selector1.getKeyword());
+		keywordArray.add(selector2.getKeyword());
+		keywordArray.add(selector3.getKeyword());
+		keywordArray.add(selector4.getKeyword());
 		for (Widget widget : conceptPanel) {
 			if (widget instanceof OntologySearchConcept) {
 				OntologySearchConcept concept = (OntologySearchConcept)widget;
-				stringArray.add(concept.getItemLabel());
+				keywordArray.add(concept.getKeyword());
 			}
 		}
 		refreshIcon.setVisible(true);
 		warningIcon.setVisible(false);
-		requester.requestOntologyList(stringArray.toArray(new String[stringArray.size()]), page, new AsyncCallback<OntologyList>() {
+		requester.requestOntologyList(keywordArray.toArray(new Keyword[keywordArray.size()]), page, new AsyncCallback<OntologyList>() {
 
 			@Override
 			public void onFailure(Throwable caught) {

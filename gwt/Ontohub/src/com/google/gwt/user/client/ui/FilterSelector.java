@@ -5,10 +5,12 @@ import java.util.Iterator;
 import java.util.List;
 
 import org.ontohub.shared.Filter;
+import org.ontohub.shared.Keyword;
 
 import com.google.gwt.core.client.GWT;
 import com.google.gwt.core.client.JsArray;
 import com.google.gwt.dom.client.Element;
+import com.google.gwt.dom.client.LIElement;
 import com.google.gwt.event.dom.client.ClickEvent;
 import com.google.gwt.event.dom.client.ClickHandler;
 import com.google.gwt.uibinder.client.UiBinder;
@@ -42,6 +44,10 @@ public class FilterSelector extends Composite implements HasWidgets {
 	Element menu;
 
 	private boolean open = false;
+
+	private String typeLabel = null;
+
+	private String itemLabel = null;
 
 	public final void setTitle(String title) {
 		Element caretSpan = DOM.createSpan();
@@ -87,6 +93,34 @@ public class FilterSelector extends Composite implements HasWidgets {
 		for (int i = 0; i < filters.length(); i++) {
 			add(filters.get(i));
 		}
+		if (filters.length() > 0) {
+			setTitle(filters.get(0).getName());
+			itemLabel = filters.get(0).getValue();
+		}
+	}
+
+	public final void setTypeLabel(String typeLabel) {
+		this.typeLabel = typeLabel;
+	}
+
+	public final void setItemLabel(String itemLabel) {
+		this.itemLabel = itemLabel;
+	}
+
+	public final String getTypeLabel() {
+		return typeLabel;
+	}
+
+	public final String getItemLabel() {
+		return itemLabel;
+	}
+
+	public final Keyword getKeyword() {
+		Keyword keyword = Keyword.newInstance();
+		keyword.setItem(itemLabel);
+		keyword.setType(typeLabel);
+		keyword.setRole(null);
+		return keyword;
 	}
 
 	private final void add(final Filter filter) {
@@ -98,6 +132,7 @@ public class FilterSelector extends Composite implements HasWidgets {
 			public void onClick(ClickEvent event) {
 				setTitle(filter.getName());
 				setOpen(false);
+				itemLabel = filter.getValue();
 			}
 		});
 		this.add(menuItemAnchor);
@@ -106,7 +141,7 @@ public class FilterSelector extends Composite implements HasWidgets {
 		menu.appendChild(menuItem);
 	}
 
-	public final native Element createListItem() /*-{
+	public final native LIElement createListItem() /*-{
 		return $wnd.document.createElement('li');
 	}-*/;
 
@@ -132,7 +167,7 @@ public class FilterSelector extends Composite implements HasWidgets {
 	}
 
 	@Override
-	public void add(Widget widget) {
+	public final void add(Widget widget) {
 		if (isAttached()) {
 			widget.onAttach();
 		}
@@ -140,17 +175,17 @@ public class FilterSelector extends Composite implements HasWidgets {
 	}
 
 	@Override
-	public void clear() {
+	public final void clear() {
 		widgetList.clear();
 	}
 
 	@Override
-	public Iterator<Widget> iterator() {
+	public final Iterator<Widget> iterator() {
 		return widgetList.iterator();
 	}
 
 	@Override
-	public boolean remove(Widget widget) {
+	public final boolean remove(Widget widget) {
 		if (!isAttached()) {
 			widget.onDetach();
 		}

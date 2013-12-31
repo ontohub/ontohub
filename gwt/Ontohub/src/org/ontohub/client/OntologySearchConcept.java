@@ -1,5 +1,7 @@
 package org.ontohub.client;
 
+import org.ontohub.shared.Keyword;
+
 import com.google.gwt.core.client.GWT;
 import com.google.gwt.event.dom.client.ClickEvent;
 import com.google.gwt.event.dom.client.DoubleClickEvent;
@@ -15,7 +17,7 @@ import com.google.gwt.user.client.ui.HasText;
 import com.google.gwt.user.client.ui.InlineLabel;
 import com.google.gwt.user.client.ui.Widget;
 
-public class OntologySearchConcept extends Composite implements HasText {
+public class OntologySearchConcept extends Composite {
 
 	private static OntologySearchConceptUiBinder uiBinder = GWT
 			.create(OntologySearchConceptUiBinder.class);
@@ -85,27 +87,26 @@ public class OntologySearchConcept extends Composite implements HasText {
 		ontologySearch.onConceptDeleted();
 	}
 
-	private void selectNext() {
+	private final void selectNext() {
 		ontologySearch.selectNext(this);
 	}
 
-	private void selectPrevious() {
+	private final void selectPrevious() {
 		ontologySearch.selectPrevious(this);
 	}
 
-	public void setText(String text) {
-		String[] labels = text.split(":");
-		if (labels.length != 2) {
-			return;
-		}
-		typeLabel = labels[0];
-		itemLabel = labels[1].substring(1, labels[1].length() - 1).replace("\\\"", "\"").replace("\\\\", "\\");
+	public final void setKeyword(Keyword keyword) {
+		typeLabel = keyword.getType();
+		itemLabel = keyword.getItem();
 		label.setText(itemLabel);
 	}
 
-	public String getText() {
-		itemLabel = label.getText();
-		return typeLabel + ":\"" + itemLabel.replace("\\", "\\\\").replace("\"", "\\\"") + "\"";
+	public final Keyword getKeyword() {
+		Keyword keyword = Keyword.newInstance();
+		keyword.setItem(itemLabel);
+		keyword.setType(typeLabel);
+		keyword.setRole(null);
+		return keyword;
 	}
 
 	public final void setFocus(boolean focused) {
