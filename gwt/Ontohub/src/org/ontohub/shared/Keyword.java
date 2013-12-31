@@ -31,7 +31,8 @@ public class Keyword extends JavaScriptObject {
 		if (string == null) {
 			return "null";
 		}
-		return string
+		return "'" +
+			string
 			.replace("\\", "\\\\")
 	        .replace("'",  "\\'")
 	        .replace("\"", "\\\"")
@@ -40,7 +41,8 @@ public class Keyword extends JavaScriptObject {
 			.replace("\n", "\\n")
 	        .replace("\t", "\\t")
 	        .replace("\b", "\\b")
-	        .replace("\f", "\\f");
+	        .replace("\f", "\\f")
+	        + "'";
 	}
 	
 }

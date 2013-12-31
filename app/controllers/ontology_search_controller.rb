@@ -17,6 +17,8 @@ class OntologySearchController < ApplicationController
 
   def search
     keywords = params[:keywords] || []
+    keywords = keywords.each { |keyword| JSON.parse(keyword) }
+    put keywords
     page = params[:page] || "0"
     page = page.to_i
     if in_repository?
