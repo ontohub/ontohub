@@ -1,11 +1,6 @@
 package org.ontohub.client;
 
-import org.ontohub.shared.Filter;
-import org.ontohub.shared.FiltersMap;
-
 import com.google.gwt.core.client.EntryPoint;
-import com.google.gwt.core.client.JsArray;
-import com.google.gwt.user.client.Window;
 import com.google.gwt.user.client.ui.RootPanel;
 
 /**
@@ -27,7 +22,6 @@ public class Ontohub implements EntryPoint {
 			// Get ontology search attributes
 			boolean asFilter = ontologySearchBarHolder.getElement().getAttribute("role").equals("filter");
 			boolean paginated = ontologySearchBarHolder.getElement().getAttribute("pagination").equals("paginated");
-			boolean filteringBySelectors = ontologySearchBarHolder.getElement().getAttribute("filtering").equals("by-selectors");
 
 			// Add search bar
 			OntologySearch ontologySearchBar = new OntologySearch();
@@ -43,8 +37,6 @@ public class Ontohub implements EntryPoint {
 			// Set pagination
 			ontologySearchBar.setPaginated(paginated);
 
-			// Set selector visible
-			ontologySearchBar.setFilterSelectorsVisible(filteringBySelectors);
 		}
 	}
 }

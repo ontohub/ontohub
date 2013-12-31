@@ -116,14 +116,18 @@ public class FilterSelector extends Composite implements HasWidgets {
 	public final void onAttach() {
 		super.onAttach();
 		for (Widget aWidget : this) {
-			aWidget.onAttach();
+			if (!aWidget.isAttached()) {
+				aWidget.onAttach();
+			}
 		}
 	}
 
 	public final void onDetach() {
-		super.onAttach();
+		super.onDetach();
 		for (Widget aWidget : this) {
-			aWidget.onDetach();
+			if (aWidget.isAttached()) {
+				aWidget.onDetach();
+			}
 		}
 	}
 

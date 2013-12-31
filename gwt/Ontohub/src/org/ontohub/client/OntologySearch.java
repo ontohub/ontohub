@@ -110,6 +110,7 @@ public class OntologySearch extends Composite {
 				updateOntologyWidgetList();
 			}
 		});
+		setFilterSelectorsVisible(true);
 	}
 
 	@UiFactory
@@ -353,6 +354,10 @@ public class OntologySearch extends Composite {
 		if (FiltersMap.existsWindowInstance()) {
 			FiltersMap map = FiltersMap.getWindowInstance();
 			selector0.addAll(map.getOntologyTypeFilters());
+			selector1.addAll(map.getProjectFilters());
+			selector2.addAll(map.getFormalityLevelFilters());
+			selector3.addAll(map.getLicenseModelFilters());
+			selector4.addAll(map.getTaskFilters());
 		} else {
 			warningIcon.setVisible(true);
 		}

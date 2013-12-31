@@ -50,8 +50,8 @@
     <script>
     // Example of ontology filters
     var FiltersMap = {
-    		'OntologyType'   : [{ name: 'Ontologies', value: 'DistributedOntology' }, { name: 'Distributed Ontologies', value: 'DistributedOntology' }, { name: 'Single Ontologies', value: 'SingleOntology' }],
-    		'Project'        : [{ name: 'Distributed', value: 'DistributedOntology' }, { name: 'Single', value: 'SingleOntology' }],
+    		'OntologyType'   : [{ name: 'Ontologies', value: 'DistributedOntology' }, { name: 'Distributed ontologies', value: 'DistributedOntology' }, { name: 'Single ontologies', value: 'SingleOntology' }],
+    		'Project'        : [{ name: 'from all projects', value: 'All Projects' }, { name: 'from I5-DiaSpace', value: 'I5-DiaSpace' }, { name: 'from I1-OntoSpace', value: 'SingleOntology' }],
     		'FormalityLevel' : [{ name: 'Distributed', value: 'DistributedOntology' }, { name: 'Single', value: 'SingleOntology' }],
     		'LicenseModel'   : [{ name: 'Distributed', value: 'DistributedOntology' }, { name: 'Single', value: 'SingleOntology' }],
     		'Task'           : [{ name: 'Distributed', value: 'DistributedOntology' }, { name: 'Single', value: 'SingleOntology' }]
@@ -61,7 +61,7 @@
 	<div style="width:800px;margin: 0 auto;">
 	  <h2>Ontology Search Bar</h2>
       <div>Try searching for names of animal species starting with "C".</div>
-      <div id="OntologySearch" pagination="paginated" role="filter" filtering="by-selectors"></div>
+      <div id="OntologySearch" pagination="paginated" role="filter"></div>
 	</div>
 
   </body>
