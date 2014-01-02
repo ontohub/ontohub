@@ -15,6 +15,19 @@ class OntologiesController < InheritedResources::Base
   before_filter :check_read_permissions
 
   def index
+    @filters_map = Hash.new
+    @filters_map['OntologyType'] = Array.new
+    @filters_map['OntologyType'].push({ "name" => 'Ontologies', "value" => nil })
+    @filters_map['OntologyType'].push({ "name" => 'Dist. ontologies', "value" => 'DistributedOntology' })
+    @filters_map['OntologyType'].push({ "name" => 'Single ontologies', "value" => 'SingleOntology' })
+    @filters_map['Project'] = Array.new
+    @filters_map['Project'].push({ "name" => 'from all projects', "value" => nil })
+    @filters_map['FormalityLevel'] = Array.new
+    @filters_map['FormalityLevel'].push({ "name" => 'in any formality', "value" => nil })
+    @filters_map['LicenseModel'] = Array.new
+    @filters_map['LicenseModel'].push({ "name" => 'under any license', "value" => nil })
+    @filters_map['Task'] = Array.new
+    @filters_map['Task'].push({ "name" => 'for any purpose', "value" => nil })
     if in_repository?
       @count = end_of_association_chain.total_count
       render :index_repository

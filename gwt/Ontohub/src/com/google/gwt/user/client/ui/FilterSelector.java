@@ -43,7 +43,7 @@ public class FilterSelector extends Composite implements HasWidgets {
 	@UiField
 	Element menu;
 
-	private boolean open = false;
+	private boolean open;
 
 	private String typeLabel = null;
 
@@ -54,6 +54,7 @@ public class FilterSelector extends Composite implements HasWidgets {
 		caretSpan.addClassName("caret");
 		button.getElement().setInnerText(title.trim() + " ");
 		button.getElement().appendChild(caretSpan);
+		setOpen(false);
 	}
 
 	@UiHandler("button")
