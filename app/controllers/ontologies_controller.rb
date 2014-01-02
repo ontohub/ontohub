@@ -22,12 +22,16 @@ class OntologiesController < InheritedResources::Base
     @filters_map['OntologyType'].push({ "name" => 'Single ontologies', "value" => 'SingleOntology' })
     @filters_map['Project'] = Array.new
     @filters_map['Project'].push({ "name" => 'from all projects', "value" => nil })
+    @filters_map['Project'].push(*Project.select([:name, :id]).order(:name).all.map {|project| {"name" => "from " + project.name, "value" => project.id.to_s} })
     @filters_map['FormalityLevel'] = Array.new
     @filters_map['FormalityLevel'].push({ "name" => 'in any formality', "value" => nil })
+    @filters_map['FormalityLevel'].push(*FormalityLevel.select([:name, :id]).order(:name).all.map {|formality| {"name" => "in " + formality.name, "value" => formality.id.to_s} })
     @filters_map['LicenseModel'] = Array.new
     @filters_map['LicenseModel'].push({ "name" => 'under any license', "value" => nil })
+    @filters_map['LicenseModel'].push(*LicenseModel.select([:name, :id]).order(:name).all.map {|license| {"name" => "under " + license.name, "value" => license.id.to_s} })
     @filters_map['Task'] = Array.new
     @filters_map['Task'].push({ "name" => 'for any purpose', "value" => nil })
+    @filters_map['Task'].push(*Task.select([:name, :id]).order(:name).all.map {|task| {"name" => "for " + task.name, "value" => task.id.to_s} })
     if in_repository?
       @count = end_of_association_chain.total_count
       render :index_repository
