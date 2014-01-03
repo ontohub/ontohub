@@ -102,7 +102,7 @@ class OntologySearchTest < ActiveSupport::TestCase
     context 'bean list' do
       context 'with one keyword' do
         should 'be generated correctly' do
-          results = @os.make_global_bean_list_response([@o1.name], 1).results
+          results = @os.make_global_bean_list_response([{"type" => "Mixed", "item" => @o1.name}], 1).results
           results = results.map { |x| x[:name] }
 
           assert_equal @ontologies.size, results.size
@@ -115,7 +115,7 @@ class OntologySearchTest < ActiveSupport::TestCase
 
       context 'with two keywords' do
         should 'be generated correctly' do
-          results = @os.make_global_bean_list_response([@o1.name, @e1.name], 1).results
+          results = @os.make_global_bean_list_response([{"type" => "Mixed", "item" => @o1.name}, {"type" => "Mixed", "item" => @e1.name}], 1).results
           results = results.map { |x| x[:name] }
 
           assert_equal 1, results.size
@@ -126,7 +126,7 @@ class OntologySearchTest < ActiveSupport::TestCase
         end
 
         should 'return an empty set' do
-          results = @os.make_global_bean_list_response([@o2.name, @e1.name], 1).results
+          results = @os.make_global_bean_list_response([{"type" => "Mixed", "item" => @o2.name},{"type" => "Mixed", "item" => @e1.name}], 1).results
           results = results.map { |x| x[:name] }
 
           assert_equal 0, results.size
