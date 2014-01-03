@@ -6,12 +6,14 @@ module RepositoriesHelper
     methods
   end
 
-  def clone_method_links
-    clone_methods.map do |clone_method|
-      link_to clone_method, "##{clone_method}",
-        class: 'clone_method_link',
-        data: {clone: clone_method}
-    end.join(', ')
+# def clone_method_links
+#   clone_methods.map do |clone_method|
+#     clone_method_link clone_method
+#   end.join(', ')
+# end
+
+  def clone_method_link(method)
+    link_to method, "##{method}", class: 'clone_method_link', data: {clone: method}
   end
 
   def repository_clone_url(repository, clone_type: 'git', port: nil)
