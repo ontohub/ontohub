@@ -1,4 +1,3 @@
-# encoding: utf-8
 module OntologyHelper
   
   def status(resource)
@@ -13,7 +12,7 @@ module OntologyHelper
 
       link = ' ('
       link << link_to('error',
-        ontology_ontology_versions_path(resource),
+        [resource.repository, resource, :ontology_versions],
         :'data-original-title' => version.last_error,
         class: 'help'
       )
@@ -27,29 +26,7 @@ module OntologyHelper
 
   def download_path(resource)
     return nil if resource.versions.done.empty?
-    ontology_ontology_version_path(resource, resource.versions.done.latest.first)
-  end
-
-  def in_process_tag
-    ontologies = collection.in_process(admin? || current_user)
-    content_tag(:div, class: 'well', id: 'ontology_infos') do
-      content_tag(:h5, t(:in_process_ontologies)) +
-      content_tag(:ul, id: 'in_process', class: 'ontologies') do
-        render ontologies
-      end
-    end if ontologies.any?
-  end
-
-  def status_tag
-    content_tag(:div, class: 'well', id: 'ontology_infos') do
-      content_tag(:small, id: 'ontology-state',
-                          class: @ontology.state,
-                          :"data-uri" => url_for(@ontology)) do
-        status(@ontology)
-      end
-      # content_tag(:h5, t(:ontology_versions_status)) +
-      # content_tag(:h6, "Status: #{@ontology.state}")
-    end if @ontology.non_current_active_version?(current_user)
+    repository_ontology_ontology_version_path(*resource_chain, resource.versions.done.latest.first)
   end
 
 end

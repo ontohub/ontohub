@@ -1,0 +1,18 @@
+= repository_nav parent.repository, :ontologies, disable_actions: true
+
+= ontology_nav parent, :license_models
+
+-# if can? :create, LicenseModel
+- if can? :write, parent.repository
+  .pull-right
+    = link_to 'Add License Model', [:new, :repository, :ontology, :license_model], class: 'btn btn-default'
+
+%table.table
+  %thead
+    %tr
+      %th License Model
+      %th Description
+      %th URL
+      %th
+  %tbody
+    = render collection

@@ -2,6 +2,7 @@ language: ruby
 
 rvm:
   - 2.0.0
+  - ruby-head
 
 branches:
   except:
@@ -21,7 +22,7 @@ before_install:
   - 'gem install bundler'
 
 script:
-  - bundle exec rake test
+  - bundle exec rake
 
 before_script:
   - psql -c 'create database ontohub_test;' -U postgres
@@ -31,4 +32,5 @@ before_script:
   - sudo apt-get update
   - sudo apt-get install ia32-libs libsane libgphoto2-2 hets-core subversion udrawgraph git-svn
   - sudo hets -update
-  - bundle exec rake db:migrate || true
+  - RAILS_ENV=test bundle exec rake db:migrate || true
+  - RAILS_ENV=test bundle exec rake sunspot:solr:start

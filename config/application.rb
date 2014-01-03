@@ -64,6 +64,11 @@ module Ontohub
 
     # Version of your assets, change this if you want to expire all your assets
     config.assets.version = '1.0'
+
+    config.i18n.enforce_available_locales = true
+    
+    # Including Jstree Themes Styles in Precompiling
+    config.assets.precompile += %w(jstree-themes/**/*)
     
     config.before_initialize do
       # Enable serving of images, stylesheets, and JavaScripts from an asset server
@@ -76,10 +81,6 @@ module Ontohub
         config.action_mailer.send("#{key}=", val)
       end
       
-      # Exception Notifier
-      if (c = Settings.exception_notifier).try(:enabled)
-        config.middleware.use "ExceptionNotifier", c.to_hash
-      end
     end
   end
 end

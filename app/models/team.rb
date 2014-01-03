@@ -1,6 +1,5 @@
 class Team < ActiveRecord::Base
   
-  include Common::Scopes
   has_many :team_users
   has_many :users, :through => :team_users
   has_many :permissions, :as => :subject

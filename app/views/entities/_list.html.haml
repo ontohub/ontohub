@@ -1,10 +1,10 @@
 %table.entities
-  %thead
-    %tr
-      %th{style:"border:0"}
-      %th Text
-      - if @show_name_column 
-        %th Name
+  - if @show_name_column 
+    %thead
+      %tr
+        %th{style:"border:0"}
+          %th Text
+          %th Name
   %tbody
     - collection.each do |entity|
       %tr
@@ -17,7 +17,7 @@
           %td= entity.name
         - else
           - if entity.display_name
-            %td= iri_tooltip(entity, entity.display_name)
+            %td= entity.display_name
           - else 
             %td= name_highlighter(entity)
       

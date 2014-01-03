@@ -4,5 +4,4 @@
   = f.input :standardization_status, :as => :select, :collection => Language::STAND_STATUS, :include_blank => false
   = f.input :defined_by, :as => :select, :collection => Language::DEFINED_BY, :include_blank => false
   = f.input :description
-  .form-actions
-    = f.button :submit, class: 'btn-primary'
+  = f.button :wrapped

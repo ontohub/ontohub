@@ -1,0 +1,11 @@
+%h2= @page_title = 'Edit Link-Metadata'
+
+= simple_form_for resource do |f|
+  = f.input :iri
+  = f.input :kind, as: :select, collection: Link::KINDS, include_blank: false
+  = f.input :theorem
+  = f.input :proven
+  = f.input :local
+  = f.input :inclusion
+
+  = f.button :submit, class: 'btn btn-primary'

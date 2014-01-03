@@ -1,26 +1,55 @@
+# encoding: UTF-8
 module NavigationHelper
 
-  def ontology_nav(ontology, current_page)
-    @entities = ontology.entities.groups_by_kind
+  def repository_nav(resource, current_page, options = {})
+    pages = [
+      [:overview,     resource]
+    ]
+    
+    chain = resource_chain.last.is_a?(Ontology) ? resource_chain[0..-2] : resource_chain
 
-    @active_kind = nil
+    pages << [:ontologies,       [*chain, :ontologies]]
+    pages << [:"Ontology files and related files", [*chain, :tree]]
+    pages << [:"Ontology urls",  repository_url_maps_path(resource)]
+    pages << [:history,          repository_ref_path(resource, 'master', path: nil, action: :history)]
+    pages << [:errors,           repository_errors_path(resource)]
+    pages << [:permissions,      [*chain, :permissions]] if can? :permissions, resource
+ 
+    subnavigation(resource, pages, current_page, [], options)
+  end
+
+  def ontology_nav(ontology, current_page)
+    @top_level_pages = [
+      ['Content', ontology.distributed? ? :children : :entities],
+      ['Comments', :comments],
+      ['Metadata', :metadata],
+      ['Versions', :ontology_versions],
+      ['Graphs', :graphs],
+      ['Links', :links]
+    ]
+
+    @metadatas = []
+
+    if params[:action] != "edit"
+      @metadatas = ontology_nav_metadata
+    end
+
+    @entities = ontology.distributed? ? [] : ontology.entities.groups_by_kind
+
     @active_kind = @entities.first.kind if current_page == :entities
     @active_kind = params[:kind] if params[:kind]
 
     pages = []
     
     if ontology.distributed?
-      pages << [:children,  [ontology, :children]]
+      pages << [:children,  [*resource_chain, :children]]
     else
-      pages << [:sentences, [ontology, :sentences]]
+      pages << [:sentences, [*resource_chain, :sentences]]
     end
 
     actions = []
-
-    # action link to new version
-    actions << link_to('New version', [:new, ontology, :ontology_version ]) if can? :edit, ontology
     
-    # add counters
+    # Add counters
     pages.each do |row|
       counter_key = "#{row[0]}_count"
       row << ontology.send(counter_key) if ontology.respond_to?(counter_key)
@@ -37,22 +66,22 @@ module NavigationHelper
     }
   end
      
-  def subnavigation(resource, pages, current_page, additional_actions = [])
-    
-    # add counters
+  def subnavigation(resource, pages, current_page, additional_actions = [], options = {})
+    # Add counters
     pages.each do |row|
       counter_key = "#{row[0]}_count"
       row << resource.send(counter_key) if resource.respond_to?(counter_key)
     end
     
-    @page_title = resource.to_s
+    @page_title = current_page
     @page_title = "#{current_page.capitalize} · #{@page_title}" if current_page != pages[0][0]
     
     render :partial => '/shared/subnavigation', :locals => {
       resource:           resource,
       current_page:       current_page,
       pages:              pages,
-      additional_actions: additional_actions
+      additional_actions: additional_actions,
+      options:            options
     }
   end
 
@@ -66,5 +95,51 @@ module NavigationHelper
     
     subnavigation(team, pages, current_page)
   end
-  
+
+  def active_navigation(controller)
+    if params[:repository_id]
+      if params[:ontology_id]
+        return 'active' if controller == :ontologies
+      else
+        return 'active' if controller == :repositories
+      end
+    else
+      return 'active' if [controller.to_s, controller.to_s.gsub('_', '/')].include? params[:controller]
+    end
+  end
+
+  def menu_entry(title, controller)
+    content_tag :li, class: active_navigation(controller) do
+      link_to title, controller
+    end
+  end
+
+
+  # used for activating tabs in ontology view
+  def in_subcontroller?(page, current_page)
+    case page
+      when :entities
+        %w(classes sentences).include? controller_name
+      when :metadata
+        in_metadata?
+    end
+  end
+
+  # used for activating tabs in ontology view
+  def in_metadata?
+    ontology_nav_metadata.map{ |m| m[1][-1].to_s }.include? controller_name
+  end
+
+  protected
+
+  def ontology_nav_metadata
+    [
+      ['Projects',         [*resource_chain, :projects]],
+      ['Categories',       [*resource_chain, :categories]],
+      ['Tasks',            [*resource_chain, :tasks]],
+      ['License Model',    [*resource_chain, :license_models]],
+      ['Formality Levels', [*resource_chain, :formality_levels]]
+    ]
+  end
+
 end

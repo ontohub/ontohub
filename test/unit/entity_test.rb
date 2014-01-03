@@ -64,21 +64,15 @@ class EntityTest < ActiveSupport::TestCase
     context 'When creating OWL2 Entities' do
       context 'with fragment in URI' do
         setup do
-          @entity_hash = {
-            'text' => 'Class <http://example.com/resource#Fragment>',
-            'name' => '<http://example.com/resource#Fragment>'
-          }
-
-	        @ontology.entities.update_or_create_from_hash @entity_hash
-  				@entity = @ontology.entities.first
+          @entity = FactoryGirl.create :entity_owl2
         end
         
         should 'display_name attribute be the fragment'  do
-          assert_equal "Fragment", @entity.display_name
+          assert_equal "1", @entity.display_name
         end
 
         should 'iri be set'  do
-          assert_equal "http://example.com/resource#Fragment", @entity.iri
+          assert_equal "http://example.com/resource#2", @entity.iri
         end
       end
       

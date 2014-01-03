@@ -1,18 +1,25 @@
 %h2= @page_title = 'Logics'
 
 - if can? :create, Logic
-  %ul.actions.pull-right
-    %li= link_to 'Create Logic', :new_logic
+  .pull-right
+    = link_to 'Create Logic', :new_logic, class: 'btn btn-primary'
 
 %p
-  = pluralize(collection.count, resource_class.to_s)
-  found
+  = pluralize(Logic.count, "logic")
+  currently available
 
 = pagination do
   %table
     %thead
       %th Name
       %th IRI
-      %th 
+      %th
+      %th
     %tbody
+      %tr
+        %td (heterogeneous) Distributed Ontologies
+        %td
+        %td= pluralize(Ontology.heterogeneous.count, "distributed #{Ontology}")
+        %td= pluralize(Ontology.heterogeneous_children.count, "child #{Ontology}")
+        %td
       = render collection

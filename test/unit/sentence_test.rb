@@ -11,7 +11,9 @@ class SentenceTest < ActiveSupport::TestCase
       should have_db_column(column).of_type(:string)
     end
 
-    should have_db_column('text').of_type(:text)
+    %w( text display_text ).each do |column|
+      should have_db_column(column).of_type(:text)
+    end
 
     should have_db_index([:ontology_id, :id]).unique(true)
     should have_db_index([:ontology_id, :name]).unique(true)
@@ -49,6 +51,38 @@ class SentenceTest < ActiveSupport::TestCase
   			end
   		end
   	end
+
+  	context 'OWL2 sentences' do
+      setup do
+        @ontology = FactoryGirl.create :single_ontology
+        user = FactoryGirl.create :user
+        @ontology.import_xml_from_file fixture_file('generations.xml'),
+          fixture_file('generations.pp.xml'),
+          user
+        @sentence = @ontology.sentences.first
+      end
+
+      should 'have display_text set' do
+        assert_not_nil @sentence.display_text
+      end
+
+      should "not contain entities' iris" do
+        @sentence.entities.each do |x|
+          assert !(@sentence.display_text.include? x.iri)
+        end
+      end
+    end
+  end
+
+  context 'extracted names' do
+    setup do
+      sentence = FactoryGirl.create :sentence, :of_meta_ontology
+      @name1,@name2 = sentence.extract_class_names
+    end
+    should "match iris\' fragments" do
+      assert_equal @name1, 'Accounting_and_taxation'
+      assert_equal @name2, 'Business_and_administration'
+    end
   end
 
 end

@@ -1,0 +1,3 @@
+collection inherited_collection
+
+attributes *resource_class.column_names

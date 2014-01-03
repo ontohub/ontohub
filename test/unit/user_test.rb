@@ -7,6 +7,7 @@ class UserTest < ActiveSupport::TestCase
   should have_many :team_users
   should have_many :teams
   should have_many :permissions
+  should have_many :keys
   
   should strip_attribute :name
   should strip_attribute :email

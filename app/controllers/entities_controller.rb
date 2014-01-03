@@ -1,9 +1,10 @@
-# 
+#
 # Lists entities of an ontology
-# 
+#
 class EntitiesController < InheritedResources::Base
-  
+
   belongs_to :ontology
+  before_filter :check_read_permissions
 
   actions :index
   has_scope :kind
@@ -11,6 +12,18 @@ class EntitiesController < InheritedResources::Base
   respond_to :json, :xml
 
   def index
+    ontology = Ontology.find params[:ontology_id]
+    if ontology.is?('OWL2') || ontology.is?('OWL')
+      if ontology
+        begin
+          entities = ontology.entities.where(kind: 'Class')
+          @nodes = Entity.roots_of(*entities).first.children
+        rescue
+          @nodes = []
+        end
+        @hierarchy_exists = !@nodes.empty?
+      end
+    end
     index! do |format|
       format.html do
         unless collection.blank?
@@ -19,5 +32,11 @@ class EntitiesController < InheritedResources::Base
         end
       end
     end
+  end
+
+  protected
+
+  def check_read_permissions
+    authorize! :show, parent.repository
   end
 end
