@@ -20,6 +20,8 @@
         .row
           - if cover_visible?
             = render partial: '/shared/cover'
+            .col-md-12
+              = yield
           - elsif context_pane
             .col-md-8
               = yield
