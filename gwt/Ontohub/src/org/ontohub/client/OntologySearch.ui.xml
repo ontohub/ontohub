@@ -92,6 +92,9 @@
         .OntologySearch .form-control {
           padding: 6px;
         }
+        .searchBar {
+	      padding-top: 5px;
+        }
 	</ui:style>
 	<g:FlowPanel styleName="{style.OntologySearch}">
 	
@@ -103,7 +106,7 @@
 	    <g:FilterSelector typeLabel="Task" title="for any purpose" ui:field="selector4" />
 	  </g:FlowPanel>
 
-	  <g:FlowPanel styleName="input-group">
+	  <g:FlowPanel styleName="input-group {style.searchBar}">
 	    <g:FocusPanel styleName="form-control {style.ontohub-SearchBar}" ui:field="bar">
 	      <g:FlowPanel styleName="{style.nobreak}">
 	        <g:FlowPanel styleName="{style.iconPanel}" ui:field="iconPanel">
