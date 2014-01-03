@@ -15,23 +15,33 @@ class OntologiesController < InheritedResources::Base
   before_filter :check_read_permissions
 
   def index
-    @filters_map = Hash.new
-    @filters_map['OntologyType'] = Array.new
-    @filters_map['OntologyType'].push({ "name" => 'Ontologies', "value" => nil })
-    @filters_map['OntologyType'].push({ "name" => 'Dist. ontologies', "value" => 'DistributedOntology' })
-    @filters_map['OntologyType'].push({ "name" => 'Single ontologies', "value" => 'SingleOntology' })
-    @filters_map['Project'] = Array.new
-    @filters_map['Project'].push({ "name" => 'from all projects', "value" => nil })
-    @filters_map['Project'].push(*Project.select([:name, :id]).order(:name).all.map {|project| {"name" => "from " + project.name, "value" => project.id.to_s} })
-    @filters_map['FormalityLevel'] = Array.new
-    @filters_map['FormalityLevel'].push({ "name" => 'in any formality', "value" => nil })
-    @filters_map['FormalityLevel'].push(*FormalityLevel.select([:name, :id]).order(:name).all.map {|formality| {"name" => "in " + formality.name, "value" => formality.id.to_s} })
-    @filters_map['LicenseModel'] = Array.new
-    @filters_map['LicenseModel'].push({ "name" => 'under any license', "value" => nil })
-    @filters_map['LicenseModel'].push(*LicenseModel.select([:name, :id]).order(:name).all.map {|license| {"name" => "under " + license.name, "value" => license.id.to_s} })
-    @filters_map['Task'] = Array.new
-    @filters_map['Task'].push({ "name" => 'for any purpose', "value" => nil })
-    @filters_map['Task'].push(*Task.select([:name, :id]).order(:name).all.map {|task| {"name" => "for " + task.name, "value" => task.id.to_s} })
+    projects = Project.select([:name, :id]).order(:name).all.map {|project| {"name" => "from " + project.name, "value" => project.id.to_s} }
+    formalities = FormalityLevel.select([:name, :id]).order(:name).all.map {|formality| {"name" => "in " + formality.name, "value" => formality.id.to_s} }
+    licenses = LicenseModel.select([:name, :id]).order(:name).all.map {|license| {"name" => "under " + license.name, "value" => license.id.to_s} }
+    tasks = Task.select([:name, :id]).order(:name).all.map {|task| {"name" => "for " + task.name, "value" => task.id.to_s} }
+    @filters_map = {
+      'OntologyType' => [
+        { "name" => 'Ontologies', "value" => nil },
+        { "name" => 'Dist. ontologies', "value" => 'DistributedOntology' },
+        { "name" => 'Single ontologies', "value" => 'SingleOntology' }
+      ],
+      'Project' => [
+        { "name" => 'from all projects', "value" => nil },
+        *projects
+      ],
+      'FormalityLevel' => [
+        { "name" => 'in any formality', "value" => nil },
+        *formalities
+      ],
+      'LicenseModel' => [
+        { "name" => 'under any license', "value" => nil },
+        *licenses
+      ],
+      'Task' => [
+        { "name" => 'for any purpose', "value" => nil },
+        *tasks
+      ]
+    }
     if in_repository?
       @count = end_of_association_chain.total_count
       render :index_repository
