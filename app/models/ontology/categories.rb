@@ -19,7 +19,9 @@ module Ontology::Categories
 
     subclasses.each do |s|
       c1,c2 = s.hierarchical_class_names
-      CEdge.create!(:child_id => categorify(c1).id, :parent_id => categorify(c2).id)
+      e1 = self.entities.where('name = ? OR iri = ?', c1, c1).first
+      e2 = self.entities.where('name = ? OR iri = ?', c2, c2).first
+      CEdge.create!(:child_id => categorify(e1).id, :parent_id => categorify(e2).id)
     end
   end
 
