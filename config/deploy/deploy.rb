@@ -1,4 +1,3 @@
-
 namespace :deploy do
   desc "Restart Application"
   task :restart, :roles => :app, :except => { :no_release => true } do
