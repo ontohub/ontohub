@@ -17,7 +17,7 @@ set :deploy_via, :remote_cache
 # RVM
 require "rvm/capistrano"
 set :rvm_type, :system
-set :rvm_ruby_string, "ruby-2.0.0@#{application}"
+set :rvm_ruby_string, "ruby-2.1.0@#{application}"
 
 role :app, hostname
 role :web, hostname
