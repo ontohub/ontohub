@@ -16,4 +16,12 @@ namespace :generate do
       end
     end
   end
+
+  desc 'Import the values for metadata'
+  task :metadata => :environment do
+    Settings.formality_levels.each { |t| FormalityLevel.create!(t.to_h) }
+    Settings.license_models.each { |t| LicenseModel.create!(t.to_h) }
+    Settings.ontology_types.each { |t| OntologyType.create!(t.to_h) }
+    Settings.tasks.each { |t| Task.create!(t.to_h) }
+  end
 end
