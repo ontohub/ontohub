@@ -12,4 +12,28 @@ class Sentence < ActiveRecord::Base
     [ c1[0][-1], c2[0][-1] ]
   end
 
+  def hierarchical_class_names
+    match = self.text.match(%r{
+      \s*
+      Class:
+      \s*
+      (?:
+       <(?<first_class>.+)>|
+       (?<first_class>.+)
+      )
+      \s*
+      SubClassOf:
+      \s*
+      (?:
+       <(?<second_class>.+)>|
+       (?<second_class>.+)
+      )
+      \s*}x)
+    if match
+      [match[:first_class], match[:second_class]]
+    else
+      []
+    end
+  end
+
 end

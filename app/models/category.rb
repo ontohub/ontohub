@@ -9,7 +9,7 @@ class Category < ActiveRecord::Base
   connected_by 'CEdge'
 
   def related_ontologies
-    categories = [self] + self.children
+    categories = [self] + self.descendants
     ontologies = Ontology.joins(:categories).where(categories: {id: categories})
   end
 
