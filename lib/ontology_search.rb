@@ -69,14 +69,27 @@ class OntologySearch
     JSON.generate(make_global_bean_list_response(keyword_list, page))
   end
 
-  def select_item_list(keyword_list, type)
+  def select_item_list(keyword_list, type_name)
     item_list = Array.new
     keyword_list.each do |keyword|
-      if keyword["type"] == type
+      if keyword["type"] == type_name
         item_list.push keyword["item"]
       end
     end
     item_list
+  end
+
+  def select_item(keyword_list, type_name, type)
+    keyword_list.each do |keyword|
+      if keyword["type"] == type_name
+        if keyword["item"].nil?
+          return nil
+        else
+          return type.find_by_id(keyword["item"].to_i)
+        end
+      end
+    end
+    nil
   end
 
   def make_repository_bean_list_response(repository, keyword_list, page)
@@ -94,7 +107,7 @@ class OntologySearch
 
     index = 0
     bean_list_factory = OntologyBeanListFactory.new
-    search = Ontology.search_by_keywords(mixed_list, page, repository, nil, nil, nil, nil)
+    search = Ontology.search_by_keywords(mixed_list, page, repository, nil, nil,  nil, nil, nil)
     search.results.each do |ontology|
       bean_list_factory.add_small_bean(ontology)
     end
@@ -104,6 +117,10 @@ class OntologySearch
 
   def make_global_bean_list_response(keyword_list, page)
     mixed_list = select_item_list(keyword_list, 'Mixed')
+    ontology_type = select_item(keyword_list, 'OntologyType', OntologyType)
+    formality_level = select_item(keyword_list, 'FormalityLevel', FormalityLevel)
+    license_model = select_item(keyword_list, 'LicenseModel', LicenseModel)
+    task = select_item(keyword_list, 'Task', Task)
 
     # Display all ontologies for empty keyword list
     if mixed_list.size == 0
@@ -116,7 +133,7 @@ class OntologySearch
     end
 
     bean_list_factory = OntologyBeanListFactory.new
-    search = Ontology.search_by_keywords(mixed_list, page, nil, nil, nil, nil, nil)
+    search = Ontology.search_by_keywords(mixed_list, page, nil, nil, ontology_type, formality_level, license_model, task)
     search.results.each do |ontology|
       bean_list_factory.add_small_bean(ontology)
     end

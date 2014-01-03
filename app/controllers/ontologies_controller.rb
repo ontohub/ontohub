@@ -26,7 +26,7 @@ class OntologiesController < InheritedResources::Base
         { "name" => 'Ontologies', "value" => nil },
         *types
       ],
-      'Repositories' => [
+      'Repository' => [
         { "name" => 'in all repositories', "value" => nil },
         *repositories
       ],

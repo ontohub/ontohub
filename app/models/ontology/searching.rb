@@ -33,10 +33,11 @@ module Ontology::Searching
   end
 
   module ClassMethods
-    def search_by_keywords(keywords, page, repository, project, license_model, formality_level, task)
+    def search_by_keywords(keywords, page, repository, project, ontology_type, license_model, formality_level, task)
       Ontology.search do
         keywords.each { |keyword| fulltext keyword }
-        with(:repository_id, repository.id) if repository
+        with(:ontology_type_id, ontology_type.id) if ontology_type
+	with(:repository_id, repository.id) if repository
         with(:license_model_id, license_model.id) if license_model
         with(:formality_level_id, formality_level.id) if formality_level
         with(:task_id, task.id) if task
