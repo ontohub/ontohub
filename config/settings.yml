@@ -57,7 +57,7 @@ external_repository_name: 'External'
 fallback_commit_user: 'ontohub_system'
 fallback_commit_email: 'ontohub_system@ontohub.org'
 
-# possible values for metadata, adapted from OMV
+# Possible values for metadata, adapted from OMV
 formality_levels:
   - name: schema
   - name: taxonomy
@@ -105,7 +105,6 @@ ontology_types:
     description: collection of ontologies, possibly distributed over the internet    
     documentation: http://www.example.com
 
-
 tasks:
   - name: SearchTask
     description: the task characterizes how ontologies are used to refine common keywordbased search algorithms using domain knowledge in form of subsumption relations. Ontology-driven search is usually performed automatically by means of reasoning services handling particular aspects of an ontology representation language.
@@ -114,7 +113,7 @@ tasks:
   - name: QueryRewritingTask
     description: complementary to the query formulation dimension, this task applies ontologies to semantically optimize query expressions by means of the domain knowledge (constraints, subsumption relations etc.) The task can be interpreted as a particular art of filtering information. The task is performed automatically; however, it assumes the availability of patterns describing the transformations at query level.
   - name: FilteringTask
-  - description: the task describes at a very general level how ontologies are applied to refine the solution space of a certain problem, such as information retrieval or personalization. The task is targeted at being performed semi-automatically or automatically.
+    description: the task describes at a very general level how ontologies are applied to refine the solution space of a certain problem, such as information retrieval or personalization. The task is targeted at being performed semi-automatically or automatically.
   - name: IntegrationTask
     description: the task characterizes how ontologies provide an integrating environment, an inter-lingua, for information repositories or software tools. In this scenario the ontology is applied (semi-)automatically to merge between heterogeneous data pools in the same or in adjacent domains.
   - name: QueryFormulationTask
@@ -129,6 +128,3 @@ tasks:
     description: in this scenario, the goal of the ontology is to provide a clearly defined classification and browsing structure for the information items in a repository. Again, the task can be performed manually by domain experts or as part of an application in an automatic or semi-automatic way.
   - name: MatchingTask
     description: the goal of matching is to establish links between semantically similar data items in information repositories. In contrast to the previous task, matching does not include the production of a shared final schema/ontology as a result of aggregating the matched source elements to common elements. W.r.t. the automatization level the range varies from manual to fully-automatical execution.
-
-
-
