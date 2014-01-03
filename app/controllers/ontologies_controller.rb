@@ -15,6 +15,7 @@ class OntologiesController < InheritedResources::Base
   before_filter :check_read_permissions
 
   def index
+    types = OntologyType.select([:name, :id]).order(:name).all.map {|type| {"name" => type.name, "value" => type.id.to_s} }
     repositories = Repository.select([:name, :id]).order(:name).all.map {|repository| {"name" => "in " + repository.name, "value" => repository.id.to_s} }
     projects = Project.select([:name, :id]).order(:name).all.map {|project| {"name" => "from " + project.name, "value" => project.id.to_s} }
     formalities = FormalityLevel.select([:name, :id]).order(:name).all.map {|formality| {"name" => "in " + formality.name, "value" => formality.id.to_s} }
@@ -23,8 +24,7 @@ class OntologiesController < InheritedResources::Base
     @filters_map = {
       'OntologyType' => [
         { "name" => 'Ontologies', "value" => nil },
-        { "name" => 'Dist. ontologies', "value" => 'DistributedOntology' },
-        { "name" => 'Single ontologies', "value" => 'SingleOntology' }
+        *types
       ],
       'Repositories' => [
         { "name" => 'in all repositories', "value" => nil },

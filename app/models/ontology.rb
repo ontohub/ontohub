@@ -29,6 +29,9 @@ class Ontology < ActiveRecord::Base
   belongs_to :logic, counter_cache: true
   belongs_to :ontology_type
   belongs_to :repository
+  belongs_to :license_model
+  belongs_to :formality_level
+  belongs_to :task
 
   has_many :alternative_iris, dependent: :destroy
   has_many :source_links, class_name: 'Link', foreign_key: 'source_id', dependent: :destroy
@@ -44,8 +47,10 @@ class Ontology < ActiveRecord::Base
                   :projects,
                   :present,
                   :alternative_iris,
-                  :ontology_type_id,
-                  :formality_level_ids
+		  :ontology_type_id,
+		  :license_model_id,
+                  :formality_level_id,
+		  :task_id
 
   validates_uniqueness_of :iri, :if => :iri_changed?
   validates_format_of :iri, :with => URI::regexp(Settings.allowed_iri_schemes)

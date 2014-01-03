@@ -94,7 +94,7 @@ class OntologySearch
 
     index = 0
     bean_list_factory = OntologyBeanListFactory.new
-    search = Ontology.search_by_keywords_in_repository(mixed_list, page, repository)
+    search = Ontology.search_by_keywords(mixed_list, page, repository, nil, nil, nil, nil)
     search.results.each do |ontology|
       bean_list_factory.add_small_bean(ontology)
     end
@@ -116,7 +116,7 @@ class OntologySearch
     end
 
     bean_list_factory = OntologyBeanListFactory.new
-    search = Ontology.search_by_keywords(mixed_list, page)
+    search = Ontology.search_by_keywords(mixed_list, page, nil, nil, nil, nil, nil)
     search.results.each do |ontology|
       bean_list_factory.add_small_bean(ontology)
     end
