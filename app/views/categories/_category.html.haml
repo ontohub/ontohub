@@ -1,6 +1,6 @@
 - if category then
   %li{ :id => category.id }
     %a
-      =link_to category.name.gsub(/_/, ' '), category
-    %ul 
+      =link_to "#{category.name.gsub(/_/, ' ')} (#{category.related_ontologies.count})", category
+    %ul
       = render :partial => 'category', :collection => category.children.to_a

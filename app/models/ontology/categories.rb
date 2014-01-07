@@ -15,14 +15,21 @@ module Ontology::Categories
     [ Category.all, CEdge.all ].flatten.each { |c| c.destroy }
     classes = self.entities.select { |e| e.kind == 'Class' }
     subclasses = self.sentences.select { |e| e.text.include?('SubClassOf')}
-    classes.each do |c|
-      Category.create!(:name => c.display_name || c.name)
-    end
+    classes.each { |c| categorify(c) }
 
     subclasses.each do |s|
-      c1,c2 = s.extract_class_names
-      CEdge.create!(:child_id => Category.find_by_name(c1).id, :parent_id => Category.find_by_name(c2).id)
+      c1,c2 = s.hierarchical_class_names
+      e1 = self.entities.where('name = ? OR iri = ?', c1, c1).first
+      e2 = self.entities.where('name = ? OR iri = ?', c2, c2).first
+      CEdge.create!(:child_id => categorify(e1).id, :parent_id => categorify(e2).id)
     end
+  end
+
+  protected
+  def categorify(entity)
+    return if entity.kind != 'Class'
+    Category.where(name: entity.display_name || entity.name).
+      first_or_create!
   end
 
 end
