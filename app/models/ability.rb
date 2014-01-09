@@ -105,6 +105,8 @@ class Ability
         # TODO tests written?
         subject.user == user || subject.metadatable.permission?(:editor, user)
       end
+
+      can :read, Category
     else
       can :show, Repository do |subject|
         !subject.is_private

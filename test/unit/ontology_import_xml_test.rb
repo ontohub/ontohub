@@ -7,7 +7,7 @@ class OntologyImportXMLTest < ActiveSupport::TestCase
       @user = FactoryGirl.create :user
       @ontology = FactoryGirl.create :single_ontology
       @ontology.import_xml_from_file fixture_file('test1.xml'),
-       fixture_file('test1.pp.xml'), @user
+        fixture_file('test1.pp.xml'), @user
     end
 
     should 'save logic' do
