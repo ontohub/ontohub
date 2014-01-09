@@ -27,20 +27,12 @@ class OntologiesController < InheritedResources::Base
 
   def new
     @ontology_version = build_resource.versions.build
-    @c_vertices = []
-    vert = Category.first
-    if vert
-      @c_vertices = vert.roots.first.children
-    end
+    @c_vertices = Category.first.roots.first.children rescue []
   end
 
   def edit
     @ontology = resource
-    @c_vertices = []
-    vert = Category.first
-    if vert
-      @c_vertices = vert.roots.first.children
-    end
+    @c_vertices = Category.first.roots.first.children rescue []
   end
 
   def update

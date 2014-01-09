@@ -1,4 +1,4 @@
-%h2= @category.name
+%h2= @category.name.gsub(/_/, ' ')
   
 Following ontologies are in this category
 %ul.ontology_list

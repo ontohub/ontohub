@@ -19,6 +19,10 @@ class ActionController::TestRequest
 
 end
 
+def fixture_file(name)
+  Rails.root + 'test/fixtures/ontologies/xml/' + name
+end
+
 RSpec.configure do |config|
   # ## Mock Framework
   # config.mock_with :mocha
