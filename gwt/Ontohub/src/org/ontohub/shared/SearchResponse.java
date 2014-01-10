@@ -11,7 +11,7 @@ import com.google.gwt.core.client.JsArray;
 public class SearchResponse extends JavaScriptObject {
 	protected SearchResponse() {}
 	public final native int getPage() /*-{ return this.page; }-*/;
-	public final native int getResultsInPage() /*-{ return this.resultsInPage; }-*/;
-	public final native int getResultsInSet() /*-{ return this.resultsInSet; }-*/;
-	public final native JsArray<Ontology> getResults() /*-{ return this.results; }-*/;
+	public final native int getOntologiesPerPage() /*-{ return this.ontologiesPerPage; }-*/;
+	public final native int getOntologiesInSet() /*-{ return this.ontologiesInSet; }-*/;
+	public final native JsArray<Ontology> getOntologies() /*-{ return this.ontologies; }-*/;
 }

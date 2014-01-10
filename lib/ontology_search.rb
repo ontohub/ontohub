@@ -5,7 +5,7 @@ require 'json'
 #
 class OntologySearch
 
-  class Response < Struct.new(:page,:resultsInPage,:resultsInSet,:results)
+  class Response < Struct.new(:page,:ontologiesPerPage,:ontologiesInSet,:ontologies)
   end
 
   def initialize

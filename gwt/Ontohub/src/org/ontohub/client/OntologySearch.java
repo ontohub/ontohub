@@ -33,12 +33,14 @@ import com.google.gwt.user.client.ui.FocusPanel;
 import com.google.gwt.user.client.ui.InlineLabel;
 import com.google.gwt.user.client.ui.TextBox;
 import com.google.gwt.user.client.ui.Widget;
+import com.google.gwt.user.client.ui.events.FilterSelectionEvent;
+import com.google.gwt.user.client.ui.events.FilterSelectionHandler;
 
 /**
  * @author DanielVale
  *
  */
-public class OntologySearch extends Composite {
+public class OntologySearch extends Composite implements FilterSelectionHandler {
 
 	private static OntologySearchUiBinder uiBinder = GWT.create(OntologySearchUiBinder.class);
 
@@ -112,6 +114,11 @@ public class OntologySearch extends Composite {
 			}
 		});
 		setFilterSelectorsVisible(true);
+		selector0.addFilterSelectionHandler(this);
+		selector1.addFilterSelectionHandler(this);
+		selector2.addFilterSelectionHandler(this);
+		selector3.addFilterSelectionHandler(this);
+		selector4.addFilterSelectionHandler(this);
 	}
 
 	@UiFactory
@@ -367,6 +374,12 @@ public class OntologySearch extends Composite {
 		} else {
 			warningIcon.setVisible(true);
 		}
+	}
+
+	@Override
+	public void onFilterSelection(FilterSelectionEvent event) {
+		page = 1;
+		updateOntologyWidgetList();
 	}
 
 }

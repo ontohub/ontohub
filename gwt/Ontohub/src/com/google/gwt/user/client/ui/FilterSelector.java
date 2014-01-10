@@ -2,6 +2,7 @@ package com.google.gwt.user.client.ui;
 
 import java.util.ArrayList;
 import java.util.Iterator;
+import java.util.LinkedList;
 import java.util.List;
 
 import org.ontohub.shared.Filter;
@@ -13,19 +14,31 @@ import com.google.gwt.dom.client.Element;
 import com.google.gwt.dom.client.LIElement;
 import com.google.gwt.event.dom.client.ClickEvent;
 import com.google.gwt.event.dom.client.ClickHandler;
+import com.google.gwt.event.logical.shared.ValueChangeEvent;
+import com.google.gwt.event.logical.shared.ValueChangeHandler;
 import com.google.gwt.uibinder.client.UiBinder;
 import com.google.gwt.uibinder.client.UiField;
 import com.google.gwt.uibinder.client.UiHandler;
 import com.google.gwt.user.client.DOM;
 import com.google.gwt.user.client.Window;
+import com.google.gwt.user.client.ui.events.FilterSelectionEvent;
+import com.google.gwt.user.client.ui.events.FilterSelectionHandler;
+import com.google.gwt.user.client.ui.events.HasFilterSelectionHandlers;
 
-public class FilterSelector extends Composite implements HasWidgets {
+/**
+ * A widget that allows selecting a filter from a drop down list.
+ * 
+ * @author Daniel Couto Vale <danielvale@uni-bremen.de>
+ */
+public class FilterSelector extends Composite implements HasWidgets, HasFilterSelectionHandlers {
 
 	private static FilterSelectorUiBinder uiBinder = GWT
 			.create(FilterSelectorUiBinder.class);
 
 	interface FilterSelectorUiBinder extends UiBinder<Widget, FilterSelector> {
 	}
+
+	List<FilterSelectionHandler> filterSelectionHandlerList = new LinkedList<FilterSelectionHandler>();
 
 	public FilterSelector() {
 		initWidget(uiBinder.createAndBindUi(this));
@@ -49,6 +62,11 @@ public class FilterSelector extends Composite implements HasWidgets {
 
 	private String itemLabel = null;
 
+	/**
+	 * Sets the title of the button
+	 * 
+	 * @param title the title to set to the button
+	 */
 	public final void setTitle(String title) {
 		Element caretSpan = DOM.createSpan();
 		caretSpan.addClassName("caret");
@@ -62,15 +80,18 @@ public class FilterSelector extends Composite implements HasWidgets {
 		toggle();
 	}
 
+	/**
+	 * Toggles the button by opening it if it is closed and closing it if it is open.
+	 */
 	private final void toggle() {
 		setOpen(!isOpen());
 	}
 
-
 	/**
 	 * Sets the selector open or closed
 	 * 
-	 * @param open <code>true</code> for the selector to be open and <code>false</code> for it to be closed
+	 * @param open <code>true</code> for the selector to be open and <code>false</code> for it to be
+	 *     closed
 	 */
 	private final void setOpen(boolean open) {
 		this.open = open;
@@ -134,6 +155,10 @@ public class FilterSelector extends Composite implements HasWidgets {
 				setTitle(filter.getName());
 				setOpen(false);
 				itemLabel = filter.getValue();
+				FilterSelectionEvent selectionEvent = new FilterSelectionEvent(); 
+				for (FilterSelectionHandler filterSelectionHandler : filterSelectionHandlerList) {
+					filterSelectionHandler.onFilterSelection(selectionEvent);
+				}
 			}
 		});
 		this.add(menuItemAnchor);
@@ -191,6 +216,11 @@ public class FilterSelector extends Composite implements HasWidgets {
 			widget.onDetach();
 		}
 		return widgetList.remove(widget);
+	}
+
+	@Override
+	public void addFilterSelectionHandler(FilterSelectionHandler handler) {
+		filterSelectionHandlerList.add(handler);
 	}
 
 }

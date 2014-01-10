@@ -73,9 +73,9 @@ public class OntohubServices {
 					if (200 == response.getStatusCode()) {
 						@SuppressWarnings("unchecked")
 						SearchResponse searchResponse = (SearchResponse)JsonUtils.safeEval(response.getText());
-						JsArray<Ontology> array = searchResponse.getResults();
+						JsArray<Ontology> array = searchResponse.getOntologies();
 						OntologyList ontologyList = new OntologyList(searchResponse.getPage(),
-								searchResponse.getResultsInPage(), searchResponse.getResultsInSet());
+								searchResponse.getOntologiesPerPage(), searchResponse.getOntologiesInSet());
 						for (int i = 0; i < (int)array.length(); i++) {
 							Ontology ontology = array.get(i);
 							ontologyList.add(ontology);
