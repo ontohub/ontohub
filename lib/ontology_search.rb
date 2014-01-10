@@ -61,12 +61,8 @@ class OntologySearch
     text_list.to_a.sort.map { |x| {text: x} }
   end
 
-  def make_repository_bean_list_json(repository, keyword_list, page)
-    JSON.generate(make_repository_bean_list_response(repository, keyword_list, page))
-  end
-
-  def make_global_bean_list_json(keyword_list, page)
-    JSON.generate(make_global_bean_list_response(keyword_list, page))
+  def make_bean_list_json(repository, keyword_list, page)
+    JSON.generate(make_bean_list_response(repository, keyword_list, page))
   end
 
   def select_item_list(keyword_list, type_name)
@@ -92,48 +88,15 @@ class OntologySearch
     nil
   end
 
-  def make_repository_bean_list_response(repository, keyword_list, page)
-    mixed_list = select_item_list(keyword_list, 'Mixed')
-
-    # Display all repository ontologies for empty keyword list
-    if mixed_list.size == 0
-      offset = (page - 1) * @limit
-      bean_list_factory = OntologyBeanListFactory.new
-      repository.ontologies.limit(@limit).offset(offset).each do |ontology|
-        bean_list_factory.add_small_bean(ontology)
-      end
-      return Response.new(page, @limit, repository.ontologies.count, bean_list_factory.bean_list)
-    end
-
-    index = 0
-    bean_list_factory = OntologyBeanListFactory.new
-    search = Ontology.search_by_keywords(mixed_list, page, repository, nil, nil,  nil, nil, nil)
-    search.results.each do |ontology|
-      bean_list_factory.add_small_bean(ontology)
-    end
-
-    Response.new(page, @limit, search.total, bean_list_factory.bean_list)
-  end
-
-  def make_global_bean_list_response(keyword_list, page)
+  def make_bean_list_response(repository, keyword_list, page)
     mixed_list = select_item_list(keyword_list, 'Mixed')
     ontology_type = select_item(keyword_list, 'OntologyType', OntologyType)
     formality_level = select_item(keyword_list, 'FormalityLevel', FormalityLevel)
     license_model = select_item(keyword_list, 'LicenseModel', LicenseModel)
     task = select_item(keyword_list, 'Task', Task)
 
-    # Display all ontologies for empty keyword list
-    if mixed_list.size == 0
-      offset = (page - 1) * @limit
-      bean_list_factory = OntologyBeanListFactory.new
-      Ontology.limit(@limit).offset(offset).each do |ontology|
-        bean_list_factory.add_small_bean(ontology)
-      end
-      return Response.new(page, @limit, Ontology.count, bean_list_factory.bean_list)
-    end
-
     bean_list_factory = OntologyBeanListFactory.new
-    search = Ontology.search_by_keywords(mixed_list, page, nil, nil, ontology_type, formality_level, license_model, task)
+    search = Ontology.search_by_keywords(mixed_list, page, repository, nil, ontology_type, formality_level, license_model, task)
     search.results.each do |ontology|
       bean_list_factory.add_small_bean(ontology)
     end
