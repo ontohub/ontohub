@@ -1,5 +1,5 @@
 $(document).ready(function() {
-	if($(".class-hierachy").length) {
+	if($("#class-hierachy").length && ("#class-hierachy").is(':visible')) {
 		$(".entities-detail").hide();
 	}
 });
@@ -7,13 +7,14 @@ $(document).ready(function() {
 $("#hierachy").click(function() {
 	$(this).addClass("btn-primary");
 	$('#detail-page').removeClass("btn-primary");
-	$(".class-hierachy").show();
+  $("#class-hierachy").removeClass("hide");
+	$("#class-hierachy").show();
 	$(".entities-detail").hide();
 });
 
 $("#detail-page").click(function() {
 	$(this).addClass("btn-primary");
 	$('#hierachy').removeClass("btn-primary");
-	$(".class-hierachy").hide();
+	$("#class-hierachy").hide();
 	$(".entities-detail").show();
 });
