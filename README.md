@@ -135,10 +135,13 @@ to press «enter» with an empty password field.
 
 ### Redis
 
-Redis is a key-value store, in our setup used by resque to provide object
-persistence between Rails and asynchronous jobs.
+[Redis](http://redis.io/) is a key-value store, in our setup used by [Sidekiq](http://sidekiq.org/) to
+asynchronous background processing of long-lasting jobs.
+Sidekiq requires Resque 2.4.0 or greater.
 
-    apt-get -y install redis-server
+    add-apt-repository ppa:chris-lea/redis-server
+    apt-get update
+    apt-get install -y redis-server
 
 ### hets
 

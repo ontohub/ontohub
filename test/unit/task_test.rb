@@ -3,9 +3,8 @@ require 'test_helper'
 class TaskTest < ActiveSupport::TestCase
 
   context 'Migrations' do
-    %w( name description ).each do |column|
-      should have_db_column(column).of_type(:string)
-    end
+    should have_db_column(:name).of_type(:string)
+    should have_db_column(:description).of_type(:text)
     should have_db_index(:name).unique(true)
   end
 

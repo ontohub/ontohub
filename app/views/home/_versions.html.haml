@@ -16,6 +16,7 @@
 - @versions.each do |version|
   %div
     = fancy_link version.ontology
-    by
-    = fancy_link version.user
+    - if version.user
+      by
+      = fancy_link version.user
     = timestamp version
