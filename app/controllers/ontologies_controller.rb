@@ -1,3 +1,14 @@
+class String
+  def from_titlecase_to_spacedlowercase
+    self.gsub(/::/, '/').
+    gsub(/([A-Z]+)([A-Z][a-z])/,'\1 \2').
+    gsub(/([a-z\d])([A-Z])/,'\1 \2').
+    tr("_", " ").
+    tr("-", " ").
+    downcase
+  end
+end
+
 # 
 # Controller for ontologies
 # 
@@ -15,12 +26,12 @@ class OntologiesController < InheritedResources::Base
   before_filter :check_read_permissions
 
   def index
-    types = OntologyType.select([:name, :id]).order(:name).all.map {|type| {"name" => type.name, "value" => type.id.to_s} }
+    types = OntologyType.select([:name, :id]).order(:name).all.map {|type| {"name" => type.name.sub(/Ontology/, "ontologies"), "value" => type.id.to_s} }
     repositories = Repository.select([:name, :id]).order(:name).all.map {|repository| {"name" => "in " + repository.name, "value" => repository.id.to_s} }
     projects = Project.select([:name, :id]).order(:name).all.map {|project| {"name" => "from " + project.name, "value" => project.id.to_s} }
     formalities = FormalityLevel.select([:name, :id]).order(:name).all.map {|formality| {"name" => "in " + formality.name, "value" => formality.id.to_s} }
     licenses = LicenseModel.select([:name, :id]).order(:name).all.map {|license| {"name" => "under " + license.name, "value" => license.id.to_s} }
-    tasks = Task.select([:name, :id]).order(:name).all.map {|task| {"name" => "for " + task.name, "value" => task.id.to_s} }
+    tasks = Task.select([:name, :id]).order(:name).all.map {|task| {"name" => "for " + task.name[0..-5].from_titlecase_to_spacedlowercase, "value" => task.id.to_s} }
     @filters_map = {
       'OntologyType' => [
         { "name" => 'Ontologies', "value" => nil },
