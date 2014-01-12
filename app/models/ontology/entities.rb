@@ -49,8 +49,8 @@ module Ontology::Entities
   end
 
   def create_entity_tree
-    unless self.is?('OWL')
-      return
+    if !self.is?('OWL') || !self.is?('OWl2')
+      raise StandardError.new('Error: No OWL')
     end
 
     # Delete previous set of categories

@@ -24,9 +24,7 @@ class EntitiesController < InheritedResources::Base
         @hierarchy_exists = !@nodes.empty?
       end
     end
-    if params[:page]
-      @page_selected = true
-    end
+      @page_selected = !! params[:page]
     index! do |format|
       format.html do
         unless collection.blank?
