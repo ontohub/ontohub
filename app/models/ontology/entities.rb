@@ -49,9 +49,7 @@ module Ontology::Entities
   end
 
   def create_entity_tree
-    if !self.is?('OWL') || !self.is?('OWL2')
-      raise StandardError.new('Error: No OWL')
-    end
+    raise StandardError.new('Ontology is not OWL') unless self.owl?
 
     # Delete previous set of categories
     delete_edges
@@ -65,7 +63,7 @@ module Ontology::Entities
 
         EEdge.create! child_id: child_id, parent_id: parent_id
         if EEdge.where(child_id: child_id, parent_id: parent_id).first.nil?
-          raise Error "Circle Detected"
+          raise StandardError.new('Circle detected')
         end
       end
     end

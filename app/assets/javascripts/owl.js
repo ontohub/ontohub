@@ -1,5 +1,5 @@
 $(document).ready(function() {
-	if($("#class-hierarchy").length && ("#class-hierarchy").is(':visible')) {
+	if($("#class-hierarchy").length && $("#class-hierarchy").is(':visible')) {
 		$(".entities-detail").hide();
 	}
 });
@@ -7,7 +7,7 @@ $(document).ready(function() {
 $("#hierarchy").click(function() {
 	$(this).addClass("btn-primary");
 	$('#detail-page').removeClass("btn-primary");
-  $("#class-hierarchy").removeClass("hide");
+	$("#class-hierarchy").removeClass("hide");
 	$("#class-hierarchy").show();
 	$(".entities-detail").hide();
 });
