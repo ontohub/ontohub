@@ -7,7 +7,7 @@
       in this repository to (target) prefixes of the actual urls where the
       ontologies are located. All iri-prefix url-prefix mappings of this
       repository are displayed below.
-  - if can? :create, UrlMap
+  - if can? :write, Repository
     .col-md-6
       .pull-right
         = link_to 'Add URL Map', new_repository_url_map_path(parent), class: 'btn btn-primary'
@@ -24,7 +24,7 @@
               %th.source Source
               %th.symbol
               %th.target Target
-              - if can? :edit, UrlMap
+              - if can? :write, Repository
                 %th.edit Edit
                 %th.delete Delete
           %tbody

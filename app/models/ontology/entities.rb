@@ -3,8 +3,8 @@ module Ontology::Entities
 
   included do
     has_many :entities,
-    autosave: false,
-    extend:   Methods
+      autosave: false,
+      extend:   Methods
   end
 
   module Methods
@@ -49,7 +49,7 @@ module Ontology::Entities
   end
 
   def create_entity_tree
-    if !self.is?('OWL') || !self.is?('OWl2')
+    if !self.is?('OWL') || !self.is?('OWL2')
       raise StandardError.new('Error: No OWL')
     end
 

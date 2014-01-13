@@ -20,6 +20,8 @@ module LinkHelper
   end
   
   def fancy_link(resource)
+    return nil unless resource
+
     clazz = resource.class
     clazz = 'Ontology' if clazz.to_s.include?('Ontology')
     data_type, value = determine_image_type(resource)
