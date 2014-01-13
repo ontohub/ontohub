@@ -2,7 +2,9 @@ module Ontology::Sentences
   extend ActiveSupport::Concern
 
   included do
-    has_many :sentences, :extend => Methods
+    has_many :sentences,
+      autosave: false,
+      extend:   Methods
   end
 
   module Methods
