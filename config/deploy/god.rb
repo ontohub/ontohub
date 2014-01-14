@@ -8,11 +8,6 @@ namespace :god do
     "cd #{current_path}; bundle exec god"
   end
 
-  desc "Start god"
-  task :start do
-    run "#{god_command} -c config/god/app.rb", :env => environment = { :RAILS_ENV => rails_env }
-  end
-
   desc "Stop god"
   task :stop do
     if god_is_running
@@ -26,5 +21,4 @@ namespace :god do
   end
 end
 
-before "deploy:update", "god:stop"
-after "deploy:update", "god:start"
+after "deploy:update", "god:stop"
