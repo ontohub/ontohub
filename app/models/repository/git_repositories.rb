@@ -123,13 +123,13 @@ module Repository::GitRepositories
         {
           type: :file,
           file: file,
-          ontologies: ontologies.where(basepath: File.basepath(path))
+          ontologies: ontologies.where(basepath: File.basepath(path)).parents_first
         }
       else
         entries = list_folder(path, commit_oid)
         entries.each do |name, es|
           es.each do |e|
-            o = ontologies.where(basepath: File.basepath(e[:path]))
+            o = ontologies.where(basepath: File.basepath(e[:path])).parents_first
             e[:ontologies] = o
           end
         end

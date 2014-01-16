@@ -62,6 +62,8 @@ class Ontology < ActiveRecord::Base
 
   scope :list, includes(:logic).order('ontologies.state asc, ontologies.entities_count desc')
 
+  scope :parents_first, order('(CASE WHEN ontologies.parent_id IS NULL THEN 1 ELSE 0 END) DESC, ontologies.parent_id asc')
+
 
   def generate_name(name)
     match = name.match(%r{
