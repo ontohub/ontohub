@@ -131,7 +131,7 @@ module Repository::GitRepositories
           es.each do |e|
             e[:ontologies] = ontologies.find_with_path(e[:path]).parents_first
           end
-          es.sort_by! { |e| -(e[:ontologies].size) }
+          es.sort_by! { |e| -e[:ontologies].size }
         end
         {
           type: :dir,
