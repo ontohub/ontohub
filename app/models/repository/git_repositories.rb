@@ -129,9 +129,9 @@ module Repository::GitRepositories
         entries = list_folder(path, commit_oid)
         entries.each do |name, es|
           es.each do |e|
-            o = ontologies.where(basepath: File.basepath(e[:path])).parents_first
-            e[:ontologies] = o
+            e[:ontologies] = ontologies.find_with_path(e[:path]).parents_first
           end
+          es.sort_by! { |e| -(e[:ontologies].size) }
         end
         {
           type: :dir,
