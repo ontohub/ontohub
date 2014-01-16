@@ -123,7 +123,7 @@ module Repository::GitRepositories
         {
           type: :file,
           file: file,
-          ontologies: ontologies.where(basepath: File.basepath(path)).parents_first
+          ontologies: ontologies.find_with_path(path).parents_first
         }
       else
         entries = list_folder(path, commit_oid)
