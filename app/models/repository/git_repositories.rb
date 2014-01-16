@@ -67,6 +67,7 @@ module Repository::GitRepositories
     version = nil
     basepath = File.basepath(filepath)
     o = ontologies.without_parent.where(basepath: basepath).first
+    return unless o.nil? || o.path == filepath
 
     if o
       o.present = true
