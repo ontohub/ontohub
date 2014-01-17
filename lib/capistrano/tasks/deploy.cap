@@ -1,0 +1,31 @@
+
+namespace :deploy do
+  
+  desc 'Restart application'
+  task :restart do
+    on roles(:app) do
+      execute :touch, release_path.join('tmp/restart.txt')
+    end
+  end
+
+  desc "Moves and replaces the secret-token if missing in shared directory"
+  task :symlink_secret do 
+    on roles(:app) do
+      filename       = 'secret_token.rb'
+      release_secret = release_path.join("config/initializers/#{filename}")
+      shared_secret  = shared_path.join("config/#{filename}")
+      
+      unless test "[ -f #{shared_secret} ]"
+        within release_path do
+          execute :rake, "secret:replace"
+        end
+        execute :mv, "#{release_secret} #{shared_secret}"
+      end
+      
+      # symlink secret token
+      execute :ln, "-nfs #{shared_secret} #{release_secret}"
+    end
+  end
+
+  after "deploy:updated", "deploy:symlink_secret"
+end

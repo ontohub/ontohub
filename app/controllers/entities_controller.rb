@@ -13,17 +13,19 @@ class EntitiesController < InheritedResources::Base
 
   def index
     ontology = Ontology.find params[:ontology_id]
-    if ontology.is?('OWL2') || ontology.is?('OWL')
-      if ontology
-        begin
-          entities = ontology.entities.where(kind: 'Class')
-          @nodes = Entity.roots_of(*entities).first.children
-        rescue
-          @nodes = []
-        end
-        @hierarchy_exists = !@nodes.empty?
+
+    if ontology && (ontology.is?('OWL2') || ontology.is?('OWL'))
+      begin
+        entities = ontology.entities.where(kind: 'Class')
+        @nodes = Entity.roots_of(*entities).first.children
+      rescue
+        @nodes = []
       end
+      @hierarchy_exists = !@nodes.empty?
     end
+
+    @page_selected = !! params[:page]
+
     index! do |format|
       format.html do
         unless collection.blank?
