@@ -27,7 +27,7 @@ class AuthorizedKeysManager
         lines = []
         f.each_line { |l| lines << l }
         f.rewind
-        lines.each { |line| f << line if is?(line, key_id) }
+        lines.each { |line| f << line unless is?(line, key_id) }
         f.truncate(f.pos)
       end
 
