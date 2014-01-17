@@ -91,6 +91,7 @@ class OntologySearch
   def make_bean_list_response(repository, keyword_list, page)
     mixed_list = select_item_list(keyword_list, 'Mixed')
     ontology_type = select_item(keyword_list, 'OntologyType', OntologyType)
+    project = select_item(keyword_list, 'Project', Project)
     formality_level = select_item(keyword_list, 'FormalityLevel', FormalityLevel)
     license_model = select_item(keyword_list, 'LicenseModel', LicenseModel)
     task = select_item(keyword_list, 'Task', Task)
