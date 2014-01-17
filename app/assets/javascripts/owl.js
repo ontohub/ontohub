@@ -1,19 +1,20 @@
 $(document).ready(function() {
-	if($(".class-hierachy").length) {
+	if($("#class-hierarchy").length && $("#class-hierarchy").is(':visible')) {
 		$(".entities-detail").hide();
 	}
 });
 
-$("#hierachy").click(function() {
+$("#hierarchy").click(function() {
 	$(this).addClass("btn-primary");
 	$('#detail-page').removeClass("btn-primary");
-	$(".class-hierachy").show();
+	$("#class-hierarchy").removeClass("hide");
+	$("#class-hierarchy").show();
 	$(".entities-detail").hide();
 });
 
 $("#detail-page").click(function() {
 	$(this).addClass("btn-primary");
-	$('#hierachy').removeClass("btn-primary");
-	$(".class-hierachy").hide();
+	$('#hierarchy').removeClass("btn-primary");
+	$("#class-hierarchy").hide();
 	$(".entities-detail").show();
 });

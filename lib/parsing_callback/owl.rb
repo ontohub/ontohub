@@ -37,6 +37,14 @@ module ParsingCallback::OWL
     def axiom(hash, axiom)
     end
 
+    def ontology_end(hash, ontology)
+      begin
+        ontology.create_entity_tree
+      rescue StandardError => e
+        puts "Could not create entity tree for: #{ontology.name} (#{ontology.id})"
+      end
+    end
+
     private
     def is_annotation_sentence?(axiom_hash)
       axiom_hash['symbol_hashes'].each do |hash|

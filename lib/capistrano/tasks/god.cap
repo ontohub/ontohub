@@ -1,0 +1,31 @@
+# https://makandracards.com/makandra/1431-resque-+-god-+-capistrano
+
+namespace :god do
+  def god_is_running
+    within current_path do
+      capture(:bundle, "exec god status >/dev/null 2>/dev/null || echo 'not running'").start_with?('not running')
+    end
+  end
+
+  desc "Stop god"
+  task :stop do
+    on roles(:app) do
+      if god_is_running
+        within current_path do
+          execute :bundle, "exec god terminate"
+        end
+      else
+        puts "God is NOT not running"
+      end
+    end
+  end
+
+  desc "Test if god is running"
+  task :status do
+    on roles(:app) do
+      puts god_is_running ? "God is running" : "God is NOT running"
+    end
+  end
+
+  after 'deploy:publishing', 'god:stop'
+end
