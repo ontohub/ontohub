@@ -1,30 +1,13 @@
-require 'bundler/capistrano'
-require File.dirname(__FILE__) << "/../lib/environment_light"
 
-hostname = Settings.hostname
+# Repository
+set :repo_url,       "git://github.com/ontohub/ontohub.git"
+set :branch,         Settings.hostname
 
-set :application, 'ontohub'
-set :scm, :git
-set :repository, "git://github.com/#{application}/#{application}.git"
-set :branch,     hostname
-set :deploy_to, "/srv/http/ontohub"
-set :shared_children, %w( data log tmp/pids )
+set :application,    "ontohub"
+set :deploy_to,      "/srv/http/ontohub"
+set :linked_dirs,    %w{ data log tmp/pids tmp/cache tmp/sockets }
+set :bundle_without, "development deployment test"
+set :rails_env,      "production"
 
-set :user, 'ontohub'
-set :use_sudo, false
-set :deploy_via, :remote_cache
-
-# RVM
-require "rvm/capistrano"
-set :rvm_type, :system
-set :rvm_ruby_string, "ruby-2.1.0@#{application}"
-
-role :app, hostname
-role :web, hostname
-role :db,  hostname, :primary => true
-
-def rake_command(cmd)
-  run "cd #{current_path} && bundle exec rake #{cmd}", :env => { :RAILS_ENV => rails_env }
-end
-
-Dir["#{Rails.root}/config/deploy/*.rb"].each{|f| load f }
+set :ssh_options,    user: 'ontohub'
+set :log_level,      :info
