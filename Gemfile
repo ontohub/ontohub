@@ -51,7 +51,7 @@ gem 'rabl'
 gem 'nokogiri', '~> 1.6'
 
 # Authentication
-gem 'devise', '~> 2.0'
+gem 'devise', '~> 3.2'
 
 # Authorization
 gem 'cancan', '~> 1.6.7'

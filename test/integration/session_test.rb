@@ -12,7 +12,7 @@ class SessionTest < ActionController::IntegrationTest
     end
     
     assert_equal "/", current_path
-    assert_match /You have registered successfully/, find(".alert-info").text
+    assert_match /You have signed up successfully/, find(".alert-info").text
   end
   
   test 'login' do
