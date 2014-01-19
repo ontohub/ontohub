@@ -63,10 +63,13 @@ module ApplicationHelper
   end
 
   def display_commit
-    return $commit_oid if $commit_oid
-    $commit_oid = Subprocess.run(
-      *%w(git rev-parse --short HEAD),
-      GIT_DIR: Rails.root.join(".git").to_s).strip
+    # try to read the HEAD from the Git repository
+    $commit_oid ||= begin
+      path = Rails.root.join(".git")
+      Subprocess.run(*%w(git rev-parse --short HEAD), GIT_DIR: path.to_s).strip if path.exist?
+    end
+
+    $commit_oid ||= 'unknown'
   end
 
 end
