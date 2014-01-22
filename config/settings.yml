@@ -106,9 +106,6 @@ ontology_types:
   - name: Task Ontology
     description: describes the concepts for a specific task
     documentation: http://www.example.com
-  - name: Distributed Ontology
-    description: collection of ontologies, possibly distributed over the internet    
-    documentation: http://www.example.com
 
 tasks:
   - name: SearchTask
