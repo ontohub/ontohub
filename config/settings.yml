@@ -59,12 +59,17 @@ fallback_commit_email: 'ontohub_system@ontohub.org'
 
 # Possible values for metadata, adapted from OMV
 formality_levels:
-  - name: schema
-  - name: taxonomy
+  - name: vocabulary #
+    description: "list of words"
   - name: terminology
-  - name: thesaurus
-  - name: vocabulary
-
+    description: "list of concepts with definitions"
+  - name: taxonomy
+    description: "terminology with subsumption hierarchy"
+  - name: lightweight_axiomatization
+    description: "taxonomy with some logical relations among the concepts"
+  - name: deep_axiomatization
+    description: "ontology with logical descriptions of the concepts"
+  
 license_models:
   - name: Apple Public Source License (APSL)
     url: http://www.opensource.apple.com/license/apsl/
@@ -86,20 +91,20 @@ license_models:
     url: http://opensource.org/licenses/AFL-3.0
 
 ontology_types:
-  - name: Task Ontology
-    description: describes the concepts for a specific task
-    documentation: http://www.example.com
   - name: Upper Level Ontology
     description: describes general, domain-independent concepts e.g. space, time
+    documentation: http://www.example.com
+  - name: Core Ontology
+    description: describes the most important concepts in a specific domain (also: mid-level ontology)
+    documentation: http://www.example.com
+  - name: Domain Ontology
+    description: describes some domain of the world
     documentation: http://www.example.com
   - name: Application Ontology
     description: describes some domain in an application-dependent manner
     documentation: http://www.example.com
-  - name: Core Ontology
-    description: describes the most important concepts in a specific domain
-    documentation: http://www.example.com
-  - name: Domain Ontology
-    description: describes some domain of the world
+  - name: Task Ontology
+    description: describes the concepts for a specific task
     documentation: http://www.example.com
   - name: Distributed Ontology
     description: collection of ontologies, possibly distributed over the internet    
