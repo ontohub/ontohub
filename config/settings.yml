@@ -95,7 +95,7 @@ ontology_types:
     description: describes general, domain-independent concepts e.g. space, time
     documentation: http://www.example.com
   - name: Core Ontology
-    description: describes the most important concepts in a specific domain (also: mid-level ontology)
+    description: "describes the most important concepts in a specific domain (also: mid-level ontology)"
     documentation: http://www.example.com
   - name: Domain Ontology
     description: describes some domain of the world
