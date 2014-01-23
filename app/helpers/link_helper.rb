@@ -46,8 +46,14 @@ module LinkHelper
   end
 
   def determine_image_type(resource)
-    return ['data-type', "Private#{resource.class.to_s}"] if resource.is_a?(Repository) && resource.is_private
-    return ['data-type', resource.class.to_s] unless resource.is_a?(Ontology)
+    if resource.is_a?(Repository) && resource.is_private
+      return ['data-type', "Private#{resource.class.to_s}"]
+    end
+
+    unless resource.is_a? Ontology
+      return ['data-type', resource.class.to_s]
+    end
+
     data_type = 'data-ontologyclass'
     distributed_type = ->(distributed_ontology) do
       if distributed_ontology.homogeneous?
@@ -56,6 +62,7 @@ module LinkHelper
         "distributed_heterogeneous_ontology"
       end
     end
+
     value = if resource.is_a?(DistributedOntology)
               distributed_type[resource]
             else
@@ -65,11 +72,13 @@ module LinkHelper
                 'single_ontology'
               end
             end
+
     [data_type, value]
   end
 
   def ontology_link_to(resource)
     data_type, value = determine_image_type(resource)
+
     content_tag(:span, class: 'ontology_title') do
       link_to resource, {}, data_type => value
     end

@@ -25,4 +25,12 @@ module RepositoriesHelper
     end
   end
 
+  def access_change_hint
+    if resource.is_private 
+      'Caution! When setting the repository public, all reader permissions are removed.'
+    else
+      false
+    end
+  end
+
 end
