@@ -131,8 +131,8 @@ module GitRepository::GetDiff
 
 
   def contents_unless_too_long(current_blob, parent_blob=nil)
-    if current_blob.size > 0 ||
-        (!parent_blob.nil? && parent_blob.size > 0)
+    if current_blob.size > Ontohub::Application.config.max_read_filesize ||
+        (!parent_blob.nil? && parent_blob.size > Ontohub::Application.config.max_read_filesize)
       [nil, nil]
     elsif parent_blob.nil?
       [current_blob.content, '']
