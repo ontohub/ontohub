@@ -1,0 +1,25 @@
+
+namespace :sidekiq do
+
+  def kill(signal)
+    on roles(:app) do
+      execute "kill -s #{signal} `cat #{current_path}/tmp/pids/sidekiq*.pid` || true"
+    end
+  end
+
+  desc "Stop sidekiq"
+  task :stop do
+    kill :TERM
+  end
+
+  desc "Suspend sidekiq (stop accepting new work)"
+  task :suspend do
+    kill :USR1
+  end
+  
+  after 'deploy:starting', 'sidekiq:suspend'
+
+  # god:terminate does this job already
+  #after 'deploy:publishing', 'sidekiq:stop'
+
+end

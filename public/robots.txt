@@ -2,3 +2,4 @@
 #
 User-Agent: *
 Disallow: /*?
+Disallow: /repositories/*/diff

@@ -51,7 +51,7 @@ gem 'rabl'
 gem 'nokogiri', '~> 1.6'
 
 # Authentication
-gem 'devise', '~> 2.0'
+gem 'devise', '~> 3.2'
 
 # Authorization
 gem 'cancan', '~> 1.6.7'
@@ -113,8 +113,6 @@ group :test do
 end
 
 group :development do
-  gem 'capistrano'
-  gem 'rvm-capistrano'
   # pre-packaged Solr distribution for use in development
   gem 'sunspot_solr', :git => 'git://github.com/digineo/sunspot.git'
   gem "rails-erd"
@@ -133,6 +131,12 @@ end
 group :production do
   gem 'god'
   gem 'exception_notification', '~> 4.0'
+end
+
+group :deployment do
+  gem 'capistrano', '~> 3.0.0'
+  gem 'capistrano-rails'
+  gem 'capistrano-rvm'
 end
 
 group :documentation do

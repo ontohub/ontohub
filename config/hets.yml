@@ -5,19 +5,22 @@ hets_path:
   - /opt/local/bin/hets
   - ~/code/hets/hets
   - ~/ontohub/Hets/hets
+  - /usr/local/opt/hets/Hets.app/Contents/Resources/hets
   - /Applications/Hets.app/Contents/Resources/hets
 hets_lib:
   - /usr/lib/hets/hets-lib
   - ~/dev/hets/lib
   - ~/ontohub/Hets
+  - /usr/local/opt/hets/Hets.app/Contents/Resources/Hets-lib
   - /Applications/Hets.app/Contents/Resources/Hets-lib
 hets_owl_tools:
   - /usr/lib/hets/hets-owl-tools
   - ~/dev/hets/OWL2
   - ~/code/hets/OWL2
   - ~/ontohub/Hets/OWL2
+  - /usr/local/opt/hets/Hets.app/Contents/Resources/hets-owl-tools
   - /Applications/Hets.app/Contents/Resources/hets-owl-tools
 
-hets_version_minimum_date: 2013-12-20
+hets_version_minimum_date: 2014-01-06
 
 hets_stack_size: 1G

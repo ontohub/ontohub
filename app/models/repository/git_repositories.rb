@@ -214,8 +214,8 @@ module Repository::GitRepositories
   def suspended_save_ontologies(options={})
     commits(options) { |commit_oid|
       git.changed_files(commit_oid).each { |f|
-        if f[:type] == :add || f[:type] == :change
-          save_ontology(commit_oid, f[:path], options.delete(:user))
+        if f.add? || f.change?
+          save_ontology(commit_oid, f.path, options.delete(:user))
         end
       }
     }

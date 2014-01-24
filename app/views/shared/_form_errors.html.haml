@@ -1,0 +1,8 @@
+- if resource.errors.any?
+  .flash.alert.alert-danger
+    %strong
+      = pluralize resource.errors.count, 'error'
+      prohibited this resource from being saved:
+    %ul
+      - resource.errors.full_messages.each do |msg|
+        %li= msg
