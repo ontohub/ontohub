@@ -20,7 +20,7 @@ module Ontology::Import
         },
         ontology: Proc.new { |h|
           child_name = h['name']
-          internal_iri = h['name'][1..-2] if h['name'][0] == '<'
+          internal_iri = h['name'].start_with?('<') ? h['name'][1..-2] : h['name']
 
           if h['reference'] == 'true'
             ontology = Ontology.find_with_iri(internal_iri)
