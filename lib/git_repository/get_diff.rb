@@ -85,9 +85,9 @@ module GitRepository::GetDiff
     current_tree.each do |e|
       if e[:type] == :blob
         if parent_tree[e[:name]] && e[:oid] != parent_tree[e[:name]][:oid]
-          files_contents << changed_files_entry(directory, e[:name], :change, @repo.lookup(e[:oid]).content, @repo.lookup(parent_tree[e[:name]][:oid]).content)
+          files_contents << changed_files_entry(directory, e[:name], :change, *contents_unless_too_long(@repo.lookup(e[:oid]), @repo.lookup(parent_tree[e[:name]][:oid])))
         elsif !parent_tree[e[:name]]
-          files_contents << changed_files_entry(directory, e[:name], :add, @repo.lookup(e[:oid]).content, '')
+          files_contents << changed_files_entry(directory, e[:name], :add, *contents_unless_too_long(@repo.lookup(e[:oid]), nil))
         end
       end
     end
@@ -112,7 +112,7 @@ module GitRepository::GetDiff
     {
       name: name,
       path: "#{directory}#{name}",
-      diff: editable ? diff(content_current, content_parent) : '',
+      diff: editable ? (content_current.nil? ? :file_too_large : diff(content_current, content_parent)) : :not_a_text_file,
       type: type,
       mime_type: mime_info[:mime_type],
       mime_category: mime_info[:mime_category],
@@ -122,10 +122,22 @@ module GitRepository::GetDiff
 
 
   def diff(current, original)
-    Diffy::Diff.new(original.force_encoding('UTF-8'), current.force_encoding('UTF-8'), include_plus_and_minus_in_html: true, context: 3, include_diff_info: true).to_s(:html)
+    Diffy::Diff.new(original.encoding_utf8, current.encoding_utf8, include_plus_and_minus_in_html: true, context: 3, include_diff_info: true).to_s(:html)
   end
 
   def mime_type_editable?(mime_type)
     mime_type.to_s == 'application/xml' || mime_type.to_s.match(/^text\/.*/)
+  end
+
+
+  def contents_unless_too_long(current_blob, parent_blob=nil)
+    if current_blob.size > 0 ||
+        (!parent_blob.nil? && parent_blob.size > 0)
+      [nil, nil]
+    elsif parent_blob.nil?
+      [current_blob.content, '']
+    else
+      [current_blob.content, parent_blob.content]
+    end
   end
 end
