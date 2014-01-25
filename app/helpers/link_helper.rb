@@ -2,12 +2,13 @@ module LinkHelper
   
   def sort_link_list(collection)
     hash = {}
+
     collection.each_with_index do |link, i|
       if link.entity_mappings.empty?
-        hash["empty#{i}"] = [{link: link, target: ""}]
+        hash["empty#{i}"] = [{link: link, target: ''}]
       else
         link.entity_mappings.each do |mapping|
-          sym =  mapping.source.to_s.to_sym
+          sym = mapping.source.to_s.to_sym
           if hash[sym]
             hash[sym] << {link: link, target: mapping.target}
           else
@@ -16,7 +17,8 @@ module LinkHelper
         end
       end
     end
-    return hash
+
+    hash
   end
   
   def fancy_link(resource)
@@ -28,7 +30,7 @@ module LinkHelper
 
     name = block_given? ? yield(resource) : resource
     
-    unless resource.is_a? Array then
+    unless resource.is_a? Array
       title = resource.respond_to?(:title) ? resource.title : nil
     else
       title = resource.last.respond_to?(:title) ? resource.last.title : nil
