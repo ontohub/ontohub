@@ -24,7 +24,7 @@ class UrlMapsController < InheritedResources::Base
   end
 
   def check_read_permissions
-    authorize! :show, repository
+    authorize! :show, Repository.find_by_path(params[:repository_id])
   end
 
   helper_method :repository
