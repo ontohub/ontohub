@@ -1,3 +1,13 @@
+def update_or_create_by_name(klass, h)
+  x = klass.find_by_name(h[:name])
+  if x.nil?
+    x = klass.create!(h)
+  else
+    x.update_attributes!(h)
+  end
+  x
+end
+
 namespace :generate do
   desc 'Import the categories for the ontologies'
   task :categories => :environment do
@@ -19,9 +29,9 @@ namespace :generate do
 
   desc 'Import the values for metadata'
   task :metadata => :environment do
-    Settings.formality_levels.each { |t| FormalityLevel.create!(t.to_h) }
-    Settings.license_models.each { |t| LicenseModel.create!(t.to_h) }
-    Settings.ontology_types.each { |t| OntologyType.create!(t.to_h) }
-    Settings.tasks.each { |t| Task.create!(t.to_h) }
+    Settings.formality_levels.each { |t| update_or_create_by_name(FormalityLevel, t.to_h) }
+    Settings.license_models.each { |t| update_or_create_by_name(LicenseModel, t.to_h) }
+    Settings.ontology_types.each { |t| update_or_create_by_name(OntologyType, t.to_h) }
+    Settings.tasks.each { |t| update_or_create_by_name(Task, t.to_h) }
   end
 end
