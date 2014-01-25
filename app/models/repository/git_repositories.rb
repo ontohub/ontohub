@@ -67,6 +67,7 @@ module Repository::GitRepositories
     version = nil
     basepath = File.basepath(filepath)
     o = ontologies.without_parent.where(basepath: basepath).first
+    return unless o.nil? || o.path == filepath
 
     if o
       o.present = true
@@ -123,15 +124,15 @@ module Repository::GitRepositories
         {
           type: :file,
           file: file,
-          ontologies: ontologies.where(basepath: File.basepath(path))
+          ontologies: ontologies.find_with_path(path).parents_first
         }
       else
         entries = list_folder(path, commit_oid)
         entries.each do |name, es|
           es.each do |e|
-            o = ontologies.where(basepath: File.basepath(e[:path]))
-            e[:ontologies] = o
+            e[:ontologies] = ontologies.find_with_path(e[:path]).parents_first
           end
+          es.sort_by! { |e| -e[:ontologies].size }
         end
         {
           type: :dir,
