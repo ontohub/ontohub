@@ -1,0 +1,5 @@
+wiki:
+  root: "http://wiki.ontohub.org"
+  controller:
+    ontology:
+      index: "ontology_overview"
