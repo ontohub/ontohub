@@ -23,11 +23,7 @@ class LogicgraphParser::StubTest < ActiveSupport::TestCase
 
     context 'parsing stub' do
       setup do
-        @user = User.new
-        @user.email = 'admin@example.com'
-        @user.name = 'Admin'
-        @user.password = 'foobar'
-        @user.save!
+        @user = FactoryGirl.create :admin
         LogicgraphParser.parse open_fixture('LogicGraph.xml'),
           logic:           Proc.new{ |h| save_logic(h) },
           language:        Proc.new{ |h| save_language(h) },

@@ -7,32 +7,32 @@
 %ul.changed-files-list.nav.nav-stacked.nav-tabs
   - @changed_files.each do |file|
     %li
-      = link_to "#file-#{file[:path]}" do
-        - if file[:type] == :add
+      = link_to "#file-#{file.path}" do
+        - if file.add?
           %i.icon-plus
-        - elsif file[:type] == :delete
+        - elsif file.delete?
           %i.icon-minus
-        - elsif file[:type] == :change
+        - elsif file.change?
           %i.icon-edit
-        = file[:path]
+        = file.path
 
 %h3 Changes
 - @changed_files.each do |file|
   .changed-file.well.well-small
     %h2.file-name
-      - if file[:type] == :delete
-        = link_to file[:path], '#', 'data-toggle' => 'tooltip', 'data-original-title' => 'You cannot view a deleted file', 
-          class: 'btn btn-default disabled', name: "file-#{file[:path]}"
+      - if file.delete?
+        = link_to file.path, '#', 'data-toggle' => 'tooltip', 'data-original-title' => 'You cannot view a deleted file', 
+          class: 'btn btn-default disabled', name: "file-#{file.path}"
       - else
-        = link_to file[:path], fancy_repository_path(repository, path: file[:path], ref: oid), class: 'btn btn-default', name: "file-#{file[:path]}"
+        = link_to file.path, fancy_repository_path(repository, path: file.path, ref: oid), class: 'btn btn-default', name: "file-#{file.path}"
 
-    - if file[:type] == :delete
+    - if file.delete?
       .alert.alert-info
         File was deleted
-    - elsif file[:editable]
+    - elsif file.editable?
       .diff-code
-        = file[:diff].encoding_utf8.html_safe
-    - elsif file[:mime_category] == 'image'
-      = image_tag fancy_repository_path(repository.path, ref: oid, path: file[:path]), alt: file[:name]
+        = file.diff.encoding_utf8.html_safe
+    - elsif file.mime_category == 'image'
+      = image_tag fancy_repository_path(repository.path, ref: oid, path: file.path), alt: file.name
     - else
-      = link_to raw('<i class="icon-download-alt"></i> Download'), fancy_repository_path(repository.path, ref: oid, path: file[:path]), class: 'btn btn-default'
+      = link_to raw('<i class="icon-download-alt"></i> Download'), fancy_repository_path(repository.path, ref: oid, path: file.path), class: 'btn btn-default'

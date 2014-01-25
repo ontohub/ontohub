@@ -20,7 +20,7 @@ module Ontology::Import
         },
         ontology: Proc.new { |h|
           child_name = h['name']
-          internal_iri = h['name'][1..-2]
+          internal_iri = h['name'].start_with?('<') ? h['name'][1..-2] : h['name']
 
           if h['reference'] == 'true'
             ontology = Ontology.find_with_iri(internal_iri)
@@ -134,9 +134,6 @@ module Ontology::Import
 
             logic_callback.link(h, link)
           end
-        },
-        import: Proc.new { |h|
-          ontology.iri = ExternalRepository.determine_iri(h['library'])
         }
       save!
       versions.each { |version| version.save! }

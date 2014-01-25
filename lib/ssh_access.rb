@@ -37,11 +37,7 @@ class SshAccess
       user = User.joins(:keys).
         where(keys: {id: key_field}).first
       permission = nil
-      if user
-        permission = user.permissions.
-          where(item_id: repository.id,
-                item_type: repository.class).first
-      end
+      permission = repository.highest_permission(user) if user
       return [requested_permission, permission]
     end
 
