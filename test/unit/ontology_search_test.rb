@@ -124,7 +124,8 @@ class OntologySearchTest < ActiveSupport::TestCase
       context 'with two keywords' do
         should 'be generated correctly' do
           @keywords.push({'type' => 'Mixed', 'item' => @o1.name})
-	  @keywords.push({'type' => 'Mixed', 'item' => @e1.name})
+          @keywords.push({'type' => 'Mixed', 'item' => @e1.name})
+
           results = @os.make_bean_list_response(nil, @keywords, 1).ontologies
           results = results.map { |x| x[:name] }
 
@@ -137,7 +138,8 @@ class OntologySearchTest < ActiveSupport::TestCase
 
         should 'return an empty set' do
           @keywords.push({'type' => 'Mixed', 'item' => @o2.name})
-	  @keywords.push({'type' => 'Mixed', 'item' => @e1.name})
+          @keywords.push({'type' => 'Mixed', 'item' => @e1.name})
+
           results = @os.make_bean_list_response(nil, @keywords, 1).ontologies
           results = results.map { |x| x[:name] }
 
