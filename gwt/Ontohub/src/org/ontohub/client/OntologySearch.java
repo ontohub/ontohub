@@ -365,15 +365,33 @@ public class OntologySearch extends Composite implements FilterSelectionHandler 
 	 */
 	private final void updateFilterSelectors() {
 		if (FiltersMap.existsWindowInstance()) {
-			FiltersMap map = FiltersMap.getWindowInstance();
-			selector0.addAll(map.getOntologyTypeFilters());
-			selector1.addAll(map.getProjectFilters());
-			selector2.addAll(map.getFormalityLevelFilters());
-			selector3.addAll(map.getLicenseModelFilters());
-			selector4.addAll(map.getTaskFilters());
+			System.out.println("Window Instance");
+			setFiltersMap(FiltersMap.getWindowInstance());
 		} else {
-			warningIcon.setVisible(true);
+			requester.requestFilterMap(new AsyncCallback<FiltersMap>() {
+
+				@Override
+				public void onFailure(Throwable caught) {
+					System.out.println("No Instance");
+					warningIcon.setVisible(true);
+				}
+
+				@Override
+				public void onSuccess(FiltersMap map) {
+					System.out.println("Server Instance");
+					setFiltersMap(map);
+				}
+
+			});
 		}
+	}
+
+	private final void setFiltersMap(FiltersMap map) {
+		selector0.addAll(map.getOntologyTypeFilters());
+		selector1.addAll(map.getProjectFilters());
+		selector2.addAll(map.getFormalityLevelFilters());
+		selector3.addAll(map.getLicenseModelFilters());
+		selector4.addAll(map.getTaskFilters());
 	}
 
 	@Override
