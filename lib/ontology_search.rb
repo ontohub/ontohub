@@ -97,7 +97,7 @@ class OntologySearch
     task = select_item(keyword_list, 'Task', Task)
 
     bean_list_factory = OntologyBeanListFactory.new
-    search = Ontology.search_by_keywords(mixed_list, page, repository, nil, ontology_type, formality_level, license_model, task)
+    search = Ontology.search_by_keywords(mixed_list, page, repository, project, ontology_type, formality_level, license_model, task)
     search.results.each do |ontology|
       bean_list_factory.add_small_bean(ontology)
     end

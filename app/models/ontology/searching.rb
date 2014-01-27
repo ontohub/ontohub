@@ -28,6 +28,7 @@ module Ontology::Searching
       integer :task_id do
         task.id if task
       end
+      integer :project_ids, multiple: true
       integer :repository_id
     end
   end
@@ -40,6 +41,7 @@ module Ontology::Searching
         with(:repository_id, repository.id) unless repository.nil?
         with(:license_model_id, license_model.id) unless license_model.nil?
         with(:formality_level_id, formality_level.id) unless formality_level.nil?
+	with(:project_ids, [project.id]) unless project.nil?
         with(:task_id, task.id) unless task.nil?
         paginate page: page, per_page: 20
       end
