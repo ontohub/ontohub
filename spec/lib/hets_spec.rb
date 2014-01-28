@@ -70,7 +70,7 @@ describe Hets do
   end
 
   it 'raise exception if provided with wrong file-format' do
-    assert_raise Hets::HetsError do
+    assert_raise Hets::ExecutionError do
       Hets.parse Rails.root.join('test/fixtures/ontologies/xml/valid.xml')
     end
   end
