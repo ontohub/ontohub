@@ -2,6 +2,63 @@ module GitRepository::GetDiff
   # depends on GitRepository
   extend ActiveSupport::Concern
 
+  # Represents a added/changed/deleted file
+  class FileChange
+    attr_accessor :directory, :name, :oid, :parent_oid, :type
+
+    def initialize(repo, directory, name, type, oid=nil, parent_oid=nil)
+      @repo       = repo
+      @directory  = directory
+      @name       = name
+      @type       = type
+      @oid        = oid
+      @parent_oid = parent_oid
+    end
+
+    %w( add change delete ).each do |type|
+      class_eval "def #{type}?; @type==:#{type}; end"
+    end
+
+    def path
+      "#{directory}#{name}"
+    end
+
+    def content
+      @repo.lookup(oid).content
+    end
+
+    def content_parent
+      @repo.lookup(parent_oid).content
+    end
+
+    def mime_info
+      @mime_info ||= GitRepository.mime_info(name)
+    end
+
+    def mime_type
+      mime_info[:mime_type]
+    end
+
+    def mime_category
+      mime_info[:mime_category]
+    end
+
+    def editable?
+      GitRepository.mime_type_editable?(mime_type)
+    end
+
+    def diff
+      contents = contents_unless_too_long(@repo.lookup(oid), @repo.lookup(parent_oid))
+      if contents[0].nil?
+        :file_too_large
+      elsif !editable?
+        :not_a_text_file
+      else
+        @repo.diff(*contents)
+      end
+    end
+  end
+
   # returns a list of files changed by a commit
   def changed_files(commit_oid=nil)
     rugged_commit = get_commit(commit_oid)
@@ -28,107 +85,79 @@ module GitRepository::GetDiff
   end
 
   def gcf_complete(current_tree, parent_tree, directory='')
-    files_contents = []
-    files_contents.concat(gcf_subtrees(current_tree, parent_tree, directory))
-    files_contents.concat(gcf_current(current_tree, parent_tree, directory))
-
-
-    files_contents
+    result = []
+    result.concat(gcf_subtrees(current_tree, parent_tree, directory))
+    result.concat(gcf_current(current_tree, parent_tree, directory))
+    result
   end
 
   def gcf_subtrees(current_tree, parent_tree, directory)
-    files_contents = []
-    files_contents.concat(gcf_subtrees_addeed_and_changed(current_tree, parent_tree, directory))
-    files_contents.concat(gcf_subtrees_deleted(current_tree, parent_tree, directory))
-
-    files_contents
+    result = []
+    result.concat(gcf_subtrees_addeed_and_changed(current_tree, parent_tree, directory))
+    result.concat(gcf_subtrees_deleted(current_tree, parent_tree, directory))
+    result
   end
 
   def gcf_subtrees_addeed_and_changed(current_tree, parent_tree, directory)
-    files_contents = []
+    result = []
     current_tree.each do |e|
       if e[:type] == :tree
         if parent_tree[e[:name]] && e[:oid] != parent_tree[e[:name]][:oid]
-          files_contents.concat(gcf_complete(@repo.lookup(e[:oid]), @repo.lookup(parent_tree[e[:name]][:oid]), "#{directory}#{e[:name]}/"))
+          result.concat(gcf_complete(@repo.lookup(e[:oid]), @repo.lookup(parent_tree[e[:name]][:oid]), "#{directory}#{e[:name]}/"))
         elsif !parent_tree[e[:name]]
-          files_contents.concat(gcf_complete(@repo.lookup(e[:oid]), {}, "#{directory}#{e[:name]}/"))
+          result.concat(gcf_complete(@repo.lookup(e[:oid]), {}, "#{directory}#{e[:name]}/"))
         elsif parent_tree == {} || parent_tree.count == 0
-          files_contents.concat(gcf_complete(@repo.lookup(e[:oid]), parent_tree, "#{directory}#{e[:name]}/"))
+          result.concat(gcf_complete(@repo.lookup(e[:oid]), parent_tree, "#{directory}#{e[:name]}/"))
         end
       end
     end
 
-    files_contents
+    result
   end
 
   def gcf_subtrees_deleted(current_tree, parent_tree, directory)
-    files_contents = []
+    result = []
     parent_tree.each do |e|
       if e[:type] == :tree && !current_tree[e[:name]]
-        files_contents.concat(gcf_complete({}, @repo.lookup(e[:oid]), "#{directory}#{e[:name]}/"))
+        result.concat(gcf_complete({}, @repo.lookup(e[:oid]), "#{directory}#{e[:name]}/"))
       end
     end
 
-    files_contents
+    result
   end
 
   def gcf_current(current_tree, parent_tree, directory)
-    files_contents = []
-    files_contents.concat(gcf_current_added_and_changed(current_tree, parent_tree, directory))
-    files_contents.concat(gcf_current_deleted(current_tree, parent_tree, directory))
-
-    files_contents
+    result = []
+    result.concat(gcf_current_added_and_changed(current_tree, parent_tree, directory))
+    result.concat(gcf_current_deleted(current_tree, parent_tree, directory))
+    result
   end
 
   def gcf_current_added_and_changed(current_tree, parent_tree, directory)
-    files_contents = []
+    result = []
     current_tree.each do |e|
       if e[:type] == :blob
         if parent_tree[e[:name]] && e[:oid] != parent_tree[e[:name]][:oid]
-          files_contents << changed_files_entry(directory, e[:name], :change, *contents_unless_too_long(@repo.lookup(e[:oid]), @repo.lookup(parent_tree[e[:name]][:oid])))
+          result << changed_files_entry(directory, e[:name], :change, e[:oid], parent_tree[e[:name]][:oid])
         elsif !parent_tree[e[:name]]
-          files_contents << changed_files_entry(directory, e[:name], :add, *contents_unless_too_long(@repo.lookup(e[:oid]), nil))
+          result << changed_files_entry(directory, e[:name], :add, e[:oid])
         end
       end
     end
 
-    files_contents
+    result
   end
 
   def gcf_current_deleted(current_tree, parent_tree, directory)
-    files_contents = []
+    result = []
     parent_tree.each do |e|
       if e[:type] == :blob && !current_tree[e[:name]]
-        files_contents << changed_files_entry(directory, e[:name], :delete, '', '')
+        result << changed_files_entry(directory, e[:name], :delete)
       end
     end
 
-    files_contents
+    result
   end
-
-  def changed_files_entry(directory, name, type, content_current, content_parent)
-    mime_info = mime_info(name)
-    editable = mime_type_editable?(mime_info[:mime_type])
-    {
-      name: name,
-      path: "#{directory}#{name}",
-      diff: editable ? (content_current.nil? ? :file_too_large : diff(content_current, content_parent)) : :not_a_text_file,
-      type: type,
-      mime_type: mime_info[:mime_type],
-      mime_category: mime_info[:mime_category],
-      editable: editable
-    }
-  end
-
-
-  def diff(current, original)
-    Diffy::Diff.new(original.encoding_utf8, current.encoding_utf8, include_plus_and_minus_in_html: true, context: 3, include_diff_info: true).to_s(:html)
-  end
-
-  def mime_type_editable?(mime_type)
-    mime_type.to_s == 'application/xml' || mime_type.to_s.match(/^text\/.*/)
-  end
-
 
   def contents_unless_too_long(current_blob, parent_blob=nil)
     if current_blob.size > Ontohub::Application.config.max_read_filesize ||
@@ -140,4 +169,13 @@ module GitRepository::GetDiff
       [current_blob.content, parent_blob.content]
     end
   end
+
+  def changed_files_entry(*args)
+    FileChange.new(self, *args)
+  end
+
+  def diff(current, previous)
+    Diffy::Diff.new(previous.encoding_utf8, current.encoding_utf8, include_plus_and_minus_in_html: true, context: 3, include_diff_info: true).to_s(:html)
+  end
+
 end

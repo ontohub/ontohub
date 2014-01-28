@@ -64,7 +64,10 @@ module Repository::Importing
       result = git.send(method, *args)
 
       update_state! 'processing'
-      save_current_ontologies
+      suspended_save_ontologies \
+        start_oid:  result.current,
+        stop_oid:   result.previous,
+        walk_order: Rugged::SORT_REVERSE
 
       self.imported_at = Time.now
       update_state! 'done'

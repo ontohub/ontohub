@@ -69,6 +69,12 @@ module ApplicationHelper
       Subprocess.run(*%w(git rev-parse --short HEAD), GIT_DIR: path.to_s).strip if path.exist?
     end
 
+    # try to read the revision from file
+    $commit_oid ||= begin
+      path = Rails.root.join("REVISION")
+      path.read.strip if path.exist?
+    end
+
     $commit_oid ||= 'unknown'
   end
 
