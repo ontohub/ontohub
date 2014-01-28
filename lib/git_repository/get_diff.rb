@@ -13,6 +13,7 @@ module GitRepository::GetDiff
       @type       = type
       @oid        = oid
       @parent_oid = parent_oid
+      @diff       = nil
     end
 
     %w( add change delete ).each do |type|
@@ -24,11 +25,11 @@ module GitRepository::GetDiff
     end
 
     def content
-      @repo.lookup(oid).content
+      @repo.repo.lookup(oid).content
     end
 
     def content_parent
-      @repo.lookup(parent_oid).content
+      @repo.repo.lookup(parent_oid).content
     end
 
     def mime_info
@@ -48,13 +49,18 @@ module GitRepository::GetDiff
     end
 
     def diff
-      contents = contents_unless_too_long(@repo.lookup(oid), @repo.lookup(parent_oid))
-      if contents[0].nil?
-        :file_too_large
-      elsif !editable?
-        :not_a_text_file
+      if @diff.nil?
+        contents = @repo.contents_unless_too_long(@repo.repo.lookup(oid),
+                     parent_oid.nil? ? nil : @repo.repo.lookup(parent_oid))
+        if contents[0].nil?
+          @diff = :file_too_large
+        elsif !editable?
+          @diff = :not_a_text_file
+        else
+          @diff = GitRepository.diff(*contents)
+        end
       else
-        @repo.diff(*contents)
+        @diff
       end
     end
   end
@@ -66,6 +72,23 @@ module GitRepository::GetDiff
       []
     else
       gcf_rugged(rugged_commit)
+    end
+  end
+
+  def contents_unless_too_long(current_blob, parent_blob=nil)
+    if current_blob.size > Ontohub::Application.config.max_read_filesize ||
+        (!parent_blob.nil? && parent_blob.size > Ontohub::Application.config.max_read_filesize)
+      [nil, nil]
+    elsif parent_blob.nil?
+      [current_blob.content, '']
+    else
+      [current_blob.content, parent_blob.content]
+    end
+  end
+
+  module ClassMethods
+    def diff(current, previous)
+      Diffy::Diff.new(previous.encoding_utf8, current.encoding_utf8, include_plus_and_minus_in_html: true, context: 3, include_diff_info: true).to_s(:html)
     end
   end
 
@@ -159,23 +182,8 @@ module GitRepository::GetDiff
     result
   end
 
-  def contents_unless_too_long(current_blob, parent_blob=nil)
-    if current_blob.size > Ontohub::Application.config.max_read_filesize ||
-        (!parent_blob.nil? && parent_blob.size > Ontohub::Application.config.max_read_filesize)
-      [nil, nil]
-    elsif parent_blob.nil?
-      [current_blob.content, '']
-    else
-      [current_blob.content, parent_blob.content]
-    end
-  end
-
   def changed_files_entry(*args)
     FileChange.new(self, *args)
-  end
-
-  def diff(current, previous)
-    Diffy::Diff.new(previous.encoding_utf8, current.encoding_utf8, include_plus_and_minus_in_html: true, context: 3, include_diff_info: true).to_s(:html)
   end
 
 end
