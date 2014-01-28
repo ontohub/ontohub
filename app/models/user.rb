@@ -62,8 +62,8 @@ class User < ActiveRecord::Base
   end
 
   def team_permissions
-    team_ids = teams.map{|t| t.id}
-    return Permission.where(subject_id: team_ids, subject_type: 'Team')
+    Permission.where(subject_id: teams.pluck(:id),
+                     subject_type: 'Team')
   end
 
   def accessible_ids(type)

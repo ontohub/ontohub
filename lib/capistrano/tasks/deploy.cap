@@ -8,6 +8,15 @@ namespace :deploy do
     end
   end
 
+  desc "Saves the current revision to release_path/REVISION"
+  task :set_revision do
+    on roles(:app) do
+      # dump current git revision
+      rev = capture "cd #{repo_path} && git rev-parse --short #{fetch :branch}"
+      execute :echo, "#{rev} > #{release_path}/REVISION"
+    end
+  end
+
   desc "Moves and replaces the secret-token if missing in shared directory"
   task :symlink_secret do 
     on roles(:app) do
@@ -27,5 +36,6 @@ namespace :deploy do
     end
   end
 
-  after "deploy:updated", "deploy:symlink_secret"
+  after :updated, "deploy:symlink_secret"
+  after :updated, "deploy:set_revision"
 end

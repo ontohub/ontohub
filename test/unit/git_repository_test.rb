@@ -473,27 +473,27 @@ class GitRepositoryTest < ActiveSupport::TestCase
       end
 
       should 'have the right name in the list when using the first commit' do
-        assert_equal @repository.changed_files(@commit1).first[:name], 'file.xml'
+        assert_equal @repository.changed_files(@commit1).first.name, 'file.xml'
       end
 
       should 'have the right path in the list when using the first commit' do
-        assert_equal @repository.changed_files(@commit1).first[:path], @filepath
+        assert_equal @repository.changed_files(@commit1).first.path, @filepath
       end
 
       should 'have the right type in the list when using the first commit' do
-        assert_equal @repository.changed_files(@commit1).first[:type], :add
+        assert_equal @repository.changed_files(@commit1).first.type, :add
       end
 
       should 'have the right mime type in the list when using the first commit' do
-        assert_equal @repository.changed_files(@commit1).first[:mime_type], Mime::Type.lookup_by_extension(@file_extension)
+        assert_equal @repository.changed_files(@commit1).first.mime_type, Mime::Type.lookup_by_extension(@file_extension)
       end
 
       should 'have the right mime category in the list when using the first commit' do
-        assert_equal @repository.changed_files(@commit1).first[:mime_category], 'application'
+        assert_equal @repository.changed_files(@commit1).first.mime_category, 'application'
       end
 
       should 'have the right editable in the list when using the first commit' do
-        assert_equal @repository.changed_files(@commit1).first[:editable], true
+        assert_equal @repository.changed_files(@commit1).first.editable?, true
       end
 
 
@@ -503,27 +503,27 @@ class GitRepositoryTest < ActiveSupport::TestCase
       end
 
       should 'have the right name in the list when using a commit in the middle' do
-        assert_equal @repository.changed_files(@commit2).first[:name], @filepath.split('/')[-1]
+        assert_equal @repository.changed_files(@commit2).first.name, @filepath.split('/')[-1]
       end
 
       should 'have the right path in the list when using a commit in the middle' do
-        assert_equal @repository.changed_files(@commit2).first[:path], @filepath
+        assert_equal @repository.changed_files(@commit2).first.path, @filepath
       end
 
       should 'have the right type in the list when using a commit in the middle' do
-        assert_equal @repository.changed_files(@commit2).first[:type], :change
+        assert_equal @repository.changed_files(@commit2).first.type, :change
       end
 
       should 'have the right mime type in the list when using a commit in the middle' do
-        assert_equal @repository.changed_files(@commit2).first[:mime_type], Mime::Type.lookup_by_extension(@file_extension)
+        assert_equal @repository.changed_files(@commit2).first.mime_type, Mime::Type.lookup_by_extension(@file_extension)
       end
 
       should 'have the right mime category in the list when using a commit in the middle' do
-        assert_equal @repository.changed_files(@commit2).first[:mime_category], 'application'
+        assert_equal @repository.changed_files(@commit2).first.mime_category, 'application'
       end
 
       should 'have the right editable in the list when using a commit in the middle' do
-        assert_equal @repository.changed_files(@commit2).first[:editable], true
+        assert_equal @repository.changed_files(@commit2).first.editable?, true
       end
 
 
@@ -533,27 +533,27 @@ class GitRepositoryTest < ActiveSupport::TestCase
       end
 
       should 'have the right name in the list when using the HEAD' do
-        assert_equal @repository.changed_files.first[:name], @filepath.split('/')[-1]
+        assert_equal @repository.changed_files.first.name, @filepath.split('/')[-1]
       end
 
       should 'have the right path in the list when using the HEAD' do
-        assert_equal @repository.changed_files.first[:path], @filepath
+        assert_equal @repository.changed_files.first.path, @filepath
       end
 
       should 'have the right type in the list when using the HEAD' do
-        assert_equal @repository.changed_files.first[:type], :delete
+        assert_equal @repository.changed_files.first.type, :delete
       end
 
       should 'have the right mime type in the list when using the HEAD' do
-        assert_equal @repository.changed_files.first[:mime_type], Mime::Type.lookup_by_extension(@file_extension)
+        assert_equal @repository.changed_files.first.mime_type, Mime::Type.lookup_by_extension(@file_extension)
       end
 
       should 'have the right mime category in the list when using the HEAD' do
-        assert_equal @repository.changed_files.first[:mime_category], 'application'
+        assert_equal @repository.changed_files.first.mime_category, 'application'
       end
 
       should 'have the right editable in the list when using the HEAD' do
-        assert_equal @repository.changed_files.first[:editable], true
+        assert_equal @repository.changed_files.first.editable?, true
       end
     end
   end

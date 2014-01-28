@@ -168,8 +168,14 @@ class RepositoryTest < ActiveSupport::TestCase
           tmpfile.puts(content)
           tmpfile.close
           
-          assert_difference 'Worker.jobs.count' do
-            @repository.save_file(file_path, path, @message, @user, "#{@iri_prefix}#{file_path}")
+          if path == 'inroot2.clif'
+            assert_no_difference 'Worker.jobs.count' do
+              @repository.save_file(file_path, path, @message, @user, "#{@iri_prefix}#{file_path}")
+            end
+          else
+            assert_difference 'Worker.jobs.count' do
+              @repository.save_file(file_path, path, @message, @user, "#{@iri_prefix}#{file_path}")
+            end
           end
         end
       end
@@ -204,7 +210,7 @@ class RepositoryTest < ActiveSupport::TestCase
                 {:type=>:file, :name=>"inroot2.clf", :path=>"inroot2.clf", :index=>3},
                 {:type=>:file, :name=>"inroot2.clif", :path=>"inroot2.clif", :index=>4}
               ], selected_entry.map{ |e| e.except(:ontologies) }
-        assert_equal(['Inroot2', 'Inroot2'], selected_entry.map{ |e| e[:ontologies].map(&:to_s) }.flatten)
+        assert_equal(['Inroot2'], selected_entry.map{ |e| e[:ontologies].map(&:to_s) }.flatten)
 
         path_infos_entries = @repository.path_info('folder2')[:entries]
         assert_equal 1, path_infos_entries.size

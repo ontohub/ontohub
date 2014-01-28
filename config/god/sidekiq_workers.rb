@@ -22,7 +22,7 @@ class SidekiqWorkers
       w.pid_file      = File.join(RAILS_ROOT, "tmp/pids/sidekiq-#{@count}.pid")
 
       w.interval      = 30.seconds
-      w.start         = "nice bin/sidekiq -c #{concurrency} --logfile log/sidekiq.log" << queues.map{|q| " -q '#{q}'"}.join
+      w.start         = "exec nice bin/sidekiq -c #{concurrency} --pidfile #{w.pid_file} --logfile log/sidekiq.log" << queues.map{|q| " -q '#{q}'"}.join
       w.start_grace   = 10.seconds
       
       # Restart if memory gets too high
