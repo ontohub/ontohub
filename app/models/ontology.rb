@@ -84,7 +84,7 @@ class Ontology < ActiveRecord::Base
     }x)
     if match
       filename = match[:filename].sub(/\.[\w\d]+\z/, '')
-      capitalized_name = filename.split(/([_ ])/).map(&:capitalize).join($1)
+      capitalized_name = filename.split(/[_ ]/).map(&:capitalize).join(' ')
     else
       name
     end
