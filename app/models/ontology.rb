@@ -75,11 +75,11 @@ class Ontology < ActiveRecord::Base
   def generate_name(name)
     match = name.match(%r{
       \A
-      < # angle brackets denote a custom IRI
+      .+?
+      :// # A uri has a separation between schema and hierarchy
       .+
       (?:/|\#)
         (?<filename>[^/]+) # Match filename after a slash/hash
-      > # end of IRI
       \z
     }x)
     if match
