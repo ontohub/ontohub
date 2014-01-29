@@ -1,5 +1,5 @@
 # Add OOPS! requests and responses to pizza ontology.
-ontology = Ontology.where("name like '%pizza.owl'").first!
+ontology = Ontology.where(name: "Pizza").first!
 version  = ontology.versions.first
 if version
   request  = version.build_request({state: 'done'}, without_protection: true)
