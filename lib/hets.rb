@@ -119,8 +119,4 @@ module Hets
     config ||= Config.new
   end
 
-  def self.library_path
-    @@config.library_path
-  end
-
 end
