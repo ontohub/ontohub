@@ -2,7 +2,7 @@
 # An exception is thrown if the subprocess exists with non-zero.
 module Subprocess
 
-  class Error < ::Exception
+  class Error < ::StandardError
     attr_reader :status, :output
     def initialize(args, status, output)
       super "Subprocess #{args.inspect} exited with status #{status}:\n#{output}"
