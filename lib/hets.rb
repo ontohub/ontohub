@@ -115,43 +115,12 @@ module Hets
     end
   end
 
-  # Traverses a directory recursively, importing ontology file with supported
-  # extension.
-  #
-  # @param user [User] the user that imports the ontology files
-  # @param repo [Repository] Repository, the files shall be saved in
-  # @param dir  [String] the path to the ontology library
-  #
-  def self.import_ontologies(user, repo, dir)
-    find_ontologies(dir) { |path| import_ontology(user, repo, dir, path) }
-  end
-
-  # Imports an ontology in demand of a user.
-  #
-  # @param user [User] the user that imports the ontology file
-  # @param repo [Repository] Repository, the files shall be saved in
-  # @param path [String] the path to the ontology file
-  #
-  def self.import_ontology(user, repo, dir, path)
-    relpath = File.relative_path(dir, path)
-    repo.save_file(path, relpath, "Added #{relpath}.", user)
-  end
-
   def self.config
     config ||= Config.new
   end
 
   def self.library_path
     @@config.library_path
-  end
-
-
-  private
-
-  # Traverses a directory for ontologies with supported extensions recursively,
-  # yielding their path.
-  def self.find_ontologies(dir)
-    Dir.glob("#{dir}/**/*.{#{Ontology::FILE_EXTENSIONS.join(',')}}").each { |path| yield path }
   end
 
 end

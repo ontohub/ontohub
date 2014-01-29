@@ -22,7 +22,7 @@ namespace :import do
         return 1
       end
 
-      Hets.import_ontologies(user, repo, Hets.library_path)
+      repo.import_ontologies(user, Hets.library_path)
     end
   end
 
