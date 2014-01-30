@@ -2,11 +2,7 @@ module Repository::Access
 
   extend ActiveSupport::Concern
 
-  OPTIONS = [
-    ['Private',                       'private'   ],
-    ['Public readable',               'public_r'  ],
-    ['Public readable and writable',  'public_rw' ]
-  ]
+  OPTIONS = %w[private public_r public_rw]
 
   included do
     scope :pub, where("access != 'private'")
@@ -23,7 +19,7 @@ module Repository::Access
 
     validates :access,
       presence: true,
-      inclusion: { in: Repository::Access::OPTIONS.map(&:last) }
+      inclusion: { in: Repository::Access::OPTIONS }
   end
 
   def is_private
