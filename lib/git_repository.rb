@@ -131,6 +131,21 @@ class GitRepository
     false
   end
 
+  def self.mime_type_editable?(mime_type)
+    mime_type.to_s == 'application/xml' || mime_type.to_s.match(/^text\/.*/)
+  end
+
+  def self.mime_info(filename)
+    ext = File.extname(filename)[1..-1]
+    mime_type = Mime::Type.lookup_by_extension(ext) || Mime::TEXT
+    mime_category = mime_type.to_s.split('/')[0]
+
+    {
+      mime_type: mime_type,
+      mime_category: mime_category
+    }
+  end
+
   protected
 
   def path_exists_rugged?(rugged_commit, url='')
@@ -151,7 +166,7 @@ class GitRepository
 
     if object.type == :blob
       filename = url.split('/')[-1]
-      mime_info = mime_info(filename)
+      mime_info = self.class.mime_info(filename)
       {
         name: filename,
         size: object.size,
@@ -162,17 +177,6 @@ class GitRepository
     else
       nil
     end
-  end
-
-  def mime_info(filename)
-    ext = File.extname(filename)[1..-1]
-    mime_type = Mime::Type.lookup_by_extension(ext) || Mime::TEXT
-    mime_category = mime_type.to_s.split('/')[0]
-
-    {
-      mime_type: mime_type,
-      mime_category: mime_category
-    }
   end
 
   def head

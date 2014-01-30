@@ -20,7 +20,10 @@
               - if entry[:type] == :dir
                 %i.icon-folder-close
               - else
-                %i.icon-file
+                - if entry[:ontologies].empty?
+                  %i.icon-file
+                - else
+                  %i.glyphicon.glyphicon-file
             %td.name
               = link_to entry[:name].force_encoding('UTF-8'), fancy_repository_path(repository, path: entry[:path], ref: oid) #FIXME force_encoding is needed due to errors in rugged
             %td.last-commit.muted

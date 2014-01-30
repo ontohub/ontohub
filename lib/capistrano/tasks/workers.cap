@@ -1,0 +1,14 @@
+
+namespace :workers do
+  
+  desc "Stop background workers"
+  task :stop do
+    on roles(:app) do
+      within current_path do
+        execute :kill, "`cat tmp/pids/*.pid` || true"
+      end
+    end
+  end
+
+  after 'deploy:publishing', 'workers:stop'
+end

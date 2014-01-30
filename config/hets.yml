@@ -21,6 +21,10 @@ hets_owl_tools:
   - /usr/local/opt/hets/Hets.app/Contents/Resources/hets-owl-tools
   - /Applications/Hets.app/Contents/Resources/hets-owl-tools
 
-hets_version_minimum_date: 2014-01-06
+version_minimum_date: 2014-01-29
 
-hets_stack_size: 1G
+stack_size: 1G
+
+# Environment variables to set for running Hets
+env:
+  LANG: en_US.UTF-8
