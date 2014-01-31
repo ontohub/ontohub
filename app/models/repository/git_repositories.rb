@@ -222,7 +222,7 @@ module Repository::GitRepositories
     commits(options) { |commit_oid|
       git.changed_files(commit_oid).each { |f|
         if f.add? || f.change?
-          save_ontology(commit_oid, f.path, options.delete(:user), fast_parse: true)
+          save_ontology(commit_oid, f.path, options.delete(:user), fast_parse: has_changed?(f.path, commit_oid))
         end
       }
     }
