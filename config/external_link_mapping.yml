@@ -107,5 +107,5 @@ wiki:
       history: "list_repository_history"
     home:
       show: ""
-
-
+    graphs:
+      index: "show_graph"
