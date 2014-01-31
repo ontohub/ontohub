@@ -11,14 +11,14 @@ module OntologyVersion::Parsing
     @deactivate_parsing = true
   end
 
-  def async_parse
+  def async_parse(*args)
     if !@deactivate_parsing
       update_state! :pending
-      async :parse
+      async :parse, *args
     end
   end
 
-  def parse
+  def parse(refresh_cache: false)
 #    do_or_set_failed do
 #      condition = ['checksum = ? and id != ?', self.checksum, self.id]
 #      if OntologyVersion.where(condition).any?
@@ -31,16 +31,22 @@ module OntologyVersion::Parsing
     do_or_set_failed do
       refresh_checksum! unless checksum?
       
-      @path = Hets.parse(self.raw_path!, self.ontology.repository.url_maps, File.dirname(self.xml_path))
-      
-      # move generated file to destination
-      File.rename @path, self.xml_path
+      # run hets if necessary
+      generate_xml if refresh_cache || !xml_file?
 
       # Import version
       self.ontology.import_version self, self.user
       
       update_state! :done
     end
+  end
+
+  # generate XML by passing the raw ontology to Hets
+  def generate_xml
+    path = Hets.parse(raw_path!, ontology.repository.url_maps, File.dirname(xml_path))
+    
+    # move generated file to destination
+    File.rename path, xml_path
   end
   
 end

@@ -2,10 +2,7 @@
 
 rake sunspot:solr:start &
 bin/sidekiq -q default -q hets -c 1 -v  >> log/sidekiq.log &
-if [ $1 != "-n" ]
-then
-  rails s &
-fi
+rails s &
 
 trap "rake sunspot:solr:stop" INT
 

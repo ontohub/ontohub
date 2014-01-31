@@ -43,7 +43,7 @@ module FilesHelper
   end
 
   def ensure_next_page_exists(current_page, per_page)
-    (current_page || 1)*(per_page+1)
+    Integer(current_page || 1)*(per_page+1)
   end
 
   def dirpath(repository)

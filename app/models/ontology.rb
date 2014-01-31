@@ -63,19 +63,28 @@ class Ontology < ActiveRecord::Base
   scope :list, includes(:logic).order('ontologies.state asc, ontologies.entities_count desc')
 
 
+  scope :find_with_path, ->(path) do
+    where "ontologies.basepath = :basepath AND ontologies.file_extension = :file_extension",
+      basepath: File.basepath(path),
+      file_extension: File.extname(path)
+  end
+
+  scope :parents_first, order('(CASE WHEN ontologies.parent_id IS NULL THEN 1 ELSE 0 END) DESC, ontologies.parent_id asc')
+
+
   def generate_name(name)
     match = name.match(%r{
       \A
-      < # angle brackets denote a custom IRI
+      .+?
+      :// # A uri has a separation between schema and hierarchy
       .+
       (?:/|\#)
         (?<filename>[^/]+) # Match filename after a slash/hash
-      > # end of IRI
       \z
     }x)
     if match
       filename = match[:filename].sub(/\.[\w\d]+\z/, '')
-      capitalized_name = filename.split(/([_ ])/).map(&:capitalize).join($1)
+      capitalized_name = filename.split(/[_ ]/).map(&:capitalize).join(' ')
     else
       name
     end

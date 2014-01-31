@@ -98,7 +98,7 @@ describe Ability do
   context 'Private Repository' do
     let(:editor){ create :user } # editor
     let(:reader){ create :user } # reader
-    let(:item){   create(:repository, is_private: true, user: owner) }
+    let(:item){   create(:repository, access: 'private', user: owner) }
 
     before do
       create(:permission, subject: editor, role: 'editor', item: item)

@@ -10,7 +10,15 @@ module Permissionable
   def permissions_count
     permissions.count
   end
-  
+
+  def highest_permission(user)
+    where_hash = {item_id: self.id, item_type: self.class.to_s}
+    team_permissions = user.team_permissions.where(where_hash)
+    user_permissions = user.permissions.where(where_hash)
+    (team_permissions + user_permissions).
+      sort(&:permissions_order).last
+  end
+
   def permission?(role, user)
     # Deny if user is nil
     return false unless user

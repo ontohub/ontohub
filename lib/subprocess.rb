@@ -2,7 +2,7 @@
 # An exception is thrown if the subprocess exists with non-zero.
 module Subprocess
 
-  class Error < ::Exception
+  class Error < ::StandardError
     attr_reader :status, :output
     def initialize(args, status, output)
       super "Subprocess #{args.inspect} exited with status #{status}:\n#{output}"
@@ -16,10 +16,7 @@ module Subprocess
   def self.run(*args)
     env    = stringify_keys(args.extract_options!)
     args   = args.map(&:to_s)
-    output = IO.popen env, args, err: [:child, :out] do |ls_io|
-      ls_io.read
-    end
-
+    output = IO.popen env, args, err: [:child, :out], &:read
     status = $?.exitstatus
 
     if status != 0
@@ -30,12 +27,12 @@ module Subprocess
   end
 
   private
-  def self.stringify_keys(base_hash)
-    hash = base_hash.reduce({}) do |h, (key, value)|
+
+  def self.stringify_keys(hash)
+    hash.reduce({}) do |h, (key, value)|
       h[key.to_s] = value
       h
     end
-    return hash
   end
 
 end
