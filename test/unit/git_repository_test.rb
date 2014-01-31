@@ -455,6 +455,7 @@ class GitRepositoryTest < ActiveSupport::TestCase
         assert @repository.has_changed?(@filepath,  @commit_add1,    @commit_change1)
         assert @repository.has_changed?(@filepath,  @commit_add1,    @commit_delete1)
         assert @repository.has_changed?(@filepath,  @commit_delete1, @commit_add2)
+        assert @repository.has_changed?(@filepath,  @commit_delete1, @commit_delete2)
       end
     end
 
