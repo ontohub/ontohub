@@ -26,3 +26,10 @@ en:
       logic: Enter characters to search for a language
   Link: Ontology-Link
   LogicMapping: Logic-Mapping
+  repository:
+    access:
+      change_hint: 'Caution! When setting the repository public, all reader permissions are removed.'
+      options:
+        private: Private
+        public_r: Public readable
+        public_rw: Public readable and writable

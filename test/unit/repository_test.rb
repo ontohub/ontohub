@@ -39,7 +39,7 @@ class RepositoryTest < ActiveSupport::TestCase
 
     context 'made private' do
       setup do
-        @repository.is_private = true
+        @repository.access = 'private'
         @repository.save
 
         editor = FactoryGirl.create :user
@@ -58,7 +58,7 @@ class RepositoryTest < ActiveSupport::TestCase
 
       should 'clear reader premissions when set public' do
         assert_equal 3, @repository.permissions.where(role: 'reader').count
-        @repository.is_private = false
+        @repository.access = 'public_r'
         @repository.save
         assert_equal 0, @repository.permissions.where(role: 'reader').count
       end
