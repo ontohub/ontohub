@@ -1,5 +1,5 @@
 wiki:
-  root: "http://wiki.ontohub.org/"
+  root: "http://wiki.ontohub.org/index.php/"
   controller:
     ontology:
       index: "ontology_overview"
