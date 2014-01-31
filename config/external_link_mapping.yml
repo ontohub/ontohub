@@ -1,39 +1,41 @@
 wiki:
   root: "http://wiki.ontohub.org/index.php/"
   controller:
-    ontology:
+    ontologies:
       index: "ontology_overview"
       show: "ontology_details"
       edit: "ontology_edit"
       retry_failed: "ontology_retry"
-    category:
+    categories:
       index: "category_based_search"
       show: "category_details"
-    ontology_type:
+    ontology_types:
+      index: "list_ontology_types"
       show: "ontology_type_details"
-    formality_level:
+    formality_levels:
+      index: "list_formality_levels"
       show: "formality_level_details"
-    user_session:
+    user_sessions:
       new: "login"
       destroy: "logout"
-    user:
+    users:
       show: "user_details"
-    key:
+    keys:
       new: "add_ssh_keys"
       index: "list_ssh_keys"
-    support:
+    supports:
       index: "list_logic_supported_languages"
-    logic:
+    logics:
       new: "add_logic"
       edit: "edit_logic"
       show: "logic_details"
       index: "list_logics"
-    language:
+    languages:
       new: "add_language"
       edit: "edit_language"
       show: "language_details"
       index: "list_languages"
-    logic_mapping:
+    logic_mappings:
       new: "add_logic_mapping"
       edit: "edit_logic_mapping"
       show: "logic_mapping_details"
@@ -73,7 +75,7 @@ wiki:
       index: "list_entities"
     sentences:
       index: "list_sentences"
-    link_version:
+    link_versions:
       index: "list_link_versions"
     ontology_versions:
       index: "list_ontology_version"
@@ -97,11 +99,13 @@ wiki:
       index: "list_comments"
       new: "add_comment"
       destroy: "remove_comment"
-    foramlity_level:
+    foramlity_levels:
       index: "list_formality_level"
     files:
       files: "list_files"
       new: "add_new_file"
+      history: "list_repository_history"
     home:
-      show: "root_page"
+      show: ""
+
 
