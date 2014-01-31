@@ -116,7 +116,7 @@ module Hets
   end
 
   def self.config
-    config ||= Config.new
+    @@config ||= Config.new
   end
 
 end
