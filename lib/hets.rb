@@ -70,7 +70,7 @@ module Hets
   end
 
   # Runs hets with input_file and returns XML output file path.
-  def self.parse(input_file, url_catalog = [], output_path = nil)
+  def self.parse(input_file, url_catalog = [], output_path = nil, structure_only: false)
 
     # Arguments to run the subprocess
     args = [config.path, *%w( -o pp.xml -o xml --full-signatures -a none -v2 )]
@@ -79,6 +79,8 @@ module Hets
       FileUtils.mkdir_p output_path
       args += ['-O', output_path]
     end
+
+    args += ['-s'] if structure_only
 
     args += ['-C', url_catalog.join(',')] unless url_catalog.empty?
 

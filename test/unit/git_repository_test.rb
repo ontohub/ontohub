@@ -449,6 +449,14 @@ class GitRepositoryTest < ActiveSupport::TestCase
           @commit_add1
         ], @repository.commits(path: @filepath, limit: 7, offset: 5) { |commit_oid| commit_oid })
       end
+
+      should 'find out if a file is at the current state' do
+        assert !@repository.has_changed?(@filepath, @commit_add1,    @commit_add1)
+        assert @repository.has_changed?(@filepath,  @commit_add1,    @commit_change1)
+        assert @repository.has_changed?(@filepath,  @commit_add1,    @commit_delete1)
+        assert @repository.has_changed?(@filepath,  @commit_delete1, @commit_add2)
+        assert @repository.has_changed?(@filepath,  @commit_delete1, @commit_delete2)
+      end
     end
 
 

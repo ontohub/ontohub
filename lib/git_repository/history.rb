@@ -20,6 +20,19 @@ module GitRepository::History
     end
   end
 
+  # check if the file at path has changed between previous_oid and current_oid
+  def has_changed?(path, previous_oid, current_oid=nil)
+    current_oid ||= head_oid
+
+    previous_obj = get_object(repo.lookup(previous_oid), path)
+    current_obj  = get_object(repo.lookup(current_oid),  path)
+
+    if previous_obj.nil? || current_obj.nil?
+      true
+    else
+      previous_obj.oid != current_obj.oid
+    end
+  end
 
   protected
 

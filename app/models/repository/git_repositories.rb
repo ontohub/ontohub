@@ -3,7 +3,7 @@ require 'git_repository'
 module Repository::GitRepositories
   extend ActiveSupport::Concern
 
-  delegate :dir?, :points_through_file?, to: :git
+  delegate :dir?, :points_through_file?, :has_changed?, to: :git
 
   included do
     after_create  :create_and_init_git
@@ -43,7 +43,7 @@ module Repository::GitRepositories
     version = nil
 
     git.add_file({email: user.email, name: user.name}, tmp_file, filepath, message) do |commit_oid|
-      version = save_ontology(commit_oid, filepath, user, iri)
+      version = save_ontology(commit_oid, filepath, user, iri: iri)
     end
     touch
     version
@@ -60,7 +60,7 @@ module Repository::GitRepositories
     commit
   end
 
-  def save_ontology(commit_oid, filepath, user=nil, iri=nil)
+  def save_ontology(commit_oid, filepath, user=nil, iri: nil, fast_parse: false)
     # we expect that this method is only called, when the ontology is 'present'
 
     return unless Ontology::FILE_EXTENSIONS.include?(File.extname(filepath))
@@ -73,7 +73,10 @@ module Repository::GitRepositories
       o.present = true
       unless o.versions.find_by_commit_oid(commit_oid)
         # update existing ontology
-        version = o.versions.build({ :commit_oid => commit_oid, :user => user }, { without_protection: true })
+        version = o.versions.build({ commit_oid: commit_oid,
+                                     user: user,
+                                     fast_parse: fast_parse },
+                                   { without_protection: true })
         o.ontology_version = version
         o.save!
       end
@@ -90,7 +93,10 @@ module Repository::GitRepositories
       o.repository = self
       o.present = true
       o.save!
-      version = o.versions.build({ :commit_oid => commit_oid, :user => user }, { without_protection: true })
+      version = o.versions.build({ commit_oid: commit_oid,
+                                   user: user,
+                                   fast_parse: fast_parse },
+                                 { without_protection: true })
       version.save!
       o.ontology_version = version
       o.save!
@@ -216,7 +222,7 @@ module Repository::GitRepositories
     commits(options) { |commit_oid|
       git.changed_files(commit_oid).each { |f|
         if f.add? || f.change?
-          save_ontology(commit_oid, f.path, options.delete(:user))
+          save_ontology(commit_oid, f.path, options.delete(:user), fast_parse: has_changed?(f.path, commit_oid))
         end
       }
     }
@@ -225,7 +231,7 @@ module Repository::GitRepositories
   # saves all ontologies at the current state in the database
   def save_current_ontologies(user=nil)
     git.files do |entry|
-      save_ontology entry.last_change[:oid], entry.path, user
+      save_ontology entry.last_change[:oid], entry.path, user, fast_parse: true
     end
   end
 
