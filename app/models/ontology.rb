@@ -138,6 +138,13 @@ class Ontology < ActiveRecord::Base
     ontology
   end
 
+  def is_imported?
+    import_links.present?
+  end
+
+  def imported_by
+    import_links.map(&:target)
+  end
 
   protected
 
@@ -145,6 +152,10 @@ class Ontology < ActiveRecord::Base
     where "ontologies.basepath = :basepath AND ontologies.file_extension = :file_extension AND ontologies.parent_id IS NULL",
       basepath: File.basepath(file),
       file_extension: File.extname(file)
+  end
+
+  def import_links
+    Link.where(target_id: self.id, kind: "import")
   end
 
 end
