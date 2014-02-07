@@ -143,7 +143,7 @@ class Ontology < ActiveRecord::Base
   end
 
   def imported_by
-    import_links.map(&:target)
+    import_links.map(&:source)
   end
 
   protected
