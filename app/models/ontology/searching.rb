@@ -34,15 +34,15 @@ module Ontology::Searching
   end
 
   module ClassMethods
-    def search_by_keywords(keywords, page, repository, project, ontology_type, license_model, formality_level, task)
+    def search_by_keywords(keywords, page, qualifiers)
       Ontology.search do
         keywords.each { |keyword| fulltext keyword }
-        with(:ontology_type_id, ontology_type.id) unless ontology_type.nil?
-        with(:repository_id, repository.id) unless repository.nil?
-        with(:license_model_id, license_model.id) unless license_model.nil?
-        with(:formality_level_id, formality_level.id) unless formality_level.nil?
-	with(:project_ids, [project.id]) unless project.nil?
-        with(:task_id, task.id) unless task.nil?
+        with(:ontology_type_id, qualifiers[:ontology_type].id) if qualifiers[:ontology_type]
+        with(:repository_id, qualifiers[:repository].id) if qualifiers[:repository]
+        with(:license_model_id, qualifiers[:license_model].id) if qualifiers[:license_model]
+        with(:formality_level_id, qualifiers[:formality_level].id) if qualifiers[:formality_level]
+	with(:project_ids, [qualifiers[:project].id]) if qualifiers[:project]
+        with(:task_id, qualifiers[:task].id) if qualifiers[:task]
         paginate page: page, per_page: 20
       end
     end

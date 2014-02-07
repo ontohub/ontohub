@@ -129,14 +129,16 @@ class OntologySearch
 
   def make_bean_list_response(repository, keyword_list, page)
     mixed_list = select_item_list(keyword_list, 'Mixed')
-    ontology_type = select_item(keyword_list, 'OntologyType', OntologyType)
-    project = select_item(keyword_list, 'Project', Project)
-    formality_level = select_item(keyword_list, 'FormalityLevel', FormalityLevel)
-    license_model = select_item(keyword_list, 'LicenseModel', LicenseModel)
-    task = select_item(keyword_list, 'Task', Task)
+    qualifiers = Hash.new
+    qualifiers[:repository] = repository
+    qualifiers[:ontology_type] = select_item(keyword_list, 'OntologyType', OntologyType)
+    qualifiers[:project] = select_item(keyword_list, 'Project', Project)
+    qualifiers[:formality_level] = select_item(keyword_list, 'FormalityLevel', FormalityLevel)
+    qualifiers[:license_model] = select_item(keyword_list, 'LicenseModel', LicenseModel)
+    qualifiers[:task] = select_item(keyword_list, 'Task', Task)
 
     bean_list_factory = OntologyBeanListFactory.new
-    search = Ontology.search_by_keywords(mixed_list, page, repository, project, ontology_type, formality_level, license_model, task)
+    search = Ontology.search_by_keywords(mixed_list, page, qualifiers)
     search.results.each do |ontology|
       bean_list_factory.add_small_bean(ontology)
     end
