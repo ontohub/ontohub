@@ -7,9 +7,9 @@
 %p
   = pluralize(Logic.count, "logic")
   currently available
-  -unless @all
+  -unless all_logics?
     = "but only #{pluralize(@counter, "logic")}"
-    have ontologies defined
+    = "#{t :have , count: @counter } ontologies defined"
     =link_to "show all Logics", logics_path(all: true)
   - else
     =link_to "show only Logics with Ontologies", logics_path

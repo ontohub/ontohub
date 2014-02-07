@@ -42,18 +42,23 @@ class LogicsController < InheritedResources::Base
   
   protected
   def collection
-    unless params[:all]
+    if all_logics?
+      super
+    else
       logics = Logic.all.select{|l| !l.ontologies.empty?}
       @counter = logics.size
       collection = Kaminari.paginate_array(logics).page(params[:page])
-    else
-      @all = true
-      super
     end
   end
 
   def authorize_parent
     #not needed
   end
+  
+  helper_method :all_logics?
+  def all_logics?
+    params[:all].present?
+  end
+  
   
 end

@@ -33,3 +33,6 @@ en:
         private: Private
         public_r: Public readable
         public_rw: Public readable and writable
+  have:
+    one: has
+    other: have
