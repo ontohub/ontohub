@@ -58,7 +58,7 @@ class User < ActiveRecord::Base
   end
   
   def first_name
-    return name.split(' ')[0]
+    name.split(' ')[0]
   end
 
   def team_permissions
@@ -69,15 +69,15 @@ class User < ActiveRecord::Base
   def accessible_ids(type)
     user_permissions = permissions.where(item_type: type)
     user_permissions + team_permissions.where(item_type: type)
-    return user_permissions.map{|p| p.item_id}
+    user_permissions.map{|p| p.item_id}
   end
 
   def accessible_ontologies
-    return Ontology.where(id: accessible_ids('Ontology'))
+    Ontology.where(id: accessible_ids('Ontology'))
   end
 
   def accessible_repositories
-    return Repository.where(id: accessible_ids('Repository'))
+    Repository.where(id: accessible_ids('Repository'))
   end
 
   protected

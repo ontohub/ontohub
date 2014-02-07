@@ -6,22 +6,16 @@ module ApplicationHelper
 
   def context_pane
     if params[:controller] == 'home'
-      return 'shared/user_repositories'
+      'shared/user_repositories'
+    elsif params[:action] != 'index'
+      false
+    elsif %w[categories logics links ontologies].include? params[:controller]
+      'shared/user_ontologies' unless in_repository?
+    elsif params[:controller] == 'repositories'
+      'shared/user_repositories'
+    else
+      false
     end
-
-    if params[:action] != 'index'
-      return false
-    end
-
-    if %w[categories logics links ontologies].include? params[:controller]
-      return 'shared/user_ontologies' unless in_repository?
-    end
-
-    if params[:controller] == 'repositories'
-      return 'shared/user_repositories'
-    end
-
-    return false 
   end
 
   def cover_visible?

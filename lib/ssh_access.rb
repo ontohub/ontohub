@@ -18,16 +18,16 @@ class SshAccess
 
     def determine_permission(requested_permission, permission)
       if PERMISSION_MAP[:everyone].include?(requested_permission)
-        return true
+        true
       elsif permission
         return true if PERMISSION_MAP[:permission][:all].
           include?(requested_permission)
 
         role = permission.role.to_sym
         allowed_permissions = PERMISSION_MAP[:permission][role]
-        return allowed_permissions.include?(requested_permission)
+        allowed_permissions.include?(requested_permission)
       else
-        return false
+        false
       end
     end
 
@@ -38,7 +38,7 @@ class SshAccess
         where(keys: {id: key_field}).first
       permission = nil
       permission = repository.highest_permission(user) if user
-      return [requested_permission, permission]
+      [requested_permission, permission]
     end
 
   end

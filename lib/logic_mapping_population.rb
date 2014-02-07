@@ -45,9 +45,8 @@ class LogicMappingPopulation
       'http://purl.net/dol/1.0/rdf#ExactMapping'
     ]
 
-    mappings = Array.new
-    mapping_iris = @store.subjects(type_iri, mapping_type_iri);
-    mapping_iris.each do |mapping_iri|
+    mapping_iris = @store.subjects(type_iri, mapping_type_iri)
+    mapping_iris.map do |mapping_iri|
       mapping_names = @store.objects(mapping_iri, label_iri)
       mapping_defis = @store.objects(mapping_iri, defined_iri)
       mapping_source_ids = @store.objects(mapping_iri, maps_from_iri)
@@ -73,7 +72,8 @@ class LogicMappingPopulation
       if faithfulness_i > 2 then
         exactness_i = 3
       end
-      mapping = LogicMapping.new({
+      
+      LogicMapping.new \
         :iri => mapping_iri,
         #:name => mapping_name,
         :defined_by => mapping_defi,
@@ -85,10 +85,7 @@ class LogicMappingPopulation
         :faithfulness => LogicMapping::FAITHFULNESSES[faithfulness_i],
         :theoroidalness => LogicMapping::THEOROIDALNESSES[theoroidalness_i],
         :exactness => LogicMapping::EXACTNESSES[exactness_i]
-      })
-      mappings.push(mapping);
     end
-    return mappings;
   end
 end
 

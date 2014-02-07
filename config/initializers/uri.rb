@@ -3,9 +3,9 @@ module URI
 
     def valid?(string)
       URI.parse(string)
-      return true
+      true
     rescue URI::InvalidURIError
-      return false
+      false
     end
 
   end
