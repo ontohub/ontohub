@@ -234,10 +234,13 @@ module Repository::GitRepositories
   end
 
   def schedule_batch_parsing(versions)
-    versions.map! do |version|
-      [version.id, { fast_parse: version.fast_parse }]
+    grouped_versions = versions.compact.group_by { |v| v.ontology.path }
+    grouped_versions.each do |k,versions|
+      optioned_versions = versions.map do |version|
+        [version.id, { fast_parse: version.fast_parse }]
+      end
+      OntologyBatchParseWorker.perform_async(optioned_versions)
     end
-    OntologyBatchParseWorker.perform_async(versions)
   end
 
   # saves all ontologies at the current state in the database
