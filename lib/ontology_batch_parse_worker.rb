@@ -14,6 +14,6 @@ class OntologyBatchParseWorker
 
     version.parse
   ensure
-    self.class.perform_async(versions)
+    self.class.perform_async(versions) unless versions.empty?
   end
 end
