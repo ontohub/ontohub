@@ -41,7 +41,7 @@ class Logic < ActiveRecord::Base
   default_scope order('ontologies_count desc')
 
   scope :autocomplete_search, ->(query) {
-    where("name #{connection.ilike_operator} ?", "%" << query << "%")
+    where("name ILIKE ?", "%" << query << "%")
   }
 
   def to_s
