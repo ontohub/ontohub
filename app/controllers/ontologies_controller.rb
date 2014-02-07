@@ -3,20 +3,21 @@
 # 
 class OntologiesController < InheritedResources::Base
 
-  include RepositoryHelper
+  include FilesHelper
 
   belongs_to :repository, finder: :find_by_path!
   respond_to :json, :xml
   has_pagination
-  has_scope :search
+  has_scope :search, :state
   actions :index, :show, :edit, :update
 
   before_filter :check_write_permission, :except => [:index, :show, :oops_state]
+  before_filter :check_read_permissions
 
   def index
     if in_repository?
       @count = end_of_association_chain.total_count
-      render :index_ontology
+      render :index_repository
     else
       @count = resource_class.count
       render :index_global
@@ -26,20 +27,12 @@ class OntologiesController < InheritedResources::Base
 
   def new
     @ontology_version = build_resource.versions.build
-    @c_vertices = []
-    vert = Category.first
-    if vert
-      @c_vertices = vert.roots.first.children
-    end
+    @c_vertices = Category.first.roots.first.children rescue []
   end
 
   def edit
     @ontology = resource
-    @c_vertices = []
-    vert = Category.first
-    if vert
-      @c_vertices = vert.roots.first.children
-    end
+    @c_vertices = Category.first.roots.first.children rescue []
   end
 
   def update
@@ -80,8 +73,16 @@ class OntologiesController < InheritedResources::Base
   end
 
   def retry_failed
-    end_of_association_chain.retry_failed
-    redirect_to [parent, :ontologies]
+    scope = end_of_association_chain
+    
+    if id = params[:id]
+      # retry a specific ontology
+      scope = scope.where(id: id)
+    end
+
+    scope.retry_failed
+
+    redirect_to (id ? [parent, scope.first!, :ontology_versions] : [parent, :ontologies])
   end
   
   def oops_state
@@ -95,6 +96,12 @@ class OntologiesController < InheritedResources::Base
 
   protected
   
+  def check_read_permissions
+    unless params[:action] == 'index'
+      authorize!(:show, Repository.find_by_path(params[:repository_id]))
+    end
+  end
+
   def build_resource
     @ontology ||= begin
       type  = (params[:ontology] || {}).delete(:type)

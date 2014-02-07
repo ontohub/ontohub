@@ -6,7 +6,7 @@ module PathsInitializer
       if Rails.env == "test"
         config.data_root = Rails.root.join('tmp','data')
       else
-        config.data_root = Rails.root.join('data')
+        config.data_root = Rails.root.join('data').sub(%r(/releases/\d+/), "/current/")
       end
 
       config.git_root = config.data_root.join('repositories')

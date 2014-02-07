@@ -1,4 +1,4 @@
 module Oops
-  class Error < ::Exception; end
+  class Error < ::StandardError; end
   
 end

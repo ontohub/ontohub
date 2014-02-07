@@ -127,9 +127,9 @@ module LogicgraphParser
           hash = Hash[*[attributes]]
           @current_comorphism = make_mapping(hash['name'])
           if @path[-2] == SOURCE_SUBLOGIC
-            @current_comorphism.source = @current_source_sublogic
+            # @current_comorphism.source = @current_source_sublogic
           elsif @path[-2] == TARGET_SUBLOGIC
-            @current_comorphism.target = @current_target_sublogic
+            # @current_comorphism.target = @current_target_sublogic
           else
             # Get attributes
             if hash['is_weakly_amalgamable'] == 'TRUE'
@@ -141,6 +141,12 @@ module LogicgraphParser
               @current_comorphism.faithfulness = LogicMapping::FAITHFULNESSES[2]
             else
               @current_comorphism.faithfulness = LogicMapping::FAITHFULNESSES[0]
+            end
+            if hash['source']
+              @current_comorphism.source = make_logic(hash['source'])
+            end
+            if hash['target']
+              @current_comorphism.target = make_logic(hash['target'])
             end
           end
           if !@current_comorphism.source.nil? && !@current_comorphism.target.nil?

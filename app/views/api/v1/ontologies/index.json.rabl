@@ -1,3 +1,3 @@
 collection inherited_collection
 
-attributes *resource_class.column_names
+attributes :category_ids, *resource_class.column_names

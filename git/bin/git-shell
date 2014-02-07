@@ -8,6 +8,8 @@ unless ENV['SSH_CONNECTION']
   exit 1
 end
 
+ENV['GEM_HOME'] = File.expand_path('../../../../shared/bundle/ruby/2.0.0/', __FILE__)
+
 require File.expand_path('../../lib/init',  __FILE__)
 require 'git_shell'
 

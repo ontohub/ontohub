@@ -18,7 +18,7 @@ module Ontology::States
   module ClassMethods
     # Enqueues new parse jobs for all failed ontologies
     def retry_failed
-      state(:failed).find_each do |ontology|
+      state(:failed).without_parent.find_each do |ontology|
         ontology.versions.last.try :async_parse
       end
     end

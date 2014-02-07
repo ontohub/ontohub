@@ -2,12 +2,14 @@ module GitRepository::History
   # depends on GitRepository
   extend ActiveSupport::Concern
 
-  def commits(start_oid: nil, stop_oid: nil, path: nil, limit: nil, offset: 0, &block)
+  def commits(start_oid: nil, stop_oid: nil, path: nil, limit: nil, offset: 0, walk_order: nil, &block)
     return [] if @repo.empty?
     start_oid ||= head_oid
     offset = 0 if offset < 0
+    stop_oid = nil if stop_oid =~ /\A0+\z/
 
     walker = Rugged::Walker.new(@repo)
+    walker.sorting(walk_order) if walk_order
     walker.push(start_oid)
     walker.hide(stop_oid) if stop_oid
 
@@ -18,6 +20,19 @@ module GitRepository::History
     end
   end
 
+  # check if the file at path has changed between previous_oid and current_oid
+  def has_changed?(path, previous_oid, current_oid=nil)
+    current_oid ||= head_oid
+
+    previous_obj = get_object(repo.lookup(previous_oid), path)
+    current_obj  = get_object(repo.lookup(current_oid),  path)
+
+    if previous_obj.nil? || current_obj.nil?
+      true
+    else
+      previous_obj.oid != current_obj.oid
+    end
+  end
 
   protected
 

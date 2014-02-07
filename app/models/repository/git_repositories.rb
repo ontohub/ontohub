@@ -3,7 +3,7 @@ require 'git_repository'
 module Repository::GitRepositories
   extend ActiveSupport::Concern
 
-  delegate :dir?, to: :git
+  delegate :dir?, :points_through_file?, :has_changed?, to: :git
 
   included do
     after_create  :create_and_init_git
@@ -22,7 +22,9 @@ module Repository::GitRepositories
     git
     symlink_name = local_path.join("hooks")
     symlink_name.rmtree
-    symlink_name.make_symlink Rails.root.join('git','hooks')
+    symlink_name.make_symlink(Rails.root.join('git','hooks').
+      # replace capistrano-style release with 'current'-symlink
+      sub(%r{/releases/\d+/}, '/current/'))
   end
 
   def destroy_git
@@ -41,22 +43,40 @@ module Repository::GitRepositories
     version = nil
 
     git.add_file({email: user.email, name: user.name}, tmp_file, filepath, message) do |commit_oid|
-      version = save_ontology(commit_oid, filepath, user, iri)
+      version = save_ontology(commit_oid, filepath, user, iri: iri)
     end
     touch
     version
   end
 
-  def save_ontology(commit_oid, filepath, user=nil, iri=nil)
-    return unless Ontology::FILE_EXTENSIONS.include?(File.extname(filepath))
+  def save_file_only(tmp_file, filepath, message, user)
+    commit = nil
+    name = user ? user.name : Settings.fallback_commit_user
+    email = user ? user.email : Settings.fallback_commit_email
+    git.add_file({email: email, name: name}, tmp_file, filepath, message) do |commit_oid|
+      commit = commit_oid
+    end
+    touch
+    commit
+  end
 
+  def save_ontology(commit_oid, filepath, user=nil, iri: nil, fast_parse: false)
+    # we expect that this method is only called, when the ontology is 'present'
+
+    return unless Ontology::FILE_EXTENSIONS.include?(File.extname(filepath))
+    version = nil
     basepath = File.basepath(filepath)
-    o = ontologies.where(basepath: basepath).first
+    o = ontologies.without_parent.where(basepath: basepath).first
+    return unless o.nil? || o.path == filepath
 
     if o
+      o.present = true
       unless o.versions.find_by_commit_oid(commit_oid)
         # update existing ontology
-        version = o.versions.build({ :commit_oid => commit_oid, :user => user }, { without_protection: true })
+        version = o.versions.build({ commit_oid: commit_oid,
+                                     user: user,
+                                     fast_parse: fast_parse },
+                                   { without_protection: true })
         o.ontology_version = version
         o.save!
       end
@@ -71,8 +91,12 @@ module Repository::GitRepositories
       o.name = filepath.split('/')[-1].split(".")[0].capitalize
 
       o.repository = self
+      o.present = true
       o.save!
-      version = o.versions.build({ :commit_oid => commit_oid, :user => user }, { without_protection: true })
+      version = o.versions.build({ commit_oid: commit_oid,
+                                   user: user,
+                                   fast_parse: fast_parse },
+                                 { without_protection: true })
       version.save!
       o.ontology_version = version
       o.save!
@@ -106,15 +130,15 @@ module Repository::GitRepositories
         {
           type: :file,
           file: file,
-          ontologies: ontologies.where(basepath: File.basepath(path))
+          ontologies: ontologies.find_with_path(path).parents_first
         }
       else
         entries = list_folder(path, commit_oid)
         entries.each do |name, es|
           es.each do |e|
-            o = ontologies.where(basepath: File.basepath(e[:path]))
-            e[:ontologies] = o
+            e[:ontologies] = ontologies.find_with_path(e[:path]).parents_first
           end
+          es.sort_by! { |e| -e[:ontologies].size }
         end
         {
           type: :dir,
@@ -145,10 +169,7 @@ module Repository::GitRepositories
   end
 
   def read_file(filepath, commit_oid=nil)
-    file = git.get_file(filepath, commit_oid)
-    file[:content] = file[:content].force_encoding("UTF-8")
-
-    file
+    git.get_file(filepath, commit_oid)
   end
 
   # given a commit oid or a branch name, commit_id returns a hash of oid and branch name if existent
@@ -192,6 +213,7 @@ module Repository::GitRepositories
   #                     :path (file to show changes for)
   #                     :limit (max number of commits)
   #                     :offset (number of commits to skip)
+  #                     :walk_order (Rugged-Walkorder)
   def commits(options={}, &block)
     git.commits(options, &block)
   end
@@ -199,8 +221,8 @@ module Repository::GitRepositories
   def suspended_save_ontologies(options={})
     commits(options) { |commit_oid|
       git.changed_files(commit_oid).each { |f|
-        if f[:type] == :add || f[:type] == :change
-          save_ontology(commit_oid, f[:path], options.delete(:user))
+        if f.add? || f.change?
+          save_ontology(commit_oid, f.path, options.delete(:user), fast_parse: has_changed?(f.path, commit_oid))
         end
       }
     }
@@ -209,7 +231,7 @@ module Repository::GitRepositories
   # saves all ontologies at the current state in the database
   def save_current_ontologies(user=nil)
     git.files do |entry|
-      save_ontology entry.last_change[:oid], entry.path, user
+      save_ontology entry.last_change[:oid], entry.path, user, fast_parse: true
     end
   end
 

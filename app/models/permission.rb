@@ -1,9 +1,9 @@
 class Permission < ActiveRecord::Base
   
-  ROLES = %w(owner editor)
+  ROLES = %w(owner editor reader)
   
   # thrown if the last admin/owner tries to remove itself
-  class PowerVaccuumError < Exception; end
+  class PowerVaccuumError < StandardError; end
   
   attr_accessible :subject, :subject_id, :subject_type, :role
   
@@ -33,5 +33,19 @@ class Permission < ActiveRecord::Base
   scope :role, ->(role) { where :role => role }
   scope :owner, role(:owner)
   scope :editor, role(:editor)
+  scope :reader, role(:reader)
   
+  # reduce the comparison problem to
+  # a number comparison problem by
+  # using an array
+  def permissions_order(b)
+    a = self
+    a_role, b_role = a.role, b.role
+    order = %w{reader editor owner}
+    a_index = order.index(a_role) || -1
+    b_index = order.index(b_role) || -1
+    a_index <=> b_index
+  end
+
+
 end

@@ -1,4 +1,3 @@
-# encoding: UTF-8
 module FlashHelper
   
   FLASH_TYPES = [:error, :success, :info]

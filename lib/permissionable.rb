@@ -10,7 +10,15 @@ module Permissionable
   def permissions_count
     permissions.count
   end
-  
+
+  def highest_permission(user)
+    where_hash = {item_id: self.id, item_type: self.class.to_s}
+    team_permissions = user.team_permissions.where(where_hash)
+    user_permissions = user.permissions.where(where_hash)
+    (team_permissions + user_permissions).
+      sort(&:permissions_order).last
+  end
+
   def permission?(role, user)
     # Deny if user is nil
     return false unless user
@@ -34,7 +42,14 @@ module Permissionable
 
     # Allow if role matches any permission.
     @perms.flatten.each do |perm|
+      # Requested role exists exactly as permission.
       return true if perm.role == role.to_s
+
+      # editors have reader permissions.
+      return true if perm.role == 'editor' and role == :reader
+
+      # owners have reader and editor permissions.
+      return true if perm.role == 'owner' and role == :reader
       return true if perm.role == 'owner' and role == :editor
     end
 

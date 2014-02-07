@@ -4,7 +4,7 @@
     email:    'admin@example.com',
     name:     'admin',
     admin:    true,
-    password: 'foobar'
+    password: 'changeme'
   },
   as: :admin
 )
@@ -21,7 +21,7 @@
   @user = User.create! \
     email:    "#{name}@example.com",
     name:     name,
-    password: 'foobar'
+    password: 'changeme'
 
   @user.confirm!
   

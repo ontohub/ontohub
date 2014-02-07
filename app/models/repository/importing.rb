@@ -27,8 +27,9 @@ module Repository::Importing
     }
 
     validates_inclusion_of :state,       in: STATES
-    validates_inclusion_of :source_type, in: SOURCE_TYPES, if: :remote?
+    validates_with SourceTypeValidator, if: :remote?
 
+    before_validation ->{ detect_source_type }
     after_create ->{ async_remote :clone }, if: :remote?
   end
 
@@ -63,7 +64,10 @@ module Repository::Importing
       result = git.send(method, *args)
 
       update_state! 'processing'
-      save_current_ontologies
+      suspended_save_ontologies \
+        start_oid:  result.current,
+        stop_oid:   result.previous,
+        walk_order: Rugged::SORT_REVERSE
 
       self.imported_at = Time.now
       update_state! 'done'
@@ -88,5 +92,23 @@ module Repository::Importing
       r
     end
   end
-  
+
+  protected
+
+  def detect_source_type
+    if GitRepository.is_git_repository?(source_address)
+      self.source_type = 'git'
+    elsif GitRepository.is_svn_repository?(source_address)
+      self.source_type = 'svn'
+    end
+  end
+
+  class SourceTypeValidator < ActiveModel::Validator
+    def validate(record)
+      if record.remote? && !record.source_type.present?
+        record.errors[:source_address] = "not a valid remote repository (types supported: #{SOURCE_TYPES.join(', ')})"
+        record.errors[:source_type] = "not present"
+      end
+    end
+  end
 end

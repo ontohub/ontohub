@@ -1,0 +1,14 @@
+.clone_urls
+  - clone_methods(visible: 'git').each do |(clone_type, visible)|
+    %p.clone_url_block{data: {clone: clone_type, default_visible: visible.to_s}}
+      Clone with
+      %span= clone_type
+      %input.form-control.clone-url{type: 'text', readonly: true, value: repository_clone_url(resource, clone_type: clone_type, port: nil)}
+  %p
+    You can clone the repository with
+    = clone_method_link 'git'
+    (read-only) or
+    = clone_method_link 'ssh-git'
+    (read-write).
+    - if signed_in? and not current_user.keys.any?
+      = link_to 'Upload a SSH key.', [:new, :key]

@@ -18,11 +18,10 @@ namespace :import do
       begin
         repo.save!
       rescue ActiveRecord::RecordInvalid
-        $stderr << '"Hets lib" repository already existing.' << "\n"
-        return 1
+        abort '"Hets lib" repository already existing.'
       end
 
-      Hets.import_ontologies(user, repo, Hets.library_path)
+      repo.import_ontologies(user, Hets.config.library_path)
     end
   end
 

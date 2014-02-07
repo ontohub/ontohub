@@ -1,13 +1,13 @@
 language: ruby
 
 rvm:
-  - 2.0.0
+  - 2.1.0
 
 branches:
   except:
-    - deployment
     - ontohub.org
     - staging.ontohub.org
+    - develop.ontohub.org
 
 services:
   - redis-server
@@ -31,4 +31,5 @@ before_script:
   - sudo apt-get update
   - sudo apt-get install ia32-libs libsane libgphoto2-2 hets-core subversion udrawgraph git-svn
   - sudo hets -update
-  - bundle exec rake db:migrate || true
+  - RAILS_ENV=test bundle exec rake db:migrate || true
+  - RAILS_ENV=test bundle exec rake sunspot:solr:start

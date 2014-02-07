@@ -27,10 +27,16 @@ describe "git import" do
 
     @repository = Repository.import_remote('git', user, "file://#{remote_path}", 'local import', description: 'just an imported repo')
 
-    OntologyParser.stubs(:parse)
-    
     # Run clone job
     Worker.drain
+  end
+
+  it 'detect that it is not an svn repo' do
+    assert !GitRepository.is_svn_repository?(remote_path)
+  end
+
+  it 'detect that it is a git repo' do
+    assert GitRepository.is_git_repository?(remote_path)
   end
 
   pending 'read_only'

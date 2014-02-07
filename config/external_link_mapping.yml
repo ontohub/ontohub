@@ -1,0 +1,111 @@
+wiki:
+  root: "http://wiki.ontohub.org/index.php/"
+  controller:
+    ontologies:
+      index: "ontology_overview"
+      show: "ontology_details"
+      edit: "ontology_edit"
+      retry_failed: "ontology_retry"
+    categories:
+      index: "category_based_search"
+      show: "category_details"
+    ontology_types:
+      index: "list_ontology_types"
+      show: "ontology_type_details"
+    formality_levels:
+      index: "list_formality_levels"
+      show: "formality_level_details"
+    user_sessions:
+      new: "login"
+      destroy: "logout"
+    users:
+      show: "user_details"
+    keys:
+      new: "add_ssh_keys"
+      index: "list_ssh_keys"
+    supports:
+      index: "list_logic_supported_languages"
+    logics:
+      new: "add_logic"
+      edit: "edit_logic"
+      show: "logic_details"
+      index: "list_logics"
+    languages:
+      new: "add_language"
+      edit: "edit_language"
+      show: "language_details"
+      index: "list_languages"
+    logic_mappings:
+      new: "add_logic_mapping"
+      edit: "edit_logic_mapping"
+      show: "logic_mapping_details"
+      index: "list_logic_mappings"
+    serialzations:
+      new: "add_serialization"
+      edit: "edit_serialization"
+      show: "serialization_details"
+      index: "list_serializations"
+    links:
+      show: "see_link_details"
+      index: "list_links"
+    teams:
+      index: "list_teams"
+      new: "create_team"
+      edit: "edit_team"
+      show: "team_details"
+    permissions:
+      index: "list_permissions"
+      edit: "edit_permission"
+      destroy: "remove_permissions"
+    repositories:
+      index: "list_repositories"
+      new: "create_repository"
+      edit: "edit_repository"
+      show: "repository_details"
+    url_maps:
+      index: "list_iri_mappings"
+      new: "add_iri_mapping"
+      edit: "edit_iri_mapping"
+      destroy: "remove_iri_mapping"
+    errors:
+      index: "list_errors"
+    children:
+      index: "list_defined_ontologies"
+    entities:
+      index: "list_entities"
+    sentences:
+      index: "list_sentences"
+    link_versions:
+      index: "list_link_versions"
+    ontology_versions:
+      index: "list_ontology_version"
+    tasks:
+      index: "list_tasks"
+      new: "add_task"
+      destroy: "remove_task"
+    license_models:
+      index: "list_license_models"
+      new: "add_license_model"
+      destroy: "remove_license_model"
+    tools:
+      index: "list_tools"
+      new: "add_tool"
+      destroy: "remove_tool"
+    projects:
+      index: "list_projects"
+      new: "add_project"
+      destroy: "remove_project"
+    comments:
+      index: "list_comments"
+      new: "add_comment"
+      destroy: "remove_comment"
+    foramlity_levels:
+      index: "list_formality_level"
+    files:
+      files: "list_files"
+      new: "add_new_file"
+      history: "list_repository_history"
+    home:
+      show: ""
+    graphs:
+      index: "show_graph"

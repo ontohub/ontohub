@@ -94,13 +94,13 @@
 	    <g:FocusPanel styleName="form-control {style.ontohub-SearchBar}" ui:field="bar">
 	      <g:FlowPanel styleName="{style.nobreak}">
 	        <g:FlowPanel styleName="{style.conceptPanel}" ui:field="conceptPanel"/>
-	        <g:SuggestBox styleName="{style.box}" ui:field="box"/>
+	        <g:TextBox styleName="{style.box}" ui:field="box"/>
 	      </g:FlowPanel>
 	    </g:FocusPanel>
 	    <g:SimplePanel styleName="input-group-btn">
-	      <g:SimplePanel styleName="btn btn-primary">
+	      <g:FocusPanel styleName="btn btn-primary" ui:field="searchButton">
 	        <g:InlineLabel styleName="glyphicon glyphicon-search" />
-	      </g:SimplePanel>
+	      </g:FocusPanel>
 	    </g:SimplePanel>
 	  </g:FlowPanel>
 	  <o:Pagination ui:field="pagination" />

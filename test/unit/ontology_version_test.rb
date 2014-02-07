@@ -28,7 +28,7 @@ class OntologyVersionTest < ActiveSupport::TestCase
       @ontology_version = FactoryGirl.create :ontology_version
     end
     should 'have url' do
-      assert_match %r(http://example\.com/repositories/#{@ontology_version.repository.path}/[0-9a-f]{40}/\w+\.owl$), @ontology_version.url
+      assert_match %r(http://example\.com/repositories/#{@ontology_version.repository.path}/ontologies/\d+/versions/\d+$), @ontology_version.url
     end
   end
   
@@ -42,17 +42,63 @@ class OntologyVersionTest < ActiveSupport::TestCase
       assert_difference 'Worker.jobs.count' do
         @version  = @ontology.save_file File.open('test/fixtures/ontologies/owl/pizza.owl'), "message", FactoryGirl.create(:user)
       end
-
-      # Run Job
-      Worker.drain
     end
 
-    should 'be done' do
-      assert_equal 'done', @ontology.reload.state
+    context 'without exception' do
+      setup do
+        # Run Job
+        Worker.drain
+      end
+
+      should 'be done' do
+        assert_equal 'done', @ontology.reload.state
+      end
+
+      should 'have checksum' do
+        assert_match /^[a-z0-9]{40}$/, @version.reload.checksum
+      end
+
+      should 'have state_updated_at' do
+        assert_not_nil @version.state_updated_at
+      end
     end
 
-    should 'have checksum' do
-      assert_match /^[a-z0-9]{40}$/, @version.reload.checksum
+    context 'on sidekiq shutdown' do
+      setup do
+        Hets.stubs(:parse).raises(Sidekiq::Shutdown)
+
+        begin
+          Worker.drain
+          assert false
+        rescue Sidekiq::Shutdown
+          assert true
+        end
+
+        Hets.unstub(:parse)
+      end
+
+      should 'reset status to pending' do
+        assert_equal 'pending', @ontology.reload.state
+      end
+    end
+
+    context 'on hets error' do
+      setup do
+        Hets.stubs(:parse).raises(Hets::HetsError, "serious error")
+
+        begin
+          Worker.drain
+          assert false
+        rescue Hets::HetsError
+          assert true
+        end
+
+        Hets.unstub(:parse)
+      end
+
+      should 'set status to failed' do
+        assert_equal 'failed', @ontology.reload.state
+      end
     end
     
   end

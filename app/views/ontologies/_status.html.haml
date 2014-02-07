@@ -1,0 +1,6 @@
+#ontology_infos.well
+  %small#ontology-state{ class: @ontology.state, "data-uri" => repository_ontology_url(@ontology.repository, @ontology) }
+    = status @ontology
+
+  - if @ontology.state == 'failed'
+    = link_to 'Retry', [:retry_failed, @ontology.repository, @ontology], method: :post, class: 'btn btn-xs btn-primary', data: { disable_with: t(:wait) }

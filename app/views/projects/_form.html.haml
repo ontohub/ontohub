@@ -1,0 +1,10 @@
+= simple_form_for [@ontology.repository, @ontology, resource] do |f|
+  = render partial: '/shared/form_errors'
+
+  = f.input :name
+  = f.input :institution
+  = f.input :homepage
+  = f.input :description, as: :text, input_html: {rows: 5}
+  = f.input :contact
+
+  = f.submit class: 'btn btn-primary'
