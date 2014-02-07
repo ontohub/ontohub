@@ -80,8 +80,8 @@ class SentenceTest < ActiveSupport::TestCase
       @name1,@name2 = sentence.hierarchical_class_names
     end
     should "match iris\' fragments" do
-      assert_equal 'Accounting_and_taxation',     @name1
-      assert_equal 'Business_and_administration', @name2
+      assert_equal 'https://github.com/ontohub/OOR_Ontohub_API/blob/master/Domain_fields.owl#Accounting_and_taxation',     @name1
+      assert_equal 'https://github.com/ontohub/OOR_Ontohub_API/blob/master/Domain_fields.owl#Business_and_administration', @name2
     end
   end
 

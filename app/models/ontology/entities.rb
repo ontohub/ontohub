@@ -58,8 +58,8 @@ module Ontology::Entities
       subclasses.each do |s|
         c1, c2 = s.hierarchical_class_names
 
-        child_id = Entity.where(display_name: c1, ontology_id: s.ontology.id).first.id
-        parent_id = Entity.where(display_name: c2, ontology_id: s.ontology.id).first.id
+        child_id = self.entities.where('name = ? OR iri = ?', c1, c1).first.id
+        parent_id = self.entities.where('name = ? OR iri = ?', c2, c2).first.id
 
         EEdge.create! child_id: child_id, parent_id: parent_id
         if EEdge.where(child_id: child_id, parent_id: parent_id).first.nil?
