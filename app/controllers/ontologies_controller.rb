@@ -1,14 +1,3 @@
-class String
-  def from_titlecase_to_spacedlowercase
-    self.gsub(/::/, '/').
-    gsub(/([A-Z]+)([A-Z][a-z])/,'\1 \2').
-    gsub(/([a-z\d])([A-Z])/,'\1 \2').
-    tr("_", " ").
-    tr("-", " ").
-    downcase
-  end
-end
-
 # 
 # Controller for ontologies
 # 

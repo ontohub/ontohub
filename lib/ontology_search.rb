@@ -12,12 +12,51 @@ class OntologySearch
     @limit = 20
   end
 
+  def make_filters_map_json()
+    JSON.generate(make_filters_map())
+  end
+
   def make_repository_keyword_list_json(repository, prefix)
     JSON.generate(make_repository_keyword_list(repository, prefix))
   end
 
   def make_global_keyword_list_json(prefix)
     JSON.generate(make_global_keyword_list(prefix))
+  end
+
+  def make_filters_map()
+    types = OntologyType.select([:name, :id]).order(:name).all.map {|type| {"name" => type.name.sub(/Ontology/, "ontologies"), "value" => type.id.to_s} }
+    repositories = Repository.select([:name, :id]).order(:name).all.map {|repository| {"name" => "in " + repository.name, "value" => repository.id.to_s} }
+    projects = Project.select([:name, :id]).order(:name).all.map {|project| {"name" => "from " + project.name, "value" => project.id.to_s} }
+    formalities = FormalityLevel.select([:name, :id]).order(:name).all.map {|formality| {"name" => "in " + formality.name, "value" => formality.id.to_s} }
+    licenses = LicenseModel.select([:name, :id]).order(:name).all.map {|license| {"name" => "under " + license.name, "value" => license.id.to_s} }
+    tasks = Task.select([:name, :id]).order(:name).all.map {|task| {"name" => "for " + task.name[0..-5].from_titlecase_to_spacedlowercase, "value" => task.id.to_s} }
+    filters_map = {
+      'OntologyType' => [
+        { "name" => 'Ontologies', "value" => nil },
+        *types
+      ],
+      'Repository' => [
+        { "name" => 'in all repositories', "value" => nil },
+        *repositories
+      ],
+      'Project' => [
+        { "name" => 'from all projects', "value" => nil },
+        *projects
+      ],
+      'FormalityLevel' => [
+        { "name" => 'in any formality', "value" => nil },
+        *formalities
+      ],
+      'LicenseModel' => [
+        { "name" => 'under any license', "value" => nil },
+        *licenses
+      ],
+      'Task' => [
+        { "name" => 'for any purpose', "value" => nil },
+        *tasks
+      ]
+    }
   end
 
   def make_repository_keyword_list(repository, prefix)
