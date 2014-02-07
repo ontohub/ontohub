@@ -1,5 +1,6 @@
 class OntologyBatchParseWorker
   include Sidekiq::Worker
+  sidekiq_options retry: false
 
   def perform(versions)
     return if versions.empty?
