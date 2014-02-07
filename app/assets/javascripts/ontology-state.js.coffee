@@ -5,7 +5,6 @@ finalStates  = ["done", "failed"]
 
 return if !currentState || $.inArray(currentState, finalStates) != -1
 
-uri = container.data('uri')
 
 update = ->
   $.getJSON container.data('uri') + ".json", (data) ->
