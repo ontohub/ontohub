@@ -13,7 +13,7 @@ class OntologyBatchParseWorker
     end
 
     version.parse
-
-    self.perform_async(versions)
+  ensure
+    self.class.perform_async(versions)
   end
 end
