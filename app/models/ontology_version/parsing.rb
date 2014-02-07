@@ -25,7 +25,7 @@ module OntologyVersion::Parsing
     end
   end
 
-  def parse(refresh_cache: false, structure_only: false)
+  def parse(refresh_cache: false, structure_only: self.fast_parse)
 #    do_or_set_failed do
 #      condition = ['checksum = ? and id != ?', self.checksum, self.id]
 #      if OntologyVersion.where(condition).any?
