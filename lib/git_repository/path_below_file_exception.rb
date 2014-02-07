@@ -1,2 +1,2 @@
-class GitRepository::PathBelowFileException < Exception
+class GitRepository::PathBelowFileException < StandardError
 end

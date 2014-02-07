@@ -11,7 +11,7 @@ end
 namespace :generate do
   desc 'Import the categories for the ontologies'
   task :categories => :environment do
-    Ontology.where("name ilike '%Domain_Fields_Core.owl'").first.create_categories
+    Ontology.where("name ilike '%Domain Fields Core'").first.create_categories
   end
 
   desc 'Generate entity trees for ALL OWL ontologies'

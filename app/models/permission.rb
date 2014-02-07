@@ -3,7 +3,7 @@ class Permission < ActiveRecord::Base
   ROLES = %w(owner editor reader)
   
   # thrown if the last admin/owner tries to remove itself
-  class PowerVaccuumError < Exception; end
+  class PowerVaccuumError < StandardError; end
   
   attr_accessible :subject, :subject_id, :subject_type, :role
   

@@ -41,7 +41,7 @@ module ParsingCallback::OWL
       begin
         ontology.create_entity_tree
       rescue StandardError => e
-        puts "Could not create entity tree for: #{ontology.name} (#{ontology.id})"
+        Rails.logger.warn "Could not create entity tree for: #{ontology.name} (#{ontology.id})"
       end
     end
 

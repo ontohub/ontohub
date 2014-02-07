@@ -70,7 +70,7 @@ module Hets
   end
 
   # Runs hets with input_file and returns XML output file path.
-  def self.parse(input_file, url_catalog = [], output_path = nil)
+  def self.parse(input_file, url_catalog = [], output_path = nil, structure_only: false)
 
     # Arguments to run the subprocess
     args = [config.path, *%w( -o pp.xml -o xml --full-signatures -a none -v2 )]
@@ -79,6 +79,8 @@ module Hets
       FileUtils.mkdir_p output_path
       args += ['-O', output_path]
     end
+
+    args += ['-s'] if structure_only
 
     args += ['-C', url_catalog.join(',')] unless url_catalog.empty?
 
@@ -115,43 +117,8 @@ module Hets
     end
   end
 
-  # Traverses a directory recursively, importing ontology file with supported
-  # extension.
-  #
-  # @param user [User] the user that imports the ontology files
-  # @param repo [Repository] Repository, the files shall be saved in
-  # @param dir  [String] the path to the ontology library
-  #
-  def self.import_ontologies(user, repo, dir)
-    find_ontologies(dir) { |path| import_ontology(user, repo, dir, path) }
-  end
-
-  # Imports an ontology in demand of a user.
-  #
-  # @param user [User] the user that imports the ontology file
-  # @param repo [Repository] Repository, the files shall be saved in
-  # @param path [String] the path to the ontology file
-  #
-  def self.import_ontology(user, repo, dir, path)
-    relpath = File.relative_path(dir, path)
-    repo.save_file(path, relpath, "Added #{relpath}.", user)
-  end
-
   def self.config
-    config ||= Config.new
-  end
-
-  def self.library_path
-    @@config.library_path
-  end
-
-
-  private
-
-  # Traverses a directory for ontologies with supported extensions recursively,
-  # yielding their path.
-  def self.find_ontologies(dir)
-    Dir.glob("#{dir}/**/*.{#{Ontology::FILE_EXTENSIONS.join(',')}}").each { |path| yield path }
+    @@config ||= Config.new
   end
 
 end

@@ -23,7 +23,7 @@ module Ontohub
       config.sass.load_paths << Compass::Frameworks['blueprint'].stylesheets_directory
       config.sass.load_paths << Compass::Frameworks['compass'].stylesheets_directory
     end
-    
+
     # Mailer Layout for Devise https://github.com/plataformatec/devise/issues/1671
     config.to_prepare { Devise::Mailer.layout "mailer" }
 
@@ -66,21 +66,24 @@ module Ontohub
     config.assets.version = '1.0'
 
     config.i18n.enforce_available_locales = true
-    
+
     # Including Jstree Themes Styles in Precompiling
     config.assets.precompile += %w(jstree-themes/**/*)
-    
+
+    #Including the external mappings Yaml-file
+    config.external_url_mapping = APP_CONFIG = YAML.load(File.read(Rails.root + "config/external_link_mapping.yml"))
+
     config.before_initialize do
       # Enable serving of images, stylesheets, and JavaScripts from an asset server
       config.action_controller.asset_host = Settings.asset_host
-      
+
       # ActionMailer settings
       c = Settings.action_mailer
       (c[:default_url_options] ||= {})[:host] ||= Settings.hostname
       c.each do |key,val|
         config.action_mailer.send("#{key}=", val)
       end
-      
+
     end
   end
 end

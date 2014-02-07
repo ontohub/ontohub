@@ -8,7 +8,7 @@ module Ontology::Categories
 
 
   def create_categories 
-    raise Exception.new('Error: No OWL') unless self.is? 'OWL'
+    raise 'Error: No OWL' unless self.is? 'OWL'
 
     # Delete previous set of categories.
     [Category, CEdge].map(&:destroy_all)
