@@ -56,7 +56,7 @@ module Ontology::Entities
     subclasses = self.sentences.where("text LIKE '%SubClassOf%'").select { |sentence| sentence.text.split(" ").size == 4 }
     transaction do
       subclasses.each do |s|
-        c1, c2 = s.extract_class_names
+        c1, c2 = s.hierarchical_class_names
 
         child_id = Entity.where(display_name: c1, ontology_id: s.ontology.id).first.id
         parent_id = Entity.where(display_name: c2, ontology_id: s.ontology.id).first.id
