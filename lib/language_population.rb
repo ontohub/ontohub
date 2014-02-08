@@ -13,16 +13,15 @@ class LanguagePopulation
     @store = store
   end
 
-  def list()
+  def list
     typeIri = 'http://www.w3.org/1999/02/22-rdf-syntax-ns#type'
     labelIri = 'http://www.w3.org/2000/01/rdf-schema#label'
     commentIri = 'http://www.w3.org/2000/01/rdf-schema#comment'
     definedIri = 'http://www.w3.org/2000/01/rdf-schema#isDefinedBy'
     languageTypeIri = 'http://purl.net/dol/1.0/rdf#OntologyLanguage'
 
-    languages = Array.new
     languageIris = @store.subjects(typeIri, languageTypeIri);
-    languageIris.each do |languageIri|
+    languageIris.map do |languageIri|
       languageNames = @store.objects(languageIri, labelIri)
       languageDescs = @store.objects(languageIri, commentIri)
       languageDefis = @store.objects(languageIri, definedIri)
@@ -35,9 +34,8 @@ class LanguagePopulation
         :description => languageDesc,
         :defined_by => languageDefi
       })
-      languages.push(language);
+      language
     end
-    return languages;
   end
 end
 

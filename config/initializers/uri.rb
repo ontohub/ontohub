@@ -2,10 +2,9 @@ module URI
   class << self
 
     def valid?(string)
-      URI.parse(string)
-      return true
+      !!URI.parse(string)
     rescue URI::InvalidURIError
-      return false
+      false
     end
 
   end

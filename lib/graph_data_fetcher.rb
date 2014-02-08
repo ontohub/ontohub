@@ -76,9 +76,9 @@ class GraphDataFetcher
     response = explain
     cost = JSON.parse(response.first["QUERY PLAN"]).
         first["Plan"]["Total Cost"]
-    return cost
+    cost
   rescue NoMethodError
-    return nil
+    nil
   end
 
   private
