@@ -12,8 +12,8 @@ class OntologySearch
     @limit = 20
   end
 
-  def make_filters_map_json()
-    JSON.generate(make_filters_map())
+  def make_filters_map_json
+    JSON.generate make_filters_map
   end
 
   def make_repository_keyword_list_json(repository, prefix)
