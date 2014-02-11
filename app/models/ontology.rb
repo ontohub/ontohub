@@ -47,10 +47,10 @@ class Ontology < ActiveRecord::Base
                   :projects,
                   :present,
                   :alternative_iris,
-		  :ontology_type_id,
-		  :license_model_id,
+                  :ontology_type_id,
+                  :license_model_id,
                   :formality_level_id,
-		  :task_id
+                  :task_id
 
   validates_uniqueness_of :iri, :if => :iri_changed?
   validates_format_of :iri, :with => URI::regexp(Settings.allowed_iri_schemes)

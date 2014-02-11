@@ -41,7 +41,7 @@ module Ontology::Searching
         with(:repository_id, qualifiers[:repository].id) if qualifiers[:repository]
         with(:license_model_id, qualifiers[:license_model].id) if qualifiers[:license_model]
         with(:formality_level_id, qualifiers[:formality_level].id) if qualifiers[:formality_level]
-	with(:project_ids, [qualifiers[:project].id]) if qualifiers[:project]
+        with(:project_ids, [qualifiers[:project].id]) if qualifiers[:project]
         with(:task_id, qualifiers[:task].id) if qualifiers[:task]
         paginate page: page, per_page: 20
       end
