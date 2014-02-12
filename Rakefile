@@ -8,10 +8,3 @@ Ontohub::Application.load_tasks
 
 # Run all test suites per default
 task :default => [:spec, :test]
-
-# Required by Coveralls to push a merged result for all test suites
-require 'coveralls/rake/task'
-Coveralls::RakeTask.new
-task :test_with_coveralls => [:default, 'coveralls:push'] do
-  ENV['USE_COVERALLS'] = 'true'
-end

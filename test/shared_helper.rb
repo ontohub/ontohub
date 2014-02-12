@@ -39,9 +39,9 @@ module SharedHelper
         add_filter "/#{gemset}/"
       end
     end
-
-    if ENV['USE_COVERALLS'] == 'true'
-      require 'coveralls'
+    
+    if defined? Coveralls
+      # is loaded in the Rake task 'test:coveralls'
       Coveralls.wear_merged!('rails')
     end
   end
