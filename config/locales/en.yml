@@ -42,3 +42,5 @@ en:
     ones.
   to_display_all_sentences:
     to display all related sentences.
+  defined_in:
+    defined in %{link}
