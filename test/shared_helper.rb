@@ -24,6 +24,10 @@ module SharedHelper
   def use_simplecov
     require 'simplecov'
     SimpleCov.start do
+      add_filter '/config/'
+      add_filter '/spec/'
+      add_filter '/test/'
+
       gemset_definition = app_root.join('.rbenv-gemsets')
       gemsets.each do |gemset|
         add_filter "/#{gemset}/"
