@@ -138,6 +138,15 @@ class Ontology < ActiveRecord::Base
     ontology
   end
 
+  def imported_ontologies
+    Ontology.where(id: Link.where(source_id: self.id).pluck(:target_id))
+  end
+
+  def combined_sentences
+    affected_ontology_ids = [self.id] + imported_ontologies.pluck(:id)
+    Sentence.where(ontology_id: affected_ontology_ids)
+  end
+
 
   protected
 
