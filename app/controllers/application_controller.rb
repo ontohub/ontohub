@@ -55,4 +55,10 @@ class ApplicationController < ActionController::Base
     request.referrer
   end
 
+  def display_all?
+    params[:all].present?
+  end
+
+  helper_method :display_all?
+
 end
