@@ -112,7 +112,7 @@ group :test do
   gem "webmock", '~> 1.9.0'
 
   # Code Coverage Analysis
-  gem 'simplecov', require: false
+  gem 'coveralls', require: false
 end
 
 group :development do
