@@ -23,7 +23,7 @@ module SharedHelper
 
   def use_simplecov
     require 'simplecov'
-    
+
     SimpleCov.start do
       add_group "Models",      "app/models"
       add_group "Controllers", "app/controllers"
@@ -39,9 +39,11 @@ module SharedHelper
         add_filter "/#{gemset}/"
       end
     end
-    
-    require 'coveralls'
-    Coveralls.wear_merged!('rails')
+
+    if ENV['USE_COVERALLS'] == 'true'
+      require 'coveralls'
+      Coveralls.wear_merged!('rails')
+    end
   end
 
 end
