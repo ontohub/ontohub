@@ -4,7 +4,7 @@
 
 = simple_form_for [parent, resource], html: { class: 'form-horizontal' } do |f|
   
-  = f.input :type, :as => :radio_buttons, :collection => {"Distributed" => "DistributedOntology", "Single" => "SingleOntology"}
+  = f.input :type, :as => :radio_buttons, :collection => {"Library" => "DistributedOntology", "Single" => "SingleOntology"}
   
   .well
     = f.simple_fields_for :versions, resource.versions.first do |vf|
