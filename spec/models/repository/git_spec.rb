@@ -7,7 +7,7 @@ describe Repository do
     it 'should create a bulk job on a queue' do
       Sidekiq::Testing.fake! do
         expect { repository.remote_send('clone') }.
-          to change(OntologyBatchParseWorker.jobs, :size).by(1)
+          to change(OntologyBatchParseWorker.jobs, :size)
       end
     end
 
