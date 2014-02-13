@@ -34,10 +34,11 @@ module SharedHelper
       add_filter '/spec/'
       add_filter '/test/'
 
-      gemset_definition = app_root.join('.rbenv-gemsets')
-      gemsets.each do |gemset|
-        add_filter "/#{gemset}/"
-      end
+      # these lines break SimpleCov on RVM environments (corny)
+      #gemset_definition = app_root.join('.rbenv-gemsets')
+      #gemsets.each do |gemset|
+      #  add_filter "/#{gemset}/"
+      #end
     end
     
     if defined? Coveralls
