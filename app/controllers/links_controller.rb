@@ -52,8 +52,7 @@ class LinksController < InheritedResources::Base
   end
   
   def build_resource
-    return @link if @link
-    @link = Link.new params[:link]
+    @link ||= Link.new params[:link]
   end
   
   def check_read_permissions

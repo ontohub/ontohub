@@ -25,8 +25,8 @@ class TripleStore
     statements = []
     RDF::RDFXML::Reader.open(path_name) do |reader|
       statements = reader.statements.to_a
-    end && 0
-    return TripleStore.new statements
+    end
+    TripleStore.new statements
   end
 
   # Constructor
@@ -101,11 +101,11 @@ class TripleStore
   # * - an empty array otherwise
   def entities(map, key1, key2)
     if !map[key1]
-      return Array.new
+      Array.new
     elsif !map[key1][key2]
-      return Array.new
+      Array.new
     else
-      return Array.new(map[key1][key2])
+      Array.new(map[key1][key2])
     end
   end
 

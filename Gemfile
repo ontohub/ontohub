@@ -110,6 +110,9 @@ group :test do
   # Recording of HTTP Requests
   gem "vcr"
   gem "webmock", '~> 1.9.0'
+
+  # Code Coverage Analysis
+  gem 'coveralls', require: false
 end
 
 group :development do
