@@ -10,7 +10,7 @@ module SentenceHelper
 
   def link_to_sentence_origin(sentence, ontology)
     if sentence.ontology != ontology
-      t(:defined_in, link: link_to(sentence.ontology,
+      t('.defined_in', link: link_to(sentence.ontology,
                 [sentence.ontology.repository, sentence.ontology]))
     end
   end
