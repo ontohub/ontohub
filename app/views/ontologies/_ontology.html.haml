@@ -1,7 +1,7 @@
 %li
   %ul.stats
     - if ontology.distributed?
-      %li distributed
+      %li library
       %li= link_to pluralize(ontology.children.count, 'Ontology'), [ontology, :children]
     - elsif ontology.logic
       %li= link_to ontology.logic.to_s, ontology.logic
