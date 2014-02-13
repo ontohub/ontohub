@@ -58,3 +58,6 @@ config/environments/*.local.yml
 
 # Ignore agignore (ignore file for ag (like grep or ack))
 .agignore
+
+# Ignore output of SimpleCov
+/coverage

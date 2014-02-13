@@ -47,3 +47,6 @@ en:
     sentence:
       defined_in:
         defined in %{link}
+  have:
+    one: has
+    other: have

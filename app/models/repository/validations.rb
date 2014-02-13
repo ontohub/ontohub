@@ -11,6 +11,8 @@ module Repository::Validations
                      uniqueness: { case_sensitive: false },
                      format: VALID_NAME_REGEX,
                      if: :name_changed?
+
+    validates_with NameNotChangedAfterSetValidator, if: :name_changed?
     
     validates :path, presence: true,
                      uniqueness: { case_sensitive: true },
@@ -39,4 +41,26 @@ class UnreservedValidator < ActiveModel::Validator
   def is_reserved_name?(name)
     REVERSED_NAMES.include?(name)
   end
+end
+
+class NameNotChangedAfterSetValidator < ActiveModel::Validator
+
+  def validate(record)
+    if name_was_changed_to_different_name?(record)
+      record.errors[:name] = "we do not allow renaming, right now"
+    end
+  end
+
+  def name_was_changed_to_different_name?(record)
+    !(was_name_nil?(record) && name_is_present_now?(record))
+  end
+
+  def was_name_nil?(record)
+    record.name_was.nil?
+  end
+
+  def name_is_present_now?(record)
+    record.name.present?
+  end
+
 end
