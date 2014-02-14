@@ -1,6 +1,19 @@
 require 'pathname'
+require 'simplecov'
 
 module SharedHelper
+
+  APP_ROOT = Pathname.new(File.expand_path('../../', __FILE__)).expand_path
+
+  class AppRootFilter < SimpleCov::Filter
+    def matches?(source_file)
+      source_file.filename.sub(/^#{excluded_path.to_s}.*/, '').empty?
+    end
+
+    def excluded_path
+      APP_ROOT.join(filter_argument).expand_path
+    end
+  end
 
   def app_root
     Pathname.new(File.expand_path('../../', __FILE__))
@@ -21,7 +34,6 @@ module SharedHelper
   end
 
   def use_simplecov
-    require 'simplecov'
 
     SimpleCov.start do
       add_group "Models",      "app/models"
@@ -29,12 +41,12 @@ module SharedHelper
       add_group "Helpers",     "app/helpers"
       add_group "Lib",         "lib"
 
-      add_filter '/config/'
-      add_filter '/spec/'
-      add_filter '/test/'
+      add_filter AppRootFilter.new('config/')
+      add_filter AppRootFilter.new('spec/')
+      add_filter AppRootFilter.new('test/')
 
       gemsets.each do |gemset|
-        add_filter "/#{gemset}/"
+        add_filter AppRootFilter.new("#{gemset}/")
       end
     end
     
