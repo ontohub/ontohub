@@ -8,17 +8,16 @@ module SharedHelper
 
   def gemset_definition_file
     rbenv = app_root.join('.rbenv-gemsets')
-    rvm = app_root.join('.ruby-gemset')
     if rbenv.exist?
       rbenv
-    elsif rvm.exist?
-      rvm
     end
   end
 
   def gemsets
     file = gemset_definition_file
-    file.readlines.map { |line| line.strip }.select { |line| !line.empty? }
+    if file.exist?
+      file.readlines.map { |line| line.strip }.select { |line| !line.empty? }
+    end
   end
 
   def use_simplecov
@@ -34,11 +33,9 @@ module SharedHelper
       add_filter '/spec/'
       add_filter '/test/'
 
-      # these lines break SimpleCov on RVM environments (corny)
-      #gemset_definition = app_root.join('.rbenv-gemsets')
-      #gemsets.each do |gemset|
-      #  add_filter "/#{gemset}/"
-      #end
+      gemsets.each do |gemset|
+        add_filter "/#{gemset}/"
+      end
     end
     
     if defined? Coveralls
