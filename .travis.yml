@@ -29,7 +29,7 @@ before_script:
   - sudo apt-add-repository -y 'deb http://archive.canonical.com/ubuntu precise partner'
   - sudo apt-add-repository -y 'deb http://archive.ubuntu.com/ubuntu precise-updates main restricted universe multiverse'
   - sudo apt-get update
-  - sudo apt-get install ia32-libs libsane libgphoto2-2 hets-core subversion udrawgraph git-svn
+  - sudo apt-get install libsane libgphoto2-2 hets-core subversion udrawgraph git-svn
   - sudo hets -update
   - RAILS_ENV=test bundle exec rake db:migrate || true
   - RAILS_ENV=test bundle exec rake sunspot:solr:start
