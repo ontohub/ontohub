@@ -25,6 +25,8 @@ class Ontology < ActiveRecord::Base
   # Multiple Class Features
   include Aggregatable
 
+  class DeleteError < ::StandardError; end
+
   belongs_to :language
   belongs_to :logic, counter_cache: true
   belongs_to :ontology_type
