@@ -63,6 +63,7 @@ describe Ontology do
         expect { ontology.destroy_with_parent }.to raise_error(Ontology::DeleteError)
       end
     end
+  end
 
   context 'when trying to get the imported ontologies' do
     let!(:ontology) { create :ontology }
