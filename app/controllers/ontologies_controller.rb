@@ -78,7 +78,7 @@ class OntologiesController < InheritedResources::Base
       false
     else
       resource.repository.delete_file(resource.path, current_user, "Delete ontology #{resource}") do
-        (resource.parent || resource).destroy
+        resource.destroy_with_parent
         destroy!
       end
     end
