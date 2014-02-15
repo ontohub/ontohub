@@ -16,13 +16,13 @@ describe Ontology do
       let(:ontology) { create :ontology }
       it 'should delete the defining file as well' do
         file = ontology.path
-        ontology.destroy
+        ontology.destroy_with_parent
         expect(ontology.repository.path_exists?(file)).to be_false
       end
 
       it 'should be deleted' do
         param = ontology.to_param
-        ontology.destroy
+        ontology.destroy_with_parent
         expect { Ontology.find(param) }.to raise_error(ActiveRecord::RecordNotFound)
       end
     end
@@ -33,7 +33,7 @@ describe Ontology do
       it 'should delete the parent and its child ontologies as well' do
         params = distributed_ontology.children.map(&:to_param)
         params << distributed_ontology.to_param
-        ontology.destroy
+        ontology.destroy_with_parent
 
         params.each do |param|
           expect { Ontology.find(param) }.to raise_error(ActiveRecord::RecordNotFound)
@@ -46,7 +46,7 @@ describe Ontology do
       it 'should delete the child ontologies as well' do
         params = ontology.children.map(&:to_param)
         params << ontology.to_param
-        ontology.destroy
+        ontology.destroy_with_parent
 
         params.each do |param|
           expect { Ontology.find(param) }.to raise_error(ActiveRecord::RecordNotFound)
@@ -56,15 +56,11 @@ describe Ontology do
 
     context 'an imported ontology' do
       let(:ontology) { create :ontology }
-      let(:importing) do
-        onto = create :ontology
-        create :link, source: onto, target: ontology, kind: 'import'
-
-        onto
-      end
 
       it 'should not be allowed' do
-        expect { ontology.destroy }.to raise_error(Ontology::DeleteError)
+        importing = create :ontology
+        create :link, source: importing, target: ontology, kind: 'import'
+        expect { ontology.destroy_with_parent }.to raise_error(Ontology::DeleteError)
       end
     end
   end
