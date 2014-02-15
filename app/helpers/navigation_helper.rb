@@ -9,8 +9,8 @@ module NavigationHelper
     chain = resource_chain.last.is_a?(Ontology) ? resource_chain[0..-2] : resource_chain
 
     pages << [:ontologies,       [*chain, :ontologies]]
-    pages << [:"Ontology files and related files", [*chain, :tree]]
-    pages << [:"Ontology urls",  repository_url_maps_path(resource)]
+    pages << [:"File browser", [*chain, :tree]]
+    pages << [:"URL catalog",  repository_url_maps_path(resource)]
     pages << [:history,          repository_ref_path(resource, 'master', path: nil, action: :history)]
     pages << [:errors,           repository_errors_path(resource)]
     pages << [:permissions,      [*chain, :permissions]] if can? :permissions, resource
@@ -99,12 +99,12 @@ module NavigationHelper
   def active_navigation(controller)
     if params[:repository_id]
       if params[:ontology_id]
-        return 'active' if controller == :ontologies
+        'active' if controller == :ontologies
       else
-        return 'active' if controller == :repositories
+        'active' if controller == :repositories
       end
     else
-      return 'active' if [controller.to_s, controller.to_s.gsub('_', '/')].include? params[:controller]
+      'active' if [controller.to_s, controller.to_s.gsub('_', '/')].include? params[:controller]
     end
   end
 

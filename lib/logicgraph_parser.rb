@@ -51,18 +51,17 @@ module LogicgraphParser
 
     # Makes a logic mapping singleton for a given key
     def make_mapping(key)
-      if @mappings[key] == nil
+      @mappings[key] ||= begin
         mapping = LogicMapping.new
         mapping.iri = "http://purl.net/dol/logic-mapping/" + key
         mapping.standardization_status = "Unofficial"
-        @mappings[key] = mapping
+        mapping
       end
-      return @mappings[key]
     end
 
     # Make a logic singleton for a given key
     def make_logic(key)
-      if @logics[key] == nil
+      @logics[key] ||= begin
         iri = "http://purl.net/dol/logics/" + key
         logic = Logic.find_by_iri iri
         if logic.nil?
@@ -71,14 +70,13 @@ module LogicgraphParser
           logic.name = key
           logic.standardization_status = "Unofficial"
         end
-        @logics[key] = logic
+        logic
       end
-      return @logics[key]
     end
     
     # Make a language singleton for a given key
     def make_language(key)
-      if @languages[key] == nil
+      @languages[key] ||= begin
         iri = "http://purl.net/dol/language/" + key
         language = Language.find_by_iri iri
         if language.nil?
@@ -86,16 +84,13 @@ module LogicgraphParser
           language.iri = iri
           language.name = key
         end
-        @languages[key] = language
+        language
       end
-      return @languages[key]
     end
 
     def make_support(logic_key, language_key)
-      if @supports[logic_key] == nil
-        @supports[logic_key] = Hash.new
-      end
-      if @supports[logic_key][language_key] == nil
+      @supports[logic_key] ||= {}
+      @supports[logic_key][language_key] ||= begin
         logic = @logics[logic_key]
         language = @languages[language_key]
         support = Support.where(logic_id: logic, language_id: language).first
@@ -104,9 +99,8 @@ module LogicgraphParser
           support.logic = @logics[logic_key]
           support.language = @languages[language_key]
         end
-        @supports[logic_key][language_key] = support
+        support
       end
-      return @supports[logic_key][language_key]
     end
     
     # Parses the element opening tag
@@ -218,8 +212,7 @@ module LogicgraphParser
     private
     
     def callback(name, args)
-      block = @callbacks[name]
-      block.call(args) if block
+      @callbacks[name].try :call, args
     end
   
   end
