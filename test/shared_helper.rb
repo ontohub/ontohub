@@ -28,8 +28,10 @@ module SharedHelper
 
   def gemsets
     file = gemset_definition_file
-    if file.exist?
+    if File.exist? file.to_s
       file.readlines.map { |line| line.strip }.select { |line| !line.empty? }
+    else
+      []
     end
   end
 
