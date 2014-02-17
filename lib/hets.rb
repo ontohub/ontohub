@@ -98,9 +98,9 @@ module Hets
     if output.starts_with? '*** Error'
       # some error occured
       raise ExecutionError, output 
-    elsif match = output.lines.last.match(/Writing file: (.+)/)
+    elsif (files = written_files(output.lines)).any?
       # successful execution
-      match[1]
+      files
     else
       # we can not handle this response
       raise ExecutionError, "Unexpected output:\n#{output}"
@@ -119,6 +119,19 @@ module Hets
 
   def self.config
     @@config ||= Config.new
+  end
+
+  def self.written_files(lines)
+    lines.reduce([]) do |lines, line|
+      file = written_file(line)
+      lines << file if file
+      lines
+    end
+  end
+
+  def self.written_file(line)
+    match = line.match(/Writing file: (?<file>.+)/)
+    match[:file] if match
   end
 
 end
