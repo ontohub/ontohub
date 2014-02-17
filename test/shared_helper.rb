@@ -21,15 +21,13 @@ module SharedHelper
 
   def gemset_definition_file
     rbenv = app_root.join('.rbenv-gemsets')
-    if rbenv.exist?
-      rbenv
-    end
+    rbenv if rbenv.exist?
   end
 
   def gemsets
     file = gemset_definition_file
     if File.exist? file.to_s
-      file.readlines.map { |line| line.strip }.select { |line| !line.empty? }
+      file.readlines.map(&:strip).select { |line| !line.empty? }
     else
       []
     end
