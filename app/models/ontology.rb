@@ -46,7 +46,8 @@ class Ontology < ActiveRecord::Base
                   :present,
                   :alternative_iris,
                   :ontology_type_id,
-                  :formality_level_ids
+                  :formality_level_ids,
+                  :project_ids
 
   validates_uniqueness_of :iri, :if => :iri_changed?
   validates_format_of :iri, :with => URI::regexp(Settings.allowed_iri_schemes)
