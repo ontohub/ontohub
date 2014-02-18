@@ -35,6 +35,7 @@ class Ontology < ActiveRecord::Base
   has_many :source_links, class_name: 'Link', foreign_key: 'source_id', dependent: :destroy
   has_many :target_links, class_name: 'Link', foreign_key: 'target_id', dependent: :destroy
 
+  has_and_belongs_to_many :license_models
   has_and_belongs_to_many :formality_levels
 
   attr_accessible :iri, :name, :description, :acronym, :documentation,
@@ -46,7 +47,9 @@ class Ontology < ActiveRecord::Base
                   :present,
                   :alternative_iris,
                   :ontology_type_id,
+                  :license_model_ids,
                   :formality_level_ids,
+                  :task_ids,
                   :project_ids
 
   validates_uniqueness_of :iri, :if => :iri_changed?
