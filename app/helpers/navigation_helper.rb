@@ -10,8 +10,8 @@ module NavigationHelper
 
     pages << [:ontologies,       [*chain, :ontologies]]
     pages << [:"File browser", [*chain, :tree]]
-    pages << [:"URL catalog",  repository_url_maps_path(resource)]
     pages << [:history,          repository_ref_path(resource, 'master', path: nil, action: :history)]
+    pages << [:settings,  repository_repository_settings_path(resource)]
     pages << [:errors,           repository_errors_path(resource)]
     pages << [:permissions,      [*chain, :permissions]] if can? :permissions, resource
  
@@ -140,6 +140,17 @@ module NavigationHelper
       ['License Model',    [*resource_chain, :license_models]],
       ['Formality Levels', [*resource_chain, :formality_levels]]
     ]
+  end
+  
+  def repository_settings_nav(repository, current_page)
+    pages = []
+    chain = resource_chain.last.is_a?(Ontology) ? resource_chain[0..-2] : resource_chain
+    
+    pages << [:"URL catalog",  repository_url_maps_path(repository)]
+    pages << [:errors,           repository_errors_path(repository)]
+    pages << [:permissions,      [*chain, :permissions]] if can? :permissions, repository
+    
+    subnavigation(repository, pages, current_page)
   end
 
 end
