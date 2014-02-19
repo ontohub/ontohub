@@ -19,12 +19,15 @@ class ConcurrencyBalancer
 
   # gets and reuses the Sidekiq-redis connection
   def redis
-    redis = Sidekiq.instance_variable_get(:@redis)
-    if redis.nil?
-      hash = Sidekiq.instance_variable_get(:@hash)
-      redis = Sidekiq.instance_variable_set(:@redis, Sidekiq::RedisConnection.create(hash || {}))
+    RedisWrapper.new
+  end
+
+  class RedisWrapper
+
+    def method_missing(name, *args, &block)
+      Sidekiq.redis { |redis| redis.send(name, *args, &block) }
     end
-    redis
+
   end
 
 end
