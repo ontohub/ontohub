@@ -3,9 +3,11 @@ class OntologyBatchParseWorker
   sidekiq_options retry: false
 
   def perform(versions)
+    done = false
+
     return if versions.empty?
 
-    version_id, opts = versions.shift
+    version_id, opts = versions.head
     version = OntologyVersion.find(version_id)
 
     opts.each do |method_name, value|
@@ -13,7 +15,10 @@ class OntologyBatchParseWorker
     end
 
     version.parse
+  rescue ConcurrencyBalancer::AlreadyProcessingError
+    self.class.perform_async(versions)
+    done = true
   ensure
-    self.class.perform_async(versions) unless versions.empty?
+    self.class.perform_async(versions.tail) unless versions.tail.empty? || done
   end
 end
