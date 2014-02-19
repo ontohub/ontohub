@@ -27,7 +27,7 @@ module Ontology::Import
           child_name = h['name']
           internal_iri = h['name'].start_with?('<') ? h['name'][1..-2] : h['name']
           dgnode_stack_id ||= 0
-          concurrency.mark_as_processing_or_complain(internal_iri, dgnode_stack[dgnode_stack_id])
+          concurrency.mark_as_processing_or_complain(internal_iri, unlock_this_iri: dgnode_stack[dgnode_stack_id])
           dgnode_stack_id += 1
           dgnode_stack << internal_iri
 
