@@ -5,22 +5,31 @@ module Ontology::Import
     now = Time.now
 
     transaction do
-      code_doc = code_io ? Nokogiri::XML(code_io) : nil
+      code_doc         = code_io ? Nokogiri::XML(code_io) : nil
+      concurrency      = ConcurrencyBalancer.new
       self.present     = true
       root             = nil
       ontology         = nil
       logic_callback   = nil
       link             = nil
       ontologies_count = 0
-      versions = []
+      versions         = []
+      dgnode_count     = 0
+      dgnode_stack_id      = nil
+      dgnode_stack      = []
 
       OntologyParser.parse io,
         root: Proc.new { |h|
           root = h
+          dgnode_count = root['dgnodes'].to_i
         },
         ontology: Proc.new { |h|
           child_name = h['name']
           internal_iri = h['name'].start_with?('<') ? h['name'][1..-2] : h['name']
+          dgnode_stack_id ||= 0
+          concurrency.mark_as_processing_or_complain(internal_iri, dgnode_stack[dgnode_stack_id])
+          dgnode_stack_id += 1
+          dgnode_stack << internal_iri
 
           if h['reference'] == 'true'
             ontology = Ontology.find_with_iri(internal_iri)
@@ -111,6 +120,8 @@ module Ontology::Import
           ontology.save!
 
           logic_callback.ontology_end({}, ontology)
+
+          concurrency.mark_as_finished_processing(dgnode_stack.last) if dgnode_stack_id + 1 == dgnode_count
         },
         symbol: Proc.new { |h|
           if logic_callback.pre_symbol(h)
