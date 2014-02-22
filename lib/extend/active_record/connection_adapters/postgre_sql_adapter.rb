@@ -1,4 +1,9 @@
 class ActiveRecord::ConnectionAdapters::PostgreSQLAdapter < ActiveRecord::ConnectionAdapters::AbstractAdapter
+  # Lists all self-defined types in the local postgresql database system.
+  # This only pertains to PostgreSQL and their Type-System.
+  #
+  # * *Returns* :
+  # * - Array of Strings which represent a defined type.
   def types
     query("SELECT t.typname as typename
 FROM pg_type t
