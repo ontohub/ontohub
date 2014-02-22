@@ -21,7 +21,7 @@ hets_owl_tools:
   - /usr/local/opt/hets/Hets.app/Contents/Resources/hets-owl-tools
   - /Applications/Hets.app/Contents/Resources/hets-owl-tools
 
-version_minimum_date: 2014-01-29
+version_minimum_revision: 18480
 
 stack_size: 1G
 
