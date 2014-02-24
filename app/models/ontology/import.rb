@@ -15,8 +15,9 @@ module Ontology::Import
       ontologies_count = 0
       versions         = []
       dgnode_count     = 0
-      dgnode_stack_id      = nil
       dgnode_stack      = []
+      next_dgnode_stack_id = ->() { dgnode_stack.length }
+      dgnode_stack_id = ->() { next_dgnode_stack_id[] - 1 }
 
       OntologyParser.parse io,
         root: Proc.new { |h|
@@ -54,8 +55,7 @@ module Ontology::Import
             end
           end
 
-          concurrency.mark_as_processing_or_complain(ontohub_iri, unlock_this_iri: dgnode_stack[dgnode_stack_id])
-          dgnode_stack_id += 1
+          concurrency.mark_as_processing_or_complain(ontohub_iri, unlock_this_iri: dgnode_stack[dgnode_stack_id[]])
           dgnode_stack << ontohub_iri
 
           if h['reference'] == 'true'
@@ -148,7 +148,7 @@ module Ontology::Import
 
           logic_callback.ontology_end({}, ontology)
 
-          concurrency.mark_as_finished_processing(dgnode_stack.last) if dgnode_stack_id + 1 == dgnode_count
+          concurrency.mark_as_finished_processing(dgnode_stack.last) if next_dgnode_stack_id[] == dgnode_count
         },
         symbol: Proc.new { |h|
           if logic_callback.pre_symbol(h)
