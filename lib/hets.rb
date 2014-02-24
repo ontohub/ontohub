@@ -8,6 +8,7 @@ module Hets
   class VersionOutdatedError < DeploymentError; end
   class ConfigDateFormatError < DeploymentError; end
   class VersionDateFormatError < DeploymentError; end
+  class InvalidHetsVersionFormatError < DeploymentError; end
 
   class Config
     attr_reader :path, :library_path, :stack_size, :env
@@ -23,7 +24,7 @@ module Hets
       raise DeploymentError, 'Could not find hets'     unless @path
       raise DeploymentError, 'Hets library not found.' unless @library_path
 
-      unless is_compatible? yaml['version_minimum_date']
+      unless is_compatible? yaml['version_minimum_revision']
         raise VersionOutdatedError, 'The installed version of Hets is too old'
       end
 
@@ -40,26 +41,25 @@ module Hets
     # Checks Hets installation compatibility by its version date
     # 
     # * *Args* :
-    # * - +minimum_date+ -> Minimum working hets version date
+    # * - +minimum_revision+ -> Minimum working hets version revision
     # * *Returns* :
-    # * - true if hets version minimum date prior or equal to actual hets version date
+    # * - true if hets version minimum revision smaller than or equal to actual hets version revision
     # * - false otherwise
-    def is_compatible?(minimum_date)
-      # Read Hets version minimum date
-      raise ConfigDateFormatError, 'Could not read hets version minimum date in YAML' unless minimum_date
+    def is_compatible?(minimum_revision)
+      # Read Hets version minimum revision
+      raise ConfigDateFormatError, 'Could not read hets version minimum revision in YAML' unless minimum_revision
 
       # Read Hets version date
       version = `#{@path} -V`
-      version_date = begin
-        Date.parse version.split.last
-      rescue ArgumentError
-        nil
+      # revision starts with r-char and ends with revision number.
+      version_revision = if version.split.last =~ /r(\d+)/
+        $1 # the revision number
+      else
+        raise InvalidHetsVersionFormatError, "format is not valid: <#{version}>"
       end
 
-      raise VersionDateFormatError, 'Could not read hets version date in output of `hets -V`' unless version_date
-
       # Return true if minimum date is prior or equal to version date
-      return minimum_date <= version_date
+      return minimum_revision.to_i <= version_revision.to_i
     end
 
     def first_which_exists(paths)
