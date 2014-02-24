@@ -27,9 +27,36 @@ module Ontology::Import
           child_name = h['name']
           internal_iri = h['name'].start_with?('<') ? h['name'][1..-2] : h['name']
           dgnode_stack_id ||= 0
-          concurrency.mark_as_processing_or_complain(internal_iri, unlock_this_iri: dgnode_stack[dgnode_stack_id])
+          ontohub_iri = nil
+
+          if h['reference'] == 'true'
+            ontology = Ontology.find_with_iri(internal_iri)
+            if ontology.nil?
+              ontohub_iri = ExternalRepository.determine_iri(internal_iri)
+            else
+              ontohub_iri = ontology.iri
+            end
+          else
+            if distributed?
+              ontohub_iri = iri_for_child(internal_iri)
+            else
+              # we use 0 here, because the first time around, we
+              # have ontologies_count 0 which is increased by one
+              # after obtaining the lock. We need to preempt
+              # this message, because otherwise we would
+              # fail here with a lock issue instead of the
+              # 'more than one ontology' issue.
+              if ontologies_count > 0
+                raise "more than one ontology found"
+              else
+                ontohub_iri = self.iri
+              end
+            end
+          end
+
+          concurrency.mark_as_processing_or_complain(ontohub_iri, unlock_this_iri: dgnode_stack[dgnode_stack_id])
           dgnode_stack_id += 1
-          dgnode_stack << internal_iri
+          dgnode_stack << ontohub_iri
 
           if h['reference'] == 'true'
             ontology = Ontology.find_with_iri(internal_iri)
