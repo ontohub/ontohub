@@ -14,6 +14,8 @@ class Worker
     else
       raise ArgumentError, "unsupported type: #{type}"
     end
+  rescue ConcurrencyBalancer::AlreadyProcessingError
+    self.class.perform_async(type, clazz, method, *args)
   end
 
   # This method definition is required by sidekiq
