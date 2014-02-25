@@ -50,8 +50,11 @@ module OntologyVersion::Parsing
 
   # generate XML by passing the raw ontology to Hets
   def generate_xml(structure_only: false)
-    path = Hets.parse(raw_path!, ontology.repository.url_maps, File.dirname(xml_path), structure_only: structure_only)
+    paths = Hets.parse(raw_path!, ontology.repository.url_maps, xml_dir, structure_only: structure_only)
+    path = paths.last
     
+    set_pp_xml_name(paths, perform_save: false)
+    set_xml_name(paths)
     # move generated file to destination
     File.rename path, xml_path
   end
@@ -62,6 +65,19 @@ module OntologyVersion::Parsing
 
   def parse_fast
     parse(structure_only: true)
+  end
+
+  protected
+  def set_pp_xml_name(paths, perform_save: true)
+    if paths.size > 1
+      self.pp_xml_name = File.basename(paths.first)
+      save! if perform_save
+    end
+  end
+
+  def set_xml_name(paths, perform_save: true)
+    self.xml_name = File.basename(paths.last)
+    save! if perform_save
   end
 
 end
