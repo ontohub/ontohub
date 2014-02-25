@@ -56,7 +56,7 @@ module OntologyVersion::Files
   end
 
   def xml_file?
-    xml_path && File.exists?(xml_path)
+    xml_path.try(:exist?)
   end
 
   def raw_file?
