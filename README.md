@@ -45,6 +45,7 @@ Installation of [RVM](https://rvm.io/ "Ruby Version Manager"):
 
     apt-get install -y curl
     curl -L https://get.rvm.io | bash -s stable --ruby
+    rvm wrapper default
 
 If you have a desktop installation, you should "run command as a login shell" to
 source rvm automatically as explained in https://rvm.io/integration/gnome-terminal/ .
