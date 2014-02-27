@@ -5,8 +5,11 @@ Ontohub::Application.routes.draw do
 
   resources :ontology_types, only: :show
 
-  devise_for :users, :controllers => { :registrations => "users/registrations" }
-  resources :users, :only => :show
+  devise_for :users, controllers: {
+    confirmations: 'users/confirmations',
+    registrations: 'users/registrations'
+  }
+  resources :users, only: :show
   resources :keys, except: [:show, :edit, :update]
   
   resources :logics do

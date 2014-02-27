@@ -1,8 +1,7 @@
-require File.expand_path(
-  File.join(File.dirname(__FILE__), "/../../lib/environment_light"))
-require File.expand_path(
-  File.join(File.dirname(__FILE__), "/../../config/initializers/paths"))
+require File.expand_path("../../../lib/environment_light", __FILE__)
+require File.expand_path("../../../config/initializers/paths", __FILE__)
 
+# extend the load path
 $:.unshift File.dirname(__FILE__)
 $:.unshift Rails.root.join("lib")
 
