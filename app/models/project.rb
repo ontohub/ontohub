@@ -14,4 +14,8 @@ class Project < ActiveRecord::Base
       allow_blank: true
     }
 
+  def to_s
+    name
+  end
+
 end

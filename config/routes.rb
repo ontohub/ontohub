@@ -3,7 +3,6 @@ require 'sidekiq/web' if defined? Sidekiq
 
 Ontohub::Application.routes.draw do
   
-  resources :categories, :only => [:index, :show]
 
   resources :ontology_types, only: :show
   resources :formality_levels, only: :show
@@ -25,6 +24,12 @@ Ontohub::Application.routes.draw do
   resources :logic_mappings
 
   resources :links, :only => :index 
+
+  resources :categories, :only => [:index, :show]
+  resources :projects
+  resources :tasks
+  resources :license_models
+  resources :formality_levels
 
 
   resources :language_adjoints

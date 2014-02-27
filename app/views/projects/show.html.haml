@@ -1,0 +1,18 @@
+.row
+  .pull-right
+    .btn-group
+      = link_to 'Edit', [:edit, resource], class: 'btn btn-default'
+      = link_to 'Delete', resource, class: 'btn btn-danger', method: :delete, confirm: "Really delete the project '#{resource}'?"
+  %h1= fancy_link resource
+
+%h4 Institution
+= resource.institution
+
+%h4 Homepage
+= link_to resource.homepage, resource.homepage, target: :blank
+
+%h4 Description
+= resource.description
+
+%h4 Contact
+= resource.contact

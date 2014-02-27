@@ -1,7 +1,10 @@
-= repository_nav parent.repository, :ontologies, disable_actions: true
+- if parent
+  = repository_nav parent.repository, :ontologies, disable_actions: true
 
-= ontology_nav parent, :projects
+  = ontology_nav parent, :projects
 
-%h4 Add Project
+  %h4 Add new Project to this Ontology
+- else
+  %h1 Add Project
 
 = render 'form'

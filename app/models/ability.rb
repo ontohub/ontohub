@@ -106,6 +106,10 @@ class Ability
         subject.user == user || subject.metadatable.permission?(:editor, user)
       end
 
+      can :write, Project
+      can :write, Task
+      can :write, LicenseModel
+
       can :read, Category
     else
       can :show, Repository do |subject|
