@@ -1,0 +1,7 @@
+- if can_add? parent, cls_sym
+  .pull-right
+    = link_to [:new, *resource_chain, cls_sym], class: 'btn btn-default' do
+      - if parent
+        = "Add new #{cls_sym} to ontology"
+      - else
+        = "Add #{cls_sym}"

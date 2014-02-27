@@ -3,7 +3,7 @@
   %td= truncate(project.description, length: 20, separator: ' ')
   %td= project.institution
   %td= project.contact
-  -if !parent
+  -if !parent && can?(:write, Project)
     %td
       .btn-group
         = link_to 'Edit', [:edit, *resource_chain, project], class: 'btn btn-default btn-xs'
