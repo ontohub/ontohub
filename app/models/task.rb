@@ -9,4 +9,8 @@ class Task < ActiveRecord::Base
     uniqueness: true,
     length: { within: 0..50 }
 
+  def to_s
+    name
+  end
+
 end
