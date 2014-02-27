@@ -11,7 +11,7 @@
     %tr
       %th Formality Level Name
       %th Description
-      - if !parent && can?(:write, Project)
+      - if !parent && can?(:write, FormalityLevel)
         %th Manage
   %tbody
     = render collection
