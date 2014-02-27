@@ -5,8 +5,9 @@ class LicenseModel < ActiveRecord::Base
   attr_accessible :name, :description, :url, :ontology_id
 
   validates :name,
-    :presence => true,
-    :uniqueness => true
+    presence: true,
+    uniqueness: true,
+    length: { within: 0..50 }
 
   validates :url,
     :format => { :with => URI::regexp(Settings.allowed_iri_schemes) }

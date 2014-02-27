@@ -5,7 +5,8 @@ class Task < ActiveRecord::Base
   attr_accessible :name, :description
 
   validates :name,
-    :presence => true,
-    :uniqueness => true
+    presence: true,
+    uniqueness: true,
+    length: { within: 0..50 }
 
 end
