@@ -11,5 +11,7 @@
     %tr
       %th Task
       %th Description
+      - if !parent && can?(:write, Task)
+        %th Manage
   %tbody
     = render collection
