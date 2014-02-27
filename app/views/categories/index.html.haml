@@ -3,11 +3,10 @@
 
   = ontology_nav parent, :categories
 
-  These ontology is assigned to following Categories
+  This ontology is assigned to the following categories
   %ul.category_list
     - parent.categories.each do |cat|
       %li= link_to cat, cat
-
 
 - else 
   %h2 Categories
@@ -16,4 +15,3 @@
   
   .well 
     = render partial: 'categories'
-  
