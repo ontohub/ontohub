@@ -1,5 +1,5 @@
 %tr
-  %td= license_model.name
-  %td= license_model.description
+  %td= fancy_link license_model
+  %td= truncate license_model.description, length: 20, separator: ' '
   %td= license_model.url
-  %td= link_to 'Edit', [:edit, parent.repository, parent, license_model]
+  = render partial: 'shared/metadata_index_manage', locals: { cls_sym: :license_model, subject: license_model }

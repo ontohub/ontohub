@@ -1,4 +1,4 @@
--if !parent && can?(:write, cls)
+-if !parent && can?(:write, cls_sym.to_s.classify)
   %td
     .btn-group
       = link_to 'Edit', [:edit, subject], class: 'btn btn-default btn-xs'

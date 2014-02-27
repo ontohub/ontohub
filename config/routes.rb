@@ -2,7 +2,6 @@ require 'sidekiq/web' if defined? Sidekiq
 
 
 Ontohub::Application.routes.draw do
-  
 
   resources :ontology_types, only: :show
   resources :formality_levels, only: :show

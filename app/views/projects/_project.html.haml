@@ -3,4 +3,4 @@
   %td= truncate(project.description, length: 20, separator: ' ')
   %td= project.institution
   %td= project.contact
-  = render partial: 'shared/metadata_index_manage', locals: { cls_sym: :project, cls: Project, subject: project }
+  = render partial: 'shared/metadata_index_manage', locals: { cls_sym: :project, subject: project }
