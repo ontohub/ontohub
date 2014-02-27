@@ -12,7 +12,6 @@ class LicenseModel < ActiveRecord::Base
   validates :url,
     format: {
       with: URI::regexp(Settings.allowed_iri_schemes),
-      allow_blank: true
     }
 
   def to_s
