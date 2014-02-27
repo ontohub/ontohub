@@ -1,7 +1,6 @@
 class ProjectsController < InheritedResources::Base
 
   belongs_to :ontology, optional: true
-
   before_filter :check_read_permissions
 
 
