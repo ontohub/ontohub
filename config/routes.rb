@@ -4,7 +4,6 @@ require 'sidekiq/web' if defined? Sidekiq
 Ontohub::Application.routes.draw do
 
   resources :ontology_types, only: :show
-  resources :formality_levels, only: :show
 
   devise_for :users, :controllers => { :registrations => "users/registrations" }
   resources :users, :only => :show
@@ -108,7 +107,7 @@ Ontohub::Application.routes.draw do
       resources :metadata, :only => [:index, :create, :destroy]
       resources :comments, :only => [:index, :create, :destroy]
       resources :graphs, :only => [:index]
-      resources :formality_levels, :only => [:index]
+      resources :formality_levels
 
     end
 

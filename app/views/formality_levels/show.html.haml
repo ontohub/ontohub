@@ -1,6 +1,7 @@
-%h1 Formality Level
+= render partial: 'shared/metadata_top_show', locals: { cls_sym: :formality_level }
 
-%h2= link_to resource
+%h1= fancy_link resource
 
-%h3 Description
+%h4 Description
 = resource.description
+

@@ -1,2 +1,4 @@
-%li
-  = fancy_link formality_level
+%tr
+  %td= fancy_link formality_level
+  %td= truncate(formality_level.description, length: 100, separator: ' ')
+  = render partial: 'shared/metadata_index_manage', locals: { cls_sym: :formality_level, subject: formality_level }
