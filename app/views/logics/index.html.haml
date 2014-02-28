@@ -5,7 +5,7 @@
     = link_to 'Create Logic', :new_logic, class: 'btn btn-primary'
 
 %p
-  = pluralize(Logic.count, "logic")
+  = pluralize(Logic.count, 'logic')
   currently available
 
 = pagination do
@@ -19,7 +19,7 @@
       %tr
         %td (heterogeneous) Ontology Libraries
         %td
-        %td= pluralize(Ontology.heterogeneous.count, "Ontology Libraries")
-        %td= pluralize(Ontology.heterogeneous_children.count, "child #{Ontology}")
+        %td= pluralize(Ontology.heterogeneous.count, 'Ontology Library')
+        %td= pluralize(Ontology.heterogeneous_children.count, 'Child Ontology')
         %td
       = render collection

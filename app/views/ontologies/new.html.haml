@@ -1,18 +1,18 @@
 = repository_nav parent, :ontologies
 
-%h3= @page_title = "Create an ontology"
+%h3= @page_title = 'Create an ontology'
 
 = simple_form_for [parent, resource], html: { class: 'form-horizontal' } do |f|
   
-  = f.input :type, :as => :radio_buttons, :collection => {"Library" => "DistributedOntology", "Single" => "SingleOntology"}
+  = f.input :type, as: :radio_buttons, collection: {'Library' => 'DistributedOntology', 'Single' => 'SingleOntology'}
   
   .well
     = f.simple_fields_for :versions, resource.versions.first do |vf|
-      = vf.input :raw_file, :as => :file
+      = vf.input :raw_file, as: :file
   
-    / = f.collection_select :parent_id, Category.all, :id, :name_for_selects, { :include_blank => true }, { :multiple => true }
   Choose one ore more categories:
-  = render :partial => 'categories'
+  = render partial: 'categories'
+
   = f.input :iri
   = f.input :name
   = f.input :description, input_html: { class: 'span8' }
