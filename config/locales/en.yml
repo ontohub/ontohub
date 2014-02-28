@@ -33,3 +33,20 @@ en:
         private: Private
         public_r: Public readable
         public_rw: Public readable and writable
+  sentences:
+    index:
+      display_only_self_defined_sentences:
+        Currently we display only self-defined sentences.
+      to_display_only_self_defined_sentences:
+        to display only the self-defined sentences.
+      display_all_sentences:
+        Currently we display all sentences, self-defined and imported
+        ones.
+      to_display_all_sentences:
+        to display all related sentences.
+    sentence:
+      defined_in:
+        defined in %{link}
+  have:
+    one: has
+    other: have

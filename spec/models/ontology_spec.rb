@@ -11,4 +11,35 @@ describe Ontology do
     end
   end
 
+  context 'when trying to get the imported ontologies' do
+    let!(:ontology) { create :ontology }
+    let!(:imported_ontology) do
+      imported = create :single_ontology
+      create :import_link, source: ontology, target: imported
+      imported
+    end
+
+    it 'should fetch immediately imported ontologies' do
+      expect(ontology.imported_ontologies).to include(imported_ontology)
+      expect(ontology.imported_ontologies.size).to be(1)
+    end
+
+    context 'which have imports themselves' do
+      let!(:imported_imported_ontology) do
+        imported = create :single_ontology
+        create :import_link, source: imported_ontology, target: imported
+        imported
+      end
+
+      it 'should fetch all imported ontologies' do
+        expect(ontology.imported_ontologies).to include(imported_ontology)
+        expect(ontology.imported_ontologies).
+          to include(imported_imported_ontology)
+        expect(ontology.imported_ontologies.size).to be(2)
+      end
+
+    end
+
+  end
+
 end

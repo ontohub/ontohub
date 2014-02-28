@@ -4,8 +4,10 @@ class SshAccessController < InheritedResources::Base
 
   def index
     allowed = SshAccess.determine_permission(
-      *SshAccess.extract_permission_params(params, parent))
+      *SshAccess.extract_permission_params(params, parent), parent)
     render json: {allowed: allowed}
+  rescue => e# ensure that we always return a valid response
+    render json: {allowed: false, reason: "internal server problem: #{e.message}"}
   end
 
 end

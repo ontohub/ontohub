@@ -6,6 +6,24 @@ module OopsHelper
     'Suggestion' => :lightbulb
   }
   
+  def global_responses
+    return oops_request.responses.global if oops_request
+    false
+  end
+
+  def oops_data_uri
+    url_for [repository, @ontology, current_version, :oops_request]
+  end
+
+  def oops_data_reload_uri
+    url_for [repository, @ontology] #, anchor: 'detail'
+  end
+
+  def oops_icon(type)
+    icon = ICONS[type] || 'question-sign'
+    "icon-#{icon}"
+  end
+
   def oops_icons(response_scope)
     responses = response_scope.select('element_type, count(*) AS count').group(:element_type).order(:element_type)
     out = ''
@@ -24,10 +42,13 @@ module OopsHelper
     
     out.html_safe
   end
-  
-  def oops_icon(type)
-    icon = ICONS[type] || 'question-sign'
-    "icon-#{icon}"
+
+  def oops_request
+    current_version.try(:request)
   end
-  
+
+  def show_oops?
+    @ontology.oops_supported? && !current_version.try(:request)
+  end
+
 end

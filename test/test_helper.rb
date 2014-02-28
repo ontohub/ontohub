@@ -1,4 +1,10 @@
 ENV["RAILS_ENV"] = "test"
+
+require File.expand_path("../../test/shared_helper", __FILE__)
+
+include SharedHelper
+use_simplecov
+
 require File.expand_path('../../config/environment', __FILE__)
 require 'rails/test_help'
 

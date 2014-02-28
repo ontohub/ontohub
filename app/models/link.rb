@@ -35,26 +35,26 @@ class Link < ActiveRecord::Base
       array = iri.split("?")
       string = array.last
     end
-    return string
+    string
   end
    
   def display_connection
     if theorem
       if proven
-        return "badge badge-success"
+        "badge badge-success"
       else
-        return "badge badge-important"
+        "badge badge-important"
       end
     else
-      return "badge badge-inverse"
+      "badge badge-inverse"
     end
   end
   
   def get_entity
     if entity_mappings.size > 1
-      return "#{entity_mappings.first}..."
+      "#{entity_mappings.first}..."
     else
-      return "#{entity_mappings.first}"
+      "#{entity_mappings.first}"
     end
   end
 end
