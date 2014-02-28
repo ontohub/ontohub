@@ -25,12 +25,12 @@ class OntologySearch
   end
 
   def make_filters_map()
-    types = OntologyType.select([:name, :id]).order(:name).all.map {|type| {"name" => type.name.sub(/Ontology/, "ontologies"), "value" => type.id.to_s, "count" => 10 } }
-    repositories = Repository.select([:name, :id]).order(:name).all.map {|repository| {"name" => "in " + repository.name, "value" => repository.id.to_s, "count" => 9 } }
-    projects = Project.select([:name, :id]).order(:name).all.map {|project| {"name" => "from " + project.name, "value" => project.id.to_s, "count" => 8 } }
-    formalities = FormalityLevel.select([:name, :id]).order(:name).all.map {|formality| {"name" => "in " + formality.name, "value" => formality.id.to_s, "count" => 7 } }
-    licenses = LicenseModel.select([:name, :id]).order(:name).all.map {|license| {"name" => "under " + license.name, "value" => license.id.to_s, "count" => 6 } }
-    tasks = Task.select([:name, :id]).order(:name).all.map {|task| {"name" => "for " + task.name[0..-5].from_titlecase_to_spacedlowercase, "value" => task.id.to_s, "count" => 5 } }
+    types = OntologyType.select([:name, :id]).order(:name).all.map {|type| {"name" => type.name.sub(/Ontology/, "ontologies"), "value" => type.id.to_s, "count" => type.ontologies.count } }
+    repositories = Repository.select([:name, :id]).order(:name).all.map {|repository| {"name" => "in " + repository.name, "value" => repository.id.to_s, "count" => repository.ontologies.count } }
+    projects = Project.select([:name, :id]).order(:name).all.map {|project| {"name" => "from " + project.name, "value" => project.id.to_s, "count" => project.ontologies.count } }
+    formalities = FormalityLevel.select([:name, :id]).order(:name).all.map {|formality| {"name" => "in " + formality.name, "value" => formality.id.to_s, "count" => formality.ontologies.count } }
+    licenses = LicenseModel.select([:name, :id]).order(:name).all.map {|license| {"name" => "under " + license.name.between_parentheses, "value" => license.id.to_s, "count" => license.ontologies.count } }
+    tasks = Task.select([:name, :id]).order(:name).all.map {|task| {"name" => "for " + task.name[0..-5].from_titlecase_to_spacedlowercase, "value" => task.id.to_s, "count" => task.ontologies.count } }
     filters_map = {
       'OntologyType' => [
         { "name" => 'Ontologies', "value" => nil, "count" => 0 },
