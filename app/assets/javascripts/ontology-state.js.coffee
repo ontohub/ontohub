@@ -16,10 +16,14 @@ update = ->
     else
       currentState = state
       
+        
       # display the new state
       container
       .attr('class', state)
       .find("span").text(state)
+      
+      if state != "pending"
+        $(".pending_message").hide()
       
       if $.inArray(state, finalStates) != -1
         # replace spinner with refresh button
