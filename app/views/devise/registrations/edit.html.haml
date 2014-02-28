@@ -1,7 +1,7 @@
 %h2= @page_title = current_user.first_name + "'s Account"
 
 - unless resource.confirmed?
-  .alert Your account is not yet confirmed!
+  .alert.alert-danger Your account is not yet confirmed!
 
 = simple_form_for resource, url: registration_path(resource_name), html: { class: 'form-horizontal' } do |f|
 
@@ -12,6 +12,12 @@
   = f.input :current_password, :required => true, :hint => "we need your current password to confirm your changes"
   
   = f.button :wrapped, 'Update'
+
+- unless resource.confirmed?
+  %h3 Confirmation
+
+  %p Your account is not yet confirmed.
+  = link_to 'Resend confirmation E-Mail!', confirmation_path(resource_name, user: {email: resource.email}), method: :post, class: 'btn btn-default', disable_with: t(:wait)
 
 %h3 Cancel my account
 
