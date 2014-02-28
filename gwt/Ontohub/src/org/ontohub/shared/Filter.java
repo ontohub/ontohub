@@ -11,4 +11,5 @@ public class Filter extends JavaScriptObject {
 	protected Filter() {}
 	public final native String getName() /*-{ return this.name; }-*/;
 	public final native String getValue() /*-{ return this.value; }-*/;
+	public final native int getCount() /*-{ return this.count; }-*/;
 }
