@@ -16,8 +16,12 @@ class SshAccess
 
   class << self
 
-    def determine_permission(requested_permission, permission)
-      if PERMISSION_MAP[:everyone].include?(requested_permission)
+    def determine_permission(requested_permission, permission, repository)
+      if repository.public_rw?
+        true
+      elsif repository.public_r? && requested_permission == 'read'
+        true
+      elsif PERMISSION_MAP[:everyone].include?(requested_permission)
         true
       elsif permission
         return true if PERMISSION_MAP[:permission][:all].

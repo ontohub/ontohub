@@ -1,20 +1,14 @@
-- show_oops = resource.oops_supported? && !resource.versions.current.try(:request)
-- if show_oops
-  - version = resource.parent ? resource.parent.versions.current : resource.versions.current
-
-- show_evaluate = show_oops #|| show_foo
-
-- unless resource.versions.current.nil?
+- if current_version
   .pull-right
     .btn-group
-      - if show_evaluate
+      - if show_evaluate?
         .btn-group
           %button.btn.btn-default.dropdown-toggle{'data-toggle' => 'dropdown'}
             Evaluate
             %span.caret
           %ul.dropdown-menu{role: 'menu'}
-            - if show_oops
-              %li= link_to 'design with OOPS', repository_ontology_ontology_version_oops_request_path(*resource_chain, version), method: 'post'
+            - if show_oops?
+              %li= link_to 'design with OOPS', repository_ontology_ontology_version_oops_request_path(*resource_chain, current_version), method: 'post'
       - if can? :edit, resource
         = link_to 'Edit', [:edit, *resource_chain], class: 'btn btn-default'
       .btn-group

@@ -25,7 +25,7 @@ module NavigationHelper
       ['Metadata', :metadata],
       ['Versions', :ontology_versions],
       ['Graphs', :graphs],
-      ['Links', :links]
+      ['Mappings', :links]
     ]
 
     @metadatas = []

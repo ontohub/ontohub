@@ -5,7 +5,7 @@ module ExternalMapping
     root = mappings['root']
     target = get_mapping_for mappings, second_level, controller, action
 
-    link_to 'Help', root + target
+    link_to 'Help', root + target, :target => "_blank"
   end
 
   def get_mapping_for(mapping, *args)

@@ -31,7 +31,7 @@ class EntitiesControllerTest < ActionController::TestCase
   context 'OWL Ontology instance' do
     setup do
       @user = FactoryGirl.create :user
-      @logic = FactoryGirl.create :logic, :name => 'OWL2', :user => @user
+      @logic = FactoryGirl.create :logic, :name => 'OWL', :user => @user
       @ontology = FactoryGirl.create :single_ontology, :logic => @logic
       @repository = @ontology.repository
     end

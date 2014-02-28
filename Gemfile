@@ -82,7 +82,7 @@ gem 'progress_bar'
 gem 'ruby-graphviz', "~> 1.0.8"
 
 # Fake-inputs for tests and seeds
-gem "faker", "~> 1.1.2"
+gem "faker", "~> 1.2"
 
 # Git
 gem 'rugged'
@@ -110,6 +110,9 @@ group :test do
   # Recording of HTTP Requests
   gem "vcr"
   gem "webmock", '~> 1.9.0'
+
+  # Code Coverage Analysis
+  gem 'coveralls', require: false
 end
 
 group :development do
