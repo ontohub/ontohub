@@ -10,6 +10,7 @@ class LicenseModel < ActiveRecord::Base
     length: { within: 0..50 }
 
   validates :url,
+    presence: true,
     format: {
       with: URI::regexp(Settings.allowed_iri_schemes),
     }
