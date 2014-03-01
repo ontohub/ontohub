@@ -9,7 +9,7 @@
           %ul.dropdown-menu{role: 'menu'}
             - if show_oops?
               %li= link_to 'design with OOPS', repository_ontology_ontology_version_oops_request_path(*resource_chain, current_version), method: 'post'
-      - if can? :edit, resource
+      - if can? :update, resource
         = link_to 'Edit', [:edit, *resource_chain], class: 'btn btn-default'
       .btn-group
         %button.btn.btn-default.dropdown-toggle{'data-toggle' => 'dropdown'}

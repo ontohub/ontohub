@@ -7,10 +7,23 @@ $(function() {
 			real_checkboxes_names: function (n) { return [("category_ids[" + n[0].id  + "]"), 1]; },
 			two_state: true
 		},
-			"themes": {
+		"themes": {
 			theme: "classic",
 			icons: false
 		}
+	});
+});
+
+$(function() {
+	container = $(".selector");
+	uri = container.data("uri");
+
+	container.bind("loaded.jstree", function (event, data) {
+		$.getJSON(uri, function (data) {
+			$.each(data, function() {
+				container.jstree("check_node", "#" + this.id);
+			})
+		})
 	});
 });
 

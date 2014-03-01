@@ -23,7 +23,6 @@ class OntologiesController < InheritedResources::Base
       render :index_global
     end
   end
-  
 
   def new
     @ontology_version = build_resource.versions.build
@@ -127,4 +126,3 @@ class OntologiesController < InheritedResources::Base
   end
 
 end
-
