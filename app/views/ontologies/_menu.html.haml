@@ -11,10 +11,11 @@
               %li= link_to 'design with OOPS', repository_ontology_ontology_version_oops_request_path(*resource_chain, current_version), method: 'post'
       - if can? :update, resource
         = link_to 'Edit', [:edit, *resource_chain], class: 'btn btn-default'
-      .btn-group
-        %button.btn.btn-default.dropdown-toggle{'data-toggle' => 'dropdown'}
-          Formats
-          %span.caret
-        %ul.dropdown-menu{role: 'menu'}
-          - %w(xml json).each do |f|
-            %li= link_to f.upcase, format: f
+      - if Settings.format_selection
+        .btn-group
+          %button.btn.btn-default.dropdown-toggle{'data-toggle' => 'dropdown'}
+            Formats
+            %span.caret
+          %ul.dropdown-menu{role: 'menu'}
+            - %w(xml json).each do |f|
+              %li= link_to f.upcase, format: f
