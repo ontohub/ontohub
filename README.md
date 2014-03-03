@@ -39,12 +39,13 @@ Installation
 
 These commands should work on Ubuntu 12.04. First of all you need a root shell.
 
-### RVM with Ruby 2.0
+### RVM with Ruby 2.1
 
 Installation of [RVM](https://rvm.io/ "Ruby Version Manager"):
 
     apt-get install -y curl
     curl -L https://get.rvm.io | bash -s stable --ruby
+    rvm wrapper default
 
 If you have a desktop installation, you should "run command as a login shell" to
 source rvm automatically as explained in https://rvm.io/integration/gnome-terminal/ .
@@ -65,13 +66,13 @@ this section, if you are preparing your development setup.)
 Depending on the installed ruby and passenger version you need to create a
 `/etc/apache2/mods-available/passenger.load` with the LoadModule directive:
 
-    LoadModule passenger_module /usr/local/rvm/gems/ruby-2.0.0-p<version>/gems/passenger-<version>/ext/apache2/mod_passenger.so
+    LoadModule passenger_module /usr/local/rvm/gems/ruby-2.1.1/gems/passenger-<version>/ext/apache2/mod_passenger.so
 
 and a `/etc/apache2/mods-available/passenger.conf` with the global passenger
 configuration:
 
-    PassengerRoot /usr/local/rvm/gems/ruby-2.0.0-p<version>/gems/passenger-<version>
-    PassengerRuby /usr/local/rvm/wrappers/ruby-2.0.0-p<version>/ruby
+    PassengerRoot /usr/local/rvm/gems/ruby-2.1.1/gems/passenger-<version>
+    PassengerRuby /usr/local/rvm/wrappers/ruby-2.1.1/ruby
 
 now enable the module an restart apache2:
 
