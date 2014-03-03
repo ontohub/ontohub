@@ -7,6 +7,7 @@ describe ConcurrencyBalancer do
 
   before(:each) do
     redis.del ConcurrencyBalancer::REDIS_KEY
+    redis.del ConcurrencyBalancer::SEQUENTIAL_LOCK_KEY
   end
 
   context 'successfully marking an unmarked iri' do
@@ -43,6 +44,19 @@ describe ConcurrencyBalancer do
     it 'should be awesome' do
       redis.sadd ConcurrencyBalancer::REDIS_KEY, 'iri'
       expect { balancer.mark_as_processing_or_complain('second-iri', unlock_this_iri: 'iri') }.
+        not_to raise_error
+    end
+  end
+
+  context 'using the sequential lock' do
+    it 'should fail when lock is taken' do
+      redis.sadd(ConcurrencyBalancer::SEQUENTIAL_LOCK_KEY, true)
+      expect { ConcurrencyBalancer.sequential_lock(&:+) }.
+        to raise_error(ConcurrencyBalancer::AlreadyLockedError)
+    end
+
+    it "should work, when the lock isn't taken" do
+      expect { ConcurrencyBalancer.sequential_lock { } }.
         not_to raise_error
     end
   end
