@@ -4,7 +4,7 @@ require 'sidekiq/worker'
 class Worker
   include Sidekiq::Worker
 
-  def perform(type, clazz, method, *args)
+  def perform(try_count, type, clazz, method, *args)
     case type
     when 'class'
       clazz.constantize.send method, *args
@@ -15,7 +15,7 @@ class Worker
       raise ArgumentError, "unsupported type: #{type}"
     end
   rescue ConcurrencyBalancer::AlreadyProcessingError
-    self.class.perform_async(type, clazz, method, *args)
+    self.class.perform_async(try_count+1, type, clazz, method, *args)
   end
 
   # This method definition is required by sidekiq

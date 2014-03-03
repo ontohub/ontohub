@@ -239,7 +239,7 @@ module Repository::GitRepositories
       optioned_versions = versions.map do |version|
         [version.id, { fast_parse: version.fast_parse }]
       end
-      OntologyBatchParseWorker.perform_async(optioned_versions)
+      OntologyBatchParseWorker.perform_async(1, optioned_versions)
     end
   end
 
