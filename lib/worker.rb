@@ -48,6 +48,8 @@ class SequentialWorker < Worker
     ConcurrencyBalancer.sequential_lock do
       execute_perform(*args)
     end
+  rescue ConcurrencyBalancer::AlreadyLockedError
+    SequentialWorker.perform_async(@try_count+1, *@args)
   end
 
   def handle_concurrency_issue
