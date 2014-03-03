@@ -60,7 +60,7 @@ module Repository::GitRepositories
     commit
   end
 
-  def save_ontology(commit_oid, filepath, user=nil, iri: nil, fast_parse: false)
+  def save_ontology(commit_oid, filepath, user=nil, iri: nil, fast_parse: false, do_not_parse: false)
     # we expect that this method is only called, when the ontology is 'present'
 
     return unless Ontology::FILE_EXTENSIONS.include?(File.extname(filepath))
@@ -78,6 +78,7 @@ module Repository::GitRepositories
                                      fast_parse: fast_parse },
                                    { without_protection: true })
         o.ontology_version = version
+        version.do_not_parse! if do_not_parse
         o.save!
       end
     else
@@ -97,6 +98,7 @@ module Repository::GitRepositories
                                    user: user,
                                    fast_parse: fast_parse },
                                  { without_protection: true })
+      version.do_not_parse! if do_not_parse
       version.save!
       o.ontology_version = version
       o.save!
@@ -219,13 +221,26 @@ module Repository::GitRepositories
   end
 
   def suspended_save_ontologies(options={})
+    versions = []
     commits(options) { |commit_oid|
       git.changed_files(commit_oid).each { |f|
         if f.add? || f.change?
-          save_ontology(commit_oid, f.path, options.delete(:user), fast_parse: has_changed?(f.path, commit_oid))
+          versions << save_ontology(commit_oid, f.path, options.delete(:user), fast_parse: has_changed?(f.path, commit_oid), do_not_parse: true)
         end
       }
     }
+
+    schedule_batch_parsing(versions)
+  end
+
+  def schedule_batch_parsing(versions)
+    grouped_versions = versions.compact.group_by { |v| v.ontology.path }
+    grouped_versions.each do |k,versions|
+      optioned_versions = versions.map do |version|
+        [version.id, { fast_parse: version.fast_parse }]
+      end
+      OntologyBatchParseWorker.perform_async(optioned_versions)
+    end
   end
 
   # saves all ontologies at the current state in the database

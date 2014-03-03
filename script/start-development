@@ -1,7 +1,10 @@
 #!/bin/sh
 
+root="$(dirname $0)/.."
+cd $root
+
 rake sunspot:solr:start &
-bin/sidekiq -q default -q hets -c 1 -v  >> log/sidekiq.log &
+./script/start-sidekiq >> log/sidekiq.log &
 rails s &
 
 trap "rake sunspot:solr:stop" INT

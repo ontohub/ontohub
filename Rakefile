@@ -6,4 +6,5 @@ require File.expand_path('../config/application', __FILE__)
 
 Ontohub::Application.load_tasks
 
+# Run all test suites per default
 task :default => [:spec, :test]
