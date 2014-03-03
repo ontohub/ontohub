@@ -2,6 +2,7 @@ class ConcurrencyBalancer
 
   REDIS_KEY = "processing_iris"
   SEQUENTIAL_LOCK_KEY = 'sequential_parse_locked'
+  MAX_TRIES = 3
   class AlreadyProcessingError < StandardError; end
   class UnmarkedProcessingError < StandardError; end
   class AlreadyLockedError < StandardError; end
