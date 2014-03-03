@@ -20,10 +20,12 @@ class ConcurrencyBalancer
 
   def self.sequential_lock
     if RedisWrapper.new.sadd(SEQUENTIAL_LOCK_KEY, true)
-      yield
-    rescue Exception => e
-      RedisWrapper.new.srem(SEQUENTIAL_LOCK_KEY, true)
-      raise e
+      begin
+        yield
+      rescue Exception => e
+        RedisWrapper.new.srem(SEQUENTIAL_LOCK_KEY, true)
+        raise e
+      end
     else
       raise AlreadyLockedError, 'the sequential lock is already set.'
     end
