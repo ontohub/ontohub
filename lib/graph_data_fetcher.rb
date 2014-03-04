@@ -64,7 +64,7 @@ class GraphDataFetcher
     if @center.is_a?(DistributedOntology)
       @source.
         connection.
-        select_all("EXPLAIN (SELECT fetch_distributed_graph_data(#{@center.id}))")
+        select_all("EXPLAIN (FORMAT JSON) (SELECT fetch_distributed_graph_data(#{@center.id}))")
     else
       @source.
         connection.
@@ -76,9 +76,9 @@ class GraphDataFetcher
     response = explain
     cost = JSON.parse(response.first["QUERY PLAN"]).
         first["Plan"]["Total Cost"]
-    return cost
+    cost
   rescue NoMethodError
-    return nil
+    nil
   end
 
   private
@@ -102,61 +102,8 @@ class GraphDataFetcher
   def build_statement(type = :node)
     type = type.to_s
     <<-SQL
-    (
-    #{init_statement}
-    #{gather_statement}
-    SELECT DISTINCT "loop_#{@depth-1}"."#{type}_id" FROM "loop_#{@depth-1}"
-    )
+    ( SELECT DISTINCT "#{type}_id" FROM fetch_graph_data(#{@center.id}, '#{@source_table}', '#{@target_table}', #{@depth}) )
     SQL
-  end
-
-  def init_statement
-    <<-SQL
-    WITH "loop_0" AS (SELECT "ids".* FROM
-      (SELECT DISTINCT ("#{@source_table}"."source_id") AS node_id,
-        ("#{@source_table}"."id") AS edge_id
-        FROM "#{@source_table}"
-        WHERE ("#{@source_table}"."source_id" = #{@center.id} OR
-          "#{@source_table}"."target_id" = #{@center.id})
-      UNION
-      SELECT DISTINCT ("#{@source_table}"."target_id") AS node_id,
-        ("#{@source_table}"."id") AS edge_id
-        FROM "#{@source_table}"
-        WHERE ("#{@source_table}"."source_id" = #{@center.id} OR
-          "#{@source_table}"."target_id" = #{@center.id})) AS ids)
-    SQL
-  end
-
-  def gather_statement
-    stmt_for = ->(depth) do
-      before = depth - 1
-      stmt = <<-SQL
-      "loop_#{depth}" AS (
-      SELECT DISTINCT ("#{@source_table}"."source_id") AS node_id,
-        ("#{@source_table}"."id") AS edge_id
-        FROM "#{@source_table}"
-      INNER JOIN "loop_#{before}"
-      ON ("#{@source_table}"."source_id" = "loop_#{before}"."node_id" OR
-        "#{@source_table}"."target_id" = "loop_#{before}"."node_id")
-      UNION
-      SELECT DISTINCT ("#{@source_table}"."target_id") AS node_id,
-        ("#{@source_table}"."id") AS edge_id
-        FROM "#{@source_table}"
-      INNER JOIN "loop_#{before}"
-      ON ("#{@source_table}"."source_id" = "loop_#{before}"."node_id" OR
-        "#{@source_table}"."target_id" = "loop_#{before}"."node_id"))
-      SQL
-    end
-
-    gather_stmt = ((@depth-1) > 0) ? ", " : ""
-
-    (@depth-1).times do |current_depth|
-      current_depth = current_depth + 1
-      gather_stmt << stmt_for.call(current_depth)
-      gather_stmt << ", " unless current_depth == @depth-1
-    end
-
-    gather_stmt
   end
 
 end

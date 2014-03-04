@@ -29,6 +29,10 @@ module Repository::Access
   def public_rw?
     access == 'public_rw'
   end
+
+  def public_r?
+    access == 'public_r'
+  end
   
   private
 

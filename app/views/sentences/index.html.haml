@@ -2,11 +2,24 @@
 
 = ontology_nav @ontology, :sentences
 
+- if display_all?
+  %p.display_all
+    = t('.display_all_sentences')
+    %br/
+    = link_to "Click here #{t('.to_display_only_self_defined_sentences')}", polymorphic_url([*resource_chain, :sentences])
+- else
+  %p.display_subset
+    = t('.display_only_self_defined_sentences')
+    %br/
+    = link_to "Click here #{t('.to_display_all_sentences')}", polymorphic_url([*resource_chain, :sentences], all: true)
+
+
 = pagination do
   %table.sentences
     %thead
       %tr
         %th Name
         %th Text
+        %th
     %tbody
       = render collection

@@ -8,7 +8,8 @@ describe Hets do
 
   context 'Output directory parameter' do
     before do
-      @xml_path = Hets.parse Rails.root.join('test/fixtures/ontologies/owl/pizza.owl'), [], '/tmp'
+      xml_paths = Hets.parse Rails.root.join('test/fixtures/ontologies/owl/pizza.owl'), [], '/tmp'
+      @xml_path = xml_paths.last
     end
 
     it 'correctly be used' do
@@ -19,8 +20,9 @@ describe Hets do
   %w(owl/pizza.owl owl/generations.owl clif/cat.clif).each do |path|
     context path do
       before do
-        @xml_path = Hets.parse Rails.root.join("test/fixtures/ontologies/#{path}"), [], '/tmp'
-        @pp_path = @xml_path.sub(/\.[^.]*$/, '.pp.xml')
+        xml_paths = Hets.parse Rails.root.join("test/fixtures/ontologies/#{path}"), [], '/tmp'
+        @xml_path = xml_paths.last
+        @pp_path = xml_paths.first
       end
 
       it 'have created output file' do
@@ -40,11 +42,12 @@ describe Hets do
 
   context 'with url-catalog' do
     before do
-      @xml_path = Hets.parse \
+      xml_paths = Hets.parse \
         Rails.root.join("test/fixtures/ontologies/clif/monoid.clif"),
         ["http://colore.oor.net=http://develop.ontohub.org/colore/ontologies"],
         '/tmp'
-      @pp_path = @xml_path.sub(/\.[^.]*$/, '.pp.xml')
+      @xml_path = xml_paths.last
+      @pp_path = xml_paths.first
     end
 
     it 'have created output file' do

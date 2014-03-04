@@ -5,5 +5,5 @@ def unique_names(n)
     names << Faker::Lorem.word
     names.uniq!
   end
-  return [names.length, names]
+  [names.length, names]
 end
