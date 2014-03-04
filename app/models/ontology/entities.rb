@@ -57,13 +57,15 @@ module Ontology::Entities
     transaction do
       subclasses.each do |s|
         c1, c2 = s.hierarchical_class_names
-
-        child_id = self.entities.where('name = ? OR iri = ?', c1, c1).first.id
-        parent_id = self.entities.where('name = ? OR iri = ?', c2, c2).first.id
-
-        EEdge.create! child_id: child_id, parent_id: parent_id
-        if EEdge.where(child_id: child_id, parent_id: parent_id).first.nil?
-          raise StandardError.new('Circle detected')
+        
+        unless c1 == "Thing" || c2 == "Thing"
+          child_id = self.entities.where('name = ? OR iri = ?', c1, c1).first.id
+          parent_id = self.entities.where('name = ? OR iri = ?', c2, c2).first.id
+        
+          EEdge.create! child_id: child_id, parent_id: parent_id
+          if EEdge.where(child_id: child_id, parent_id: parent_id).first.nil?
+            raise StandardError.new('Circle detected')
+          end
         end
       end
     end
