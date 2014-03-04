@@ -59,6 +59,17 @@ describe ConcurrencyBalancer do
       expect { ConcurrencyBalancer.sequential_lock { } }.
         not_to raise_error
     end
+
+    it "should forward inner block errors when the lock isn't taken" do
+      expect { ConcurrencyBalancer.sequential_lock { raise ArgumentError } }.
+        to raise_error(ArgumentError)
+    end
+
+    it "should still release the lock on internal errors" do
+      expect { ConcurrencyBalancer.sequential_lock { raise ArgumentError } }.
+        to raise_error(ArgumentError)
+      expect(redis.sismember ConcurrencyBalancer::REDIS_KEY, 'iri').to be_false
+    end
   end
 
 end
