@@ -26,7 +26,7 @@ class Ontology < ActiveRecord::Base
   # Multiple Class Features
   include Aggregatable
 
-  class DeleteError < StandardError; end
+  class Ontology::DeleteError < StandardError; end
 
   belongs_to :language
   belongs_to :logic, counter_cache: true
@@ -158,7 +158,7 @@ class Ontology < ActiveRecord::Base
   end
 
   def destroy
-    raise DeleteError if is_imported?
+    raise Ontology::DeleteError if is_imported? && !repository.is_destroying
     super
   end
 

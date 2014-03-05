@@ -14,10 +14,16 @@ class Repository < ActiveRecord::Base
   has_many :ontologies, dependent: :destroy
   has_many :url_maps, dependent: :destroy
 
-  attr_accessible :name, :description, :source_type, :source_address, :access
+  attr_accessible :name,
+                  :description,
+                  :source_type,
+                  :source_address,
+                  :access,
+                  :is_destroying
   attr_accessor :user
 
   after_save :clear_readers
+  before_destroy :mark_as_destroying, prepend: true
 
   scope :latest, order('updated_at DESC')
 
@@ -28,5 +34,12 @@ class Repository < ActiveRecord::Base
   def to_param
     path
   end
-  
+
+  protected
+
+  def mark_as_destroying
+    self.is_destroying = true
+    save
+  end
+
 end
