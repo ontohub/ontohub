@@ -79,7 +79,7 @@ Ontohub::Application.routes.draw do
     resources :url_maps, except: :show
     resources :errors, :only => :index
 
-    resources :ontologies, only: [:index, :show, :edit, :update] do
+    resources :ontologies, only: [:index, :show, :edit, :update, :destroy] do
       collection do
         post 'retry_failed' => 'ontologies#retry_failed'
         get 'keywords' => 'ontology_search#keywords'
