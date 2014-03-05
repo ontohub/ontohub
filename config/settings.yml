@@ -57,6 +57,8 @@ external_repository_name: 'External'
 fallback_commit_user: 'ontohub_system'
 fallback_commit_email: 'ontohub_system@ontohub.org'
 
+format_selection: false
+
 # Possible values for metadata, adapted from OMV
 formality_levels:
   - name: vocabulary 
