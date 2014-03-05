@@ -1,5 +1,5 @@
 class ExternalRepository
-  include UriFetcher
+  extend UriFetcher
 
   class << self
 
@@ -64,7 +64,7 @@ class ExternalRepository
         join(determine_path(external_iri, :dirpath))
       ensure_path_existence(dir)
       filepath = dir.join(determine_basename(external_iri))
-      fetch_uri_content(uri, write_file: filepath)
+      fetch_uri_content(external_iri, write_file: filepath)
       filepath
     end
 
