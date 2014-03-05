@@ -9,6 +9,7 @@ module Entity::Readability
     iri = URI.parse(name_is_iri_and_in_text)
     self.display_name = iri.fragment || iri.path.split("/").last
     self.iri = iri.to_s
+    self.display_name.gsub!(/_/, ' ')
   end
   
   def name_is_iri_and_in_text
