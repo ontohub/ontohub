@@ -10,3 +10,4 @@ $ ->
   $("ul.formats a[title]").tooltip placement: "bottom"
   $("span.entity_tooltip").tooltip placement: "right"
   $(".iri").tooltip()
+  $(".tooltip-btn").tooltip()
