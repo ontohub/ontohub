@@ -1,6 +1,5 @@
-- if category then
-  %li{ :id => category.id }
-    %a
-      = category.name.gsub(/_/, ' ')
-    %ul 
-      = render :partial => 'category', :collection => category.children.to_a
+- if category
+  %li{id: category.id}
+    %a= category
+    %ul
+      = render partial: 'category', collection: category.children.to_a
