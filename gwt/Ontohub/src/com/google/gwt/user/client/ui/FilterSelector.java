@@ -78,6 +78,8 @@ public class FilterSelector extends Composite implements HasWidgets, HasFilterSe
 	@UiHandler("button")
 	public final void onButtonClick(ClickEvent event) {
 		toggle();
+		event.stopPropagation();
+		event.preventDefault();
 	}
 
 	/**
