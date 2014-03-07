@@ -1,5 +1,7 @@
 class Repository < ActiveRecord::Base
 
+  @destroying ||= []
+
   include Permissionable
 
   include Repository::Access
@@ -18,8 +20,7 @@ class Repository < ActiveRecord::Base
                   :description,
                   :source_type,
                   :source_address,
-                  :access,
-                  :is_destroying
+                  :access
   attr_accessor :user
 
   after_save :clear_readers
@@ -35,11 +36,25 @@ class Repository < ActiveRecord::Base
     path
   end
 
+  def is_destroying?
+    self.class.instance_variable_get(:@destroying).include?(self.id)
+  end
+
+  def destroy
+    super
+  rescue StandardError => e
+    unmark_as_destroying
+    raise e
+  end
+
   protected
 
   def mark_as_destroying
-    self.is_destroying = true
-    save
+    self.class.instance_variable_get(:@destroying) << self.id if self.id
+  end
+
+  def unmark_as_destroying
+    self.class.instance_variable_get(:@destroying).delete(self.id) if self.id
   end
 
 end
