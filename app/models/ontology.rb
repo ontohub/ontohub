@@ -145,6 +145,10 @@ class Ontology < ActiveRecord::Base
     import_links.present?
   end
 
+  def is_imported_from_other_repository?
+    import_links_from_other_repositories.present?
+  end
+
   def imported_by
     import_links.map(&:source)
   end
@@ -158,7 +162,9 @@ class Ontology < ActiveRecord::Base
   end
 
   def destroy
-    raise Ontology::DeleteError if is_imported? && !repository.is_destroying
+    raise Ontology::DeleteError if is_imported? &&
+                                   (!repository.is_destroying? || is_imported_from_other_repository?)
+                                   # if repository destroying, then check if imported externally
     super
   end
 
@@ -181,6 +187,10 @@ class Ontology < ActiveRecord::Base
 
   def import_links
     Link.where(target_id: self.id, kind: "import")
+  end
+
+  def import_links_from_other_repositories
+    import_links.select { |l| l.source.repository != self.repository }
   end
 
 end
