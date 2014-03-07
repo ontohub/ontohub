@@ -117,6 +117,10 @@ class Ability
         !subject.is_private
       end
 
+      can :read, Project
+      can :read, Task
+      can :read, LicenseModel
+      can :read, FormalityLevel
       can :read, Category
     end
     
