@@ -2,7 +2,9 @@ module Ontology::Links
   extend ActiveSupport::Concern
 
   included do
-    has_many :links, :extend => Methods
+    has_many :links,
+      autosave: false,
+      extend:   Methods
   end
 
   module Methods
