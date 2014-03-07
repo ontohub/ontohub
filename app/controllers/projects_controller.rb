@@ -5,24 +5,24 @@ class ProjectsController < InheritedResources::Base
   load_and_authorize_resource
 
   def create
-    create! do |format|
+    create! do |success, failure|
       if parent
         parent.projects << resource
         parent.save
       end
-      format.html { redirect_to [*resource_chain, :projects] }
+      success.html { redirect_to [*resource_chain, :projects] }
     end
   end
 
   def update
-    update! do |format|
-      format.html { redirect_to [*resource_chain, :projects] }
+    update! do |success, failure|
+      success.html { redirect_to [*resource_chain, :projects] }
     end
   end
 
   def destroy
-    destroy! do |format|
-      format.html { redirect_to [*resource_chain, :projects] }
+    destroy! do |success, failure|
+      success.html { redirect_to [*resource_chain, :projects] }
     end
   end
 

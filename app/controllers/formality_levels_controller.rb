@@ -4,24 +4,24 @@ class FormalityLevelsController < InheritedResources::Base
   load_and_authorize_resource
 
   def create
-    create! do |format|
+    create! do |success, failure|
       if parent
         parent.formality_levels << resource
         parent.save
       end
-      format.html { redirect_to [*resource_chain, :formality_levels] }
+      success.html { redirect_to [*resource_chain, :formality_levels] }
     end
   end
 
   def update
-    update! do |format|
-      format.html { redirect_to [*resource_chain, :formality_levels] }
+    update! do |success, failure|
+      success.html { redirect_to [*resource_chain, :formality_levels] }
     end
   end
 
   def destroy
-    destroy! do |format|
-      format.html { redirect_to [*resource_chain, :formality_levels] }
+    destroy! do |success, failure|
+      success.html { redirect_to [*resource_chain, :formality_levels] }
     end
   end
 
