@@ -8,4 +8,9 @@ class EntityMapping < ActiveRecord::Base
   def to_s
    "#{self.source} → #{self.target}"
   end
+
+  def apply(sentence)
+    sentence.text.gsub(source.name, target.name)
+  end
+
 end
