@@ -38,8 +38,13 @@ module OntologyVersion::States
   protected
   
   def after_update_state
-    ontology.state = state.to_s
+    ontology.state = state
+
+    # unset logic_id to pass the logic_id_check in case of failures
+    ontology.logic_id = nil if state=='failed'
+
     ontology.save!
+    
     if ontology.distributed?
       ontology.children.update_all state: ontology.state
     end
