@@ -21,8 +21,7 @@ class ActiveSupport::TestCase
 
   setup do
     # clean git repositories
-    FileUtils.rmtree Ontohub::Application.config.git_root
-    FileUtils.rmtree Ontohub::Application.config.git_working_copies_root
+    FileUtils.rmtree Ontohub::Application.config.data_root
     FileUtils.rmtree Repository::Symlink::PATH
   end
 

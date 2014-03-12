@@ -39,10 +39,15 @@ module Repository::GitRepositories
     git.is_head?(commit_oid)
   end
 
+  def delete_file(filepath, user, message = nil, &block)
+    message ||= "delete file #{filepath}"
+    git.delete_file(user_info(user), filepath, &block)
+  end
+
   def save_file(tmp_file, filepath, message, user, iri=nil)
     version = nil
 
-    git.add_file({email: user.email, name: user.name}, tmp_file, filepath, message) do |commit_oid|
+    git.add_file(user_info(user), tmp_file, filepath, message) do |commit_oid|
       version = save_ontology(commit_oid, filepath, user, iri: iri)
     end
     touch
@@ -250,4 +255,7 @@ module Repository::GitRepositories
     end
   end
 
+  def user_info(user)
+    {email: user.email, name: user.name}
+  end
 end

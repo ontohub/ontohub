@@ -1,6 +1,7 @@
-%h2= @category.name.gsub(/_/, ' ')
+%h2= @category
   
-Following ontologies are in this category
-%ul.ontology_list
-  -@ontologies.each do |ontology|
+%p This category contains the following ontologies:
+
+%ul.no-bullet
+  - @ontologies.each do |ontology|
     %li= fancy_link ontology
