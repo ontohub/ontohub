@@ -5,13 +5,6 @@ class Sentence < ActiveRecord::Base
   belongs_to :ontology
   has_and_belongs_to_many :entities
 
-  def extract_class_names
-    c1,c2 = self.text.split('SubClassOf:').map do |c|
-      c.scan(URI::regexp(Settings.allowed_iri_schemes))
-    end
-    [ c1[0][-1], c2[0][-1] ]
-  end
-
   def hierarchical_class_names
     match = self.text.match(%r{
       \s*
@@ -30,7 +23,7 @@ class Sentence < ActiveRecord::Base
       )
       \s*}x)
     if match
-      [match[:first_class], match[:second_class]]
+      [match[:first_class].strip, match[:second_class].strip]
     else
       []
     end
