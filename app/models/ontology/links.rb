@@ -13,6 +13,17 @@ module Ontology::Links
       proxy_association.owner.iri_for_child(*args)
     end
     
+    def determine_link_type(typename)
+      linktype = typename
+      raise "link type missing" if linktype.blank?
+      kind   = Link::KINDS.find {|k| linktype.downcase.include?(k) }
+      if linktype.include?("Thm")
+        kind ||= "view"
+      else
+        kind ||= "import"
+      end
+    end
+
     def update_or_create_from_hash(hash, user, timestamp = Time.now)
       raise ArgumentError, 'No hash given.' unless hash.is_a? Hash
       # hash['name'] # maybe nil, in this case, we need to generate a name
@@ -26,13 +37,7 @@ module Ontology::Links
       
       # linktype
       linktype = hash['type']
-      raise "link type missing" if linktype.blank?
-      kind   = Link::KINDS.find {|k| linktype.downcase.include?(k) }
-      if linktype.include?("Thm")
-        kind ||= "view"
-      else
-        kind ||= "import"
-      end
+      kind = determine_link_type(linktype)
       
       # morphism
       gmorphism = hash['morphism']
