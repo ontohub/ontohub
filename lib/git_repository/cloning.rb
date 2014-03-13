@@ -34,7 +34,7 @@ module GitRepository::Cloning
   end
 
   def pull
-    with_head_change do
+    with_head_change head_oid do
       git_exec 'remote', 'update'
     end
   end
