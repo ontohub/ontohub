@@ -8,20 +8,24 @@ module Ontology::Links
   end
 
   module Methods
+
+    DEFAULT_LINK_KIND = 'import'
     
     def iri_for_child(*args)
       proxy_association.owner.iri_for_child(*args)
     end
     
     def determine_link_type(typename)
-      linktype = typename
-      raise "link type missing" if linktype.blank?
-      kind   = Link::KINDS.find {|k| linktype.downcase.include?(k) }
-      if linktype.include?("Thm")
-        kind ||= "view"
-      else
-        kind ||= "import"
+      raise "link type missing" if typename.blank?
+      kind = Link::KINDS_MAPPING[typename]
+      if kind.nil?
+        key = Link::KINDS_MAPPING.keys.find {|k| typename.include?(k) }
+        kind = Link::KINDS_MAPPING[key]
       end
+      if kind.nil?
+        kind = Link::KINDS.find {|k| typename.downcase.include?(k) }
+      end
+      kind || DEFAULT_LINK_KIND
     end
 
     def update_or_create_from_hash(hash, user, timestamp = Time.now)
