@@ -23,8 +23,6 @@ module Ontology::Links
       
       source = Ontology.find_with_iri(source_iri) || (raise ArgumentError, "source ontology not found: #{source_iri}")
       target = Ontology.find_with_iri(target_iri) || (raise ArgumentError, "target ontology not found: #{target_iri}")
-      Rails.logger.warn("source: #{source.inspect}")
-      Rails.logger.warn("target: #{target.inspect}")
       
       # linktype
       linktype = hash['type']
