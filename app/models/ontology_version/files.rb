@@ -25,7 +25,7 @@ module OntologyVersion::Files
   end
 
   def tmp_dir
-    Rails.root.join("tmp","commits",commit_oid)
+    Ontohub::Application.config.commits_path.join(commit_oid)
   end
 
   # path to the raw file

@@ -1,20 +1,20 @@
 class CategoriesController < InheritedResources::Base
 
+  respond_to :json
   belongs_to :ontology, optional: true
   before_filter :check_read_permissions
 
   load_and_authorize_resource
 
   def index
-    if params[:ontology_id]
-      @ontology = Ontology.find(params[:ontology_id])
-      @categories = Kaminari.paginate_array(@ontology.categories).page(params[:page])
-    else
+    unless params[:ontology_id]
       @c_vertices = []
       if vert = Category.first
         @c_vertices = vert.roots.first.children
       end
     end
+
+    super
   end
 
   def show
