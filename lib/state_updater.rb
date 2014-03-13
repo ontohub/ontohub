@@ -30,11 +30,21 @@ module StateUpdater
           after_failed
         end
       rescue Exception => ee
-        # Can really happen
-        Rails.logger.fatal "Unable to update state of #{self.class} #{id}"
+        # Can really happen (SQL Exceptions, etc.)
+        error  = "Nested exception on updating state of #{self.class} #{id}\n"
+        error << "#{ee.class}: #{ee}\n  " << ee.backtrace.join("\n  ") << "\n"
+        error << "#{e.class}: #{e}\n  "   <<  e.backtrace.join("\n  ")
+
+        # Update attributes without any callbacks
+        self.class.where(id: id).update_all \
+          state:            'failed',
+          state_updated_at: Time.now,
+          last_error:       error
+
+        # re-raise
         raise
       end
-      raise e
+      raise
     end
   end
 
