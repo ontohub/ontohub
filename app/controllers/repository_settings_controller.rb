@@ -3,5 +3,6 @@ class RepositorySettingsController < InheritedResources::Base
   
   def index
     repo = Repository.find_by_path(params[:repository_id])
+    redirect_to repository_url_maps_path
   end
 end
