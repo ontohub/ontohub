@@ -8,8 +8,11 @@ Ontohub::Application.routes.draw do
   resources :ontology_types, only: :show
   resources :formality_levels, only: :show
 
-  devise_for :users, :controllers => { :registrations => "users/registrations" }
-  resources :users, :only => :show
+  devise_for :users, controllers: {
+    confirmations: 'users/confirmations',
+    registrations: 'users/registrations'
+  }
+  resources :users, only: :show
   resources :keys, except: [:show, :edit, :update]
   
   resources :logics do
@@ -77,7 +80,7 @@ Ontohub::Application.routes.draw do
     resources :errors, :only => :index
     resources :repository_settings, :only => :index
 
-    resources :ontologies, only: [:index, :show, :edit, :update] do
+    resources :ontologies, only: [:index, :show, :edit, :update, :destroy] do
       collection do
         post 'retry_failed' => 'ontologies#retry_failed'
         get 'keywords' => 'ontology_search#keywords'

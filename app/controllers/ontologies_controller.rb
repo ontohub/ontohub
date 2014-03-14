@@ -9,7 +9,7 @@ class OntologiesController < InheritedResources::Base
   respond_to :json, :xml
   has_pagination
   has_scope :search, :state
-  actions :index, :show, :edit, :update
+  actions :index, :show, :edit, :update, :destroy
 
   before_filter :check_write_permission, :except => [:index, :show, :oops_state]
   before_filter :check_read_permissions
@@ -23,7 +23,6 @@ class OntologiesController < InheritedResources::Base
       render :index_global
     end
   end
-  
 
   def new
     @ontology_version = build_resource.versions.build
@@ -68,6 +67,18 @@ class OntologiesController < InheritedResources::Base
       end
       format.json do
         respond_with resource
+      end
+    end
+  end
+
+  def destroy
+    if resource.is_imported?
+      flash[:error] = "Can't delete an ontology that is imported by another one."
+      false
+    else
+      resource.repository.delete_file(resource.path, current_user, "Delete ontology #{resource}") do
+        resource.destroy_with_parent
+        destroy!
       end
     end
   end
@@ -127,4 +138,3 @@ class OntologiesController < InheritedResources::Base
   end
 
 end
-
