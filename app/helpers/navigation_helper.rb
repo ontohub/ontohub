@@ -66,7 +66,7 @@ module NavigationHelper
     }
   end
      
-  def subnavigation(resource, pages, current_page, additional_actions = [], options = {})
+  def subnavigation(resource, pages, current_page, additional_actions = [], options = {}, partial = '/shared/subnavigation')
     # Add counters
     pages.each do |row|
       counter_key = "#{row[0]}_count"
@@ -76,7 +76,7 @@ module NavigationHelper
     @page_title = current_page
     @page_title = "#{current_page.capitalize} · #{@page_title}" if current_page != pages[0][0]
     
-    render :partial => '/shared/subnavigation', :locals => {
+    render :partial => partial, :locals => {
       resource:           resource,
       current_page:       current_page,
       pages:              pages,
