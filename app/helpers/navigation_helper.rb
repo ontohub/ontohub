@@ -12,7 +12,6 @@ module NavigationHelper
     pages << [:"File browser", [*chain, :tree]]
     pages << [:history,          repository_ref_path(resource, 'master', path: nil, action: :history)]
     pages << [:settings,  repository_repository_settings_path(resource)]
-    pages << [:errors,           repository_errors_path(resource)]
     pages << [:permissions,      [*chain, :permissions]] if can? :permissions, resource
  
     subnavigation(resource, pages, current_page, [], options)
@@ -150,7 +149,8 @@ module NavigationHelper
     pages << [:errors,           repository_errors_path(repository)]
     pages << [:permissions,      [*chain, :permissions]] if can? :permissions, repository
     
-    subnavigation(repository, pages, current_page)
+    subnavigation(repository, pages, current_page, [],{}, '/repository_settings/subnav')
   end
+  
 
 end
