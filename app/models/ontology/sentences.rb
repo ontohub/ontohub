@@ -7,12 +7,28 @@ module Ontology::Sentences
       extend:   Methods
     include GraphStructures::SqlHelper
 
-    def translated_sentences(audience)
-      translated = self.sentences.translated_for(audience)
-      imported = self.direct_imported_ontologies.map do |ontology|
-        ontology.translated_sentences(self)
+    def translated_sentences
+      split_translated_sentences.flatten
+    end
+
+    def split_translated_sentences
+      translated = TranslatedSentence.where(audience_id: self)
+      sentence_ids = translated.pluck(:sentence_id)
+      imported = self.direct_imported_ontologies.reduce([[], []]) do |arr, ontology|
+        other_split = ontology.split_translated_sentences
+        other_translated = other_split.first
+        other_translated.delete_if do |translated_sentence|
+          sentence_ids.include?(translated_sentence.sentence_id)
+        end
+        other_sentences = other_split.last
+        other_sentences.delete_if do |sentence|
+          sentence_ids.include?(sentence.id)
+        end
+        other_translated.each { |ot| arr.first << ot }
+        other_sentences.each { |os| arr.last << os }
+        arr
       end
-      translated + imported
+      [translated + imported.first, self.sentences + imported.last]
     end
 
     def incoming_imports_with_mappings
