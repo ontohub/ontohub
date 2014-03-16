@@ -149,11 +149,15 @@ class Ontology < ActiveRecord::Base
     import_links.map(&:source)
   end
 
-  def destroy_with_parent
+  def destroy_with_parent(user)
     if parent
-      parent.destroy
+      repository.delete_file(parent.path, user, "Delete ontology #{parent}") do
+        parent.destroy
+      end
     else
-      destroy
+      repository.delete_file(path, user, "Delete ontology #{self}") do
+        destroy
+      end
     end
   end
 
