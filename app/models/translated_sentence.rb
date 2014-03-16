@@ -6,4 +6,11 @@ class TranslatedSentence < ActiveRecord::Base
 
   attr_accessible :audience, :ontology, :sentence, :entity_mapping
   attr_accessible :translated_text
+
+  # returns a translated sentence if
+  # an applicable one could be found
+  def self.choose_applicable(sentence, mapping)
+    source, target = mapping.link.source, mapping.link.target
+    where(audience_id: source, sentence_id: sentence).first || sentence
+  end
 end
