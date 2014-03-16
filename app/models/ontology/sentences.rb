@@ -39,11 +39,11 @@ module Ontology::Sentences
 
     def create_translated_sentences
       query, args = links_by_kind_query(self, 'import')
-      imported_ontology_ids = pluck_select([query, *args], :id).reverse
+      imported_ontology_ids = pluck_select([query, *args], :ontology_id).reverse
       imported_ontology_ids.each { |o_id| Ontology.find(o_id).create_translated_sentences }
       import_links = incoming_imports_with_mappings
       if import_links.any?
-        sentences.each do |sentence|
+        combined_sentences.each do |sentence|
           import_links.each do |import_link|
             import_link.entity_mappings.each do |mapping|
               translate_sentence(sentence, mapping)
@@ -54,15 +54,18 @@ module Ontology::Sentences
     end
 
     def translate_sentence(sentence, mapping)
-      entity_ids = sentence.entities.pluck(:id)
-      entity_intersection = entity_ids.include?(mapping.source_id)
-      if entity_intersection
-        translated_text = mapping.apply(sentence)
-        audience = mapping.link.source
-        TranslatedSentence.create(audience: audience,
-                                  sentence: sentence,
-                                  translated_text: translated_text,
-                                  ontology: self)
+      applicable_sentence = TranslatedSentence.choose_applicable(sentence, mapping)
+      if mapping.applicable?(applicable_sentence)
+        translated_text = mapping.apply(applicable_sentence)
+        audience = mapping.link.target
+        translated_sentence = TranslatedSentence.where(
+          entity_mapping_id: mapping,
+          audience_id: audience,
+          sentence_id: sentence,
+          ontology_id: mapping.link.source).first_or_initialize
+        translated_sentence.translated_text = translated_text
+        translated_sentence.save
+        translated_sentence
       end
     end
 
