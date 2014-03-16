@@ -19,7 +19,7 @@ class SentencesController < InheritedResources::Base
 
   def collection
     if display_all?
-      Kaminari.paginate_array(parent.combined_sentences).page(params[:page])
+      Kaminari.paginate_array(parent.translated_sentences).page(params[:page])
     else
       super
     end
