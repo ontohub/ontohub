@@ -31,10 +31,12 @@ module Ontology::Sentences
       [translated + imported.first, self.sentences + imported.last]
     end
 
+    # Find import-links which describe the following mapping:
+    # some ontology imports self.
     def incoming_imports_with_mappings
       # INNER JOINS always return an empty result set if the
       # ON clause does not match.
-      Link.joins(:entity_mappings).where(target_id: self, kind: 'import')
+      Link.joins(:entity_mappings).where(source_id: self, kind: 'import')
     end
 
     def create_translated_sentences

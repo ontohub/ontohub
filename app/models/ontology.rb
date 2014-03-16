@@ -167,9 +167,9 @@ class Ontology < ActiveRecord::Base
   end
 
   def direct_imported_ontologies
-    ontology_ids = Link.where(source_id: self, kind: 'import').
-      pluck(:target_id)
-    Ontology.find(ontology_ids)
+    ontology_ids = Link.where(target_id: self, kind: 'import').
+      pluck(:source_id)
+    Ontology.where(id: ontology_ids)
   end
 
   def combined_sentences
