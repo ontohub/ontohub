@@ -7,6 +7,16 @@ class TranslatedSentence < ActiveRecord::Base
   attr_accessible :audience, :ontology, :sentence, :entity_mapping
   attr_accessible :translated_text
 
+  delegate :name, to: :sentence
+
+  def text
+    translated_text
+  end
+
+  def display_text?
+    false
+  end
+
   # returns a translated sentence if
   # an applicable one could be found
   def self.choose_applicable(sentence, mapping)
