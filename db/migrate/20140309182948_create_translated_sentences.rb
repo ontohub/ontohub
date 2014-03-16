@@ -5,6 +5,7 @@ class CreateTranslatedSentences < ActiveRecord::Migration
       t.references :audience
       t.references :ontology
       t.references :sentence
+      t.references :entity_mapping
       t.timestamps
 
     end
