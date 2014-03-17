@@ -9,7 +9,6 @@ module Ontology::Links
 
   module Methods
 
-    DEFAULT_LINK_KIND = 'import'
     
     def iri_for_child(*args)
       proxy_association.owner.iri_for_child(*args)
@@ -25,7 +24,7 @@ module Ontology::Links
       if kind.nil?
         kind = Link::KINDS.find {|k| typename.downcase.include?(k) }
       end
-      kind || DEFAULT_LINK_KIND
+      kind || Link::DEFAULT_LINK_KIND
     end
 
     def update_or_create_from_hash(hash, user, timestamp = Time.now)
