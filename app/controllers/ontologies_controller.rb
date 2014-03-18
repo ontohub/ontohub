@@ -76,10 +76,8 @@ class OntologiesController < InheritedResources::Base
       flash[:error] = "Can't delete an ontology that is imported by another one."
       false
     else
-      resource.repository.delete_file(resource.path, current_user, "Delete ontology #{resource}") do
-        resource.destroy_with_parent
-        destroy!
-      end
+      resource.destroy_with_parent(current_user)
+      destroy!
     end
   end
 
