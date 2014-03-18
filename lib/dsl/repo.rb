@@ -1,10 +1,10 @@
-require 'subprocess.rb'
+#require 'subprocess.rb'
 require 'singleton'
 
 def init(path)
   FileUtils.mkdir_p(path)
   RepositoryCreator.instance.root_path = path
-  FileUtils.rm_rf(Dir.glob(path.join('*')))
+  RepositoryCreator.instance.cleanup
 end
 
 def repo_clone(*args)
@@ -38,18 +38,20 @@ class RepositoryCreator
   def save
     @current_repo.save
   end
+
+  def cleanup
+    FileUtils.rm_rf(Dir.glob(root_path.join('*')))
+  end
 end
 
 class Repo
   attr_accessor :url_maps
   def initialize(name, url=nil)
     @name = name
-    @path = RepositoryCreator.instance.root_path.join(name)
+    @path = url || RepositoryCreator.instance.root_path.join(name)
     @url_maps = []
 
-    if url
-      Subprocess.run 'git', 'clone', url, @path
-    else
+    unless url
       Subprocess.run 'git', 'init', @path
     end
   end
@@ -62,12 +64,3 @@ class Repo
     r.async :convert_to_local!
   end
 end
-
-# def git_exec(name, *args)
-#   args.unshift 'git'
-#   args.push \
-#     GIT_DIR: NEW_REPOS_ROOT.join(name).to_s,
-#     LANG:    'C'
-#
-#   Subprocess.run *args
-# end
