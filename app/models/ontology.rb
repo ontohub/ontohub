@@ -184,7 +184,7 @@ class Ontology < ActiveRecord::Base
   end
 
   def import_links
-    Link.where(target_id: self.id, kind: "import")
+    Link.where(source_id: self.id, kind: "import")
   end
 
 end

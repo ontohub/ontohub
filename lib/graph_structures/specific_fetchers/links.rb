@@ -11,10 +11,10 @@ module GraphStructures
       def links_by_kind_query(center, kind)
         query = <<-SQL
 WITH RECURSIVE imported_ontologies(ontology_id) AS (
-    SELECT target_id FROM links WHERE links.kind = ? AND links.source_id = ?
+    SELECT source_id FROM links WHERE links.kind = ? AND links.target_id = ?
   UNION
-    SELECT target_id FROM links
-      JOIN imported_ontologies ON links.source_id = imported_ontologies.ontology_id
+    SELECT source_id FROM links
+      JOIN imported_ontologies ON links.target_id = imported_ontologies.ontology_id
       WHERE links.kind = ?
 )
 SELECT ontology_id FROM imported_ontologies
