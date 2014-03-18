@@ -65,7 +65,7 @@ describe Ontology do
 
       it 'should not be allowed' do
         importing = create :ontology
-        create :link, source: importing, target: ontology, kind: 'import'
+        create :import_link, target: importing, source: ontology
         expect { ontology.destroy_with_parent(user) }.to raise_error(Ontology::DeleteError)
       end
     end
