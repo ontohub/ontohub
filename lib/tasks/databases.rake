@@ -47,8 +47,9 @@ namespace :db do
   task :recreate do
     Rake::Task["db:migrate:clean"].invoke
     cleanup_git_folders
-    # TODO: add cleaning of redis-store here
-    Rake::Task["db:seed"]
+    # TODO: cleanup_redis
+    Rake::Task["db:seed"].invoke
+    Rake::Task["repos:create"].invoke
   end
 end
 
@@ -57,3 +58,9 @@ def cleanup_git_folders
   FileUtils.rm_rf(Dir.glob(Ontohub::Application.config.symlink_path.join('*')))
   FileUtils.rm_rf(Dir.glob(Ontohub::Application.config.commits_path.join('*')))
 end
+
+=begin
+def cleanup_redis
+  ConcurrencyBalancer::RedisWrapper.new.keys.each{ |k| ConcurrencyBalancer::RedisWrapper.new.del k }
+end
+=end
