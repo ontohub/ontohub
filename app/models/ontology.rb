@@ -170,6 +170,11 @@ class Ontology < ActiveRecord::Base
     fetch_links_by_kind(self, 'import')
   end
 
+  def contains_logic_translations?
+    query, args = contains_logic_translations_query(self)
+    pluck_select([query, *args], :logically_translated).size > 1
+  end
+
   def direct_imported_ontologies
     ontology_ids = Link.where(target_id: self, kind: 'import').
       pluck(:source_id)
