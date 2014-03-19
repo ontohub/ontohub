@@ -4,6 +4,7 @@ class Sentence < ActiveRecord::Base
 
   belongs_to :ontology
   has_and_belongs_to_many :entities
+  default_scope where(imported: false)
 
   def hierarchical_class_names
     match = self.text.match(%r{

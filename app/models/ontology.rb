@@ -181,6 +181,15 @@ class Ontology < ActiveRecord::Base
     Sentence.where(ontology_id: affected_ontology_ids)
   end
 
+  # list all sentences defined on this ontology,
+  # those who are self defined and those which
+  # are imported (ImpAxioms)
+  def all_sentences
+    Sentence.unscoped.
+      where(ontology_id: self).
+      where('imported = ? OR imported = ?', true, false)
+  end
+
   protected
 
   scope :s_find_by_file, ->(file) do
