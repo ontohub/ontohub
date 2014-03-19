@@ -105,17 +105,15 @@ module Ontology::Import
 
           logic_callback = ParsingCallback.determine_for(ontology)
 
+          ontology.entities.destroy_all
+          ontology.all_sentences.destroy_all
           ontology.entities_count  = 0
           ontology.sentences_count = 0
+          ontology.save!
 
           logic_callback.ontology(h, ontology)
         },
         ontology_end: Proc.new {
-          # remove outdated sentences and entities
-          conditions = ['updated_at < ?', now]
-          ontology.entities.where(conditions).destroy_all
-          ontology.sentences.where(conditions).delete_all
-          ontology.save!
           ontologies << ontology
 
           logic_callback.ontology_end({}, ontology)
