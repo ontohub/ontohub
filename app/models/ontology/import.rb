@@ -136,6 +136,16 @@ module Ontology::Import
             logic_callback.axiom(h, sentence)
           end
         },
+        imported_axiom: Proc.new { |h|
+          if logic_callback.pre_axiom(h)
+            sentence = ontology.sentences.update_or_create_from_hash(h, now)
+            sentence.imported = true
+            sentence.save
+            ontology.sentences_count += 1
+
+            logic_callback.axiom(h, sentence)
+          end
+        },
         link: Proc.new { |h|
           if logic_callback.pre_link(h)
             link = self.links.update_or_create_from_hash(h, user, now)
