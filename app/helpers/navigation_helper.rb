@@ -51,7 +51,7 @@ module NavigationHelper
     
     pages.map! do |page|
       method = page.first
-      count = ontology.send(method).size if ontology.respond_to?(method)
+      count = ontology.send(method).count if ontology.respond_to?(method)
       [*page, count]
     end
     
