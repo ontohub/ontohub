@@ -1,6 +1,7 @@
 require 'spec_helper'
 
 describe Ontology do
+  let(:user) { create :user }
 
   context 'when naming an ontology' do
     let(:ontology) { create :ontology }
@@ -11,11 +12,70 @@ describe Ontology do
     end
   end
 
+  context 'when deleting' do
+    context 'a general ontology' do
+      let(:ontology) { create :ontology }
+      it 'should delete the defining file as well' do
+        file = ontology.path
+        repository = ontology.repository
+
+        repository.git.commit_file(repository.user_info(user), 'file deletion test', file, 'add file')
+
+        expect(repository.path_exists?(file)).to be_true
+        ontology.destroy_with_parent(user)
+        expect(repository.path_exists?(file)).to be_false
+      end
+
+      it 'should be deleted' do
+        param = ontology.to_param
+        ontology.destroy_with_parent(user)
+        expect { Ontology.find(param) }.to raise_error(ActiveRecord::RecordNotFound)
+      end
+    end
+
+    context 'a single ontology in a distributed ontology' do
+      let(:distributed_ontology) { create :linked_distributed_ontology }
+      let(:ontology) { distributed_ontology.children.first }
+      it 'should delete the parent and its child ontologies as well' do
+        params = distributed_ontology.children.map(&:to_param)
+        params << distributed_ontology.to_param
+        ontology.destroy_with_parent(user)
+
+        params.each do |param|
+          expect { Ontology.find(param) }.to raise_error(ActiveRecord::RecordNotFound)
+        end
+      end
+    end
+
+    context 'a distributed ontology' do
+      let (:ontology) { create :distributed_ontology }
+      it 'should delete the child ontologies as well' do
+        params = ontology.children.map(&:to_param)
+        params << ontology.to_param
+        ontology.destroy_with_parent(user)
+
+        params.each do |param|
+          expect { Ontology.find(param) }.to raise_error(ActiveRecord::RecordNotFound)
+        end
+      end
+    end
+
+    context 'an imported ontology' do
+      let(:ontology) { create :ontology }
+
+      it 'should not be allowed' do
+        importing = create :ontology
+        create :import_link, target: importing, source: ontology
+        expect { ontology.destroy_with_parent(user) }.to raise_error(Ontology::DeleteError)
+      end
+    end
+  end
+
   context 'when trying to get the imported ontologies' do
     let!(:ontology) { create :ontology }
     let!(:imported_ontology) do
       imported = create :single_ontology
-      create :import_link, source: ontology, target: imported
+      create :import_link, target: ontology, source: imported
       imported
     end
 
@@ -27,7 +87,7 @@ describe Ontology do
     context 'which have imports themselves' do
       let!(:imported_imported_ontology) do
         imported = create :single_ontology
-        create :import_link, source: imported_ontology, target: imported
+        create :import_link, target: imported_ontology, source: imported
         imported
       end
 
@@ -39,7 +99,6 @@ describe Ontology do
       end
 
     end
-
   end
 
 end

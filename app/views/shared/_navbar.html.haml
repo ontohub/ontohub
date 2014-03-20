@@ -2,6 +2,8 @@
   .container
     .navbar-header
       = link_to Settings.name, :root, class: 'navbar-brand'
+      .development-state
+        BETA
 
       %button.navbar-toggle{type: 'button', :'data-toggle' => 'collapse', :'data-target' => '.navbar-menu-collapse'}
         %span.sr-only Toggle navigation

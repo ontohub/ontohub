@@ -56,14 +56,16 @@ module Ontology::Entities
     subclasses = self.sentences.where("text LIKE '%SubClassOf%'").select { |sentence| sentence.text.split(" ").size == 4 }
     transaction do
       subclasses.each do |s|
-        c1, c2 = s.extract_class_names
-
-        child_id = Entity.where(display_name: c1, ontology_id: s.ontology.id).first.id
-        parent_id = Entity.where(display_name: c2, ontology_id: s.ontology.id).first.id
-
-        EEdge.create! child_id: child_id, parent_id: parent_id
-        if EEdge.where(child_id: child_id, parent_id: parent_id).first.nil?
-          raise StandardError.new('Circle detected')
+        c1, c2 = s.hierarchical_class_names
+        
+        unless c1 == "Thing" || c2 == "Thing"
+          child_id = self.entities.where('name = ? OR iri = ?', c1, c1).first.id
+          parent_id = self.entities.where('name = ? OR iri = ?', c2, c2).first.id
+        
+          EEdge.create! child_id: child_id, parent_id: parent_id
+          if EEdge.where(child_id: child_id, parent_id: parent_id).first.nil?
+            raise StandardError.new('Circle detected')
+          end
         end
       end
     end

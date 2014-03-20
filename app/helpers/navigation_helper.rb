@@ -49,10 +49,10 @@ module NavigationHelper
 
     actions = []
     
-    # Add counters
-    pages.each do |row|
-      counter_key = "#{row[0]}_count"
-      row << ontology.send(counter_key) if ontology.respond_to?(counter_key)
+    pages.map! do |page|
+      method = page.first
+      count = ontology.send(method).size if ontology.respond_to?(method)
+      [*page, count]
     end
     
     @page_title = ontology.to_s

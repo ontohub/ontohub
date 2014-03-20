@@ -1,4 +1,5 @@
 class ExternalRepository
+  extend UriFetcher
 
   class << self
 
@@ -6,8 +7,8 @@ class ExternalRepository
       Repository.where(name: Settings.external_repository_name).first_or_create
     end
 
-    def add_to_repository(iri, message, user)
-      tmp_path = download_iri(iri)
+    def add_to_repository(iri, message, user, location: iri)
+      tmp_path = download_iri(location)
       repository.save_file_only(tmp_path, determine_path(iri, :fullpath),
                                 message, user)
     end
@@ -59,16 +60,19 @@ class ExternalRepository
     end
 
     def download_iri(external_iri)
-      file_content = Net::HTTP.get(URI.parse(external_iri))
       dir = Pathname.new('/tmp/reference_ontologies/').
         join(determine_path(external_iri, :dirpath))
-      begin
-        dir.mkpath
-      rescue
-      end
+      ensure_path_existence(dir)
       filepath = dir.join(determine_basename(external_iri))
-      File.open(filepath.to_s, 'w') { |f| f.write(file_content) }
+      fetch_uri_content(external_iri, write_file: filepath)
       filepath
+    end
+
+    private
+    def ensure_path_existence(directory)
+      directory.mkpath
+    rescue
+      nil
     end
 
   end
