@@ -21,9 +21,9 @@ class EntitiesController < InheritedResources::Base
       rescue
         @nodes = []
       end
+      @tree_percentage = ontology.tree_percentage
       @hierarchy_exists = !@nodes.empty?
     end
-
     @page_selected = !! params[:page]
 
     index! do |format|
