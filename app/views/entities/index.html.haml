@@ -10,6 +10,10 @@
       %h3 No entities found
 
 - else
+  -if @tree_percentage < 50
+    .alert.alert-warning.small
+      The tree which we generated isn't quite complete.
+      So we decided not to show it.
   - if @hierarchy_exists
     - unless show_classes?
       - unless @page_selected
@@ -22,6 +26,10 @@
           = link_to 'Class Details', '#detail', class: 'btn btn-default mode btn-primary', id: 'detail-page'
       .owl_entities
         #class-hierarchy{class: (@page_selected) ? "hide" : ""}
+          .bold
+            ="The class tree you can see is #{@tree_percentage}% complete."
+            - unless @tree_percentage == 100
+              ="When are cycles in the class-hierachy we cant show it you at the moment."
           = render partial: 'treeview'
 
   .entities-detail
