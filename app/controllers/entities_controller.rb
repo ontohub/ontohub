@@ -13,7 +13,7 @@ class EntitiesController < InheritedResources::Base
 
   def index
     ontology = Ontology.find params[:ontology_id]
-
+    @tree_percentage = 0
     if ontology && (ontology.is?('OWL2') || ontology.is?('OWL'))
       begin
         entities = ontology.entities.where(kind: 'Class')

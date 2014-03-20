@@ -56,6 +56,7 @@ module Ontology::Entities
     sentences = self.sentences.where("text LIKE '%SubClassOf%'").
     select{ |sentence| sentence.text.split(" ").size == 4 && !sentence.text.include?("Thing")}.size
     percentage = (tree_size * 100)/sentences if sentences != 0
+    return percentage
   end
   
   def delete_edges
