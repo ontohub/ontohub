@@ -3,8 +3,7 @@
     .btn-group.pull-right
       - additional_actions.each do |action_link|
         = action_link
-      = link_to 'Edit', [:edit, resource], class: 'btn btn-default'
-      = link_to 'Delete', resource, confirm: 'Really delete?', method: :delete, class: 'btn btn-default'
+      = link_to 'Delete Repository', resource, confirm: 'Are you sure about delete the Repository? This action is irreversible', method: :delete, class: 'btn btn-default'
 
   %nav
     %ul.nav.nav-tabs
