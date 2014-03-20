@@ -42,23 +42,25 @@ module Ontology::Entities
     end
   end
 
-  def fetch_edges
+  def size_of_entity_tree
     array = []
     %i[parent_id child_id].each do |key|
       array += EEdge.where(key => self.entities.where(kind: 'Class'))
     end
-    return array
+    return array.uniq.size
   end
   
   def tree_percentage
-    tree_size = self.fetch_edges.uniq.size
+    tree_size = self.size_of_entity_tree
     sentences = self.sentences.where("text LIKE '%SubClassOf%'").
     select{ |sentence| sentence.text.split(" ").size == 4 && !sentence.text.include?("Thing")}.size
     return (tree_size * 100)/sentences
   end
   
   def delete_edges
-    fetch_edges.delete_all
+    %i[parent_id child_id].each do |key|
+      EEdge.where(key => self.entities.where(kind: 'Class')).delete_all
+    end
   end
 
   def create_entity_tree

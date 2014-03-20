@@ -107,10 +107,11 @@ describe Ontology do
 
       before do
         ontology.import_xml_from_file xml_path, nil, user
+        ontology.create_entity_tree
       end
       
       it 'should have an complete entity-tree' do
-        should_not == ontology.fetch_edges.empty?
+        ontology.size_of_entity_tree.should_not == 0
         ontology.tree_percentage.should == 100
       end 
       
