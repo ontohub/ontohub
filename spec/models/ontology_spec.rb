@@ -99,6 +99,22 @@ describe Ontology do
       end
 
     end
+    
+    context 'owl classhierachy' do
+      let(:ontology) { create :ontology }
+      let(:user) { create :user }
+      let(:xml_path) { Rails.root + 'test/fixtures/ontologies/xml/' + 'pizza.xml' }
+
+      before do
+        ontology.import_xml_from_file xml_path, nil, user
+      end
+      
+      it 'should have an complete entity-tree' do
+        should_not == ontology.fetch_edges.empty?
+        ontology.tree_percentage.should == 100
+      end 
+      
+    end
   end
 
 end
