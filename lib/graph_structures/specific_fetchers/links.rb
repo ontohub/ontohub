@@ -17,7 +17,7 @@ FROM ontologies
 JOIN (#{query}) as imported
 ON ontologies.id = imported.ontology_id
         SQL
-        [full_query, [ontology.id] + args]
+        [full_query, [ontology.logic_id] + args]
       end
 
       def fetch_links_by_kind(ontology, kind)
