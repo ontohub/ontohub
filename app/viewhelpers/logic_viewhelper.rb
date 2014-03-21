@@ -13,9 +13,9 @@ class LogicViewhelper
       ['Mappings', :mappings],
       ['Supports', :supports],
       ['Ontologies', :ontologies, @resource.ontologies.size],
-      ['homogeneous Distributed Ontologies', :distributed,
+      ['homogeneous Ontology Libraries', :distributed,
         Ontology.distributed_in(@resource).size],
-      ['heterogeneous Distributed Ontologies',
+      ['heterogeneous Ontology Libraries',
         :heterogeneous_distributed,
         Ontology.also_distributed_in(@resource).size]
     ]

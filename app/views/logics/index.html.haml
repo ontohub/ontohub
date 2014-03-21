@@ -5,7 +5,7 @@
     = link_to 'Create Logic', :new_logic, class: 'btn btn-primary'
 
 %p
-  = pluralize(Logic.count, "logic")
+  = pluralize(Logic.count, 'logic')
   currently available
   - unless all_logics?
     = "but only #{pluralize(@counter, "logic")}"
@@ -23,9 +23,9 @@
       %th
     %tbody
       %tr
-        %td (heterogeneous) Distributed Ontologies
+        %td (heterogeneous) Ontology Libraries
         %td
-        %td= pluralize(Ontology.heterogeneous.count, "distributed #{Ontology}")
-        %td= pluralize(Ontology.heterogeneous_children.count, "child #{Ontology}")
+        %td= pluralize(Ontology.heterogeneous.count, 'Ontology Library')
+        %td= pluralize(Ontology.heterogeneous_children.count, 'Child Ontology')
         %td
       = render collection
