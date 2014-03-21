@@ -26,10 +26,6 @@
           = link_to 'Class Details', '#detail', class: 'btn btn-default mode btn-primary', id: 'detail-page'
       .owl_entities
         #class-hierarchy{class: (@page_selected) ? "hide" : ""}
-          .bold
-            = "The class tree you can see is #{@tree_percentage}% complete."
-            - unless @tree_percentage == 100
-              When are cycles in the class-hierachy we cant show the tree completly to you at the moment.
           = render partial: 'treeview'
 
   .entities-detail
