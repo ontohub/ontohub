@@ -34,20 +34,22 @@ module GitRepository::Cloning
   end
 
   def pull
-    with_head_change do
+    with_head_change head_oid do
       git_exec 'remote', 'update'
     end
   end
 
   # Fetches the latest commits and resets the local master
   def pull_svn
+    old_head_oid = head_oid
     git_exec 'svn', 'fetch'
 
     if svn_has_trunk?
-      reset_branch 'master', "remotes/trunk"
+      reset_branch old_head_oid, 'master', "remotes/trunk"
     else
-      reset_branch 'master', "remotes/git-svn"
+      reset_branch old_head_oid, 'master', "remotes/git-svn"
     end
+
   end
 
   def svn_has_trunk?
@@ -55,8 +57,8 @@ module GitRepository::Cloning
   end
 
   # Sets the reference of a local branch 
-  def reset_branch(branch, ref)
-    with_head_change do
+  def reset_branch(old_head_oid, branch, ref)
+    with_head_change old_head_oid do
       git_exec 'branch', '-f', branch, ref
     end
   end
@@ -102,10 +104,9 @@ module GitRepository::Cloning
 
   # Yields the given block and returns the head OID
   # before and after yielding the block.
-  def with_head_change(*args)
-    old_oid = head_oid rescue nil
+  def with_head_change(old_head_oid, *args)
     yield
-    Ref.new(old_oid, head_oid)
+    Ref.new(old_head_oid, head_oid)
   end
 
   def local_path
