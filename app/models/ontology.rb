@@ -194,7 +194,7 @@ class Ontology < ActiveRecord::Base
   end
 
   def import_links_from_other_repositories
-    import_links.select { |l| l.source.repository != self.repository }
+    import_links.select { |l| l.target.repository != self.repository }
   end
 
 end

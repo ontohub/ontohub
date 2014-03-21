@@ -17,7 +17,7 @@ describe Repository do
     context 'with ontologies that import internally' do
       it 'should not raise an error' do
         importing = create :ontology, repository: repository
-        create :link, source: importing, target: ontology, kind: 'import'
+        create :link, target: importing, source: ontology, kind: 'import'
         expect { repository.destroy }.not_to raise_error
       end
     end
@@ -26,7 +26,7 @@ describe Repository do
       it 'should raise an error' do
         repository2 = create :repository
         importing   = create :ontology, repository: repository2
-        create :link, source: importing, target: ontology, kind: 'import'
+        create :link, target: importing, source: ontology, kind: 'import'
         expect { repository.destroy }.to raise_error(Ontology::DeleteError)
       end
     end
