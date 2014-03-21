@@ -18,7 +18,8 @@ module OntologyParser
     ONTOLOGY = 'DGNode'
     SYMBOL   = 'Symbol'
     AXIOM    = 'Axiom'
-    IMPAXIOM = 'ImpAxioms'
+    IMPAXIOMS = 'ImpAxioms'
+    AXIOMS    = 'Axioms'
     LINK     = 'DGLink'
     TEXT     = 'Text'
     TYPE     = 'Type'
@@ -53,8 +54,10 @@ module OntologyParser
             @current_link['map'] << @current_symbol
           end
           @current_axiom['symbol_hashes'] << @current_symbol if @current_axiom
-        when IMPAXIOM
+        when IMPAXIOMS
           @in_imp_axioms = true
+        when AXIOMS
+          @in_axioms = true
         when AXIOM
           @current_axiom = Hash[*[attributes]]
           @current_axiom['symbols'] = []
@@ -100,12 +103,21 @@ module OntologyParser
             callback(:symbol, @current_symbol)
           end
           @current_symbol = nil
-        when IMPAXIOM
+        when IMPAXIOMS
           @in_imp_axioms = false
+        when AXIOMS
+          @in_axioms = false
         when AXIOM
-          the_callback = @in_imp_axioms ? :imported_axiom : :axiom
+          # do not execute callbacks
+          # unless the axiom was inside a
+          # <Axioms> element or a <ImpAxioms>
+          # element
+          if @in_imp_axioms
+            callback(:imported_axiom, @current_axiom)
+          elsif @in_axioms
+            callback(:axiom, @current_axiom)
+          end
           # return the current axiom
-          callback(the_callback, @current_axiom)
           @current_axiom = nil
         when LINK
           # return the current link
