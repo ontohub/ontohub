@@ -88,10 +88,12 @@ module Ontology::Entities
   
   private
   
+  # Get SubClassOf Strings without explicit Thing
   def inheritance_sentences
-    #getting SubClassOf Strings without explicit Thing
-    self.sentences.where("text LIKE '%SubClassOf%'").
-        select{ |sentence| sentence.text.split(" ").size == 4 && !sentence.text.include?("Thing")}
+    self.sentences
+      .where("text LIKE '%SubClassOf%'")
+      .select do |sentence|
+        sentence.text.split(' ').size == 4 && !sentence.text.include?('Thing')
+      end
   end
-  
 end
