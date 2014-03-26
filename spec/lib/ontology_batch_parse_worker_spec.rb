@@ -27,9 +27,9 @@ describe OntologyBatchParseWorker do
       it 'should put the correct job in the sequential queue' do
         Sidekiq::Testing.fake! do
           optioned_versions = [[version.id, {"fast_parse" => version.fast_parse}]]
-          OntologyBatchParseWorker.new.perform(ConcurrencyBalancer::MAX_TRIES,
-            optioned_versions)
-          expect(SequentialOntologyBatchParseWorker.jobs.first['args']).to eq([1, optioned_versions])
+          OntologyBatchParseWorker.new.perform(
+            optioned_versions, try_count: ConcurrencyBalancer::MAX_TRIES)
+          expect(SequentialOntologyBatchParseWorker.jobs.first['args']).to eq([optioned_versions])
         end
       end
     end
@@ -38,10 +38,10 @@ describe OntologyBatchParseWorker do
       it 'should put the correct job in the queue once again' do
         Sidekiq::Testing.fake! do
           optioned_versions = [[version.id, {"fast_parse" => version.fast_parse}]]
-          OntologyBatchParseWorker.new.perform(ConcurrencyBalancer::MAX_TRIES-1,
-            optioned_versions)
+          OntologyBatchParseWorker.new.perform(
+            optioned_versions, try_count: ConcurrencyBalancer::MAX_TRIES-1)
           expect(OntologyBatchParseWorker.jobs.first['args']).to eq([
-            ConcurrencyBalancer::MAX_TRIES, optioned_versions])
+            optioned_versions, "try_count" => ConcurrencyBalancer::MAX_TRIES])
         end
       end
     end

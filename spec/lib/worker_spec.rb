@@ -27,9 +27,9 @@ describe Worker do
       it 'should put the correct job in the sequential queue' do
         Sidekiq::Testing.fake! do
           rest_args = ['record', OntologyVersion.to_s, 'parse', version.id]
-          Worker.new.perform(ConcurrencyBalancer::MAX_TRIES,
-            *rest_args)
-          expect(SequentialWorker.jobs.first['args']).to eq([1, *rest_args])
+          Worker.new.perform(
+            *rest_args, try_count: ConcurrencyBalancer::MAX_TRIES)
+          expect(SequentialWorker.jobs.first['args']).to eq([*rest_args])
         end
       end
     end
@@ -38,10 +38,14 @@ describe Worker do
       it 'should put the correct job in the queue once again' do
         Sidekiq::Testing.fake! do
           rest_args = ['record', OntologyVersion.to_s, 'parse', version.id]
-          Worker.new.perform(ConcurrencyBalancer::MAX_TRIES-1,
-            *rest_args)
+          Worker.new.perform(
+            *rest_args, try_count: ConcurrencyBalancer::MAX_TRIES-1)
+
+          # We need the String-Hash-Key syntax, because
+          # the JSON generate/parse cycle does not support
+          # symbols
           expect(Worker.jobs.first['args']).to eq([
-            ConcurrencyBalancer::MAX_TRIES, *rest_args])
+            *rest_args, "try_count" => ConcurrencyBalancer::MAX_TRIES])
         end
       end
     end

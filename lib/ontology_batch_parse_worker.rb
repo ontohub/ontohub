@@ -2,9 +2,10 @@ class OntologyBatchParseWorker
   include Sidekiq::Worker
   sidekiq_options retry: false
 
-  def perform(*args)
-    @try_count, @args = args.head, args.tail
-    execute_perform(*args)
+  def perform(*args, try_count: 1)
+    @args = args
+    @try_count = try_count
+    execute_perform(try_count, *args)
   end
 
   def execute_perform(try_count, versions)
@@ -23,14 +24,14 @@ class OntologyBatchParseWorker
   rescue ConcurrencyBalancer::AlreadyProcessingError
     done = handle_concurrency_issue
   ensure
-    self.class.perform_async(1, versions.tail) unless versions.tail.empty? || done
+    self.class.perform_async(versions.tail, try_count: try_count) unless versions.tail.empty? || done
   end
 
   def handle_concurrency_issue
     if @try_count >= ConcurrencyBalancer::MAX_TRIES
-      SequentialOntologyBatchParseWorker.perform_async(1, *@args)
+      SequentialOntologyBatchParseWorker.perform_async(*@args)
     else
-      self.class.perform_async(@try_count+1, *@args)
+      self.class.perform_async(*@args, try_count: @try_count+1)
     end
     true
   end
@@ -40,16 +41,16 @@ end
 class SequentialOntologyBatchParseWorker < OntologyBatchParseWorker
   sidekiq_options queue: 'sequential'
 
-  def perform(*args)
+  def perform(*args, try_count: 1)
     ConcurrencyBalancer.sequential_lock do
-      execute_perform(*args)
+      execute_perform(try_count, *args)
     end
   rescue ConcurrencyBalancer::AlreadyLockedError
-    SequentialOntologyBatchParseWorker.perform_async(@try_count+1, *@args)
+    SequentialOntologyBatchParseWorker.perform_async(*@args, try_count: @try_count+1)
   end
 
   def handle_concurrency_issue
-    SequentialOntologyBatchParseWorker.perform_async(@try_count+1, *@args)
+    SequentialOntologyBatchParseWorker.perform_async(*@args, try_count: @try_count+1)
   end
 
 end

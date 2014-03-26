@@ -4,9 +4,10 @@ require 'sidekiq/worker'
 class Worker
   include Sidekiq::Worker
 
-  def perform(*args)
-    @try_count, @args = args.head, args.tail
-    execute_perform(*args)
+  def perform(*args, try_count: 1)
+    @args = args
+    @try_count = try_count
+    execute_perform(try_count, *args)
   end
 
   def execute_perform(try_count, type, clazz, method, *args)
@@ -25,9 +26,9 @@ class Worker
 
   def handle_concurrency_issue
     if @try_count >= ConcurrencyBalancer::MAX_TRIES
-      SequentialWorker.perform_async(1, *@args)
+      SequentialWorker.perform_async(*@args)
     else
-      self.class.perform_async(@try_count+1, *@args)
+      self.class.perform_async(*@args, try_count: @try_count+1)
     end
   end
 
@@ -43,17 +44,18 @@ end
 class SequentialWorker < Worker
   sidekiq_options queue: 'sequential'
 
-  def perform(*args)
-    @try_count, @args = args.head, args.tail
+  def perform(*args, try_count: 1)
+    @args = args
+    @try_count = try_count
     ConcurrencyBalancer.sequential_lock do
-      execute_perform(*args)
+      execute_perform(try_count, *args)
     end
   rescue ConcurrencyBalancer::AlreadyLockedError
-    SequentialWorker.perform_async(@try_count+1, *@args)
+    SequentialWorker.perform_async(*@args, try_count: @try_count+1)
   end
 
   def handle_concurrency_issue
-    SequentialWorker.perform_async(@try_count+1, *@args)
+    SequentialWorker.perform_async(*@args, try_count: @try_count+1)
   end
 
 end

@@ -26,7 +26,7 @@ class ActiveRecord::Base
       'queue'     => instance_variable_get('@queue') || 'default',
       'class'     => Worker,
       'retry'     => false,
-      'args'      => [1, type, self.to_s, *args],
+      'args'      => [type, self.to_s, *args],
       'at'        => (at < 1_000_000_000 ? Time.now + at : at).to_f
   end
 
