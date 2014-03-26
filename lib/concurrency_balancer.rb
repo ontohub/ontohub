@@ -3,9 +3,11 @@ class ConcurrencyBalancer
   REDIS_KEY = "processing_iris"
   SEQUENTIAL_LOCK_KEY = 'sequential_parse_locked'
   MAX_TRIES = 3
-  class AlreadyProcessingError < StandardError; end
-  class UnmarkedProcessingError < StandardError; end
-  class AlreadyLockedError < StandardError; end
+
+  class Error < ::StandardError; end
+  class AlreadyProcessingError < Error; end
+  class UnmarkedProcessingError < Error; end
+  class AlreadyLockedError < Error; end
 
   def mark_as_processing_or_complain(iri, unlock_this_iri: nil)
     successful = redis.sadd REDIS_KEY, iri
