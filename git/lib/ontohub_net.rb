@@ -1,8 +1,10 @@
 require 'net/http'
 require 'openssl'
 require 'json'
+require File.expand_path('../../../lib/uri_fetcher', File.realdirpath(__FILE__))
 
 class OntohubNet
+  include UriFetcher
 
   GIT_CMD_MAP = {
     'git-upload-pack' => 'read',
@@ -40,26 +42,11 @@ class OntohubNet
     Rails.logger.debug "Performing GET #{url}"
 
     url  = URI.parse(url)
-    http = Net::HTTP.new(url.host, url.port)
 
-    if URI::HTTPS === url
-      http.use_ssl = true
-      http.verify_mode = OpenSSL::SSL::VERIFY_NONE
-    end
-
-    request = Net::HTTP::Get.new(url.request_uri)
-
-    response = nil
-
-    http.start {|http| http.request(request) }.tap do |resp|
-      response = resp
-      if resp.code == "200"
-        Rails.logger.debug { "Received response #{resp.code} => <#{resp.body}>." }
-      else
-        Rails.logger.error { "API call <GET #{url}> failed: #{resp.code} => <#{resp.body}>." }
-      end
-    end
-    response
+    resp = fetch_uri_content(url)
+    Rails.logger.debug { "Received response #{resp.code} => <#{resp.body}>." }
+  rescue ArgumentError
+    Rails.logger.error { "API call <GET #{url}> failed: #{resp.code} => <#{resp.body}>." }
   end
 
   private
