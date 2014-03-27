@@ -1,4 +1,5 @@
 class ConcurrencyBalancer
+  include WrappingRedis
 
   REDIS_KEY = "processing_iris"
   SEQUENTIAL_LOCK_KEY = 'sequential_parse_locked'
@@ -31,21 +32,6 @@ class ConcurrencyBalancer
     else
       raise AlreadyLockedError, 'the sequential lock is already set.'
     end
-  end
-
-  protected
-
-  # gets and reuses the Sidekiq-redis connection
-  def redis
-    RedisWrapper.new
-  end
-
-  class RedisWrapper
-
-    def method_missing(name, *args, &block)
-      Sidekiq.redis { |redis| redis.send(name, *args, &block) }
-    end
-
   end
 
 end
