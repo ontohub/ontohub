@@ -17,7 +17,12 @@ class OntologySearchController < ApplicationController
 
   def search
     keywords = params[:keywords] || []
-    keywords = keywords.map { |keyword| JSON.parse(keyword) }
+    begin
+      keywords = keywords.map { |keyword| JSON.parse(keyword) }
+    rescue
+      raise ActionController::RoutingError.new('Not Found')
+      return
+    end
     page = params[:page].to_i
     if in_repository?
       repository = Repository.find_by_path params[:repository_id]

@@ -13,11 +13,11 @@ class OntologySearch
     JSON.generate make_filters_map
   end
 
-  def make_repository_keyword_list_json(repository, prefix)
-    JSON.generate make_repository_keyword_list(repository, prefix)
+  def make_repository_restrictions_json(repository, prefix)
+    JSON.generate make_repository_restrictions(repository, prefix)
   end
 
-  def make_global_keyword_list_json(prefix)
+  def make_global_restrictions_json(prefix)
     JSON.generate({text: prefix})
   end
 
@@ -50,7 +50,7 @@ class OntologySearch
     }
   end
 
-  def make_repository_keyword_list(repository, prefix)
+  def make_repository_restrictions(repository, prefix)
     text_list = []
     
     ontology_names = repository.ontologies
@@ -62,7 +62,7 @@ class OntologySearch
 
     ontology_names.map { |name| text_list << name }
 
-    Entity.collect_keywords(prefix, repository).each do |symbol|
+    Entity.collect_restrictions(prefix, repository).each do |symbol|
       %i[display_name name text].each do |method|
         value = symbol.call method
         text_list << value if value
@@ -80,29 +80,41 @@ class OntologySearch
     text_list.sort.map { |x| {text: x} }
   end
 
-  def make_bean_list_json(repository, keyword_list, page)
-    JSON.generate(make_bean_list_response(repository, keyword_list, page))
+  def check_restrictions(restrictions)
+    restrictions.each do |restriction|
+      unless restriction.is_a?(Hash)
+        raise ArgumentError, "a restriction was not a hash"
+      end
+      if restriction["type"].nil?
+        raise ArgumentError, "a restriction had no specified type"
+      end
+    end
   end
 
-  def select_item_list(keyword_list, type_name)
-    item_list = Array.new
+  def make_bean_list_json(repository, restrictions, page)
+    check_restrictions(restrictions)
+    JSON.generate(make_bean_list_response(repository, restrictions, page))
+  end
 
-    keyword_list.each do |keyword|
-      if keyword["type"] == type_name
-        item_list.push keyword["item"]
+  def select_items(restrictions, type_name)
+    items = Array.new
+
+    restrictions.each do |restriction|
+      if restriction["type"] == type_name
+        items.push restriction["item"]
       end
     end
 
-    item_list
+    items
   end
 
-  def select_item(keyword_list, type_name, type)
-    keyword_list.each do |keyword|
-      if keyword["type"] == type_name
-        if keyword["item"].nil?
+  def select_item(restrictions, type_name, type)
+    restrictions.each do |restriction|
+      if restriction["type"] == type_name
+        if restriction["item"].nil?
           return nil
         else
-          return type.find_by_id(keyword["item"].to_i)
+          return type.find_by_id(restriction["item"].to_i)
         end
       end
     end
@@ -110,20 +122,20 @@ class OntologySearch
     nil
   end
 
-  def make_bean_list_response(repository, keyword_list, page)
-    mixed_list = select_item_list(keyword_list, 'Mixed')
+  def make_bean_list_response(repository, restrictions, page)
+    identifiers = select_items(restrictions, 'Mixed')
 
-    qualifiers = Hash.new
-    qualifiers[:repository] = repository
-    qualifiers[:ontology_type] = select_item(keyword_list, 'OntologyType', OntologyType)
-    qualifiers[:project] = select_item(keyword_list, 'Project', Project)
-    qualifiers[:formality_level] = select_item(keyword_list, 'FormalityLevel', FormalityLevel)
-    qualifiers[:license_model] = select_item(keyword_list, 'LicenseModel', LicenseModel)
-    qualifiers[:task] = select_item(keyword_list, 'Task', Task)
+    properties = Hash.new
+    properties[:repository] = repository
+    properties[:ontology_type] = select_item(restrictions, 'OntologyType', OntologyType)
+    properties[:project] = select_item(restrictions, 'Project', Project)
+    properties[:formality_level] = select_item(restrictions, 'FormalityLevel', FormalityLevel)
+    properties[:license_model] = select_item(restrictions, 'LicenseModel', LicenseModel)
+    properties[:task] = select_item(restrictions, 'Task', Task)
 
     bean_list_factory = OntologyBeanListFactory.new
 
-    search = Ontology.search_by_keywords(mixed_list, page, qualifiers)
+    search = Ontology.search_by_keywords(identifiers, page, properties)
     search.results.each do |ontology|
       bean_list_factory.add_small_bean(ontology)
     end
