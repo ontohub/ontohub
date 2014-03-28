@@ -11,17 +11,18 @@
 
 - else
   - if @hierarchy_exists
-    - unless @page_selected
-      .btn-group#ontology_selections
-        = link_to 'Class Hierarchy', '#hierarchy', class: 'btn btn-default mode btn-primary', id: 'hierarchy'
-        = link_to 'Class Details', '#detail', class: 'btn btn-default mode', id: 'detail-page'
-    - else
-      .btn-group#ontology_selections
-        = link_to 'Class Hierarchy', '#hierarchy', class: 'btn btn-default mode', id: 'hierarchy'
-        = link_to 'Class Details', '#detail', class: 'btn btn-default mode btn-primary', id: 'detail-page'
-    .owl_entities
-      #class-hierarchy{class: (@page_selected) ? "hide" : ""}
-        = render partial: 'treeview'
+    - unless show_classes?
+      - unless @page_selected
+        .btn-group#ontology_selections
+          = link_to 'Class Hierarchy', '#hierarchy', class: 'btn btn-default mode btn-primary', id: 'hierarchy'
+          = link_to 'Class Details', '#detail', class: 'btn btn-default mode', id: 'detail-page'
+      - else
+        .btn-group#ontology_selections
+          = link_to 'Class Hierarchy', '#hierarchy', class: 'btn btn-default mode', id: 'hierarchy'
+          = link_to 'Class Details', '#detail', class: 'btn btn-default mode btn-primary', id: 'detail-page'
+      .owl_entities
+        #class-hierarchy{class: (@page_selected) ? "hide" : ""}
+          = render partial: 'treeview'
 
   .entities-detail
     = pagination do

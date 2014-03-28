@@ -1,5 +1,5 @@
 = unless hide_well
   .well
-.selector
+.selector{data: {uri: repository_ontology_categories_path(*resource_chain, format: :json)}}
   %ul
-    = render :partial => 'category', :collection => @c_vertices.to_a
+    = render partial: 'category', collection: @c_vertices.to_a

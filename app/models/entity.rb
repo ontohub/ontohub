@@ -24,7 +24,7 @@ class Entity < ActiveRecord::Base
   end
   
   def to_s
-    self.text
+    self.display_name || self.name
   end
   
 end
