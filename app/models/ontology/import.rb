@@ -151,8 +151,8 @@ module Ontology::Import
           end
         }
       save!
-      versions.each { |version| version.save! }
-      ontologies.each { |o| o.create_translated_sentences }
+      versions.each(&:save!)
+      ontologies.each(&:create_translated_sentences)
 
     end
   end
