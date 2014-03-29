@@ -54,7 +54,7 @@ module Ontology::Entities
     # Delete previous set of categories
     delete_edges
     subclasses = self.sentences.where("text LIKE '%SubClassOf%'").select { |sentence| sentence.text.split(" ").size == 4 }
-    transaction do
+    transaction requires_new: true do
       subclasses.each do |s|
         c1, c2 = s.hierarchical_class_names
         
@@ -70,4 +70,5 @@ module Ontology::Entities
       end
     end
   end
+  
 end
