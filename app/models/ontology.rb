@@ -32,6 +32,9 @@ class Ontology < ActiveRecord::Base
   belongs_to :logic, counter_cache: true
   belongs_to :ontology_type
   belongs_to :repository
+  belongs_to :license_model
+  belongs_to :formality_level
+  belongs_to :task
 
   has_many :alternative_iris, dependent: :destroy
   has_many :source_links, class_name: 'Link', foreign_key: 'source_id', dependent: :destroy

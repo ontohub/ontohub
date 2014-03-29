@@ -1,0 +1,15 @@
+<!DOCTYPE ui:UiBinder SYSTEM "http://dl.google.com/gwt/DTD/xhtml.ent">
+<ui:UiBinder xmlns:ui="urn:ui:com.google.gwt.uibinder"
+	xmlns:g="urn:import:com.google.gwt.user.client.ui">
+	<ui:style>
+	  @external .btn-group, .btn-group-sm, .open;
+	  .open {}
+	  .btn-group {}
+	  .btn-group-sm {}
+	</ui:style>
+    <g:HTMLPanel ui:field="selector" styleName="btn-group btn-group-sm open">
+      <g:Button ui:field="button" styleName="btn btn-primary dropdown-toggle">Ontologies <span class="caret"></span></g:Button>
+      <ul ui:field="menu" class="dropdown-menu">
+      </ul>
+    </g:HTMLPanel>
+</ui:UiBinder> 
