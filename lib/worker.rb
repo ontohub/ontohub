@@ -51,7 +51,7 @@ class SequentialWorker < Worker
       execute_perform(try_count, *args)
     end
   rescue ConcurrencyBalancer::AlreadyLockedError
-    SequentialWorker.perform_async(*@args, try_count: @try_count+1)
+    handle_concurrency_issue
   end
 
   def handle_concurrency_issue
