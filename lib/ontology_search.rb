@@ -24,27 +24,27 @@ class OntologySearch
   def make_filters_map
     filters_map = {
       'OntologyType' => [
-        {'name' => 'Ontologies', 'value' => nil},
+        {'name' => 'Ontologies', 'value' => nil, 'count' => 0},
         *types
       ],
       'Repository' => [
-        {'name' => 'in all repositories', 'value' => nil},
+        {'name' => 'in all repositories', 'value' => nil, 'count' => 0},
         *repositories
       ],
       'Project' => [
-        {'name' => 'from all projects', 'value' => nil},
+        {'name' => 'from all projects', 'value' => nil, 'count' => 0},
         *projects
       ],
       'FormalityLevel' => [
-        {'name' => 'in any formality', 'value' => nil},
+        {'name' => 'in any formality', 'value' => nil, 'count' => 0},
         *formalities
       ],
       'LicenseModel' => [
-        {'name' => 'under any license', 'value' => nil},
+        {'name' => 'under any license', 'value' => nil, 'count' => 0},
         *licenses
       ],
       'Task' => [
-        {'name' => 'for any purpose', 'value' => nil},
+        {'name' => 'for any purpose', 'value' => nil, 'count' => 0},
         *tasks
       ]
     }
@@ -83,10 +83,10 @@ class OntologySearch
   def check_restrictions(restrictions)
     restrictions.each do |restriction|
       unless restriction.is_a?(Hash)
-        raise ArgumentError, "a restriction was not a hash"
+        raise ArgumentError, 'a restriction was not a hash'
       end
-      if restriction["type"].nil?
-        raise ArgumentError, "a restriction had no specified type"
+      if restriction['type'].nil?
+        raise ArgumentError, 'a restriction had no specified type'
       end
     end
   end
@@ -100,8 +100,8 @@ class OntologySearch
     items = Array.new
 
     restrictions.each do |restriction|
-      if restriction["type"] == type_name
-        items.push restriction["item"]
+      if restriction['type'] == type_name
+        items.push restriction['item']
       end
     end
 
@@ -110,11 +110,11 @@ class OntologySearch
 
   def select_item(restrictions, type_name, type)
     restrictions.each do |restriction|
-      if restriction["type"] == type_name
-        if restriction["item"].nil?
+      if restriction['type'] == type_name
+        if restriction['item'].nil?
           return nil
         else
-          return type.find_by_id(restriction["item"].to_i)
+          return type.find_by_id(restriction['item'].to_i)
         end
       end
     end
@@ -153,7 +153,8 @@ class OntologySearch
       .map do |item|
         {
           'name'  => name_proc.call(item),
-          'value' => item.id.to_s
+          'value' => item.id.to_s,
+          'count' => item.ontologies.count
         }
       end
   end

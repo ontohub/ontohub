@@ -146,7 +146,7 @@ public class FilterSelector extends Composite implements HasWidgets, HasFilterSe
 
 	private final void add(final Filter filter) {
 		Anchor menuItemAnchor = new Anchor();
-		menuItemAnchor.setText(filter.getName());
+		menuItemAnchor.setText(filter.getName() + filter.getCountLabel());
 		menuItemAnchor.setHref("#");
 		menuItemAnchor.addClickHandler(new ClickHandler() {
 			@Override
