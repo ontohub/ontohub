@@ -1,7 +1,9 @@
 module Repository::Destroying
   extend ActiveSupport::Concern
 
-  before_destroy :mark_as_destroying, prepend: true
+  included do
+    before_destroy :mark_as_destroying, prepend: true
+  end
 
   def is_destroying?
     self.class.instance_variable_get(:@destroying).include?(self.id)
