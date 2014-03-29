@@ -1,11 +1,11 @@
 module PermissionHelper
 
-  def can_write?(parent, cls_sym)
+  def can_create?(parent, cls_sym)
     cls = cls_sym.to_s.classify.constantize
     if parent
-      can?(:write, cls) && can?(:write, parent.repository)
+      can?(:create, cls) && can?(:write, parent.repository)
     else
-      can? :write, cls
+      can? :create, cls
     end
   end
 
