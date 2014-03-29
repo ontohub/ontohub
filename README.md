@@ -121,17 +121,16 @@ Tomcat with Solr is only required in the production environment.
 
 The war-Package should be automatically loaded.
 
-### SQL Server
+### PostgreSQL
 
-The master branch is (and should be) database independent. We are using
-PostgreSQL in production and development.
-
-#### PostgreSQL
+A recent version of PostgreSQL is required for all environments.
 
     wget --quiet -O - https://www.postgresql.org/media/keys/ACCC4CF8.asc | apt-key add -
     echo deb http://apt.postgresql.org/pub/repos/apt/ precise-pgdg main > /etc/apt/sources.list.d/pgdg.list
     apt-get update
     apt-get install -y postgresql-9.3
+    sed -i 's/de_DE/en_US/' /etc/postgresql/9.3/main/postgresql.conf
+    service postgresql reload
 
 ### Redis
 

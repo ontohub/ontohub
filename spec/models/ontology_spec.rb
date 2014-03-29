@@ -65,7 +65,7 @@ describe Ontology do
 
       it 'should not be allowed' do
         importing = create :ontology
-        create :link, source: importing, target: ontology, kind: 'import'
+        create :import_link, target: importing, source: ontology
         expect { ontology.destroy_with_parent(user) }.to raise_error(Ontology::DeleteError)
       end
     end
@@ -75,7 +75,7 @@ describe Ontology do
     let!(:ontology) { create :ontology }
     let!(:imported_ontology) do
       imported = create :single_ontology
-      create :import_link, source: ontology, target: imported
+      create :import_link, target: ontology, source: imported
       imported
     end
 
@@ -87,7 +87,7 @@ describe Ontology do
     context 'which have imports themselves' do
       let!(:imported_imported_ontology) do
         imported = create :single_ontology
-        create :import_link, source: imported_ontology, target: imported
+        create :import_link, target: imported_ontology, source: imported
         imported
       end
 
