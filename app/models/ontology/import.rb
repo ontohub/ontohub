@@ -136,9 +136,8 @@ module Ontology::Import
         },
         imported_axiom: Proc.new { |h|
           if logic_callback.pre_axiom(h)
+            h['imported'] = true
             sentence = ontology.sentences.update_or_create_from_hash(h, now)
-            sentence.imported = true
-            sentence.save
             ontology.sentences_count += 1
 
             logic_callback.axiom(h, sentence)
