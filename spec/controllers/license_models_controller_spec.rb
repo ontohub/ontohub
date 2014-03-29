@@ -25,7 +25,7 @@ describe LicenseModelsController do
 
     context "edit" do
       before { get :edit, id: license_model.to_param }
-      it { should respond_with :success }
+      it { should respond_with :found }
     end
 
     context "create" do

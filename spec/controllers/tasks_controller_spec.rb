@@ -25,7 +25,7 @@ describe TasksController do
 
     context "edit" do
       before { get :edit, id: task.to_param }
-      it { should respond_with :success }
+      it { should respond_with :found }
     end
 
     context "create" do
