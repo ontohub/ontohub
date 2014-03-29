@@ -1,6 +1,7 @@
 module OntologyVersion::Parsing
 
   extend ActiveSupport::Concern
+  include HetsErrorHandling
   
   included do
     @queue = 'hets'
@@ -57,6 +58,9 @@ module OntologyVersion::Parsing
     set_xml_name(paths)
     # move generated file to destination
     File.rename path, xml_path
+  rescue Hets::ExecutionError => e
+    handle_hets_execution_error(e, self)
+    raise
   end
   
   def parse_full
