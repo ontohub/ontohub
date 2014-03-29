@@ -74,9 +74,8 @@ module Ontology::Sentences
     protected
     def translate_sentences_for(audience_ontology)
       link = Link.where(source_id: audience_ontology, target_id: self, kind: 'import').first
-      mappings = link.entity_mappings
-      if mappings.any?
-        create_or_fetch_translations(audience_ontology, link, mappings)
+      if link && link.entity_mappings.any?
+        create_or_fetch_translations(audience_ontology, link, link.entity_mappings)
       else
         default_translated_sentences
       end
