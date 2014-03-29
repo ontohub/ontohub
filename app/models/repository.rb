@@ -42,9 +42,9 @@ class Repository < ActiveRecord::Base
 
   def destroy
     super
-  rescue StandardError => e
+  rescue
     unmark_as_destroying
-    raise e
+    raise
   end
 
   protected
