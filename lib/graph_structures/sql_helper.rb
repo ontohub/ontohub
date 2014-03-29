@@ -12,8 +12,7 @@ module GraphStructures
 
     def pluck_select(query, *column_names)
       sql.select_all(sanitize(query)).reduce([]) do |column_values, column|
-        values = []
-        column_names.each { |n| values << column[n.to_s] }
+        values = column_names.map { |name| column[name.to_s] }
         column_values << (values.length > 1 ? values : values.first)
         column_values
       end
