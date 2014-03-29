@@ -12,6 +12,11 @@ class GitShell
   end
 
   def exec
+    if Ontohub::Application.config.data_root.join("maintenance.txt").exist?
+      $stderr.puts "System in maintenance mode. Please try again later."
+      exit 1
+    end
+
     exit 1 unless @command
     
     parse_cmd

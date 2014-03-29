@@ -1,0 +1,15 @@
+namespace :maintenance do
+  desc "Enable maintenance mode"
+  task :enable do
+    on roles(:app) do
+      execute "touch #{current_path}/data/maintenance.txt"
+    end
+  end
+
+  desc "Disable maintenance mode"
+  task :disable do
+    on roles(:app) do
+      execute "rm -f #{current_path}/data/maintenance.txt"
+    end
+  end
+end
