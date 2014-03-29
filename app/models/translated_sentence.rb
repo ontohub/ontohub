@@ -20,7 +20,7 @@ class TranslatedSentence < ActiveRecord::Base
   # returns a translated sentence if
   # an applicable one could be found
   def self.choose_applicable(sentence, mapping)
-    source, target = mapping.link.source, mapping.link.target
+    source = mapping.link.source
     where(audience_id: source, sentence_id: sentence).first || sentence
   end
 end
