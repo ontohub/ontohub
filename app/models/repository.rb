@@ -1,7 +1,5 @@
 class Repository < ActiveRecord::Base
 
-  @destroying ||= []
-
   include Permissionable
 
   include Repository::Access

@@ -2,6 +2,7 @@ module Repository::Destroying
   extend ActiveSupport::Concern
 
   included do
+    @destroying ||= []
     before_destroy :mark_as_destroying, prepend: true
   end
 
