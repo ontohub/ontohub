@@ -7,6 +7,7 @@ class Entity < ActiveRecord::Base
   include Entity::Readability
 
   belongs_to :ontology
+  belongs_to :entity_group
   has_and_belongs_to_many :sentences
   has_and_belongs_to_many :oops_responses
 
