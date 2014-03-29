@@ -40,7 +40,8 @@ module OntologyVersion::Parsing
       refresh_checksum! unless checksum?
       
       # run hets if necessary
-      generate_xml(structure_only: structure_only) if refresh_cache || !xml_file?
+      cmd = generate_xml(structure_only: structure_only) if refresh_cache || !xml_file?
+      return if cmd == :abort
 
       # Import version
       self.ontology.import_version self, self.user
@@ -60,7 +61,7 @@ module OntologyVersion::Parsing
     File.rename path, xml_path
   rescue Hets::ExecutionError => e
     handle_hets_execution_error(e, self)
-    raise
+    :abort
   end
   
   def parse_full
