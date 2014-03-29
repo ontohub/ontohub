@@ -5,8 +5,6 @@
   %small
     - if resource.logic
       = link_to resource.logic.to_s, resource.logic
-    - elsif resource.distributed?
-      DOL
   = resource.acronym
 
 - if resource.ontology_type

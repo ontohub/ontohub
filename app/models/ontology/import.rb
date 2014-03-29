@@ -91,6 +91,10 @@ module Ontology::Import
           else
             ontologies_count += 1
             if distributed?
+              self.logic = Logic.where(
+                  iri: "http://purl.net/dol/logics/#{Logic::DEFAULT_DISTRIBUTED_ONTOLOGY_LOGIC}")
+                .first_or_create(user: user, name: Logic::DEFAULT_DISTRIBUTED_ONTOLOGY_LOGIC)
+
               # generate IRI for sub-ontology
 
               child_iri  = iri_for_child(child_name)
@@ -128,7 +132,10 @@ module Ontology::Import
             ontology.language = Language.where(:iri => "http://purl.net/dol/language/#{h['language']}")
               .first_or_create(user: user, name: h['language'])
           end
-          if h['logic']
+          if ontology.distributed?
+            ontology.logic = Logic.where(:iri => "http://purl.net/dol/logics/#{Logic::DEFAULT_DISTRIBUTED_ONTOLOGY_LOGIC}")
+            .first_or_create(user: user, name: Logic::DEFAULT_DISTRIBUTED_ONTOLOGY_LOGIC)
+          elsif h['logic']
             ontology.logic = Logic.where(:iri => "http://purl.net/dol/logics/#{h['logic']}")
             .first_or_create(user: user, name: h['logic'])
           end
