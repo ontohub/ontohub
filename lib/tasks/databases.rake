@@ -43,4 +43,23 @@ namespace :db do
       Rake::Task["db:migrate"].invoke
     end
   end
+
+  task :recreate do
+    Rake::Task["db:migrate:clean"].invoke
+    cleanup_git_folders
+    cleanup_redis
+    Rake::Task["db:seed"].invoke
+    Rake::Task["repos:create"].invoke
+  end
+end
+
+def cleanup_git_folders
+  FileUtils.rm_rf(Dir.glob(Ontohub::Application.config.git_root.join('*')))
+  FileUtils.rm_rf(Dir.glob(Ontohub::Application.config.symlink_path.join('*')))
+  FileUtils.rm_rf(Dir.glob(Ontohub::Application.config.commits_path.join('*')))
+end
+
+def cleanup_redis
+  include WrappingRedis
+  redis.keys.each{ |k| redis.del k }
 end

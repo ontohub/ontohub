@@ -37,6 +37,12 @@ module Repository::Importing
     source_address?
   end
 
+  def convert_to_local!
+    source_address = nil
+    source_type = nil
+    save!
+  end
+
   # do not allow new actions in specific states
   def locked?
     !%w( done failed ).include?(state)
