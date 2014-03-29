@@ -1,0 +1,20 @@
+logic OWL
+
+ontology DMB-CommonSource =
+  DataProperty: hasLegs
+    Domain: KitchenTable
+    Range: integer[>2, <5]
+  Class: KitchenTable SubClassOf: hasLegs exactly 1
+end
+
+ontology DMB-KitchentablesAreDesks =
+  DMB-CommonSource with KitchenTable |-> Desk
+end
+
+ontology DMB-DesksAreTables =
+  DMB-KitchentablesAreDesks with Desk |-> Table
+end
+
+ontology DMB-MyTables =
+  DMB-DesksAreTables
+end

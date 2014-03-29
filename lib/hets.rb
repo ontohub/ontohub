@@ -73,7 +73,7 @@ module Hets
   def self.parse(input_file, url_catalog = [], output_path = nil, structure_only: false)
 
     # Arguments to run the subprocess
-    args = [config.path, *%w( -o pp.xml -o xml --full-signatures -a none -v2 )]
+    args = [config.path, *%w( -o pp.xml -o xml --full-signatures -a none -v2 --full-theories )]
 
     if output_path
       FileUtils.mkdir_p output_path

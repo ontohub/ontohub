@@ -1,0 +1,25 @@
+logic OWL
+
+ontology BB-Source =
+  Class: Person
+  Class: Woman SubClassOf: Person
+  Class: Man SubClassOf: Person
+
+ontology BB-ImportsPlainlyWithOwnSentences =
+  BB-Source
+then
+  Class: Woman SubClassOf: Person
+  Class: Bank
+end
+
+
+ontology BB-ImportsWithMapping =
+  BB-Source with Person |-> HumanBeing
+end
+
+ontology BB-ImportsSecondHandMappingWithOwnSentences =
+  BB-ImportsWithMapping
+then
+  Class: Woman SubClassOf: HumanBeing
+  Class: Bank
+end
