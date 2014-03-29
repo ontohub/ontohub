@@ -5,17 +5,17 @@ module Entity::Searching
     searchable do
       text :text, stored: true # necessary for highlighting
       text :prefix do
-        prefixes = Array.new
+        prefixes = []
         (1 .. display_name.size).each { |length| prefixes.push display_name[0, length] } if display_name
         (1 .. name.size).each { |length| prefixes.push name[0, length] } if name
         (1 .. text.size).each { |length| prefixes.push text[0, length] } if text
         prefixes
       end
 
-      string( :kind) { |symbol| symbol.kind.to_s.downcase }
+      string(:kind) { |symbol| symbol.kind.to_s.downcase }
       integer :ontology_id
-      string( :ontology_id_str) { |symbol| symbol.ontology_id.to_s }
-      integer( :repository_id) { |symbol| symbol.ontology.repository.id }
+      string(:ontology_id_str) { |symbol| symbol.ontology_id.to_s }
+      integer(:repository_id) { |symbol| symbol.ontology.repository.id }
     end
   end
   
@@ -25,9 +25,9 @@ module Entity::Searching
     def collect_keywords(prefix, repository)
       s = search do
         fulltext prefix do
-          fields(:prefix)
+          fields :prefix
         end
-        with(:repository_id, repository.id)
+        with :repository_id, repository.id
         paginate page: 1, per_page: 5
       end
       s.results

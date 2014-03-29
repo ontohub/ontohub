@@ -5,19 +5,25 @@ module Ontology::Import
     now = Time.now
 
     transaction do
-      code_doc = code_io ? Nokogiri::XML(code_io) : nil
+      code_doc         = code_io ? Nokogiri::XML(code_io) : nil
+      concurrency      = ConcurrencyBalancer.new
       self.present     = true
       root             = nil
       ontology         = nil
       logic_callback   = nil
       link             = nil
       ontologies_count = 0
-      versions = []
+      versions         = []
+      dgnode_count     = 0
+      dgnode_stack      = []
+      next_dgnode_stack_id = ->() { dgnode_stack.length }
+      dgnode_stack_id = ->() { next_dgnode_stack_id[] - 1 }
       internal_iri = nil
 
       OntologyParser.parse io,
         root: Proc.new { |h|
           root = h
+          dgnode_count = root['dgnodes'].to_i
         },
         import: Proc.new { |h|
           location = h['location']
@@ -40,6 +46,36 @@ module Ontology::Import
         ontology: Proc.new { |h|
           child_name = h['name']
           internal_iri = h['name'].start_with?('<') ? h['name'][1..-2] : h['name']
+          dgnode_stack_id ||= 0
+          ontohub_iri = nil
+
+          if h['reference'] == 'true'
+            ontology = Ontology.find_with_iri(internal_iri)
+            if ontology.nil?
+              ontohub_iri = ExternalRepository.determine_iri(internal_iri)
+            else
+              ontohub_iri = ontology.iri
+            end
+          else
+            if distributed?
+              ontohub_iri = iri_for_child(internal_iri)
+            else
+              # we use 0 here, because the first time around, we
+              # have ontologies_count 0 which is increased by one
+              # after obtaining the lock. We need to preempt
+              # this message, because otherwise we would
+              # fail here with a lock issue instead of the
+              # 'more than one ontology' issue.
+              if ontologies_count > 0
+                raise "more than one ontology found"
+              else
+                ontohub_iri = self.iri
+              end
+            end
+          end
+
+          concurrency.mark_as_processing_or_complain(ontohub_iri, unlock_this_iri: dgnode_stack[dgnode_stack_id[]])
+          dgnode_stack << ontohub_iri
 
           if h['reference'] == 'true'
             ontology = Ontology.find_with_iri(internal_iri)
@@ -117,6 +153,8 @@ module Ontology::Import
           ontology.save!
 
           logic_callback.ontology_end({}, ontology)
+
+          concurrency.mark_as_finished_processing(dgnode_stack.last) if next_dgnode_stack_id[] == dgnode_count
         },
         symbol: Proc.new { |h|
           if logic_callback.pre_symbol(h)

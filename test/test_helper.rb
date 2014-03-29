@@ -40,6 +40,9 @@ end
 
 # For Sidekiq
 require 'sidekiq/testing'
+# Setting the default for sidekiq testing
+# many unit-tests rely on this being the default.
+# However specs use a different default (inline!)
 Sidekiq::Testing.fake!
 
 # Recording HTTP Requests

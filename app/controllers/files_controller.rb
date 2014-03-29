@@ -4,13 +4,17 @@ class FilesController < ApplicationController
   before_filter :check_write_permissions, only: [:new, :create]
   before_filter :check_read_permissions
 
+  OWL_API_HEADER_PARTS = ['text/xml;',
+                          'text/html, image/gif, image/jpeg, *;']
 
   def files
     @info = repository.path_info(params[:path], oid)
 
     raise Repository::FileNotFoundError, path if @info.nil?
 
-    if request.format == 'text/html' || @info[:type] != :file
+    if owl_api_header_in_accept_header?
+      send_download(path, oid)
+    elsif request.format == 'text/html' || @info[:type] != :file
       case @info[:type]
       when :file
         @file = repository.read_file(path, oid)
@@ -117,6 +121,12 @@ class FilesController < ApplicationController
 
   def path
     params[:path]
+  end
+
+  def owl_api_header_in_accept_header?
+    OWL_API_HEADER_PARTS.any? do |owl_api_header_part|
+      request.headers['Accept'].try(:include?, owl_api_header_part)
+    end
   end
 
 end

@@ -12,6 +12,9 @@ require 'rspec/autorun'
 require 'database_cleaner'
 
 require 'sidekiq/testing'
+# Setting the default for sidekiq testing
+# some specs rely on this being the default.
+# However unit-tests use a different default (fake!)
 Sidekiq::Testing.inline!
 
 # Requires supporting ruby files with custom matchers and macros, etc,
