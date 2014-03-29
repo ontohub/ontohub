@@ -32,6 +32,14 @@ def fixture_file(name)
   Rails.root + 'test/fixtures/ontologies/xml/' + name
 end
 
+def add_fixture_file(repository, relative_file)
+  dummy_user = FactoryGirl.create :user
+  path = File.join(Rails.root, 'test', 'fixtures', 'ontologies', relative_file)
+  basename = File.basename(path)
+
+  version = repository.save_file path, basename, "#{basename} added", dummy_user
+end
+
 RSpec.configure do |config|
   # ## Mock Framework
   # config.mock_with :mocha
