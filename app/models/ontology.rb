@@ -166,9 +166,11 @@ class Ontology < ActiveRecord::Base
   end
 
   def destroy
-    raise Ontology::DeleteError if is_imported? &&
-                                   (!repository.is_destroying? || is_imported_from_other_repository?)
-                                   # if repository destroying, then check if imported externally
+    # if repository destroying, then check if imported externally
+    if is_imported? &&
+         (!repository.is_destroying? || is_imported_from_other_repository?)
+      raise Ontology::DeleteError
+    end
     super
   end
 

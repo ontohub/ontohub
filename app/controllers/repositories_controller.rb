@@ -22,7 +22,7 @@ class RepositoriesController < InheritedResources::Base
   def destroy
     super
   rescue Ontology::DeleteError => e
-    flash[:error] = "Can't delete the repository: It contains an ontology that is imported by another repository."
+    flash[:error] = e.message
     redirect_to resource
   end
 

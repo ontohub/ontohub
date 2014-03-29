@@ -42,9 +42,9 @@ class Repository < ActiveRecord::Base
 
   def destroy
     super
-  rescue
+  rescue StandardError => e
     unmark_as_destroying
-    raise
+    raise e.class, "Can't delete repository: It contains an ontology that is imported by another repository."
   end
 
   protected
