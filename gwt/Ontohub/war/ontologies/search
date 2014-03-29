@@ -1,8 +1,8 @@
 {
  "page":5,
- "resultsInPage":20,
- "resultsInSet":200,
- "results":
+ "ontologiesPerPage":20,
+ "ontologiesInSet":200,
+ "ontologies":
   [
    {"name":"A","acronym":"B","language":"C","logic":"D","iri":"E","url":"F","description":"G"},
    {"name":"A","acronym":"B","language":"C","logic":"D","iri":"E","url":"F","description":"G"},
