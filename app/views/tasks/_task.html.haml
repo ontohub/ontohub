@@ -1,0 +1,4 @@
+%tr
+  %td= fancy_link task
+  %td= truncate(task.description, separator: ' ', length: 100)
+  = render partial: 'shared/metadata_index_manage', locals: { cls_sym: :task, subject: task }

@@ -40,6 +40,13 @@ class OntologySearchTest < ActiveSupport::TestCase
       @logics.map(&:save)
       ::Sunspot.session = ::Sunspot.session.original_session
       Ontology.reindex
+
+      @keywords = []
+      @keywords.push({'item' => nil, 'type' => 'OntologyType'})
+      @keywords.push({'item' => nil, 'type' => 'Project'})
+      @keywords.push({'item' => nil, 'type' => 'FormalityLevel'})
+      @keywords.push({'item' => nil, 'type' => 'LicenseModel'})
+      @keywords.push({'item' => nil, 'type' => 'Task'})
     end
 
     teardown do
@@ -102,7 +109,8 @@ class OntologySearchTest < ActiveSupport::TestCase
     context 'bean list' do
       context 'with one keyword' do
         should 'be generated correctly' do
-          results = @os.make_global_bean_list_response([@o1.name], 1).results
+          @keywords.push({'type' => 'Mixed', 'item' => @o1.name})
+          results = @os.make_bean_list_response(nil, @keywords, 1).ontologies
           results = results.map { |x| x[:name] }
 
           assert_equal @ontologies.size, results.size
@@ -115,7 +123,10 @@ class OntologySearchTest < ActiveSupport::TestCase
 
       context 'with two keywords' do
         should 'be generated correctly' do
-          results = @os.make_global_bean_list_response([@o1.name, @e1.name], 1).results
+          @keywords.push({'type' => 'Mixed', 'item' => @o1.name})
+          @keywords.push({'type' => 'Mixed', 'item' => @e1.name})
+
+          results = @os.make_bean_list_response(nil, @keywords, 1).ontologies
           results = results.map { |x| x[:name] }
 
           assert_equal 1, results.size
@@ -126,7 +137,10 @@ class OntologySearchTest < ActiveSupport::TestCase
         end
 
         should 'return an empty set' do
-          results = @os.make_global_bean_list_response([@o2.name, @e1.name], 1).results
+          @keywords.push({'type' => 'Mixed', 'item' => @o2.name})
+          @keywords.push({'type' => 'Mixed', 'item' => @e1.name})
+
+          results = @os.make_bean_list_response(nil, @keywords, 1).ontologies
           results = results.map { |x| x[:name] }
 
           assert_equal 0, results.size

@@ -20,6 +20,7 @@
         = menu_entry 'Symbols',      :entities_search if !! Settings.display_symbols_tab
         = menu_entry 'Logics',       :logics
         = menu_entry 'Mappings',     :links
+        = render partial: 'shared/navbar_more'
         %li= wiki_link controller_name, action_name
 
       = render partial: 'shared/session'

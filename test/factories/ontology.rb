@@ -17,6 +17,18 @@ FactoryGirl.define do
     description { Faker::Lorem.paragraph }
     logic { FactoryGirl.create :logic }
 
+    factory :single_unparsed_ontology do |ontology|
+      ontology.after(:build) do |ontology|
+        version = ontology.versions.build({
+            commit_oid: '0'*40,
+            user: nil,
+          }, without_protection: true)
+
+        version.fast_parse = true
+        version.do_not_parse!
+      end
+    end
+
     factory :single_ontology, class: SingleOntology do
     end
 

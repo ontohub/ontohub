@@ -5,7 +5,7 @@ FactoryGirl.define do
 
     factory :repository_with_remote do |repository|
       repository.after(:build) do |repository|
-        path = '/tmp/ontohub/test/unit/git/repository'
+        path = File.join(Ontohub::Application.config.git_root, 'repository')
         git_repository = GitRepository.new(path)
         userinfo = {
           email: 'janjansson.com',

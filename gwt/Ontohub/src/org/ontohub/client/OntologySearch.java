@@ -6,46 +6,41 @@ package org.ontohub.client;
 import java.util.ArrayList;
 import java.util.List;
 
-import org.ontohub.client.KeywordListRequester.Keyword;
-import org.ontohub.client.KeywordListRequester.KeywordList;
-import org.ontohub.client.KeywordListRequester.Ontology;
-import org.ontohub.client.KeywordListRequester.OntologyList;
 import org.ontohub.client.Pagination.PaginateEvent;
 import org.ontohub.client.Pagination.PaginateHandler;
+import org.ontohub.shared.Filter;
+import org.ontohub.shared.FiltersMap;
+import org.ontohub.shared.Keyword;
+import org.ontohub.shared.Ontology;
+import org.ontohub.shared.OntologyList;
 
 import com.google.gwt.core.client.GWT;
+import com.google.gwt.core.client.JsArray;
 import com.google.gwt.event.dom.client.ClickEvent;
 import com.google.gwt.event.dom.client.KeyCodes;
 import com.google.gwt.event.dom.client.KeyDownEvent;
-import com.google.gwt.event.dom.client.KeyEvent;
-import com.google.gwt.event.dom.client.KeyPressEvent;
-import com.google.gwt.event.dom.client.KeyPressHandler;
 import com.google.gwt.event.dom.client.KeyUpEvent;
 import com.google.gwt.event.dom.client.KeyUpHandler;
-import com.google.gwt.event.logical.shared.SelectionEvent;
-import com.google.gwt.event.logical.shared.SelectionHandler;
-import com.google.gwt.event.logical.shared.ValueChangeEvent;
-import com.google.gwt.event.logical.shared.ValueChangeHandler;
 import com.google.gwt.uibinder.client.UiBinder;
 import com.google.gwt.uibinder.client.UiFactory;
 import com.google.gwt.uibinder.client.UiField;
 import com.google.gwt.uibinder.client.UiHandler;
-import com.google.gwt.user.client.Window;
 import com.google.gwt.user.client.rpc.AsyncCallback;
 import com.google.gwt.user.client.ui.Composite;
+import com.google.gwt.user.client.ui.FilterSelector;
 import com.google.gwt.user.client.ui.FlowPanel;
 import com.google.gwt.user.client.ui.FocusPanel;
-import com.google.gwt.user.client.ui.MultiWordSuggestOracle;
-import com.google.gwt.user.client.ui.SuggestBox;
-import com.google.gwt.user.client.ui.SuggestOracle.Suggestion;
+import com.google.gwt.user.client.ui.InlineLabel;
 import com.google.gwt.user.client.ui.TextBox;
 import com.google.gwt.user.client.ui.Widget;
+import com.google.gwt.user.client.ui.events.FilterSelectionEvent;
+import com.google.gwt.user.client.ui.events.FilterSelectionHandler;
 
 /**
  * @author DanielVale
  *
  */
-public class OntologySearch extends Composite {
+public class OntologySearch extends Composite implements FilterSelectionHandler {
 
 	private static OntologySearchUiBinder uiBinder = GWT.create(OntologySearchUiBinder.class);
 
@@ -58,6 +53,9 @@ public class OntologySearch extends Composite {
 	FlowPanel conceptPanel;
 
 	@UiField
+	FlowPanel filterSelectorsPanel;
+
+	@UiField
 	TextBox box;
 
 	@UiField
@@ -66,7 +64,28 @@ public class OntologySearch extends Composite {
 	@UiField
 	FocusPanel bar;
 
-	private final KeywordListRequester requester;
+	@UiField
+	InlineLabel refreshIcon;
+
+	@UiField
+	InlineLabel warningIcon;
+
+	@UiField
+	FilterSelector selector0;
+
+	@UiField
+	FilterSelector selector1;
+
+	@UiField
+	FilterSelector selector2;
+
+	@UiField
+	FilterSelector selector3;
+
+	@UiField
+	FilterSelector selector4;
+	
+	private final OntohubServices requester;
 
 	private int page = 1;
 
@@ -83,7 +102,7 @@ public class OntologySearch extends Composite {
 	 * @param ontologySearchService 
 	 */
 	public OntologySearch() {
-		requester = new KeywordListRequester();
+		requester = new OntohubServices();
 		initWidget(uiBinder.createAndBindUi(this));
 		pagination.setPageRange(0, 0);
 		pagination.addPaginateHandler(new PaginateHandler() {
@@ -94,6 +113,12 @@ public class OntologySearch extends Composite {
 				updateOntologyWidgetList();
 			}
 		});
+		setFilterSelectorsVisible(true);
+		selector0.addFilterSelectionHandler(this);
+		selector1.addFilterSelectionHandler(this);
+		selector2.addFilterSelectionHandler(this);
+		selector3.addFilterSelectionHandler(this);
+		selector4.addFilterSelectionHandler(this);
 	}
 
 	@UiFactory
@@ -122,12 +147,15 @@ public class OntologySearch extends Composite {
 		return box;
 	}
 
+	/**
+	 * Selects a keyword
+	 */
 	private final void selectKeyword() {
 		String text = box.getText().trim();
 		if (text.length() == 0) {
 			return;
 		}
-		OntologySearchConcept concept = new OntologySearchConcept(OntologySearch.this, "Category", text);
+		OntologySearchConcept concept = new OntologySearchConcept(OntologySearch.this, "Mixed", text);
 		conceptPanel.add(concept);
 		box.setText("");
 		page = 1;
@@ -177,7 +205,7 @@ public class OntologySearch extends Composite {
 			@Override
 			public void onSelection(SelectionEvent<Suggestion> event) {
 				Suggestion suggestion = event.getSelectedItem();
-				conceptPanel.add(new OntologySearchConcept(OntologySearch.this, "Category", suggestion.getReplacementString()));
+				conceptPanel.add(new OntologySearchConcept(OntologySearch.this, "Mixed", suggestion.getReplacementString()));
 				box.setText("");
 				page = 1;
 				updateOntologyWidgetList();
@@ -188,23 +216,45 @@ public class OntologySearch extends Composite {
 	}
 	*/
 
+	/**
+	 * Handle the deletion of a concept.
+	 */
+	public final void onConceptDeleted() {
+		page = 1;
+		updateOntologyWidgetList();
+	}
+
+	/**
+	 * Updates the ontology widget list to match the filters. 
+	 */
 	public final void updateOntologyWidgetList() {
-		List<String> stringArray = new ArrayList<String>();
+		List<Keyword> keywordArray = new ArrayList<Keyword>();
+		keywordArray.add(selector0.getKeyword());
+		keywordArray.add(selector1.getKeyword());
+		keywordArray.add(selector2.getKeyword());
+		keywordArray.add(selector3.getKeyword());
+		keywordArray.add(selector4.getKeyword());
 		for (Widget widget : conceptPanel) {
 			if (widget instanceof OntologySearchConcept) {
 				OntologySearchConcept concept = (OntologySearchConcept)widget;
-				stringArray.add(concept.getItemLabel());
+				keywordArray.add(concept.getKeyword());
 			}
 		}
-		requester.requestOntologyList(stringArray.toArray(new String[stringArray.size()]), page, new AsyncCallback<OntologyList>() {
+		refreshIcon.setVisible(true);
+		warningIcon.setVisible(false);
+		requester.requestOntologyList(keywordArray.toArray(new Keyword[keywordArray.size()]), page, new AsyncCallback<OntologyList>() {
 
 			@Override
 			public void onFailure(Throwable caught) {
 				caught.printStackTrace();
+				refreshIcon.setVisible(false);
+				warningIcon.setVisible(true);
 			}
 
 			@Override
 			public void onSuccess(OntologyList ontologyList) {
+				refreshIcon.setVisible(false);
+				warningIcon.setVisible(false);
 				ontologyWidgetPanel.clear();
 				for (Ontology ontology : ontologyList) {
 					OntologyWidget ontologyWidget = new OntologyWidget(ontology);
@@ -229,15 +279,15 @@ public class OntologySearch extends Composite {
 		char ch = (char) event.getNativeKeyCode();
 		if (box.getCursorPos() == 0) {
 			if (event.isLeftArrow()) {
-				focusLastConcept(event);
+				focusLastConcept();
 				event.stopPropagation();
 				event.preventDefault();
 			} else if (ch == (char) KeyCodes.KEY_BACKSPACE) {
-				focusLastConcept(event);
+				focusLastConcept();
 				event.stopPropagation();
 				event.preventDefault();
 			} else if (ch == (char) KeyCodes.KEY_DELETE) {
-				focusLastConcept(event);
+				focusLastConcept();
 				event.stopPropagation();
 				event.preventDefault();
 			}
@@ -249,13 +299,21 @@ public class OntologySearch extends Composite {
 		selectKeyword();
 	}
 
-	private final void focusLastConcept(KeyEvent<?> event) {
+	/**
+	 * Focuses the last concept.
+	 */
+	private final void focusLastConcept() {
 		if (conceptPanel.getWidgetCount() > 0) {
 			OntologySearchConcept concept = (OntologySearchConcept)conceptPanel.getWidget(conceptPanel.getWidgetCount() - 1);
 			concept.setFocus(true);
 		}
 	}
 
+	/**
+	 * Selects the next search component
+	 * 
+	 * @param concept the concept in relation to which to select the next
+	 */
 	public final void selectNext(OntologySearchConcept concept) {
 		int index = conceptPanel.getWidgetIndex(concept);
 		if (index == conceptPanel.getWidgetCount() - 1) {
@@ -266,6 +324,11 @@ public class OntologySearch extends Composite {
 		}
 	}
 
+	/**
+	 * Selects the previous search component
+	 * 
+	 * @param concept the concept in relation to which to select the previous
+	 */
 	public final void selectPrevious(OntologySearchConcept concept) {
 		int index = conceptPanel.getWidgetIndex(concept);
 		if (index > 0) {
@@ -274,13 +337,67 @@ public class OntologySearch extends Composite {
 		}
 	}
 
-	public void onConceptDeleted() {
-		page = 1;
-		updateOntologyWidgetList();
-	}
-
+	/**
+	 * Sets whether the results are paginated.
+	 * 
+	 * @param paginated <code>true</code> to make the results paginated and <code>false</code>
+	 *      otherwise
+	 */
 	public final void setPaginated(boolean paginated) {
 		pagination.setVisible(paginated);
+	}
+
+	/**
+	 * Sets whether filter selectors are visible.
+	 * 
+	 * @param visible <code>true</code> to make filter selector visible and <code>false</code>
+	 *      to make filter selectors invisible
+	 */
+	public final void setFilterSelectorsVisible(boolean visible) {
+		filterSelectorsPanel.setVisible(visible);
+		if (visible) {
+			updateFilterSelectors();
+		}
+	}
+
+	/**
+	 * Updates the filter selectors with the values embedded in the website
+	 */
+	private final void updateFilterSelectors() {
+		if (FiltersMap.existsWindowInstance()) {
+			System.out.println("Window Instance");
+			setFiltersMap(FiltersMap.getWindowInstance());
+		} else {
+			requester.requestFilterMap(new AsyncCallback<FiltersMap>() {
+
+				@Override
+				public void onFailure(Throwable caught) {
+					System.out.println("No Instance");
+					warningIcon.setVisible(true);
+				}
+
+				@Override
+				public void onSuccess(FiltersMap map) {
+					System.out.println("Server Instance");
+					setFiltersMap(map);
+				}
+
+			});
+		}
+	}
+
+	private final void setFiltersMap(FiltersMap map) {
+		selector0.addAll(map.getOntologyTypeFilters());
+		selector1.addAll(map.getProjectFilters());
+		selector2.addAll(map.getFormalityLevelFilters());
+		selector3.addAll(map.getLicenseModelFilters());
+		selector4.addAll(map.getTaskFilters());
+	}
+
+	@Override
+	public void onFilterSelection(FilterSelectionEvent event) {
+		page = 1;
+		updateOntologyWidgetList();
 	}
 
 }

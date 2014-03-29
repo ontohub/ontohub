@@ -1,0 +1,5 @@
+-if !parent && can?(:write, subject)
+  %td
+    .btn-group
+      = link_to 'Edit', [:edit, subject], class: 'btn btn-default btn-xs'
+      = link_to 'Delete', subject, class: 'btn btn-danger btn-xs', method: :delete, confirm: "Really delete the #{cls_sym} '#{subject}'?"

@@ -1,0 +1,16 @@
+- page_title resource
+%h1= fancy_link resource
+
+= render partial: 'shared/metadata_top_show', locals: { cls_sym: :project }
+
+%h4 Institution
+= resource.institution
+
+%h4 Homepage
+= link_to resource.homepage, resource.homepage, target: :blank
+
+%h4 Description
+= resource.description
+
+%h4 Contact
+= resource.contact

@@ -74,4 +74,7 @@ module ApplicationHelper
     $commit_oid ||= 'unknown'
   end
 
+  def to_name(sym)
+    sym.to_s.gsub('_', ' ')
+  end
 end

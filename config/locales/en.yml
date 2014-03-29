@@ -43,7 +43,7 @@ en:
         Currently we display all sentences, self-defined and imported
         ones.
       to_display_all_sentences:
-        to display all related sentences.
+        to display all related sentences (including translations/blendoids).
     sentence:
       defined_in:
         defined in %{link}

@@ -1,11 +1,10 @@
-= repository_nav parent.repository, :ontologies, disable_actions: true
+- if parent
+  = repository_nav parent.repository, :ontologies, disable_actions: true
+  = ontology_nav parent, :license_models
+- else
+  %h1 License Models
 
-= ontology_nav parent, :license_models
-
--# if can? :create, LicenseModel
-- if can? :write, parent.repository
-  .pull-right
-    = link_to 'Add License Model', [:new, :repository, :ontology, :license_model], class: 'btn btn-default'
+= render partial: 'shared/metadata_add', locals: { cls_sym: :license_model, parent: parent }
 
 %table.table
   %thead
@@ -13,6 +12,7 @@
       %th License Model
       %th Description
       %th URL
-      %th
+      - if !parent && can?(:write, LicenseModel)
+        %th Manage
   %tbody
     = render collection

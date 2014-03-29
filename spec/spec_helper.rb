@@ -12,6 +12,9 @@ require 'rspec/autorun'
 require 'database_cleaner'
 
 require 'sidekiq/testing'
+# Setting the default for sidekiq testing
+# some specs rely on this being the default.
+# However unit-tests use a different default (fake!)
 Sidekiq::Testing.inline!
 
 # Requires supporting ruby files with custom matchers and macros, etc,
@@ -30,6 +33,14 @@ end
 
 def fixture_file(name)
   Rails.root + 'test/fixtures/ontologies/xml/' + name
+end
+
+def add_fixture_file(repository, relative_file)
+  dummy_user = FactoryGirl.create :user
+  path = File.join(Rails.root, 'test', 'fixtures', 'ontologies', relative_file)
+  basename = File.basename(path)
+
+  version = repository.save_file path, basename, "#{basename} added", dummy_user
 end
 
 RSpec.configure do |config|

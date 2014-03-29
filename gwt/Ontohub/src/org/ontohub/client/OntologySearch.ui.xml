@@ -62,6 +62,10 @@
           display: block;
           float: left;
         }
+        .iconPanel {
+          display: block;
+          float: right;
+        }
         input[type="text"].box {
 	      display: inline-block;
 	      font-size: 14px;
@@ -88,11 +92,27 @@
         .OntologySearch .form-control {
           padding: 6px;
         }
+        .searchBar {
+	      padding-top: 5px;
+        }
 	</ui:style>
 	<g:FlowPanel styleName="{style.OntologySearch}">
-	  <g:FlowPanel styleName="input-group">
+	
+	  <g:FlowPanel styleName="btn-group btn-group-sm">
+	    <g:FilterSelector typeLabel="OntologyType" title="Ontologies" ui:field="selector0" />
+	    <g:FilterSelector typeLabel="Project" title="from all projects" ui:field="selector1" />
+	    <g:FilterSelector typeLabel="FormalityLevel" title="in any formality" ui:field="selector2" />
+	    <g:FilterSelector typeLabel="LicenseModel" title="under any license" ui:field="selector3" />
+	    <g:FilterSelector typeLabel="Task" title="for any purpose" ui:field="selector4" />
+	  </g:FlowPanel>
+
+	  <g:FlowPanel styleName="input-group {style.searchBar}">
 	    <g:FocusPanel styleName="form-control {style.ontohub-SearchBar}" ui:field="bar">
 	      <g:FlowPanel styleName="{style.nobreak}">
+	        <g:FlowPanel styleName="{style.iconPanel}" ui:field="iconPanel">
+	          <g:InlineLabel styleName="glyphicon glyphicon-refresh" ui:field="refreshIcon" visible="false" />
+	          <g:InlineLabel styleName="glyphicon glyphicon-warning-sign" ui:field="warningIcon" visible="false" />
+	        </g:FlowPanel>
 	        <g:FlowPanel styleName="{style.conceptPanel}" ui:field="conceptPanel"/>
 	        <g:TextBox styleName="{style.box}" ui:field="box"/>
 	      </g:FlowPanel>
@@ -103,6 +123,8 @@
 	      </g:FocusPanel>
 	    </g:SimplePanel>
 	  </g:FlowPanel>
+	  
+	  <g:FlowPanel ui:field="filterSelectorsPanel"></g:FlowPanel>
 	  <o:Pagination ui:field="pagination" />
 	  <g:FlowPanel ui:field="ontologyWidgetPanel"></g:FlowPanel>
 	</g:FlowPanel>

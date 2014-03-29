@@ -19,6 +19,13 @@ class RepositoriesController < InheritedResources::Base
     super
   end
 
+  def destroy
+    super
+  rescue Ontology::DeleteError => e
+    flash[:error] = e.message
+    redirect_to resource
+  end
+
   protected
 
   def collection

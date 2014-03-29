@@ -1,6 +1,8 @@
-= simple_form_for [*resource_chain, request.post? ? resource : LicenseModel.new] do |f|
+= simple_form_for [*resource_chain, resource] do |f|
+  = render partial: '/shared/form_errors'
+
   = f.input :name
   = f.input :url
-  = f.input :description
-  = f.hidden_field :ontology_id, value: @ontology.id
-  = f.button :submit, class: 'btn btn-primary'
+  = f.input :description, as: :text, input_html: {rows: 5}
+
+  = f.submit class: 'btn btn-primary'
