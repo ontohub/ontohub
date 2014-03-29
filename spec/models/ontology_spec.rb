@@ -116,4 +116,26 @@ describe Ontology do
     end
   end
 
+  context 'when parsing an ontology which contains logic translations' do
+    let(:repository) { create :repository }
+    let(:version) { add_fixture_file(repository, 'dol/double_mapped_logic_translated_blendoid.dol') }
+    let(:ontology) { version.ontology.children.find_by_name('DMLTB-TheClifOne') }
+
+    context 'the logically translated ontology' do
+      before do
+        version.parse
+      end
+
+      it 'should contain imported sentences' do
+        expect(ontology.imported_sentences).to_not be_empty
+      end
+
+      it 'should contain logic translations' do
+        expect(ontology.contains_logic_translations?).to be_true
+      end
+
+    end
+
+  end
+
 end

@@ -1,0 +1,30 @@
+distributed-ontology Foo
+logic OWL
+
+ontology DMLTB-CommonSource =
+  DataProperty: hasLegs
+    Domain: KitchenTable
+    Range: integer[>2, <5]
+  Class: KitchenTable SubClassOf: hasLegs exactly 1
+end
+
+ontology DMLTB-KitchentablesAreDesks =
+  DMLTB-CommonSource with KitchenTable |-> Desk
+end
+
+ontology DMLTB-DesksAreTables =
+  DMLTB-KitchentablesAreDesks with Desk |-> Table
+end
+
+ontology DMLTB-MyTables =
+  DMLTB-DesksAreTables
+end
+
+logic CommonLogic
+
+ontology DMLTB-TheClifOne =
+  DMLTB-MyTables
+then
+  (forall (x Table)
+    (x))
+end
