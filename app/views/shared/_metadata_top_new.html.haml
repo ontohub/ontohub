@@ -1,0 +1,7 @@
+- if parent
+  = repository_nav parent.repository, :ontologies, disable_actions: true
+  = ontology_nav parent, cls_sym.to_s.pluralize.to_sym
+
+  %h4= "Add new #{to_name(cls_sym)} to this ontology"
+- else
+  %h1= "Add #{to_name(cls_sym)}"

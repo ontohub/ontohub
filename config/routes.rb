@@ -2,11 +2,8 @@ require 'sidekiq/web' if defined? Sidekiq
 
 
 Ontohub::Application.routes.draw do
-  
-  resources :categories, :only => [:index, :show]
 
   resources :ontology_types, only: :show
-  resources :formality_levels, only: :show
 
   devise_for :users, controllers: {
     confirmations: 'users/confirmations',
@@ -28,6 +25,12 @@ Ontohub::Application.routes.draw do
   resources :logic_mappings
 
   resources :links, :only => :index 
+
+  resources :categories, :only => [:index, :show]
+  resources :projects
+  resources :tasks
+  resources :license_models
+  resources :formality_levels
 
 
   resources :language_adjoints
@@ -109,7 +112,7 @@ Ontohub::Application.routes.draw do
       resources :metadata, :only => [:index, :create, :destroy]
       resources :comments, :only => [:index, :create, :destroy]
       resources :graphs, :only => [:index]
-      resources :formality_levels, :only => [:index]
+      resources :formality_levels
 
     end
 

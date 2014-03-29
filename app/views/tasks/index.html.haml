@@ -1,15 +1,17 @@
 - if parent
   = repository_nav parent.repository, :ontologies, disable_actions: true
-
   = ontology_nav parent, :tasks
-  
-  %table.table
-    %thead
-      %tr
-        %th Task
-        %th Description
-    %tbody
-      - @tasks.each do |task|
-        %tr
-          %td= task.name
-          %td= task.description
+- else
+  %h1 Tasks
+
+= render partial: 'shared/metadata_add', locals: { cls_sym: :task, parent: parent }
+
+%table.table
+  %thead
+    %tr
+      %th Task
+      %th Description
+      - if !parent && can?(:write, Task)
+        %th Manage
+  %tbody
+    = render collection

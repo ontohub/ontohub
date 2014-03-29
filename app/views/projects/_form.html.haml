@@ -1,4 +1,4 @@
-= simple_form_for [@ontology.repository, @ontology, resource] do |f|
+= simple_form_for [*resource_chain, resource] do |f|
   = render partial: '/shared/form_errors'
 
   = f.input :name
