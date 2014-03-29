@@ -71,6 +71,21 @@ describe Ontology do
     end
   end
 
+  context 'when parsing a non-ontology-file' do
+    let(:repository) { create :repository }
+    let(:version) { add_fixture_file(repository, 'xml/catalog-v001.xml') }
+
+    before do
+      version.parse
+    end
+
+    it 'no ontology should exist' do
+      puts repository.ontologies.inspect
+      expect(repository.ontologies).to be_empty
+    end
+
+  end
+
   context 'when trying to get the imported ontologies' do
     let!(:ontology) { create :ontology }
     let!(:imported_ontology) do
