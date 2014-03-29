@@ -22,10 +22,8 @@ end
 
 class RepositoryCreator
   include Singleton
+
   attr_accessor :root_path
-  def initialize
-    @current_repo = nil
-  end
 
   def clone(name, url)
     @current_repo = Repo.new(name, url)
@@ -45,7 +43,9 @@ class RepositoryCreator
 end
 
 class Repo
+
   attr_accessor :url_maps
+
   def initialize(name, url=nil)
     @name = name
     @path = url || RepositoryCreator.instance.root_path.join(name)
