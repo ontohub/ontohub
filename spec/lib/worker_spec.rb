@@ -1,5 +1,7 @@
 require 'spec_helper'
 
+# We try to be explicit when using sidekiq
+# testing modes. However inline! is the default
 describe Worker do
 
   let(:balancer) { ConcurrencyBalancer.new }
