@@ -13,10 +13,29 @@ module Ontology::Import
       link             = nil
       ontologies_count = 0
       versions = []
+      internal_iri = nil
 
       OntologyParser.parse io,
         root: Proc.new { |h|
           root = h
+        },
+        import: Proc.new { |h|
+          location = h['location']
+          source_iri = location ? location : internal_iri
+          begin
+            commit_oid = ExternalRepository.add_to_repository(
+              internal_iri,
+              "add reference ontology: #{internal_iri} from #{source_iri}", user,
+              location: source_iri)
+            version = ontology.versions.build
+            version.user = user
+            version.do_not_parse!
+            version.commit_oid = commit_oid
+            version.state = 'done'
+            versions << version
+          rescue
+            ontology.present = false
+          end
         },
         ontology: Proc.new { |h|
           child_name = h['name']
@@ -32,19 +51,6 @@ module Ontology::Import
                                                  present: true,
                                                  repository_id: ExternalRepository.repository.id},
                                                  without_protection: true)
-            end
-            begin
-              commit_oid = ExternalRepository.add_to_repository(
-                internal_iri,
-                "add reference ontology: #{internal_iri}", user)
-              version = ontology.versions.build
-              version.user = user
-              version.do_not_parse!
-              version.commit_oid = commit_oid
-              version.state = 'done'
-              versions << version
-            rescue
-              ontology.present = false
             end
           else
             ontologies_count += 1

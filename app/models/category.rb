@@ -13,4 +13,7 @@ class Category < ActiveRecord::Base
     ontologies = Ontology.joins(:categories).where(categories: {id: categories})
   end
 
+  def to_s
+    name.gsub(/_/, ' ')
+  end
 end

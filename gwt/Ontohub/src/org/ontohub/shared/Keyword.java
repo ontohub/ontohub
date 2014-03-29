@@ -9,13 +9,16 @@ import com.google.gwt.core.client.JavaScriptObject;
  */
 public class Keyword extends JavaScriptObject {
 	protected Keyword() {}
+	public final native static Keyword newInstance() /*-{ return {item: null, type: null, role: null}; }-*/;
+
 	public final native void setItem(String item) /*-{ this.item = item; }-*/;
 	public final native void setType(String type) /*-{ this.type = type; }-*/;
 	public final native void setRole(String role) /*-{ this.role = role; }-*/;
+
 	public final native String getItem() /*-{ return this.item; }-*/;
 	public final native String getType() /*-{ return this.type; }-*/;
 	public final native String getRole() /*-{ return this.role; }-*/;
-	public final native static Keyword newInstance() /*-{ return {item: null, type: null, role: null}; }-*/;
+
 	public final String toJson() {
 		StringBuffer buffer = new StringBuffer();
 		buffer.append("{\"item\":");
@@ -27,6 +30,7 @@ public class Keyword extends JavaScriptObject {
 		buffer.append("}");
 		return buffer.toString();
 	}
+
 	private final static String escape(String string) {
 		if (string == null) {
 			return "null";
@@ -34,15 +38,14 @@ public class Keyword extends JavaScriptObject {
 		return "\"" +
 			string
 			.replace("\\", "\\\\")
-	        .replace("'",  "\\'")
-	        .replace("\"", "\\\"")
-	        .replace("&",  "\\&")
-	        .replace("\r", "\\r")
+			.replace("'",  "\\'")
+			.replace("\"", "\\\"")
+			.replace("&",  "\\&")
+			.replace("\r", "\\r")
 			.replace("\n", "\\n")
-	        .replace("\t", "\\t")
-	        .replace("\b", "\\b")
-	        .replace("\f", "\\f")
-	        + "\"";
+			.replace("\t", "\\t")
+			.replace("\b", "\\b")
+			.replace("\f", "\\f")
+			+ "\"";
 	}
-	
 }

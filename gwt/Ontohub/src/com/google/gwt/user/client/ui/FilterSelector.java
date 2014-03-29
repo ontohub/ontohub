@@ -14,13 +14,10 @@ import com.google.gwt.dom.client.Element;
 import com.google.gwt.dom.client.LIElement;
 import com.google.gwt.event.dom.client.ClickEvent;
 import com.google.gwt.event.dom.client.ClickHandler;
-import com.google.gwt.event.logical.shared.ValueChangeEvent;
-import com.google.gwt.event.logical.shared.ValueChangeHandler;
 import com.google.gwt.uibinder.client.UiBinder;
 import com.google.gwt.uibinder.client.UiField;
 import com.google.gwt.uibinder.client.UiHandler;
 import com.google.gwt.user.client.DOM;
-import com.google.gwt.user.client.Window;
 import com.google.gwt.user.client.ui.events.FilterSelectionEvent;
 import com.google.gwt.user.client.ui.events.FilterSelectionHandler;
 import com.google.gwt.user.client.ui.events.HasFilterSelectionHandlers;
@@ -78,6 +75,8 @@ public class FilterSelector extends Composite implements HasWidgets, HasFilterSe
 	@UiHandler("button")
 	public final void onButtonClick(ClickEvent event) {
 		toggle();
+		event.stopPropagation();
+		event.preventDefault();
 	}
 
 	/**

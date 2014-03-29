@@ -3,10 +3,22 @@
 
   = ontology_nav parent, :categories
 
+  - if parent.categories.any?
+    %p This ontology is assigned to the following categories:
+    %ul.no-bullet
+      - parent.categories.each do |category|
+        %li= fancy_link category
+  - else
+    %p
+      This ontology is assigned to no categories.
+      - if can? :update, parent
+        = link_to 'Edit the ontology', [:edit, *resource_chain]
+        to change that.
+
 - else 
   %h2 Categories
   
-  click on one category to see the Ontologies which are in it
+  %p.alert.alert-info Click on a category to list the contained ontologies.
   
   .well 
     = render partial: 'categories'

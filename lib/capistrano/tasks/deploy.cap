@@ -28,6 +28,7 @@ namespace :deploy do
         within release_path do
           execute :rake, "secret:replace"
         end
+        execute :mkdir, "-p #{shared_path.join('config')}"
         execute :mv, "#{release_secret} #{shared_secret}"
       end
       

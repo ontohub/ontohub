@@ -21,9 +21,12 @@ class Ontology < ActiveRecord::Base
   include Ontology::LicenseModels
   include Ontology::FileExtensions
   include Ontology::Searching
+  include GraphStructures::SpecificFetchers::Links
 
   # Multiple Class Features
   include Aggregatable
+
+  class DeleteError < StandardError; end
 
   belongs_to :language
   belongs_to :logic, counter_cache: true
@@ -143,6 +146,39 @@ class Ontology < ActiveRecord::Base
     ontology
   end
 
+  def is_imported?
+    import_links.present?
+  end
+
+  def imported_by
+    import_links.map(&:source)
+  end
+
+  def destroy_with_parent(user)
+    if parent
+      repository.delete_file(parent.path, user, "Delete ontology #{parent}") do
+        parent.destroy
+      end
+    else
+      repository.delete_file(path, user, "Delete ontology #{self}") do
+        destroy
+      end
+    end
+  end
+
+  def destroy
+    raise DeleteError if is_imported?
+    super
+  end
+
+  def imported_ontologies
+    fetch_links_by_kind(self, 'import')
+  end
+
+  def combined_sentences
+    affected_ontology_ids = [self.id] + imported_ontologies.pluck(:id)
+    Sentence.where(ontology_id: affected_ontology_ids)
+  end
 
   protected
 
@@ -150,6 +186,10 @@ class Ontology < ActiveRecord::Base
     where "ontologies.basepath = :basepath AND ontologies.file_extension = :file_extension AND ontologies.parent_id IS NULL",
       basepath: File.basepath(file),
       file_extension: File.extname(file)
+  end
+
+  def import_links
+    Link.where(source_id: self.id, kind: "import")
   end
 
 end

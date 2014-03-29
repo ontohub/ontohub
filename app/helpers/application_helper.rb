@@ -7,6 +7,8 @@ module ApplicationHelper
   def context_pane
     if params[:controller] == 'home'
       'shared/user_repositories'
+    elsif params[:controller] == 'categories' && params[:action] == 'show'
+      'shared/user_ontologies'
     elsif params[:action] != 'index'
       false
     elsif %w[categories logics links ontologies].include? params[:controller]

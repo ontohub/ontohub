@@ -16,4 +16,12 @@ class SentencesController < InheritedResources::Base
   def check_read_permissions
     authorize! :show, parent.repository
   end
+
+  def collection
+    if display_all?
+      Kaminari.paginate_array(parent.combined_sentences).page(params[:page])
+    else
+      super
+    end
+  end
 end
