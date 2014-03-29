@@ -1,7 +1,7 @@
 module OntologyVersion::Parsing
 
   extend ActiveSupport::Concern
-  include HetsErrorHandling
+  include Hets::ErrorHandling
   
   included do
     @queue = 'hets'
