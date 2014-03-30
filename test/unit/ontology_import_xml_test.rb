@@ -51,7 +51,7 @@ class OntologyImportXMLTest < ActiveSupport::TestCase
       assert_equal 3, @ontology.links.count
     end
 
-    should 'have no logic' do
+    should 'have logic DOL' do
       assert_equal 'DOL', @ontology.logic.try(:name)
     end
     
