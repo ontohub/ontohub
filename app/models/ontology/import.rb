@@ -133,10 +133,7 @@ module Ontology::Import
             ontology.language = Language.where(:iri => "http://purl.net/dol/language/#{h['language']}")
               .first_or_create(user: user, name: h['language'])
           end
-          if ontology.distributed?
-            ontology.logic = Logic.where(:iri => "http://purl.net/dol/logics/#{Logic::DEFAULT_DISTRIBUTED_ONTOLOGY_LOGIC}")
-            .first_or_create(user: user, name: Logic::DEFAULT_DISTRIBUTED_ONTOLOGY_LOGIC)
-          elsif h['logic']
+          if h['logic']
             ontology.logic = Logic.where(:iri => "http://purl.net/dol/logics/#{h['logic']}")
             .first_or_create(user: user, name: h['logic'])
           end
