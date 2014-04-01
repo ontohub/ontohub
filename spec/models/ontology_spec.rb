@@ -134,6 +134,7 @@ describe Ontology do
         end
       end
     end
+  end
 
   context 'when parsing an ontology which contains logic translations' do
     let(:repository) { create :repository }
