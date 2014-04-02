@@ -8,6 +8,7 @@ module MimeTypeHelper
     when 'rb'
       'text/x-ruby'
     when 'xml'
+    when 'owl'
       'text/html'
     else
       mimetype.to_s
