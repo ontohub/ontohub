@@ -87,7 +87,7 @@ gem "faker", "~> 1.2"
 # Git
 gem 'rugged'
 gem 'diffy'
-gem 'codemirror-rails'
+gem 'codemirror-rails', :git => 'git@github.com:llwt/codemirror-rails.git'
 gem 'js-routes'
 
 # Ancestry enabling tree structure in category model
