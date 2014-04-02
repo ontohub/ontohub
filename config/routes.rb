@@ -125,6 +125,12 @@ Ontohub::Application.routes.draw do
       constraints: { path: /.*/ }
   end
 
+  post ':repository_id/:path',
+    controller:  :files,
+    action:      :update,
+    as:          :repository_tree,
+    constraints: { path: /.*/ }
+
   get ':repository_id(/:path)',
     controller:  :files,
     action:      :files,

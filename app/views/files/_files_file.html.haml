@@ -1,24 +1,36 @@
--if can? :write, repository
-  .pull-right
-    %a.btn.btn-default
-      Edit file
 %h3
   =path
 
-.col-md-9
-  - if @file[:size] <= Ontohub::Application.config.max_read_filesize
-    = form_for(repository, url: fancy_repository_path(repository, path: path, ref: oid), method: :post, html: {class: 'form-horizontal edit-form'}) do |f|
-      = text_area_tag 'content', @file[:content], class: 'input-xxlarge', id: 'code-area', 'data-mime-type' => get_mime_string(@file[:name], @file[:mime_type])
-  - else
-    %p
-      File too large to display.
-      = link_to "Download #{@file[:name]}.", fancy_repository_path(repository, path: path, ref: oid, action: :download)
+= form_for(repository, url: fancy_repository_path(repository, path: path, ref: oid), method: :post, html: {class: 'form-horizontal edit-form'}) do |f|
+  .col-md-9
+    - if @file[:size] <= Ontohub::Application.config.max_read_filesize
+      = text_area_tag 'content', @file[:content], id: 'code-area', 'data-mime-type' => get_mime_string(@file[:name], @file[:mime_type])
+    - else
+      %p
+        File too large to display.
+        = link_to "Download #{@file[:name]}.", fancy_repository_path(repository, path: path, ref: oid, action: :download)
 
-.col-md-3
-  - unless @info[:ontologies].empty?
-    %h4
-      Defining
-      = pluralize @info[:ontologies].size, 'ontology'
-    %ul.ontology-list
-      - @info[:ontologies].each do |ontology|
-        %li= fancy_link ontology
+  .col-md-3
+    -if can? :write, repository
+      .row
+        .pull-right
+          =link_to 'Edit file', '#', id: 'codemirror-btn-edit', class: 'hide-when-editing btn btn-default'
+          .show-when-editing.well.well-small
+            .row
+              .pull-right
+                = f.submit 'Update', id: 'codemirror-btn-update', class: 'btn btn-primary'
+                = link_to 'Cancel', '#', id: 'codemirror-btn-cancel', class: 'btn btn-warning'
+                =# link_to 'Reset', '#', id: 'codemirror-btn-cancel', class: 'btn btn-danger'
+            .alert-error Please enter a commit message.
+            #message-group
+              = label_tag 'message', class: 'control-label' do
+                %abbr.required *
+                Message
+              = text_area_tag 'message', params[:message] || '', id: 'message', required: true
+    - unless @info[:ontologies].empty?
+      %h4
+        Defining
+        = pluralize @info[:ontologies].size, 'ontology'
+      %ul.ontology-list
+        - @info[:ontologies].each do |ontology|
+          %li= fancy_link ontology
