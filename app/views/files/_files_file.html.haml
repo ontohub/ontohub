@@ -16,6 +16,10 @@
         .pull-right
           =link_to 'Edit file', '#', id: 'codemirror-btn-edit', class: 'hide-when-editing btn btn-default'
           .show-when-editing.well.well-small
+            %p You are in editing mode.
+            %p.warning
+              If someone else is editing the same file simultaneously only one
+              of the changes will be saved.
             .alert-error Please enter a commit message.
             #message-group
               = label_tag 'message', class: 'control-label' do
