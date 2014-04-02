@@ -12,10 +12,10 @@ $(function() {
       readOnly: true
     });
 
-    original_editor_content = editor.getTextArea().value
+    original_editor_content = editor.getValue();
 
     // Setup editing functionality
-    $("#codemirror-btn-edit").editFile()
+    $("#codemirror-btn-edit").editFile();
   }
 });
 
@@ -25,7 +25,7 @@ $.fn.editFile = function() {
     btn_edit = $("#codemirror-btn-edit");
     btn_update = $("#codemirror-btn-update");
     btn_cancel = $("#codemirror-btn-cancel");
-    // btn_reset = $("#codemirror-btn-reset");
+    btn_reset = $("#codemirror-btn-reset");
 
     btn_edit_previous_html = this.innerHTML;
 
@@ -51,12 +51,11 @@ $.fn.editFile = function() {
     });
 
     // Reset Button (rollback)
-    // btn_cancel.unbind('click').click(function() {
-    //   editor.setOption("readOnly", true);
-    //   $('.show-when-editing').hide();
-    //   $('.hide-when-editing').show();
-    //   return false;
-    // });
+    btn_reset.unbind('click').click(function() {
+      editor.setOption("readOnly", false);
+      editor.setValue(original_editor_content);
+      return false;
+    });
 
     // Commit message required
     $('.edit-form').unbind('submit').submit(function() {

@@ -16,17 +16,16 @@
         .pull-right
           =link_to 'Edit file', '#', id: 'codemirror-btn-edit', class: 'hide-when-editing btn btn-default'
           .show-when-editing.well.well-small
-            .row
-              .pull-right
-                = f.submit 'Update', id: 'codemirror-btn-update', class: 'btn btn-primary'
-                = link_to 'Cancel', '#', id: 'codemirror-btn-cancel', class: 'btn btn-warning'
-                =# link_to 'Reset', '#', id: 'codemirror-btn-cancel', class: 'btn btn-danger'
             .alert-error Please enter a commit message.
             #message-group
               = label_tag 'message', class: 'control-label' do
                 %abbr.required *
                 Message
               = text_area_tag 'message', params[:message] || '', id: 'message', required: true
+            .row.btn-group.codemirror-controls
+              = f.submit 'Update', id: 'codemirror-btn-update', class: 'btn btn-primary'
+              = link_to 'Cancel', '#', id: 'codemirror-btn-cancel', class: 'btn btn-warning'
+              = link_to 'Reset', '#', id: 'codemirror-btn-reset', class: 'btn btn-danger'
     - unless @info[:ontologies].empty?
       %h4
         Defining
