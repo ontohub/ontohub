@@ -14,7 +14,6 @@
     -if can? :write, repository
       .row
         .pull-right
-          =link_to 'Edit file', '#', id: 'codemirror-btn-edit', class: 'hide-when-editing btn btn-default'
           .show-when-editing.well.well-small
             %p You are in editing mode.
             %p.warning
