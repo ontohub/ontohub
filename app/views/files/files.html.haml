@@ -20,7 +20,7 @@
 
 .pull-right.btn-group.breadcrumbs-buttons
   - if can? :write, repository
-    - if @info[:type] == :file && !in_ref_path?
+    - if @info[:type] == :file && !in_ref_path? && display_file?
       = link_to 'Edit file', '#', id: 'codemirror-btn-edit', class: 'hide-when-editing btn btn-default btn-sm'
     = link_to new_repository_file_path(repository, {'upload_file[target_directory]' => dirpath(repository)}.merge(update_file)), class: 'btn btn-default btn-sm' do
       = file_exists? ? 'Update file' : 'Upload file'
