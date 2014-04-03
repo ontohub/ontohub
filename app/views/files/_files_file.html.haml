@@ -4,7 +4,7 @@
 = form_for(repository, url: fancy_repository_path(repository, path: path, ref: oid), method: :post, html: {class: 'form-horizontal edit-form'}) do |f|
   .col-md-9
     - if @file[:size] <= Ontohub::Application.config.max_read_filesize
-      = text_area_tag 'content', @file[:content], id: 'code-area', 'data-mime-type' => get_mime_string(@file[:name], @file[:mime_type])
+      = text_area_tag 'content', @file[:content].force_encoding('UTF-8'), id: 'code-area', 'data-mime-type' => get_mime_string(@file[:name], @file[:mime_type])
     - else
       %p
         File too large to display.
