@@ -64,15 +64,7 @@ class TarjanTree
    end
    
    def determine_group_name entities
-     name = ""
-     entities.each_with_index do |entity, i|
-       if entity == entities.last
-         name += "#{entity}"
-       else
-         name += "#{entity} ☰ "
-       end
-    end
-    name
+     entities.join(" ☰ ")
    end
    
 end
