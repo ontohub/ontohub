@@ -42,6 +42,21 @@ module Ontology::Entities
     end
   end
 
+  def size_of_entity_tree
+    array = []
+    %i[parent_id child_id].each do |key|
+      array += EEdge.where(key => self.entities.where(kind: 'Class'))
+    end
+    array.uniq.size
+  end
+  
+  def tree_percentage
+    tree_size = self.size_of_entity_tree
+    sentence_count = inheritance_sentences.size
+    return 0 if sentence_count == 0
+    (tree_size * 100)/sentence_count
+  end
+  
   def delete_edges
     %i[parent_id child_id].each do |key|
       EEdge.where(key => self.entities.where(kind: 'Class')).delete_all
@@ -69,5 +84,16 @@ module Ontology::Entities
         end
       end
     end
+  end
+  
+  private
+  
+  # Get SubClassOf Strings without explicit Thing
+  def inheritance_sentences
+    self.sentences
+      .where("text LIKE '%SubClassOf%'")
+      .select do |sentence|
+        sentence.text.split(' ').size == 4 && !sentence.text.include?('Thing')
+      end
   end
 end

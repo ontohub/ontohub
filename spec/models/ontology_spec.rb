@@ -114,6 +114,23 @@ describe Ontology do
       end
 
     end
+    
+    context 'owl classhierachy' do
+      let(:ontology) { create :ontology }
+      let(:user) { create :user }
+      let(:xml_path) { Rails.root + 'test/fixtures/ontologies/xml/' + 'pizza.xml' }
+
+      before do
+        ontology.import_xml_from_file xml_path, nil, user
+        ontology.create_entity_tree
+      end
+      
+      it 'should have an complete entity-tree' do
+        ontology.size_of_entity_tree.should_not == 0
+        ontology.tree_percentage.should == 100
+      end 
+      
+    end
   end
 
   context 'when parsing an ontology which contains logic translations' do

@@ -1,4 +1,9 @@
 .well
+  .bold
+    - unless @tree_percentage == 100
+      = "The class tree you can see is #{@tree_percentage}% complete."
+      %br
+      There are cycles in the class-hierachy, so we can't show the tree completely at the moment.
   #tree
     %ul
       = render partial: 'node', collection: @nodes.to_a
