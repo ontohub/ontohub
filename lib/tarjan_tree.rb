@@ -52,9 +52,9 @@ class TarjanTree
    end
    
    def create_edges
-     @hashed_entities.each do |parent, childs|
+     @hashed_entities.each do |parent, children|
        parent_group = Entity.find(parent).entity_group
-       childs.each do |child|
+       children.each do |child|
          child_group = Entity.find(child).entity_group
          unless parent_group == child_group
            EEdge.find_or_create_by_parent_id_and_child_id(parent_group.id, child_group.id)
