@@ -50,3 +50,8 @@ en:
   have:
     one: has
     other: have
+  delete_repository: Are you sure about delete the Repository?
+  delete_repository_desc: |
+      If you delete this repository, all ontologies, which are related to this repository, will be deleted too.
+                            
+      This action is irreversible!
