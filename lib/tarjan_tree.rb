@@ -9,12 +9,12 @@ class TarjanTree
     subclasses.each do |s|
       c1, c2 = s.hierarchical_class_names
     
-        child = ontology.entities.where('name = ? OR iri = ?', c1, c1).first.id
-        parent = ontology.entities.where('name = ? OR iri = ?', c2, c2).first.id
-        if @hashed_entities[parent]
-          @hashed_entities[parent] << child
-        else
-          @hashed_entities[parent] = [child]
+      child = ontology.entities.where('name = ? OR iri = ?', c1, c1).first!.id
+      parent = ontology.entities.where('name = ? OR iri = ?', c2, c2).first!.id
+      if @hashed_entities[parent]
+        @hashed_entities[parent] << child
+      else
+        @hashed_entities[parent] = [child]
       end
     end
     create_tree ontology
