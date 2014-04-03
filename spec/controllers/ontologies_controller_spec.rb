@@ -47,7 +47,7 @@ describe OntologiesController do
         end
 
         it{ should respond_with :found }
-        expect(response).to redirect_to([repository, :ontologies])
+        it{ response.should redirect_to([repository, :ontologies]) }
       end
 
       context 'unsuccessful deletion' do
