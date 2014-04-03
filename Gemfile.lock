@@ -13,18 +13,18 @@ GIT
       escape (~> 0.0.4)
 
 GIT
+  remote: git://github.com/llwt/codemirror-rails.git
+  revision: df5231e3053773e37b27f8181738c7080cd1c3cd
+  specs:
+    codemirror-rails (4.0.3)
+      railties (>= 3.0, < 5)
+
+GIT
   remote: git://github.com/tristanm/jstree-rails.git
   revision: e2ad211ea7835a1811e66c3d4ef1e21bfbe6e27d
   specs:
     jstree-rails (0.0.1)
       rails (>= 3.1)
-
-GIT
-  remote: git@github.com:llwt/codemirror-rails.git
-  revision: df5231e3053773e37b27f8181738c7080cd1c3cd
-  specs:
-    codemirror-rails (4.0.3)
-      railties (>= 3.0, < 5)
 
 GEM
   remote: https://rubygems.org/
