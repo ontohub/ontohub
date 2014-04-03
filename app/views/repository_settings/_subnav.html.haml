@@ -3,8 +3,7 @@
     .btn-group.pull-right
       - additional_actions.each do |action_link|
         = action_link
-      = link_to 'Delete Repository', resource, confirm: 'Are you sure about delete the Repository? This action is irreversible', method: :delete, class: 'btn btn-default'
-
+    =render "/repository_settings/modal"
   %nav
     %ul.nav.nav-tabs
       - pages.each do |page, path, count|
