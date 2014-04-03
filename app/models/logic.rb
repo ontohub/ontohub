@@ -15,6 +15,8 @@ class Logic < ActiveRecord::Base
   # Multiple Class Features
   include Aggregatable
 
+  Logic::DEFAULT_DISTRIBUTED_ONTOLOGY_LOGIC = 'DOL'
+
   STAND_STATUS = %w( AcademicLiterature ISOStandard Unofficial W3CRecommendation W3CTeamSubmission W3CWorkingGroupNote )
   DEFINED_BY = %w( registry )
 
