@@ -2,14 +2,14 @@ require 'spec_helper'
 
 describe Link do
 
+  let(:user) { create :user }
   let(:repository) { create :repository }
   let(:external_repository) { ExternalRepository.repository }
 
   context 'when importing an ontology' do
     context 'which belongs to a distributed ontology' do
 
-      let(:version) { add_fixture_file(repository, 'dol/reference.dol') }
-      let(:dist_ontology) { version.ontology }
+      let(:dist_ontology) { create :distributed_ontology }
       let(:target_ontology) { dist_ontology.children.find_by_name('Features') }
 
       context 'and imports another ontology' do
@@ -19,7 +19,9 @@ describe Link do
           let(:link) { dist_ontology.links.first }
 
           before do
-            version.parse
+            dist_ontology.
+              import_xml_from_file fixture_file('reference.xml'),
+                fixture_file('reference.pp.xml'), user
           end
 
           it 'should have the link-source set correctly' do
