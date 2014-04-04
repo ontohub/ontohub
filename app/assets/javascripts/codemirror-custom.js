@@ -14,62 +14,71 @@ $(function() {
 
     original_editor_content = editor.getValue();
 
-    // Setup editing functionality
-    $("#codemirror-btn-edit").editFile();
+    btn_edit      = $("#codemirror-btn-edit");
+    btn_commit    = $("#codemirror-btn-commit");
+    btn_discard   = $("#codemirror-btn-discard");
+    form          = $('.edit-form');
+    alert_error   = $('.alert-error');
+    message_group = $('#message-group');
+
+    hasErrorClass = 'has-error';
+    editingClass  = "editing";
+
+    btn_edit.unbind('click').click(enableEditing);
   }
 });
 
+editorSetFocus = function(e) {
+  $(e.getTextArea()).next().addClass(editingClass);
+};
 
-$.fn.editFile = function() {
-  $(this).unbind('click').click(function(e) {
-    btn_edit = $("#codemirror-btn-edit");
-    btn_update = $("#codemirror-btn-update");
-    btn_cancel = $("#codemirror-btn-cancel");
-    btn_reset = $("#codemirror-btn-reset");
+editorSetBlur = function(e) {
+  $(e.getTextArea()).next().removeClass(editingClass);
+};
 
-    btn_edit_previous_html = this.innerHTML;
+editorSetupSubmit = function(e) {
+  $("form.edit-form").submit();
+  return false;
+};
 
-    // Setup buttons and show edit form
-    e.preventDefault();
-    $(this).html($(this).data("replace"));
-    editor.setOption("readOnly", false);
-    $('.show-when-editing').show();
-    $('.hide-when-editing').hide();
+editorSetupDiscard = function(e) {
+  $('#message')[0].value = ""
+  editor.setOption("readOnly", true);
+  editor.setValue(original_editor_content);
+  message_group.removeClass(hasErrorClass);
+  alert_error.hide();
+  $('.show-when-editing').hide();
+  $('.hide-when-editing').show();
 
-    // Submit form by clicking on update button
-    btn_update.unbind('click').click(function() {
-      $("form.edit-form").submit();
-      return false;
-    });
+  editor.off("focus", editorSetFocus);
+  editor.off("blur", editorSetBlur);
+  return false;
+};
 
-    // Cancel Button
-    btn_cancel.unbind('click').click(function() {
-      editor.setOption("readOnly", true);
-      $('.show-when-editing').hide();
-      $('.hide-when-editing').show();
-      return false;
-    });
-
-    // Reset Button (rollback)
-    btn_reset.unbind('click').click(function() {
-      editor.setOption("readOnly", false);
-      editor.setValue(original_editor_content);
-      return false;
-    });
-
-    // Commit message required
-    $('.edit-form').unbind('submit').submit(function() {
-      if($.trim($('#message').val()) == '') {
-        $('.alert-error').show();
-        $('#message-group').addClass('has-error')
-        return false;
-      } else {
-        return true;
-      }
-    });
-
+requireCommitMessage = function(e) {
+  if($.trim($('#message').val()) == '') {
+    alert_error.show();
+    message_group.addClass(hasErrorClass)
     return false;
+  } else {
+    return true;
+  }
+};
 
-  });
-  return this;
+enableEditing = function(e) {
+  e.preventDefault();
+
+  editor.on("focus", editorSetFocus);
+  editor.on("blur", editorSetBlur);
+
+  editor.setOption("readOnly", false);
+  $('.show-when-editing').show();
+  $('.hide-when-editing').hide();
+  editor.focus();
+
+  btn_commit.unbind('click').click(editorSetupSubmit);
+  btn_discard.unbind('click').click(editorSetupDiscard);
+  form.unbind('submit').submit(requireCommitMessage);
+
+  return false;
 };
