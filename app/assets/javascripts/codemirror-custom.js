@@ -5,7 +5,6 @@
 
 $(function() {
   if($("#code-area").length > 0) {
-    // Setup codemirror highlighting
    	editor = CodeMirror.fromTextArea(document.getElementById("code-area"), {
       mode: $("#code-area").data("mime-type"),
       lineNumbers: true,
@@ -25,9 +24,18 @@ $(function() {
     hasErrorClass    = 'has-error';
     editingClass     = "editing";
 
+    editorPreventFocus();
     btn_edit.unbind('click').click(enableEditing);
   }
 });
+
+editorPreventFocus = function(e) {
+  editor.setOption("cursorHeight", 0);
+};
+
+editorAllowFocus = function(e) {
+  editor.setOption("cursorHeight", 1);
+};
 
 editorSetFocus = function(e) {
   $(e.getTextArea()).next().addClass(editingClass);
@@ -72,6 +80,7 @@ discard = function() {
   $('.show-when-editing').hide();
   $('.hide-when-editing').show();
 
+  editorPreventFocus();
   editor.off("focus", editorSetFocus);
   editor.off("blur", editorSetBlur);
 };
@@ -79,6 +88,7 @@ discard = function() {
 enableEditing = function(e) {
   e.preventDefault();
 
+  editorAllowFocus();
   editor.on("focus", editorSetFocus);
   editor.on("blur", editorSetBlur);
 
