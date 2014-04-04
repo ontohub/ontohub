@@ -5,6 +5,7 @@
   config.x_xss_protection       = {:value => 1, :mode => false}
   config.csp                    = {
     default_src: "self",
-    :disable_chrome_extension => true
+    style_src:   "'self' 'unsafe-inline'",
+    disable_chrome_extension: true,
   }
 end
