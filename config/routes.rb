@@ -4,7 +4,8 @@ require 'sidekiq/web' if defined? Sidekiq
 Ontohub::Application.routes.draw do
 
   resources :ontology_types, only: :show
-
+  resources :home, only: :show
+  
   devise_for :users, controllers: {
     confirmations: 'users/confirmations',
     registrations: 'users/registrations'
