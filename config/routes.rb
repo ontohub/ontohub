@@ -131,6 +131,6 @@ Ontohub::Application.routes.draw do
     as:          :repository_tree,
     constraints: { path: /.*/ }
 
-  root :to => 'home#show'
+  root :to => 'home#index'
 
 end
