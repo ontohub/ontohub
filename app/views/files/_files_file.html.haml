@@ -1,5 +1,7 @@
-%h3
-  =path
+.row
+  %h3
+    =path
+    %span.show-when-editing.label.label-info Edit mode
 
 = form_for(repository, url: fancy_repository_path(repository, path: path, ref: oid), method: :post, html: {class: 'form-horizontal edit-form'}) do |f|
   .col-md-9
@@ -18,20 +20,19 @@
             %p
               You are now in editing mode and may change the text directly in the
               text area on the left. To save the changes, simply add a brief
-              description as a commit message and click the update button below.
+              description as a commit message and click the commit button below.
             %p.warning
               If someone else is editing the same file simultaneously only one
               of the changes will be saved.
-            .alert-error Please enter a commit message.
+            .alert.alert-error.alert-warning Please enter a commit message.
             #message-group
               = label_tag 'message', class: 'control-label' do
                 %abbr.required *
                 Message
               = text_area_tag 'message', params[:message] || '', id: 'message', required: true
             .row.btn-group.codemirror-controls
-              = f.submit 'Update', id: 'codemirror-btn-update', class: 'btn btn-primary'
-              = link_to 'Cancel', '#', id: 'codemirror-btn-cancel', class: 'btn btn-warning'
-              = link_to 'Reset', '#', id: 'codemirror-btn-reset', class: 'btn btn-danger'
+              = f.submit 'Commit', id: 'codemirror-btn-commit', class: 'btn btn-primary'
+              = f.button 'Discard', id: 'codemirror-btn-discard', class: 'btn btn-danger'
     - unless @info[:ontologies].empty?
       %h4
         Defining

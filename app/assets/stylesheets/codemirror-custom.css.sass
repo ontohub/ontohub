@@ -3,6 +3,9 @@
   height: auto
   background: white
 
+.CodeMirror.editing
+  @extend textarea:focus
+
 .CodeMirror-linenumber
   background: #F9F9F9
 
@@ -19,6 +22,9 @@
     display: none
   .codemirror-controls
     margin-left: 0
+
+span.show-when-editing
+  font-size: 12px
 
 #code-area
   width: 100%
