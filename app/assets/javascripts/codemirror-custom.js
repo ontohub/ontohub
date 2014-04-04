@@ -29,10 +29,6 @@ $(function() {
   }
 });
 
-editorPreventFocus = function(e) {
-
-};
-
 editorSetFocus = function(e) {
   $(e.getTextArea()).next().addClass(editingClass);
 };
