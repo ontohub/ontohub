@@ -13,7 +13,7 @@
         = link_to "Download #{@file[:name]}.", fancy_repository_path(repository, path: path, ref: oid, action: :download)
 
   .col-md-3
-    -if can? :write, repository
+    - if can? :write, repository
       .row
         .pull-right
           .show-when-editing.well.well-small
@@ -31,8 +31,8 @@
                 Message
               = text_area_tag 'message', params[:message] || '', id: 'message', required: true
             .row.btn-group.codemirror-controls
-              = f.submit 'Commit', id: 'codemirror-btn-commit', class: 'btn btn-primary'
-              = f.button 'Discard', id: 'codemirror-btn-discard', class: 'btn btn-danger'
+              = f.button 'Commit', type: 'submit', id: 'codemirror-btn-commit', class: 'btn btn-primary'
+              = f.button 'Discard', type: 'cancel', id: 'codemirror-btn-discard', class: 'btn btn-danger'
     - unless @info[:ontologies].empty?
       %h4
         Defining
