@@ -1,14 +1,18 @@
 module UriFetcher
+  include Errors
 
-  def fetch_uri_content(uri, limit: 10, write_file: nil)
-    raise ArgumentError, 'too many HTTP redirects' if limit == 0
+  NO_REDIRECT = 1
+
+  def fetch_uri_content(uri, limit: 10, write_file: nil, prev_resp: nil)
+    raise TooManyRedirectionsError.new(last_response: prev_resp) if limit == 0
     Net::HTTP.get_response(URI(uri)) do |response|
       if has_actual_content?(response)
         produce_response_body(response, write_file)
       else
         fetch_uri_content(response['location'],
                                     limit: limit-1,
-                                    write_file: write_file)
+                                    write_file: write_file,
+                                    prev_resp: response)
       end
     end
   end
