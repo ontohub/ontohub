@@ -33,6 +33,14 @@ class GitUpdate
       update_redis
       exit 0
     end
+  rescue OntohubNet::UnexpectedStatusCodeError => error
+    puts <<-ERROR
+We couldn't determine your permissions successfully because
+we encountered a status code of #{error.status_code} when
+querying for permissions. Please try again in a few minutes.
+If this issue persists please inform an Administrator.
+    ERROR
+    exit 1
   end
 
   protected
