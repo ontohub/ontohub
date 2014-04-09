@@ -43,6 +43,20 @@ def add_fixture_file(repository, relative_file)
   version = repository.save_file path, basename, "#{basename} added", dummy_user
 end
 
+
+def stub_ontology_file_extensions
+  Ontology.stubs(:file_extensions_distributed).returns(
+    %w[casl dol hascasl het].map!{ |ext| ".#{ext}" })
+  Ontology.stubs(:file_extensions_single).returns(
+    %w[owl obo hs exp maude elf hol isa thy prf omdoc hpf clf clif xml fcstd rdf xmi qvt tptp gen_trm baf].
+    map!{ |ext| ".#{ext}" })
+end
+
+def unstub_ontology_file_extensions
+  Ontology.unstub(:file_extensions_distributed)
+  Ontology.unstub(:file_extensions_single)
+end
+
 RSpec.configure do |config|
   # ## Mock Framework
   # config.mock_with :mocha
