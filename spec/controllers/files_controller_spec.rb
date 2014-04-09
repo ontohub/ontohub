@@ -64,6 +64,81 @@ describe FilesController do
           it { should respond_with :redirect }
         end
       end
+
+      describe "update" do
+
+        describe "with existing file" do
+          let(:filepath)     { "existing-file" }
+          let(:tmp_filepath) { Rails.root.join('tmp', filepath) }
+          let(:message)      { "message" }
+
+          before do
+            FileUtils.rm_rf(tmp_filepath)
+            File.open(tmp_filepath, 'w+') { |f| f.write("unchanged") }
+
+            repository.save_file_only(tmp_filepath, filepath, message, user)
+          end
+
+          describe "without validation error" do
+            before do
+              post :update,
+                repository_id: repository.to_param,
+                path: filepath,
+                message: message,
+                content: "changed"
+            end
+
+            it { should respond_with :found }
+            it "should not show an error" do
+              expect(flash[:error]).to be_nil
+            end
+            it "should show a success message" do
+              expect(flash[:success]).not_to be_nil
+            end
+          end
+
+          describe "with validation error" do
+            before do
+              post :update,
+                repository_id: repository.to_param,
+                path: filepath,
+                content: "changed"
+            end
+
+            it { should respond_with :success }
+            it "should show an error" do
+              expect { flash[:error].messages[:message] }.not_to be_nil
+            end
+            it "should not show a success message" do
+              expect(flash[:success]).to be_nil
+            end
+          end
+        end
+
+        describe "with non-existent file" do
+          let(:filepath) { "non-existent-file" }
+          before do
+            post :update,
+              repository_id: repository.to_param,
+              path: filepath,
+              message: "message",
+              content: "changed"
+          end
+          it { should respond_with :found }
+          it "should not show an error" do
+            expect(flash[:error]).to be_nil
+          end
+          it "should show a success message" do
+            expect(flash[:success]).not_to be_nil
+          end
+          it "should have added a file" do
+            expect(repository.path_exists? filepath).to be_true
+          end
+          it "should actually not have added a file" do
+            pending "this should be another controller action"
+          end
+        end
+      end
     end
   end
 
