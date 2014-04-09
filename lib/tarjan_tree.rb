@@ -40,14 +40,14 @@ class TarjanTree
    end
    
    def create_tree(ontology)
-     create_groups ontology
-     create_edges
+    create_groups ontology
+    create_edges
    end
    
    def create_groups(ontology)
      groups = self.strongly_connected_components
      groups.each do |entity_group|
-       entities = Entity.where(id: entity_group)
+       entities = Entity.find(entity_group)
        name = determine_group_name(entities)
        EntityGroup.create!(ontology: ontology, entities: entities, name: name)
      end
