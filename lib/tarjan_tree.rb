@@ -3,7 +3,7 @@
 class TarjanTree
   include TSort
 
-  def initialize ontology
+  def initialize(ontology)
     @hashed_entities = Hash.new
     subclasses = inheritance_sentences ontology
     subclasses.each do |s|
@@ -25,13 +25,13 @@ class TarjanTree
   end
   
   def tsort_each_child(node, &block)
-    @hashed_entities[node].each(&block) if @hashed_entities[node]
+    @hashed_entities[node].try(:each, &block)
   end
   
   # Get SubClassOf Strings without explicit Thing
   # Only sentences with 4 words are the right sentences for the Tree
   # so we have to ignore the other.
-   def inheritance_sentences ontology
+   def inheritance_sentences(ontology)
      ontology.sentences
        .where("text LIKE '%SubClassOf%' AND text NOT LIKE '%Thing%'")
        .select do |sentence|
@@ -39,12 +39,12 @@ class TarjanTree
        end
    end
    
-   def create_tree ontology
+   def create_tree(ontology)
      create_groups ontology
      create_edges
    end
    
-   def create_groups ontology
+   def create_groups(ontology)
      groups = self.strongly_connected_components
      groups.each do |entity_group|
        entities = Entity.where(id: entity_group)
@@ -65,7 +65,7 @@ class TarjanTree
      end
    end
    
-   def determine_group_name entities
+   def determine_group_name(entities)
      entities.join(" ☰ ")
    end
    
