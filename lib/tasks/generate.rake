@@ -34,4 +34,22 @@ namespace :generate do
     Settings.ontology_types.each { |t| update_or_create_by_name(OntologyType, t.to_h) }
     Settings.tasks.each { |t| update_or_create_by_name(Task, t.to_h) }
   end
+
+  desc 'Generate all currently supported ontology file extensions'
+  task :ontology_file_extensions => :environment do
+    FILE_EXTENSIONS_DISTRIBUTED = %w[casl dol hascasl het]
+    FILE_EXTENSIONS_SINGLE = %w[owl obo hs exp maude elf hol isa thy prf omdoc hpf clf clif xml fcstd rdf xmi qvt tptp gen_trm baf]
+
+    FILE_EXTENSIONS_DISTRIBUTED.map! { |e| ".#{e}" }
+    FILE_EXTENSIONS_SINGLE.map! { |e| ".#{e}" }
+
+    FILE_EXTENSIONS_DISTRIBUTED.each do |ext|
+      ActiveRecord::Base.connection.execute(
+        "INSERT INTO ontology_file_extensions (extension, distributed) VALUES ('#{ext}', 'true')")
+    end
+    FILE_EXTENSIONS_SINGLE.each do |ext|
+      ActiveRecord::Base.connection.execute(
+        "INSERT INTO ontology_file_extensions (extension, distributed) VALUES ('#{ext}', 'false')")
+    end
+  end
 end
