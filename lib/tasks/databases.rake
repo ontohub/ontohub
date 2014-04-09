@@ -48,6 +48,7 @@ namespace :db do
     Rake::Task["db:migrate:clean"].invoke
     cleanup_git_folders
     cleanup_redis
+    Rake::Task["generate:ontology_file_extensions"].invoke
     Rake::Task["db:seed"].invoke
     Rake::Task["repos:create"].invoke
   end
