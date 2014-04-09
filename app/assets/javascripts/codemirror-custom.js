@@ -68,7 +68,8 @@ requireCommitMessage = function(e) {
 };
 
 confirmDiscard = function() {
-  return true; // TODO: Use modal.
+  // TODO: Use bootstrap modal instead of browser prompt.
+  return confirm("You made changes to the code. Are you sure you want to discard them?");
 };
 
 discard = function() {
