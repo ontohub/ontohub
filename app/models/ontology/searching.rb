@@ -19,8 +19,8 @@ module Ontology::Searching
       integer :ontology_type_id do
         ontology_type.id if ontology_type
       end
-      integer :license_model_id do
-        license_model.id if license_model
+      integer :license_id do
+        license.id if license
       end
       integer :formality_level_id do
         formality_level.id if formality_level
@@ -39,7 +39,7 @@ module Ontology::Searching
         keywords.each { |keyword| fulltext keyword }
         with(:ontology_type_id, qualifiers[:ontology_type].id) if qualifiers[:ontology_type]
         with(:repository_id, qualifiers[:repository].id) if qualifiers[:repository]
-        with(:license_model_id, qualifiers[:license_model].id) if qualifiers[:license_model]
+        with(:license_id, qualifiers[:license].id) if qualifiers[:license]
         with(:formality_level_id, qualifiers[:formality_level].id) if qualifiers[:formality_level]
         with(:project_ids, [qualifiers[:project].id]) if qualifiers[:project]
         with(:task_id, qualifiers[:task].id) if qualifiers[:task]

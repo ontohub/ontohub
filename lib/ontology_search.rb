@@ -39,7 +39,7 @@ class OntologySearch
         {'name' => 'in any formality', 'value' => nil, 'count' => 0},
         *formalities
       ],
-      'LicenseModel' => [
+      'License' => [
         {'name' => 'under any license', 'value' => nil, 'count' => 0},
         *licenses
       ],
@@ -130,7 +130,7 @@ class OntologySearch
     properties[:ontology_type] = select_item(restrictions, 'OntologyType', OntologyType)
     properties[:project] = select_item(restrictions, 'Project', Project)
     properties[:formality_level] = select_item(restrictions, 'FormalityLevel', FormalityLevel)
-    properties[:license_model] = select_item(restrictions, 'LicenseModel', LicenseModel)
+    properties[:license] = select_item(restrictions, 'License', License)
     properties[:task] = select_item(restrictions, 'Task', Task)
 
     bean_list_factory = OntologyBeanListFactory.new
@@ -180,7 +180,7 @@ class OntologySearch
   end
 
   def licenses
-    model_to_filters_map LicenseModel,
+    model_to_filters_map License,
       ->(x) {'under ' + x.name}
   end
 

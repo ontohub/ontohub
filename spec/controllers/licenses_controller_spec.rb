@@ -1,8 +1,8 @@
 require 'spec_helper'
 
-describe LicenseModelsController do
+describe LicensesController do
 
-  let!(:license_model)   { create :license_model }
+  let!(:license)   { create :license }
 
   context "signed in" do
     let(:user){ create(:user) }
@@ -14,7 +14,7 @@ describe LicenseModelsController do
     end
 
     context "show" do
-      before { get :show, id: license_model.id }
+      before { get :show, id: license.id }
       it { should respond_with :success }
     end
 
@@ -24,7 +24,7 @@ describe LicenseModelsController do
     end
 
     context "edit" do
-      before { get :edit, id: license_model.to_param }
+      before { get :edit, id: license.to_param }
       it { should respond_with :found }
     end
 
@@ -34,12 +34,12 @@ describe LicenseModelsController do
     end
 
     context "update" do
-      before { put :update, id: license_model.to_param }
+      before { put :update, id: license.to_param }
       it { should respond_with :found }
     end
 
     context "destroy" do
-      before { delete :destroy, id: license_model.to_param }
+      before { delete :destroy, id: license.to_param }
       it { should respond_with :found }
     end
   end
@@ -51,7 +51,7 @@ describe LicenseModelsController do
     end
 
     context "show" do
-      before { get :show, id: license_model.id }
+      before { get :show, id: license.id }
       it { should respond_with :success }
     end
 
@@ -61,7 +61,7 @@ describe LicenseModelsController do
     end
 
     context "edit" do
-      before { get :edit, id: license_model.to_param }
+      before { get :edit, id: license.to_param }
       it { should respond_with :found }
     end
 
@@ -71,12 +71,12 @@ describe LicenseModelsController do
     end
 
     context "update" do
-      before { put :update, id: license_model.to_param }
+      before { put :update, id: license.to_param }
       it { should respond_with :found }
     end
 
     context "destroy" do
-      before { delete :destroy, id: license_model.to_param }
+      before { delete :destroy, id: license.to_param }
       it { should respond_with :found }
     end
   end

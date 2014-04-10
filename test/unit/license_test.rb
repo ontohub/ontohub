@@ -1,6 +1,6 @@
 require 'test_helper'
 
-class LicenseModelTest < ActiveSupport::TestCase
+class LicenseTest < ActiveSupport::TestCase
 
   context 'Migrations' do
     %w( name description url ).each do |column|
@@ -17,15 +17,15 @@ class LicenseModelTest < ActiveSupport::TestCase
 
     context 'when name is already taken' do
       setup do
-        LicenseModel.create!(:name => 'foo', :url => 'http://foo.com')
+        License.create!(:name => 'foo', :url => 'http://foo.com')
       end
       should_not allow_value('foo').for :name
     end
 
-    context 'when LicenseModel without name is to be saved' do
+    context 'when License without name is to be saved' do
       should 'raise error' do 
         assert_raise ActiveRecord::RecordInvalid do
-          LicenseModel.create!
+          License.create!
         end
       end
     end

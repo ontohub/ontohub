@@ -102,7 +102,7 @@
 	    <g:FilterSelector typeLabel="OntologyType" title="Ontologies" ui:field="selector0" />
 	    <g:FilterSelector typeLabel="Project" title="from all projects" ui:field="selector1" />
 	    <g:FilterSelector typeLabel="FormalityLevel" title="in any formality" ui:field="selector2" />
-	    <g:FilterSelector typeLabel="LicenseModel" title="under any license" ui:field="selector3" />
+	    <g:FilterSelector typeLabel="License" title="under any license" ui:field="selector3" />
 	    <g:FilterSelector typeLabel="Task" title="for any purpose" ui:field="selector4" />
 	  </g:FlowPanel>
 

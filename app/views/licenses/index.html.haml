@@ -1,0 +1,18 @@
+- if parent
+  = repository_nav parent.repository, :ontologies, disable_actions: true
+  = ontology_nav parent, :licenses
+- else
+  %h1 License
+
+= render partial: 'shared/metadata_add', locals: { cls_sym: :license, parent: parent }
+
+%table.table
+  %thead
+    %tr
+      %th License
+      %th Description
+      %th URL
+      - if !parent && can?(:write, License)
+        %th Manage
+  %tbody
+    = render collection

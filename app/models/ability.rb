@@ -108,7 +108,7 @@ class Ability
 
       can [:create, :read], Project
       can [:create, :read], Task
-      can [:create, :read], LicenseModel
+      can [:create, :read], License
 
       can :read, FormalityLevel
       can :read, Category
@@ -119,7 +119,7 @@ class Ability
 
       can :read, Project
       can :read, Task
-      can :read, LicenseModel
+      can :read, License
       can :read, FormalityLevel
       can :read, Category
     end
