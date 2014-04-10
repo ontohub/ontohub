@@ -27,6 +27,10 @@ en:
   Link: Ontology-Link
   LogicMapping: Logic-Mapping
   repository:
+    errors: Errors
+    permissions: Permissions
+    edit: Edit repository
+    urlmaps: Url Catalog
     access:
       change_hint: 'Caution! When setting the repository public, all reader permissions are removed.'
       options:

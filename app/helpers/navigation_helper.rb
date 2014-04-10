@@ -143,11 +143,11 @@ module NavigationHelper
   def repository_settings_nav(repository, current_page)
     pages = []
     chain = resource_chain.last.is_a?(Ontology) ? resource_chain[0..-2] : resource_chain
-    
-    pages << [:"URL catalog",  repository_url_maps_path(repository)]
-    pages << [:errors,           repository_errors_path(repository)]
-    pages << [:permissions,      [*chain, :permissions]] if can? :permissions, repository
-    pages << [:"Edit Repository", edit_repository_path(repository)]  if can? :edit, repository 
+    current_page = t("repository.#{current_page}")
+    pages << [t("repository.urlmaps"),  repository_url_maps_path(repository)]
+    pages << [t("repository.errors"),           repository_errors_path(repository)]
+    pages << [t("repository.permissions"),      [*chain, :permissions]] if can? :permissions, repository
+    pages << [t("repository.edit"), edit_repository_path(repository)]  if can? :edit, repository 
     
     subnavigation(repository, pages, current_page, [],{}, '/repository_settings/subnav')
   end
