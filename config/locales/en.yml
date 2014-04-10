@@ -27,6 +27,7 @@ en:
   Link: Ontology-Link
   LogicMapping: Logic-Mapping
   repository:
+    delete: Delete Repository
     errors: Errors
     permissions: Permissions
     edit: Edit repository
@@ -59,3 +60,4 @@ en:
       If you delete this repository, all ontologies, which are related to this repository, will be deleted too.
                             
       This action is irreversible!
+  cancel: Cancel

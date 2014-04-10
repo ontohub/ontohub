@@ -1,4 +1,5 @@
-%button.btn.btn-danger.pull-right{"data-toggle"=>"modal", "data-target"=>"#delete_modal"}Delete Repository
+%button.btn.btn-danger.pull-right{"data-toggle"=>"modal", "data-target"=>"#delete_modal"}
+  =t("repository.delete")
 .modal.fade#delete_modal{"tabindex"=>"-1", "role"=>"dialog", "aria-labelledby"=>"deleteRepository", "aria-hidden"=>"true"}
   .modal-dialog
     .modal-content
@@ -8,8 +9,5 @@
       .modal-body  
         =simple_format t("delete_repository_desc")
       .modal-footer
-        %button.btn.btn-default{"data-dismiss" => "modal"} Cancel
-        -if controller_name != "repositories"
-          = link_to 'Delete Repository', parent, method: :delete, class: 'btn btn-danger'
-        -else
-          = link_to 'Delete Repository', resource, method: :delete, class: 'btn btn-danger'
+        %button.btn.btn-default{"data-dismiss" => "modal"}=t("cancel")
+        = link_to t("repository.delete"), (controller_name == "repositories" ? resource : parent), method: :delete, class: 'btn btn-danger'
