@@ -137,7 +137,7 @@ module NavigationHelper
       ['Projects',         [*resource_chain, :projects]],
       ['Categories',       [*resource_chain, :categories]],
       ['Tasks',            [*resource_chain, :tasks]],
-      ['License Models',   [*resource_chain, :license_models]],
+      ['Licenses',         [*resource_chain, :licenses]],
       ['Formality Levels', [*resource_chain, :formality_levels]]
     ]
   end

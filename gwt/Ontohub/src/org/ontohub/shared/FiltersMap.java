@@ -16,7 +16,7 @@ public class FiltersMap extends JavaScriptObject {
 	public final native JsArray<Filter> getOntologyTypeFilters() /*-{ return this.OntologyType; }-*/;
 	public final native JsArray<Filter> getProjectFilters() /*-{ return this.Project; }-*/;
 	public final native JsArray<Filter> getFormalityLevelFilters() /*-{ return this.FormalityLevel; }-*/;
-	public final native JsArray<Filter> getLicenseModelFilters() /*-{ return this.LicenseModel; }-*/;
+	public final native JsArray<Filter> getLicenseFilters() /*-{ return this.License; }-*/;
 	public final native JsArray<Filter> getTaskFilters() /*-{ return this.Task; }-*/;
 	public final native static FiltersMap getWindowInstance() /*-{ return $wnd.FiltersMap; }-*/;
 	public final native static boolean existsWindowInstance() /*-{ return $wnd.FiltersMap != undefined; }-*/;

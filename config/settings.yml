@@ -71,7 +71,7 @@ formality_levels:
     description: "ontology with axioms beyond a pure subsumption hierarchy"
     # number of axioms per concept can be displayed
 
-license_models:
+licenses:
   - name: Apple Public Source License (APSL)
     url: http://www.opensource.apple.com/license/apsl/
   - name: Open Software License (OSL)

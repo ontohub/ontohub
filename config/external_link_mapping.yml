@@ -83,10 +83,10 @@ wiki:
       index: "list_tasks"
       new: "add_task"
       destroy: "remove_task"
-    license_models:
-      index: "list_license_models"
-      new: "add_license_model"
-      destroy: "remove_license_model"
+    licenses:
+      index: "list_licenses"
+      new: "add_license"
+      destroy: "remove_license"
     tools:
       index: "list_tools"
       new: "add_tool"

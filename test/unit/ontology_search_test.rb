@@ -45,7 +45,7 @@ class OntologySearchTest < ActiveSupport::TestCase
       @keywords.push({'item' => nil, 'type' => 'OntologyType'})
       @keywords.push({'item' => nil, 'type' => 'Project'})
       @keywords.push({'item' => nil, 'type' => 'FormalityLevel'})
-      @keywords.push({'item' => nil, 'type' => 'LicenseModel'})
+      @keywords.push({'item' => nil, 'type' => 'License'})
       @keywords.push({'item' => nil, 'type' => 'Task'})
     end
 

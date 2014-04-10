@@ -29,7 +29,7 @@ Ontohub::Application.routes.draw do
   resources :categories, :only => [:index, :show]
   resources :projects
   resources :tasks
-  resources :license_models
+  resources :licenses
   resources :formality_levels
 
 
@@ -105,7 +105,7 @@ Ontohub::Application.routes.draw do
       end
       resources :categories
       resources :tasks
-      resources :license_models
+      resources :licenses
       resources :tools
       resources :projects
       

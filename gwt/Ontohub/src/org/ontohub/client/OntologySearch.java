@@ -390,7 +390,7 @@ public class OntologySearch extends Composite implements FilterSelectionHandler 
 		selector0.addAll(map.getOntologyTypeFilters());
 		selector1.addAll(map.getProjectFilters());
 		selector2.addAll(map.getFormalityLevelFilters());
-		selector3.addAll(map.getLicenseModelFilters());
+		selector3.addAll(map.getLicenseFilters());
 		selector4.addAll(map.getTaskFilters());
 	}
 

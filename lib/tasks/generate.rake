@@ -30,7 +30,7 @@ namespace :generate do
   desc 'Import the values for metadata'
   task :metadata => :environment do
     Settings.formality_levels.each { |t| update_or_create_by_name(FormalityLevel, t.to_h) }
-    Settings.license_models.each { |t| update_or_create_by_name(LicenseModel, t.to_h) }
+    Settings.licenses.each { |t| update_or_create_by_name(License, t.to_h) }
     Settings.ontology_types.each { |t| update_or_create_by_name(OntologyType, t.to_h) }
     Settings.tasks.each { |t| update_or_create_by_name(Task, t.to_h) }
   end

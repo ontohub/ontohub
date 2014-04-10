@@ -1,4 +1,4 @@
-class LicenseModelsController < InheritedResources::Base
+class LicensesController < InheritedResources::Base
 
   belongs_to :ontology, optional: true
   before_filter :check_read_permissions
@@ -7,22 +7,22 @@ class LicenseModelsController < InheritedResources::Base
   def create
     create! do |success, failure|
       if parent
-        parent.license_models << resource
+        parent.licenses << resource
         parent.save
       end
-      success.html { redirect_to [*resource_chain, :license_models] }
+      success.html { redirect_to [*resource_chain, :licenses] }
     end
   end
 
   def update
     update! do |success, failure|
-      success.html { redirect_to [*resource_chain, :license_models] }
+      success.html { redirect_to [*resource_chain, :licenses] }
     end
   end
 
   def destroy
     destroy! do |success, failure|
-      success.html { redirect_to [*resource_chain, :license_models] }
+      success.html { redirect_to [*resource_chain, :licenses] }
     end
   end
 

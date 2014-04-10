@@ -18,7 +18,6 @@ class Ontology < ActiveRecord::Base
   include Ontology::Projects
   include Ontology::Tools
   include Ontology::Tasks
-  include Ontology::LicenseModels
   include Ontology::FileExtensions
   include Ontology::Searching
   include GraphStructures::SpecificFetchers::Links
@@ -32,7 +31,7 @@ class Ontology < ActiveRecord::Base
   belongs_to :logic, counter_cache: true
   belongs_to :ontology_type
   belongs_to :repository
-  belongs_to :license_model
+  belongs_to :license
   belongs_to :formality_level
   belongs_to :task
 
@@ -40,7 +39,7 @@ class Ontology < ActiveRecord::Base
   has_many :source_links, class_name: 'Link', foreign_key: 'source_id', dependent: :destroy
   has_many :target_links, class_name: 'Link', foreign_key: 'target_id', dependent: :destroy
 
-  has_and_belongs_to_many :license_models
+  has_and_belongs_to_many :licenses
   has_and_belongs_to_many :formality_levels
 
   attr_accessible :iri, :name, :description, :acronym, :documentation,
@@ -52,7 +51,7 @@ class Ontology < ActiveRecord::Base
                   :present,
                   :alternative_iris,
                   :ontology_type_id,
-                  :license_model_ids,
+                  :license_ids,
                   :formality_level_ids,
                   :task_ids,
                   :project_ids
