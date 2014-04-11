@@ -1,5 +1,5 @@
 %li.commit
-  .col-md-7
+  .col-md-9
     %span.message= link_to get_message(commit)[:title], fancy_repository_path(repository, ref: commit[:oid], action: :diff)
     %span.time-author
       [
@@ -7,7 +7,7 @@
       authored
       %span.time= timestamp(commit[:author][:time])
       ]
-  .col-md-5
+  .col-md-3
     .pull-right
       .btn-group
         - if @current_file && repository.path_exists?(path, commit[:oid])
