@@ -1,8 +1,8 @@
 module Ontology::FileExtensions
   extend ActiveSupport::Concern
 
-  included do
-    def self.file_extensions
+  module ClassMethods
+    def file_extensions
       @file_extensions ||= file_extensions_distributed + file_extensions_single
     end
 
