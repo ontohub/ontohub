@@ -116,6 +116,26 @@ describe Ontology do
     end
   end
 
+  context 'when parsing' do
+    context 'a distributed ontology' do
+      let(:user) { create :user }
+      let(:repository) { create :repository, user: user }
+      it 'should have logic DOL' do
+        Sidekiq::Testing.fake! do
+          path = File.join(Rails.root, 'test', 'fixtures', 'ontologies', 'casl', 'partial_order.casl')
+          version = repository.save_file(
+            path,
+            'partial_order.casl',
+            'parsing a distributed ontology',
+            user)
+
+          version.parse
+          expect(version.ontology.logic.name).to eq('DOL')
+        end
+      end
+    end
+  end
+
   context 'when parsing an ontology which contains logic translations' do
     let(:repository) { create :repository }
     let(:version) { add_fixture_file(repository, 'dol/double_mapped_logic_translated_blendoid.dol') }

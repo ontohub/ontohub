@@ -1,10 +1,10 @@
 Ontohub
 =======
 
-[![Build Status](https://travis-ci.org/ontohub/ontohub.png?branch=master)](https://travis-ci.org/ontohub/ontohub)
+[![Build Status](https://travis-ci.org/ontohub/ontohub.svg?branch=master)](https://travis-ci.org/ontohub/ontohub)
 [![Code Climate](https://codeclimate.com/github/ontohub/ontohub.png)](https://codeclimate.com/github/ontohub/ontohub)
 [![Coverage Status](https://coveralls.io/repos/ontohub/ontohub/badge.png?branch=staging)](https://coveralls.io/r/ontohub/ontohub?branch=staging)
-[![Dependency Status](https://gemnasium.com/ontohub/ontohub.png)](https://gemnasium.com/ontohub/ontohub)
+[![Dependency Status](https://gemnasium.com/ontohub/ontohub.svg)](https://gemnasium.com/ontohub/ontohub)
 
 
 A web-based repository for distributed ontologies.

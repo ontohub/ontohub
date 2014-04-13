@@ -94,6 +94,10 @@ module Ontology::Import
           else
             ontologies_count += 1
             if distributed?
+              self.logic = Logic.where(
+                  iri: "http://purl.net/dol/logics/#{Logic::DEFAULT_DISTRIBUTED_ONTOLOGY_LOGIC}")
+                .first_or_create(user: user, name: Logic::DEFAULT_DISTRIBUTED_ONTOLOGY_LOGIC)
+
               # generate IRI for sub-ontology
 
               child_iri  = iri_for_child(child_name)
