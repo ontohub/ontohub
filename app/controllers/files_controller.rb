@@ -14,7 +14,7 @@ class FilesController < ApplicationController
 
     if owl_api_header_in_accept_header?
       send_download(path, oid)
-    elsif request.format == 'text/html' || @info[:type] != :file
+    elsif existing_file_requested_as_html?
       case @info[:type]
       when :file
         @file = repository.read_file(path, oid)
@@ -127,6 +127,10 @@ class FilesController < ApplicationController
     OWL_API_HEADER_PARTS.any? do |owl_api_header_part|
       request.headers['Accept'].try(:include?, owl_api_header_part)
     end
+  end
+
+  def existing_file_requested_as_html?
+    request.headers['Accept'].starts_with?("text/html") || @info[:type] != :file
   end
 
 end
