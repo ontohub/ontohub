@@ -125,12 +125,12 @@ class FilesController < ApplicationController
 
   def owl_api_header_in_accept_header?
     OWL_API_HEADER_PARTS.any? do |owl_api_header_part|
-      request.headers['Accept'].try(:include?, owl_api_header_part)
+      request.accept.try(:include?, owl_api_header_part)
     end
   end
 
   def existing_file_requested_as_html?
-    request.headers['Accept'].starts_with?("text/html") || @info[:type] != :file
+    request.accepts.first == Mime::HTML || @info[:type] != :file
   end
 
 end
