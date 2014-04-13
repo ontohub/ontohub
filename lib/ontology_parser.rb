@@ -100,7 +100,8 @@ module OntologyParser
             @current_axiom['symbols'] << @current_symbol['text']
           else
             # return the current symcol
-            callback(:symbol, @current_symbol)
+            in_mapping_link = @current_link && @current_link['map']
+            callback(:symbol, @current_symbol) unless in_mapping_link
           end
           @current_symbol = nil
         when IMPAXIOMS
