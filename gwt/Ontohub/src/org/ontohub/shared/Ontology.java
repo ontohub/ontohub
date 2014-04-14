@@ -1,6 +1,7 @@
 package org.ontohub.shared;
 
 import com.google.gwt.core.client.JavaScriptObject;
+import com.google.gwt.core.client.JsArray;
 
 /**
  * A JSON object that describes an ontology for search results.
@@ -16,20 +17,24 @@ public class Ontology extends JavaScriptObject {
 	public final native String getIri() /*-{ return this.iri; }-*/;
 	public final native String getHref() /*-{ return this.url; }-*/; 
 	public final native String getDescription() /*-{ return this.description; }-*/;
-	public final native String getType() /*-{ return this.type; }-*/;
-	public final native String getTypeUrl() /*-{ return this.typeUrl; }-*/;
-	public final native String getTopic0() /*-{ return this.topic0; }-*/;
-	public final native String getTopic1() /*-{ return this.topic1; }-*/;
-	public final native String getTopic2() /*-{ return this.topic2; }-*/;
-	public final native String getTopic0Url() /*-{ return this.topic0Url; }-*/;
-	public final native String getTopic1Url() /*-{ return this.topic1Url; }-*/;
-	public final native String getTopic2Url() /*-{ return this.topic2Url; }-*/;
-	public final native String getProject0() /*-{ return this.project0; }-*/;
-	public final native String getProject1() /*-{ return this.project1; }-*/;
-	public final native String getProject2() /*-{ return this.project2; }-*/;
-	public final native String getProject0Url() /*-{ return this.project0Url; }-*/;
-	public final native String getProject1Url() /*-{ return this.project1Url; }-*/;
-	public final native String getProject2Url() /*-{ return this.project2Url; }-*/;
-	public final native String getIconUrl() /*-{ return this.iconUrl; }-*/;
-	public final native String getIconAltText() /*-{ return this.iconAltText; }-*/;
+	public final native AnchorData getType() /*-{ return this.type; }-*/;
+	public final native JsArray<AnchorData> getTopics() /*-{ return this.topics; }-*/;
+	public final native JsArray<AnchorData> getProjects() /*-{ return this.projects; }-*/;
+	public final native ImageData getIcon() /*-{ return this.icon; }-*/;
+	public final AnchorData getTopic(int index) {
+		JsArray<AnchorData> topics = getTopics();
+		if (index < topics.length()) {
+			return topics.get(index);
+		} else {
+			return null;
+		}
+	}
+	public final AnchorData getProject(int index) {
+		JsArray<AnchorData> projects = getProjects();
+		if (index < projects.length()) {
+			return projects.get(index);
+		} else {
+			return null;
+		}
+	}
 }

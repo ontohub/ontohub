@@ -1,5 +1,6 @@
 package org.ontohub.client;
 
+import org.ontohub.shared.AnchorData;
 import org.ontohub.shared.Ontology;
 
 import com.google.gwt.core.client.GWT;
@@ -74,8 +75,8 @@ public class OntologyWidget extends Composite {
 	}
 
 	private final void setOntology(Ontology ontology) {
-		iconImage.setUrl(ontology.getIconUrl());
-		iconImage.setAltText(ontology.getIconAltText());
+		iconImage.setUrl(ontology.getIcon().getSrc());
+		iconImage.setAltText(ontology.getIcon().getAlt());
 		titleAnchor.setText(ontology.getName());
 		titleAnchor.setHref(ontology.getHref());
 		titleAnchor.setTabIndex(-1);
@@ -89,13 +90,13 @@ public class OntologyWidget extends Composite {
 		logicLabel.setText(ontology.getLogic());
 		iriLabel.setText(ontology.getIri());
 		descriptionLabel.setText(ontology.getDescription());
-		updateWidgetAnchor(typeAnchor, ontology.getType(), ontology.getTypeUrl());
-		updateWidgetAnchor(topic0Anchor, ontology.getTopic0(), ontology.getTopic0Url());
-		updateWidgetAnchor(topic1Anchor, ontology.getTopic1(), ontology.getTopic1Url());
-		updateWidgetAnchor(topic2Anchor, ontology.getTopic2(), ontology.getTopic2Url());
-		updateWidgetAnchor(project0Anchor, ontology.getProject0(), ontology.getProject0Url());
-		updateWidgetAnchor(project1Anchor, ontology.getProject1(), ontology.getProject1Url());
-		updateWidgetAnchor(project2Anchor, ontology.getProject2(), ontology.getProject2Url());
+		updateWidgetAnchor(typeAnchor, ontology.getType());
+		updateWidgetAnchor(topic0Anchor, ontology.getTopic(0));
+		updateWidgetAnchor(topic1Anchor, ontology.getTopic(1));
+		updateWidgetAnchor(topic2Anchor, ontology.getTopic(2));
+		updateWidgetAnchor(project0Anchor, ontology.getProject(0));
+		updateWidgetAnchor(project1Anchor, ontology.getProject(1));
+		updateWidgetAnchor(project2Anchor, ontology.getProject(2));
 	}
 
 	/**
@@ -106,11 +107,11 @@ public class OntologyWidget extends Composite {
 	 * @param anchorText the text of the anchor
 	 * @param anchorHref the href of the anchor
 	 */
-	private final static void updateWidgetAnchor(Anchor anchor, String anchorText, String anchorHref) {
-		if (anchorText != null && anchorText.length() != 0 && anchorHref != null && anchorHref.length() != 0) {
+	private final static void updateWidgetAnchor(Anchor anchor, AnchorData anchorData) {
+		if (anchorData != null && anchorData.getText() != null && anchorData.getHref() != null && !"".equals(anchorData.getText())) {
 			anchor.setVisible(true);
-			anchor.setText(anchorText);
-			anchor.setHref(anchorHref);
+			anchor.setText(anchorData.getText());
+			anchor.setHref(anchorData.getHref());
 		} else {
 			anchor.setVisible(false);
 		}
