@@ -1,0 +1,10 @@
+%prefix(
+   path: <https://ontohub.org/fois-ontology-competition/FormalCAD/>
+    )%
+
+logic OWL 
+
+ontology Features = 
+ path:features.owl
+end
+
