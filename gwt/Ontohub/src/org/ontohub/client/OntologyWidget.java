@@ -77,6 +77,7 @@ public class OntologyWidget extends Composite {
 	private final void setOntology(Ontology ontology) {
 		iconImage.setUrl(ontology.getIcon().getSrc());
 		iconImage.setAltText(ontology.getIcon().getAlt());
+		iconImage.setTitle(ontology.getIcon().getAlt());
 		titleAnchor.setText(ontology.getName());
 		titleAnchor.setHref(ontology.getHref());
 		titleAnchor.setTabIndex(-1);
