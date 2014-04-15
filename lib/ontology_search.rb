@@ -171,7 +171,7 @@ class OntologySearch
 
   def projects
     model_to_filters_map Project,
-      ->(x) {'from ' + x.name }
+      ->(x) {'from ' + x.display_name }
   end
 
   def formalities
