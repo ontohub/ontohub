@@ -149,7 +149,7 @@ module NavigationHelper
     pages << [t("repository.permissions"),      [*chain, :permissions]] if can? :permissions, repository
     pages << [t("repository.edit"), edit_repository_path(repository)]  if can? :edit, repository 
     
-    subnavigation(repository, pages, current_page,partial: '/repository_settings/subnav')
+    subnavigation(repository, pages, current_page, partial: '/repository_settings/subnav')
   end
   
 
