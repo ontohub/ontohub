@@ -66,7 +66,6 @@ Ontohub::Application.routes.draw do
 
   resources :links do
     get 'update_version', :on => :member
-    resources :link_versions
   end
 
   resources :teams do
@@ -98,7 +97,6 @@ Ontohub::Application.routes.draw do
       resources :sentences, :only => :index
       resources :links do
         get 'update_version', :on => :member
-        resources :link_versions
       end
       resources :ontology_versions, :only => [:index, :show, :new, :create], :path => 'versions' do
         resource :oops_request, :only => [:show, :create]
