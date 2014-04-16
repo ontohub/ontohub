@@ -104,7 +104,9 @@ public class FilterSelector extends Composite implements HasWidgets, HasFilterSe
 		this.open = open;
 		if (open) {
 			for (FilterSelector filterSelector : filterSelectorList) {
-				filterSelector.setOpen(false);
+				if (this != filterSelector) {
+					filterSelector.setOpen(false);
+				}
 			}
 			selector.addStyleName("open");
 		} else {
