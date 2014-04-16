@@ -1,4 +1,5 @@
 class User < ActiveRecord::Base
+  MINIMAL_ADMIN_COUNT = 1
   
   include User::Authentication
   
@@ -83,8 +84,8 @@ class User < ActiveRecord::Base
   protected
   
   def check_remaining_admins
-    if self.admin && User.admin.count < 2
-      raise Permission::PowerVaccuumError, I18n.t(:admin_deletion_error_message, minimal_count: 2)
+    if self.admin && User.admin.count <= MINIMAL_ADMIN_COUNT
+      raise Permission::PowerVaccuumError, I18n.t(:admin_deletion_error_message, minimal_count: MINIMAL_ADMIN_COUNT)
     end
   end
 
