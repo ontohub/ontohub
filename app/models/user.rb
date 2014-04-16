@@ -83,8 +83,8 @@ class User < ActiveRecord::Base
   protected
   
   def check_remaining_admins
-    if User.admin.count < 2
-      raise Permission::PowerVaccuumError, "What the hell ... nobody cares for your site if you remove the only one admin!"
+    if self.admin && User.admin.count < 2
+      raise Permission::PowerVaccuumError, I18n.t(:admin_deletion_error_message, minimal_count: 2)
     end
   end
 
