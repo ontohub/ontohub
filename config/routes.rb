@@ -4,7 +4,7 @@ require 'sidekiq/web' if defined? Sidekiq
 Ontohub::Application.routes.draw do
 
   resources :ontology_types, only: :show
-  resources :home, only: :show
+  get '/after_signup', to: 'home#show' , as: 'after_sign_up'
   
   devise_for :users, controllers: {
     confirmations: 'users/confirmations',

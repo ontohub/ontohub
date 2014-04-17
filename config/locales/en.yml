@@ -50,3 +50,15 @@ en:
   have:
     one: has
     other: have
+    
+  signup:
+    welcome: Welcome %{name}
+    what_happens: |
+          For full qualified access to Ontohub you have to confirm your e-mail address.
+          We have sent an mail with instructions for you.
+    wiki: | 
+        We have an Wiki where you can find informations of Ontohub.
+        You can find the wiki under: %{link}
+        The "Help" button in the navigationbar is context specific.
+        It will lead you to the wiki-page which is related to the actual content. 
+    need_help: Need Help?
