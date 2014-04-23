@@ -7,11 +7,11 @@ class SentenceTest < ActiveSupport::TestCase
       should have_db_column(column).of_type(:integer)
     end   
   
-    %w( name range ).each do |column|
+    %w( range ).each do |column|
       should have_db_column(column).of_type(:string)
     end
 
-    %w( text display_text ).each do |column|
+    %w( name text display_text ).each do |column|
       should have_db_column(column).of_type(:text)
     end
 

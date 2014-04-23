@@ -20,6 +20,7 @@ module Ontology::Import
       next_dgnode_stack_id = ->() { dgnode_stack.length }
       dgnode_stack_id = ->() { next_dgnode_stack_id[] - 1 }
       internal_iri = nil
+      ontology_aliases = {}
 
       OntologyParser.parse io,
         root: Proc.new { |h|
@@ -89,6 +90,7 @@ module Ontology::Import
                                                  repository_id: ExternalRepository.repository.id},
                                                  without_protection: true)
             end
+            ontology_aliases[h['name']] = ontology.iri
           else
             ontologies_count += 1
             if distributed?
@@ -187,6 +189,8 @@ module Ontology::Import
         },
         link: Proc.new { |h|
           if logic_callback.pre_link(h)
+            h['source_iri'] = ontology_aliases[h['source']]
+            h['target_iri'] = ontology_aliases[h['target']]
             link = self.links.update_or_create_from_hash(h, user, now)
 
             logic_callback.link(h, link)

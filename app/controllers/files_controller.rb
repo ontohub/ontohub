@@ -4,9 +4,6 @@ class FilesController < ApplicationController
   before_filter :check_write_permissions, only: [:new, :create]
   before_filter :check_read_permissions
 
-  OWL_API_HEADER_PARTS = ['text/xml;',
-                          'text/html, image/gif, image/jpeg, *;']
-
   def files
     @info = repository.path_info(params[:path], oid)
 
@@ -14,7 +11,7 @@ class FilesController < ApplicationController
 
     if owl_api_header_in_accept_header?
       send_download(path, oid)
-    elsif request.format == 'text/html' || @info[:type] != :file
+    elsif existing_file_requested_as_html?
       case @info[:type]
       when :file
         @file = repository.read_file(path, oid)
@@ -124,9 +121,17 @@ class FilesController < ApplicationController
   end
 
   def owl_api_header_in_accept_header?
-    OWL_API_HEADER_PARTS.any? do |owl_api_header_part|
-      request.headers['Accept'].try(:include?, owl_api_header_part)
-    end
+    # OWL API sends those two http accept headers in different requests:
+    # application/rdf+xml, application/xml; q=0.5, text/xml; q=0.3, */*; q=0.2
+    # text/html, image/gif, image/jpeg, *; q=.2, */*; q=.2
+    # The latter conflicts with what browsers send.
+    accepts = request.accepts.compact
+    (accepts.present? && accepts.first != Mime::HTML) ||
+      accepts[0..2] == [Mime::HTML, Mime::GIF, Mime::JPEG]
+  end
+
+  def existing_file_requested_as_html?
+    request.accepts.first == Mime::HTML || @info[:type] != :file
   end
 
 end

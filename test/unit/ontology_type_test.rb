@@ -4,7 +4,7 @@ class OntologyTypeTest < ActiveSupport::TestCase
 
   context 'Migrations' do
     %w( name description documentation ).each do |column|
-      should have_db_column(column).of_type(:string)
+      should have_db_column(column).of_type(:text)
     end
     should have_db_index(:name).unique(true)
   end
