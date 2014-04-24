@@ -13,6 +13,13 @@ GIT
       escape (~> 0.0.4)
 
 GIT
+  remote: git://github.com/llwt/codemirror-rails.git
+  revision: df5231e3053773e37b27f8181738c7080cd1c3cd
+  specs:
+    codemirror-rails (4.0.3)
+      railties (>= 3.0, < 5)
+
+GIT
   remote: git://github.com/tristanm/jstree-rails.git
   revision: e2ad211ea7835a1811e66c3d4ef1e21bfbe6e27d
   specs:
@@ -93,8 +100,6 @@ GEM
       timers (~> 1.1.0)
     choice (0.1.6)
     chunky_png (1.3.0)
-    codemirror-rails (3.22)
-      railties (>= 3.0, < 5)
     coderay (1.1.0)
     coffee-rails (3.2.2)
       coffee-script (>= 2.2.0)
@@ -400,7 +405,7 @@ DEPENDENCIES
   capistrano-rvm
   capybara
   capybara-webkit
-  codemirror-rails
+  codemirror-rails!
   coffee-rails (~> 3.2.1)
   compass (~> 0.12.1)
   coveralls

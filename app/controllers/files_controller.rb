@@ -1,7 +1,7 @@
 class FilesController < ApplicationController
 
   helper_method :repository, :ref, :oid, :path, :branch_name
-  before_filter :check_write_permissions, only: [:new, :create]
+  before_filter :check_write_permissions, only: [:new, :create, :update]
   before_filter :check_read_permissions
 
   def files
@@ -65,7 +65,7 @@ class FilesController < ApplicationController
   def create
     if build_file.valid?
       repository.save_file @file.file.path, @file.filepath, @file.message, current_user
-      flash[:success] = "Successfully saved uploaded file."
+      flash[:success] = "Successfully saved the uploaded file."
       if ontology = repository.ontologies.find_by_file(@file.filepath)
         redirect_to edit_repository_ontology_path(repository, ontology)
       else
@@ -73,6 +73,25 @@ class FilesController < ApplicationController
       end
     else
       render :new
+    end
+  end
+
+  def update
+    if update_file.valid?
+      repository.save_file @file.file.path, @file.filepath, @file.message, current_user
+      FileUtils.rm_rf(@file.file.path)
+      flash[:success] = "Successfully changed the file."
+      redirect_to fancy_repository_path(repository, path: @file.filepath)
+    else
+      @info = repository.path_info(params[:path], oid)
+      @file = repository.read_file(path, oid)
+
+      @info[:file][:content] = params[:content]
+      @file[:content] = params[:content]
+
+      flash[:error] = @file.errors
+
+      render :files
     end
   end
 
@@ -89,6 +108,22 @@ class FilesController < ApplicationController
   def build_file
     args = params[:upload_file].merge({repository: repository}) unless params[:upload_file].nil?
     @file ||= UploadFile.new(args)
+  end
+
+  def update_file
+    filepath = Rails.root.join('tmp', 'files', oid, "#{Time.now.nsec}_#{params[:path].split('/')[-1]}")
+    FileUtils.mkdir_p(filepath.split[0])
+
+    tmp_file = File.open(filepath, 'w+') do |f|
+      f.write(params[:content])
+    end
+
+    @file = UploadFile.new(
+      target_directory: params[:path].split('/')[0..-2].join('/'),
+      target_filename: params[:path].split('/')[-1],
+      message: params[:message],
+      repository: repository,
+      file: File.new(filepath))
   end
 
   def check_read_permissions
