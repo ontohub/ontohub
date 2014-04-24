@@ -3,7 +3,7 @@
 	xmlns:g="urn:import:com.google.gwt.user.client.ui"
 	xmlns:o="urn:import:org.ontohub.client">
 	<ui:style>
-	    @external .gwt-SuggestBoxPopup .item .item-selected, .ontohub-SearchBar-focus, .input-group, .form-control, .input-group-btn, .btn, .btn-primary, .glyphicon, .glyphicon-search;
+	    @external .gwt-SuggestBoxPopup .item .item-selected, .SearchBar-textBoxFocus, .SearchBar-conceptFocus, .input-group, .form-control, .input-group-btn, .btn, .btn-primary, .glyphicon, .glyphicon-search;
 	    .input-group, .form-control, .input-group-btn, .btn, .btn-primary, .glyphicon, .glyphicon-search {};
 	    .gwt-SuggestBoxPopup {
 	      background-color: white;
@@ -14,15 +14,19 @@
         }
         .form-control.ontohub-SearchBar {
 	      cursor: text;
-        }
-        .form-control.ontohub-SearchBar:focus {
+	      -webkit-transition-delay: 0s, 0s;
+	      -webkit-transition-duration: 0.15s, 0.15s;
+	      -webkit-transition-property: border-color, box-shadow;
+	      -webkit-transition-timing-function: ease-in-out, ease-in-out;
 	      border-color: #ccc;
           outline: 0;
           -webkit-box-shadow: inset 0 1px 1px rgba(0, 0, 0, 0.075);
           -moz-box-shadow: inset 0 1px 1px rgba(0, 0, 0, 0.075);
           box-shadow: inset 0 1px 1px rgba(0, 0, 0, 0.075);
         }
-        .form-control.ontohub-SearchBar-focus {
+        .form-control.ontohub-SearchBar:focus,
+        .SearchBar-textBoxFocus .form-control.ontohub-SearchBar,
+        .SearchBar-conceptFocus .form-control.ontohub-SearchBar {
           border-color: rgba(82, 168, 236, 0.8);
           outline: 0;
           -webkit-box-shadow: inset 0 1px 1px rgba(0, 0, 0, 0.075), 0 0 8px rgba(82, 168, 236, 0.6);
