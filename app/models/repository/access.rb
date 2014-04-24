@@ -2,13 +2,13 @@ module Repository::Access
 
   extend ActiveSupport::Concern
 
-  OPTIONS = %w[private public_r public_rw]
+  OPTIONS = %w[private_r private_rw public_r public_rw]
 
   included do
     scope :pub, where("access != 'private'")
     scope :accessible_by, ->(user) do
       if user
-        where("access != 'private'
+        where("access NOT LIKE 'private%'
           OR id IN (SELECT item_id FROM permissions WHERE item_type = 'Repository' AND subject_type = 'User' AND subject_id = ?)
           OR id IN (SELECT item_id FROM permissions INNER JOIN team_users ON team_users.team_id = permissions.subject_id AND team_users.user_id = ?
             WHERE  item_type = 'Repository' AND subject_type = 'Team')", user, user)
@@ -23,7 +23,15 @@ module Repository::Access
   end
 
   def is_private
-    access == 'private'
+    access.start_with?('private')
+  end
+
+  def private_r?
+    access == 'private_r'
+  end
+
+  def private_rw?
+    access == 'private_rw'
   end
 
   def public_rw?

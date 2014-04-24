@@ -98,7 +98,7 @@ describe Ability do
   context 'Private Repository' do
     let(:editor){ create :user } # editor
     let(:reader){ create :user } # reader
-    let(:item){   create(:repository, access: 'private', user: owner) }
+    let(:item){   create(:repository, access: 'private_rw', user: owner) }
 
     before do
       create(:permission, subject: editor, role: 'editor', item: item)
@@ -139,7 +139,62 @@ describe Ability do
       end
     end
 
-    pending 'add tests for all roles'
+    context 'owner' do
+      subject(:ability){ Ability.new(owner) }
+
+      it 'be allowed: everything' do
+        [:show, :update, :write].each do |perm|
+          should be_able_to(perm, item)
+        end
+      end
+    end
+  end
+
+  context 'Private read-only Repository' do
+    let(:editor){ create :user } # editor
+    let(:reader){ create :user } # reader
+    let(:item){   create(:repository, access: 'private_r', user: owner) }
+
+    before do
+      create(:permission, subject: editor, role: 'editor', item: item)
+      create(:permission, subject: reader, role: 'reader', item: item)
+    end
+
+    context 'guest' do
+      subject(:ability){ Ability.new(User.new) }
+
+      it 'not be allowed: anything' do
+        [:show, :update, :write].each do |perm|
+          should_not be_able_to(perm, item)
+        end
+      end
+    end
+
+    context 'reader, editor, owner' do
+      it 'not be allowed: to write' do
+        [reader, editor, owner].each do |role|
+          Ability.new(role).should_not be_able_to(:write, item)
+        end
+      end
+
+      it 'be allowed: to read' do
+        [reader, editor, owner].each do |role|
+          Ability.new(role).should be_able_to(:show, item)
+        end
+      end
+    end
+
+    context 'update:' do
+      it 'reader, editor should be allowed' do
+        [reader, editor].each do |role|
+          Ability.new(role).should_not be_able_to(:update, item)
+        end
+      end
+
+      it 'owner should not be allowed' do
+        Ability.new(owner).should be_able_to(:update, item)
+      end
+    end
   end
 
   context 'Team' do
