@@ -2,6 +2,10 @@
 # See https://github.com/svenfuchs/rails-i18n/tree/master/rails%2Flocale for starting points.
 
 en:
+  admin_deletion_error_message: |
+    You probably shouldn't remove this account, as deleting
+    it would leave the system with too few admins.
+    The threshold level is: %{minimal_count}.
   in_process_ontologies: "Ontologies with pending work:"
   ontology_versions_status: "In-Process Ontology-Version found:"
   wait: 'Please wait …'
