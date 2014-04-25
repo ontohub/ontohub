@@ -1,6 +1,6 @@
 class AddConstratintsAndIndicesToEntityGroups < ActiveRecord::Migration
   def change
-   change_column :entity_groups, :name, :text, :null => false 
+    change_column :entity_groups, :name, :text, :null => false 
     
     
     change_table :entity_groups do |t|
@@ -8,6 +8,5 @@ class AddConstratintsAndIndicesToEntityGroups < ActiveRecord::Migration
       t.index [:ontology_id, :name], :unique => true
       t.foreign_key :ontologies, :dependent => :delete
     end
-  
   end
 end
