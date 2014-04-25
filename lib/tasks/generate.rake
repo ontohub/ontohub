@@ -11,7 +11,20 @@ end
 namespace :generate do
   desc 'Import the categories for the ontologies'
   task :categories => :environment do
-    Ontology.where("name ilike '%Domain Fields Core'").first.create_categories
+    ontology = Ontology.where("name ilike '%Domain Fields Core'").first
+    if ontology
+      ontology.create_categories
+    else
+      repository = Repository.find_by_name "Default"
+      user = User.where(admin: true).first
+      filepath = "#{Rails.root}/test/fixtures/ontologies/categories.owl"
+      system("wget -O #{filepath} https://raw.githubusercontent.com/ontohub/OOR_Ontohub_API/master/Domain_Fields_Core.owl")
+      path = File.join(filepath)
+      basename = File.basename(path)
+      version = repository.save_file path, basename, "#{basename} added", user
+      version.ontology.create_categories
+      system("rm #{filepath}")
+    end
   end
 
   desc 'Generate entity trees for ALL OWL ontologies'
