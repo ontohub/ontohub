@@ -91,7 +91,9 @@ module Repository::Importing
       params[:name]           = name
       params[:source_type]    = type
       params[:source_address] = source
-      params[:access]         = params[:access].split('_').first + '_r'
+      params[:access]         = params[:access] ?
+        Repository::Access.as_read_only(params[:access]) :
+        Repository::Access::DEFAULT_OPTION
 
       r = Repository.new(params)
       r.user = user

@@ -2,7 +2,8 @@ module Repository::Access
 
   extend ActiveSupport::Concern
 
-  OPTIONS = %w[private_r private_rw public_r public_rw]
+  OPTIONS = %w[public_r public_rw private_r private_rw]
+  DEFAULT_OPTION = OPTIONS[0]
 
   included do
     scope :pub, where("access != 'private'")
@@ -40,6 +41,10 @@ module Repository::Access
 
   def public_r?
     access == 'public_r'
+  end
+
+  def self.as_read_only(access)
+    access.split('_').first + '_r'
   end
   
   private
