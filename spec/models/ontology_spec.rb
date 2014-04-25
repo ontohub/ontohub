@@ -158,4 +158,38 @@ describe Ontology do
 
   end
 
+  context 'when parsing an ontology which is referenced by another ontology' do
+    let(:repository) { create :repository }
+    let(:list) do
+      referenced_ontology = nil
+      ontology = define_ontology('Foo') do
+        ontohub = prefix('ontohub', self)
+        referenced_ontology = define('Bar') do
+          other_ontohub = prefix('other_ontohub', self)
+          other_ontohub.class('SomeBar')
+        end
+        imports referenced_ontology
+        ontohub.class('Bar').sub_class_of ontohub.class('Foo')
+      end
+      [ontology, referenced_ontology]
+    end
+    let(:presentation) { list[0] }
+    let(:referenced_presentation) { list[1] }
+    let(:version) { version_for_file(repository, presentation.file.path) }
+    let(:ontology) { version.ontology }
+
+    before do
+      version.parse
+    end
+
+    let(:referenced_ontology) do
+      name = File.basename(referenced_presentation.name, '.owl')
+      Ontology.where("name LIKE '#{name}%'").first
+    end
+
+    it 'should import an ontology with that name' do
+      expect(ontology.direct_imported_ontologies).to include(referenced_ontology)
+    end
+  end
+
 end
