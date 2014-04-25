@@ -157,15 +157,18 @@ $grayLighter: #ddd
     .path
       padding-top: 12px
   .commit
-    @include border-radius(4px)
     background: $commit_blue
     border: 1px solid darken($commit_blue, 5%)
-    @include box-shadow(inset 0 1px 1px rgba(0, 0, 0, 0.05))
-    adding: 10px
-    margin: 10px 0px
-    padding: 5px 0
+    padding: 3px 0
     &:hover
       background: darken($commit_blue, 10%)
+    .oid-btn
+      min-width: 80px
+    .time-author
+      margin-left: 7px
+      color: #888
+      .author
+        color: #000
   .browse-history
     text-align: center
     margin-right: -40px

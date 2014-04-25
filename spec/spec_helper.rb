@@ -53,6 +53,11 @@ RSpec.configure do |config|
     DatabaseCleaner.strategy = :truncation
   end
 
+  config.before(:each) do
+    redis = WrappingRedis::RedisWrapper.new
+    redis.del redis.keys.join(' ')
+  end
+
   config.after(:each) do
     DatabaseCleaner.clean
   end

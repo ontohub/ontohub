@@ -3,11 +3,16 @@ package org.ontohub.client;
 import org.ontohub.shared.Keyword;
 
 import com.google.gwt.core.client.GWT;
+import com.google.gwt.event.dom.client.BlurHandler;
 import com.google.gwt.event.dom.client.ClickEvent;
 import com.google.gwt.event.dom.client.DoubleClickEvent;
+import com.google.gwt.event.dom.client.FocusHandler;
+import com.google.gwt.event.dom.client.HasBlurHandlers;
+import com.google.gwt.event.dom.client.HasFocusHandlers;
 import com.google.gwt.event.dom.client.KeyCodes;
 import com.google.gwt.event.dom.client.KeyDownEvent;
 import com.google.gwt.event.dom.client.KeyEvent;
+import com.google.gwt.event.shared.HandlerRegistration;
 import com.google.gwt.uibinder.client.UiBinder;
 import com.google.gwt.uibinder.client.UiField;
 import com.google.gwt.uibinder.client.UiHandler;
@@ -17,7 +22,7 @@ import com.google.gwt.user.client.ui.HasText;
 import com.google.gwt.user.client.ui.InlineLabel;
 import com.google.gwt.user.client.ui.Widget;
 
-public class OntologySearchConcept extends Composite {
+public class OntologySearchConcept extends Composite implements HasFocusHandlers, HasBlurHandlers {
 
 	private static OntologySearchConceptUiBinder uiBinder = GWT
 			.create(OntologySearchConceptUiBinder.class);
@@ -123,6 +128,16 @@ public class OntologySearchConcept extends Composite {
 
 	public final String getItemLabel() {
 		return label.getText();
+	}
+
+	@Override
+	public HandlerRegistration addBlurHandler(BlurHandler handler) {
+		return panel.addBlurHandler(handler);
+	}
+
+	@Override
+	public HandlerRegistration addFocusHandler(FocusHandler handler) {
+		return panel.addFocusHandler(handler);
 	}
 
 }

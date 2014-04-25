@@ -8,15 +8,17 @@ import java.util.List;
 
 import org.ontohub.client.Pagination.PaginateEvent;
 import org.ontohub.client.Pagination.PaginateHandler;
-import org.ontohub.shared.Filter;
 import org.ontohub.shared.FiltersMap;
 import org.ontohub.shared.Keyword;
 import org.ontohub.shared.Ontology;
 import org.ontohub.shared.OntologyList;
 
 import com.google.gwt.core.client.GWT;
-import com.google.gwt.core.client.JsArray;
+import com.google.gwt.event.dom.client.BlurEvent;
+import com.google.gwt.event.dom.client.BlurHandler;
 import com.google.gwt.event.dom.client.ClickEvent;
+import com.google.gwt.event.dom.client.FocusEvent;
+import com.google.gwt.event.dom.client.FocusHandler;
 import com.google.gwt.event.dom.client.KeyCodes;
 import com.google.gwt.event.dom.client.KeyDownEvent;
 import com.google.gwt.event.dom.client.KeyUpEvent;
@@ -144,6 +146,18 @@ public class OntologySearch extends Composite implements FilterSelectionHandler 
 				}
 			}
 		});
+		box.addBlurHandler(new BlurHandler() {
+			@Override
+			public void onBlur(BlurEvent event) {
+				OntologySearch.this.getElement().removeClassName("SearchBar-textBoxFocus");
+			}
+		});
+		box.addFocusHandler(new FocusHandler() {
+			@Override
+			public void onFocus(FocusEvent event) {
+				OntologySearch.this.getElement().addClassName("SearchBar-textBoxFocus");
+			}
+		});
 		return box;
 	}
 
@@ -156,6 +170,19 @@ public class OntologySearch extends Composite implements FilterSelectionHandler 
 			return;
 		}
 		OntologySearchConcept concept = new OntologySearchConcept(OntologySearch.this, "Mixed", text);
+		concept.addBlurHandler(new BlurHandler() {
+			@Override
+			public void onBlur(BlurEvent event) {
+				OntologySearch.this.getElement().removeClassName("SearchBar-conceptFocus");
+			}
+		});
+		concept.addFocusHandler(new FocusHandler() {
+			@Override
+			public void onFocus(FocusEvent event) {
+				OntologySearch.this.getElement().addClassName("SearchBar-conceptFocus");
+			}
+			
+		});
 		conceptPanel.add(concept);
 		box.setText("");
 		page = 1;
