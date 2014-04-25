@@ -40,8 +40,8 @@ module ParsingCallback::OWL
     def ontology_end(hash, ontology)
       begin
         TarjanTree.new(ontology)
-      rescue StandardError => e
-        Rails.logger.warn "Could not create entity tree for: #{ontology.name} (#{ontology.id})"
+      rescue ActiveResource::ResourceInvalid => e
+        Rails.logger.warn "Could not create entity tree for: #{ontology.name} (#{ontology.id}) caused #{e}"
       end
     end
 
