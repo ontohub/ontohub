@@ -105,7 +105,7 @@ describe FilesController do
             end
 
             it { should respond_with :success }
-            it "should show an error" do
+            it "should set an error message for the message field" do
               expect { flash[:error].messages[:message] }.not_to be_nil
             end
             it "should not show a success message" do
