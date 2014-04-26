@@ -78,10 +78,10 @@ class FilesController < ApplicationController
 
   def update
     if update_file.valid?
-      repository.save_file @file.file.path, @file.filepath, @file.message, current_user
-      FileUtils.rm_rf(@file.file.path)
+      repository.save_file @file_changed.file.path, @file_changed.filepath, @file_changed.message, current_user
+      FileUtils.rm_rf(@file_changed.file.path)
       flash[:success] = "Successfully changed the file."
-      redirect_to fancy_repository_path(repository, path: @file.filepath)
+      redirect_to fancy_repository_path(repository, path: @file_changed.filepath)
     else
       @info = repository.path_info(params[:path], oid)
       @file = repository.read_file(path, oid)
@@ -89,7 +89,7 @@ class FilesController < ApplicationController
       @info[:file][:content] = params[:content]
       @file[:content] = params[:content]
 
-      flash[:error] = @file.errors
+      flash[:error] = @file_changed.errors
 
       render :files
     end
@@ -118,7 +118,7 @@ class FilesController < ApplicationController
       f.write(params[:content])
     end
 
-    @file = UploadFile.new(
+    @file_changed = UploadFile.new(
       target_directory: params[:path].split('/')[0..-2].join('/'),
       target_filename: params[:path].split('/')[-1],
       message: params[:message],
