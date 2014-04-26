@@ -30,29 +30,28 @@ describe FilesController do
   describe "repository" do
     let!(:repository){ create :repository }
 
-    describe "files" do
+    context "files" do
       before { get :files, repository_id: repository.to_param }
       it { should respond_with :success }
       it { should render_template :files }
     end
 
-
-    describe "signed in with write access" do
+    context "signed in with write access" do
       let(:user){ create(:permission, item: repository).subject }
       before { sign_in user }
 
-      describe "new" do
+      context "new" do
         before { get :new, repository_id: repository.to_param }
         it { should respond_with :success }
       end
 
-      describe "create" do
-        describe "without file" do
+      context "create" do
+        context "without file" do
           before { post :create, repository_id: repository.to_param }
           it { should respond_with :success }
         end
 
-        describe "with file" do
+        context "with file" do
           before {
             post :create, repository_id: repository.to_param, upload_file: {
               target_directory: 'my_dir',
@@ -65,9 +64,9 @@ describe FilesController do
         end
       end
 
-      describe "update" do
+      context "update" do
 
-        describe "with existing file" do
+        context "with existing file" do
           let(:filepath)     { "existing-file" }
           let(:tmp_filepath) { Rails.root.join('tmp', filepath) }
           let(:message)      { "message" }
@@ -79,7 +78,7 @@ describe FilesController do
             repository.save_file_only(tmp_filepath, filepath, message, user)
           end
 
-          describe "without validation error" do
+          context "without validation error" do
             before do
               post :update,
                 repository_id: repository.to_param,
@@ -97,7 +96,7 @@ describe FilesController do
             end
           end
 
-          describe "with validation error" do
+          context "with validation error" do
             before do
               post :update,
                 repository_id: repository.to_param,
@@ -115,7 +114,7 @@ describe FilesController do
           end
         end
 
-        describe "with non-existent file" do
+        context "with non-existent file" do
           let(:filepath) { "non-existent-file" }
           before do
             post :update,
@@ -124,6 +123,7 @@ describe FilesController do
               message: "message",
               content: "changed"
           end
+
           it { should respond_with :found }
           it "should not show an error" do
             expect(flash[:error]).to be_nil
