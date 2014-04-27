@@ -5,6 +5,9 @@ class RepositoryTest < ActiveSupport::TestCase
   should have_many :ontologies
   should have_many :permissions
 
+  setup { stub_ontology_file_extensions }
+  teardown { unstub_ontology_file_extensions }
+
   context "a repository" do
     setup do
       @user       = FactoryGirl.create :user

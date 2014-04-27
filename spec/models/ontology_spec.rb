@@ -1,6 +1,9 @@
 require 'spec_helper'
 
 describe Ontology do
+  before { stub_ontology_file_extensions }
+  after { unstub_ontology_file_extensions }
+
   let(:user) { create :user }
 
   context 'when naming an ontology' do

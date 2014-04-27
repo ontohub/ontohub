@@ -67,8 +67,7 @@ module Repository::GitRepositories
 
   def save_ontology(commit_oid, filepath, user=nil, iri: nil, fast_parse: false, do_not_parse: false)
     # we expect that this method is only called, when the ontology is 'present'
-
-    return unless Ontology::FILE_EXTENSIONS.include?(File.extname(filepath))
+    return unless Ontology.file_extensions.include?(File.extname(filepath))
     version = nil
     basepath = File.basepath(filepath)
     o = ontologies.without_parent.where(basepath: basepath).first
@@ -88,7 +87,7 @@ module Repository::GitRepositories
       end
     else
       # create new ontology
-      clazz      = Ontology::FILE_EXTENSIONS_DISTRIBUTED.include?(File.extname(filepath)) ? DistributedOntology : SingleOntology
+      clazz      = Ontology.file_extensions_distributed.include?(File.extname(filepath)) ? DistributedOntology : SingleOntology
       o          = clazz.new
       o.basepath = basepath
       o.file_extension = File.extname(filepath)
