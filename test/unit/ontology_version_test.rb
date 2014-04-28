@@ -9,9 +9,6 @@ class OntologyVersionTest < ActiveSupport::TestCase
   should have_db_index(:commit_oid)
   should have_db_index(:checksum)
 
-  setup { stub_ontology_file_extensions }
-  teardown { unstub_ontology_file_extensions }
-  
   setup do
     @user = FactoryGirl.create :user
   end
