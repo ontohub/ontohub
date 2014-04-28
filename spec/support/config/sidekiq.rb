@@ -13,6 +13,8 @@ RSpec.configure do |config|
       Sidekiq::Testing.inline!
     elsif example.metadata[:needs_hets]
       Sidekiq::Testing.inline!
+    elsif example.metadata[:process_jobs_synchronously]
+      Sidekiq::Testing.inline!
     else
       Sidekiq::Testing.fake!
     end

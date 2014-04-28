@@ -72,13 +72,9 @@ describe Ontology do
     end
   end
 
-  context 'when parsing a non-ontology-file' do
+  context 'when parsing a non-ontology-file', :needs_hets do
     let(:repository) { create :repository }
     let(:version) { add_fixture_file(repository, 'xml/catalog-v001.xml') }
-
-    before do
-      version.parse
-    end
 
     it 'no ontology should exist' do
       puts repository.ontologies.inspect
@@ -117,35 +113,29 @@ describe Ontology do
     end
   end
 
-  context 'when parsing' do
+  context 'when parsing', :needs_hets do
     context 'a distributed ontology' do
       let(:user) { create :user }
       let(:repository) { create :repository, user: user }
       it 'should have logic DOL' do
-        Sidekiq::Testing.fake! do
-          path = File.join(Rails.root, 'test', 'fixtures', 'ontologies', 'casl', 'partial_order.casl')
-          version = repository.save_file(
-            path,
-            'partial_order.casl',
-            'parsing a distributed ontology',
-            user)
+        path = File.join(Rails.root, 'test', 'fixtures', 'ontologies', 'casl', 'partial_order.casl')
+        version = repository.save_file(
+          path,
+          'partial_order.casl',
+          'parsing a distributed ontology',
+          user)
 
-          version.parse
-          expect(version.ontology.logic.name).to eq('DOL')
-        end
+        expect(version.ontology.logic.name).to eq('DOL')
       end
     end
   end
 
-  context 'when parsing an ontology which contains logic translations' do
+  context 'when parsing an ontology which contains logic translations', :needs_hets do
     let(:repository) { create :repository }
     let(:version) { add_fixture_file(repository, 'dol/double_mapped_logic_translated_blendoid.dol') }
     let(:ontology) { version.ontology.children.find_by_name('DMLTB-TheClifOne') }
 
     context 'the logically translated ontology' do
-      before do
-        version.parse
-      end
 
       it 'should contain imported sentences' do
         expect(ontology.imported_sentences).to_not be_empty
