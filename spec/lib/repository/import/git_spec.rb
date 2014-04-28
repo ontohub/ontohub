@@ -1,8 +1,6 @@
 require 'spec_helper'
 
 describe "git import" do
-  before { stub_ontology_file_extensions }
-  after { unstub_ontology_file_extensions }
 
   let(:tmpdir){  }
   

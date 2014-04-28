@@ -23,6 +23,11 @@ class ActiveSupport::TestCase
     # clean git repositories
     FileUtils.rmtree Ontohub::Application.config.data_root
     FileUtils.rmtree Repository::Symlink::PATH
+    stub_ontology_file_extensions
+  end
+
+  teardown do
+    unstub_ontology_file_extensions
   end
 
 end
@@ -30,6 +35,8 @@ end
 # for devise
 class ActionController::TestCase
   include Devise::TestHelpers
+  setup { stub_ontology_file_extensions }
+  teardown { unstub_ontology_file_extensions }
 end
 
 # for strip_attributes
