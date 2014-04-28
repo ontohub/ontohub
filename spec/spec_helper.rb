@@ -70,9 +70,11 @@ RSpec.configure do |config|
   config.before(:each) do
     redis = WrappingRedis::RedisWrapper.new
     redis.del redis.keys.join(' ')
+    stub_ontology_file_extensions
   end
 
   config.after(:each) do
+    unstub_ontology_file_extensions
     DatabaseCleaner.clean
   end
 

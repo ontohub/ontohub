@@ -1,8 +1,6 @@
 require 'spec_helper'
 
 describe TranslatedSentence do
-  before { stub_ontology_file_extensions }
-  after { unstub_ontology_file_extensions }
 
   context 'when parsing the CarsAreAudis ontology with symbol mappings' do
     let(:repository) { create :repository }
