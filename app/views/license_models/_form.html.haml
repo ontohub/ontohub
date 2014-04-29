@@ -2,7 +2,7 @@
   = render partial: '/shared/form_errors'
 
   = f.input :name, as: :string
-  = f.input :url
+  = f.input :url, as: :url
   = f.input :description, as: :text, input_html: {rows: 5}
 
   = f.submit class: 'btn btn-primary'

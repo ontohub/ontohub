@@ -4,6 +4,6 @@
   = f.input :access, collection: access_options, include_blank: false, hint: access_change_hint
 
   - if resource.new_record?
-    = f.input :source_address
+    = f.input :source_address, as: :url
   
   = f.button :wrapped
