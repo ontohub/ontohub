@@ -49,6 +49,19 @@ end
 # includes the convience-method `define_ontology('name.extension')`
 include OntologyUnited::Convenience
 
+def stub_ontology_file_extensions
+  Ontology.stubs(:file_extensions_distributed).returns(
+    %w[casl dol hascasl het].map!{ |ext| ".#{ext}" })
+  Ontology.stubs(:file_extensions_single).returns(
+    %w[owl obo hs exp maude elf hol isa thy prf omdoc hpf clf clif xml fcstd rdf xmi qvt tptp gen_trm baf].
+    map!{ |ext| ".#{ext}" })
+end
+
+def unstub_ontology_file_extensions
+  Ontology.unstub(:file_extensions_distributed)
+  Ontology.unstub(:file_extensions_single)
+end
+
 RSpec.configure do |config|
   # ## Mock Framework
   # config.mock_with :mocha
@@ -62,9 +75,11 @@ RSpec.configure do |config|
   config.before(:each) do
     redis = WrappingRedis::RedisWrapper.new
     redis.del redis.keys.join(' ')
+    stub_ontology_file_extensions
   end
 
   config.after(:each) do
+    unstub_ontology_file_extensions
     DatabaseCleaner.clean
   end
 

@@ -1,6 +1,7 @@
 require 'spec_helper'
 
 describe Ontology do
+
   let(:user) { create :user }
 
   context 'when naming an ontology' do
