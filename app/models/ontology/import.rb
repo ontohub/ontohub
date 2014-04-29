@@ -10,6 +10,7 @@ module Ontology::Import
       self.present     = true
       root             = nil
       ontology         = nil
+      ontologies         = []
       logic_callback   = nil
       link             = nil
       ontologies_count = 0
@@ -19,6 +20,7 @@ module Ontology::Import
       next_dgnode_stack_id = ->() { dgnode_stack.length }
       dgnode_stack_id = ->() { next_dgnode_stack_id[] - 1 }
       internal_iri = nil
+      ontology_aliases = {}
 
       OntologyParser.parse io,
         root: Proc.new { |h|
@@ -88,9 +90,14 @@ module Ontology::Import
                                                  repository_id: ExternalRepository.repository.id},
                                                  without_protection: true)
             end
+            ontology_aliases[h['name']] = ontology.iri
           else
             ontologies_count += 1
             if distributed?
+              self.logic = Logic.where(
+                  iri: "http://purl.net/dol/logics/#{Logic::DEFAULT_DISTRIBUTED_ONTOLOGY_LOGIC}")
+                .first_or_create(user: user, name: Logic::DEFAULT_DISTRIBUTED_ONTOLOGY_LOGIC)
+
               # generate IRI for sub-ontology
 
               child_iri  = iri_for_child(child_name)
@@ -140,17 +147,16 @@ module Ontology::Import
 
           logic_callback = ParsingCallback.determine_for(ontology)
 
+          ontology.entities.destroy_all
+          ontology.all_sentences.destroy_all
           ontology.entities_count  = 0
           ontology.sentences_count = 0
+          ontology.save!
 
           logic_callback.ontology(h, ontology)
         },
         ontology_end: Proc.new {
-          # remove outdated sentences and entities
-          conditions = ['updated_at < ?', now]
-          ontology.entities.where(conditions).destroy_all
-          ontology.sentences.where(conditions).delete_all
-          ontology.save!
+          ontologies << ontology
 
           logic_callback.ontology_end({}, ontology)
 
@@ -172,15 +178,27 @@ module Ontology::Import
             logic_callback.axiom(h, sentence)
           end
         },
+        imported_axiom: Proc.new { |h|
+          if logic_callback.pre_axiom(h)
+            h['imported'] = true
+            sentence = ontology.sentences.update_or_create_from_hash(h, now)
+            ontology.sentences_count += 1
+
+            logic_callback.axiom(h, sentence)
+          end
+        },
         link: Proc.new { |h|
           if logic_callback.pre_link(h)
+            h['source_iri'] = ontology_aliases[h['source']]
+            h['target_iri'] = ontology_aliases[h['target']]
             link = self.links.update_or_create_from_hash(h, user, now)
 
             logic_callback.link(h, link)
           end
         }
       save!
-      versions.each { |version| version.save! }
+      versions.each(&:save!)
+      ontologies.each(&:create_translated_sentences)
 
     end
   end

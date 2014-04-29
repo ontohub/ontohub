@@ -61,5 +61,5 @@ end
 
 def cleanup_redis
   include WrappingRedis
-  redis.keys.each{ |k| redis.del k }
+  redis.del redis.keys.join(' ')
 end

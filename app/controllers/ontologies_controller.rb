@@ -74,7 +74,7 @@ class OntologiesController < InheritedResources::Base
   def destroy
     if resource.is_imported?
       flash[:error] = "Can't delete an ontology that is imported by another one."
-      false
+      redirect_to resource_chain
     else
       resource.destroy_with_parent(current_user)
       destroy!

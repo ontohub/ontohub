@@ -66,7 +66,6 @@ Ontohub::Application.routes.draw do
 
   resources :links do
     get 'update_version', :on => :member
-    resources :link_versions
   end
 
   resources :teams do
@@ -98,7 +97,6 @@ Ontohub::Application.routes.draw do
       resources :sentences, :only => :index
       resources :links do
         get 'update_version', :on => :member
-        resources :link_versions
       end
       resources :ontology_versions, :only => [:index, :show, :new, :create], :path => 'versions' do
         resource :oops_request, :only => [:show, :create]
@@ -124,6 +122,12 @@ Ontohub::Application.routes.draw do
       as:          :ref,
       constraints: { path: /.*/ }
   end
+
+  post ':repository_id/:path',
+    controller:  :files,
+    action:      :update,
+    as:          :repository_tree,
+    constraints: { path: /.*/ }
 
   get ':repository_id(/:path)',
     controller:  :files,

@@ -1,6 +1,7 @@
 require 'spec_helper'
 
 describe Repository do
+
   let(:repository) { create :repository_with_remote }
 
   context 'when ontohub clones a remote repository' do

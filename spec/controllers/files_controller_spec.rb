@@ -30,29 +30,28 @@ describe FilesController do
   describe "repository" do
     let!(:repository){ create :repository }
 
-    describe "files" do
+    context "files" do
       before { get :files, repository_id: repository.to_param }
       it { should respond_with :success }
       it { should render_template :files }
     end
 
-
-    describe "signed in with write access" do
+    context "signed in with write access" do
       let(:user){ create(:permission, item: repository).subject }
       before { sign_in user }
 
-      describe "new" do
+      context "new" do
         before { get :new, repository_id: repository.to_param }
         it { should respond_with :success }
       end
 
-      describe "create" do
-        describe "without file" do
+      context "create" do
+        context "without file" do
           before { post :create, repository_id: repository.to_param }
           it { should respond_with :success }
         end
 
-        describe "with file" do
+        context "with file" do
           before {
             post :create, repository_id: repository.to_param, upload_file: {
               target_directory: 'my_dir',
@@ -62,6 +61,82 @@ describe FilesController do
             }
           }
           it { should respond_with :redirect }
+        end
+      end
+
+      context "update" do
+
+        context "with existing file" do
+          let(:filepath)     { "existing-file" }
+          let(:tmp_filepath) { Rails.root.join('tmp', filepath) }
+          let(:message)      { "message" }
+
+          before do
+            FileUtils.rm_rf(tmp_filepath)
+            File.open(tmp_filepath, 'w+') { |f| f.write("unchanged") }
+
+            repository.save_file_only(tmp_filepath, filepath, message, user)
+          end
+
+          context "without validation error" do
+            before do
+              post :update,
+                repository_id: repository.to_param,
+                path: filepath,
+                message: message,
+                content: "changed"
+            end
+
+            it { should respond_with :found }
+            it "should not show an error" do
+              expect(flash[:error]).to be_nil
+            end
+            it "should show a success message" do
+              expect(flash[:success]).not_to be_nil
+            end
+          end
+
+          context "with validation error" do
+            before do
+              post :update,
+                repository_id: repository.to_param,
+                path: filepath,
+                content: "changed"
+            end
+
+            it { should respond_with :success }
+            it "should set an error message for the message field" do
+              expect { flash[:error].messages[:message] }.not_to be_nil
+            end
+            it "should not show a success message" do
+              expect(flash[:success]).to be_nil
+            end
+          end
+        end
+
+        context "with non-existent file" do
+          let(:filepath) { "non-existent-file" }
+          before do
+            post :update,
+              repository_id: repository.to_param,
+              path: filepath,
+              message: "message",
+              content: "changed"
+          end
+
+          it { should respond_with :found }
+          it "should not show an error" do
+            expect(flash[:error]).to be_nil
+          end
+          it "should show a success message" do
+            expect(flash[:success]).not_to be_nil
+          end
+          it "should have added a file" do
+            expect(repository.path_exists? filepath).to be_true
+          end
+          it "should actually not have added a file" do
+            pending "this should be another controller action"
+          end
         end
       end
     end
