@@ -19,7 +19,7 @@ namespace :server do
 
     desc 'Start rails server'
     task :start do
-      system 'rails server &'
+      system 'rails server 2>&1 > /dev/null &'
     end
 
     desc 'Stop rails server'
