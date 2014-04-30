@@ -3,6 +3,7 @@ class Repository < ActiveRecord::Base
   include Permissionable
 
   include Repository::Access
+  include Repository::Destroying
   include Repository::FilesList
   include Repository::GitRepositories
   include Repository::Importing
@@ -14,7 +15,11 @@ class Repository < ActiveRecord::Base
   has_many :ontologies, dependent: :destroy
   has_many :url_maps, dependent: :destroy
 
-  attr_accessible :name, :description, :source_type, :source_address, :access
+  attr_accessible :name,
+                  :description,
+                  :source_type,
+                  :source_address,
+                  :access
   attr_accessor :user
 
   after_save :clear_readers
@@ -28,5 +33,5 @@ class Repository < ActiveRecord::Base
   def to_param
     path
   end
-  
+
 end

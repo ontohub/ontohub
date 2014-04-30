@@ -8,6 +8,7 @@ module Hets
   class VersionOutdatedError < DeploymentError; end
   class ConfigDateFormatError < DeploymentError; end
   class VersionDateFormatError < DeploymentError; end
+  class InvalidHetsVersionFormatError < DeploymentError; end
 
   class Config
     attr_reader :path, :library_path, :stack_size, :env
@@ -23,7 +24,7 @@ module Hets
       raise DeploymentError, 'Could not find hets'     unless @path
       raise DeploymentError, 'Hets library not found.' unless @library_path
 
-      unless is_compatible? yaml['version_minimum_date']
+      unless is_compatible? yaml['version_minimum_revision']
         raise VersionOutdatedError, 'The installed version of Hets is too old'
       end
 
@@ -40,26 +41,25 @@ module Hets
     # Checks Hets installation compatibility by its version date
     # 
     # * *Args* :
-    # * - +minimum_date+ -> Minimum working hets version date
+    # * - +minimum_revision+ -> Minimum working hets version revision
     # * *Returns* :
-    # * - true if hets version minimum date prior or equal to actual hets version date
+    # * - true if hets version minimum revision smaller than or equal to actual hets version revision
     # * - false otherwise
-    def is_compatible?(minimum_date)
-      # Read Hets version minimum date
-      raise ConfigDateFormatError, 'Could not read hets version minimum date in YAML' unless minimum_date
+    def is_compatible?(minimum_revision)
+      # Read Hets version minimum revision
+      raise ConfigDateFormatError, 'Could not read hets version minimum revision in YAML' unless minimum_revision
 
       # Read Hets version date
       version = `#{@path} -V`
-      version_date = begin
-        Date.parse version.split.last
-      rescue ArgumentError
-        nil
+      # revision starts with r-char and ends with revision number.
+      version_revision = if version.split.last =~ /r(\d+)/
+        $1 # the revision number
+      else
+        raise InvalidHetsVersionFormatError, "format is not valid: <#{version}>"
       end
 
-      raise VersionDateFormatError, 'Could not read hets version date in output of `hets -V`' unless version_date
-
       # Return true if minimum date is prior or equal to version date
-      return minimum_date <= version_date
+      return minimum_revision.to_i <= version_revision.to_i
     end
 
     def first_which_exists(paths)
@@ -73,7 +73,7 @@ module Hets
   def self.parse(input_file, url_catalog = [], output_path = nil, structure_only: false)
 
     # Arguments to run the subprocess
-    args = [config.path, *%w( -o pp.xml -o xml --full-signatures -a none -v2 )]
+    args = [config.path, *%w( -o pp.xml -o xml --full-signatures -a none -v2 --full-theories )]
 
     if output_path
       FileUtils.mkdir_p output_path
@@ -98,9 +98,9 @@ module Hets
     if output.starts_with? '*** Error'
       # some error occured
       raise ExecutionError, output 
-    elsif match = output.lines.last.match(/Writing file: (.+)/)
+    elsif (files = written_files(output.lines)).any?
       # successful execution
-      match[1]
+      files
     else
       # we can not handle this response
       raise ExecutionError, "Unexpected output:\n#{output}"
@@ -119,6 +119,19 @@ module Hets
 
   def self.config
     @@config ||= Config.new
+  end
+
+  def self.written_files(lines)
+    lines.reduce([]) do |lines, line|
+      file = written_file(line)
+      lines << file if file
+      lines
+    end
+  end
+
+  def self.written_file(line)
+    match = line.match(/Writing file: (?<file>.+)/)
+    match[:file] if match
   end
 
 end

@@ -1,84 +1,35 @@
 class LicenseModelsController < InheritedResources::Base
 
-  belongs_to :ontology
-
+  belongs_to :ontology, optional: true
   before_filter :check_read_permissions
-  before_filter :check_write_permissions
-
-  def index
-    @ontology = Ontology.find(params[:ontology_id])
-    @license_models = @ontology.license_models
-    @repo = Repository.find_by_path(params[:repository_id])  
-  end
-  
-  def new
-    @license = LicenseModel.new
-    @ontology = Ontology.find(params[:ontology_id])
-    respond_to do |format|
-      format.html 
-      format.json { render json: @license }
-    end
-  end
-
-  def edit
-    @ontology = Ontology.find(params[:ontology_id])
-    @license = LicenseModel.find(params[:id])
-  end
+  load_and_authorize_resource
 
   def create
-    @ontology = Ontology.find(params[:ontology_id])
-    @license = LicenseModel.new(params[:license_model])
-    @repo = Repository.find_by_path(params[:repository_id])
-
-    respond_to do |format|
-      if @license.save
-        format.html { redirect_to repository_ontology_license_models_path, notice: 'LicenseModel was successfully created.' }
-        format.json { render json: @license, status: :created, location: @license }
-      else
-        format.html { render action: "new" }
-        format.json { render json: @license.errors, status: :unprocessable_entity }
+    create! do |success, failure|
+      if parent
+        parent.license_models << resource
+        parent.save
       end
+      success.html { redirect_to [*resource_chain, :license_models] }
     end
   end
 
   def update
-    @license = LicenseModel.find(params[:id])
-
-    respond_to do |format|
-      if @license.update_attributes(params[:license])
-        format.html { redirect_to @license, notice: 'LicenseModel was successfully updated.' }
-        format.json { head :no_content }
-      else
-        format.html { render action: "edit" }
-        format.json { render json: @license.errors, status: :unprocessable_entity }
-      end
+    update! do |success, failure|
+      success.html { redirect_to [*resource_chain, :license_models] }
     end
   end
 
   def destroy
-    @license = LicenseModel.find(params[:id])
-    @license.destroy
-
-    respond_to do |format|
-      format.html { redirect_to licenses_url }
-      format.json { head :no_content }
+    destroy! do |success, failure|
+      success.html { redirect_to [*resource_chain, :license_models] }
     end
   end
 
-  protected
 
-  def collection
-    parent ? parent.license_models : LicenseModel.all
-  end
+  private
 
   def check_read_permissions
-    authorize! :show, parent.repository
+    authorize! :show, parent.repository if parent.is_a? Ontology
   end
-
-  def check_write_permissions
-    unless %w(index show).include? params[:action]
-      authorize! :write, parent.repository if parent
-    end
-  end
-
 end

@@ -1,10 +1,10 @@
 Ontohub
 =======
 
-[![Build Status](https://travis-ci.org/ontohub/ontohub.png?branch=master)](https://travis-ci.org/ontohub/ontohub)
+[![Build Status](https://travis-ci.org/ontohub/ontohub.svg?branch=master)](https://travis-ci.org/ontohub/ontohub)
 [![Code Climate](https://codeclimate.com/github/ontohub/ontohub.png)](https://codeclimate.com/github/ontohub/ontohub)
-[![Coverage Status](https://coveralls.io/repos/ontohub/ontohub/badge.png)](https://coveralls.io/r/ontohub/ontohub)
-[![Dependency Status](https://gemnasium.com/ontohub/ontohub.png)](https://gemnasium.com/ontohub/ontohub)
+[![Coverage Status](https://coveralls.io/repos/ontohub/ontohub/badge.png?branch=staging)](https://coveralls.io/r/ontohub/ontohub?branch=staging)
+[![Dependency Status](https://gemnasium.com/ontohub/ontohub.svg)](https://gemnasium.com/ontohub/ontohub)
 
 
 A web-based repository for distributed ontologies.
@@ -39,12 +39,13 @@ Installation
 
 These commands should work on Ubuntu 12.04. First of all you need a root shell.
 
-### RVM with Ruby 2.0
+### RVM with Ruby 2.1
 
 Installation of [RVM](https://rvm.io/ "Ruby Version Manager"):
 
     apt-get install -y curl
     curl -L https://get.rvm.io | bash -s stable --ruby
+    rvm wrapper default
 
 If you have a desktop installation, you should "run command as a login shell" to
 source rvm automatically as explained in https://rvm.io/integration/gnome-terminal/ .
@@ -65,13 +66,13 @@ this section, if you are preparing your development setup.)
 Depending on the installed ruby and passenger version you need to create a
 `/etc/apache2/mods-available/passenger.load` with the LoadModule directive:
 
-    LoadModule passenger_module /usr/local/rvm/gems/ruby-2.0.0-p<version>/gems/passenger-<version>/ext/apache2/mod_passenger.so
+    LoadModule passenger_module /usr/local/rvm/gems/ruby-2.1.1/gems/passenger-<version>/ext/apache2/mod_passenger.so
 
 and a `/etc/apache2/mods-available/passenger.conf` with the global passenger
 configuration:
 
-    PassengerRoot /usr/local/rvm/gems/ruby-2.0.0-p<version>/gems/passenger-<version>
-    PassengerRuby /usr/local/rvm/wrappers/ruby-2.0.0-p<version>/ruby
+    PassengerRoot /usr/local/rvm/gems/ruby-2.1.1/gems/passenger-<version>
+    PassengerRuby /usr/local/rvm/wrappers/ruby-2.1.1/ruby
 
 now enable the module an restart apache2:
 
@@ -120,24 +121,16 @@ Tomcat with Solr is only required in the production environment.
 
 The war-Package should be automatically loaded.
 
-### SQL Server
+### PostgreSQL
 
-The master branch is (and should be) database independent. We are using
-PostgreSQL in production and development.
+A recent version of PostgreSQL is required for all environments.
 
-#### PostgreSQL
-
-    apt-get -y install postgresql
-
-#### MySQL
-
-You probably do not need this but we used MySQL in the new-model branch once and
-these instructions are given for completeness. MariaDB has been tested, too.
-
-The installation will prompt you for a password three times and you are expected
-to press «enter» with an empty password field.
-
-    apt-get -y install mysql-server libmysqlclient-dev
+    wget --quiet -O - https://www.postgresql.org/media/keys/ACCC4CF8.asc | apt-key add -
+    echo deb http://apt.postgresql.org/pub/repos/apt/ precise-pgdg main > /etc/apt/sources.list.d/pgdg.list
+    apt-get update
+    apt-get install -y postgresql-9.3
+    sed -i 's/de_DE/en_US/' /etc/postgresql/9.3/main/postgresql.conf
+    service postgresql reload
 
 ### Redis
 

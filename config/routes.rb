@@ -2,14 +2,14 @@ require 'sidekiq/web' if defined? Sidekiq
 
 
 Ontohub::Application.routes.draw do
-  
-  resources :categories, :only => [:index, :show]
 
   resources :ontology_types, only: :show
-  resources :formality_levels, only: :show
 
-  devise_for :users, :controllers => { :registrations => "users/registrations" }
-  resources :users, :only => :show
+  devise_for :users, controllers: {
+    confirmations: 'users/confirmations',
+    registrations: 'users/registrations'
+  }
+  resources :users, only: :show
   resources :keys, except: [:show, :edit, :update]
   
   resources :logics do
@@ -25,6 +25,12 @@ Ontohub::Application.routes.draw do
   resources :logic_mappings
 
   resources :links, :only => :index 
+
+  resources :categories, :only => [:index, :show]
+  resources :projects
+  resources :tasks
+  resources :license_models
+  resources :formality_levels
 
 
   resources :language_adjoints
@@ -54,12 +60,12 @@ Ontohub::Application.routes.draw do
     collection do
       get 'keywords' => 'ontology_search#keywords'
       get 'search' => 'ontology_search#search'
+      get 'filters_map' => 'ontology_search#filters_map'
     end
   end
 
   resources :links do
     get 'update_version', :on => :member
-    resources :link_versions
   end
 
   resources :teams do
@@ -76,11 +82,12 @@ Ontohub::Application.routes.draw do
     resources :url_maps, except: :show
     resources :errors, :only => :index
 
-    resources :ontologies, only: [:index, :show, :edit, :update] do
+    resources :ontologies, only: [:index, :show, :edit, :update, :destroy] do
       collection do
         post 'retry_failed' => 'ontologies#retry_failed'
         get 'keywords' => 'ontology_search#keywords'
         get 'search' => 'ontology_search#search'
+        get 'filters_map' => 'ontology_search#filters_map'
       end
       member do
         post 'retry_failed' => 'ontologies#retry_failed'
@@ -90,7 +97,6 @@ Ontohub::Application.routes.draw do
       resources :sentences, :only => :index
       resources :links do
         get 'update_version', :on => :member
-        resources :link_versions
       end
       resources :ontology_versions, :only => [:index, :show, :new, :create], :path => 'versions' do
         resource :oops_request, :only => [:show, :create]
@@ -104,7 +110,7 @@ Ontohub::Application.routes.draw do
       resources :metadata, :only => [:index, :create, :destroy]
       resources :comments, :only => [:index, :create, :destroy]
       resources :graphs, :only => [:index]
-      resources :formality_levels, :only => [:index]
+      resources :formality_levels
 
     end
 
@@ -116,6 +122,12 @@ Ontohub::Application.routes.draw do
       as:          :ref,
       constraints: { path: /.*/ }
   end
+
+  post ':repository_id/:path',
+    controller:  :files,
+    action:      :update,
+    as:          :repository_tree,
+    constraints: { path: /.*/ }
 
   get ':repository_id(/:path)',
     controller:  :files,

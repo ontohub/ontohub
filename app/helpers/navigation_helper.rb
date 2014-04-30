@@ -25,7 +25,7 @@ module NavigationHelper
       ['Metadata', :metadata],
       ['Versions', :ontology_versions],
       ['Graphs', :graphs],
-      ['Links', :links]
+      ['Mappings', :links]
     ]
 
     @metadatas = []
@@ -49,10 +49,10 @@ module NavigationHelper
 
     actions = []
     
-    # Add counters
-    pages.each do |row|
-      counter_key = "#{row[0]}_count"
-      row << ontology.send(counter_key) if ontology.respond_to?(counter_key)
+    pages.map! do |page|
+      method = page.first
+      count = ontology.send(method).count if ontology.respond_to?(method)
+      [*page, count]
     end
     
     @page_title = ontology.to_s
@@ -137,7 +137,7 @@ module NavigationHelper
       ['Projects',         [*resource_chain, :projects]],
       ['Categories',       [*resource_chain, :categories]],
       ['Tasks',            [*resource_chain, :tasks]],
-      ['License Model',    [*resource_chain, :license_models]],
+      ['License Models',   [*resource_chain, :license_models]],
       ['Formality Levels', [*resource_chain, :formality_levels]]
     ]
   end

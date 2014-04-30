@@ -39,10 +39,15 @@ module Repository::GitRepositories
     git.is_head?(commit_oid)
   end
 
+  def delete_file(filepath, user, message = nil, &block)
+    message ||= "delete file #{filepath}"
+    git.delete_file(user_info(user), filepath, &block)
+  end
+
   def save_file(tmp_file, filepath, message, user, iri=nil)
     version = nil
 
-    git.add_file({email: user.email, name: user.name}, tmp_file, filepath, message) do |commit_oid|
+    git.add_file(user_info(user), tmp_file, filepath, message) do |commit_oid|
       version = save_ontology(commit_oid, filepath, user, iri: iri)
     end
     touch
@@ -60,10 +65,9 @@ module Repository::GitRepositories
     commit
   end
 
-  def save_ontology(commit_oid, filepath, user=nil, iri: nil, fast_parse: false)
+  def save_ontology(commit_oid, filepath, user=nil, iri: nil, fast_parse: false, do_not_parse: false)
     # we expect that this method is only called, when the ontology is 'present'
-
-    return unless Ontology::FILE_EXTENSIONS.include?(File.extname(filepath))
+    return unless Ontology.file_extensions.include?(File.extname(filepath))
     version = nil
     basepath = File.basepath(filepath)
     o = ontologies.without_parent.where(basepath: basepath).first
@@ -78,11 +82,12 @@ module Repository::GitRepositories
                                      fast_parse: fast_parse },
                                    { without_protection: true })
         o.ontology_version = version
+        version.do_not_parse! if do_not_parse
         o.save!
       end
     else
       # create new ontology
-      clazz      = Ontology::FILE_EXTENSIONS_DISTRIBUTED.include?(File.extname(filepath)) ? DistributedOntology : SingleOntology
+      clazz      = Ontology.file_extensions_distributed.include?(File.extname(filepath)) ? DistributedOntology : SingleOntology
       o          = clazz.new
       o.basepath = basepath
       o.file_extension = File.extname(filepath)
@@ -97,6 +102,7 @@ module Repository::GitRepositories
                                    user: user,
                                    fast_parse: fast_parse },
                                  { without_protection: true })
+      version.do_not_parse! if do_not_parse
       version.save!
       o.ontology_version = version
       o.save!
@@ -219,20 +225,29 @@ module Repository::GitRepositories
   end
 
   def suspended_save_ontologies(options={})
+    versions = []
     commits(options) { |commit_oid|
       git.changed_files(commit_oid).each { |f|
         if f.add? || f.change?
-          save_ontology(commit_oid, f.path, options.delete(:user), fast_parse: has_changed?(f.path, commit_oid))
+          versions << save_ontology(commit_oid, f.path, options.delete(:user), fast_parse: has_changed?(f.path, commit_oid), do_not_parse: true)
         end
       }
     }
+
+    schedule_batch_parsing(versions)
   end
 
-  # saves all ontologies at the current state in the database
-  def save_current_ontologies(user=nil)
-    git.files do |entry|
-      save_ontology entry.last_change[:oid], entry.path, user, fast_parse: true
+  def schedule_batch_parsing(versions)
+    grouped_versions = versions.compact.group_by { |v| v.ontology.path }
+    grouped_versions.each do |k,versions|
+      optioned_versions = versions.map do |version|
+        [version.id, { fast_parse: version.fast_parse }]
+      end
+      OntologyBatchParseWorker.perform_async(optioned_versions)
     end
   end
 
+  def user_info(user)
+    {email: user.email, name: user.name}
+  end
 end

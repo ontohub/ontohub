@@ -9,12 +9,20 @@
           %ul.dropdown-menu{role: 'menu'}
             - if show_oops?
               %li= link_to 'design with OOPS', repository_ontology_ontology_version_oops_request_path(*resource_chain, current_version), method: 'post'
-      - if can? :edit, resource
+      - if can? :write, resource.repository
         = link_to 'Edit', [:edit, *resource_chain], class: 'btn btn-default'
-      .btn-group
-        %button.btn.btn-default.dropdown-toggle{'data-toggle' => 'dropdown'}
-          Formats
-          %span.caret
-        %ul.dropdown-menu{role: 'menu'}
-          - %w(xml json).each do |f|
-            %li= link_to f.upcase, format: f
+      - if can? :write, resource.repository
+        - if resource.is_imported?
+          .btn.btn-default.tooltip-btn{:"data-toggle"=>"tooltip", :"data-original-title" => "Can't delete an ontology that's imported by another one.", :"data-container" => 'body', disabled: true}
+            %span.allow-tooltips
+              Delete
+        - else
+          = link_to 'Delete', resource_chain, method: :delete, class: 'btn btn-default', confirm: "Really delete the ontology #{resource}?\n\nThe #{resource.parent.present? ? 'parent ontology including its children and the ' : ''}#{resource.children.present? ? 'subontologies and the ' : ''}defining file #{resource.path} will be deleted as well."
+      - if Settings.format_selection
+        .btn-group
+          %button.btn.btn-default.dropdown-toggle{'data-toggle' => 'dropdown'}
+            Formats
+            %span.caret
+          %ul.dropdown-menu{role: 'menu'}
+            - %w(xml json).each do |f|
+              %li= link_to f.upcase, format: f

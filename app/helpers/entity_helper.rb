@@ -1,4 +1,8 @@
 module EntityHelper
+  
+  def show_classes?
+    return params[:kind] != "Class"
+  end
 
   def name_highlighter(entity)
     if entity.name == entity.text

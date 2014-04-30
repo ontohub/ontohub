@@ -31,4 +31,39 @@ describe OntologiesController do
 
   end
 
+  describe 'deleting an ontology' do
+    let(:ontology){ create :ontology }
+    let(:repository){ ontology.repository }
+    let(:user){ create(:permission, role: 'owner', item: repository).subject }
+
+    context 'signed in' do
+      before do
+        sign_in user
+      end
+
+      context 'successful deletion' do
+        before do
+          delete :destroy, repository_id: repository.to_param, id: ontology.id
+        end
+
+        it{ should respond_with :found }
+        it 'should redirect to ontologies-index of repository' do
+          expect(response).to redirect_to([repository, :ontologies])
+        end
+      end
+
+      context 'unsuccessful deletion' do
+        before do
+          importing = create :ontology
+          create :import_link, target: importing, source: ontology
+          delete :destroy, repository_id: repository.to_param, id: ontology.id
+        end
+
+        it{ should set_the_flash.to(/is imported/) }
+        it{ should respond_with :found }
+        it{ response.should redirect_to [repository, ontology] }
+      end
+    end
+  end
+
 end

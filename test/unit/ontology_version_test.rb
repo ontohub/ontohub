@@ -8,7 +8,7 @@ class OntologyVersionTest < ActiveSupport::TestCase
   should have_db_index(:user_id)
   should have_db_index(:commit_oid)
   should have_db_index(:checksum)
-  
+
   setup do
     @user = FactoryGirl.create :user
   end
@@ -98,6 +98,32 @@ class OntologyVersionTest < ActiveSupport::TestCase
 
       should 'set status to failed' do
         assert_equal 'failed', @ontology.reload.state
+      end
+    end
+
+    context 'on failed to update state' do
+      setup do
+        Hets.stubs(:parse).raises(Hets::HetsError, "first error")
+        OntologyVersion.any_instance.stubs(:after_failed).raises("second exception")
+
+        begin
+          Worker.drain
+          assert false
+        rescue RuntimeError
+          assert true
+        end
+
+        Hets.unstub(:parse)
+        OntologyVersion.any_instance.unstub(:after_failed)
+      end
+
+      should 'set status to failed on ontology' do
+        assert_equal 'failed', @ontology.reload.state
+      end
+
+      should 'set state and nested exception' do
+        assert_equal 'failed', @version.reload.state
+        assert_match /nested exception.*second exception.*first error/im, @version.reload.last_error
       end
     end
     

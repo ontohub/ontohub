@@ -82,12 +82,12 @@ gem 'progress_bar'
 gem 'ruby-graphviz', "~> 1.0.8"
 
 # Fake-inputs for tests and seeds
-gem "faker", "~> 1.1.2"
+gem "faker", "~> 1.2"
 
 # Git
 gem 'rugged'
 gem 'diffy'
-gem 'codemirror-rails'
+gem 'codemirror-rails', github: 'llwt/codemirror-rails'
 gem 'js-routes'
 
 # Ancestry enabling tree structure in category model

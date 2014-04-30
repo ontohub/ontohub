@@ -21,9 +21,13 @@ class ActiveSupport::TestCase
 
   setup do
     # clean git repositories
-    FileUtils.rmtree Ontohub::Application.config.git_root
-    FileUtils.rmtree Ontohub::Application.config.git_working_copies_root
+    FileUtils.rmtree Ontohub::Application.config.data_root
     FileUtils.rmtree Repository::Symlink::PATH
+    stub_ontology_file_extensions
+  end
+
+  teardown do
+    unstub_ontology_file_extensions
   end
 
 end
@@ -31,6 +35,8 @@ end
 # for devise
 class ActionController::TestCase
   include Devise::TestHelpers
+  setup { stub_ontology_file_extensions }
+  teardown { unstub_ontology_file_extensions }
 end
 
 # for strip_attributes
@@ -39,8 +45,25 @@ class Test::Unit::TestCase
   extend StripAttributes::Matchers
 end
 
+
+def stub_ontology_file_extensions
+  Ontology.stubs(:file_extensions_distributed).returns(
+    %w[casl dol hascasl het].map!{ |ext| ".#{ext}" })
+  Ontology.stubs(:file_extensions_single).returns(
+    %w[owl obo hs exp maude elf hol isa thy prf omdoc hpf clf clif xml fcstd rdf xmi qvt tptp gen_trm baf].
+    map!{ |ext| ".#{ext}" })
+end
+
+def unstub_ontology_file_extensions
+  Ontology.unstub(:file_extensions_distributed)
+  Ontology.unstub(:file_extensions_single)
+end
+
 # For Sidekiq
 require 'sidekiq/testing'
+# Setting the default for sidekiq testing
+# many unit-tests rely on this being the default.
+# However specs use a different default (inline!)
 Sidekiq::Testing.fake!
 
 # Recording HTTP Requests

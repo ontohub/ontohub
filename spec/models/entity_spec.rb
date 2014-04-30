@@ -2,7 +2,7 @@ require 'spec_helper'
 
 describe Entity do
 
-  it { should have_db_column('label').of_type(:string) }
+  it { should have_db_column('label').of_type(:text) }
   it { should have_db_column('comment').of_type(:text) }
 
   it { should belong_to(:ontology) }

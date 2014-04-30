@@ -1,19 +1,19 @@
 - if parent
   = repository_nav parent.repository, :ontologies, disable_actions: true
-
   = ontology_nav parent, :projects
+- else
+  %h1 Projects
 
-  -# if can? :create, Project
-  - if user_signed_in?
-    .pull-right
-      = link_to 'Add Project', [:new, :repository, :ontology, :project], class: 'btn btn-default'
+= render partial: 'shared/metadata_add', locals: { cls_sym: :project, parent: parent }
 
-  %table.table
-    %thead
-      %tr
-        %th Project Name
-        %th Description
-        %th Institution
-        %th Contact
-    %tbody
-      = render collection
+%table.table
+  %thead
+    %tr
+      %th Project Name
+      %th Description
+      %th Institution
+      %th Contact
+      - if !parent && can?(:write, Project)
+        %th Manage
+  %tbody
+    = render collection

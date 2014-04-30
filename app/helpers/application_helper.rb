@@ -7,6 +7,8 @@ module ApplicationHelper
   def context_pane
     if params[:controller] == 'home'
       'shared/user_repositories'
+    elsif params[:controller] == 'categories' && params[:action] == 'show'
+      'shared/user_ontologies'
     elsif params[:action] != 'index'
       false
     elsif %w[categories logics links ontologies].include? params[:controller]
@@ -72,4 +74,7 @@ module ApplicationHelper
     $commit_oid ||= 'unknown'
   end
 
+  def to_name(sym)
+    sym.to_s.gsub('_', ' ')
+  end
 end

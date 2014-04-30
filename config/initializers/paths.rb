@@ -9,8 +9,9 @@ module PathsInitializer
         config.data_root = Rails.root.join('data').sub(%r(/releases/\d+/), "/current/")
       end
 
-      config.git_root = config.data_root.join('repositories')
-      config.git_working_copies_root = config.data_root.join('working_copies')
+      config.git_root     = config.data_root.join('repositories')
+      config.symlink_path = config.data_root.join('git_daemon')
+      config.commits_path = config.data_root.join('commits')
       config.max_read_filesize = 512 * 1024
 
       settings = Settings.git

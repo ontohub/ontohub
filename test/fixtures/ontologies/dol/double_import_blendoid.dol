@@ -1,0 +1,22 @@
+logic OWL
+
+ontology DIB-CommonSource =
+  Class: Car
+  Class: AudiA4 SubClassOf: Car
+  Class: AudiB1 SubClassOf: Car
+end
+
+ontology DIB-MoreCars =
+  DIB-CommonSource
+then
+  Class: BMW203 SubClassOf: Car
+  Class: BMW205 SubClassOf: Car
+end
+
+ontology DIB-CarsAreAudis =
+  DIB-CommonSource with Car |-> Audi
+end
+
+ontology DIB-TheSumOfCars =
+  DIB-MoreCars and DIB-CarsAreAudis
+end

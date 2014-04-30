@@ -1,4 +1,4 @@
 #!/bin/sh
 root="$(dirname $0)/.."
 cd $root
-exec ./bin/sidekiq -q default -q hets -c 1 -v
+exec ./bin/sidekiq -q default -q hets -q sequential -c 1 -v

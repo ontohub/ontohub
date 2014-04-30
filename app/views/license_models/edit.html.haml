@@ -1,6 +1,6 @@
-= repository_nav parent.repository, :ontologies, disable_actions: true
-
-= ontology_nav parent, :license_models
+- if parent
+  = repository_nav parent.repository, :ontologies, disable_actions: true
+  = ontology_nav parent, :license_models
 
 %h4 Edit License Model
 

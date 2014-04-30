@@ -1,0 +1,18 @@
+%prefix( sandbox:   <http://develop.ontohub.org/sandbox/>
+          )%
+
+logic OWL
+
+ontology test =
+  Class: Human
+  Class: Woman SubClassOf: Human
+ with Human |-> Person
+end
+
+%[
+ontology test2=
+  sandbox:pizza.owl
+then
+  Class: test2
+end
+]%

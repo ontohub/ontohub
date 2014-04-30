@@ -2,7 +2,7 @@
   .flash.alert.alert-danger
     %strong
       = pluralize resource.errors.count, 'error'
-      prohibited this resource from being saved:
+      = "prohibited this #{resource.class} from being saved:"
     %ul
       - resource.errors.full_messages.each do |msg|
         %li= msg
