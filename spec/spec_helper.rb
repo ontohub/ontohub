@@ -36,13 +36,18 @@ def fixture_file(name)
 end
 
 def add_fixture_file(repository, relative_file)
-  dummy_user = FactoryGirl.create :user
   path = File.join(Rails.root, 'test', 'fixtures', 'ontologies', relative_file)
-  basename = File.basename(path)
+  version_for_file(repository, path)
+end
 
+def version_for_file(repository, path)
+  dummy_user = FactoryGirl.create :user
+  basename = File.basename(path)
   version = repository.save_file path, basename, "#{basename} added", dummy_user
 end
 
+# includes the convience-method `define_ontology('name.extension')`
+include OntologyUnited::Convenience
 
 def stub_ontology_file_extensions
   Ontology.stubs(:file_extensions_distributed).returns(

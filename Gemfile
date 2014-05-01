@@ -113,6 +113,9 @@ group :test do
 
   # Code Coverage Analysis
   gem 'coveralls', require: false
+
+  # Writing test ontologies
+  gem 'ontology-united', github: '0robustus1/ontology-united'
 end
 
 group :development do

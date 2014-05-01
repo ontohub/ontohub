@@ -1,4 +1,10 @@
 GIT
+  remote: git://github.com/0robustus1/ontology-united.git
+  revision: f5e94e1a0efdd142462638bc4446ddba664e6e02
+  specs:
+    ontology-united (0.0.2)
+
+GIT
   remote: git://github.com/digineo/sunspot.git
   revision: 122f7c60207b9539903f06a66ce35a01cb1bf481
   specs:
@@ -434,6 +440,7 @@ DEPENDENCIES
   mocha
   momentjs-rails
   nokogiri (~> 1.6)
+  ontology-united!
   pg
   progress_bar
   pry-byebug
