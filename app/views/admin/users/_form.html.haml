@@ -2,7 +2,7 @@
 = simple_form_for resource do |f|
   = hidden_field_tag :back_url, params[:back_url] || request.referer
   = f.input :email
-  = f.input :name
+  = f.input :name, as: :string
   = f.input :admin
 
   = f.button :submit, class: 'btn btn-primary'
