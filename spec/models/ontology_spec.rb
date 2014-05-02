@@ -175,7 +175,7 @@ describe Ontology do
 
     let(:referenced_ontology) do
       name = File.basename(referenced_presentation.name, '.owl')
-      Ontology.where("name LIKE '#{name}%'").first
+      Ontology.where("name LIKE '#{name}%'").first!
     end
 
     it 'should import an ontology with that name' do
