@@ -1,0 +1,31 @@
+.CodeMirror
+  border: 1px solid #eaeaea
+  height: auto
+  background: white
+
+.CodeMirror.editing
+  @extend textarea:focus
+
+.CodeMirror-linenumber
+  background: #F9F9F9
+
+.CodeMirror-scroll
+  overflow-y: hidden
+  overflow-x: auto
+
+.show-when-editing
+  display: none
+  #message
+    width: 100%
+    margin-bottom: 15px
+  .alert-error
+    display: none
+  .codemirror-controls
+    margin-left: 0
+
+span.show-when-editing
+  font-size: 12px
+
+#code-area
+  width: 100%
+  height: 300px

@@ -27,24 +27,20 @@ describe OntologyBatchParseWorker do
 
     context 'exceeding the parallel try count of an already marked iri job' do
       it 'should put the correct job in the sequential queue' do
-        Sidekiq::Testing.fake! do
-          optioned_versions = [[version.id, {"fast_parse" => version.fast_parse}]]
-          OntologyBatchParseWorker.new.perform(
-            optioned_versions, try_count: ConcurrencyBalancer::MAX_TRIES)
-          expect(SequentialOntologyBatchParseWorker.jobs.first['args']).to eq([optioned_versions])
-        end
+        optioned_versions = [[version.id, {"fast_parse" => version.fast_parse}]]
+        OntologyBatchParseWorker.new.perform(
+          optioned_versions, try_count: ConcurrencyBalancer::MAX_TRIES)
+        expect(SequentialOntologyBatchParseWorker.jobs.first['args']).to eq([optioned_versions])
       end
     end
 
     context 'not exceeding the parallel try count of an already marked iri job' do
       it 'should put the correct job in the queue once again' do
-        Sidekiq::Testing.fake! do
-          optioned_versions = [[version.id, {"fast_parse" => version.fast_parse}]]
-          OntologyBatchParseWorker.new.perform(
-            optioned_versions, try_count: ConcurrencyBalancer::MAX_TRIES-1)
-          expect(OntologyBatchParseWorker.jobs.first['args']).to eq([
-            optioned_versions, "try_count" => ConcurrencyBalancer::MAX_TRIES])
-        end
+        optioned_versions = [[version.id, {"fast_parse" => version.fast_parse}]]
+        OntologyBatchParseWorker.new.perform(
+          optioned_versions, try_count: ConcurrencyBalancer::MAX_TRIES-1)
+        expect(OntologyBatchParseWorker.jobs.first['args']).to eq([
+          optioned_versions, "try_count" => ConcurrencyBalancer::MAX_TRIES])
       end
     end
   end

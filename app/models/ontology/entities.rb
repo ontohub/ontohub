@@ -70,4 +70,5 @@ module Ontology::Entities
       end
     end
   end
+  
 end

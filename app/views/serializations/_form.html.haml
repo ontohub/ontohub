@@ -1,5 +1,5 @@
 = simple_form_for resource, html: { class: 'form-horizontal' } do |f|
-  = f.input :name
+  = f.input :name, as: :string
   = f.input :extension
   = f.input :mimetype, :as => :select, :collection => Serialization::MIMETYPES, :include_blank => false
   = f.association :language, :include_blank => false
