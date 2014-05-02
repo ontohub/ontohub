@@ -1,5 +1,4 @@
-#Class for using the Tarjan algorithm to remove cycles in the entity trees.
-
+# Class for using the Tarjan algorithm to remove cycles in the entity trees.
 class TarjanTree
   include TSort
 
@@ -31,42 +30,41 @@ class TarjanTree
   # Get SubClassOf Strings without explicit Thing
   # Only sentences with 4 words are the right sentences for the Tree
   # so we have to ignore the other.
-   def inheritance_sentences(ontology)
-     ontology.sentences
-       .where("text LIKE '%SubClassOf%' AND text NOT LIKE '%Thing%'")
-       .select do |sentence|
-         sentence.text.split(' ').size == 4
-       end
-   end
+  def inheritance_sentences(ontology)
+    ontology.sentences
+      .where("text LIKE '%SubClassOf%' AND text NOT LIKE '%Thing%'")
+      .select do |sentence|
+        sentence.text.split(' ').size == 4
+      end
+  end
    
-   def create_tree(ontology)
+  def create_tree(ontology)
     create_groups ontology
     create_edges
-   end
+  end
    
-   def create_groups(ontology)
-     groups = self.strongly_connected_components
-     groups.each do |entity_group|
-       entities = Entity.find(entity_group)
-       name = determine_group_name(entities)
-       EntityGroup.create!(ontology: ontology, entities: entities, name: name)
-     end
-   end
+  def create_groups(ontology)
+    groups = self.strongly_connected_components
+    groups.each do |entity_group|
+      entities = Entity.find(entity_group)
+      name = determine_group_name(entities)
+      EntityGroup.create!(ontology: ontology, entities: entities, name: name)
+    end
+  end
    
-   def create_edges
-     @hashed_entities.each do |parent, children|
-       parent_group = Entity.find(parent).entity_group
-       children.each do |child|
-         child_group = Entity.find(child).entity_group
-         unless parent_group == child_group
-           EEdge.find_or_create_by_parent_id_and_child_id(parent_group.id, child_group.id)
-         end
-       end
-     end
-   end
+  def create_edges
+    @hashed_entities.each do |parent, children|
+      parent_group = Entity.find(parent).entity_group
+      children.each do |child|
+        child_group = Entity.find(child).entity_group
+        unless parent_group == child_group
+          EEdge.find_or_create_by_parent_id_and_child_id(parent_group.id, child_group.id)
+        end
+      end
+    end
+  end
    
-   def determine_group_name(entities)
-     entities.join(" ☰ ")
-   end
-   
+  def determine_group_name(entities)
+    entities.join(" ☰ ")
+  end
 end
