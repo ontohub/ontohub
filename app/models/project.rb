@@ -16,7 +16,7 @@ class Project < ActiveRecord::Base
     }
 
   def display_name
-    if name.match /Project/
+    if name.include?('Project')
       name
     else
       "Project #{name}"

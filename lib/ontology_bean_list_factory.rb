@@ -42,27 +42,20 @@ class OntologyBeanListFactory
     else
       {
         src: "/assets/icons/distributed_homogeneous_ontology.svg",
-	alt: "Distributed Homogeneous Ontology"
+        alt: "Distributed Homogeneous Ontology"
       }
     end
   end
 
   def make_topic_anchors_data(ontology)
-    ontology.categories.map { |category| {text: category.name,href: "/categories/#{category.id}"} }
+    ontology.categories.map { |category| {text: category.name, href: "/categories/#{category.id}"} }
   end
 
   def make_project_anchors_data(ontology)
-    ontology.projects.map { |project| {text: project.display_name,href: "/projects/#{project.id}"} }
+    ontology.projects.map { |project| {text: project.display_name, href: "/projects/#{project.id}"} }
   end
 
   def make_type_anchor_data(ontology)
-    if ontology.ontology_type.nil?
-      nil
-    else
-      {
-        text: ontology.ontology_type.name,
-        href: ""
-      }
-    end
+    {text: ontology.ontology_type.name, href: ''} if ontology.ontology_type
   end
 end
