@@ -1,0 +1,28 @@
+logic OWL
+
+ontology Source = 
+  Class: Person
+  Class: Woman SubClassOf: Person
+  Class: Man SubClassOf: Person
+
+ontology Onto1 =
+  Source
+then
+  Class: Woman SubClassOf: Person
+  Class: Bank
+end
+
+
+ontology Onto2 =
+  Source with Person |-> HumanBeing
+then
+  Class: Woman SubClassOf: HumanBeing
+  Class: Bank
+end
+
+ontology VAlignedOntology =
+  combine Source, %[ 1 : ]% Onto1, %[ 2 : ]%  Onto2
+  %% 1:Person is identified with 2:HumanBeing
+  %% 1:Woman is identified with 2:Woman
+  %% 1:Bank and 2:Bank are kept distinct
+end

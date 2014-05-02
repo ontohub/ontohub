@@ -9,18 +9,24 @@ import com.google.gwt.user.client.ui.RootPanel;
 public class Ontohub implements EntryPoint {
 
 	/**
-	 * This is the entry point method.
+	 * Handles the loading of the ontology search bar.
 	 */
 	public void onModuleLoad() {
-		RootPanel rootPanel = RootPanel.get("OntologySearch");
-		if (rootPanel != null) {
-			boolean asFilter = rootPanel.getElement().getAttribute("role").equals("filter");
-			boolean paginated = rootPanel.getElement().getAttribute("pagination").equals("paginated");
-			
+
+		// Get HTML element with id "OntologySearch"
+		RootPanel ontologySearchBarHolder = RootPanel.get("OntologySearch");
+
+		// If a holder exists for the ontology search bar
+		if (ontologySearchBarHolder != null) {
+
+			// Get ontology search attributes
+			boolean asFilter = ontologySearchBarHolder.getElement().getAttribute("role").equals("filter");
+			boolean paginated = ontologySearchBarHolder.getElement().getAttribute("pagination").equals("paginated");
+
 			// Add search bar
 			OntologySearch ontologySearchBar = new OntologySearch();
-			rootPanel.add(ontologySearchBar);
-			
+			ontologySearchBarHolder.add(ontologySearchBar);
+
 			// If it works as filter
 			if (asFilter) {
 
@@ -30,6 +36,7 @@ public class Ontohub implements EntryPoint {
 
 			// Set pagination
 			ontologySearchBar.setPaginated(paginated);
+
 		}
 	}
 }

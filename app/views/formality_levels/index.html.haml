@@ -1,6 +1,17 @@
-= repository_nav repository, :ontologies, disable_actions: true
+- if parent
+  = repository_nav parent.repository, :ontologies, disable_actions: true
+  = ontology_nav parent, :formality_levels
+- else
+  %h1 Formality Levels
 
-= ontology_nav ontology, :formality_levels
+= render partial: 'shared/metadata_add', locals: { cls_sym: :formality_level, parent: parent }
 
-%ul.formality_levels
-  = render collection
+%table.table
+  %thead
+    %tr
+      %th Formality Level Name
+      %th Description
+      - if !parent && can?(:write, FormalityLevel)
+        %th Manage
+  %tbody
+    = render collection

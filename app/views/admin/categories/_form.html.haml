@@ -1,4 +1,4 @@
 = simple_form_for resource, :url => [:admin, resource], html: { class: 'form-horizontal' } do |f|
-  = f.input :name
+  = f.input :name, as: :string
   .form-actions
     = f.button :submit, disable_with: t(:wait), class: 'btn-primary'

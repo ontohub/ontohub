@@ -1,9 +1,9 @@
 = simple_form_for resource, html: {class: 'form-horizontal' } do |f|
-  = f.input :name, input_html: { class: 'input-xlarge' }, required: true, disabled: resource.name.present?
+  = f.input :name, input_html: { class: 'input-xlarge' }, required: true, disabled: resource.name.present?, as: :string
   = f.input :description, input_html: { class: 'input-xlarge' }
   = f.input :access, collection: access_options, include_blank: false, hint: access_change_hint
 
   - if resource.new_record?
-    = f.input :source_address
+    = f.input :source_address, as: :url
   
   = f.button :wrapped

@@ -30,7 +30,7 @@ class SessionTest < ActionController::IntegrationTest
     end
     
     assert_equal "/", current_path
-    assert_match /#{user.name}/, find("nav .dropdown a").text
+    assert_match /#{user.name}/, find("nav .dropdown.user-dropdown a").text
   end
   
 end

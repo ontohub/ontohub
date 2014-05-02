@@ -1,7 +1,3 @@
-= repository_nav parent.repository, :ontologies
-
-= ontology_nav parent, :license_models
-
-%h4 add license model
+= render partial: 'shared/metadata_top_new', locals: { cls_sym: :task }
 
 = render 'form'

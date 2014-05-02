@@ -8,7 +8,7 @@ class OntologyVersionTest < ActiveSupport::TestCase
   should have_db_index(:user_id)
   should have_db_index(:commit_oid)
   should have_db_index(:checksum)
-  
+
   setup do
     @user = FactoryGirl.create :user
   end

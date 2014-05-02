@@ -1,5 +1,4 @@
-.commit-group.well.well-small
-  %h2.commit-date= group[:date]
+.commit-group
+  %h4.commit-date= group[:date]
   %ol.repository-commits
     = render partial: 'commit', collection: group[:commits]
- 

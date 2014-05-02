@@ -87,7 +87,7 @@ gem "faker", "~> 1.2"
 # Git
 gem 'rugged'
 gem 'diffy'
-gem 'codemirror-rails'
+gem 'codemirror-rails', github: 'llwt/codemirror-rails'
 gem 'js-routes'
 
 # Ancestry enabling tree structure in category model
@@ -113,6 +113,9 @@ group :test do
 
   # Code Coverage Analysis
   gem 'coveralls', require: false
+
+  # Writing test ontologies
+  gem 'ontology-united', github: '0robustus1/ontology-united'
 end
 
 group :development do

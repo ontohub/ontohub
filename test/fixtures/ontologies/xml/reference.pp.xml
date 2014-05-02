@@ -1,0 +1,13 @@
+<?xml version='1.0' ?>
+<Lib name="reference">
+  <Global>
+    <Annotation range="1.1-3.6">%prefix(path: &lt;https://ontohub.org/fois-ontology-competition/FormalCAD/&gt;)%</Annotation>
+  </Global>
+  <Import name="&lt;https://ontohub.org/fois-ontology-competition/FormalCAD/features.owl&gt;" range="8.2-8.19">
+    <Item as="path:features.owl" />
+  </Import>
+  <Logic name="OWL" range="5.1" />
+  <SpecDefn name="Features" range="7.1-9.1">
+    <Actuals name="path:features.owl" />
+  </SpecDefn>
+</Lib>

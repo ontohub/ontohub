@@ -4,7 +4,7 @@
 module Repository::Symlink
   extend ActiveSupport::Concern
 
-  PATH = Ontohub::Application.config.data_root.join("git_daemon")
+  PATH = Ontohub::Application.config.symlink_path
 
   included do
     after_save     :symlink_update, if: :path_changed?

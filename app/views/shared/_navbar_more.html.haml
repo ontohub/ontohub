@@ -1,0 +1,10 @@
+%li.dropdown
+  = link_to '#', {class: 'dropdown-toggle', 'data-toggle' => 'dropdown'} do
+    More
+    %b.caret
+
+  %ul.dropdown-menu
+    %li= menu_entry 'Projects',         :projects
+    %li= menu_entry 'Tasks',            :tasks
+    %li= menu_entry 'License Models',   :license_models
+    %li= menu_entry 'Formality Levels', :formality_levels

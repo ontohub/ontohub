@@ -11,9 +11,6 @@ require 'rspec/rails'
 require 'rspec/autorun'
 require 'database_cleaner'
 
-require 'sidekiq/testing'
-Sidekiq::Testing.inline!
-
 # Requires supporting ruby files with custom matchers and macros, etc,
 # in spec/support/ and its subdirectories.
 Dir[Rails.root.join("spec/support/**/*.rb")].each { |f| require f }
@@ -32,6 +29,33 @@ def fixture_file(name)
   Rails.root + 'test/fixtures/ontologies/xml/' + name
 end
 
+def add_fixture_file(repository, relative_file)
+  path = File.join(Rails.root, 'test', 'fixtures', 'ontologies', relative_file)
+  version_for_file(repository, path)
+end
+
+def version_for_file(repository, path)
+  dummy_user = FactoryGirl.create :user
+  basename = File.basename(path)
+  version = repository.save_file path, basename, "#{basename} added", dummy_user
+end
+
+# includes the convience-method `define_ontology('name.extension')`
+include OntologyUnited::Convenience
+
+def stub_ontology_file_extensions
+  Ontology.stubs(:file_extensions_distributed).returns(
+    %w[casl dol hascasl het].map!{ |ext| ".#{ext}" })
+  Ontology.stubs(:file_extensions_single).returns(
+    %w[owl obo hs exp maude elf hol isa thy prf omdoc hpf clf clif xml fcstd rdf xmi qvt tptp gen_trm baf].
+    map!{ |ext| ".#{ext}" })
+end
+
+def unstub_ontology_file_extensions
+  Ontology.unstub(:file_extensions_distributed)
+  Ontology.unstub(:file_extensions_single)
+end
+
 RSpec.configure do |config|
   # ## Mock Framework
   # config.mock_with :mocha
@@ -42,13 +66,22 @@ RSpec.configure do |config|
     DatabaseCleaner.strategy = :truncation
   end
 
+  config.before(:each) do
+    redis = WrappingRedis::RedisWrapper.new
+    redis.del redis.keys.join(' ')
+    stub_ontology_file_extensions
+  end
+
   config.after(:each) do
+    unstub_ontology_file_extensions
     DatabaseCleaner.clean
   end
 
   config.infer_base_class_for_anonymous_controllers = true
 
   config.include Devise::TestHelpers, type: :controller
+
+  config.treat_symbols_as_metadata_keys_with_true_values = true
 
   # Run specs in random order to surface order dependencies. If you find an
   # order dependency and want to debug it, you can fix the order by providing

@@ -1,6 +1,6 @@
 require 'spec_helper'
 
-describe Hets do
+describe Hets, :needs_hets do
 
   after do
     File.delete @xml_path if @xml_path

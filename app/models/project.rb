@@ -6,12 +6,17 @@ class Project < ActiveRecord::Base
 
   validates :name,
     presence: true,
-    uniqueness: true
+    uniqueness: true,
+    length: { within: 0..50 }
 
   validates :homepage,
     format: {
       with: URI::regexp(Settings.allowed_iri_schemes),
       allow_blank: true
     }
+
+  def to_s
+    name
+  end
 
 end

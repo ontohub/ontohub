@@ -1,10 +1,10 @@
 Ontohub
 =======
 
-[![Build Status](https://travis-ci.org/ontohub/ontohub.png?branch=master)](https://travis-ci.org/ontohub/ontohub)
+[![Build Status](https://travis-ci.org/ontohub/ontohub.svg?branch=master)](https://travis-ci.org/ontohub/ontohub)
 [![Code Climate](https://codeclimate.com/github/ontohub/ontohub.png)](https://codeclimate.com/github/ontohub/ontohub)
 [![Coverage Status](https://coveralls.io/repos/ontohub/ontohub/badge.png?branch=staging)](https://coveralls.io/r/ontohub/ontohub?branch=staging)
-[![Dependency Status](https://gemnasium.com/ontohub/ontohub.png)](https://gemnasium.com/ontohub/ontohub)
+[![Dependency Status](https://gemnasium.com/ontohub/ontohub.svg)](https://gemnasium.com/ontohub/ontohub)
 
 
 A web-based repository for distributed ontologies.
@@ -121,24 +121,16 @@ Tomcat with Solr is only required in the production environment.
 
 The war-Package should be automatically loaded.
 
-### SQL Server
+### PostgreSQL
 
-The master branch is (and should be) database independent. We are using
-PostgreSQL in production and development.
+A recent version of PostgreSQL is required for all environments.
 
-#### PostgreSQL
-
-    apt-get -y install postgresql
-
-#### MySQL
-
-You probably do not need this but we used MySQL in the new-model branch once and
-these instructions are given for completeness. MariaDB has been tested, too.
-
-The installation will prompt you for a password three times and you are expected
-to press «enter» with an empty password field.
-
-    apt-get -y install mysql-server libmysqlclient-dev
+    wget --quiet -O - https://www.postgresql.org/media/keys/ACCC4CF8.asc | apt-key add -
+    echo deb http://apt.postgresql.org/pub/repos/apt/ precise-pgdg main > /etc/apt/sources.list.d/pgdg.list
+    apt-get update
+    apt-get install -y postgresql-9.3
+    sed -i 's/de_DE/en_US/' /etc/postgresql/9.3/main/postgresql.conf
+    service postgresql reload
 
 ### Redis
 
