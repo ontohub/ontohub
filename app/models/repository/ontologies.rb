@@ -28,7 +28,7 @@ module Repository::Ontologies
   # @param dir  [String] the path to the ontology library
   #
   def import_ontologies(user, dir)
-    Dir.glob("#{dir}/**/*.{#{Ontology::FILE_EXTENSIONS.join(',')}}").each do |path|
+    Dir.glob("#{dir}/**/*.{#{Ontology.file_extensions.join(',')}}").each do |path|
       import_ontology(user, dir, path)
     end
   end

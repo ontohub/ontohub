@@ -1,3 +1,3 @@
 = simple_form_for resource do |f|
-  = f.input :name
+  = f.input :name, as: :string
   = f.button :submit, disable_with: t(:wait), class: 'btn btn-primary'

@@ -1,7 +1,7 @@
 = simple_form_for [*resource_chain, resource] do |f|
   = render partial: '/shared/form_errors'
 
-  = f.input :name
+  = f.input :name, as: :string
   = f.input :description, as: :text, input_html: {rows: 5}
 
   = f.submit class: 'btn btn-primary'

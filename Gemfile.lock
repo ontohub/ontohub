@@ -1,4 +1,10 @@
 GIT
+  remote: git://github.com/0robustus1/ontology-united.git
+  revision: f5e94e1a0efdd142462638bc4446ddba664e6e02
+  specs:
+    ontology-united (0.0.2)
+
+GIT
   remote: git://github.com/digineo/sunspot.git
   revision: 122f7c60207b9539903f06a66ce35a01cb1bf481
   specs:
@@ -11,6 +17,13 @@ GIT
       sunspot (= 2.0.0.pre.111215)
     sunspot_solr (2.0.0.pre.111215)
       escape (~> 0.0.4)
+
+GIT
+  remote: git://github.com/llwt/codemirror-rails.git
+  revision: df5231e3053773e37b27f8181738c7080cd1c3cd
+  specs:
+    codemirror-rails (4.0.3)
+      railties (>= 3.0, < 5)
 
 GIT
   remote: git://github.com/tristanm/jstree-rails.git
@@ -93,8 +106,6 @@ GEM
       timers (~> 1.1.0)
     choice (0.1.6)
     chunky_png (1.3.0)
-    codemirror-rails (3.22)
-      railties (>= 3.0, < 5)
     coderay (1.1.0)
     coffee-rails (3.2.2)
       coffee-script (>= 2.2.0)
@@ -400,7 +411,7 @@ DEPENDENCIES
   capistrano-rvm
   capybara
   capybara-webkit
-  codemirror-rails
+  codemirror-rails!
   coffee-rails (~> 3.2.1)
   compass (~> 0.12.1)
   coveralls
@@ -429,6 +440,7 @@ DEPENDENCIES
   mocha
   momentjs-rails
   nokogiri (~> 1.6)
+  ontology-united!
   pg
   progress_bar
   pry-byebug
