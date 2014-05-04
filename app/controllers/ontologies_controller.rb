@@ -137,7 +137,7 @@ class OntologiesController < InheritedResources::Base
 
   helper_method :repository
   def repository
-    @repository ||= Repository.find_by_path!(params[:repository_id])
+    parent
   end
 
 
