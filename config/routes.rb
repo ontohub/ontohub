@@ -81,6 +81,7 @@ Ontohub::Application.routes.draw do
     resources :permissions, :only => [:index, :create, :update, :destroy]
     resources :url_maps, except: :show
     resources :errors, :only => :index
+    resources :repository_settings, :only => :index
 
     resources :ontologies, only: [:index, :show, :edit, :update, :destroy] do
       collection do

@@ -31,6 +31,11 @@ en:
   Link: Ontology-Link
   LogicMapping: Logic-Mapping
   repository:
+    delete: Delete Repository
+    errors: Errors
+    permissions: Permissions
+    edit: Edit repository
+    urlmaps: Url Catalog
     access:
       change_hint: 'Caution! When setting the repository public, all reader permissions are removed.'
       options:
@@ -54,3 +59,9 @@ en:
   have:
     one: has
     other: have
+  delete_repository: Are you sure about delete the Repository?
+  delete_repository_desc: |
+      If you delete this repository, all ontologies, which are related to this repository, will be deleted too.
+                            
+      This action is irreversible!
+  cancel: Cancel

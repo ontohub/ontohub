@@ -1,8 +1,9 @@
 %div{class: resource.class.name.downcase}
-
-  %h1
-    = fancy_link resource
-
+  - if can? :edit, resource and not options[:disable_actions]
+    .btn-group.pull-right
+      - additional_actions.each do |action_link|
+        = action_link
+    =render "/repository_settings/modal"
   %nav
     %ul.nav.nav-tabs
       - pages.each do |page, path, count|
