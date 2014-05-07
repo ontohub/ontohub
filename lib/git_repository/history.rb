@@ -48,10 +48,12 @@ module GitRepository::History
 
       break if limit && i-offset_original == limit
 
+      deltas = retrieve_deltas(c.parents, c)
+
       if block_given?
-        commits << block.call(c.oid)
+        commits << block.call(c.oid, deltas)
       else
-        commits << to_hash(c)
+        commits << to_hash(c, deltas)
       end
     end
 
@@ -65,6 +67,7 @@ module GitRepository::History
 
     object = nil
     commit = nil
+    deltas = nil
 
     added_commits = 0
 
@@ -72,19 +75,20 @@ module GitRepository::History
       break if limit && added_commits == limit
       previous_object = get_object(previous_commit, path)
 
-      if object_added(object, previous_object, !commit.nil?) ||
-         object_changed(object, previous_object, !commit.nil?) ||
-         object_deleted(object, previous_object, !commit.nil?)
+      if commit
+        deltas = retrieve_deltas([previous_commit], commit, path)
 
-        if offset > 0
-          offset = offset - 1
-        else
-          if block_given?
-            commits << block.call(commit.oid)
+        if deltas.present?
+          if offset > 0
+            offset = offset - 1
           else
-            commits << to_hash(commit)
+            if block_given?
+              commits << block.call(commit.oid, deltas)
+            else
+              commits << to_hash(commit, deltas)
+            end
+            added_commits = added_commits + 1
           end
-          added_commits = added_commits + 1
         end
       end
 
@@ -97,7 +101,7 @@ module GitRepository::History
         if block_given?
           commits << block.call(commit.oid)
         else
-          commits << to_hash(commit)
+          commits << to_hash(commit, deltas)
         end
       end
     end
@@ -107,24 +111,28 @@ module GitRepository::History
     commits
   end
 
-  def to_hash(commit)
+  def to_hash(commit, deltas)
     {
       message: commit.message,
       committer: commit.committer,
       author: commit.author,
-      oid: commit.oid
+      oid: commit.oid,
+      deltas: deltas
     }
   end
 
-  def object_changed(object, previous_object, started)
-    started && !object.nil? && !previous_object.nil? && object.oid != previous_object.oid
+  def combined_diff(parent_commits, current_commit)
+    parent_commits.map do |parent|
+      parent.diff(current_commit)
+    end.inject do |diff_merged, parent_diff|
+      diff_merged.merge!(parent_diff)
+    end.find_similar!
   end
 
-  def object_added(object, previous_object, started)
-    started && !object.nil? &&  previous_object.nil?
-  end
-
-  def object_deleted(object, previous_object, started)
-    started &&  object.nil? && !previous_object.nil?
+  def retrieve_deltas(parent_commits, current_commit, path='')
+    combined_diff(parent_commits, current_commit)
+      .each_delta.select do |d|
+      d.old_file[:path].start_with?(path) || d.new_file[:path].start_with?(path)
+    end
   end
 end
