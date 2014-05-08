@@ -17,7 +17,7 @@ begin
 
   require 'ontohub_net'
 rescue ScriptError => e
-  puts <<-ERROR
+  STDERR.puts <<-ERROR
 We encountered a hard system error while processing
 your git-interaction attempt.
 The git command was not processed; your data is safe.

@@ -4,7 +4,7 @@
 # 
 
 unless ENV['SSH_CONNECTION']
-  puts "Only ssh allowed"
+  STDERR.puts "Only ssh allowed"
   exit 1
 end
 
@@ -27,7 +27,7 @@ With this stacktrace:
   #{error.backtrace.join('\n')}
     ERROR
   end
-  puts <<-ERROR
+  STDERR.puts <<-ERROR
 We encountered a system error while processing your
 git-interaction attempt.
 The git command was not processed; your data
