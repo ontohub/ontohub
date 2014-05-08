@@ -1,10 +1,9 @@
-class OntologyBatchParseWorker
-  include Sidekiq::Worker
+class OntologyBatchParseWorker < BaseWorker
   sidekiq_options retry: false
 
   def perform(*args, try_count: 1)
+    establish_arguments(args, try_count: try_count)
     @args = args
-    @try_count = try_count
     execute_perform(try_count, *args)
   end
 
@@ -42,8 +41,7 @@ class SequentialOntologyBatchParseWorker < OntologyBatchParseWorker
   sidekiq_options queue: 'sequential'
 
   def perform(*args, try_count: 1)
-    @args = args
-    @try_count = try_count
+    establish_arguments(args, try_count: try_count)
     ConcurrencyBalancer.sequential_lock do
       execute_perform(try_count, *args)
     end

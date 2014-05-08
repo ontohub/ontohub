@@ -37,7 +37,7 @@
         - when :not_a_text_file
           File is not a text file.
         - else
-          = file.diff.encoding_utf8.html_safe
+          = file.diff.force_encoding('UTF-8').html_safe
     - elsif file.mime_category == 'image'
       = image_tag fancy_repository_path(repository.path, ref: oid, path: file.path), alt: file.name
     - else

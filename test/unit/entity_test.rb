@@ -7,13 +7,13 @@ class EntityTest < ActiveSupport::TestCase
       should have_db_column(column).of_type(:integer)
     end
   
-    %w( kind name range display_name ).each do |column|
+    %w( kind range ).each do |column|
       should have_db_column(column).of_type(:string)
     end
 
-    should have_db_column('iri').of_type(:text)
-
-    should have_db_column('text').of_type(:text)
+    %w( name display_name label iri text ).each do |column|
+      should have_db_column(column).of_type(:text)
+    end
 
     should have_db_index([:ontology_id, :id]).unique(true)
     should have_db_index([:ontology_id, :text]).unique(true)

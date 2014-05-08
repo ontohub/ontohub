@@ -1,6 +1,7 @@
 require 'spec_helper'
 
 describe Ontology do
+
   let(:user) { create :user }
 
   context 'when naming an ontology' do
@@ -71,13 +72,9 @@ describe Ontology do
     end
   end
 
-  context 'when parsing a non-ontology-file' do
+  context 'when parsing a non-ontology-file', :needs_hets do
     let(:repository) { create :repository }
     let(:version) { add_fixture_file(repository, 'xml/catalog-v001.xml') }
-
-    before do
-      version.parse
-    end
 
     it 'no ontology should exist' do
       puts repository.ontologies.inspect
@@ -116,35 +113,29 @@ describe Ontology do
     end
   end
 
-  context 'when parsing' do
+  context 'when parsing', :needs_hets do
     context 'a distributed ontology' do
       let(:user) { create :user }
       let(:repository) { create :repository, user: user }
       it 'should have logic DOL' do
-        Sidekiq::Testing.fake! do
-          path = File.join(Rails.root, 'test', 'fixtures', 'ontologies', 'casl', 'partial_order.casl')
-          version = repository.save_file(
-            path,
-            'partial_order.casl',
-            'parsing a distributed ontology',
-            user)
+        path = File.join(Rails.root, 'test', 'fixtures', 'ontologies', 'casl', 'partial_order.casl')
+        version = repository.save_file(
+          path,
+          'partial_order.casl',
+          'parsing a distributed ontology',
+          user)
 
-          version.parse
-          expect(version.ontology.logic.name).to eq('DOL')
-        end
+        expect(version.ontology.logic.name).to eq('DOL')
       end
     end
   end
 
-  context 'when parsing an ontology which contains logic translations' do
+  context 'when parsing an ontology which contains logic translations', :needs_hets do
     let(:repository) { create :repository }
     let(:version) { add_fixture_file(repository, 'dol/double_mapped_logic_translated_blendoid.dol') }
     let(:ontology) { version.ontology.children.find_by_name('DMLTB-TheClifOne') }
 
     context 'the logically translated ontology' do
-      before do
-        version.parse
-      end
 
       it 'should contain imported sentences' do
         expect(ontology.imported_sentences).to_not be_empty
@@ -156,6 +147,40 @@ describe Ontology do
 
     end
 
+  end
+
+  context 'when parsing an ontology which is referenced by another ontology' do
+    let(:repository) { create :repository }
+    let(:list) do
+      referenced_ontology = nil
+      ontology = define_ontology('Foo') do
+        ontohub = prefix('ontohub', self)
+        referenced_ontology = define('Bar') do
+          other_ontohub = prefix('other_ontohub', self)
+          other_ontohub.class('SomeBar')
+        end
+        imports referenced_ontology
+        ontohub.class('Bar').sub_class_of ontohub.class('Foo')
+      end
+      [ontology, referenced_ontology]
+    end
+    let(:presentation) { list[0] }
+    let(:referenced_presentation) { list[1] }
+    let(:version) { version_for_file(repository, presentation.file.path) }
+    let(:ontology) { version.ontology }
+
+    before do
+      version.parse
+    end
+
+    let(:referenced_ontology) do
+      name = File.basename(referenced_presentation.name, '.owl')
+      Ontology.where("name LIKE '#{name}%'").first!
+    end
+
+    it 'should import an ontology with that name' do
+      expect(ontology.direct_imported_ontologies).to include(referenced_ontology)
+    end
   end
 
 end

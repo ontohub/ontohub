@@ -3,10 +3,7 @@
 root="$(dirname $0)/.."
 cd $root
 
-rake sunspot:solr:start &
-./script/start-sidekiq >> log/sidekiq.log &
-bundle exec rails s &
-
-trap "rake sunspot:solr:stop" INT
+bundle exec rake server:start &
+trap "bundle exec rake server:stop" INT
 
 wait

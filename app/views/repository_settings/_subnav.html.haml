@@ -1,0 +1,17 @@
+%div{class: resource.class.name.downcase}
+  - if can? :edit, resource and not options[:disable_actions]
+    .btn-group.pull-right
+      - additional_actions.each do |action_link|
+        = action_link
+    =render "/repository_settings/modal"
+  %nav
+    %ul.nav.nav-tabs
+      - pages.each do |page, path, count|
+        %li{class: (page == current_page ? 'active' : nil)}
+          = link_to url_for(path) do
+            = page.to_s.capitalize
+            - if count
+              %span.badge{style: count == 0 && 'display: none'}= count
+
+  - unless params[:ontology_id]
+    %h2= current_page.to_s.capitalize

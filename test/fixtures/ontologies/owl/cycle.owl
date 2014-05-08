@@ -1,0 +1,10 @@
+Prefix: : <http://ontohub.org/sandbox/cycle#>
+
+Ontology: <http://ontohub.org/sandbox/cycle.owl>
+
+Class: A 
+Class: B1 SubClassOf: B2
+Class: B2 SubClassOf: B3
+Class: B3 SubClassOf: B1 
+Class: B1 SubClassOf: A
+Class: C SubClassOf: B2
