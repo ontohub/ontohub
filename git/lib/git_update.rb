@@ -26,7 +26,12 @@ class GitUpdate
         update_redis
         exit 0
       else
-        STDERR.puts "Git: You are not allowed to access #{@branch_name}!"
+        STDERR.puts <<-MSG
+Git: You are not allowed to access #{@branch_name}!
+Please take a look at
+http://wiki.ontohub.org/index.php/Permission
+for more information about permissions.
+        MSG
         exit 1
       end
     else
