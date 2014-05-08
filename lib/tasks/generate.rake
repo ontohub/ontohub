@@ -16,14 +16,13 @@ namespace :generate do
 
   desc 'Generate entity trees for ALL OWL ontologies'
   task :owl_ontology_class_hierarchies => :environment do
+    #cleaning up
+    EntityGroup.destroy_all
+    #generating new
     logics = Logic.where(name: ["OWL2", "OWL"])
     ontologies = Ontology.where(logic_id: logics)
     ontologies.each do |ontology|
-      begin
-        ontology.create_entity_tree
-      rescue StandardError => e
-        puts "Could not create entity tree for: #{ontology.name} (#{ontology.id})"
-      end
+      TarjanTree.new(ontology)
     end
   end
 
