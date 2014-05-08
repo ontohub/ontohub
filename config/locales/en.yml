@@ -57,6 +57,6 @@ en:
           For full qualified access to Ontohub you have to confirm your e-mail address.
           We have sent an mail with instructions for you.
     wiki: | 
-        You can find more information about Ontohub in the Wiki. (The word "Wiki" should link to the wiki)
+        You can find more information about Ontohub in the %{link}.
         Moreover, context specific information is available with the "Help" button, leading to a specfic wiki page.
     need_help: Need Help?
