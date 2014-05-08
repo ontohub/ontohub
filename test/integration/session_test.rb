@@ -11,7 +11,7 @@ class SessionTest < ActionController::IntegrationTest
       click_on 'Sign Up'
     end
     
-    assert_equal "/", current_path
+    assert_equal "/after_signup", current_path
     assert_match /You have signed up successfully/, find(".alert-info").text
   end
   
