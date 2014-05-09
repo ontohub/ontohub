@@ -5,7 +5,7 @@ set :branch,         Settings.hostname
 
 set :application,    "ontohub"
 set :deploy_to,      "/srv/http/ontohub"
-set :linked_dirs,    %w{ data log tmp/pids tmp/cache tmp/sockets }
+set :linked_dirs,    %w{ data log tmp/pids tmp/cache tmp/sockets public/assets }
 set :bundle_without, "development deployment test"
 set :rails_env,      "production"
 

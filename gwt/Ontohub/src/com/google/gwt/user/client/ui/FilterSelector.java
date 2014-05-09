@@ -35,9 +35,17 @@ public class FilterSelector extends Composite implements HasWidgets, HasFilterSe
 	interface FilterSelectorUiBinder extends UiBinder<Widget, FilterSelector> {
 	}
 
-	List<FilterSelectionHandler> filterSelectionHandlerList = new LinkedList<FilterSelectionHandler>();
+	private final static List<FilterSelector> defaultFilterSelectorList = new LinkedList<FilterSelector>();
+	private final List<FilterSelector> filterSelectorList;
+	private final List<FilterSelectionHandler> filterSelectionHandlerList = new LinkedList<FilterSelectionHandler>();
+	
+    public FilterSelector() {
+    	this(defaultFilterSelectorList);
+    }
 
-	public FilterSelector() {
+	public FilterSelector(List<FilterSelector> filterSelectorList) {
+		this.filterSelectorList = filterSelectorList;
+		filterSelectorList.add(this);
 		initWidget(uiBinder.createAndBindUi(this));
 		button.getElement().setAttribute("type", "button");
 		button.getElement().setAttribute("data-toggle", "dropdown");
@@ -95,6 +103,11 @@ public class FilterSelector extends Composite implements HasWidgets, HasFilterSe
 	private final void setOpen(boolean open) {
 		this.open = open;
 		if (open) {
+			for (FilterSelector filterSelector : filterSelectorList) {
+				if (this != filterSelector) {
+					filterSelector.setOpen(false);
+				}
+			}
 			selector.addStyleName("open");
 		} else {
 			selector.removeStyleName("open");

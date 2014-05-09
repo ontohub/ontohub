@@ -2,6 +2,10 @@
 # See https://github.com/svenfuchs/rails-i18n/tree/master/rails%2Flocale for starting points.
 
 en:
+  admin_deletion_error_message: |
+    You probably shouldn't remove this account, as deleting
+    it would leave the system with too few admins.
+    The threshold level is: %{minimal_count}.
   in_process_ontologies: "Ontologies with pending work:"
   ontology_versions_status: "In-Process Ontology-Version found:"
   wait: 'Please wait …'
@@ -27,6 +31,11 @@ en:
   Link: Ontology-Link
   LogicMapping: Logic-Mapping
   repository:
+    delete: Delete Repository
+    errors: Errors
+    permissions: Permissions
+    edit: Edit repository
+    urlmaps: Url Catalog
     access:
       change_hint: 'Caution! When setting the repository public, all reader permissions are removed.'
       options:
@@ -50,7 +59,6 @@ en:
   have:
     one: has
     other: have
-    
   signup:
     welcome: Welcome %{name}
     what_happens: |
@@ -60,3 +68,9 @@ en:
         You can find more information about Ontohub in the %{link}.
         Moreover, context specific information is available with the "Help" button, leading to a specfic wiki page.
     need_help: Need Help?
+  delete_repository: Are you sure about delete the Repository?
+  delete_repository_desc: |
+      If you delete this repository, all ontologies, which are related to this repository, will be deleted too.
+                            
+      This action is irreversible!
+  cancel: Cancel

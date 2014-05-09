@@ -3,8 +3,8 @@ module BreadcrumbsHelper
   def repository_breadcrumbs(repository, path, oid)
     path ||= ''
     crumbs = path.split('/')
-    result = [{ 
-        name: 'Home',
+    result = [{
+        name: repository.name,
         last: false,
         path: fancy_repository_path(repository, path: nil, ref: oid)
     }]

@@ -36,6 +36,7 @@ class Ontology < ActiveRecord::Base
   belongs_to :formality_level
   belongs_to :task
 
+  has_many :entity_groups
   has_many :alternative_iris, dependent: :destroy
   has_many :source_links, class_name: 'Link', foreign_key: 'source_id', dependent: :destroy
   has_many :target_links, class_name: 'Link', foreign_key: 'target_id', dependent: :destroy
