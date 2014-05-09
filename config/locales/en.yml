@@ -59,6 +59,15 @@ en:
   have:
     one: has
     other: have
+  signup:
+    welcome: Welcome %{name}
+    what_happens: |
+          For full qualified access to Ontohub you have to confirm your e-mail address.
+          We have sent an mail with instructions for you.
+    wiki: | 
+        You can find more information about Ontohub in the %{link}.
+        Moreover, context specific information is available with the "Help" button, leading to a specfic wiki page.
+    need_help: Need Help?
   delete_repository: Are you sure about delete the Repository?
   delete_repository_desc: |
       If you delete this repository, all ontologies, which are related to this repository, will be deleted too.
