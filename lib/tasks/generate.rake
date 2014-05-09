@@ -22,17 +22,25 @@ namespace :generate do
     logics = Logic.where(name: ["OWL2", "OWL"])
     ontologies = Ontology.where(logic_id: logics)
     ontologies.each do |ontology|
-      TarjanTree.new(ontology)
+      begin
+        TarjanTree.new(ontology)
+      rescue ActiveRecord::RecordNotFound => e
+        puts "Could not create entity tree for: #{ontology.name} (#{ontology.id}) caused #{e}"
+      end
     end
   end
   
   desc 'Generate entity tree for one specific OWL ontology'
   task :class_hierachy_for_specific_ontology, [:ontology_id] => :environment do |t,args|
-    ontology = Ontology.find(args.ontology_id)
+    ontology = Ontology.find!(args.ontology_id)
     #cleaning up to prevent duplicated entity_groups
     ontology.entity_groups.destroy_all
     #generating new
-    TarjanTree.new(ontology)
+    begin
+      TarjanTree.new(ontology)
+    rescue ActiveRecord::RecordNotFound => e
+      puts "Could not create entity tree for: #{ontology.name} (#{ontology.id}) caused #{e}"
+    end
   end
 
   desc 'Import the values for metadata'
