@@ -4,6 +4,6 @@ class RemoveLinkVersionFromEntityMapping < ActiveRecord::Migration
     add_column :entity_mappings, :link_id, :integer, :null => false
   end
 
-  def down 
+  def down
   end
 end

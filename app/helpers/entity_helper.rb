@@ -1,5 +1,5 @@
 module EntityHelper
-  
+
   def show_classes?
     return params[:kind] != "Class"
   end

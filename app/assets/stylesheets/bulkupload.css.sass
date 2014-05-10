@@ -7,43 +7,43 @@ $remaining-color: #333
 
 form#bulkupload
   width: $width
-  
+
   .start input[type=submit]
     @extend .btn-primary
-  
+
   .stop input[type=submit]
     @extend .btn-danger
-  
+
   textarea
     width: $width
     height: 400px
-  
+
   fieldset
     border: 0
     padding: 0
-  
+
   ol.queue
     height: 400px
     overflow-y: auto
     border: 1px solid #ccc
-    
+
     > li
       padding: .3em
       margin: 1px
       border: 1px solid $remaining-color
       background-color: #eee
-      
+
       &.success
         background-color: lighten($created-color, 60%)
         border-color: $created-color
       &.error
         background-color: lighten($failed-color, 45%)
         border-color: $failed-color
-  
+
   .status
     width: $width
     white-space: nowrap
-  
+
   ul.stats
     margin: 1em 0em
     padding: 0em
@@ -60,11 +60,11 @@ form#bulkupload
       padding: .2em .5em
       border: 1px solid #ccc
       +border-radius(1em)
-  
+
   ul.errors
     margin-top: .5em
     font-size: .8em
-  
+
   // TODO migrate to bootstrap
   .ui-progressbar
     height: 22px

@@ -1,6 +1,6 @@
 class Entity < ActiveRecord::Base
 
- 
+
   include Metadatable
   include Entity::Searching
   include Entity::Readability
@@ -20,9 +20,9 @@ class Entity < ActiveRecord::Base
     groups << Struct.new(:kind, :count).new("Symbol",0) if groups.empty?
     groups
   end
-  
+
   def to_s
     self.display_name || self.name
   end
-  
+
 end

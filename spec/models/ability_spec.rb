@@ -2,7 +2,7 @@ require 'spec_helper'
 require 'cancan/matchers'
 
 describe Ability do
-  
+
   let(:user){   create :user } # regular user
   let(:owner){  create :user } # owner
 
@@ -18,7 +18,7 @@ describe Ability do
 
     context 'guest' do
       subject(:ability){ Ability.new(User.new) }
-      
+
       it 'not be allowed: new, create' do
         [:new, :create].each do |perm|
           should_not be_able_to(perm, Repository.new)
@@ -58,7 +58,7 @@ describe Ability do
 
     context 'owner' do
       subject(:ability){ Ability.new(owner) }
-      
+
       it 'be allowed: new, create' do
         [:new, :create].each do |perm|
           should be_able_to(perm, Repository.new)
@@ -80,7 +80,7 @@ describe Ability do
 
     context 'editor' do
       subject(:ability){ Ability.new(editor) }
-      
+
       it 'be allowed: write' do
         [:show, :write].each do |perm|
           should be_able_to(perm, item)
@@ -236,22 +236,22 @@ describe Ability do
       end
     end
   end
-  
+
   context 'Comment' do
     let(:comment){ create :comment }
-    
+
     context 'author' do
       subject(:ability){ Ability.new(comment.user) }
-      
+
       it 'destroy his own comment' do
         should be_able_to(:destroy, comment)
       end
-      
+
       it 'not be allowed to destroy others comment' do
         should_not be_able_to(:destroy, create(:comment))
       end
     end
-    
+
     context 'admin' do
       subject(:ability){ Ability.new(create :admin) }
 
@@ -259,25 +259,25 @@ describe Ability do
         should be_able_to(:destroy, comment)
       end
     end
-    
+
     context 'comments repository owner' do
       subject(:ability){ Ability.new(owner) }
 
       before do
         create(:permission, subject: owner, role: 'owner', item: comment.commentable.repository)
       end
-      
+
       it 'destroy others comments for his repository' do
         should be_able_to(:destroy, comment)
       end
     end
-    
+
     context 'comments repository editor' do
       subject(:ability){ Ability.new(owner) }
       before do
         create(:permission, subject: owner, role: 'editor', item: comment.commentable.repository)
       end
-      
+
       it 'not destroy others comments for his repository' do
         should_not be_able_to(:destroy, comment)
       end

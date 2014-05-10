@@ -1,6 +1,6 @@
 require 'test_helper'
 
-class OntologySearchTest < ActiveSupport::TestCase 
+class OntologySearchTest < ActiveSupport::TestCase
 
   context 'OntologySearch' do
     setup do
@@ -50,7 +50,7 @@ class OntologySearchTest < ActiveSupport::TestCase
     end
 
     teardown do
-      ::Sunspot.session = ::Sunspot::Rails::StubSessionProxy.new(::Sunspot.session)     
+      ::Sunspot.session = ::Sunspot::Rails::StubSessionProxy.new(::Sunspot.session)
     end
 
     #context 'keyword list' do
@@ -152,5 +152,5 @@ class OntologySearchTest < ActiveSupport::TestCase
       end
     end
   end
-  
+
 end

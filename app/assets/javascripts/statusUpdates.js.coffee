@@ -6,7 +6,7 @@ states       = ["done", "failed", "pending"]
 
 update = ->
   container.each ->
-    
+
     uri = $(this).data('uri')
     reload_uri = container.data('reload_uri')
     button = container.data('button')
@@ -16,18 +16,18 @@ update = ->
       )
     return if !currentState || $.inArray(currentState, finalStates) != -1
     $.getJSON container.data('uri'), (data) ->
-      
+
       state = data.state
       if state == currentState
         enqueue()
       else
         currentState = state
-        
+
         # display the new state
         container
         .attr('class', state)
         .find("span").find("span").text(state)
-        
+
         if $.inArray(state, finalStates) != -1
           # replace spinner with refresh button
           container.find(".spinner").replaceWith("<a href='#{reload_uri}' class='btn btn-info'><i class='icon-refresh'></i> #{button}</a>")

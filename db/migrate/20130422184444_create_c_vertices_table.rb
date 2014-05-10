@@ -7,7 +7,7 @@ class CreateCVerticesTable < ActiveRecord::Migration
 
 
    end
-   
+
    create_table :c_edges do |t|
      t.references :parent, :null => false
      t.references :child,  :null => false

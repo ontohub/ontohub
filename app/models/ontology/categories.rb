@@ -7,7 +7,7 @@ module Ontology::Categories
   end
 
 
-  def create_categories 
+  def create_categories
     raise 'Error: No OWL' unless self.is? 'OWL'
 
     # Delete previous set of categories.

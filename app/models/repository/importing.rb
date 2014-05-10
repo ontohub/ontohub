@@ -5,7 +5,7 @@
 # * processing - Inserting fetched commits into the local database-
 # * done       - Everthing is fine, nothing to do-
 # * failed     - Something has gone wrong.
-# 
+#
 module Repository::Importing
   extend ActiveSupport::Concern
 

@@ -1,6 +1,6 @@
 # A users SSH Key
 class Key < ActiveRecord::Base
-  
+
   include Key::Fingerprint
 
   after_create :add_to_authorized_keys

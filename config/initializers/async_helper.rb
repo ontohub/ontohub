@@ -9,7 +9,7 @@ class ActiveRecord::Base
       end
     end
   end
-  
+
   def self.async(method, *args)
     async_in 'class', 1, method.to_s, *args
   end

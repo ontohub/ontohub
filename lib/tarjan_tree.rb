@@ -7,7 +7,7 @@ class TarjanTree
     subclasses = inheritance_sentences ontology
     subclasses.each do |s|
       c1, c2 = s.hierarchical_class_names
-    
+
       child = ontology.entities.where('name = ? OR iri = ?', c1, c1).first!.id
       parent = ontology.entities.where('name = ? OR iri = ?', c2, c2).first!.id
       if @hashed_entities[parent]
@@ -18,15 +18,15 @@ class TarjanTree
     end
     create_tree ontology
   end
-  
+
   def tsort_each_node(&block)
     @hashed_entities.each_key(&block)
   end
-  
+
   def tsort_each_child(node, &block)
     @hashed_entities[node].try(:each, &block)
   end
-  
+
   # Get SubClassOf Strings without explicit Thing
   # Only sentences with 4 words are the right sentences for the Tree
   # so we have to ignore the other.
@@ -37,12 +37,12 @@ class TarjanTree
         sentence.text.split(' ').size == 4
       end
   end
-   
+
   def create_tree(ontology)
     create_groups ontology
     create_edges
   end
-   
+
   def create_groups(ontology)
     groups = self.strongly_connected_components
     groups.each do |entity_group|
@@ -51,7 +51,7 @@ class TarjanTree
       EntityGroup.create!(ontology: ontology, entities: entities, name: name)
     end
   end
-   
+
   def create_edges
     @hashed_entities.each do |parent, children|
       parent_group = Entity.find(parent).entity_group
@@ -63,7 +63,7 @@ class TarjanTree
       end
     end
   end
-   
+
   def determine_group_name(entities)
     entities.join(" ☰ ")
   end

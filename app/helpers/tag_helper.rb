@@ -1,5 +1,5 @@
 module TagHelper
-  
+
   def fancy_tag(resource, tags)
     result = ""
     first = true
@@ -8,19 +8,19 @@ module TagHelper
         if block_given?
           result += first ? tag.to_s : (yield tag.to_s)
         else
-          result += first ? tag.to_s : ' ' + tag.to_s 
+          result += first ? tag.to_s : ' ' + tag.to_s
         end
         first = false
       end
     end
     result
     #if block_given?
-     #   yield 
+     #   yield
       #else
        # name = resource
       #end
 
   end
 
-  
+
 end

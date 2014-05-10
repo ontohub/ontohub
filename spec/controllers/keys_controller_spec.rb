@@ -1,7 +1,7 @@
 require 'spec_helper'
 
 describe KeysController do
-  
+
   let(:user){ create :user }
 
   context 'not signed in' do

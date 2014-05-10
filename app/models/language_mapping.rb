@@ -6,7 +6,7 @@ class LanguageMapping < ActiveRecord::Base
   THEOROIDALNESSES = %w( plain simple_theoroidal theoroidal generalised )
   STAND_STATUS = %w( AcademicLiterature ISOStandard Unofficial W3CRecommendation W3CTeamSubmission W3CWorkingGroupNote )
   DEFINED_BY = %w( registry )
-  
+
   belongs_to :source, class_name: 'Language'
   belongs_to :target, class_name: 'Language'
   belongs_to :user

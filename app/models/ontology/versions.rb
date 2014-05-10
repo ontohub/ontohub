@@ -58,7 +58,7 @@ module Ontology::Versions
     end
 
   end
-  
+
   # Updates the ontology and returns the new version
   def save_file(file, message, user)
     repository.save_file(file, path, message, user)

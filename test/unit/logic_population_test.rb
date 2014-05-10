@@ -44,5 +44,5 @@ class TripleStoreTest < ActiveSupport::TestCase
       assert_equal 'http://ontohub.org/CommonLogic.rdf', logic.defined_by
     end
   end
-  
+
 end

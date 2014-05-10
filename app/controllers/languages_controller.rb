@@ -1,6 +1,6 @@
-# 
+#
 # Controller for Languages
-# 
+#
 class LanguagesController < InheritedResources::Base
 
   respond_to :json, :xml
@@ -22,7 +22,7 @@ class LanguagesController < InheritedResources::Base
     @language.user = current_user
     super
   end
-  
+
   def show
     super do |format|
       format.html do

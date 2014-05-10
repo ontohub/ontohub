@@ -8,7 +8,7 @@ class ToolTest < ActiveSupport::TestCase
     end
     should have_db_index(:name).unique(true)
   end
-    
+
   context 'Validations' do
     ['http://example.com/', 'https://example.com/', 'file://path/to/file'].each do |val|
       should allow_value(val).for :url

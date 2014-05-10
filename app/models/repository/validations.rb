@@ -3,7 +3,7 @@ module Repository::Validations
 
   VALID_NAME_REGEX = /^[A-Za-z0-9_\.\-\ ]{3,32}$/
   VALID_PATH_REGEX = /^[a-z0-9_\.\-]{3,32}$/
-  
+
   included do
     before_validation :set_path
 
@@ -13,12 +13,12 @@ module Repository::Validations
                      if: :name_changed?
 
     validates_with NameNotChangedAfterSetValidator, if: :name_changed?
-    
+
     validates :path, presence: true,
                      uniqueness: { case_sensitive: true },
                      format: VALID_PATH_REGEX,
                      if: :path_changed?
-    
+
     validates_with UnreservedValidator, if: :path_changed?
   end
 

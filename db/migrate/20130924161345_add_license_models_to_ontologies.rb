@@ -7,7 +7,7 @@ class AddLicenseModelsToOntologies < ActiveRecord::Migration
 
       t.timestamps
     end
-    
+
     change_table :license_models do |t|
       t.index :name, :unique => true
     end

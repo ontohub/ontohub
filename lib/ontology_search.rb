@@ -52,7 +52,7 @@ class OntologySearch
 
   def make_repository_restrictions(repository, prefix)
     text_list = []
-    
+
     ontology_names = repository.ontologies
       .select(:name)
       .where('name ilike ?', "#{prefix}%")

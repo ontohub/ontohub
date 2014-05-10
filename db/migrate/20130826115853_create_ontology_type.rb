@@ -7,7 +7,7 @@ class CreateOntologyType < ActiveRecord::Migration
       t.string :documentation, :null => false
       t.timestamps :null => false
     end
-    
+
     change_table :ontology_types do |t|
       t.index :name, :unique => true
     end

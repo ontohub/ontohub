@@ -49,19 +49,19 @@ class Logic < ActiveRecord::Base
   def to_s
     name
   end
-  
+
   def add_language(language)
     sup = self.supports.new
     sup.language = language
     sup.save!
   end
-  
+
   def mappings_from
     LogicMapping.find_all_by_source_id self.id
   end
-  
+
   def mappings_to
     LogicMapping.find_all_by_target_id self.id
   end
-  
+
 end
