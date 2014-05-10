@@ -135,4 +135,10 @@ class OntologiesController < InheritedResources::Base
     params[:category_ids].keys unless params[:category_ids].nil?
   end
 
+  helper_method :repository
+  def repository
+    parent
+  end
+
+
 end

@@ -39,7 +39,7 @@ class RepositoryTest < ActiveSupport::TestCase
 
     context 'made private' do
       setup do
-        @repository.access = 'private'
+        @repository.access = 'private_rw'
         @repository.save
 
         editor = FactoryGirl.create :user

@@ -39,7 +39,8 @@ en:
     access:
       change_hint: 'Caution! When setting the repository public, all reader permissions are removed.'
       options:
-        private: Private
+        private_r: Private readable
+        private_rw: Private readable and writable
         public_r: Public readable
         public_rw: Public readable and writable
   sentences:

@@ -30,7 +30,13 @@ module RepositoriesHelper
   end
 
   def access_options
-    t('repository.access.options').invert
+    t('repository.access.options').select do |k,v|
+      if @repository.remote?
+        k.to_s.split('_')[1] == 'r'
+      else
+        true
+      end
+    end.invert
   end
 
 end

@@ -21,7 +21,13 @@ class Ability
         end
       end
       can [:write], Repository do |subject|
-        subject.permission?(:editor, user) or subject.public_rw?
+        if subject.private_r?
+          false
+        elsif subject.private_rw?
+          subject.permission?(:editor, user)
+        else
+          (subject.permission?(:editor, user) || subject.public_rw?)
+        end
       end
       can [:update, :destroy, :permissions], Repository do |subject|
         subject.permission?(:owner, user)
