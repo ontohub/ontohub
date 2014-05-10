@@ -48,7 +48,7 @@ module GitRepository::History
 
       break if limit && i-offset_original == limit
 
-      deltas = retrieve_deltas(c.parents, c)
+      deltas = retrieve_deltas(combined_diff(c.parents, c))
 
       if block_given?
         commits << block.call(c.oid, deltas)
@@ -76,7 +76,7 @@ module GitRepository::History
       previous_object = get_object(previous_commit, path)
 
       if commit
-        deltas = retrieve_deltas([previous_commit], commit, path)
+        deltas = retrieve_deltas(combined_diff([previous_commit], commit), path)
 
         if deltas.present?
           if offset > 0
@@ -122,17 +122,24 @@ module GitRepository::History
   end
 
   def combined_diff(parent_commits, current_commit)
-    parent_commits.map do |parent|
-      parent.diff(current_commit)
-    end.inject do |diff_merged, parent_diff|
-      diff_merged.merge!(parent_diff)
-    end.find_similar!
+    if parent_commits.present?
+      parent_commits.map do |parent|
+        parent.diff(current_commit)
+      end.inject do |diff_merged, parent_diff|
+        diff_merged.merge!(parent_diff)
+      end.find_similar!
+    else
+      diff_of_first_commit(current_commit)
+    end
   end
 
-  def retrieve_deltas(parent_commits, current_commit, path='')
-    combined_diff(parent_commits, current_commit)
-      .each_delta.select do |d|
+  def retrieve_deltas(diff, path='')
+    diff.each_delta.select do |d|
       d.old_file[:path].start_with?(path) || d.new_file[:path].start_with?(path)
     end
+  end
+
+  def diff_of_first_commit(commit)
+    commit.diff(nil, reverse: true)
   end
 end
