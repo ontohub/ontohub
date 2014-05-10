@@ -22,7 +22,7 @@ module GitRepository::GetDiff
     end
 
     def path
-      directory.join(name)
+      directory.join(name).to_s
     end
 
     def binary?
@@ -62,8 +62,8 @@ module GitRepository::GetDiff
     rugged_commit = get_commit(commit_oid)
     file_changes = []
     if rugged_commit
-      deltas = retrieve_deltas(combined_diff(rugged_commit.parents, rugged_commit))
-      deltas.each do |delta|
+      commit = GitRepository::History::Commit.new(rugged_commit)
+      commit.deltas.each do |delta|
         path = Pathname.new(delta.new_file[:path])
         file_changes << FileChange.new(self, path.dirname, path.basename, delta)
       end
