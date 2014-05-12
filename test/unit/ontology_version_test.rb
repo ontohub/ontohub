@@ -22,7 +22,7 @@ class OntologyVersionTest < ActiveSupport::TestCase
     #   should_not allow_value(val).for :source_url
     # end
   end
-  
+
   context 'OntologyVersion' do
     setup do
       @ontology_version = FactoryGirl.create :ontology_version
@@ -31,7 +31,7 @@ class OntologyVersionTest < ActiveSupport::TestCase
       assert_match %r(http://example\.com/repositories/#{@ontology_version.repository.path}/ontologies/\d+/versions/\d+$), @ontology_version.url
     end
   end
-  
+
   context 'Parsing' do
     setup do
       @ontology = FactoryGirl.create :ontology
@@ -126,6 +126,6 @@ class OntologyVersionTest < ActiveSupport::TestCase
         assert_match /nested exception.*second exception.*first error/im, @version.reload.last_error
       end
     end
-    
+
   end
 end

@@ -9,11 +9,11 @@ module Ontology::Links
 
   module Methods
 
-    
+
     def iri_for_child(*args)
       proxy_association.owner.iri_for_child(*args)
     end
-    
+
     def determine_link_type(typename)
       raise "link type missing" if typename.blank?
       kind = Link::KINDS_MAPPING[typename]
@@ -37,11 +37,11 @@ module Ontology::Links
 
       source = Ontology.find_with_iri(source_iri) || (raise ArgumentError, "source ontology not found: #{source_iri}")
       target = Ontology.find_with_iri(target_iri) || (raise ArgumentError, "target ontology not found: #{target_iri}")
-      
+
       # linktype
       linktype = hash['type']
       kind = determine_link_type(linktype)
-      
+
       # morphism
       gmorphism = hash['morphism']
       raise "gmorphism missing" if gmorphism.blank?
@@ -50,7 +50,7 @@ module Ontology::Links
       # finally, create or update the link
       link = find_or_initialize_by_iri(link_iri)
       link.attributes = {
-        name:          link_name, 
+        name:          link_name,
         source_id:     source.id,
         target_id:     target.id,
         kind:          kind,
@@ -64,7 +64,7 @@ module Ontology::Links
       link.versions << LinkVersion.create(link: link,
                                           source: source.versions.current,
                                           target: target.versions.current)
-                                                    
+
       # entity mapping
       if hash["map"]
         source = Entity.where(text: hash["map"].first["text"],ontology_id: link.source.id).first

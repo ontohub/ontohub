@@ -6,7 +6,7 @@ module Permissionable
 
     after_create :add_permission, if: :create_permission?
   end
-  
+
   def permissions_count
     permissions.count
   end
@@ -22,10 +22,10 @@ module Permissionable
   def permission?(role, user)
     # Deny if user is nil
     return false unless user
-    
+
     # Deny if user is of wrong type
     raise ArgumentError, "no user given" unless user.is_a? User
-    
+
     # Allow any admin user.
     return true if user.admin? rescue nil
 

@@ -1,6 +1,6 @@
-# 
+#
 # Displays versions of an ontology
-# 
+#
 class OntologyVersionsController < InheritedResources::Base
 
   defaults :collection_name => :versions, :finder => :find_by_number!
@@ -14,7 +14,7 @@ class OntologyVersionsController < InheritedResources::Base
   # TODO Needs testing !!!
   def show
     resource.checkout_raw!
-    
+
     send_file resource.raw_path, filename: File.basename(resource.ontology.path)
   rescue Errno::ENOENT, NoMethodError => e
     redirect_to collection_path, flash: { error: "The file was not found: #{e.message}" }
@@ -30,10 +30,10 @@ class OntologyVersionsController < InheritedResources::Base
 
   def oops
     resource.build_request.save!
-    flash[:notice] = "Your request is send to OOPS!" 
+    flash[:notice] = "Your request is send to OOPS!"
     redirect_to ontology_entities_path(resource.ontology)
   end
-  
+
 
   protected
 

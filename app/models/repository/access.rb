@@ -55,7 +55,7 @@ module Repository::Access
   def self.as_read_only(access)
     access.split('_').first + '_r'
   end
-  
+
   private
 
   def clear_readers

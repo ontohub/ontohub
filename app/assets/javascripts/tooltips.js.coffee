@@ -1,6 +1,6 @@
-# 
+#
 # Bootstrap tooltip
-# 
+#
 $ ->
   $("button.help").tooltip(placement: "right").click (event) ->
     event.preventDefault()

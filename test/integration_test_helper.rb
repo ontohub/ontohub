@@ -24,5 +24,5 @@ class ActionController::IntegrationTest
     DatabaseCleaner.clean       # Truncate the database
     Capybara.reset_sessions!    # Forget the (simulated) browser state
   end
-  
+
 end

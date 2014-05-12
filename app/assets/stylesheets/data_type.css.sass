@@ -12,7 +12,7 @@
     repeat: no-repeat
     position:  10px center
   padding-left: 30px !important
-  
+
 @mixin data-svg-icon($name)
   background:
     image: image-url('icons/'+$name+'.svg')
@@ -25,7 +25,7 @@
 .ui-autocomplete a, .relationList li, a
   &[data-type=Team]
     +data-icon(team)
-  
+
   &[data-type=User]
     +data-icon(user)
 
@@ -34,10 +34,10 @@
 
   &[data-type=PrivateRepository]
     +data-icon(repository_private)
-    
+
   &[data-type=RemoteRepository]
     +data-svg-icon(repository_remote)
-    
+
   &[data-ontologyclass=Ontology]
     +data-icon(ontology)
 

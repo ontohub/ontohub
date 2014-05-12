@@ -1,6 +1,6 @@
-# 
+#
 # Controller for Logics
-# 
+#
 class LogicsController < InheritedResources::Base
 
   respond_to :json, :xml
@@ -8,7 +8,7 @@ class LogicsController < InheritedResources::Base
   has_scope :search
 
   load_and_authorize_resource :except => [:index, :show]
-  
+
   def index
     super do |format|
       format.html do
@@ -22,7 +22,7 @@ class LogicsController < InheritedResources::Base
     @logic.user = current_user
     super
   end
-  
+
   def show
     @tab = params[:tab].try(:to_sym)
     super do |format|
@@ -39,7 +39,7 @@ class LogicsController < InheritedResources::Base
       end
     end
   end
-  
+
   protected
   def collection
     if all_logics?
@@ -54,11 +54,11 @@ class LogicsController < InheritedResources::Base
   def authorize_parent
     #not needed
   end
-  
+
   helper_method :all_logics?
   def all_logics?
     params[:all].present?
   end
-  
-  
+
+
 end

@@ -1,10 +1,10 @@
 require 'test_helper'
 
 class LanguageAdjointsControllerTest < ActionController::TestCase
-  
+
   should_map_resources :language_adjoints,
     :except => [:index]
-  
+
   context 'Language Adjoint:' do
     setup do
       @user     = FactoryGirl.create :user
@@ -16,12 +16,12 @@ class LanguageAdjointsControllerTest < ActionController::TestCase
       @mapping2 = FactoryGirl.create :language_mapping, :source => @source_language2, :target => @target_language2, :user => @user
       @adjoint = FactoryGirl.create :language_adjoint, :translation => @mapping, :projection => @mapping2, :user => @user
     end
-      
+
     context 'signed in as owner' do
       setup do
         sign_in @user
       end
-      
+
       context 'on get to show' do
         setup do
           get :show, :id => @adjoint.id, :mapping_id => @mapping.id
@@ -30,16 +30,16 @@ class LanguageAdjointsControllerTest < ActionController::TestCase
         should render_template :show
         should_not set_the_flash
       end
-      
+
       context 'on get to new' do
         setup do
           get :new, :mapping_id => @mapping.id
         end
-        
+
         should respond_with :success
         should render_template :new
       end
-      
+
       context 'on POST to CREATE' do
         setup do
           post :create, :language_mapping_id => @mapping.id,
@@ -48,7 +48,7 @@ class LanguageAdjointsControllerTest < ActionController::TestCase
               :iri => 'http://test.de'
             }
         end
-        
+
         should 'create the record' do
           adjoint = LanguageAdjoint.find_by_iri('http://test.de')
           assert !adjoint.nil?
@@ -56,7 +56,7 @@ class LanguageAdjointsControllerTest < ActionController::TestCase
           assert_equal  @mapping2, adjoint.projection unless adjoint.nil?
         end
       end
-      
+
       context 'on PUT to Update' do
         setup do
           put :update, :id => @adjoint.id,
@@ -65,7 +65,7 @@ class LanguageAdjointsControllerTest < ActionController::TestCase
                                  :iri => "http://test2.de"
               }
         end
-        
+
         should 'change the record' do
           adjoint = LanguageAdjoint.find_by_iri('http://test2.de')
           assert !adjoint.nil?
@@ -73,19 +73,19 @@ class LanguageAdjointsControllerTest < ActionController::TestCase
           assert_equal @mapping2, adjoint.projection unless adjoint.nil?
         end
       end
-      
+
       context 'on POST to DELETE' do
         setup do
           delete :destroy, :id => @adjoint.id, :mapping_id => @mapping.id
         end
-        
+
         should 'remove the record' do
           assert_equal nil, LanguageAdjoint.find_by_id(@adjoint.id)
         end
 
 
       end
-      
+
       context 'on GET to EDIT' do
         setup do
           get :edit, :id => @adjoint.id, :mapping_id => @mapping.id
@@ -95,9 +95,9 @@ class LanguageAdjointsControllerTest < ActionController::TestCase
         should_not set_the_flash
       end
     end
-    
-    
-    
+
+
+
     context 'signed in as not-owner' do
       setup do
         @user2     = FactoryGirl.create :user
@@ -234,5 +234,5 @@ class LanguageAdjointsControllerTest < ActionController::TestCase
       end
     end
   end
-  
+
 end

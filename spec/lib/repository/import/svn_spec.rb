@@ -9,7 +9,7 @@ describe "svn import" do
   let(:tmpdir){ Pathname.new("/tmp/ontohub/svn_test") }
   let(:git_root){ Ontohub::Application.config.git_root }
   let(:daemon_root){ Repository::Symlink::PATH }
-  
+
   let(:svn_baredir){ tmpdir.join('svn_bare') }
   let(:svn_workdir){ tmpdir.join('svn_work') }
   let(:svn_url){ "file://#{svn_baredir}" }
@@ -61,7 +61,7 @@ describe "svn import" do
   context 'adding commits to svn' do
     before do
       Subprocess.run SCRIPT_SVN_ADD_COMMITS, svn_workdir, commit_count, 'new_'
-      
+
       @result = @repository.remote_send :pull
     end
 

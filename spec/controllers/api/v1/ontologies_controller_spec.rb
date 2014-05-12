@@ -30,7 +30,7 @@ describe Api::V1::OntologiesController do
     context 'without permission' do
       before do
         put :update, params
-          
+
       end
       it{ should respond_with :forbidden }
     end

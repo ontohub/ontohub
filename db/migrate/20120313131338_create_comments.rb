@@ -6,7 +6,7 @@ class CreateComments < ActiveRecord::Migration
       t.text :text, :null => false
       t.timestamps :null => false
     end
-    
+
     change_table :comments do |t|
       t.index [:commentable_id, :commentable_type, :id], :name => 'index_comments_on_commentable_and_id' # id for ordering
       t.index :user_id

@@ -23,7 +23,7 @@ class FormalityLevelTest < ActiveSupport::TestCase
     end
 
     context 'when FormalityLevel without name is to be saved' do
-      should 'raise error' do 
+      should 'raise error' do
         assert_raise ActiveRecord::RecordInvalid do
           FormalityLevel.create!
         end

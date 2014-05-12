@@ -1,5 +1,5 @@
 class Api::V1::CategoriesController < Api::V1::Base
-  
+
   inherit_resources
   actions :index
 
@@ -7,5 +7,5 @@ class Api::V1::CategoriesController < Api::V1::Base
     collection
     render :index
   end
-  
+
 end

@@ -9,7 +9,7 @@ module OntologyHelper
     return nil if resource.versions.done.empty?
     repository_ontology_ontology_version_path(*resource_chain, resource.versions.done.latest.first)
   end
-  
+
   def show_evaluate?
     show_oops? #|| show_foo?
   end

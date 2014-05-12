@@ -8,12 +8,12 @@ class CreateLinkVersions < ActiveRecord::Migration
       t.integer :version_number
       t.boolean :current
       t.boolean :proof_status, :default => false
-      t.string :required_cons_status, :default => "none" 
+      t.string :required_cons_status, :default => "none"
       t.string :proven_cons_status, :default => "none"
 
       t.timestamps :null => false
     end
-    
+
     change_table :link_versions do |t|
       t.index :link_id
       t.index :source_id

@@ -1,7 +1,7 @@
 $('.state').on 'click', 'a.pitfalls', (event) ->
   event.preventDefault()
   $('div.pitfalls').toggle()
-  
+
 $('.oops').popover(
   html: true,
   placement: 'top',

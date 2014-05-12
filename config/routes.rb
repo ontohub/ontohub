@@ -5,27 +5,27 @@ Ontohub::Application.routes.draw do
 
   resources :ontology_types, only: :show
   get '/after_signup', to: 'home#show' , as: 'after_sign_up'
-  
+
   devise_for :users, controllers: {
     confirmations: 'users/confirmations',
     registrations: 'users/registrations'
   }
   resources :users, only: :show
   resources :keys, except: [:show, :edit, :update]
-  
+
   resources :logics do
     resources :supports, :only => [:create, :update, :destroy, :index]
     resources :graphs, :only => [:index]
   end
-  
+
   resources :languages do
     resources :supports, :only => [:create, :update, :destroy, :index]
   end
-  
+
   resources :language_mappings
   resources :logic_mappings
 
-  resources :links, :only => :index 
+  resources :links, :only => :index
 
   resources :categories, :only => [:index, :show]
   resources :projects
@@ -56,7 +56,7 @@ Ontohub::Application.routes.draw do
       resources :ontologies,   only: [:index, :update]
     end
   end
-  
+
   resources :ontologies, only: [:index] do
     collection do
       get 'keywords' => 'ontology_search#keywords'
@@ -108,7 +108,7 @@ Ontohub::Application.routes.draw do
       resources :license_models
       resources :tools
       resources :projects
-      
+
       resources :metadata, :only => [:index, :create, :destroy]
       resources :comments, :only => [:index, :create, :destroy]
       resources :graphs, :only => [:index]

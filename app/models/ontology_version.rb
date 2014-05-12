@@ -9,7 +9,7 @@ class OntologyVersion < ActiveRecord::Base
 
   include Rails.application.routes.url_helpers
   include ActionDispatch::Routing::UrlFor
-  
+
   belongs_to :user
   belongs_to :ontology, :counter_cache => :versions_count
 
@@ -29,11 +29,11 @@ class OntologyVersion < ActiveRecord::Base
   def self.last_updated_at
     latest.first.try(:updated_at)
   end
-  
+
   def to_param
     self.number
   end
-  
+
   # Public URL to this version
   #
   # TODO: This returns a path without the commit id and filename for now,
@@ -46,7 +46,7 @@ class OntologyVersion < ActiveRecord::Base
   def default_url_options
     {host: Settings.hostname}
   end
- 
+
 
   protected
 

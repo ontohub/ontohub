@@ -10,10 +10,10 @@ class CreateTeamUsers < ActiveRecord::Migration
     change_table :team_users do |t|
       t.index [:team_id, :user_id], :unique => true
       t.foreign_key :teams, :dependent => :delete
-      
+
       t.index :user_id
       t.foreign_key :users, :dependent => :delete
-      
+
       t.index :creator_id
       t.foreign_key :users, :dependent => :nullify, :column => :creator_id
     end

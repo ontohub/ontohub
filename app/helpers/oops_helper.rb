@@ -1,11 +1,11 @@
 module OopsHelper
-  
+
   ICONS = {
     'Pitfall'    => :bolt,
     'Warning'    => 'warning-sign',
     'Suggestion' => :lightbulb
   }
-  
+
   def global_responses
     return oops_request.responses.global if oops_request
     false
@@ -27,11 +27,11 @@ module OopsHelper
   def oops_icons(response_scope)
     responses = response_scope.select('element_type, count(*) AS count').group(:element_type).order(:element_type)
     out = ''
-    
+
     # support unknown element_types
     (ICONS.keys + responses.map(&:element_type)).uniq.each do |type|
       count = responses.find{|r| r.element_type == type }.try(:count) || 0
-      
+
       if count == 0
         out << content_tag(:i, '', class: 'empty')
       else
@@ -39,7 +39,7 @@ module OopsHelper
         out << content_tag(:i, '', class: oops_icon(type))
       end
     end
-    
+
     out.html_safe
   end
 

@@ -2,7 +2,7 @@ FactoryGirl.define do
   sequence :entity_text do |n|
     "http://host/ontology/#{n}"
   end
-  
+
   sequence :entity_kind do |n|
     "Kind#{n}"
   end
@@ -14,7 +14,7 @@ FactoryGirl.define do
   sequence :entity_owl2_name do |n|
     "<http://example.com/resource##{n}>"
   end
-  
+
   factory :entity do
     association :ontology
     text { FactoryGirl.generate :entity_text }

@@ -9,7 +9,7 @@ describe Project do
 
     it { should have_and_belong_to_many :ontologies }
   end
-    
+
   context 'Validations' do
     ['http://example.com/', 'https://example.com/', 'file://path/to/file'].each do |val|
       it { should allow_value(val).for :homepage }
