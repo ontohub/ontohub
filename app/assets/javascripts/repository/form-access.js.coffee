@@ -4,21 +4,11 @@ $ ->
     to_mirror_option     = (value) -> value.split("_")[0] + "_r"
     to_non_mirror_option = (value) -> value
 
-    # CoffeeScript's array.filter(condition) throws "undefined is not a function".
-    # It recognizes the condition as undefined. This is a workaround for that issue.
-    filter = (array, condition) ->
-      result = []
-      for element in array
-        result.push(element) if condition(element)
-      return result
-
-    clone = (array) -> filter(array, (element) -> true)
-
     input_access_el    = $('#repository_form #repository_access')[0]
     source_address_el  = $('#repository_form #repository_source_address')
     options_all        = input_access_el.options
-    options_non_mirror = clone(options_all)
-    options_mirror     = filter(options_all, mirror_option)
+    options_non_mirror = _.clone(options_all)
+    options_mirror     = _.filter(options_all, mirror_option)
 
     # If options are not set one by one, the select box won't change.
     set_options = (options, converter, last_value) ->
