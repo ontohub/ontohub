@@ -56,8 +56,12 @@ module LinkHelper
       return ['data-type', "Private#{resource.class.to_s}"]
     end
 
+    if resource.is_a?(Repository) && resource.remote?
+      return ['data-type', "Remote#{resource.class.to_s}"]
+    end
+
     unless resource.is_a?(Ontology)
-      return ['data-type', resource.class.to_s] 
+      return ['data-type', resource.class.to_s]
     end
 
     data_type = 'data-ontologyclass'

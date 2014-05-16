@@ -36,9 +36,9 @@ class LogicgraphParser::StubTest < ActiveSupport::TestCase
     end
 
   end
-  
+
   def open_fixture(name)
     File.open("#{Rails.root}/registry/#{name}")
   end
-  
+
 end

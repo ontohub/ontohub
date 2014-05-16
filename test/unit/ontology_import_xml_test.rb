@@ -30,7 +30,7 @@ class OntologyImportXMLTest < ActiveSupport::TestCase
       end
     end
   end
-  
+
   context 'Import distributed Ontology' do
     setup do
       @user = FactoryGirl.create :user
@@ -38,15 +38,15 @@ class OntologyImportXMLTest < ActiveSupport::TestCase
       @ontology.import_xml_from_file fixture_file('test2.xml'),
         fixture_file('test2.pp.xml'), @user
     end
-    
+
     should 'create single ontologies' do
       assert_equal 4, SingleOntology.count
     end
-    
+
     should 'have children ontologies' do
       assert_equal 4, @ontology.children.count
     end
-    
+
     should 'have correct link count' do
       assert_equal 3, @ontology.links.count
     end
@@ -54,24 +54,24 @@ class OntologyImportXMLTest < ActiveSupport::TestCase
     should 'have logic DOL' do
       assert_equal 'DOL', @ontology.logic.try(:name)
     end
-    
+
     should 'have no entities' do
       assert_equal 0, @ontology.entities.count
     end
-    
+
     should 'have no sentences' do
       assert_equal 0, @ontology.sentences.count
     end
-    
+
     context 'first child ontology' do
       setup do
         @child = @ontology.children.where(name: 'sp__E1').first
       end
-      
+
       should 'have entities' do
         assert_equal 2, @child.entities.count
       end
-      
+
       should 'have sentences' do
         assert_equal 1, @child.sentences.count
       end
@@ -94,7 +94,7 @@ class OntologyImportXMLTest < ActiveSupport::TestCase
         fixture_file('align.pp.xml'), @user
       @combined = @ontology.children.where(name: 'VAlignedOntology').first
     end
-    
+
     should 'create single ontologies' do
       assert_equal 4, SingleOntology.count
     end

@@ -1,7 +1,7 @@
 .invitation New to Ontohub? Sign up!
 
 = simple_form_for User.new, url: user_registration_path, html: {class: 'form-horizontal'} do |f|
-  = f.input_field :name, class: 'form-control', required: true, placeholder: 'Name', style: 'margin: 0 0 2px;'
+  = f.input_field :name, class: 'form-control', required: true, placeholder: 'Name', style: 'margin: 0 0 2px;', as: :string
   = f.input_field :email, type: 'email', pattern: '[^@]*@[^@]*', class: 'form-control', required: true, placeholder: 'E-Mail'
   .input-group
     = f.input_field :password, class: 'form-control', required: true, placeholder: 'Password'

@@ -39,7 +39,7 @@ module Hets
     private
 
     # Checks Hets installation compatibility by its version date
-    # 
+    #
     # * *Args* :
     # * - +minimum_revision+ -> Minimum working hets version revision
     # * *Returns* :
@@ -97,7 +97,7 @@ module Hets
 
     if output.starts_with? '*** Error'
       # some error occured
-      raise ExecutionError, output 
+      raise ExecutionError, output
     elsif (files = written_files(output.lines)).any?
       # successful execution
       files

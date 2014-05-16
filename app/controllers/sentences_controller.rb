@@ -1,6 +1,6 @@
-# 
+#
 # Lists sentences of an ontology
-# 
+#
 class SentencesController < InheritedResources::Base
 
   belongs_to :ontology

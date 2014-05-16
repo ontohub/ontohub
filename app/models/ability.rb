@@ -3,9 +3,9 @@ class Ability
 
   def initialize(user)
     # Define abilities for the passed in user here.
-    
+
     user ||= User.new # guest user (not logged in)
-    
+
     if user.admin?
       can { true }
     elsif user.id
@@ -21,7 +21,13 @@ class Ability
         end
       end
       can [:write], Repository do |subject|
-        subject.permission?(:editor, user) or subject.public_rw?
+        if subject.private_r?
+          false
+        elsif subject.private_rw?
+          subject.permission?(:editor, user)
+        else
+          (subject.permission?(:editor, user) || subject.public_rw?)
+        end
       end
       can [:update, :destroy, :permissions], Repository do |subject|
         subject.permission?(:owner, user)
@@ -31,7 +37,7 @@ class Ability
       can :manage, Ontology do |subject|
         subject.permission?(:editor, user)
       end
-      
+
       # Logics
       can [:update], Logic do |subject|
         subject.permission?(:editor, user)
@@ -40,7 +46,7 @@ class Ability
         subject.permission?(:owner, user)
       end
       can [:create], Logic
-      
+
       # LogicMappings
       can [:update], LogicMapping do |subject|
         subject.permission?(:editor, user)
@@ -49,7 +55,7 @@ class Ability
         subject.permission?(:owner, user)
       end
       can [:create], LogicMapping
-      
+
       # LanguageMappings
       can [:update], LanguageMapping do |subject|
         subject.permission?(:editor, user)
@@ -76,7 +82,7 @@ class Ability
         subject.permission?(:owner, user)
       end
       can [:create], LanguageAdjoint
-      
+
       # Languages
       can [:update], Language do |subject|
         subject.permission?(:editor, user)
@@ -88,19 +94,19 @@ class Ability
 
       # Serializations
       can [:create, :destroy, :update], Serialization
-      
+
       # Team permissions
       can [:create, :read], Team
       can [:update, :destroy], Team do |subject|
         subject.admin?(user)
       end
-      
+
       # Comments
       can [:create], Comment
       can [:destroy], Comment do |subject|
         subject.user == user || subject.commentable.permission?(:owner, user)
       end
-      
+
       can [:create, :destroy], Metadatum do |subject|
         # TODO tests written?
         subject.user == user || subject.metadatable.permission?(:editor, user)
@@ -123,7 +129,7 @@ class Ability
       can :read, FormalityLevel
       can :read, Category
     end
-    
+
     # See the wiki for details: https://github.com/ryanb/cancan/wiki/Defining-Abilities
   end
 end

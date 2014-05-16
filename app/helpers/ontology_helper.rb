@@ -10,10 +10,6 @@ module OntologyHelper
     repository_ontology_ontology_version_path(*resource_chain, resource.versions.done.latest.first)
   end
 
-  def repository
-    @ontology.repository
-  end
-  
   def show_evaluate?
     show_oops? #|| show_foo?
   end

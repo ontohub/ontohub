@@ -1,2 +1,11 @@
-- @page_title = 'Home'
-= render partial: 'versions'
+- @page_title = 'Sign Up Information'
+
+%h2=t("signup.welcome", name: current_user.name)
+
+.row
+  .col-md-12
+    =simple_format t("signup.what_happens")
+.row
+  .col-md-12
+    %h3=t("signup.need_help")
+    =simple_format t("signup.wiki", link: link_to("Wiki", "http://wiki.ontohub.org/", target: "_blank"))

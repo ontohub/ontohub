@@ -11,7 +11,7 @@ class TripleStoreTest < ActiveSupport::TestCase
       @store = TripleStore.new([])
     end
 
-    should "expect no subjects" do 
+    should "expect no subjects" do
       assert_equal [], @store.subjects('b','c')
     end
     should "expect no predicates" do
@@ -36,7 +36,7 @@ class TripleStoreTest < ActiveSupport::TestCase
     should "expect one object" do
       assert_equal ['c'], @store.objects('a','b')
     end
-    should "expect no subjects" do 
+    should "expect no subjects" do
       assert_equal [], @store.subjects('b','d')
     end
     should "expect no predicates" do

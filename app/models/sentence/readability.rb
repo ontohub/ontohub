@@ -1,6 +1,6 @@
 module Sentence::Readability
   extend ActiveSupport::Concern
-  
+
   def set_display_text!
     new_text = self.text.dup
 

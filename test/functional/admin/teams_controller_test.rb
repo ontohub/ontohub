@@ -7,17 +7,17 @@ class Admin::TeamsControllerTest < ActionController::TestCase
       setup do
         get :index
       end
-      
+
       should set_the_flash.to(/admin privileges/)
       should respond_with :redirect
     end
-    
+
     context 'signed in as normal user' do
       setup do
         sign_in FactoryGirl.create :user
         get :index
       end
-      
+
       should set_the_flash.to(/admin privileges/)
       should respond_with :redirect
     end
@@ -27,9 +27,9 @@ class Admin::TeamsControllerTest < ActionController::TestCase
         sign_in FactoryGirl.create :admin
         get :index
       end
-      
+
       should respond_with :success
     end
   end
-  
+
 end

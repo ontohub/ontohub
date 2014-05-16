@@ -1,7 +1,7 @@
 $ ->
   messages = $(".flash")
   timeout = null
-  
+
   close = (message) ->
     message.fadeOut()
 

@@ -1,14 +1,14 @@
-# 
+#
 # Helper-Class for rendering a list of relations
-# 
+#
 class RelationList
-  
+
   attr_reader :model, :collection_path, :collection, :scope, :association
-  
-  # 
+
+  #
   # first argument: restful path to the collection of related objects
   # second argument: options hash that may contain the following elements:
-  # 
+  #
   # :scope       => scope for the autocompleter
   # :model       => class that represents the relation
   # :association => name of the activerecord-association
@@ -16,7 +16,7 @@ class RelationList
   def initialize(collection_path, options)
     @collection_path = collection_path
     @editable        = true
-    
+
     options.each do |key,value|
       case key
         when :model, :collection, :association
@@ -31,43 +31,43 @@ class RelationList
           raise ArgumentError, "invalid option: #{key}"
       end
     end
-    
+
     # check required attributes
     for key in %w( model scope collection )
       raise ArgumentError, "#{key} is not set" unless instance_variable_get("@#{key}")
     end
   end
-  
+
   def polymorphic?
     @model.reflect_on_association(@association).options[:polymorphic]==true
   end
-  
+
   # path for rendering a PermissionsList instance
   def to_partial_path
     'relation_list/relation_list'
   end
-  
+
   def form_path
     partial_path :form
   end
-  
+
   def relation_partial_path
     partial_path model_underscore
   end
-  
+
   # path to a specific partial of the permission list
   def partial_path(name)
     "#{model_underscore.pluralize}/#{name}"
   end
-  
+
   def model_underscore
     @model.name.underscore
   end
-  
+
   def t(key)
     I18n.t(key, :scope => "relation_list.#{model_underscore}" )
   end
-  
+
   def to_data
     {
       'data-model'       => model,
@@ -76,5 +76,5 @@ class RelationList
       'data-association' => association
     }
   end
-  
+
 end

@@ -24,7 +24,7 @@
     password: 'changeme'
 
   @user.confirm!
-  
+
   # Add two users to the first team.
   @team.users << @user if i < 2
 end

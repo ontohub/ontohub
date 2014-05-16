@@ -2,11 +2,11 @@ class ApplicationController < ActionController::Base
 
   protect_from_forgery
   ensure_security_headers
-  
+
   include Pagination
   include PathHelpers
   include ApplicationHelper
-  
+
   # CanCan Authorization
   rescue_from CanCan::AccessDenied do |exception|
     if request.format.html?
@@ -18,7 +18,7 @@ class ApplicationController < ActionController::Base
         text:         exception.message
     end
   end
- 
+
   if defined? PG
     # A foreign key constraint exception from the database
     rescue_from PG::Error do |exception|
@@ -27,7 +27,7 @@ class ApplicationController < ActionController::Base
         logger.warn(message)
         # shorten the message
         message = message.match(/DETAIL: .+/).to_s
-        
+
         redirect_to :back,
           flash: {error: "Whatever you tried to do - the server is unable to process your request because of a foreign key constraint. (#{message})" }
       else
@@ -39,7 +39,7 @@ class ApplicationController < ActionController::Base
 
 
   protected
-  
+
   def authenticate_admin!
     unless admin?
       flash[:error] = 'you need admin privileges for this action'

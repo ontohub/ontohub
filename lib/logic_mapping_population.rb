@@ -1,5 +1,5 @@
 # A logic_mapping propulation procedure.
-# 
+#
 # TODO Transform this code in an iterator to enable unit testing
 #
 # Author: Daniel Couto Vale <danielvale@uni-bremen.de>
@@ -72,7 +72,7 @@ class LogicMappingPopulation
       if faithfulness_i > 2 then
         exactness_i = 3
       end
-      
+
       LogicMapping.new \
         :iri => mapping_iri,
         #:name => mapping_name,

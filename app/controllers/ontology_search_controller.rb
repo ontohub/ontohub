@@ -30,7 +30,7 @@ class OntologySearchController < ApplicationController
     end
   end
 
-  def filters_map    
+  def filters_map
     respond_with OntologySearch.new.make_filters_map_json
   end
 

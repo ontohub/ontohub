@@ -40,7 +40,7 @@ class Worker < BaseWorker
       'backtrace' => true
     }
   end
-  
+
 end
 
 class SequentialWorker < Worker

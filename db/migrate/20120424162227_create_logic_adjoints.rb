@@ -8,7 +8,7 @@ class CreateLogicAdjoints < ActiveRecord::Migration
 
       t.timestamps :null => false
     end
-    
+
     change_table :logic_adjoints do |t|
       t.index :translation_id
       t.index :projection_id

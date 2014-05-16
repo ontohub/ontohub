@@ -1,6 +1,6 @@
-# 
+#
 # Controller for ontologies
-# 
+#
 class OntologiesController < InheritedResources::Base
 
   include FilesHelper
@@ -45,7 +45,7 @@ class OntologiesController < InheritedResources::Base
     super
     resource.category_ids = user_selected_categories
   end
-  
+
   def show
     @content_object = :ontology
 
@@ -83,7 +83,7 @@ class OntologiesController < InheritedResources::Base
 
   def retry_failed
     scope = end_of_association_chain
-    
+
     if id = params[:id]
       # retry a specific ontology
       scope = scope.where(id: id)
@@ -93,7 +93,7 @@ class OntologiesController < InheritedResources::Base
 
     redirect_to (id ? [parent, scope.first!, :ontology_versions] : [parent, :ontologies])
   end
-  
+
   def oops_state
     respond_to do |format|
       format.json do
@@ -104,7 +104,7 @@ class OntologiesController < InheritedResources::Base
 
 
   protected
-  
+
   def check_read_permissions
     unless params[:action] == 'index'
       authorize!(:show, Repository.find_by_path(params[:repository_id]))
@@ -134,5 +134,11 @@ class OntologiesController < InheritedResources::Base
   def user_selected_categories
     params[:category_ids].keys unless params[:category_ids].nil?
   end
+
+  helper_method :repository
+  def repository
+    parent
+  end
+
 
 end

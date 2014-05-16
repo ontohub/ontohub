@@ -1,11 +1,11 @@
 require 'test_helper'
 
 class PermissionTest < ActiveSupport::TestCase
-  
+
   should belong_to :creator
   should belong_to :item
   should belong_to :subject
-  
+
   [ 'owner', 'editor' ].each do |val|
     should allow_value(val).for :role
   end
@@ -13,7 +13,7 @@ class PermissionTest < ActiveSupport::TestCase
   [ nil, '','foo' ].each do |val|
     should_not allow_value(val).for :role
   end
-  
+
   context 'repository' do
     setup do
       @repository = FactoryGirl.create :repository

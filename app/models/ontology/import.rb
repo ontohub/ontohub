@@ -1,5 +1,5 @@
 module Ontology::Import
-	extend ActiveSupport::Concern
+  extend ActiveSupport::Concern
 
   def import_xml(io, code_io, user)
     now = Time.now

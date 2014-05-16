@@ -5,7 +5,7 @@ class OntologyVersionsControllerTest < ActionController::TestCase
   should_map_nested_resources :repositories, :ontologies, :ontology_versions,
     :as     => 'versions',
     :except => [:show, :edit, :update, :destroy]
-  
+
   context 'OntologyVersion of a DistributedOntology' do
     setup do
       @user = FactoryGirl.create :user
@@ -27,19 +27,19 @@ class OntologyVersionsControllerTest < ActionController::TestCase
       end
     end
   end
-    
+
   context 'OntologyVersion Instance' do
     setup do
       @version  = FactoryGirl.create :ontology_version_with_file
       @ontology = @version.ontology
       @repository = @ontology.repository
     end
-    
+
     context 'on GET to index' do
       setup do
         get :index, repository_id: @repository.to_param, ontology_id: @ontology.to_param
       end
-      
+
       should respond_with :success
 
       context 'for a single ontology' do

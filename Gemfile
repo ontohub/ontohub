@@ -1,6 +1,6 @@
 source 'https://rubygems.org'
 
-gem 'rails', '~> 3.2.13'
+gem 'rails', '~> 3.2.18'
 gem 'rack-protection'
 gem 'secure_headers'
 
@@ -30,6 +30,7 @@ group :assets do
   gem 'uglifier', '>= 1.0.3'
   gem 'handlebars_assets', '~> 0.14.1'
   gem 'hamlbars', '~> 2.0'
+  gem 'underscore-rails', '~> 1.6.0'
 end
 
 gem 'haml-rails'

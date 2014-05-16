@@ -33,7 +33,7 @@ module ApplicationHelper
 
     if params[:logic_id]
       @resource_chain = []
-      return @resource_chain      
+      return @resource_chain
     end
 
     if !params[:repository_id] && !(params[:controller] == 'repositories' && params[:id])
@@ -42,7 +42,7 @@ module ApplicationHelper
     end
 
     @resource_chain = [ Repository.find_by_path!( controller_name=='repositories' ? params[:id] : params[:repository_id] )]
-    
+
     if id = params[:commit_reference_id]
       @resource_chain << CommitReference.new(id)
     end

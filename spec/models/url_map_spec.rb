@@ -33,7 +33,7 @@ describe UrlMap do
         subject do
           source = ""
         end
-        it do 
+        it do
           url_map.source = ""
           url_map.valid?
           url_map.errors[:source].should == ["can't be blank"]
@@ -41,7 +41,7 @@ describe UrlMap do
       end
 
       describe 'target empty' do
-        it do 
+        it do
           url_map.target = ""
           url_map.valid?
           url_map.errors[:target].should == ["can't be blank"]

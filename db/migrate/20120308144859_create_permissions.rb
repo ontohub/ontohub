@@ -13,7 +13,7 @@ class CreatePermissions < ActiveRecord::Migration
         :name => 'index_permissions_on_item_and_subject',
         :unique => true
       t.index [:subject_id, :subject_type]
-      
+
       t.index :creator_id
       t.foreign_key :users, :dependent => :nullify, :column => :creator_id
     end

@@ -64,7 +64,7 @@ class EntityDisplayTest < ActionController::IntegrationTest
             @entity.ontology.state = 'done'
             @entity.ontology.save
             @repository = @entity.ontology.repository
-            
+
             visit repository_ontology_entities_path(@repository, @entity.ontology)
           end
 

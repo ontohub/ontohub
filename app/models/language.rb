@@ -1,7 +1,7 @@
 class Language < ActiveRecord::Base
   include Resourcable
   include Permissionable
-  
+
   STAND_STATUS = %w( AcademicLiterature ISOStandard Unofficial W3CRecommendation W3CTeamSubmission W3CWorkingGroupNote )
   DEFINED_BY = %w( registry )
 
@@ -10,7 +10,7 @@ class Language < ActiveRecord::Base
   has_many :ontologies
   has_many :serializations
   has_many :language_mappings, :foreign_key => :source_id
-  
+
   belongs_to :user
 
   attr_accessible :name, :iri, :description, :standardization_status, :defined_by
@@ -22,7 +22,7 @@ class Language < ActiveRecord::Base
   validates_format_of :iri, with: URI::regexp(Settings.allowed_iri_schemes)
 
   after_create :add_permission
-  
+
   scope :autocomplete_search, ->(query) {
     where("name ILIKE ?", "%" << query << "%")
   }
@@ -30,17 +30,17 @@ class Language < ActiveRecord::Base
   def to_s
     name
   end
-  
+
   def add_logic(logic)
     sup = self.supports.new
     sup.logic = logic
     sup.save!
   end
-  
+
     def mappings_from
     LanguageMapping.where source_id: self.id
   end
-  
+
   def mappings_to
     LanguageMapping.where(target_id: self.id)
   end

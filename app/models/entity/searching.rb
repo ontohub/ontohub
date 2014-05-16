@@ -1,6 +1,6 @@
 module Entity::Searching
   extend ActiveSupport::Concern
-  
+
   included do
     searchable do
       text :text, stored: true # necessary for highlighting
@@ -18,9 +18,9 @@ module Entity::Searching
       integer(:repository_id) { |symbol| symbol.ontology.repository.id }
     end
   end
-  
+
   KIND_PATTERN = /kind:([\w\.-]+)/
-  
+
   module ClassMethods
     def collect_keywords(prefix, repository)
       s = search do
@@ -35,7 +35,7 @@ module Entity::Searching
 
     def search_with_ontologies(name, max)
       name = name.dup
-      
+
       # extract kind:<value>, if included
       if kind = KIND_PATTERN.match(term)
         kind = kind[1]
@@ -43,21 +43,21 @@ module Entity::Searching
       end
 
       search :include => [:ontology] do
-        
+
         # search for text
         fulltext term do
           highlight :text
           fields(:text)
         end
-        
+
         # search for kind
         with :kind, kind.downcase if kind
-        
+
         # group by ontology
         group :ontology_id_str do
           limit 10
         end
-        
+
         # limit result
         paginate :per_page => max
       end

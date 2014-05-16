@@ -1,10 +1,4 @@
 %div{class: resource.class.name.downcase}
-  - if can? :edit, resource and not options[:disable_actions]
-    .btn-group.pull-right
-      - additional_actions.each do |action_link|
-        = action_link
-      = link_to 'Edit', [:edit, resource], class: 'btn btn-default'
-      = link_to 'Delete', resource, confirm: 'Really delete?', method: :delete, class: 'btn btn-default'
 
   %h1
     = fancy_link resource
