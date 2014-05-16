@@ -3,7 +3,7 @@ require 'git_repository'
 module Repository::GitRepositories
   extend ActiveSupport::Concern
 
-  delegate :dir?, :points_through_file?, :has_changed?, to: :git
+  delegate :dir?, :points_through_file?, :has_changed?, :commits, to: :git
 
   included do
     after_create  :create_and_init_git
@@ -212,16 +212,6 @@ module Repository::GitRepositories
 
   def recent_changes
     commits(limit: 3)
-  end
-
-  # recognized options: :start_oid (first commit to show)
-  #                     :stop_oid (first commit to hide)
-  #                     :path (file to show changes for)
-  #                     :limit (max number of commits)
-  #                     :offset (number of commits to skip)
-  #                     :walk_order (Rugged-Walkorder)
-  def commits(options={}, &block)
-    git.commits(options, &block)
   end
 
   def suspended_save_ontologies(options={})
