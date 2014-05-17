@@ -65,16 +65,16 @@ module Repository::GitRepositories
     commit
   end
 
-  def save_ontology(commit_oid, filepath, user=nil, iri: nil, fast_parse: false, do_not_parse: false)
+  def save_ontology(commit_oid, filepath, user=nil, iri: nil, fast_parse: false, do_not_parse: false, previous_filepath: nil)
     # we expect that this method is only called, when the ontology is 'present'
     return unless Ontology.file_extensions.include?(File.extname(filepath))
     version = nil
     basepath = File.basepath(filepath)
     file_extension = File.extname(filepath)
-    o = ontologies.without_parent.where(basepath: basepath).first
-    return unless o.nil? || o.path == filepath
+    o = ontologies.find_with_path(previous_filepath || filepath).without_parent.first
 
     if o
+      return if o.versions.last.present? && !master_file?(o, previous_filepath || filepath)
       o.present = true
       unless o.versions.find_by_commit_oid(commit_oid)
         # update existing ontology
@@ -92,10 +92,8 @@ module Repository::GitRepositories
       # create new ontology
       clazz      = Ontology.file_extensions_distributed.include?(File.extname(filepath)) ? DistributedOntology : SingleOntology
       o          = clazz.new
-      o.basepath = basepath
-      o.file_extension = File.extname(filepath)
 
-      o.iri  = iri || "http://#{Settings.hostname}/#{path}/#{basepath}"
+      o.iri  = iri || generate_iri(basepath)
       o.name = filepath.split('/')[-1].split(".")[0].capitalize
 
       o.repository = self
@@ -221,10 +219,12 @@ module Repository::GitRepositories
 
   def suspended_save_ontologies(options={})
     versions = []
-    commits(options) { |commit_oid|
-      git.changed_files(commit_oid).each { |f|
-        if f.add? || f.change?
-          versions << save_ontology(commit_oid, f.path, options.delete(:user), fast_parse: has_changed?(f.path, commit_oid), do_not_parse: true)
+    commits(options) { |commit|
+      git.changed_files(commit.oid).each { |f|
+        if f.added? || f.modified?
+          versions << save_ontology(commit.oid, f.path, options.delete(:user), fast_parse: has_changed?(f.path, commit.oid), do_not_parse: true)
+        elsif f.renamed?
+          versions << save_ontology(commit.oid, f.path, options.delete(:user), fast_parse: has_changed?(f.path, commit.oid), do_not_parse: true, previous_filepath: f.delta.old_file[:path])
         end
       }
     }
@@ -233,7 +233,7 @@ module Repository::GitRepositories
   end
 
   def schedule_batch_parsing(versions)
-    grouped_versions = versions.compact.group_by { |v| v.ontology.path }
+    grouped_versions = versions.compact.group_by { |v| v.path }
     grouped_versions.each do |k,versions|
       optioned_versions = versions.map do |version|
         [version.id, { fast_parse: version.fast_parse }]
@@ -244,5 +244,13 @@ module Repository::GitRepositories
 
   def user_info(user)
     {email: user.email, name: user.name}
+  end
+
+  def master_file?(ontology, filepath)
+    ontology.path == filepath
+  end
+
+  def generate_iri(basepath)
+    "http://#{Settings.hostname}/#{self.path}/#{basepath}"
   end
 end

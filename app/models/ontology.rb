@@ -75,7 +75,8 @@ class Ontology < ActiveRecord::Base
   scope :find_with_path, ->(path) do
     joins(:ontology_version).where(
       'ontology_versions.basepath'       => File.basepath(path),
-      'ontology_versions.file_extension' => File.extname(path))
+      'ontology_versions.file_extension' => File.extname(path)).
+    readonly(false)
   end
 
   scope :parents_first, order('(CASE WHEN ontologies.parent_id IS NULL THEN 1 ELSE 0 END) DESC, ontologies.parent_id asc')
@@ -207,7 +208,8 @@ class Ontology < ActiveRecord::Base
   end
 
   def current_version
-    versions.where(id: self.ontology_version_id).first!
+    onto = parent.nil? ? self : parent
+    onto.versions.where(id: onto.ontology_version_id).first
   end
 
   protected
