@@ -70,6 +70,7 @@ module Repository::GitRepositories
     return unless Ontology.file_extensions.include?(File.extname(filepath))
     version = nil
     basepath = File.basepath(filepath)
+    file_extension = File.extname(filepath)
     o = ontologies.without_parent.where(basepath: basepath).first
     return unless o.nil? || o.path == filepath
 
@@ -79,6 +80,8 @@ module Repository::GitRepositories
         # update existing ontology
         version = o.versions.build({ commit_oid: commit_oid,
                                      user: user,
+                                     basepath: basepath,
+                                     file_extension: file_extension,
                                      fast_parse: fast_parse },
                                    { without_protection: true })
         o.ontology_version = version
@@ -100,6 +103,8 @@ module Repository::GitRepositories
       o.save!
       version = o.versions.build({ commit_oid: commit_oid,
                                    user: user,
+                                   basepath: basepath,
+                                   file_extension: file_extension,
                                    fast_parse: fast_parse },
                                  { without_protection: true })
       version.do_not_parse! if do_not_parse

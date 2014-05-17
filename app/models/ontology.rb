@@ -65,19 +65,17 @@ class Ontology < ActiveRecord::Base
     allow_blank: true,
     format: { with: URI::regexp(Settings.allowed_iri_schemes) }
 
-  validates_presence_of :basepath
-
   delegate :permission?, to: :repository
+  delegate :basepath, :file_extension, :path, to: :current_version
 
   strip_attributes :only => [:name, :iri]
 
   scope :list, includes(:logic).order('ontologies.state asc, ontologies.entities_count desc')
 
-
   scope :find_with_path, ->(path) do
-    where "ontologies.basepath = :basepath AND ontologies.file_extension = :file_extension",
-      basepath: File.basepath(path),
-      file_extension: File.extname(path)
+    joins(:ontology_version).where(
+      'ontology_versions.basepath'       => File.basepath(path),
+      'ontology_versions.file_extension' => File.extname(path))
   end
 
   scope :parents_first, order('(CASE WHEN ontologies.parent_id IS NULL THEN 1 ELSE 0 END) DESC, ontologies.parent_id asc')
@@ -114,10 +112,6 @@ class Ontology < ActiveRecord::Base
     self.is?('OWL') || self.is?('OWL2')
   end
 
-  def path
-    "#{basepath}#{file_extension}"
-  end
-
   def symbols
     entities
   end
@@ -133,11 +127,6 @@ class Ontology < ActiveRecord::Base
   # Title for links
   def title
     name? ? iri : nil
-  end
-
-
-  def self.find_by_file(file)
-    s_find_by_file(file).first
   end
 
   def self.find_with_iri(iri)
@@ -217,13 +206,11 @@ class Ontology < ActiveRecord::Base
       where('imported = ?', true)
   end
 
-  protected
-
-  scope :s_find_by_file, ->(file) do
-    where "ontologies.basepath = :basepath AND ontologies.file_extension = :file_extension AND ontologies.parent_id IS NULL",
-      basepath: File.basepath(file),
-      file_extension: File.extname(file)
+  def current_version
+    versions.where(id: self.ontology_version_id).first!
   end
+
+  protected
 
   def import_links
     Link.where(source_id: self.id, kind: "import")
