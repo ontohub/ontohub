@@ -67,18 +67,11 @@ module GitRepository::History
 
   # check if the file at path has changed between previous_oid and current_oid
   def has_changed?(path, previous_oid, current_oid=nil)
-    Rails.logger.warn ""
-    Rails.logger.warn ""
-    Rails.logger.warn "path: #{path.inspect}"
-    Rails.logger.warn "previous_oid: #{previous_oid.inspect}"
     current_oid ||= head_oid
-    Rails.logger.warn "current_oid:  #{current_oid.inspect}"
 
     previous_obj = get_object(repo.lookup(previous_oid), path.to_s)
     current_obj  = get_object(repo.lookup(current_oid),  path.to_s)
 
-    Rails.logger.warn ""
-    Rails.logger.warn ""
     if previous_obj.nil? || current_obj.nil?
       true
     else
