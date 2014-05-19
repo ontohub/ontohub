@@ -2,6 +2,8 @@ FactoryGirl.define do
   factory :ontology_version do
     association :ontology
     association :user
+    basepath { SecureRandom.hex(10) }
+    file_extension { '.owl' }
     commit_oid { SecureRandom.hex(20) }
   end
   
