@@ -215,7 +215,7 @@ class Ontology < ActiveRecord::Base
 
   def current_version
     onto = parent.nil? ? self : parent
-    onto.versions.where(id: onto.ontology_version_id).first
+    onto.versions.current
   end
 
   protected
