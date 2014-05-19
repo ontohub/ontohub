@@ -79,6 +79,12 @@ class Ontology < ActiveRecord::Base
     readonly(false)
   end
 
+  scope :find_with_basepath, ->(path) do
+    joins(:ontology_version).where(
+      'ontology_versions.basepath' => File.basepath(path)).
+    readonly(false)
+  end
+
   scope :parents_first, order('(CASE WHEN ontologies.parent_id IS NULL THEN 1 ELSE 0 END) DESC, ontologies.parent_id asc')
 
 

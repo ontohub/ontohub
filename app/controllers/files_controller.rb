@@ -16,9 +16,9 @@ class FilesController < ApplicationController
       when :file
         @file = repository.read_file(path, oid)
       when :file_base
-        ontology = repository.ontologies.
-                    where(basepath: File.basepath(@info[:entry][:path])).
-                    order('id asc').first
+        ontology = repository.ontologies.find_with_basepath(
+          File.basepath(@info[:entry][:path])).
+          order('id asc').first
         if request.query_string.present?
           ontology = ontology.children.
             where(name: request.query_string).first
