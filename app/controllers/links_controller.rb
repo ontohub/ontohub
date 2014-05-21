@@ -34,6 +34,7 @@ class LinksController < InheritedResources::Base
     @version = resource.versions.current.dup
     @version.version_number = @version.version_number + 1
     @version.save
+    @version.ontology.update_version!(to: @version)
     redirect_to edit_link_link_version_path(resource, @version)
   end
 

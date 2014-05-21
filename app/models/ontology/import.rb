@@ -198,11 +198,9 @@ module Ontology::Import
           end
         }
       save!
-      versions.each do |version|
+      versions.compact.each do |version|
         version.save!
-        version_ontology = version.ontology
-        version_ontology.ontology_version_id = version.id
-        version_ontology.save!
+        version.ontology.update_version!(to: version)
       end
       ontologies.each(&:create_translated_sentences)
 
