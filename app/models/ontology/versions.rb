@@ -26,6 +26,14 @@ module Ontology::Versions
       save!
     end
 
+    def current_version
+      if self.ontology_version
+        self.ontology_version
+      else
+        self.versions.current
+      end
+    end
+
     def active_version
       return self.ontology_version if self.state == 'done'
       OntologyVersion.

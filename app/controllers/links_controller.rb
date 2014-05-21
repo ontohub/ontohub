@@ -25,13 +25,13 @@ class LinksController < InheritedResources::Base
 
   def create
     @version = build_resource.versions.first
-    @version.source = Ontology.find(params[:link][:source_id]).versions.current
-    @version.target = Ontology.find(params[:link][:target_id]).versions.current
+    @version.source = Ontology.find(params[:link][:source_id]).current_version
+    @version.target = Ontology.find(params[:link][:target_id]).current_version
     super
   end
 
   def update_version
-    @version = resource.versions.current.dup
+    @version = resource.current_version.dup
     @version.version_number = @version.version_number + 1
     @version.save
     @version.ontology.update_version!(to: @version)
