@@ -77,7 +77,6 @@ describe Ontology do
     let(:version) { add_fixture_file(repository, 'xml/catalog-v001.xml') }
 
     it 'no ontology should exist' do
-      puts repository.ontologies.inspect
       expect(repository.ontologies).to be_empty
     end
 
@@ -145,6 +144,10 @@ describe Ontology do
         expect(ontology.contains_logic_translations?).to be_true
       end
 
+      it 'should have an ontology-version' do
+        expect(ontology.ontology_version).to_not be_nil
+      end
+
     end
 
   end
@@ -167,10 +170,20 @@ describe Ontology do
     let(:presentation) { list[0] }
     let(:referenced_presentation) { list[1] }
     let(:version) { version_for_file(repository, presentation.file.path) }
-    let(:ontology) { version.ontology }
+    let(:ontology) { version.ontology.reload }
 
     before do
+      ExternalRepository.stub(:download_iri) do |external_iri|
+        absolute_path = external_iri.sub('file://', '')
+        dir = Pathname.new('/tmp/reference_ontologies/').
+          join(ExternalRepository.determine_path(external_iri, :dirpath))
+        ExternalRepository.send(:ensure_path_existence, dir)
+        filepath = dir.join(ExternalRepository.send(:determine_basename, external_iri))
+        FileUtils.cp(absolute_path, filepath)
+        filepath
+      end
       version.parse
+      ExternalRepository.unstub(:download_iri)
     end
 
     let(:referenced_ontology) do
@@ -180,6 +193,14 @@ describe Ontology do
 
     it 'should import an ontology with that name' do
       expect(ontology.direct_imported_ontologies).to include(referenced_ontology)
+    end
+
+    it 'should have an ontology-version' do
+      expect(ontology.ontology_version).to_not be_nil
+    end
+
+    it 'should have a referenced ontology with an ontology-version' do
+      expect(referenced_ontology.ontology_version).to_not be_nil
     end
   end
 
