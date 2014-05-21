@@ -127,6 +127,7 @@ module Ontology::Import
               else
                 ontology = self
                 ontology.present = true
+                versions << ontology.versions.current
               end
             end
           end
@@ -197,7 +198,12 @@ module Ontology::Import
           end
         }
       save!
-      versions.each(&:save!)
+      versions.each do |version|
+        version.save!
+        version_ontology = version.ontology
+        version_ontology.ontology_version_id = version.id
+        version_ontology.save!
+      end
       ontologies.each(&:create_translated_sentences)
 
     end
