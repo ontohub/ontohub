@@ -111,7 +111,8 @@ group :test do
   # Recording of HTTP Requests
   gem "vcr"
   gem "webmock", '~> 1.9.0'
-
+  
+  gem 'cucumber-rails', '~> 1.4'
   # Code Coverage Analysis
   gem 'coveralls', require: false
 
