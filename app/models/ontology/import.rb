@@ -84,6 +84,8 @@ module Ontology::Import
             if ontology.nil?
               ontology = SingleOntology.create!({name: child_name,
                                                  iri: ExternalRepository.determine_iri(internal_iri),
+                                                 basepath: ExternalRepository.determine_path(internal_iri, :basepath),
+                                                 file_extension: ExternalRepository.determine_path(internal_iri, :extension),
                                                  present: true,
                                                  repository_id: ExternalRepository.repository.id},
                                                  without_protection: true)
@@ -106,6 +108,8 @@ module Ontology::Import
 
                 ontology = SingleOntology.create!({iri: child_iri,
                     name: child_name,
+                    basepath: self.basepath,
+                    file_extension: self.file_extension,
                     repository_id: repository_id},
                   without_protection: true)
                 self.children << ontology

@@ -12,6 +12,8 @@ FactoryGirl.define do
     association :repository
     iri { FactoryGirl.generate :iri }
     name { FactoryGirl.generate :name }
+    basepath { SecureRandom.hex(10) }
+    file_extension { '.owl' }
     description { Faker::Lorem.paragraph }
     logic { FactoryGirl.create :logic }
 

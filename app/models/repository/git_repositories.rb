@@ -74,7 +74,7 @@ module Repository::GitRepositories
     o = ontologies.find_with_path(previous_filepath || filepath).without_parent.first
 
     if o
-      return if o.versions.last.present? && !master_file?(o, previous_filepath || filepath)
+      return if !master_file?(o, previous_filepath || filepath)
       o.present = true
       unless o.versions.find_by_commit_oid(commit_oid)
         # update existing ontology
@@ -92,6 +92,8 @@ module Repository::GitRepositories
       # create new ontology
       clazz      = Ontology.file_extensions_distributed.include?(File.extname(filepath)) ? DistributedOntology : SingleOntology
       o          = clazz.new
+      o.basepath = basepath
+      o.file_extension = file_extension
 
       o.iri  = iri || generate_iri(basepath)
       o.name = filepath.split('/')[-1].split(".")[0].capitalize

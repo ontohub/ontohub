@@ -65,8 +65,9 @@ class Ontology < ActiveRecord::Base
     allow_blank: true,
     format: { with: URI::regexp(Settings.allowed_iri_schemes) }
 
+  validates_presence_of :basepath
+
   delegate :permission?, to: :repository
-  delegate :basepath, :file_extension, :path, to: :current_version
 
   strip_attributes :only => [:name, :iri]
 
@@ -216,6 +217,22 @@ class Ontology < ActiveRecord::Base
   def current_version
     onto = parent.nil? ? self : parent
     onto.versions.current
+  end
+
+  def basepath
+    has_versions? ? current_version.basepath : read_attribute(:basepath)
+  end
+
+  def file_extension
+    has_versions? ? current_version.file_extension : read_attribute(:file_extension)
+  end
+
+  def path
+    basepath+file_extension
+  end
+
+  def has_versions?
+    versions.last.present?
   end
 
   protected
