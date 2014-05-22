@@ -228,7 +228,7 @@ class Ontology < ActiveRecord::Base
   end
 
   def path
-    basepath+file_extension
+    "#{basepath}#{file_extension}"
   end
 
   def has_versions?
