@@ -5,6 +5,10 @@ FactoryGirl.define do
     basepath { SecureRandom.hex(10) }
     file_extension { '.owl' }
     commit_oid { SecureRandom.hex(20) }
+
+    after(:create) do |version|
+      version.ontology.reload
+    end
   end
   
   factory :ontology_version_with_file, :parent => :ontology_version do
