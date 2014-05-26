@@ -6,9 +6,19 @@ class SshAccess
   }
 
   PERMISSION_MAP = {
-    everyone: %w{read},
+    everyone: {
+      'public_r' => %w{read},
+      'public_rw' => %w{read write},
+      'private_r' => %w{},
+      'private_rw' => %w{},
+    },
     permission: {
-      all: %w{write},
+      all: {
+        'public_r' => %w{},
+        'public_rw' => %w{},
+        'private_r' => %w{read},
+        'private_rw' => %w{read write},
+      },
       owner: [],
       editor: []
     }
@@ -21,10 +31,10 @@ class SshAccess
         true
       elsif repository.public_r? && requested_permission == 'read'
         true
-      elsif PERMISSION_MAP[:everyone].include?(requested_permission)
+      elsif PERMISSION_MAP[:everyone][repository.access].include?(requested_permission)
         true
       elsif permission
-        return true if PERMISSION_MAP[:permission][:all].
+        return true if PERMISSION_MAP[:permission][:all][repository.access].
           include?(requested_permission)
 
         role = permission.role.to_sym
