@@ -70,7 +70,7 @@ gem 'acts_as_tree'
 gem "rest-client"
 
 # Background-Jobs
-gem 'sidekiq', '~> 3.0.0'
+gem 'sidekiq', '~> 3.1.0'
 gem 'sinatra', require: false, group: [:development, :production]
 
 # Search engine

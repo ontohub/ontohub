@@ -329,7 +329,7 @@ GEM
     shoulda-matchers (2.5.0)
       activesupport (>= 3.0.0)
     shoulda_routing_macros (0.1.2)
-    sidekiq (3.0.2)
+    sidekiq (3.1.0)
       celluloid (>= 0.15.2)
       connection_pool (>= 2.0.0)
       json
@@ -457,7 +457,7 @@ DEPENDENCIES
   secure_headers
   shoulda
   shoulda_routing_macros (~> 0.1.2)
-  sidekiq (~> 3.0.0)
+  sidekiq (~> 3.1.0)
   simple_form
   sinatra
   strip_attributes (~> 1.0)
