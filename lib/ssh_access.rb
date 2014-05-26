@@ -27,27 +27,14 @@ class SshAccess
   class << self
 
     def determine_permission(requested_permission, permission, repository)
-      if repository.public_rw?
-        true
-      elsif repository.public_r? && requested_permission == 'read'
-        true
-      elsif allowed_for_everyone?(requested_permission, repository)
-        true
-      elsif permission
-        allowed_for?(requested_permission, repository, through: permission)
-      else
-        false
-      end
+      allowed_for_everyone?(requested_permission, repository) ||
+      allowed_for?(requested_permission, repository, through: permission)
     end
 
     def allowed_for?(requested_permission, repository, through: nil)
-      if through
-        return true if included_in?(:permission, :all, repository, requested_permission)
-
-        included_in_role?(through.role.to_sym, requested_permission)
-      else
-        false
-      end
+      through.present? &&
+        (included_in?(:permission, :all, repository, requested_permission) ||
+        included_in_role?(through.role.to_sym, requested_permission))
     end
 
     def allowed_for_everyone?(requested_permission, repository)
