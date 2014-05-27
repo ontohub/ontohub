@@ -215,8 +215,7 @@ class Ontology < ActiveRecord::Base
   end
 
   def current_version
-    onto = parent.nil? ? self : parent
-    onto.versions.current
+    self.versions.current
   end
 
   def basepath
@@ -232,7 +231,7 @@ class Ontology < ActiveRecord::Base
   end
 
   def has_versions?
-    versions.last.present?
+    versions.current.present?
   end
 
   protected
