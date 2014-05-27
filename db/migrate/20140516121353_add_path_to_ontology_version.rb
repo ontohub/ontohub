@@ -3,7 +3,7 @@ class AddPathToOntologyVersion < ActiveRecord::Migration
     add_column :ontology_versions, :basepath, :string, null: true
     add_column :ontology_versions, :file_extension, :string, limit: 20
 
-    Ontology.all.map do |o|
+    Ontology.all.each do |o|
       o.versions.each do |v|
         v.basepath = o.basepath
         v.file_extension = o.file_extension
