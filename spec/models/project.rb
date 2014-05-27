@@ -4,7 +4,7 @@ describe Project do
 
   context 'Migrations' do
     %w(name institution homepage description contact).each do |column|
-      it { should have_db_column(column).of_type :string }
+      it { should have_db_column(column).of_type :text }
     end
 
     it { should have_and_belong_to_many :ontologies }
