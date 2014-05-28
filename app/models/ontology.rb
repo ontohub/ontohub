@@ -74,16 +74,30 @@ class Ontology < ActiveRecord::Base
   scope :list, includes(:logic).order('ontologies.state asc, ontologies.entities_count desc')
 
   scope :find_with_path, ->(path) do
-    joins(:ontology_version).where(
-      'ontology_versions.basepath'       => File.basepath(path),
-      'ontology_versions.file_extension' => File.extname(path)).
-    readonly(false)
+    condition = <<-CONDITION
+      ("ontology_versions"."file_extension" = :extname)
+        OR (("ontology_versions"."file_extension" IS NULL)
+          AND ("ontologies"."file_extension" = :extname))
+    CONDITION
+
+    find_with_basepath(File.basepath(path)).
+      where(condition, extname: File.extname(path)).
+      readonly(false)
   end
 
   scope :find_with_basepath, ->(path) do
-    joins(:ontology_version).where(
-      'ontology_versions.basepath' => File.basepath(path)).
-    readonly(false)
+    join = <<-JOIN
+      LEFT JOIN "ontology_versions"
+      ON "ontologies"."ontology_version_id" = "ontology_versions"."id"
+    JOIN
+
+    condition = <<-CONDITION
+      ("ontology_versions"."basepath" = :path)
+        OR (("ontology_versions"."basepath" IS NULL)
+          AND ("ontologies"."basepath" = :path))
+    CONDITION
+
+    joins(join).where(condition, path: path).readonly(false)
   end
 
   scope :parents_first, order('(CASE WHEN ontologies.parent_id IS NULL THEN 1 ELSE 0 END) DESC, ontologies.parent_id asc')
