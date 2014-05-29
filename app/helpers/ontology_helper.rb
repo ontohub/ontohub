@@ -2,7 +2,7 @@ module OntologyHelper
 
   def current_version
     o = @ontology.parent ? @ontology.parent : @ontology
-    o.versions.current
+    o.current_version
   end
 
   def download_path(resource)

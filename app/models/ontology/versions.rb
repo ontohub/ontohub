@@ -17,6 +17,23 @@ module Ontology::Versions
     attr_accessible :versions_attributes
     accepts_nested_attributes_for :versions
 
+    def update_version!(to: nil)
+      if to
+        self.ontology_version_id = to.id
+      else
+        self.ontology_version_id = versions.current.id
+      end
+      save!
+    end
+
+    def current_version
+      if self.ontology_version
+        self.ontology_version
+      else
+        self.versions.current
+      end
+    end
+
     def active_version
       return self.ontology_version if self.state == 'done'
       OntologyVersion.
