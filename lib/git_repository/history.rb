@@ -3,7 +3,8 @@ module GitRepository::History
   extend ActiveSupport::Concern
 
   class Commit
-    attr_accessor :oid, :message, :committer, :author
+    attr_reader :oid, :message, :committer, :author
+    attr_reader :rugged_commit, :path, :commits_to_diff
 
     def initialize(commit, commits_to_diff: nil, path: nil)
       @rugged_commit   = commit
@@ -32,6 +33,12 @@ module GitRepository::History
       @deltas ||= combined_diff.each_delta.select do |d|
         !@path ||
           [d.old_file[:path], d.new_file[:path]].any?{ |p| p.start_with?(@path) }
+      end
+    end
+
+    def ==(other)
+      %w(oid message committer author rugged_commit path commits_to_diff).all? do |method|
+        self.send(method) == other.send(method)
       end
     end
 
