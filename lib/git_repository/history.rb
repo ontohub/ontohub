@@ -135,7 +135,7 @@ module GitRepository::History
             if block_given?
               commits << block.call(commit_obj)
             else
-              commits << to_hash(commit_obj)
+              commits << commit_obj
             end
             added_commits = added_commits + 1
           end
@@ -152,7 +152,7 @@ module GitRepository::History
         if block_given?
           commits << block.call(commit_obj)
         else
-          commits << to_hash(commit_obj)
+          commits << commit_obj
         end
       end
     end
