@@ -70,8 +70,9 @@ module Repository::GitRepositories
     return unless Ontology.file_extensions.include?(File.extname(filepath))
     version = nil
     basepath = File.basepath(filepath)
+    previous_basepath = File.basepath(previous_filepath) if previous_filepath
     file_extension = File.extname(filepath)
-    o = ontologies.find_with_path(previous_filepath || filepath).without_parent.first
+    o = ontologies.find_with_basepath(previous_basepath || basepath).without_parent.first
 
     if o
       return if !master_file?(o, previous_filepath || filepath)
