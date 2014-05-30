@@ -39,7 +39,9 @@
         - when :diff_too_large
           Diff is too large to display.
         - else
-          = file.diff.force_encoding('UTF-8')
+          - file.diff.split("\n").each do |diff_line|
+            = diff_line.force_encoding('UTF-8')
+            %br
     - elsif file.mime_category == 'image'
       = image_tag fancy_repository_path(repository.path, ref: oid, path: file.path), alt: file.name
     - else
