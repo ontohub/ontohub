@@ -49,9 +49,9 @@ module GitRepository::Commit
     rugged_commit = @repo.lookup(commit_oid)
 
     if @repo.empty?
-      ref = Rugged::Reference.create(@repo, 'refs/heads/master', commit_oid)
+      ref = @repo.references.create('refs/heads/master', commit_oid)
     else
-      @repo.head.set_target commit_oid
+      @repo.references.update(@repo.head, commit_oid)
     end
 
     block.call(commit_oid) if block_given?
@@ -60,7 +60,7 @@ module GitRepository::Commit
 =begin
   rescue => e
     if old_head
-      @repo.head.set_target old_head
+      @repo.references.update(@repo.head, old_head)
     else
       @repo.head.delete!
     end
