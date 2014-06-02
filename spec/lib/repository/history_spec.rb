@@ -154,32 +154,19 @@ describe "git history" do
       end
     end
   end
-
-  context 'git mv with bash' do
-
-  end
 end
 
 describe 'git mv' do
-  TEMP_DIR = Pathname.new('/tmp/ontohub/test/lib/')
-  SCRIPT_CREATE_REPO_WITH_MOVED_ONTOLOGIES = Rails.root.
-    join('spec', 'lib', 'repository', 'create_repository_with_moved_ontologies.sh')
   let(:userinfo) { {
       email: 'janjansson.com',
       name: 'Jan Jansson',
       time: Time.now
     } }
 
-  let(:path) { TEMP_DIR.join('moved_ontologies') }
-  let(:repository) { GitRepository.new(path.to_s) }
-
-  before do
-    FileUtils.mkdir_p(TEMP_DIR)
-    Dir.chdir(TEMP_DIR) { `#{SCRIPT_CREATE_REPO_WITH_MOVED_ONTOLOGIES}` }
-  end
+  let(:repository) { create :git_repository_with_moved_ontologies }
 
   after do
-    FileUtils.rmtree TEMP_DIR
+    repository.destroy
   end
 
   it 'should have all the commits' do

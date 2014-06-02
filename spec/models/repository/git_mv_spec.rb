@@ -1,26 +1,18 @@
 require 'spec_helper'
 
 describe 'git mv', :process_jobs_synchronously do
-  TEMP_DIR = Pathname.new('/tmp/ontohub/test/models/')
-  SCRIPT_CREATE_REPO_WITH_MOVED_ONTOLOGIES = Rails.root.
-    join('spec', 'lib', 'repository', 'create_repository_with_moved_ontologies.sh')
-
   let(:userinfo) { {
       email: 'janjansson.com',
       name: 'Jan Jansson',
       time: Time.now
     } }
 
-  let(:remote_path) { "file://#{TEMP_DIR.join('moved_ontologies', '.git')}" }
-  let(:repository) { create :repository, source_address: remote_path, source_type: 'git' }
-
-  before do
-    FileUtils.mkdir_p(TEMP_DIR)
-    Dir.chdir(TEMP_DIR) { `#{SCRIPT_CREATE_REPO_WITH_MOVED_ONTOLOGIES}` }
-  end
+  let(:remote_repository) { create :git_repository_with_moved_ontologies }
+  let(:repository) { create :repository,
+    source_address: remote_repository.path, source_type: 'git' }
 
   after do
-    FileUtils.rmtree TEMP_DIR
+    remote_repository.destroy
   end
 
   it 'should detect ontology file renames' do
