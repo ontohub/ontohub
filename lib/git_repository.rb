@@ -14,6 +14,8 @@ class GitRepository
     Commit,
     History
 
+  delegate :path, to: :repo
+
   def initialize(path)
     if File.exists?(path)
       @repo = Rugged::Repository.new(path)

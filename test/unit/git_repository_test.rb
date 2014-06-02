@@ -48,7 +48,7 @@ class GitRepositoryTest < ActiveSupport::TestCase
     end
 
     teardown do
-      FileUtils.rmtree(@path) if File.exists?(@path)
+      FileUtils.rmtree(@repository.path) if File.exists?(@repository.path)
       @path = nil
       @repository = nil
     end
