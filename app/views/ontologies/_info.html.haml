@@ -10,11 +10,11 @@
 - if resource.ontology_type
   %small
     %p
-      Ontology Type:
+      #{Settings.OMS} Type:
       = fancy_link resource.ontology_type
 
 %small
-  Ontology defined
+  #{Settings.OMS} defined
   - if resource.parent
     by
     %span= fancy_link(resource.parent)

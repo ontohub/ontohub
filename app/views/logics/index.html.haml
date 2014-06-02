@@ -20,7 +20,7 @@
       %th
     %tbody
       %tr
-        %td (heterogeneous) Distributed Ontologies
+        %td (heterogeneous) Distributed #{Settings.OMS.pluralize}
         %td
         %td= pluralize(Ontology.heterogeneous.count, "distributed #{Ontology}")
         %td= pluralize(Ontology.heterogeneous_children.count, "child #{Ontology}")
