@@ -2,6 +2,8 @@
 
 git init moved_ontologies
 cd moved_ontologies
+git config --local user.email "tester@localhost.localdomain"
+git config --local user.name "Tester"
 echo "(P x)" > Px.clif
 echo "(Q y)" > Qy.clif
 echo "(R z)" > Rz.clif
