@@ -11,6 +11,10 @@ name: "MyOntohub"
 # Hostname of the installation
 hostname: example.com
 
+
+#generalize "Ontology"
+OMS: Ontology
+
 # Optional asset host for delivery of static files (css, images, javascripts)
 # asset_host: assets.example.com
 
