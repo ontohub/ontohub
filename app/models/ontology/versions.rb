@@ -12,6 +12,10 @@ module Ontology::Versions
         def current
           reorder('number DESC').first
         end
+
+        def newest
+          reorder('number DESC')
+        end
       end
 
     attr_accessible :versions_attributes
