@@ -13,12 +13,15 @@ $ ->
     btn_edit = $("#codemirror-btn-edit")
     btn_commit = $("#codemirror-btn-commit")
     btn_discard = $("#codemirror-btn-discard")
+    btn_discard_cancel = $('#coremirror-btn-discard-cancel')
+    btn_discard_confirm = $('#codemirror-btn-discard-confirm')
     form = $(".edit-form")
     alert_error = $(".alert-error")
     message_group = $("#message-group")
     message_textarea = $("#message")[0]
     hasErrorClass = "has-error"
     editingClass = "editing"
+    discard_modal = $('#discard_modal')
 
     editorPreventFocus = (e) ->
       editor.setOption "cursorHeight", 0
@@ -41,7 +44,10 @@ $ ->
       false
 
     editorDiscard = (e) ->
-      discard() if editor.doc.isClean() or confirmDiscard()
+      if editor.doc.isClean()
+        discard()
+      else
+        discard_modal.modal('show')
       false
 
     requireCommitMessage = (e) ->
@@ -51,10 +57,6 @@ $ ->
         false
       else
         true
-
-    confirmDiscard = ->
-      # TODO: Use bootstrap modal instead of browser prompt.
-      confirm "You made changes to the code. Are you sure you want to discard them?"
 
     discard = ->
       message_textarea.value = ""
@@ -67,6 +69,7 @@ $ ->
       editorPreventFocus()
       editor.off "focus", editorSetFocus
       editor.off "blur", editorSetBlur
+      discard_modal.modal('hide')
       return
 
     enableEditing = (e) ->
@@ -80,10 +83,13 @@ $ ->
       editor.focus()
       btn_commit.unbind("click").click editorSubmit
       btn_discard.unbind("click").click editorDiscard
+      btn_discard_confirm.unbind('click').click discard
       form.unbind("submit").submit requireCommitMessage
       false
 
     original_editor_content = editor.getValue()
+
+    discard_modal.modal({show: false})
 
     editorPreventFocus()
     btn_edit.unbind("click").click enableEditing

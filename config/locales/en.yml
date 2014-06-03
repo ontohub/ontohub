@@ -43,6 +43,13 @@ en:
         private_rw: Private readable and writable
         public_r: Public readable
         public_rw: Public readable and writable
+  files:
+    discard: Discard
+    discard_confirmation: You made changes to the code. Are you sure you want to discard them?
+    discard_desc: |
+      If you discard the changes, the textarea on the left will be reset to the previous state.
+
+      This action is irreversible!
   sentences:
     index:
       display_only_self_defined_sentences:
@@ -69,9 +76,10 @@ en:
         You can find more information about Ontohub in the %{link}.
         Moreover, context specific information is available with the "Help" button, leading to a specfic wiki page.
     need_help: Need Help?
-  delete_repository: Are you sure about delete the Repository?
+  delete_repository: Are you sure about deleting the Repository?
   delete_repository_desc: |
       If you delete this repository, all ontologies, which are related to this repository, will be deleted too.
                             
       This action is irreversible!
+  discard_changes: Are you sure
   cancel: Cancel
