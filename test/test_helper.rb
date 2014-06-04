@@ -25,6 +25,9 @@ class ActiveSupport::TestCase
     # clean git repositories
     FileUtils.rmtree Ontohub::Application.config.data_root
     FileUtils.rmtree Repository::Symlink::PATH
+
+    redis = WrappingRedis::RedisWrapper.new
+    redis.del redis.keys.join(' ')
   end
 
 end
