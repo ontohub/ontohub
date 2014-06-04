@@ -9,7 +9,7 @@ use_simplecov
 require File.expand_path("../../config/environment", __FILE__)
 require 'rspec/rails'
 require 'rspec/autorun'
-require 'database_cleaner'
+require Rails.root.join('config', 'database_cleaner.rb')
 
 # Requires supporting ruby files with custom matchers and macros, etc,
 # in spec/support/ and its subdirectories.
@@ -69,10 +69,6 @@ RSpec.configure do |config|
   # config.mock_with :flexmock
   # config.mock_with :rr
 
-  config.before(:suite) do
-    DatabaseCleaner.strategy = :truncation
-  end
-
   config.before(:each) do
     redis = WrappingRedis::RedisWrapper.new
     redis.del redis.keys.join(' ')
@@ -81,7 +77,6 @@ RSpec.configure do |config|
 
   config.after(:each) do
     unstub_ontology_file_extensions
-    DatabaseCleaner.clean
   end
 
   config.expose_current_running_example_as :example
