@@ -43,12 +43,10 @@ $ ->
       $("form.edit-form").submit()
       false
 
-    editorDiscard = (e) ->
-      if editor.doc.isClean()
-        discard()
-      else
-        discard_modal.modal('show')
-      false
+    # Once you discarded an actual change, the first disjunct is false
+    # even though the editor content is the original one.
+    editorDocClean = ->
+      editor.doc.isClean() || original_editor_content == editor.getValue()
 
     requireCommitMessage = (e) ->
       if $.trim($("#message").val()) is ""
@@ -58,18 +56,21 @@ $ ->
       else
         true
 
-    discard = ->
-      message_textarea.value = ""
-      editor.setOption "readOnly", true
-      editor.setValue original_editor_content
-      message_group.removeClass hasErrorClass
-      alert_error.hide()
-      $(".show-when-editing").hide()
-      $(".hide-when-editing").show()
-      editorPreventFocus()
-      editor.off "focus", editorSetFocus
-      editor.off "blur", editorSetBlur
-      discard_modal.modal('hide')
+    discard = (use_modal) ->
+      if use_modal
+        discard_modal.modal('show')
+      else
+        message_textarea.value = ""
+        editor.setOption "readOnly", true
+        editor.setValue original_editor_content
+        message_group.removeClass hasErrorClass
+        alert_error.hide()
+        $(".show-when-editing").hide()
+        $(".hide-when-editing").show()
+        editorPreventFocus()
+        editor.off "focus", editorSetFocus
+        editor.off "blur", editorSetBlur
+        discard_modal.modal('hide')
       return
 
     enableEditing = (e) ->
@@ -82,8 +83,8 @@ $ ->
       $(".hide-when-editing").hide()
       editor.focus()
       btn_commit.unbind("click").click editorSubmit
-      btn_discard.unbind("click").click editorDiscard
-      btn_discard_confirm.unbind('click').click discard
+      btn_discard.unbind("click").click(-> discard(!editorDocClean()))
+      btn_discard_confirm.unbind('click').click(-> discard(false))
       form.unbind("submit").submit requireCommitMessage
       false
 
