@@ -43,6 +43,12 @@ en:
         private_rw: Private readable and writable
         public_r: Public readable
         public_rw: Public readable and writable
+  permission:
+    errors:
+      falling_short_of_owner_count: |
+        You probably shouldn't remove this owner permission, as deleting
+        it would leave the %{item} with too few owners.
+        The threshold level is: %{minimal_count}.
   sentences:
     index:
       display_only_self_defined_sentences:
