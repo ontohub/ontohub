@@ -39,7 +39,7 @@ module ParsingCallback::OWL
 
     def ontology_end(hash, ontology)
       begin
-        TarjanTree.new(ontology)
+        TarjanTree.for(ontology)
       rescue ActiveRecord::RecordNotFound => e
         Rails.logger.warn "Could not create entity tree for: #{ontology.name} (#{ontology.id}) caused #{e}"
       end
