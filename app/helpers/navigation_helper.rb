@@ -32,9 +32,9 @@ module NavigationHelper
       @metadatas = ontology_nav_metadata
     end
 
-    @entities = ontology.distributed? ? [] : ontology.entities.groups_by_kind
+    @entities = ontology.distributed? ? [] : ontology.entities.groups_by_kind.sort_by(&:kind)
 
-    @active_kind = @entities.first.kind if current_page == :entities
+    @active_kind = choose_default_entity_kind(@entities) if current_page == :entities
     @active_kind = params[:kind] if params[:kind]
 
     pages = []
