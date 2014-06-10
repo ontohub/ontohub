@@ -19,9 +19,7 @@ describe Link do
           let(:link) { dist_ontology.links.first }
 
           before do
-            dist_ontology.
-              import_xml_from_file fixture_file('reference.xml'),
-                fixture_file('reference.pp.xml'), user
+            parse_this(user, dist_ontology, fixture_file('reference.xml'), fixture_file('reference.pp.xml'))
           end
 
           it 'should have the link-source set correctly' do

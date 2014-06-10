@@ -152,7 +152,7 @@ describe Ontology do
 
   end
 
-  context 'when parsing an ontology which is referenced by another ontology' do
+  context 'when parsing an ontology which is referenced by another ontology', :needs_hets do
     let(:repository) { create :repository }
     let(:list) do
       referenced_ontology = nil
@@ -182,7 +182,7 @@ describe Ontology do
         FileUtils.cp(absolute_path, filepath)
         filepath
       end
-      version.parse
+      version
       ExternalRepository.unstub(:download_iri)
     end
 
