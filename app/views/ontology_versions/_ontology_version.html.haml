@@ -1,4 +1,5 @@
 %tr
+  %td= link_to ontology_version.number, fancy_repository_path(resource_chain[0], path: resource_chain[1].path, ref: ontology_version.commit_oid, action: :download)
   %td= link_to ontology_version.commit_oid[0..8], repository_ref_path(ontology_version.repository, ontology_version.commit_oid, :diff)
   %td= timestamp ontology_version
   %td= ontology_version.user ? fancy_link(ontology_version.user) : '-'
