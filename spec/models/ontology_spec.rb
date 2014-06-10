@@ -204,4 +204,122 @@ describe Ontology do
     end
   end
 
+  context 'Import single Ontology' do
+    let(:user) { create :user }
+    let(:ontology) { create :single_ontology }
+
+    before do
+      parse_this(user, ontology, fixture_file('test1.xml'),
+                 fixture_file('test1.pp.xml'))
+    end
+
+    it 'should save logic' do
+      expect(ontology.logic.try(:name)).to eq('CASL')
+    end
+
+    context 'entity count' do
+      it 'should be correct' do
+        expect(ontology.entities.count).to eq(2)
+      end
+
+      it 'should be reflected in field' do
+        expect(ontology.entities_count).to eq(ontology.entities.count)
+      end
+    end
+
+    context 'sentence count' do
+      it 'should be correct' do
+        expect(ontology.sentences.count).to eq(1)
+      end
+
+      it 'should be reflected in field' do
+        expect(ontology.sentences_count).to eq(ontology.sentences.count)
+      end
+    end
+  end
+
+  context 'Import distributed Ontology' do
+    let(:user) { create :user }
+    let(:ontology) { create :distributed_ontology }
+
+    before do
+      parse_this(user, ontology, fixture_file('test2.xml'),
+                 fixture_file('test2.pp.xml'))
+    end
+
+    it 'should create all single ontologies' do
+      expect(SingleOntology.count).to eq(4)
+    end
+
+    it 'should have all children ontologies' do
+      expect(ontology.children.count).to eq(4)
+    end
+
+    it 'should have correct link count' do
+      expect(ontology.links.count).to eq(3)
+    end
+
+    it 'should have logic DOL' do
+      expect(ontology.logic.try(:name)).to eq('DOL')
+    end
+
+    it 'should have no entities' do
+      expect(ontology.entities.count).to eq(0)
+    end
+
+    it 'should have no sentences' do
+      expect(ontology.sentences.count).to eq(0)
+    end
+
+    context 'first child ontology' do
+      let(:child) { ontology.children.where(name: 'sp__E1').first }
+
+      it 'should have entities' do
+        expect(child.entities.count).to eq(2)
+      end
+
+      it 'should have one sentence' do
+        expect(child.sentences.count).to eq(1)
+      end
+    end
+
+    context 'all child ontologies' do
+      it 'should have the same state as the parent' do
+        ontology.children.each do |child|
+          expect(child.state).to eq(ontology.state)
+        end
+      end
+    end
+
+  end
+
+  context 'Import another distributed Ontology' do
+    let(:user) { create :user }
+    let(:ontology) { create :distributed_ontology }
+    let(:combined) { ontology.children.where(name: 'VAlignedOntology').first }
+
+    before do
+      parse_this(user, ontology, fixture_file('align.xml'),
+                 fixture_file('align.pp.xml'))
+    end
+
+    it 'should create single ontologies' do
+      assert_equal 4, SingleOntology.count
+      expect(SingleOntology.count).to eq(4)
+    end
+
+    it 'should create combined ontology' do
+      expect(combined).to_not be_nil
+    end
+
+    context 'kinds' do
+      let(:kinds) { combined.entities.map(&:kind) }
+
+      it 'should be assigned to symbols of combined ontology' do
+        expect(kinds).to_not include('Undefined')
+      end
+    end
+
+  end
+
 end
