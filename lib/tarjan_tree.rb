@@ -39,11 +39,10 @@ class TarjanTree
   # Only sentences with 4 words are the right sentences for the Tree
   # so we have to ignore the other.
   def inheritance_sentences(ontology)
-    ontology.sentences
-      .where("text LIKE '%SubClassOf%' AND text NOT LIKE '%Thing%'")
-      .select do |sentence|
-        sentence.text.split(' ').size == 4
-      end
+    ontology.sentences.where <<-SQL
+      text NOT LIKE '%Thing%' AND
+      text ~* '[^\s]+\s+[^\s]+\s+SubClassOf:+\s+[^\s]+'
+    SQL
   end
 
   def create_tree(ontology)
