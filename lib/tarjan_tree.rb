@@ -24,6 +24,7 @@ class TarjanTree
 
   def self.for(ontology)
     tarjan_tree = new(ontology)
+    ontology.entity_groups.destroy_all
     tarjan_tree.calculate
   end
 
