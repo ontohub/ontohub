@@ -1,7 +1,7 @@
 module EntityHelper
 
-  def show_classes?
-    return params[:kind] != "Class"
+  def show_classes?(kind=params[:kind])
+    kind == "Class"
   end
 
   def name_highlighter(entity)
