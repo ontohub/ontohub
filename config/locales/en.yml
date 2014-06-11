@@ -44,6 +44,9 @@ en:
         public_r: Public readable
         public_rw: Public readable and writable
   permission:
+    delete_header: Are you sure you want to delete the permission?
+    delete_desc: If you remove this %{role} permission, %{subject} won't be able to access the %{class} %{item} according to it.
+    delete_btn: Delete Permission
     errors:
       falling_short_of_owner_count: |
         You probably shouldn't remove this owner permission, as deleting
@@ -81,3 +84,5 @@ en:
                             
       This action is irreversible!
   cancel: Cancel
+  edit: Edit
+  delete: Delete
