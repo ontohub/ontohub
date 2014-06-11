@@ -7,7 +7,7 @@ class PermissionsController < PrivilegeList::Base
 
   def destroy
     destroy! do
-      redirect_to(:back)
+      redirect_to(:back) and return
     end
   rescue Permission::PowerVaccuumError => e
     flash[:alert] = e.message
@@ -15,12 +15,9 @@ class PermissionsController < PrivilegeList::Base
   end
 
   def update
-    update!  do
-      redirect_to(:back)
-    end
-  rescue Permission::PowerVaccuumError => e
-    flash[:alert] = e.message
-    redirect_to :back
+    super
+  rescue ActiveRecord::RecordInvalid => e
+    render text: e.message
   end
 
   protected
