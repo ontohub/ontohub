@@ -20,7 +20,8 @@ describe PermissionsController do
       end
 
       it 'should render an error message on degrading update' do
-        put :update, repository_id: permission.item.to_param, id: permission.id, role: 'editor'
+        put :update, repository_id: permission.item.to_param, id: permission.id,
+          permission: {id: permission.id, role: 'editor'}
         expect(response.body).to have_content(ERROR_TEXT)
       end
 
@@ -47,7 +48,8 @@ describe PermissionsController do
       end
 
       it 'should be possible to degrade his role' do
-        put :update, repository_id: permission.item.to_param, id: permission.id, role: 'editor'
+        put :update, repository_id: permission.item.to_param, id: permission.id,
+          permission: { id: permission.id, role: 'editor' }
         expect(response.body).not_to have_content(ERROR_TEXT)
       end
     end
