@@ -49,6 +49,27 @@ describe TimeoutWorker do
 
     end
 
+    context 'when the timeout is not reached' do
+      let(:start_unix_timestamp) { TimeoutWorker.time_since_epoch(Time.now) }
+      let(:args) { [start_unix_timestamp, ontology_version.id] }
+
+      it 'will throw itself on the job-queue' do
+        expect { worker.perform(start_unix_timestamp, ontology_version.id) }.
+          to change(TimeoutWorker.jobs, :size).from(0).to(1)
+      end
+
+      it 'will not touch the state of the ontology_version' do
+        expect { worker.perform(*args) }.
+          to_not change(ontology_version, :state)
+      end
+
+      it 'will not touch the state of the ontology' do
+        expect { worker.perform(*args) }.
+          to_not change(ontology, :state)
+      end
+
+    end
+
   end
 
 end
