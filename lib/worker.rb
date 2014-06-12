@@ -18,7 +18,9 @@ class Worker < BaseWorker
       clazz.constantize.send method, *args
     when 'record'
       id = args.shift
-      clazz.constantize.find(id).send method, *args
+      klass = clazz.constantize
+      TimeoutWorker.start_timeout_clock(id) if klass == OntologyVersion
+      klass.find(id).send method, *args
     else
       raise ArgumentError, "unsupported type: #{type}"
     end
