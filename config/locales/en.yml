@@ -49,7 +49,7 @@ en:
     delete_btn: Delete Permission
     errors:
       falling_short_of_owner_count: |
-        You probably shouldn't remove this owner permission, as deleting
+        You can't remove this owner permission, as deleting
         it would leave the %{item} with too few owners.
         The threshold level is: %{minimal_count}.
   sentences:
