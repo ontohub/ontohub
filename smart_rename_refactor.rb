@@ -55,13 +55,14 @@ module Super
 
     def replace_in_file(file, old_word, new_word)
       commands = [
-        "s/#{old_word}/#{new_word}/g",
-        "s/#{pluralize(old_word)}/#{pluralize(new_word)}/g",
-        "s/#{camelize(old_word)}/#{camelize(new_word)}/g",
-        "s/#{camelize(pluralize(old_word))}/#{camelize(pluralize(new_word))}/g",
+        "gsub(\"#{old_word}\",\"#{new_word}\")",
+        "gsub(\"#{pluralize(old_word)}\",\"#{pluralize(new_word)}\")",
+        "gsub(\"#{camelize(old_word)}\",\"#{camelize(new_word)}\")",
+        "gsub(\"#{camelize(pluralize(old_word))}\",\"#{camelize(pluralize(new_word))}\")",
       ]
-      command = "sed -i -e '#{commands.join(';')}' #{file}"
-      # puts command if verbose
+      tmp_file = "> /tmp/awk_tmp_file && mv /tmp/awk_tmp_file #{file}"
+      command = "#{awk} '{#{commands.join(';')};print}' #{file} #{tmp_file}"
+      puts command if verbose
       system(command) unless dry_run
     end
 
@@ -90,11 +91,11 @@ module Super
       end
     end
 
-    def sed_variant
-      'gsed'
+    def awk
+      'awk'
     end
 
   end
 end
 
-Super::RenameRefactorProvider.new(verbose: true, dry_run: true).run
+Super::RenameRefactorProvider.new(verbose: false, dry_run: false).run
