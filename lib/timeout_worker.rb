@@ -4,6 +4,15 @@ class TimeoutWorker < BaseWorker
 
   include Sidekiq::Worker
 
+  def self.start_timeout_clock(ontology_version_id, start_time=nil)
+    start_time ||= self.time_since_epoch
+    self.perform_async(start_time, ontology_version_id)
+  end
+
+  def self.time_since_epoch(time=Time.now)
+    time.strftime('%s').to_i
+  end
+
   def perform(start_time, ontology_version_id)
     if timeout_reached?(Time.at(start_time))
       version = OntologyVersion.find(ontology_version_id)

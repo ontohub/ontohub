@@ -27,7 +27,7 @@ describe TimeoutWorker do
 
     context 'when the timeout is reached' do
       let(:offset_hours) { (Settings.ontology_parse_timeout + 1) * 3600 }
-      let(:start_unix_timestamp) { (Time.now - offset_hours).strftime('%s').to_i }
+      let(:start_unix_timestamp) { TimeoutWorker.time_since_epoch(Time.now - offset_hours) }
 
 
       before do
