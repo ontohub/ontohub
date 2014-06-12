@@ -60,17 +60,10 @@ module Super
         "gsub(\"#{camelize(old_word)}\",\"#{camelize(new_word)}\")",
         "gsub(\"#{camelize(pluralize(old_word))}\",\"#{camelize(pluralize(new_word))}\")",
       ]
-      # commands = [
-      #   "s/#{old_word}/#{new_word}/g",
-      #   "s/#{pluralize(old_word)}/#{pluralize(new_word)}/g",
-      #   "s/#{camelize(old_word)}/#{camelize(new_word)}/g",
-      #   "s/#{camelize(pluralize(old_word))}/#{camelize(pluralize(new_word))}/g",
-      # ]
-      # command = "sed -i -e '#{commands.join(';')}' #{file}"
-      tmp_file = "> /tmp/awk_tmp_file && mv /tmp/awk_tmp_file #{file} && rm /tmp/awk_tmp_file"
-      command = "#{awk} '{#{commands.join(';')};print}' #{tmp_file}"
+      tmp_file = "> /tmp/awk_tmp_file && mv /tmp/awk_tmp_file #{file}"
+      command = "#{awk} '{#{commands.join(';')};print}' #{file} #{tmp_file}"
       puts command if verbose
-      # system(command) unless dry_run
+      system(command) unless dry_run
     end
 
     def rename_file(old_filename, old_word, new_word)
