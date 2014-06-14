@@ -15,7 +15,7 @@ describe TimeoutWorker do
     end
 
     it 'will complain with an error' do
-      expect { worker.timeout_limit }.to raise_error(TimeoutWorker::TimeOutNotSetError)
+      expect { TimeoutWorker.timeout_limit }.to raise_error(TimeoutWorker::TimeOutNotSetError)
     end
 
   end
@@ -25,13 +25,11 @@ describe TimeoutWorker do
     let(:ontology_version) { create :ontology_version }
     let(:ontology) { ontology_version.ontology }
 
-    context 'when the timeout is reached' do
-      let(:offset_hours) { (Settings.ontology_parse_timeout + 1) * 3600 }
-      let(:start_unix_timestamp) { TimeoutWorker.time_since_epoch(Time.now - offset_hours) }
-
+    context 'when the state is processing' do
+      let(:offset_hours) { Settings.ontology_parse_timeout }
 
       before do
-        worker.perform(start_unix_timestamp, ontology_version.id)
+        worker.perform(ontology_version.id)
         ontology_version.reload
       end
 
@@ -49,22 +47,31 @@ describe TimeoutWorker do
 
     end
 
-    context 'when the timeout is not reached' do
-      let(:start_unix_timestamp) { TimeoutWorker.time_since_epoch(Time.now) }
-      let(:args) { [start_unix_timestamp, ontology_version.id] }
-
-      it 'will throw itself on the job-queue' do
-        expect { worker.perform(start_unix_timestamp, ontology_version.id) }.
-          to change(TimeoutWorker.jobs, :size).from(0).to(1)
-      end
+    context 'when the version is done' do
+      let(:ontology_version) { create :ontology_version, state: 'done' }
 
       it 'will not touch the state of the ontology_version' do
-        expect { worker.perform(*args) }.
+        expect { worker.perform(ontology_version.id) }.
           to_not change(ontology_version, :state)
       end
 
       it 'will not touch the state of the ontology' do
-        expect { worker.perform(*args) }.
+        expect { worker.perform(ontology_version.id) }.
+          to_not change(ontology, :state)
+      end
+
+    end
+
+    context 'when the version is failed' do
+      let(:ontology_version) { create :ontology_version, state: 'failed' }
+
+      it 'will not touch the state of the ontology_version' do
+        expect { worker.perform(ontology_version.id) }.
+          to_not change(ontology_version, :state)
+      end
+
+      it 'will not touch the state of the ontology' do
+        expect { worker.perform(ontology_version.id) }.
           to_not change(ontology, :state)
       end
 
