@@ -6,7 +6,7 @@ describe PermissionsController do
 
   before { sign_in owner }
 
-  ERROR_TEXT = "You probably shouldn't remove this owner permission"
+  ERROR_TEXT = "You can't remove this owner permission"
 
   describe 'owner degradation' do
     context 'one owner' do
