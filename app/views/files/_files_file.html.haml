@@ -36,7 +36,7 @@
     - unless @info[:ontologies].empty?
       %h4
         Defining
-        = pluralize @info[:ontologies].size, 'ontology'
+        = pluralize @info[:ontologies].size, Settings.OMS
       %ul.ontology-list
         - @info[:ontologies].each do |ontology|
           %li= fancy_link ontology

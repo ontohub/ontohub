@@ -33,7 +33,7 @@ module Ontology::Import
           begin
             commit_oid = ExternalRepository.add_to_repository(
               internal_iri,
-              "add reference ontology: #{internal_iri} from #{source_iri}", user,
+              "add reference #{Settings.OMS}: #{internal_iri} from #{source_iri}", user,
               location: source_iri)
             version = ontology.versions.build
             version.user = user
@@ -69,7 +69,7 @@ module Ontology::Import
               # fail here with a lock issue instead of the
               # 'more than one ontology' issue.
               if ontologies_count > 0
-                raise "more than one ontology found"
+                raise "more than one #{Settings.OMS} found"
               else
                 ontohub_iri = self.iri
               end

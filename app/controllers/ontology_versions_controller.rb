@@ -47,7 +47,7 @@ class OntologyVersionsController < InheritedResources::Base
 
   def check_changeable
     unless parent.changeable?
-      redirect_to collection_path, flash: { error: 'There are pending ontology versions.' }
+      redirect_to collection_path, flash: { error: 'There are pending #{Settings.OMS} versions.' }
     end
   end
 

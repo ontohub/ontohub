@@ -12,7 +12,7 @@
     %p
       This #{Settings.OMS} is assigned to no categories.
       - if can? :update, parent
-        = link_to 'Edit the ontology', [:edit, *resource_chain]
+        = link_to 'Edit the'+Settings.OMS, [:edit, *resource_chain]
         to change that.
 
 - else 

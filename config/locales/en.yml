@@ -6,8 +6,8 @@ en:
     You probably shouldn't remove this account, as deleting
     it would leave the system with too few admins.
     The threshold level is: %{minimal_count}.
-  in_process_ontologies: "Ontologies with pending work:"
-  ontology_versions_status: "In-Process Ontology-Version found:"
+  in_process_ontologies: "#{Settings.OMS.pluralize.capitalize} with pending work:"
+  ontology_versions_status: "In-Process #{Settings.OMS}-Version found:"
   wait: 'Please wait …'
   relation_list:
     team_user:
@@ -71,7 +71,7 @@ en:
     need_help: Need Help?
   delete_repository: Are you sure about delete the Repository?
   delete_repository_desc: |
-      If you delete this repository, all ontologies, which are related to this repository, will be deleted too.
+      If you delete this repository, all #{Settings.OMS.pluralize}, which are related to this repository, will be deleted too.
                             
       This action is irreversible!
   cancel: Cancel

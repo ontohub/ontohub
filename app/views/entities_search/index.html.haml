@@ -16,6 +16,6 @@
   %p
     %strong= pluralize @group.matches, 'Symbol'
     = @max_groups > @groups.size ? 'found in' : 'found, displaying the first'
-    %strong= pluralize @groups.size, 'Ontology'
+    %strong= pluralize @groups.size, Settings.OMS.capitalize
   %ol.searchResult
     = render partial: 'group', collection: @groups

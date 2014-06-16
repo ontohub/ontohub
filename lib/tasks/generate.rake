@@ -9,7 +9,7 @@ def update_or_create_by_name(klass, h)
 end
 
 namespace :generate do
-  desc 'Import the categories for the ontologies'
+  desc 'Import the categories for the #{Settings.OMS.pluralize}'
   task :categories => :environment do
     Ontology.where("name ilike '%Domain Fields Core'").first.create_categories
   end
