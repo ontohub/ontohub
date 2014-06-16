@@ -1,6 +1,6 @@
 module Ontology::Import
   extend ActiveSupport::Concern
-
+  
   def import_latest_version(user)
     import_version(versions.last, user)
   end
