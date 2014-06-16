@@ -1,34 +1,45 @@
-container    = $("#ontology-state")
-currentState = container.attr('class')
-finalStates  = ["done", "failed"]
+containers    = $(".ontology-version-state")
+final_states  = ["done", "failed"]
+poll_time = 3000 # milliseconds
 
-return if !currentState || $.inArray(currentState, finalStates) != -1
-
+return if _.isEmpty(containers) || !containers.length
 
 update = ->
-  $.getJSON container.data('uri') + ".json", (data) ->
-    state = data.state
+  containers.each ->
+    container = $(this)
+    current_state = container.data('state')
 
-    if state == currentState
-      enqueue()
-    else
-      currentState = state
+    $.getJSON container.data('uri') + ".json", (data) ->
+      state = data.state
 
-      # display the new state
-      container
-      .attr('class', state)
-      .find("span").text(state)
-
-      if state != "pending"
-        $(".pending_message").hide()
-
-      if $.inArray(state, finalStates) != -1
-        # replace spinner with refresh button
-        container.find(".spinner").replaceWith("<a href='#{document.location.href}' class='btn btn-info'><i class='icon-refresh'></i> refresh</a>")
-      else
+      if state == current_state && !_.contains(final_states, state)
         enqueue()
+      else
+        current_state = state
+
+        # display the new state
+        container
+          .attr('class', state)
+          .find("span").text(state)
+
+        if state == "pending"
+          $(".pending_message").show()
+        else
+          $(".pending_message").hide()
+
+        if _.contains(final_states, state)
+          # replace spinner with refresh button
+          container.find(".spinner").
+            replaceWith($('<a />').
+              attr('href', document.location.href).
+              attr('class', 'btn btn-info btn-sm').
+              append($('<i />').
+                attr('class', 'icon-refresh')).
+              text('refresh'))
+        else
+          enqueue()
 
 enqueue = ->
-  setTimeout update, 3000
+  setTimeout update, poll_time
 
 enqueue()
