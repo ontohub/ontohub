@@ -2,7 +2,7 @@
   %ul.stats
     - if ontology.distributed?
       %li distributed
-      %li= link_to pluralize(ontology.children.count, 'Ontology'), [ontology, :children]
+      %li= link_to pluralize(ontology.children.count, Settings.OMS.capitalize), [ontology, :children]
     - elsif ontology.logic
       %li= link_to ontology.logic.to_s, ontology.logic
     - if ontology.language

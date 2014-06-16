@@ -9,7 +9,7 @@
   .col-md-6
     %p
       This repository contains
-      = pluralize @count, 'ontology'
+      = pluralize @count, Settings.OMS
       ranked according to the number of comitted changes.
       You can search for a particular #{Settings.OMS} by filtering the list using the
       #{Settings.OMS} name, the logic name, or the name of logical symbols such as
@@ -19,6 +19,6 @@
 
   .col-md-8
     .pull-right
-      = link_to 'Upload an ontology file', new_repository_file_path(parent, 'upload_file[path]' => params[:path]), class: 'btn btn-link' if can? :write, repository
+      = link_to 'Upload an '+ Settings.OMS +' file', new_repository_file_path(parent, 'upload_file[path]' => params[:path]), class: 'btn btn-link' if can? :write, repository
     .clearfix
     #OntologySearch{pagination: 'paginated', role: 'filter'}

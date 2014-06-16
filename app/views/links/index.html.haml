@@ -7,7 +7,7 @@
   %h2= @page_title = 'Mappings'
 
 %p
-  = pluralize(collection.count, "ontology mapping")
+  = pluralize(collection.count, "#{Settings.OMS} mapping")
   currently available
   
 = pagination do 
