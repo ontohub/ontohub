@@ -11,6 +11,9 @@ module Hets
   class InvalidHetsVersionFormatError < DeploymentError; end
 
   class Config
+
+    VERSION_RE = %r{v\d+\.\d+,\s*(\d+)$}
+
     attr_reader :path, :library_path, :stack_size, :env
 
     def initialize
@@ -24,9 +27,7 @@ module Hets
       raise DeploymentError, 'Could not find hets'     unless @path
       raise DeploymentError, 'Hets library not found.' unless @library_path
 
-      unless is_compatible? yaml['version_minimum_revision']
-        raise VersionOutdatedError, 'The installed version of Hets is too old'
-      end
+      check_validity_of_version(yaml['version_minimum_revision'])
 
       # Set hets environment variables
       %w( hets_lib hets_owl_tools ).each do |key|
@@ -52,8 +53,8 @@ module Hets
       # Read Hets version date
       version = `#{@path} -V`
       # revision starts with r-char and ends with revision number.
-      version_revision = if version.split.last =~ /r(\d+)/
-        $1 # the revision number
+      version_revision = if version =~ VERSION_RE
+        $1 # the version number (unix timestamp)
       else
         raise InvalidHetsVersionFormatError, "format is not valid: <#{version}>"
       end
@@ -67,6 +68,23 @@ module Hets
         File.exists? path
       end
     end
+
+    def check_validity_of_version(reference_version)
+      if !is_compatible?(reference_version)
+        raise VersionOutdatedError, 'The installed version of Hets is too old'
+      end
+    rescue InvalidHetsVersionFormatError => e
+      message = <<-MSG
+HETS PROBLEM:
+The Hets Version identifier was not recognized
+(#{e.message}),
+we expected it to be matchable by this regular expression:
+#{VERSION_RE}.
+      MSG
+      Rails.logger.warn message
+      STDERR.puts message
+    end
+
   end
 
   # Runs hets with input_file and returns XML output file path.
