@@ -5,9 +5,6 @@ require 'sidekiq/worker'
 class SidetiqWorker
 
   include Sidekiq::Worker
-  include Sidetiq::Schedulable
-
-  recurrence { minutely(5) }
 
   def perform
     Repository.outdated.find_each{|r| r.async_remote :pull }

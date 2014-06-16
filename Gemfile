@@ -70,9 +70,7 @@ gem 'acts_as_tree'
 gem "rest-client"
 
 # Background-Jobs
-gem 'sidekiq', '~> 2.17'
-gem 'sidetiq', '~> 0.5'
-gem 'sidekiq-failures'
+gem 'sidekiq', '~> 3.1.0'
 gem 'sinatra', require: false, group: [:development, :production]
 
 # Search engine
@@ -137,7 +135,7 @@ end
 
 group :production do
   gem 'god'
-  gem 'exception_notification', '~> 4.0'
+  gem 'exception_notification', '~> 4.1.0.rc1'
 end
 
 group :deployment do
