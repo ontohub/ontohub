@@ -1,4 +1,4 @@
-Given(/^i visit the landing page\.$/) do
+Given(/^I visit the landing page\.$/) do
   visit root_path
 end
 
@@ -16,7 +16,7 @@ When(/^click on the singup button\.$/) do
   end
 end
 
-Then(/^i should be on the after signup page$/) do
+Then(/^I should be on the after signup page$/) do
   page.should have_content("Need Help?")
   page.should have_content("Welcome Foo Bar")
   current_path.should eq("/after_signup")
@@ -41,7 +41,7 @@ Given(/^I am an registered and confirmed user\.$/) do
   @user.save!
 end
 
-When(/^i fill out the login form\.$/) do
+When(/^I fill out the login form\.$/) do
   within '#sign_in' do
     fill_in 'user_email',    :with => @user.email
     fill_in 'user_password', :with => @password
@@ -54,7 +54,7 @@ When(/^click on the signin button\.$/) do
   end
 end
 
-Then(/^i should be logged in\.$/) do
+Then(/^I should be logged in\.$/) do
   page.should have_content(@user.name)
   page.should have_content("Signed in successfully")
 end
