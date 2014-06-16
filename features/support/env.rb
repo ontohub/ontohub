@@ -60,3 +60,6 @@ Capybara.current_driver = :webkit
 Capybara.javascript_driver = :webkit
 
 WebMock.allow_net_connect!(:net_http_connect_on_start => true)
+
+include Warden::Test::Helpers
+Warden.test_mode!
