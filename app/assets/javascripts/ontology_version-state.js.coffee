@@ -4,9 +4,8 @@ poll_time = 3000 # milliseconds
 
 return if _.isEmpty(containers) || !containers.length
 
-update = ->
-  containers.each ->
-    container = $(this)
+update = (container) ->
+  updateContainer = (container) ->
     current_state = container.data('state')
 
     $.getJSON container.data('uri') + ".json", (data) ->
@@ -37,9 +36,15 @@ update = ->
                 attr('class', 'icon-refresh')).
               text('refresh'))
         else
-          enqueue()
+          enqueue(container)
 
-enqueue = ->
-  setTimeout update, poll_time
+  if _.isUndefined(container)
+    containers.each ->
+      updateContainer($(this))
+  else
+    updateContainer(container)
+
+enqueue = (container) ->
+  setTimeout (-> update(container)), poll_time
 
 enqueue()
