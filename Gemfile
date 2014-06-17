@@ -36,7 +36,7 @@ end
 gem 'haml-rails'
 
 # Project configuration
-gem 'rails_config'
+gem 'rails_config', '~> 0.3.0'
 
 # Fancy Forms
 gem 'simple_form'

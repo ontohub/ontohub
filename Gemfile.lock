@@ -265,7 +265,7 @@ GEM
       activesupport (>= 3.0)
       choice (~> 0.1.6)
       ruby-graphviz (~> 1.0.4)
-    rails_config (0.4.2)
+    rails_config (0.3.4)
       activesupport (>= 3.0)
     railties (3.2.18)
       actionpack (= 3.2.18)
@@ -453,7 +453,7 @@ DEPENDENCIES
   rack-protection
   rails (~> 3.2.18)
   rails-erd
-  rails_config
+  rails_config (~> 0.3.0)
   rdf
   rdf-n3
   rdf-rdfxml
