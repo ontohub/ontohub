@@ -33,6 +33,12 @@ class Link < ActiveRecord::Base
                   :target_id, :versions_attributes, :versions, :name
   accepts_nested_attributes_for :versions
 
+  def self.with_ontology_reference(ontology_id)
+    Link.where('ontology_id = ? OR source_id = ? OR target_id = ?',
+                          ontology_id, ontology_id, ontology_id)
+
+  end
+
   def to_s
     string = ""
     if name

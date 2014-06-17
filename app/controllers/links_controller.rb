@@ -47,8 +47,8 @@ class LinksController < InheritedResources::Base
     end
     if params[:ontology_id]
       ontology_id = params[:ontology_id]
-      @links = Link.where('ontology_id = ? OR source_id = ? OR target_id = ?',
-                          ontology_id, ontology_id, ontology_id)
+      @links = Link.with_ontology_reference(ontology_id).
+        joins(:source => :logic).order('logics.name DESC')
       collection = @links
     else
       collection = super
