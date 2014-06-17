@@ -46,13 +46,12 @@ class LinksController < InheritedResources::Base
       can?(:show, link.source.repository) && can?(:show, link.target.repository)
     end
     if params[:ontology_id]
-      ontology_id = params[:ontology_id]
-      @links = Link.with_ontology_reference(ontology_id).
-        joins(:source => :logic).order('logics.name DESC')
-      collection = @links
+      collection = Link.with_ontology_reference(params[:ontology_id])
     else
       collection = super
     end
+    @links = collection = collection.
+        joins(:source => :logic).order('logics.name DESC')
     paginate_for(collection.select(&restrict_by_permission))
   end
 
