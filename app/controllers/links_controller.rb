@@ -42,14 +42,17 @@ class LinksController < InheritedResources::Base
   private
 
   def collection
-    if params[:ontology_id]
-      onto = params[:ontology_id]
-      @links = Link.where("ontology_id =#{onto} OR source_id = #{onto} OR target_id = #{onto}")
-      collection = Kaminari.paginate_array(Link.where("ontology_id =#{onto} OR source_id = #{onto} OR target_id = #{onto}").
-          select { |link| can?(:show, link.source.repository) && can?(:show, link.target.repository) }).page(params[:page])
-    else
-      Kaminari.paginate_array(super.select { |link| can?(:show, link.source.repository) && can?(:show, link.target.repository) }).page(params[:page])
+    restrict_by_permission = proc do |link|
+      can?(:show, link.source.repository) && can?(:show, link.target.repository)
     end
+    if params[:ontology_id]
+      collection = Link.with_ontology_reference(params[:ontology_id])
+    else
+      collection = super
+    end
+    @links = collection = collection.
+        joins(:source => :logic).order('logics.name DESC')
+    paginate_for(collection.select(&restrict_by_permission))
   end
 
   def build_resource
