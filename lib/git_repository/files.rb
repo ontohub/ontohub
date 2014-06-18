@@ -2,8 +2,6 @@ module GitRepository::Files
   # depends on GitRepository
   extend ActiveSupport::Concern
 
-  class GitRepository::Files::FileError < StandardError; end
-
   class GitFile
     attr_reader :name, :path, :oid, :mime_type, :mime_category
 
@@ -11,7 +9,7 @@ module GitRepository::Files
       @path = path
       self.repository = repository
       if !repository.path_exists?(path, rugged_commit.oid)
-        fail FileError, "Path doesn't exist: #{path}"
+        fail GitRepository::PathNotFoundError, "Path doesn't exist: #{path}"
       end
       self.rugged_object = repository.get_object(rugged_commit, path)
 

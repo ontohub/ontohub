@@ -15,14 +15,14 @@ class RepositoryFile
   def self.find_with_path(opts)
     begin
       new(opts)
-    rescue GitRepository::Files::FileError
+    rescue GitRepository::PathNotFoundError
       nil
     end
   end
 
   def self.find_with_path!(opts)
     self.find_with_path(opts) ||
-      raise(Repository::FileNotFoundError,
+      raise(GitRepository::PathNotFoundError,
         [opts[:repository_id], opts[:ref], opts[:path]].compact.join('/'))
   end
 
@@ -39,15 +39,16 @@ class RepositoryFile
     end
   end
 
-  def initialize(params)
-    if params[:git_file] && params[:repository]
-      @repository = params[:repository]
-      @file       = params[:git_file]
+  def initialize(opts)
+    opts = opts.symbolize_keys
+    if opts[:git_file] && opts[:repository]
+      @repository = opts[:repository]
+      @file       = opts[:git_file]
       @commit_id  = repository.commit_id(file.oid)
     else
-      @repository = Repository.find_by_path(params[:repository_id])
-      @commit_id  = repository.commit_id(params[:ref] || DEFAULT_BRANCH)
-      @file       = repository.git.get_file(params[:path] || '/', commit_id[:oid])
+      @repository = Repository.find_by_path(opts[:repository_id])
+      @commit_id  = repository.commit_id(opts[:ref] || DEFAULT_BRANCH)
+      @file       = repository.git.get_file!(opts[:path] || '/', commit_id[:oid])
     end
   end
 

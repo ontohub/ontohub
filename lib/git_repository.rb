@@ -59,21 +59,25 @@ class GitRepository
   end
 
   def get_file(path, commit_oid=nil)
-    path ||= '/'
-    rugged_commit = get_commit(commit_oid)
-    return nil if !rugged_commit && path.empty?
-
     begin
-      GitFile.new(self, rugged_commit, path)
-    rescue GitRepository::Files::FileError
+      get_file!(path, commit_oid)
+    rescue GitRepository::PathNotFoundError
       nil
     end
+  end
+
+  def get_file!(path, commit_oid=nil)
+    path ||= '/'
+    rugged_commit = get_commit(commit_oid)
+    raise GitRepository::PathNotFoundError if !rugged_commit && path.empty?
+
+    GitFile.new(self, rugged_commit, path)
   end
 
   def get_path_of_dir(oid=nil, path=nil)
     path ||= ''
     path = path[0..-2] if(path[-1] == '/')
-    raise URLNotFoundError.new unless path_exists?(path, oid)
+    raise PathNotFoundError.new unless path_exists?(path, oid)
 
     path
   end

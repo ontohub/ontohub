@@ -1,6 +1,15 @@
 require 'spec_helper'
 
 describe FilesController do
+  before do
+    Repository.stub(:find_by_path) { true }
+    RepositoryFile.stub(:find_with_path) { true }
+  end
+
+  after do
+    Repository.unstub(:find_by_path)
+    RepositoryFile.unstub(:find_with_path)
+  end
   # FIXME some/path must exist in repository
   #it { should     route(:get,  'repopath/some/path'               ).to(repository_id: 'repopath', action: :files, path: 'some/path') }
 

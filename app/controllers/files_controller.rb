@@ -83,11 +83,7 @@ class FilesController < InheritedResources::Base
   protected
 
   def resource
-    @repository_file ||= begin
-      RepositoryFile.find_with_path(params)
-    rescue GitRepository::Files::FileError
-      RepositoryFile.find_with_basepath(params)
-    end
+    @repository_file ||= RepositoryFile.find_with_path(params)
   end
 
   def collection

@@ -1,5 +1,5 @@
 require 'sidekiq/web' if defined? Sidekiq
-
+require Rails.root.join('lib', 'router_constraints.rb')
 
 Ontohub::Application.routes.draw do
 
@@ -123,6 +123,12 @@ Ontohub::Application.routes.draw do
       controller:  :files,
       as:          :ref,
       constraints: { path: /.*/ }
+
+    # get ':ref/files(/:path)',
+    #   controller: :files,
+    #   action:     :files,
+    #   as:         :ref,
+    #   constraints: FilesRouter.new
   end
 
   post ':repository_id/:path',
@@ -131,11 +137,17 @@ Ontohub::Application.routes.draw do
     as:          :repository_tree,
     constraints: { path: /.*/ }
 
-  get ':repository_id(/:path)',
-    controller:  :files,
-    action:      :files,
-    as:          :repository_tree,
-    constraints: { path: /.*/ }
+  get ':repository_id(/*path)',
+    controller: :files,
+    action:     :files,
+    as:         :repository_tree,
+    constraints: FilesRouter.new
+
+  get '*path',
+    controller:  :ontologies,
+    action:      :show,
+    as:          :iri,
+    constraints: IRIRouter.new
 
   root :to => 'home#index'
 
