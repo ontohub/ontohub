@@ -16,7 +16,7 @@ module GitRepository::Files
         return
       end
       if !repository.path_exists?(path, rugged_commit.oid)
-        fail GitRepository::PathNotFoundError, "Path doesn't exist: #{path}"
+        raise GitRepository::PathNotFoundError, "Path doesn't exist: #{path}"
       end
       self.rugged_object = repository.get_object(rugged_commit, path)
 
@@ -66,7 +66,7 @@ module GitRepository::Files
     end
 
     def name
-      path.split('/')[-1]
+      @name ||= path.split('/')[-1]
     end
 
     def last_change
@@ -77,6 +77,9 @@ module GitRepository::Files
       [:repository, :path, :oid].all? do |attr|
         self.send(attr) == other.send(attr)
       end
+
+    def last_change
+      @last_change ||= git.entry_info(path, oid)
     end
 
     protected
