@@ -116,6 +116,7 @@ module Super
       sql_statements = read_structure_sql
 
       sql_statements.each do |sql_statement|
+        rename_columns(sql_statement)
         rename_table(sql_statement)
       end
 
@@ -149,17 +150,30 @@ module Super
       end
     end
 
+    def rename_columns(sql_statement)
+      if sql_statement =~ /^\s*CREATE TABLE (\S+)/
+        table_name = $1
+        sql_statement.lines[1..-2].each do |column_line|
+          if column_line =~ /^\s+(\S+)\s+/
+            column_name = $1
+            new_column_name = translate(column_name)
+            push(:change, "rename_column '#{table_name}', '#{column_name}', '#{new_column_name}'") if new_column_name
+          end
+        end
+      end
+    end
+
     def translate(name)
       REPLACE_WORDS.each do |old_name, new_name|
         result = case name
-        when old_name
-          new_name
-        when pluralize(old_name)
-          pluralize(new_name)
-        when camelize(old_name)
-          camelize(new_name)
-        when camelize(pluralize(old_name))
-          camelize(pluralize(new_name))
+        when /#{old_name}/
+          name.gsub($&, new_name)
+        when /#{pluralize(old_name)}/
+          name.gsub($&, pluralize(new_name))
+        when /#{camelize(old_name)}/
+          name.gsub($&, camelize(new_name))
+        when /#{camelize(pluralize(old_name))}/
+          name.gsub($&, camelize(pluralize(new_name)))
         end
         return result if result
       end
