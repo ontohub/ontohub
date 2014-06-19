@@ -102,6 +102,7 @@ module Super
     include ActiveSupport::Inflector
 
     STRUCTURE_SQL_PATH = Pathname.new('db/structure.sql')
+    MIGRATION_DIRPATH  = Pathname.new('db/migrate')
 
     attr_accessor :verbose, :dry_run, :migration_commands
 
@@ -118,9 +119,11 @@ module Super
       sql_statements.each do |sql_statement|
         rename_columns(sql_statement)
         rename_table(sql_statement)
+        rebuild_index(sql_statement)
       end
 
       puts migration_commands.map(&:inspect).join("\n") if dry_run && verbose
+      write_migration
     end
 
     def clean_slate
@@ -163,6 +166,23 @@ module Super
       end
     end
 
+    def rebuild_index(sql_statement)
+    end
+
+    def write_migration
+      migration_filepath.open('w') do |f|
+        f << "class RenameViaScript < ActiveRecord::Migration\n"
+        migration_commands.group_by{ |c| c.first }.each do |method_name, commands|
+          f << "  def #{method_name}\n"
+          commands.each do |(_, command)|
+            f << "    #{command}\n"
+          end
+          f << "  end\n"
+        end
+        f << "end\n"
+      end
+    end
+
     def translate(name)
       REPLACE_WORDS.each do |old_name, new_name|
         result = case name
@@ -182,6 +202,10 @@ module Super
 
     def push(*args)
       migration_commands << args
+    end
+
+    def migration_filepath
+      MIGRATION_DIRPATH.join("#{Time.now.utc.strftime("%Y%m%d%H%M%S")}_rename_via_script.rb")
     end
   end
 end
