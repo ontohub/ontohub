@@ -2,6 +2,7 @@
 
 require 'active_support'
 require 'fileutils'
+require 'pathname'
 
 module Super
 
@@ -96,6 +97,80 @@ module Super
     end
 
   end
+
+  class MigrationProvider
+    include ActiveSupport::Inflector
+
+    STRUCTURE_SQL_PATH = Pathname.new('db/structure.sql')
+
+    attr_accessor :verbose, :dry_run, :migration_commands
+
+    def initialize(verbose: false, dry_run: true)
+      self.verbose = verbose
+      self.dry_run = dry_run
+      self.migration_commands = []
+    end
+
+    def run
+      clean_slate unless dry_run
+      sql_statements = read_structure_sql
+
+      sql_statements.each do |sql_statement|
+        rename_table(sql_statement)
+      end
+
+      puts migration_commands.map(&:inspect).join("\n") if dry_run && verbose
+    end
+
+    def clean_slate
+      puts "Running rake db:migrate:clean" if verbose
+      system('bundle exec rake db:migrate:clean')
+    end
+
+    def read_structure_sql
+      STRUCTURE_SQL_PATH.readlines("\n\n\n").map do |command|
+        command.lines.select do |line|
+          !line.start_with?('--') && line != "\n"
+        end.join("\n")
+      end
+    end
+
+    def commands(sql_statements)
+      sql_statements.map do |statement|
+        statement.split(' ')[0..1].join(' ')
+      end.uniq
+    end
+
+    def rename_table(sql_statement)
+      if sql_statement =~ /^\s*CREATE TABLE (\S+)/
+        old_name = $1
+        new_name = translate(old_name)
+        push(:change, "rename_table '#{old_name}', '#{new_name}'") if new_name
+      end
+    end
+
+    def translate(name)
+      REPLACE_WORDS.each do |old_name, new_name|
+        result = case name
+        when old_name
+          new_name
+        when pluralize(old_name)
+          pluralize(new_name)
+        when camelize(old_name)
+          camelize(new_name)
+        when camelize(pluralize(old_name))
+          camelize(pluralize(new_name))
+        end
+        return result if result
+      end
+      nil
+    end
+
+    def push(*args)
+      migration_commands << args
+    end
+  end
 end
 
-Super::RenameRefactorProvider.new(verbose: false, dry_run: false).run
+# Super::RenameRefactorProvider.new(verbose: false, dry_run: false).run
+Super::MigrationProvider.new(verbose: true, dry_run: true).run
