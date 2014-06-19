@@ -1,4 +1,5 @@
-Feature: This Feature should be hold the test for the Permissions
+Feature: Permission feature 
+        This Feature should be hold the test for the Permissions
         like adding permissions or something like that
         
 Background: 
