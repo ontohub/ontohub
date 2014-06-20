@@ -123,7 +123,7 @@ module Ontology::Import
               versions << version
             else
               if ontologies_count > 1
-                raise "more than one ontology found"
+                raise "more than one #{Settings.OMS} found"
               else
                 ontology = self
                 ontology.present = true
