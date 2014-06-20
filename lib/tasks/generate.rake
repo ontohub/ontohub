@@ -28,7 +28,7 @@ namespace :generate do
     ontology.create_categories
   end
 
-  desc 'Generate entity trees for ALL OWL ontologies'
+  desc 'Generate entity trees for ALL OWL #{Settings.OMS.pluralize}'
   task :owl_ontology_class_hierarchies => :environment do
     #cleaning up
     EntityGroup.destroy_all
@@ -43,8 +43,9 @@ namespace :generate do
       end
     end
   end
+  
+  desc 'Generate entity tree for one specific OWL #{Settings.OMS}'
 
-  desc 'Generate entity tree for one specific OWL ontology'
   task :class_hierachy_for_specific_ontology, [:ontology_id] => :environment do |t,args|
     ontology = Ontology.find!(args.ontology_id)
     #cleaning up to prevent duplicated entity_groups

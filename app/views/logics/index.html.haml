@@ -7,9 +7,9 @@
   - unless all_logics?
     = "but only #{pluralize(@counter, "logic")}"
     = "#{t :have , count: @counter } #{Settings.OMS.pluralize} defined"
-    = link_to "show all Logics", logics_path(all: true)
+    = link_to "show all logics", logics_path(all: true)
   - else
-    = link_to "show only Logics with Ontologies", logics_path
+    = link_to "show only logics with "+Settings.OMS.pluralize, logics_path
 
 = pagination do
   %table
@@ -22,7 +22,7 @@
       %tr
         %td (heterogeneous) Distributed #{Settings.OMS.pluralize}
         %td
-        %td= pluralize(Ontology.heterogeneous.count, "distributed #{Ontology}")
-        %td= pluralize(Ontology.heterogeneous_children.count, "child #{Ontology}")
+        %td= pluralize(Ontology.heterogeneous.count, "distributed #{Settings.OMS}")
+        %td= pluralize(Ontology.heterogeneous_children.count, "child #{Settings.OMS}")
         %td
       = render collection
