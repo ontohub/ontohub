@@ -14,8 +14,8 @@ describe Permission do
       expect(permission).not_to be_valid
     end
 
-    it 'should be possible to remove another permission' do
-      %w(editor reader).each do |role|
+    %w(editor reader).each do |role|
+      it "should be possible to remove some #{role} permission" do
         other_permission = create(:permission, subject: owner, role: role)
         expect{ other_permission.destroy }.not_to raise_error
       end
