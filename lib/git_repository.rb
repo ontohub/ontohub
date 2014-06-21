@@ -161,7 +161,6 @@ class GitRepository
     if url.empty?
       true
     else
-      tree = rugged_commit.tree
       nil != get_object(rugged_commit, url)
     end
   rescue Rugged::OdbError

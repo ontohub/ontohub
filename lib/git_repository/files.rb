@@ -3,7 +3,7 @@ module GitRepository::Files
   extend ActiveSupport::Concern
 
   class GitFile
-    attr_reader :name, :path, :oid, :mime_type, :mime_category
+    attr_reader :path, :oid, :mime_type, :mime_category
 
     def initialize(repository, rugged_commit, path)
       @path = path
@@ -14,7 +14,6 @@ module GitRepository::Files
       self.rugged_object = repository.get_object(rugged_commit, path)
 
       @oid  = rugged_commit.oid
-      @name = path.split('/')[-1]
 
       if file?
         mime_info      = repository.class.mime_info(name)
@@ -58,8 +57,18 @@ module GitRepository::Files
       end
     end
 
+    def name
+      path.split('/')[-1]
+    end
+
     def last_change
-      @last_change ||= git.entry_info(path, oid)
+      @last_change ||= repository.entry_info(path, oid)
+    end
+
+    def ==(other)
+      [:repository, :path, :oid].all? do |attr|
+        self.send(attr) == other.send(attr)
+      end
     end
 
     protected

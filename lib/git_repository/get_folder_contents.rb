@@ -22,7 +22,7 @@ module GitRepository::GetFolderContents
   protected
 
   def files_recursive(folder, rugged_commit, &block)
-    folder_contents(commit_oid, folder).each do |entry|
+    folder_contents_rugged(rugged_commit, folder).each do |entry|
       case entry.type
       when :dir
         files_recursive(entry.path, rugged_commit, &block)

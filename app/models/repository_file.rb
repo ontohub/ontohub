@@ -1,16 +1,29 @@
 class RepositoryFile
 
+  class PathValidator < ActiveModel::Validator
+    def validate(record)
+      if record.repository.points_through_file?(record.target_path)
+        record.errors[:target_directory] = "Error! This path points to or through a file."
+      end
+    end
+  end
+
   include ActiveModel::Conversion
   include ActiveModel::Validations
   extend ActiveModel::Naming
 
+  DEFAULT_BRANCH = 'master'
+
+  # basic repository file usage
   attr_reader :repository, :file
   attr_accessor :index
-
   delegate :name, :path, :size, :mime_type, :mime_category,
     :oid, :file?, :dir?, :type, to: :file
 
-  DEFAULT_BRANCH = 'master'
+  # only for new/edit
+  attr_reader :message, :temp_file, :target_directory, :target_filename
+  validates :message, :temp_file, presence: true
+  validates_with PathValidator, :if => :temp_file_exists?
 
   def self.find_with_path(opts)
     begin
@@ -39,9 +52,43 @@ class RepositoryFile
     end
   end
 
+  def self.build(opts={})
+    if opts[:content] # edit text of file
+      tempfile = Tempfile.new('repository_tempfile')
+      tempfile.write(opts[:content])
+      tempfile.close
+      opts.merge!({ temp_file: tempfile })
+      new(opts)
+    elsif(opts[:repository_file]) # upload file
+      new(opts[:repository_file].merge({repository_id: opts[:repository_id]}))
+    else
+      new(opts)
+    end
+  end
+
+  def self.create(opts={})
+    rf = build(opts)
+    if rf.valid?
+      rf.repository.save_file(rf.temp_file.path, rf.target_path, rf.message, opts[:user])
+    end
+
+    return rf
+  end
+
   def initialize(opts)
     opts = opts.symbolize_keys
-    if opts[:git_file] && opts[:repository]
+    if self.class.manipulating_file?(opts)
+      @repository = Repository.find_by_path(opts[:repository_id])
+      @message    = opts[:message]
+      @temp_file  = opts[:temp_file]
+      if opts[:path].present?
+        @target_directory = opts[:path].split('/')[0..-2].join('/')
+        @target_filename  = opts[:path].split('/')[-1]
+      else
+        @target_directory = opts[:target_directory]
+        @target_filename  = opts[:target_filename]
+      end
+    elsif opts[:git_file] && opts[:repository]
       @repository = opts[:repository]
       @file       = opts[:git_file]
       @commit_id  = repository.commit_id(file.oid)
@@ -106,7 +153,22 @@ class RepositoryFile
   end
 
   def basename(name)
-    name.split('.')[0]
+    name.split('.')[0..-2].join('.')
+  end
+
+
+  # only for new/edit
+  def target_path
+    @target_directory ||= ''
+    str  = target_directory
+    str  = str[1,-1] if target_directory.starts_with?("/")
+    str  = str[0,-2] if target_directory.ends_with?("/")
+    str += "/" unless target_directory.empty?
+    str += target_filename.present? ? target_filename : temp_file.original_filename
+  end
+
+  def temp_file_exists?
+    temp_file.present?
   end
 
   protected
@@ -115,6 +177,10 @@ class RepositoryFile
 
   def self.compute_ref(repository, ref)
     repository.commit_id(ref || DEFAULT_BRANCH)
+  end
+
+  def self.manipulating_file?(opts)
+    opts[:temp_file].present?
   end
 
 end
