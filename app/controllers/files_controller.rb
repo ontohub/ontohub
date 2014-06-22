@@ -5,7 +5,7 @@ class FilesController < InheritedResources::Base
   before_filter :check_write_permissions, only: [:new, :create, :update]
   before_filter :check_read_permissions
 
-  def files
+  def show
     if owl_api_header_in_accept_header?
       send_download(path, oid)
     elsif existing_file_requested_as_html?
@@ -72,7 +72,7 @@ class FilesController < InheritedResources::Base
       flash[:success] = "Successfully changed the file."
       redirect_to fancy_repository_path(repository, path: resource.target_path)
     else
-      render :files
+      render :show
     end
   end
 

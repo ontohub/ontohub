@@ -13,7 +13,7 @@ describe FilesController do
       @repository_file.stub(:ontologies) { [dist_ontology] }
       RepositoryFile.stub(:find_with_path) { @repository_file }
       @request.query_string = do_child.name
-      get :files, repository_id: repository.path, path: dist_ontology.name
+      get :show, repository_id: repository.path, path: dist_ontology.name
     end
 
     after do
@@ -37,7 +37,7 @@ describe FilesController do
         @repository_file = 'repository_file'
         @repository_file.stub(:file?) { false }
         RepositoryFile.stub(:find_with_path) { @repository_file }
-        get :files, repository_id: repository.to_param
+        get :show, repository_id: repository.to_param
       end
 
       after do
@@ -46,7 +46,7 @@ describe FilesController do
       end
 
       it { should respond_with :success }
-      it { should render_template :files }
+      it { should render_template :show }
     end
 
     context "signed in with write access" do

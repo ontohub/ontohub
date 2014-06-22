@@ -119,6 +119,13 @@ Ontohub::Application.routes.draw do
     resources :files, only: [:new, :create]
 
     # action: history, diff, entries_info, files
+    get ':ref/files(/*path)',
+      controller:  :files,
+      action:      :show,
+      as:          :ref,
+      constraints: FilesRouter.new
+
+    # action: history, diff, entries_info, files
     get ':ref/:action(/:path)',
       controller:  :files,
       as:          :ref,
@@ -139,7 +146,7 @@ Ontohub::Application.routes.draw do
 
   get ':repository_id(/*path)',
     controller: :files,
-    action:     :files,
+    action:     :show,
     as:         :repository_tree,
     constraints: FilesRouter.new
 
