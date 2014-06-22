@@ -11,16 +11,16 @@
 .row
   .col-md-12
     - if oid
-      - if @ontology
+      - if ontology
         .pull-right.btn-group.breadcrumbs-buttons
-          = link_to 'Show Ontology versions', repository_ontology_ontology_versions_path(repository, @ontology), class: 'btn btn-default btn-sm'
+          = link_to 'Show Ontology versions', [repository, ontology, :ontology_versions], class: 'btn btn-default btn-sm'
 
       = render partial: 'files/breadcrumbs'
 
       .history-pagination
-        = paginate history_pagination(@commits, params[:page], @per_page), window: 0, outer_window: 0, exclude: [:first, :last, :gap, :per_page]
+        = paginate resource.paginated_array, window: 0, outer_window: 0, exclude: [:first, :last, :gap, :per_page]
 
-      - group_commits(@commits).each do |group|
+      - resource.grouped_commits.each do |group|
         = render partial: 'history_commit_group', locals: { group: group }
 
     - else
