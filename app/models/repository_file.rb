@@ -94,7 +94,8 @@ class RepositoryFile
       @commit_id  = repository.commit_id(file.oid)
     else
       @repository = Repository.find_by_path(opts[:repository_id])
-      @commit_id  = repository.commit_id(opts[:ref] || DEFAULT_BRANCH)
+      @commit_id  = self.class.compute_ref(repository, opts[:ref] || DEFAULT_BRANCH)
+      @commit_id  = {oid: nil} if repository.empty?
       @file       = repository.git.get_file!(opts[:path] || '/', commit_id[:oid])
     end
   end

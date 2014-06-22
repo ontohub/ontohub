@@ -8,6 +8,13 @@ module GitRepository::Files
     def initialize(repository, rugged_commit, path)
       @path = path
       self.repository = repository
+      if repository.empty?
+        @path = '/'
+        @content = []
+        @rugged_commit = nil
+        @rugged_object = nil
+        return
+      end
       if !repository.path_exists?(path, rugged_commit.oid)
         fail GitRepository::PathNotFoundError, "Path doesn't exist: #{path}"
       end
@@ -49,6 +56,7 @@ module GitRepository::Files
     end
 
     def type
+      return :dir if rugged_object.nil?
       case rugged_object.type
       when :blob
         :file
