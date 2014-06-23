@@ -16,7 +16,7 @@ class Link < ActiveRecord::Base
   belongs_to :source, class_name: 'Ontology'
   belongs_to :target, class_name: 'Ontology'
   belongs_to :logic_mapping
-  belongs_to :current_version
+  belongs_to :link_version
   has_many :entity_mappings
 
   has_many :versions,
@@ -32,6 +32,19 @@ class Link < ActiveRecord::Base
                   :inclusion, :logic_mapping, :parent, :ontology_id, :source_id,
                   :target_id, :versions_attributes, :versions, :name
   accepts_nested_attributes_for :versions
+
+  def current_version
+    if self.link_version
+      self.link_version
+    else
+      self.versions.current
+    end
+  end
+
+  def update_version!(to: nil)
+    self.link_version_id = to ? to.id : versions.current.id
+    save!
+  end
 
   def to_s
     string = ""
