@@ -83,7 +83,6 @@ $.widget "ui.relationList",
 
     # AJAX Actions failed
     element.on "ajax:error", (xhr, status, error) ->
-      console.log status
       alert status.responseText
 
   # collects elements from list for exclusion
