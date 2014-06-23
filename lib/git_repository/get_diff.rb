@@ -50,7 +50,7 @@ module GitRepository::GetDiff
     def diff
       @diff ||= begin
         patch = delta.diff.patch
-        if patch.size > Ontohub::Application.config.max_combined_diff_size
+        if patch.size > Settings.max_combined_diff_size
           :diff_too_large
         else
           patch

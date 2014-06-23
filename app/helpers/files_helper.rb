@@ -72,6 +72,6 @@ module FilesHelper
   end
 
   def display_file?
-    @file[:size] <= Ontohub::Application.config.max_read_filesize
+    @file[:size] <= Settings.max_read_filesize
   end
 end
