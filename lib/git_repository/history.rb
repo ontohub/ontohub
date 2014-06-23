@@ -87,15 +87,17 @@ module GitRepository::History
 
   def commits_all(walker, limit, offset, &block)
     commits = []
-    offset_original = offset
+    original_offset = offset
 
     walker.each_with_index do |c,i|
+      # Skip first `offset` commits (if set).
       if offset > 0
-        offset = offset - 1
+        offset -= 1
         next
       end
 
-      break if limit && i-offset_original == limit
+      # Only proccess `limit` commits (if set).
+      break if limit && i-original_offset == limit
 
       if block_given?
         commits << block.call(Commit.new(c))
@@ -119,15 +121,18 @@ module GitRepository::History
     added_commits = 0
 
     walker.each do |previous_commit|
+      # Only process `limit` commits (if set).
       break if limit && added_commits == limit
+
       previous_object = get_object(previous_commit, path)
 
       if commit
         commit_obj = Commit.new(commit, path: path)
 
         if commit_obj.deltas.present?
+          # Skip first `offset` commits (if set).
           if offset > 0
-            offset = offset - 1
+            offset -= 1
           else
             if block_given?
               commits << block.call(commit_obj)
@@ -143,6 +148,9 @@ module GitRepository::History
       commit = previous_commit
     end
 
+    # This block is needed to process the last commit in line
+    # because we always consider two subsequent commits in the above code
+    # (see `object` and `previous_project`).
     unless object.nil?
       unless limit && added_commits == limit
         commit_obj = Commit.new(commit, path: path)
