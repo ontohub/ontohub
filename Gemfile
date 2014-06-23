@@ -107,12 +107,12 @@ group :test do
   gem "capybara"
   gem "capybara-webkit"
   gem "launchy"
-  
+
   # Recording of HTTP Requests
   gem "vcr"
   gem "webmock", '~> 1.9.0'
-  
-  gem 'cucumber-rails', '~> 1.4'
+
+  gem 'cucumber-rails', '~> 1.4', require: false
   # Code Coverage Analysis
   gem 'coveralls', require: false
 
