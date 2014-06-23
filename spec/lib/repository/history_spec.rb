@@ -142,10 +142,12 @@ describe "git history" do
     end
 
     context 'state check' do
-      it 'should detect if a file has changed' do
+      it 'should detect that a file has not changed' do
         expect(repository.has_changed?(filepath, @commit_add1, @commit_add1)).
           to be_false
+      end
 
+      it 'should detect that a file has changed' do
         [ [@commit_add1,    @commit_change1],
           [@commit_add1,    @commit_delete1],
           [@commit_delete1, @commit_add2],
@@ -184,36 +186,69 @@ describe 'git mv' do
     expect(repository.commits{ |c| c.message }).to eq(messages)
   end
 
-  it 'should detect all the file renames' do
-    expect(repository.commits(limit: 1, offset: 0) { |c| c.deltas }.first[0].
-      status).to eq(:renamed)
-    expect(repository.commits(limit: 1, offset: 0) { |c| c.deltas }.first[0].
-      old_file[:path]).to eq('Qy.clif')
-    expect(repository.commits(limit: 1, offset: 0) { |c| c.deltas }.first[0].
-      new_file[:path]).to eq('QyMoved.clif')
+  context 'detect all the file renames' do
+    it do
+      expect(repository.commits(limit: 1, offset: 0) { |c| c.deltas }.first[0].
+        status).to eq(:renamed)
+    end
 
-    expect(repository.commits(limit: 1, offset: 0) { |c| c.deltas }.first[1].
-      status).to eq(:renamed)
-    expect(repository.commits(limit: 1, offset: 0) { |c| c.deltas }.first[1].
-      old_file[:path]).to eq('Rz.clif')
-    expect(repository.commits(limit: 1, offset: 0) { |c| c.deltas }.first[1].
-      new_file[:path]).to eq('RzMoved.clif')
+    it do
+      expect(repository.commits(limit: 1, offset: 0) { |c| c.deltas }.first[0].
+        old_file[:path]).to eq('Qy.clif')
+    end
 
-
-    expect(repository.commits(limit: 1, offset: 1) { |c| c.deltas }.first[0].
-      status).to eq(:renamed)
-    expect(repository.commits(limit: 1, offset: 1) { |c| c.deltas }.first[0].
-      old_file[:path]).to eq('PxMoved.clif')
-    expect(repository.commits(limit: 1, offset: 1) { |c| c.deltas }.first[0].
-      new_file[:path]).to eq('PxMoved2.clif')
+    it do
+      expect(repository.commits(limit: 1, offset: 0) { |c| c.deltas }.first[0].
+        new_file[:path]).to eq('QyMoved.clif')
+    end
 
 
-    expect(repository.commits(limit: 1, offset: 2) { |c| c.deltas }.first[0].
-      status).to eq(:renamed)
-    expect(repository.commits(limit: 1, offset: 2) { |c| c.deltas }.first[0].
-      old_file[:path]).to eq('Px.clif')
-    expect(repository.commits(limit: 1, offset: 2) { |c| c.deltas }.first[0].
-      new_file[:path]).to eq('PxMoved.clif')
+    it do
+      expect(repository.commits(limit: 1, offset: 0) { |c| c.deltas }.first[1].
+        status).to eq(:renamed)
+    end
+
+    it do
+      expect(repository.commits(limit: 1, offset: 0) { |c| c.deltas }.first[1].
+        old_file[:path]).to eq('Rz.clif')
+    end
+
+    it do
+      expect(repository.commits(limit: 1, offset: 0) { |c| c.deltas }.first[1].
+        new_file[:path]).to eq('RzMoved.clif')
+    end
+
+
+    it do
+      expect(repository.commits(limit: 1, offset: 1) { |c| c.deltas }.first[0].
+        status).to eq(:renamed)
+    end
+
+    it do
+      expect(repository.commits(limit: 1, offset: 1) { |c| c.deltas }.first[0].
+        old_file[:path]).to eq('PxMoved.clif')
+    end
+
+    it do
+      expect(repository.commits(limit: 1, offset: 1) { |c| c.deltas }.first[0].
+        new_file[:path]).to eq('PxMoved2.clif')
+    end
+
+
+    it do
+      expect(repository.commits(limit: 1, offset: 2) { |c| c.deltas }.first[0].
+        status).to eq(:renamed)
+    end
+
+    it do
+      expect(repository.commits(limit: 1, offset: 2) { |c| c.deltas }.first[0].
+        old_file[:path]).to eq('Px.clif')
+    end
+
+    it do
+      expect(repository.commits(limit: 1, offset: 2) { |c| c.deltas }.first[0].
+        new_file[:path]).to eq('PxMoved.clif')
+    end
   end
 
 end

@@ -3,11 +3,13 @@ require 'spec_helper'
 describe "git diff" do
   let(:path) { '/tmp/ontohub/test/lib/repository' }
   let(:repository) { GitRepository.new(path) }
-  let(:userinfo) { {
+  let(:userinfo) do
+    {
       email: 'janjansson.com',
       name: 'Jan Jansson',
       time: Time.now
-    } }
+    }
+  end
 
   after do
     FileUtils.rmtree(path) if File.exists?(path)
@@ -42,9 +44,12 @@ describe "git diff" do
     expect(repository.changed_files(@commit1).first.path).to eq(filepath)
   end
 
-  it 'should have the right type in the list when using the first commit' do
+  it 'should have the type added in the list when using the first commit' do
     expect(repository.changed_files(@commit1).first.added?).to be_true
-    %w(modified deleted renamed).each do |status|
+  end
+
+  %w(modified deleted renamed).each do |status|
+    it "should have the type #{status} in the list when using the first commit" do
       expect(repository.changed_files(@commit1).first.send("#{status}?")).to be_false
     end
   end
@@ -64,7 +69,6 @@ describe "git diff" do
   end
 
 
-
   it 'should have the right file count when using a commit in the middle' do
     expect(repository.changed_files(@commit2).size).to eq(1)
   end
@@ -77,9 +81,12 @@ describe "git diff" do
     expect(repository.changed_files(@commit2).first.path).to eq(filepath)
   end
 
-  it 'should have the right type in the list when using a commit in the middle' do
+  it 'should have the type modified in the list when using a commit in the middle' do
     expect(repository.changed_files(@commit2).first.modified?).to be_true
-    %w(added deleted renamed).each do |status|
+  end
+
+  %w(added deleted renamed).each do |status|
+    it "should have the type #{status} in the list when using a commit in the middle" do
       expect(repository.changed_files(@commit2).first.send("#{status}?")).to be_false
     end
   end
@@ -99,7 +106,6 @@ describe "git diff" do
   end
 
 
-
   it 'should have the right file count when using the HEAD' do
     expect(repository.changed_files.size).to eq(1)
   end
@@ -112,9 +118,12 @@ describe "git diff" do
     expect(repository.changed_files.first.path).to eq(filepath)
   end
 
-  it 'should have the right type in the list when using the HEAD' do
+  it 'should have the type deleted in the list when using the HEAD' do
     expect(repository.changed_files.first.deleted?).to be_true
-    %w(added modified renamed).each do |status|
+  end
+
+  %w(added modified renamed).each do |status|
+    it "should have the type #{status} in the list when using the HEAD" do
       expect(repository.changed_files.first.send("#{status}?")).to be_false
     end
   end
