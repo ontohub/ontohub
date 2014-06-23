@@ -1,5 +1,5 @@
 class AddPathToOntologyVersion < ActiveRecord::Migration
-  def change
+  def up
     add_column :ontology_versions, :basepath, :string, null: true
     add_column :ontology_versions, :file_extension, :string, limit: 20
 
@@ -10,5 +10,10 @@ class AddPathToOntologyVersion < ActiveRecord::Migration
         v.save!
       end
     end
+  end
+
+  def down
+    remove_column :ontology_versions, :basepath
+    remove_column :ontology_versions, :file_extension
   end
 end
