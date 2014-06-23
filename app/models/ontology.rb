@@ -73,19 +73,19 @@ class Ontology < ActiveRecord::Base
 
   scope :list, includes(:logic).order('ontologies.state asc, ontologies.entities_count desc')
 
-  scope :find_with_path, ->(path) do
+  scope :with_path, ->(path) do
     condition = <<-CONDITION
       ("ontology_versions"."file_extension" = :extname)
         OR (("ontology_versions"."file_extension" IS NULL)
           AND ("ontologies"."file_extension" = :extname))
     CONDITION
 
-    find_with_basepath(File.basepath(path)).
+    with_basepath(File.basepath(path)).
       where(condition, extname: File.extname(path)).
       readonly(false)
   end
 
-  scope :find_with_basepath, ->(path) do
+  scope :with_basepath, ->(path) do
     join = <<-JOIN
       LEFT JOIN "ontology_versions"
       ON "ontologies"."ontology_version_id" = "ontology_versions"."id"

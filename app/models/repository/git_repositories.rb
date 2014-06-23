@@ -72,7 +72,7 @@ module Repository::GitRepositories
     basepath = File.basepath(filepath)
     previous_basepath = File.basepath(previous_filepath) if previous_filepath
     file_extension = File.extname(filepath)
-    o = ontologies.find_with_basepath(previous_basepath || basepath).without_parent.first
+    o = ontologies.with_basepath(previous_basepath || basepath).without_parent.first
 
     if o
       return if !master_file?(o, previous_filepath || filepath)
@@ -142,13 +142,13 @@ module Repository::GitRepositories
         {
           type: :file,
           file: file,
-          ontologies: ontologies.find_with_path(path).parents_first
+          ontologies: ontologies.with_path(path).parents_first
         }
       else
         entries = list_folder(path, commit_oid)
         entries.each do |name, es|
           es.each do |e|
-            e[:ontologies] = ontologies.find_with_path(e[:path]).parents_first
+            e[:ontologies] = ontologies.with_path(e[:path]).parents_first
           end
           es.sort_by! { |e| -e[:ontologies].size }
         end

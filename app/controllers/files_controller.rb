@@ -16,7 +16,7 @@ class FilesController < ApplicationController
       when :file
         @file = repository.read_file(path, oid)
       when :file_base
-        ontology = repository.ontologies.find_with_basepath(
+        ontology = repository.ontologies.with_basepath(
           File.basepath(@info[:entry][:path])).
           order('id asc').first
         if request.query_string.present?
@@ -66,7 +66,7 @@ class FilesController < ApplicationController
     if build_file.valid?
       repository.save_file @file.file.path, @file.filepath, @file.message, current_user
       flash[:success] = "Successfully saved the uploaded file."
-      if ontology = repository.ontologies.find_with_path(@file.filepath).without_parent.first
+      if ontology = repository.ontologies.with_path(@file.filepath).without_parent.first
         redirect_to edit_repository_ontology_path(repository, ontology)
       else
         redirect_to fancy_repository_path(repository, path: @file.filepath)
