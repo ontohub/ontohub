@@ -39,7 +39,7 @@
         - when :diff_too_large
           Diff is too large to display.
         - else
-          - file.diff.split("\n").each do |diff_line|
+          - file.diff.each_line do |diff_line|
             = diff_line.force_encoding('UTF-8')
             %br
     - elsif file.mime_category == 'image'

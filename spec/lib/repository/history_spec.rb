@@ -1,11 +1,13 @@
 require 'spec_helper'
 
 describe "git history" do
-  let(:userinfo) { {
+  let(:userinfo) do
+    {
       email: 'jan@jansson.com',
       name: 'Jan Jansson',
       time: Time.now
-    } }
+    }
+  end
 
   context 'without bash' do
     let(:path) { '/tmp/ontohub/test/lib/repository' }
@@ -157,11 +159,13 @@ describe "git history" do
 end
 
 describe 'git mv' do
-  let(:userinfo) { {
+  let(:userinfo) do
+    {
       email: 'janjansson.com',
       name: 'Jan Jansson',
       time: Time.now
-    } }
+    }
+  end
 
   let(:repository) { create :git_repository_with_moved_ontologies }
 

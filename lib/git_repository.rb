@@ -103,8 +103,6 @@ class GitRepository
   def branch_oid(name)
     if commit = branch_commit(name)
       commit.oid
-    else
-      nil
     end
   end
 

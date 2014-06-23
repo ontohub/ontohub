@@ -227,9 +227,14 @@ module Repository::GitRepositories
     commits(options) { |commit|
       git.changed_files(commit.oid).each { |f|
         if f.added? || f.modified?
-          versions << save_ontology(commit.oid, f.path, options.delete(:user), fast_parse: has_changed?(f.path, commit.oid), do_not_parse: true)
+          versions << save_ontology(commit.oid, f.path, options.delete(:user),
+            fast_parse: has_changed?(f.path, commit.oid),
+            do_not_parse: true)
         elsif f.renamed?
-          versions << save_ontology(commit.oid, f.path, options.delete(:user), fast_parse: has_changed?(f.path, commit.oid), do_not_parse: true, previous_filepath: f.delta.old_file[:path])
+          versions << save_ontology(commit.oid, f.path, options.delete(:user),
+            fast_parse: has_changed?(f.path, commit.oid),
+            do_not_parse: true,
+            previous_filepath: f.delta.old_file[:path])
         end
       }
     }
@@ -238,7 +243,7 @@ module Repository::GitRepositories
   end
 
   def schedule_batch_parsing(versions)
-    grouped_versions = versions.compact.group_by { |v| v.path }
+    grouped_versions = versions.compact.group_by(&:path)
     grouped_versions.each do |k,versions|
       optioned_versions = versions.map do |version|
         [version.id, { fast_parse: version.fast_parse }]

@@ -1,11 +1,13 @@
 require 'spec_helper'
 
 describe 'git mv', :process_jobs_synchronously do
-  let(:userinfo) { {
+  let(:userinfo) do
+    {
       email: 'janjansson.com',
       name: 'Jan Jansson',
       time: Time.now
-    } }
+    }
+  end
 
   let(:remote_repository) { create :git_repository_with_moved_ontologies }
   let(:repository) { create :repository,

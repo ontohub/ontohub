@@ -3,15 +3,12 @@ module GitRepository::History
   extend ActiveSupport::Concern
 
   class Commit
-    attr_reader :oid, :message, :committer, :author
     attr_reader :rugged_commit, :path, :commits_to_diff
+
+    delegate :oid, :message, :committer, :author, to: :rugged_commit
 
     def initialize(commit, commits_to_diff: nil, path: nil)
       @rugged_commit   = commit
-      @oid             = commit.oid
-      @message         = commit.message
-      @committer       = commit.committer
-      @author          = commit.author
       @commits_to_diff = commits_to_diff ? commits_to_diff : commit.parents
       @path            = path
     end

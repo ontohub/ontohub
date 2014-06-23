@@ -18,7 +18,9 @@ module GitRepository::GetDiff
     end
 
     %w( added modified deleted renamed ).each do |status|
-      class_eval "def #{status}?; @status==:#{status}; end"
+      define_method :"#{status}?" do
+        @status == status
+      end
     end
 
     def path
