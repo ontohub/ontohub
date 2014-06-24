@@ -20,7 +20,6 @@ Then(/^I should be on the after signup page$/) do
   page.should have_content("Need Help?")
   page.should have_content("Welcome Foo Bar")
   current_path.should eq("/after_signup")
-
 end
 
 Then(/^a new User with given values is registred\.$/) do
