@@ -124,6 +124,7 @@ group :development do
   gem 'sunspot_solr', :git => 'git://github.com/digineo/sunspot.git'
   gem "rails-erd"
   gem 'quiet_assets'
+  gem 'invoker', '~> 1.2.0'
 end
 
 group :development, :test do
