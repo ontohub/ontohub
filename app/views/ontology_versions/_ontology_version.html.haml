@@ -4,7 +4,7 @@
   %td= timestamp ontology_version
   %td= ontology_version.user ? fancy_link(ontology_version.user) : '-'
   %td
-    = status ontology_version
+    = status_tag(ontology_version)
     - if updated_at = ontology_version.state_updated_at
       (#{timestamp updated_at})
     = format_error_message ontology_version.last_error
