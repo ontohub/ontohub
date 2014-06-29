@@ -7,7 +7,7 @@ class OntologyStateTest < ActionController::IntegrationTest
   end
 
   test 'ontology state' do
-    visit ontology_path(@ontology)
+    visit repository_ontology_path(@ontology.repository, @ontology)
 
     # check current status
     assert_equal "pending", find("#ontology-state span").text
