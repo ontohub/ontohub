@@ -16,7 +16,7 @@ class Link < ActiveRecord::Base
   belongs_to :source, class_name: 'Ontology'
   belongs_to :target, class_name: 'Ontology'
   belongs_to :logic_mapping
-  belongs_to :current_version
+  belongs_to :link_version
   has_many :entity_mappings
 
   has_many :versions,
@@ -36,7 +36,19 @@ class Link < ActiveRecord::Base
   def self.with_ontology_reference(ontology_id)
     Link.where('ontology_id = ? OR source_id = ? OR target_id = ?',
                           ontology_id, ontology_id, ontology_id)
+  end
 
+  def current_version
+    if self.link_version
+      self.link_version
+    else
+      self.versions.current
+    end
+  end
+
+  def update_version!(to: nil)
+    self.link_version_id = to ? to.id : versions.current.id
+    save!
   end
 
   def to_s
