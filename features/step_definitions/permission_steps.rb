@@ -23,7 +23,7 @@ end
 When(/^I fill in the name of an team$/) do
   within '.relationList' do
     # does only one permission exist?
-     1.should ==(all('ul li[data-id]').count)
+     expect(all('ul li[data-id]').count).to eq(1)
     # fill in the autocomplete input
     fill_in 'name', with: @team.name
   end
@@ -41,6 +41,6 @@ Then(/^the permission for the team should be added$/) do
   # has the permission been added to the list?
   page.should have_link @team.name
     within '.relationList ul' do
-    2.should  ==(all('li[data-id]').count)
+    expect(all('ul li[data-id]').count).to eq(2)
   end
 end
