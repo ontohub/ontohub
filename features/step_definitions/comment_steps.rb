@@ -5,7 +5,7 @@ Given(/^There is an ontology with version$/) do
 end
 
 Given(/^a User which is logged in$/) do
-  @user     = FactoryGirl.create :user
+  @user = FactoryGirl.create :user
   login_as @user, :scope => :user
 end
 

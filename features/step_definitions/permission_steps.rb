@@ -3,12 +3,12 @@ Given(/^there exists a repository$/) do
 end
 
 Given(/^a User with a permission$/) do
-  @user       = FactoryGirl.create :user
+  @user = FactoryGirl.create :user
   FactoryGirl.create :permission, subject: @user, item: @repository
 end
 
 Given(/^a team$/) do
-  @team       = FactoryGirl.create :team
+  @team = FactoryGirl.create :team
 end
 
 Given(/^I am logged in$/) do
