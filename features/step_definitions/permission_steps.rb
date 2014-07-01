@@ -1,8 +1,8 @@
-Given(/^It exists an repository$/) do
+Given(/^there exists a repository$/) do
   @repository = FactoryGirl.create :repository
 end
 
-Given(/^a User with permission$/) do
+Given(/^a User with a permission$/) do
   @user       = FactoryGirl.create :user
   FactoryGirl.create :permission, subject: @user, item: @repository
 end
@@ -16,7 +16,7 @@ Given(/^I am logged in$/) do
   login_as @user, :scope => :user
 end
 
-When(/^i visit the permissions page of my repository$/) do
+When(/^I visit the permissions page of my repository$/) do
   visit repository_permissions_path(@repository)
 end
 

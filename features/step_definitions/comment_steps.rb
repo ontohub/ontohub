@@ -9,7 +9,7 @@ Given(/^a User which is logged in$/) do
   login_as @user, :scope => :user
 end
 
-Given(/^the has permissions on the repository of the ontology$/) do
+Given(/^he has permissions on the repository of the ontology$/) do
   @repository = @ontology.repository
   FactoryGirl.create :permission, subject: @user, item: @ontology.repository
 end
@@ -18,7 +18,7 @@ Given(/^I am on the comment page of an ontology$/) do
   visit repository_ontology_comments_path(@repository, @ontology)
 end
 
-When(/^I am fill in text in comment field$/) do
+When(/^I am fill in text in the comment field$/) do
   @comment = 'very loooooooong comment'
   within '#new_comment' do
     fill_in 'Text', with: @comment
