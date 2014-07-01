@@ -1,0 +1,11 @@
+.modal.fade#discard_modal{"tabindex"=>"-1", "role"=>"dialog", "aria-labelledby"=>"discardFile", "aria-hidden"=>"true"}
+  .modal-dialog
+    .modal-content
+      .modal-header
+        %button.btn.close{"data-dismiss" => "modal", "aria-hidden"=>"true"}
+        = t("files.discard_confirmation")
+      .modal-body
+        = simple_format t("files.discard_desc")
+      .modal-footer
+        %button.btn.btn-default#coremirror-btn-discard-cancel{"data-dismiss" => "modal"}=t("cancel")
+        %button.btn.btn-danger#codemirror-btn-discard-confirm= t("files.discard")

@@ -25,15 +25,16 @@ class LinksController < InheritedResources::Base
 
   def create
     @version = build_resource.versions.first
-    @version.source = Ontology.find(params[:link][:source_id]).versions.current
-    @version.target = Ontology.find(params[:link][:target_id]).versions.current
+    @version.source = Ontology.find(params[:link][:source_id]).current_version
+    @version.target = Ontology.find(params[:link][:target_id]).current_version
     super
   end
 
   def update_version
-    @version = resource.versions.current.dup
+    @version = resource.current_version.dup
     @version.version_number = @version.version_number + 1
     @version.save
+    @version.ontology.update_version!(to: @version)
     redirect_to edit_link_link_version_path(resource, @version)
   end
 
@@ -41,14 +42,17 @@ class LinksController < InheritedResources::Base
   private
 
   def collection
-    if params[:ontology_id]
-      onto = params[:ontology_id]
-      @links = Link.where("ontology_id =#{onto} OR source_id = #{onto} OR target_id = #{onto}")
-      collection = Kaminari.paginate_array(Link.where("ontology_id =#{onto} OR source_id = #{onto} OR target_id = #{onto}").
-          select { |link| can?(:show, link.source.repository) && can?(:show, link.target.repository) }).page(params[:page])
-    else
-      Kaminari.paginate_array(super.select { |link| can?(:show, link.source.repository) && can?(:show, link.target.repository) }).page(params[:page])
+    restrict_by_permission = proc do |link|
+      can?(:show, link.source.repository) && can?(:show, link.target.repository)
     end
+    if params[:ontology_id]
+      collection = Link.with_ontology_reference(params[:ontology_id])
+    else
+      collection = super
+    end
+    @links = collection = collection.
+        joins(:source => :logic).order('logics.name DESC')
+    paginate_for(collection.select(&restrict_by_permission))
   end
 
   def build_resource

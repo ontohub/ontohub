@@ -26,6 +26,9 @@ action_mailer:
 # the website without confirming his account.
 allow_unconfirmed_access_for_days: 3
 
+# Timeout for ontology parsing jobs in hours
+ontology_parse_timeout: 6
+
 # Footer links and texts
 footer:
   - text: Foo Institute

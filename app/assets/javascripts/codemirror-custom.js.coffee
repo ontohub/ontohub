@@ -13,12 +13,15 @@ $ ->
     btn_edit = $("#codemirror-btn-edit")
     btn_commit = $("#codemirror-btn-commit")
     btn_discard = $("#codemirror-btn-discard")
+    btn_discard_cancel = $('#coremirror-btn-discard-cancel')
+    btn_discard_confirm = $('#codemirror-btn-discard-confirm')
     form = $(".edit-form")
     alert_error = $(".alert-error")
     message_group = $("#message-group")
     message_textarea = $("#message")[0]
     hasErrorClass = "has-error"
     editingClass = "editing"
+    discard_modal = $('#discard_modal')
 
     editorPreventFocus = (e) ->
       editor.setOption "cursorHeight", 0
@@ -40,9 +43,10 @@ $ ->
       $("form.edit-form").submit()
       false
 
-    editorDiscard = (e) ->
-      discard() if editor.doc.isClean() or confirmDiscard()
-      false
+    # Once you discarded an actual change, the first disjunct is false
+    # even though the editor content is the original one.
+    editorDocClean = ->
+      editor.doc.isClean() || original_editor_content == editor.getValue()
 
     requireCommitMessage = (e) ->
       if $.trim($("#message").val()) is ""
@@ -52,21 +56,21 @@ $ ->
       else
         true
 
-    confirmDiscard = ->
-      # TODO: Use bootstrap modal instead of browser prompt.
-      confirm "You made changes to the code. Are you sure you want to discard them?"
-
-    discard = ->
-      message_textarea.value = ""
-      editor.setOption "readOnly", true
-      editor.setValue original_editor_content
-      message_group.removeClass hasErrorClass
-      alert_error.hide()
-      $(".show-when-editing").hide()
-      $(".hide-when-editing").show()
-      editorPreventFocus()
-      editor.off "focus", editorSetFocus
-      editor.off "blur", editorSetBlur
+    discard = (use_modal) ->
+      if use_modal
+        discard_modal.modal('show')
+      else
+        message_textarea.value = ""
+        editor.setOption "readOnly", true
+        editor.setValue original_editor_content
+        message_group.removeClass hasErrorClass
+        alert_error.hide()
+        $(".show-when-editing").hide()
+        $(".hide-when-editing").show()
+        editorPreventFocus()
+        editor.off "focus", editorSetFocus
+        editor.off "blur", editorSetBlur
+        discard_modal.modal('hide')
       return
 
     enableEditing = (e) ->
@@ -79,11 +83,14 @@ $ ->
       $(".hide-when-editing").hide()
       editor.focus()
       btn_commit.unbind("click").click editorSubmit
-      btn_discard.unbind("click").click editorDiscard
+      btn_discard.unbind("click").click(-> discard(!editorDocClean()))
+      btn_discard_confirm.unbind('click').click(-> discard(false))
       form.unbind("submit").submit requireCommitMessage
       false
 
     original_editor_content = editor.getValue()
+
+    discard_modal.modal({show: false})
 
     editorPreventFocus()
     btn_edit.unbind("click").click enableEditing

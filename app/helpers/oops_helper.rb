@@ -12,11 +12,11 @@ module OopsHelper
   end
 
   def oops_data_uri
-    url_for [repository, @ontology, current_version, :oops_request]
+    url_for [@ontology.repository, @ontology, current_version, :oops_request]
   end
 
   def oops_data_reload_uri
-    url_for [repository, @ontology] #, anchor: 'detail'
+    url_for [@ontology.repository, @ontology] #, anchor: 'detail'
   end
 
   def oops_icon(type)

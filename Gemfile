@@ -36,7 +36,7 @@ end
 gem 'haml-rails'
 
 # Project configuration
-gem 'rails_config'
+gem 'rails_config', '~> 0.3.0'
 
 # Fancy Forms
 gem 'simple_form'
@@ -70,8 +70,8 @@ gem 'acts_as_tree'
 gem "rest-client"
 
 # Background-Jobs
-gem 'sidekiq', '~> 2.17'
-gem 'sidetiq', '~> 0.5'
+gem 'sidekiq', '~> 3.1'
+gem 'sidetiq'
 gem 'sidekiq-failures'
 gem 'sinatra', require: false, group: [:development, :production]
 

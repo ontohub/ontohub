@@ -22,15 +22,38 @@
 	        max-height: 4.1em;
 	        overflow-y: hidden;
         }
+        .footAnchor {
+	        color: #009900;
+	        cursor: pointer;
+	        text-decoration: underline;
+	        margin: 0 6px 0 0;
+        }
+        .footAnchor:hover {
+	        color: #006600;
+        }
+        .icon {
+	        width: 20px;
+	        height: 20px;
+	        vertical-align: bottom;
+	        margin: 0;
+        }
 	</ui:style>
 	<g:FocusPanel ui:field="widget" styleName="{style.widget}">
 		<g:HTMLPanel>
+		    <g:Image styleName="{style.icon}" ui:field="iconImage" />
 			<g:Anchor styleName="{style.important}" ui:field="titleAnchor" tabIndex="-1" />
-			<!-- (<g:InlineLabel ui:field="acronymLabel" />) -->
+			<g:InlineLabel ui:field="acronymLabel" />
 			<!-- <g:InlineLabel ui:field="languageLabel" />/ -->
-			(<g:InlineLabel ui:field="logicLabel" />)
+			<g:InlineLabel ui:field="logicLabel" />
 			<g:Label styleName="{style.iri}" ui:field="iriLabel"/>
 			<g:Label styleName="{style.description}" ui:field="descriptionLabel"/>
+			<g:Anchor styleName="{style.footAnchor}" ui:field="typeAnchor" tabIndex="-1" />
+			<g:Anchor styleName="{style.footAnchor}" ui:field="topic0Anchor" tabIndex="-1" />
+			<g:Anchor styleName="{style.footAnchor}" ui:field="topic1Anchor" tabIndex="-1" />
+			<g:Anchor styleName="{style.footAnchor}" ui:field="topic2Anchor" tabIndex="-1" />
+			<g:Anchor styleName="{style.footAnchor}" ui:field="project0Anchor" tabIndex="-1" />
+			<g:Anchor styleName="{style.footAnchor}" ui:field="project1Anchor" tabIndex="-1" />
+			<g:Anchor styleName="{style.footAnchor}" ui:field="project2Anchor" tabIndex="-1" />
 		</g:HTMLPanel>
 	</g:FocusPanel>
 </ui:UiBinder> 

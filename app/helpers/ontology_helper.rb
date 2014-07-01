@@ -2,7 +2,7 @@ module OntologyHelper
 
   def current_version
     o = @ontology.parent ? @ontology.parent : @ontology
-    o.versions.current
+    o.current_version
   end
 
   def download_path(resource)
@@ -12,6 +12,23 @@ module OntologyHelper
 
   def show_evaluate?
     show_oops? #|| show_foo?
+  end
+
+  def status_tag(resource)
+    version = resource.is_a?(Ontology) ? resource.current_version : resource
+    uri = repository_ontology_ontology_version_url(
+      version.ontology.repository, version.ontology, version)
+    html_opts = {
+      class: 'ontology-version-state',
+      data: {
+        ontology_version_id: version.id,
+        uri: uri,
+        state: version.state,
+      }
+    }
+    content_tag(:small, html_opts) do
+      status(version)
+    end
   end
 
   def status(resource)

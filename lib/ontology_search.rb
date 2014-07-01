@@ -145,7 +145,7 @@ class OntologySearch
 
   private
 
-  def model_to_filters_map(model, name_proc)
+  def model_to_filters_map(model, &name_proc)
     model
       .select([:name, :id])
       .order(:name)
@@ -160,32 +160,26 @@ class OntologySearch
   end
 
   def types
-    model_to_filters_map OntologyType,
-      ->(x) {x.name.sub(/Ontology/, 'ontologies')}
+    model_to_filters_map(OntologyType) { |type| type.name.sub(/Ontology/, 'ontologies') }
   end
 
   def repositories
-    model_to_filters_map Repository,
-      ->(x) {'in ' + x.name}
+    model_to_filters_map(Repository) { |repository| 'in ' + repository.name }
   end
 
   def projects
-    model_to_filters_map Project,
-      ->(x) {'from ' + x.name }
+    model_to_filters_map(Project) { |project| 'from ' + project.display_name }
   end
 
   def formalities
-    model_to_filters_map FormalityLevel,
-      ->(x) {'in ' + x.name}
+    model_to_filters_map(FormalityLevel) { |level| 'in ' + level.name }
   end
 
   def licenses
-    model_to_filters_map LicenseModel,
-      ->(x) {'under ' + x.name}
+    model_to_filters_map(LicenseModel) { |model| 'under ' + model.name }
   end
 
   def tasks
-    model_to_filters_map Task,
-      ->(x) {'for ' + x.name[0..-5].from_titlecase_to_spacedlowercase}
+    model_to_filters_map(Task) { |task| 'for ' + task.name[0..-5].from_titlecase_to_spacedlowercase }
   end
 end

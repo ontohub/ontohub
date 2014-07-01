@@ -9,7 +9,7 @@ describe TarjanTree do
 
       before do
         ontology.import_xml_from_file xml_path, nil, user
-        ontology.create_entity_tree
+        ontology.reload
       end
 
       it 'should have an entity-tree' do
