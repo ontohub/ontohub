@@ -8,6 +8,8 @@ class RepositoryFile
     end
   end
 
+  # Those inclusions and extensions are used to mimic ActiveRecord::Base.
+  #   We need them for easier file manipulation in the git repository (CRUD).
   include ActiveModel::Conversion
   include ActiveModel::Validations
   extend ActiveModel::Naming
