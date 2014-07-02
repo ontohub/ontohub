@@ -6,7 +6,7 @@ class PermissionsController < PrivilegeList::Base
   belongs_to :repository, finder: :find_by_path!
 
   def destroy
-    super do
+    destroy! do
       redirect_to(:back) and return
     end
   rescue Permission::PowerVaccuumError => e
