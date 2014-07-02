@@ -99,15 +99,10 @@ class RepositoryFile
   end
 
   def ontologies(child_name=nil)
-    if file?
-      @ontologies ||= begin
-        ontos = repository.ontologies.find_with_path(path).parents_first
-        if child_name
-          ontos.map!{ |o| o.children.where(name: child_name) }.flatten!
-        end
-
-        ontos
-      end
+    @ontologies ||= if file?
+      ontos = repository.ontologies.find_with_path(path).parents_first
+      ontos.map!{ |o| o.children.where(name: child_name) }.flatten! if child_name
+      ontos
     end
   end
 
