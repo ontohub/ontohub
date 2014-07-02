@@ -17,7 +17,7 @@ module GitRepository::GetDiff
       @diff_size = delta
     end
 
-    %w( added modified deleted renamed ).each do |status|
+    %i( added modified deleted renamed ).each do |status|
       define_method :"#{status}?" do
         @status == status
       end
