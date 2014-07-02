@@ -4,7 +4,7 @@
       - additional_actions.each do |action_link|
         = action_link
     .pull-right= modal_button(t("repository.delete"))
-    = modal_body(t("delete_repository"), t("delete_repository_desc"), (controller_name == "repositories" ? resource : parent), t("repository.delete"))
+    = repository_modal_body
   %nav
     %ul.nav.nav-tabs
       - pages.each do |page, path, count|

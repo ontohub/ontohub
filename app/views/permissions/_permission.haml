@@ -4,7 +4,7 @@
     .btn-group
       = link_to t('edit'),   '#', rel: :edit, class: 'btn btn-default btn-xs'
       = modal_button(t("delete"), btn_class: 'btn-danger btn-xs', modal_id: "role_modal_#{permission.id}")
-      = modal_body(t("permission.delete_header"), t("permission.delete_desc", role: permission.role, subject: permission.subject, class: permission.item.class, item: permission.item), [permission.item, permission], t('permission.delete_btn'), modal_id: "role_modal_#{permission.id}")
+      = permission_modal_body
   
   = link_to permission.subject, permission.subject
   
