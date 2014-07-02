@@ -1,5 +1,11 @@
 class RepositoryFile
 
+  # Those inclusions and extensions are used to mimic ActiveRecord::Base.
+  #   We need them for easier file manipulation in the git repository (CRUD).
+  extend ActiveModel::Naming
+  include ActiveModel::Conversion
+  include ActiveModel::Validations
+
   class PathValidator < ActiveModel::Validator
     def validate(record)
       if record.repository.points_through_file?(record.target_path)
@@ -7,12 +13,6 @@ class RepositoryFile
       end
     end
   end
-
-  # Those inclusions and extensions are used to mimic ActiveRecord::Base.
-  #   We need them for easier file manipulation in the git repository (CRUD).
-  include ActiveModel::Conversion
-  include ActiveModel::Validations
-  extend ActiveModel::Naming
 
   # basic repository file usage
   attr_reader :repository, :file
