@@ -26,11 +26,9 @@ class RepositoryFile
   validates_with PathValidator, :if => :temp_file_exists?
 
   def self.find_with_path(opts)
-    begin
-      new(opts)
-    rescue GitRepository::PathNotFoundError
-      nil
-    end
+    new(opts)
+  rescue GitRepository::PathNotFoundError
+    nil
   end
 
   def self.find_with_path!(opts)
