@@ -14,7 +14,6 @@ class FilesController < InheritedResources::Base
         ontology = resource.ontologies.first.children.where(name: request.query_string).first
         redirect_to [repository, ontology]
       end
-      #consider file_base!
     else
       send_download(path, oid)
     end
