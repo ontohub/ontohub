@@ -1,30 +1,15 @@
-class FilesController < ApplicationController
+class FilesController < InheritedResources::Base
+  defaults resource_class: RepositoryFile
 
   helper_method :repository, :ref, :oid, :path, :branch_name
   before_filter :check_write_permissions, only: [:new, :create, :update]
   before_filter :check_read_permissions
 
   def files
-    @info = repository.path_info(params[:path], oid)
-
-    raise Repository::FileNotFoundError, path if @info.nil?
-
     if owl_api_header_in_accept_header?
       send_download(path, oid)
     elsif existing_file_requested_as_html?
-      case @info[:type]
-      when :file
-        @file = repository.read_file(path, oid)
-      when :file_base
-        ontology = repository.ontologies.
-                    where(basepath: File.basepath(@info[:entry][:path])).
-                    order('id asc').first
-        if request.query_string.present?
-          ontology = ontology.children.
-            where(name: request.query_string).first
-        end
-        redirect_to [repository, ontology]
-      end
+      #consider file_base!
     else
       send_download(path, oid)
     end
@@ -97,6 +82,18 @@ class FilesController < ApplicationController
 
   protected
 
+  def resource
+    @repository_file ||= begin
+      RepositoryFile.find_with_path(params)
+    rescue GitRepository::Files::FileError
+      RepositoryFile.find_with_basepath(params)
+    end
+  end
+
+  def collection
+    @repository_files ||= RepositoryFile.find_with_path(params)
+  end
+
   def repository
     @repository ||= Repository.find_by_path!(params[:repository_id])
   end
@@ -166,7 +163,7 @@ class FilesController < ApplicationController
   end
 
   def existing_file_requested_as_html?
-    request.accepts.first == Mime::HTML || @info[:type] != :file
+    request.accepts.first == Mime::HTML || resource.file?
   end
 
 end

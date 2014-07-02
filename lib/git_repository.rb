@@ -6,6 +6,7 @@ class GitRepository
   include \
     Config,
     Cloning,
+    Files,
     GetCommit,
     GetObject,
     GetDiff,
@@ -37,6 +38,7 @@ class GitRepository
   end
 
   def dir?(path, commit_oid=nil)
+    path ||= '/'
     if empty?
       return false
     end
@@ -56,12 +58,15 @@ class GitRepository
     end
   end
 
-  def get_file(url, commit_oid=nil)
+  def get_file(path, commit_oid=nil)
+    path ||= '/'
     rugged_commit = get_commit(commit_oid)
-    if !rugged_commit && url.empty?
+    return nil if !rugged_commit && path.empty?
+
+    begin
+      GitFile.new(self, rugged_commit, path)
+    rescue GitRepository::Files::FileError
       nil
-    else
-      get_file_rugged(rugged_commit, url)
     end
   end
 
@@ -157,26 +162,6 @@ class GitRepository
     end
   rescue Rugged::OdbError
     false
-  end
-
-  def get_file_rugged(rugged_commit, url='')
-    return nil unless path_exists_rugged?(rugged_commit, url)
-
-    object = get_object(rugged_commit, url)
-
-    if object.type == :blob
-      filename = url.split('/')[-1]
-      mime_info = self.class.mime_info(filename)
-      {
-        name: filename,
-        size: object.size,
-        content: object.content,
-        mime_type: mime_info[:mime_type],
-        mime_category: mime_info[:mime_category]
-      }
-    else
-      nil
-    end
   end
 
   def head
