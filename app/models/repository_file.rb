@@ -89,12 +89,11 @@ class RepositoryFile
     elsif opts[:git_file] && opts[:repository]
       @repository = opts[:repository]
       @file       = opts[:git_file]
-      @commit_id  = repository.commit_id(file.oid)
     else
       @repository = Repository.find_by_path(opts[:repository_id])
-      @commit_id  = self.class.compute_ref(repository, opts[:ref] || Settings.git.default_branch)
-      @commit_id  = {oid: nil} if repository.empty?
-      @file       = repository.git.get_file!(opts[:path] || '/', @commit_id[:oid])
+      commit_id   = repository.commit_id(opts[:ref] || Settings.git.default_branch)
+      commit_id   = {oid: nil} if repository.empty?
+      @file       = repository.git.get_file!(opts[:path] || '/', commit_id[:oid])
     end
   end
 
@@ -159,10 +158,6 @@ class RepositoryFile
   end
 
   protected
-
-  def self.compute_ref(repository, ref)
-    repository.commit_id(ref || Settings.git.default_branch)
-  end
 
   def self.manipulating_file?(opts)
     opts[:temp_file].present?
