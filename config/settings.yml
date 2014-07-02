@@ -42,6 +42,7 @@ exception_notifier:
 
 git:
   verify_url: http://localhost/
+  default_branch: 'master'
 
 allowed_iri_schemes:
   - http

@@ -14,8 +14,6 @@ class RepositoryFile
   include ActiveModel::Validations
   extend ActiveModel::Naming
 
-  DEFAULT_BRANCH = 'master'
-
   # basic repository file usage
   attr_reader :repository, :file
   attr_accessor :index
@@ -96,7 +94,7 @@ class RepositoryFile
       @commit_id  = repository.commit_id(file.oid)
     else
       @repository = Repository.find_by_path(opts[:repository_id])
-      @commit_id  = self.class.compute_ref(repository, opts[:ref] || DEFAULT_BRANCH)
+      @commit_id  = self.class.compute_ref(repository, opts[:ref] || Settings.git.default_branch)
       @commit_id  = {oid: nil} if repository.empty?
       @file       = repository.git.get_file!(opts[:path] || '/', commit_id[:oid])
     end
@@ -179,7 +177,7 @@ class RepositoryFile
   attr_reader :commit_id
 
   def self.compute_ref(repository, ref)
-    repository.commit_id(ref || DEFAULT_BRANCH)
+    repository.commit_id(ref || Settings.git.default_branch)
   end
 
   def self.manipulating_file?(opts)
