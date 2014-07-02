@@ -107,15 +107,12 @@ class RepositoryFile
   end
 
   def content
-    @content ||= begin
-      cntnt = file.content
-      if dir?
-        cntnt.map! do |e|
-          self.class.new(repository: self.repository, git_file: e)
-        end
+    @content ||= if dir?
+      file.content.map do |git_file|
+        self.class.new(repository: self.repository, git_file: git_file)
       end
-
-      cntnt
+    else
+      file.content
     end
   end
 
