@@ -1,5 +1,6 @@
 class FilesController < InheritedResources::Base
   defaults resource_class: RepositoryFile
+  defaults singleton: true
 
   helper_method :repository, :ref, :oid, :path, :branch_name
   before_filter :check_write_permissions, only: [:new, :create, :update]
@@ -79,10 +80,6 @@ class FilesController < InheritedResources::Base
 
   def resource
     @repository_file ||= RepositoryFile.find_with_path(params)
-  end
-
-  def collection
-    @repository_files ||= RepositoryFile.find_with_path(params)
   end
 
   def repository
