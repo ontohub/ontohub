@@ -233,11 +233,11 @@ class Ontology < ActiveRecord::Base
   end
 
   def basepath
-    versions.any? ? current_version.basepath : read_attribute(:basepath)
+    has_versions? ? current_version.basepath : read_attribute(:basepath)
   end
 
   def file_extension
-    versions.any? ? current_version.file_extension : read_attribute(:file_extension)
+    has_versions? ? current_version.file_extension : read_attribute(:file_extension)
   end
 
   def path
@@ -245,7 +245,7 @@ class Ontology < ActiveRecord::Base
   end
 
   def has_versions?
-    versions.current.present?
+    current_version.present?
   end
 
   protected
