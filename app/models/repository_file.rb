@@ -43,10 +43,10 @@ class RepositoryFile
 
     dir_path = opts[:path].split('/')[0..-2].join('/')
 
-    entries = repository.git.folder_contents(oid, dir_path).select do |entry|
-      entry.path.start_with?(opts[:path]) && entry.file?
-    end.map do |entry|
-      new(repository_id: repository.to_param, path: entry.path)
+    entries = repository.git.folder_contents(oid, dir_path).reduce([]) do |es, entry|
+      if entry.path.start_with?(opts[:path]) && entry.file?
+        es << new(repository_id: repository.to_param, path: entry.path)
+      end
     end
   end
 
