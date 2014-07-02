@@ -15,7 +15,7 @@ describe Permission do
     end
 
     %w(editor reader).each do |role|
-      it "should be possible to remove some #{role} permission" do
+      it "should be possible to remove a #{role} permission" do
         other_permission = create(:permission, subject: owner, role: role)
         expect{ other_permission.destroy }.not_to raise_error
       end
