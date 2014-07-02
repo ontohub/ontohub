@@ -4,7 +4,7 @@
 - else
   %table.table.table-condensed.table-hover.file-table{'data-id' => repository.path, 'data-path' => path, 'data-oid' => oid, 'data-ajax-path' => fancy_repository_path(repository, path: path, ref: oid, action: :entries_info), 'data-diff-path' => fancy_repository_path(repository, ref: '%s', action: :diff)}
     %tbody
-      - resource.grouped_entries.each do |name, entries|
+      - resource.grouped_content.each do |name, entries|
         - entries.each_with_index do |entry, i|
           %tr{"data-id" => entry.index}
             - if i == 0

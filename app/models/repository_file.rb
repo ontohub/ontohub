@@ -129,17 +129,13 @@ class RepositoryFile
     false
   end
 
-  def grouped_entries
-    grouped ||= begin
-      content.each_with_index do |v,i|
-        v.index = i
-      end
-
-      Hash[content.group_by do | e |
-        { type: e.type, name: basename(e.name) }
-      end.map do | k, v |
-        [k[:name], v]
-      end]
+  def grouped_content
+    return @grouped unless @grouped.nil?
+    ungrouped = content.each_with_index { |entry,i| entry.index = i }
+    intermediate_grouped = ungrouped.group_by { |e| {type: e.type, name: basename(e.name)} }
+    @grouped = intermediate_grouped.reduce({}) do |hash, (key, value)|
+      hash[key[:name]] = value
+      hash
     end
   end
 
