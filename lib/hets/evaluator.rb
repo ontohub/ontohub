@@ -6,6 +6,13 @@ module Hets
     attr_accessor :concurrency, :dgnode_stack, :ontology_aliases
     attr_accessor :versions, :now, :dgnode_count
 
+    # As there are many approaches to parsing an ontology
+    # file, we provide two versions:
+    # new(user, ontology, version: some_version)
+    # and
+    # new(user, ontology, path: some_path, code_path: some_code_path)
+    # If the version is set, the path and code_path will be extracted from the
+    # version object.
     def initialize(user, ontology, version: nil, path: nil, code_path: nil)
       self.version = version
       self.path = path
@@ -17,6 +24,9 @@ module Hets
       initialize_handling
     end
 
+    # Actually performs the import of the ontology file DGXML output.
+    # Also calls the start and end callbacks, which do not actually
+    # correspond to an element in the DGXML.
     def import
       callback = NodeEvaluator.new(self)
       code_document = Nokogiri::XML(File.open(code_path)) if code_path

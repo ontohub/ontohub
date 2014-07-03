@@ -1,4 +1,10 @@
 module Hets
+
+  # - Meta component
+  # This is the base class of the Node Evaluator It should not be used
+  # directly but instead be subclassed. This is necessary since we usually
+  # want to register specific callbacks.  See Hets::NodeEvaluator for the
+  # actual evaluator.
   class BaseNodeEvaluator
     attr_accessor :hets_evaluator
     attr_accessor :ontology
@@ -12,6 +18,13 @@ module Hets
     delegate :user, to: :hets_evaluator
     delegate :ontologies_count, to: :hets_evaluator
 
+    # - Meta method
+    # registers a callback-method for a specific node (with node meaning a
+    # denominator for an element which occurs in the Hets DGXML output)
+    #   - The (node_type, order) pair is the signature
+    #     of a registration. Multiple callback methods can
+    #     be registered for one signature.
+    #   - to: is the symbol-designator of the method.
     def self.register(node_type, order, to: nil)
       ensure_registrations
       @registrations[[node_type, order]] ||= []
@@ -30,6 +43,17 @@ module Hets
       hets_evaluator.ontology
     end
 
+    # - Meta method
+    # This is the main method that is being called during the
+    # parsing process. It decides which actual method will
+    # be called in order to process the parse step. This may
+    # be a no-op.
+    # If there is a registered method which corresponds to
+    # the signature (node_type, order) this will be called.
+    # Otherwise it falls back to the default naming schema of
+    # 'nodetype_order' as method name. This default method
+    # will only be called if it is defined, thus resulting
+    # in a no-op as fallback.
     def process(node_type, order, *args)
       if registered?(node_type, order)
         registered_methods(node_type, order).each do |method_name|
@@ -82,6 +106,11 @@ module Hets
       end
     end
 
+    # As concurrency handling is usually performed across
+    # multiple method calls during the parsing-chain,
+    # we will need to initialize and finish concurrency
+    # handling manually. A block-approach is just not
+    # feasible.
     def initiate_concurrency_handling(ontohub_iri)
       concurrency.mark_as_processing_or_complain(ontohub_iri,
         unlock_this_iri: dgnode_stack[dgnode_stack_id])
