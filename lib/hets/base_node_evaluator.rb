@@ -65,14 +65,6 @@ module Hets
       end
     end
 
-    def code_reference_for(ontology_name)
-      code_doc = hets_evaluator.code_document
-      return if code_doc.nil?
-      elements = code_doc.xpath("//*[contains(@name, '##{ontology_name}')]")
-      code_range = elements.first.try(:attr, "range")
-      code_reference_from_range(code_range)
-    end
-
     private
     def registered?(node_type, order, method_name=nil)
       selected_registrations = registered_methods(node_type, order)
@@ -87,23 +79,6 @@ module Hets
     def registered_methods(node_type, order)
       registrations = self.class.instance_variable_get(:@registrations)
       selected_registrations = registrations[[node_type, order]] || []
-    end
-
-
-    def code_reference_from_range(range)
-      return if range.nil?
-      match = range.match( %r{
-        (?<begin_line>\d+)\.
-        (?<begin_column>\d+)
-        -
-        (?<end_line>\d+)\.
-        (?<end_column>\d+)}x)
-      if match
-        reference = CodeReference.new(begin_line: match[:begin_line].to_i,
-          begin_column: match[:begin_column].to_i,
-          end_line: match[:end_line].to_i,
-          end_column: match[:end_column].to_i)
-      end
     end
 
     # As concurrency handling is usually performed across

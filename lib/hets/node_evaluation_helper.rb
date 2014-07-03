@@ -60,5 +60,84 @@ module Hets
       ontology
     end
 
+    def alias_iris_for_links!(current_element)
+      aliases = hets_evaluator.ontology_aliases
+      current_element['source_iri'] = aliases[current_element['source']]
+      current_element['target_iri'] = aliases[current_element['target']]
+    end
+
+    def generate_ontology_iri(internal_iri, current_element)
+      if current_element['reference'] == 'true'
+        ontology = Ontology.find_with_iri(internal_iri)
+        if ontology.nil?
+          ontohub_iri = ExternalRepository.determine_iri(internal_iri)
+        else
+          ontohub_iri = ontology.iri
+        end
+      else
+        if parent_ontology.distributed?
+          ontohub_iri = parent_ontology.iri_for_child(internal_iri)
+        else
+          # we use 0 here, because the first time around, we
+          # have ontologies_count 0 which is increased by one
+          # after obtaining the lock. We need to preempt
+          # this message, because otherwise we would
+          # fail here with a lock issue instead of the
+          # 'more than one ontology' issue.
+          if hets_evaluator.ontologies_count > 0
+            raise "more than one ontology found"
+          else
+            ontohub_iri = parent_ontology.iri
+          end
+        end
+      end
+    end
+
+    def procure_ontology(element, iri)
+      if element['reference'] == 'true'
+        ontology = Ontology.find_with_iri(iri)
+        if ontology.nil?
+          ontology = ExternalRepository.create_ontology(iri)
+        end
+        hets_evaluator.ontology_aliases[element['name']] = ontology.iri
+      else
+        hets_evaluator.ontologies_count += 1
+        if parent_ontology.distributed?
+          assign_distributed_ontology_logic(parent_ontology)
+
+          ontology = procure_child_ontology(iri)
+        else
+          ontology = parent_ontology
+          ontology.present = true
+        end
+      end
+      clean_ontology(ontology)
+      ontology
+    end
+
+    def code_reference_from_range(range)
+      return if range.nil?
+      match = range.match( %r{
+        (?<begin_line>\d+)\.
+        (?<begin_column>\d+)
+        -
+        (?<end_line>\d+)\.
+        (?<end_column>\d+)}x)
+      if match
+        reference = CodeReference.new(begin_line: match[:begin_line].to_i,
+          begin_column: match[:begin_column].to_i,
+          end_line: match[:end_line].to_i,
+          end_column: match[:end_column].to_i)
+      end
+    end
+
+    def code_reference_for(ontology_name)
+      code_doc = hets_evaluator.code_document
+      return if code_doc.nil?
+      elements = code_doc.xpath("//*[contains(@name, '##{ontology_name}')]")
+      code_range = elements.first.try(:attr, "range")
+      code_reference_from_range(code_range)
+    end
+
   end
 end
