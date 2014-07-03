@@ -1,4 +1,4 @@
-class Router
+class RouterConstraint
   def set_path_parameters(request, new_params)
     params     = request.send(:env)["action_dispatch.request.path_parameters"]
     controller = params[:controller]
@@ -11,7 +11,7 @@ class Router
 end
 
 
-class FilesRouter < Router
+class FilesRouterConstraint < RouterConstraint
   def matches?(request)
     return false if Repository.find_by_path(request.params[:repository_id]).nil?
 
@@ -39,7 +39,7 @@ class FilesRouter < Router
 end
 
 
-class IRIRouter < Router
+class IRIRouterConstraint < RouterConstraint
   def matches?(request)
     ontology = Ontology.find_with_iri(request.original_url)
     result = !ontology.nil?

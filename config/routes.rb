@@ -123,7 +123,7 @@ Ontohub::Application.routes.draw do
       controller:  :files,
       action:      :show,
       as:          :ref,
-      constraints: FilesRouter.new
+      constraints: FilesRouterConstraint.new
 
     # action: history, diff, entries_info, files
     get ':ref/:action(/:path)',
@@ -148,13 +148,13 @@ Ontohub::Application.routes.draw do
     controller: :files,
     action:     :show,
     as:         :repository_tree,
-    constraints: FilesRouter.new
+    constraints: FilesRouterConstraint.new
 
   get '*path',
     controller:  :ontologies,
     action:      :show,
     as:          :iri,
-    constraints: IRIRouter.new
+    constraints: IRIRouterConstraint.new
 
   root :to => 'home#index'
 
