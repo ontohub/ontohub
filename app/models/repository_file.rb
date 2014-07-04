@@ -76,24 +76,11 @@ class RepositoryFile
   def initialize(opts)
     opts = opts.symbolize_keys
     if self.class.manipulating_file?(opts)
-      @repository = Repository.find_by_path(opts[:repository_id])
-      @message    = opts[:message]
-      @temp_file  = opts[:temp_file]
-      if opts[:path].present?
-        @target_directory = opts[:path].split('/')[0..-2].join('/')
-        @target_filename  = opts[:path].split('/')[-1]
-      else
-        @target_directory = opts[:target_directory]
-        @target_filename  = opts[:target_filename]
-      end
+      initialize_for_create_and_update(opts)
     elsif opts[:git_file] && opts[:repository]
-      @repository = opts[:repository]
-      @file       = opts[:git_file]
+      initialize_for_already_loaded_file(opts)
     else
-      @repository = Repository.find_by_path(opts[:repository_id])
-      commit_id   = repository.commit_id(opts[:ref] || Settings.git.default_branch)
-      commit_id   = {oid: nil} if repository.empty?
-      @file       = repository.git.get_file!(opts[:path] || '/', commit_id[:oid])
+      initialize_for_read(opts)
     end
   end
 
@@ -161,6 +148,35 @@ class RepositoryFile
 
   def self.manipulating_file?(opts)
     opts[:temp_file].present?
+  end
+
+  def initialize_for_read(opts)
+    @repository = Repository.find_by_path(opts[:repository_id])
+    commit_id   = repository.commit_id(opts[:ref] || Settings.git.default_branch)
+    commit_id   = {oid: nil} if repository.empty?
+    @file       = repository.git.get_file!(opts[:path] || '/', commit_id[:oid])
+  end
+
+  def initialize_for_create_and_update(opts)
+    @repository = Repository.find_by_path(opts[:repository_id])
+    @message    = opts[:message]
+    @temp_file  = opts[:temp_file]
+    if editing_file?(opts)
+      @target_directory = opts[:path].split('/')[0..-2].join('/')
+      @target_filename  = opts[:path].split('/')[-1]
+    else
+      @target_directory = opts[:target_directory]
+      @target_filename  = opts[:target_filename]
+    end
+  end
+
+  def initialize_for_already_loaded_file(opts)
+    @repository = opts[:repository]
+    @file       = opts[:git_file]
+  end
+
+  def editing_file?(opts)
+    opts[:path].present?
   end
 
 end
