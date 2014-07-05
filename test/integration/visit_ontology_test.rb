@@ -1,4 +1,4 @@
-require 'integration_test_helper' 
+require 'integration_test_helper'
 
 class VisitOntologyTest < ActionController::IntegrationTest
 
@@ -6,15 +6,15 @@ class VisitOntologyTest < ActionController::IntegrationTest
 
   def sign_in_as(user, password)
     user = User.create(:password => password, :password_confirmation => password, :email => user)
-    user.confirmed_at = Time.now 
+    user.confirmed_at = Time.now
     user.save!
     visit '/'
     click_link_or_button('Log in')
     fill_in 'Email', :with => user.email
     fill_in 'Password', :with => password
     click_link_or_button('Sign in')
-    user      
-  end 
+    user
+  end
 
   def list_ontologies()
     visit '/ontologies'
@@ -55,12 +55,12 @@ class VisitOntologyTest < ActionController::IntegrationTest
 
   test "visiting a single ontology" do
     FactoryGirl.create :single_ontology, :name => 'Cat'
-    
+
     visit '/ontologies'
-    
+
     assert page.has_content?('Ontologies')
     assert page.has_content?('Cat')
-    
+
     visit_ontology("Cat")
     visit_ontology_tab("Sentences", ["Name", "Text"])
     visit_ontology_tab("Entities", ["Text", "Kind", "Name", "URI", "Range"])
@@ -84,7 +84,7 @@ class VisitOntologyTest < ActionController::IntegrationTest
   end
 
   #check 'Exclusive'
-  
+
 =end
-  
+
 end

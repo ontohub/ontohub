@@ -29,7 +29,7 @@
         .col-md-2
           = link_to array.first[:link], array.first[:link]
         .col-md-2
-          = array.first[:link].source
+          = fancy_link array.first[:link].source
         .col-md-2
           -if key.to_s.include? "empty"
             
@@ -39,7 +39,7 @@
           -array.each do |link|
             .row.center-row
               .col-md-6
-                =link[:link].target
+                =fancy_link link[:link].target
               .col-md-6
                 =link[:target]
                 

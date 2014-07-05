@@ -49,7 +49,7 @@ module SharedHelper
         add_filter AppRootFilter.new("#{gemset}/")
       end
     end
-    
+
     if defined? Coveralls
       # is loaded in the Rake task 'test:coveralls'
       Coveralls.wear_merged!('rails')

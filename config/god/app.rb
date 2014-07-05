@@ -6,7 +6,7 @@ SidekiqWorkers.configure do
     `nproc`.to_i.times.each do
       watch 'hets', 1
     end
-    
+
     # one worker for the default queue
     watch 'default', 5
   else

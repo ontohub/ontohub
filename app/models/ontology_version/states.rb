@@ -1,16 +1,16 @@
-# 
+#
 # states:
 # * pending
 # * downloading
 # * processing
 # * failed
 # * done
-# 
+#
 module OntologyVersion::States
   extend ActiveSupport::Concern
-  
+
   include StateUpdater
-  
+
   included do
     after_save :after_update_state, if: :state_changed?
   end
@@ -34,9 +34,9 @@ module OntologyVersion::States
     end
     msg.join(": ")
   end
-  
+
   protected
-  
+
   def after_update_state
     ontology.state = state.to_s
     ontology.save!

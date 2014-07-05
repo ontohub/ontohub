@@ -1,7 +1,7 @@
 require 'test_helper'
 
 class RepositoryTest < ActiveSupport::TestCase
-  
+
   should have_many :ontologies
   should have_many :permissions
 
@@ -27,11 +27,11 @@ class RepositoryTest < ActiveSupport::TestCase
       setup do
         assert_not_nil @permission = @repository.permissions.first
       end
-      
+
       should 'with subject' do
         assert_equal @user, @permission.subject
       end
-      
+
       should 'with role owner' do
         assert_equal 'owner', @permission.role
       end
@@ -39,7 +39,7 @@ class RepositoryTest < ActiveSupport::TestCase
 
     context 'made private' do
       setup do
-        @repository.access = 'private'
+        @repository.access = 'private_rw'
         @repository.save
 
         editor = FactoryGirl.create :user
@@ -65,7 +65,7 @@ class RepositoryTest < ActiveSupport::TestCase
     end
 
     context 'saving a file' do
-      setup do 
+      setup do
         @file_path = '/tmp/ontohub/test/git_repository/save_file.txt'
         @target_path = 'save_file.clif'
         @message = 'test message'
@@ -76,7 +76,7 @@ class RepositoryTest < ActiveSupport::TestCase
         unless File.directory?(dir)
           FileUtils.mkdir_p(dir)
         end
-        
+
         # create file
         tmpfile = File.open(@file_path, 'w')
         tmpfile.puts(@content)
@@ -122,11 +122,11 @@ class RepositoryTest < ActiveSupport::TestCase
           assert_difference 'Worker.jobs.count' do
             @repository.save_file(@file_path, @target_path, @message, @user)
           end
-          
+
           file = File.open(@file_path, 'w')
           file.puts("#{@content}\n#{@content}")
           file.close
-          
+
           @repository.save_file(@file_path, @target_path, @message, @user)
         end
 
@@ -162,12 +162,12 @@ class RepositoryTest < ActiveSupport::TestCase
           unless File.directory?(dir)
             FileUtils.mkdir_p(dir)
           end
-          
+
           # create file
           tmpfile = File.open(file_path, 'w')
           tmpfile.puts(content)
           tmpfile.close
-          
+
           if path == 'inroot2.clif'
             assert_no_difference 'Worker.jobs.count' do
               @repository.save_file(file_path, path, @message, @user, "#{@iri_prefix}#{file_path}")

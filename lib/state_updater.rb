@@ -2,19 +2,17 @@ require 'sidekiq/cli'
 
 module StateUpdater
   extend ActiveSupport::Concern
-  
+
   included do
     scope :state, ->(*states){
       where state: states.map(&:to_s)
     }
   end
 
-  protected
-  
   def after_failed
     # override if necessary
   end
-  
+
   def do_or_set_failed(&block)
     raise ArgumentError.new('No block given.') unless block_given?
 

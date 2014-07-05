@@ -7,10 +7,10 @@ class CreateLanguageMappings < ActiveRecord::Migration
       t.string :kind
       t.string :standardization_status
       t.string :defined_by
-      
+
       t.timestamps :null => false
     end
-    
+
     change_table :language_mappings do |t|
       t.index :source_id
       t.index :target_id

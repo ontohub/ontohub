@@ -13,7 +13,7 @@ class GitShell
 
   def exec
     if Settings.data_root.join("maintenance.txt").exist?
-      $stderr.puts "System in maintenance mode. Please try again later."
+      STDERR.puts "System in maintenance mode. Please try again later."
       exit 1
     end
 
@@ -30,12 +30,17 @@ class GitShell
       else
         message = "git-shell: Access denied for git command <#{@command}> by #{log_username}."
         Rails.logger.warn message
-        $stderr.puts "Access denied."
+        STDERR.puts <<-MSG
+Access denied.
+Please take a look at
+http://wiki.ontohub.org/index.php/Permission
+for more information about permissions."
+        MSG
       end
     else
       message = "git-shell: Attempt to execute disallowed command <#{@command}> by #{log_username}."
       Rails.logger.warn message
-      puts 'Not allowed command'
+      STDERR.puts 'Not allowed command'
     end
   end
 

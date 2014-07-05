@@ -1,6 +1,6 @@
 module OntologyVersion::Files
   extend ActiveSupport::Concern
-  
+
   included do
     # virtual attribute for upload
     attr_accessible :raw_file
@@ -16,7 +16,7 @@ module OntologyVersion::Files
     raise "raw file missing" unless @raw_file
     ontology.path = @raw_file.original_filename if ontology.path.nil?
     # otherwise the file upload is broken (no implicit conversion of ActionDispatch::Http::UploadedFile into String):
-    tmp_file = if @raw_file.class == ActionDispatch::Http::UploadedFile 
+    tmp_file = if @raw_file.class == ActionDispatch::Http::UploadedFile
         @raw_file.tempfile
       else
         @raw_file
@@ -75,5 +75,5 @@ module OntologyVersion::Files
   def raw_data
     repository.read_file(ontology.path, commit_oid)[:content].encoding_utf8
   end
-  
+
 end

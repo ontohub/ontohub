@@ -8,10 +8,10 @@ class CreateSerializations < ActiveRecord::Migration
 
       t.timestamps
     end
-    
+
     change_table :serializations do |t|
       t.index :language_id
       t.foreign_key :languages
-    end  
-  end 
+    end
+  end
 end

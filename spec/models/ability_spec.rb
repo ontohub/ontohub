@@ -2,7 +2,7 @@ require 'spec_helper'
 require 'cancan/matchers'
 
 describe Ability do
-  
+
   let(:user){   create :user } # regular user
   let(:owner){  create :user } # owner
 
@@ -18,7 +18,7 @@ describe Ability do
 
     context 'guest' do
       subject(:ability){ Ability.new(User.new) }
-      
+
       it 'not be allowed: new, create' do
         [:new, :create].each do |perm|
           should_not be_able_to(perm, Repository.new)
@@ -58,7 +58,7 @@ describe Ability do
 
     context 'owner' do
       subject(:ability){ Ability.new(owner) }
-      
+
       it 'be allowed: new, create' do
         [:new, :create].each do |perm|
           should be_able_to(perm, Repository.new)
@@ -80,7 +80,7 @@ describe Ability do
 
     context 'editor' do
       subject(:ability){ Ability.new(editor) }
-      
+
       it 'be allowed: write' do
         [:show, :write].each do |perm|
           should be_able_to(perm, item)
@@ -98,7 +98,7 @@ describe Ability do
   context 'Private Repository' do
     let(:editor){ create :user } # editor
     let(:reader){ create :user } # reader
-    let(:item){   create(:repository, access: 'private', user: owner) }
+    let(:item){   create(:repository, access: 'private_rw', user: owner) }
 
     before do
       create(:permission, subject: editor, role: 'editor', item: item)
@@ -139,7 +139,62 @@ describe Ability do
       end
     end
 
-    pending 'add tests for all roles'
+    context 'owner' do
+      subject(:ability){ Ability.new(owner) }
+
+      it 'be allowed: everything' do
+        [:show, :update, :write].each do |perm|
+          should be_able_to(perm, item)
+        end
+      end
+    end
+  end
+
+  context 'Private read-only Repository' do
+    let(:editor){ create :user } # editor
+    let(:reader){ create :user } # reader
+    let(:item){   create(:repository, access: 'private_r', user: owner) }
+
+    before do
+      create(:permission, subject: editor, role: 'editor', item: item)
+      create(:permission, subject: reader, role: 'reader', item: item)
+    end
+
+    context 'guest' do
+      subject(:ability){ Ability.new(User.new) }
+
+      it 'not be allowed: anything' do
+        [:show, :update, :write].each do |perm|
+          should_not be_able_to(perm, item)
+        end
+      end
+    end
+
+    context 'reader, editor, owner' do
+      it 'not be allowed: to write' do
+        [reader, editor, owner].each do |role|
+          Ability.new(role).should_not be_able_to(:write, item)
+        end
+      end
+
+      it 'be allowed: to read' do
+        [reader, editor, owner].each do |role|
+          Ability.new(role).should be_able_to(:show, item)
+        end
+      end
+    end
+
+    context 'update:' do
+      it 'reader, editor should be allowed' do
+        [reader, editor].each do |role|
+          Ability.new(role).should_not be_able_to(:update, item)
+        end
+      end
+
+      it 'owner should not be allowed' do
+        Ability.new(owner).should be_able_to(:update, item)
+      end
+    end
   end
 
   context 'Team' do
@@ -181,22 +236,22 @@ describe Ability do
       end
     end
   end
-  
+
   context 'Comment' do
     let(:comment){ create :comment }
-    
+
     context 'author' do
       subject(:ability){ Ability.new(comment.user) }
-      
+
       it 'destroy his own comment' do
         should be_able_to(:destroy, comment)
       end
-      
+
       it 'not be allowed to destroy others comment' do
         should_not be_able_to(:destroy, create(:comment))
       end
     end
-    
+
     context 'admin' do
       subject(:ability){ Ability.new(create :admin) }
 
@@ -204,25 +259,25 @@ describe Ability do
         should be_able_to(:destroy, comment)
       end
     end
-    
+
     context 'comments repository owner' do
       subject(:ability){ Ability.new(owner) }
 
       before do
         create(:permission, subject: owner, role: 'owner', item: comment.commentable.repository)
       end
-      
+
       it 'destroy others comments for his repository' do
         should be_able_to(:destroy, comment)
       end
     end
-    
+
     context 'comments repository editor' do
       subject(:ability){ Ability.new(owner) }
       before do
         create(:permission, subject: owner, role: 'editor', item: comment.commentable.repository)
       end
-      
+
       it 'not destroy others comments for his repository' do
         should_not be_able_to(:destroy, comment)
       end

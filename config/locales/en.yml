@@ -31,12 +31,25 @@ en:
   Link: Ontology-Link
   LogicMapping: Logic-Mapping
   repository:
+    delete: Delete Repository
+    errors: Errors
+    permissions: Permissions
+    edit: Edit repository
+    urlmaps: Url Catalog
     access:
       change_hint: 'Caution! When setting the repository public, all reader permissions are removed.'
       options:
-        private: Private
+        private_r: Private readable
+        private_rw: Private readable and writable
         public_r: Public readable
         public_rw: Public readable and writable
+  files:
+    discard: Discard
+    discard_confirmation: You made changes to the code. Are you sure you want to discard them?
+    discard_desc: |
+      If you discard the changes, the textarea on the left will be reset to the previous state.
+
+      This action is irreversible!
   sentences:
     index:
       display_only_self_defined_sentences:
@@ -54,3 +67,19 @@ en:
   have:
     one: has
     other: have
+  signup:
+    welcome: Welcome %{name}
+    what_happens: |
+          For full qualified access to Ontohub you have to confirm your e-mail address.
+          We have sent an mail with instructions for you.
+    wiki: | 
+        You can find more information about Ontohub in the %{link}.
+        Moreover, context specific information is available with the "Help" button, leading to a specfic wiki page.
+    need_help: Need Help?
+  delete_repository: Are you sure about deleting the Repository?
+  delete_repository_desc: |
+      If you delete this repository, all ontologies, which are related to this repository, will be deleted too.
+                            
+      This action is irreversible!
+  discard_changes: Are you sure
+  cancel: Cancel

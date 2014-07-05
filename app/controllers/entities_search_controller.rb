@@ -1,6 +1,6 @@
-# 
+#
 # Allow searching for entities
-# 
+#
 class EntitiesSearchController < ApplicationController
 
   def index
@@ -15,5 +15,5 @@ class EntitiesSearchController < ApplicationController
       @groups = @group.groups
     end
   end
-  
+
 end

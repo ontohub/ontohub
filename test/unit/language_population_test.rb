@@ -47,5 +47,5 @@ class TripleStoreTest < ActiveSupport::TestCase
       assert_equal 'http://ontohub.org/CommonLanguage.rdf', language.defined_by
     end
   end
-  
+
 end

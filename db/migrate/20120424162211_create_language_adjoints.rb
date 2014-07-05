@@ -8,7 +8,7 @@ class CreateLanguageAdjoints < ActiveRecord::Migration
 
       t.timestamps :null => false
     end
-    
+
     change_table :language_adjoints do |t|
       t.index :translation_id
       t.index :projection_id

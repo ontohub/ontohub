@@ -67,7 +67,7 @@ require 'sidekiq/testing'
 Sidekiq::Testing.fake!
 
 # Recording HTTP Requests
-VCR.configure do |c|  
+VCR.configure do |c|
   c.cassette_library_dir = 'test/fixtures/vcr'
   c.hook_into :webmock
   c.ignore_localhost = true

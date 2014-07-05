@@ -15,6 +15,14 @@ class Project < ActiveRecord::Base
       allow_blank: true
     }
 
+  def display_name
+    if name.include?('Project')
+      name
+    else
+      "Project #{name}"
+    end
+  end
+
   def to_s
     name
   end

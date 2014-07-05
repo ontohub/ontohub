@@ -11,7 +11,7 @@ class CreateLinks < ActiveRecord::Migration
       t.boolean :proven, :default => false # has the link been proven (makes only sense for theorem links)
       t.boolean :local, :default => false # local or global link? corresponds to Scope in Hets. Local links may arise in development graph proofs
       t.boolean :inclusion, :default => true # is the linka signature inclusion?
-      t.references :parent, :default => nil # non-nil for component signature morphisms which are coded as links here, 
+      t.references :parent, :default => nil # non-nil for component signature morphisms which are coded as links here,
             # see FreeOrCofreeDefLink (here the link is the inclusion of the intermediate node into the source) or HidingFreeOrCofreeThm in Hets
       t.timestamps :null => false
     end

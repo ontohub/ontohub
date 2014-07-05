@@ -1,5 +1,5 @@
 # A logic propulation procedure.
-# 
+#
 # TODO Transform this code in an iterator to enable unit testing
 #
 # Author: Daniel Couto Vale <danielvale@uni-bremen.de>
@@ -16,7 +16,7 @@ class LogicPopulation
     commentIri = 'http://www.w3.org/2000/01/rdf-schema#comment'
     definedIri = 'http://www.w3.org/2000/01/rdf-schema#isDefinedBy'
     logicTypeIri = 'http://purl.net/dol/1.0/rdf#Logic'
-    
+
     logicIris = @store.subjects(typeIri, logicTypeIri)
     logicIris.map do |logicIri|
       logicNames = @store.objects(logicIri, labelIri)

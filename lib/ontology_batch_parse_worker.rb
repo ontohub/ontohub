@@ -13,6 +13,8 @@ class OntologyBatchParseWorker < BaseWorker
     return if versions.empty?
 
     version_id, opts = versions.head
+    TimeoutWorker.start_timeout_clock(version_id)
+
     version = OntologyVersion.find(version_id)
 
     opts.each do |method_name, value|

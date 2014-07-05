@@ -10,7 +10,7 @@ class CreateBasicProofs < ActiveRecord::Migration
     end
     add_index :basic_proofs, :logic_mapping_id
     add_index :basic_proofs, :sentence_id
-    
+
     change_table :basic_proofs do |t|
       t.foreign_key :logic_mappings, :dependent => :delete
       t.foreign_key :sentences, :dependent => :delete

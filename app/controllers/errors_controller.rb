@@ -14,6 +14,6 @@ class ErrorsController < InheritedResources::Base
   def check_read_permissions
     authorize! :show, parent
   end
-    
+
 
 end

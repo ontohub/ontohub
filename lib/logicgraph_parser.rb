@@ -22,7 +22,7 @@ module LogicgraphParser
 
   # Listener for the SAX Parser
   class Listener < Nokogiri::XML::SAX::Document
-    
+
     ROOT            = 'LogicGraph'
     LOGIC           = 'logic'
     COMORPHISM      = 'comorphism'
@@ -73,7 +73,7 @@ module LogicgraphParser
         logic
       end
     end
-    
+
     # Make a language singleton for a given key
     def make_language(key)
       @languages[key] ||= begin
@@ -102,7 +102,7 @@ module LogicgraphParser
         support
       end
     end
-    
+
     # Parses the element opening tag
     def start_element(name, attributes)
       @path << name
@@ -208,13 +208,13 @@ module LogicgraphParser
           @current_language.description = text if @current_language
       end
     end
-    
+
     private
-    
+
     def callback(name, args)
       @callbacks[name].try :call, args
     end
-  
+
   end
-  
+
 end

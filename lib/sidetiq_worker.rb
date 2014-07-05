@@ -12,5 +12,5 @@ class SidetiqWorker
   def perform
     Repository.outdated.find_each{|r| r.async_remote :pull }
   end
-  
+
 end

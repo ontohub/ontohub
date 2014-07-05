@@ -23,7 +23,7 @@ class LicenseModelTest < ActiveSupport::TestCase
     end
 
     context 'when LicenseModel without name is to be saved' do
-      should 'raise error' do 
+      should 'raise error' do
         assert_raise ActiveRecord::RecordInvalid do
           LicenseModel.create!
         end
