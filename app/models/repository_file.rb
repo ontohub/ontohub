@@ -145,7 +145,7 @@ class RepositoryFile < FakeRecord
 
     opts = prepare_opts_on_file_upload(opts)
 
-    @message    = opts[:message]
+    @message = opts[:message]
 
     if self.class.editing_file?(opts)
       opts = prepare_opts_add_tempfile(opts)
