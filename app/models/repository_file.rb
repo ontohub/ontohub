@@ -1,11 +1,4 @@
-class RepositoryFile
-
-  # Those inclusions and extensions are used to mimic ActiveRecord::Base.
-  #   We need them for easier file manipulation in the git repository (CRUD).
-  extend ActiveModel::Naming
-  include ActiveModel::Conversion
-  include ActiveModel::Validations
-
+class RepositoryFile < FakeRecord
   class PathValidator < ActiveModel::Validator
     def validate(record)
       if record.repository.points_through_file?(record.target_path)
@@ -15,7 +8,7 @@ class RepositoryFile
   end
 
   # basic repository file usage
-  attr_reader :repository, :file
+  attr_reader :repository, :file, :user
   attr_accessor :index
   delegate :name, :path, :size, :mime_type, :mime_category,
     :oid, :file?, :dir?, :type, to: :file
@@ -40,8 +33,7 @@ class RepositoryFile
   def self.find_with_basepath(opts)
     repository = Repository.find_by_path(opts[:repository_id])
     oid        = compute_ref(repository, opts[:ref])[:oid]
-
-    dir_path = opts[:path].split('/')[0..-2].join('/')
+    dir_path   = opts[:path].split('/')[0..-2].join('/')
 
     entries = repository.git.folder_contents(oid, dir_path).reduce([]) do |es, entry|
       if entry.path.start_with?(opts[:path]) && entry.file?
@@ -50,31 +42,9 @@ class RepositoryFile
     end
   end
 
-  def self.build(opts={})
-    if opts[:content] # edit text of file
-      tempfile = Tempfile.new('repository_tempfile')
-      tempfile.write(opts[:content])
-      tempfile.close
-      opts.merge!({ temp_file: tempfile })
-      new(opts)
-    elsif(opts[:repository_file]) # upload file
-      new(opts[:repository_file].merge({repository_id: opts[:repository_id]}))
-    else
-      new(opts)
-    end
-  end
-
-  def self.create(opts={})
-    rf = build(opts)
-    if rf.valid?
-      rf.repository.save_file(rf.temp_file.path, rf.target_path, rf.message, opts[:user])
-    end
-
-    return rf
-  end
-
-  def initialize(opts)
-    opts = opts.symbolize_keys
+  def initialize(*args, &block)
+    opts = args.shift.symbolize_keys
+    @user = opts[:user]
     if self.class.manipulating_file?(opts)
       initialize_for_create_and_update(opts)
     elsif opts[:git_file] && opts[:repository]
@@ -82,6 +52,11 @@ class RepositoryFile
     else
       initialize_for_read(opts)
     end
+  end
+
+  def save!
+    raise RecordNotSavedError unless valid?
+    repository.save_file(temp_file.path, target_path, message, user)
   end
 
   def ontologies(child_name=nil)
@@ -147,7 +122,15 @@ class RepositoryFile
   protected
 
   def self.manipulating_file?(opts)
-    opts[:temp_file].present?
+    uploading_file?(opts) || editing_file?(opts)
+  end
+
+  def self.uploading_file?(opts)
+    opts[:repository_file].present?
+  end
+
+  def self.editing_file?(opts)
+    opts[:path].present? && (opts[:content].present? || opts[:temp_file].present?)
   end
 
   def initialize_for_read(opts)
@@ -159,15 +142,21 @@ class RepositoryFile
 
   def initialize_for_create_and_update(opts)
     @repository = Repository.find_by_path(opts[:repository_id])
+
+    opts = prepare_opts_on_file_upload(opts)
+
     @message    = opts[:message]
-    @temp_file  = opts[:temp_file]
-    if editing_file?(opts)
+
+    if self.class.editing_file?(opts)
+      opts = prepare_opts_add_tempfile(opts)
+
       @target_directory = opts[:path].split('/')[0..-2].join('/')
       @target_filename  = opts[:path].split('/')[-1]
     else
       @target_directory = opts[:target_directory]
       @target_filename  = opts[:target_filename]
     end
+    @temp_file  = opts[:temp_file]
   end
 
   def initialize_for_already_loaded_file(opts)
@@ -175,8 +164,26 @@ class RepositoryFile
     @file       = opts[:git_file]
   end
 
-  def editing_file?(opts)
-    opts[:path].present?
+  def editing_file_providing_content?(opts)
+    opts[:content].present?
+  end
+
+  def prepare_opts_add_tempfile(opts)
+    tempfile = Tempfile.new('repository_tempfile')
+    tempfile.write(opts[:content])
+    tempfile.close
+
+    opts[:temp_file] = tempfile
+
+    opts
+  end
+
+  def prepare_opts_on_file_upload(opts)
+    if self.class.uploading_file?(opts)
+      opts.merge!(opts[:repository_file])
+    end
+
+    opts.symbolize_keys
   end
 
 end
