@@ -65,7 +65,7 @@ module FilesHelper
 
   def update_file
     if file_exists?
-      { 'upload_file[target_filename]' => resource.name }
+      { 'repository_file[target_filename]' => resource.name }
     else
       { }
     end
