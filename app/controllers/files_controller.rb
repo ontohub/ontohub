@@ -79,7 +79,7 @@ class FilesController < InheritedResources::Base
   protected
 
   def resource
-    @repository_file ||= RepositoryFile.find_with_path(params)
+    @repository_file ||= resource_class.find_with_path(params)
   end
 
   def repository
