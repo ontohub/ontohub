@@ -6,14 +6,14 @@ module Hets
     attr_accessor :internal_iri
 
     register :all, :end, to: :all_end
-    register :root           , :start , to: :dgraph
-    register :ontology       , :start , to: :ontology_start
-    register :ontology       , :end   , to: :ontology_end
-    register :import         , :start , to: :import
-    register :symbol         , :end   , to: :symbol
-    register :axiom          , :end   , to: :axiom
-    register :imported_axiom , :end   , to: :imported_axiom
-    register :link           , :end   , to: :link
+    register :root, :start, to: :dgraph
+    register :ontology, :start, to: :ontology_start
+    register :ontology, :end, to: :ontology_end
+    register :import, :start, to: :import
+    register :symbol, :end, to: :symbol
+    register :axiom, :end, to: :axiom
+    register :imported_axiom, :end, to: :imported_axiom
+    register :link, :end, to: :link
 
     def dgraph(current_element)
       hets_evaluator.dgnode_count = current_element['dgnodes'].to_i

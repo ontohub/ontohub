@@ -1,17 +1,17 @@
 module Hets
   class NokogiriListener < Nokogiri::XML::SAX::Document
-    MAP      = "map"
-    ROOT     = 'DGraph'
+    MAP = "map"
+    ROOT = 'DGraph'
     ONTOLOGY = 'DGNode'
-    SYMBOL   = 'Symbol'
-    AXIOM    = 'Axiom'
+    SYMBOL = 'Symbol'
+    AXIOM = 'Axiom'
     IMPAXIOMS = 'ImpAxioms'
-    AXIOMS    = 'Axioms'
-    LINK     = 'DGLink'
-    TEXT     = 'Text'
-    TYPE     = 'Type'
+    AXIOMS = 'Axioms'
+    LINK = 'DGLink'
+    TEXT = 'Text'
+    TYPE = 'Type'
     MORPHISM = 'GMorphism'
-    IMPORT   = 'Reference'
+    IMPORT = 'Reference'
 
     CALLBACK_MAP = {
       ONTOLOGY => :ontology,
