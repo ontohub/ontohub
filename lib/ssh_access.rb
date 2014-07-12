@@ -1,5 +1,8 @@
 class SshAccess
 
+  class Error < ::StandardError; end
+  class InvalidAccessOnMirrorError < Error; end
+
   PERMISSIONS = %w{
     read
     write
@@ -27,8 +30,20 @@ class SshAccess
   class << self
 
     def determine_permission(requested_permission, permission, repository)
-      allowed_for_everyone?(requested_permission, repository) ||
-      allowed_for?(requested_permission, repository, through: permission)
+      not_a_write_to_mirror_repository!(requested_permission, repository) &&
+        (allowed_for_everyone?(requested_permission, repository) ||
+        allowed_for?(requested_permission, repository, through: permission))
+    end
+
+    def write_to_mirror_repository?(requested_permission, repository)
+      repository.remote? && requested_permission == 'write'
+    end
+
+    def not_a_write_to_mirror_repository!(requested_permission, repository)
+      if write_to_mirror_repository?(requested_permission, repository)
+        raise InvalidAccessOnMirrorError
+      end
+      true
     end
 
     def allowed_for?(requested_permission, repository, through: nil)
