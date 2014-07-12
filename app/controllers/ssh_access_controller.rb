@@ -1,14 +1,14 @@
-class SshAccessController < InheritedResources::Base
+class SSHAccessController < InheritedResources::Base
 
   MIRROR_DENY_MSG = "you cannot write to a mirror repository, they are readonly"
 
   belongs_to :repository, finder: :find_by_path!
 
   def index
-    allowed = SshAccess.determine_permission(
-      *SshAccess.extract_permission_params(params, parent), parent)
+    allowed = SSHAccess.determine_permission(
+      *SSHAccess.extract_permission_params(params, parent), parent)
     render json: {allowed: allowed}
-  rescue SshAccess::InvalidAccessOnMirrorError
+  rescue SSHAccess::InvalidAccessOnMirrorError
     render json: {allowed: false,
                   reason: MIRROR_DENY_MSG,
                   provide_to_user: true}

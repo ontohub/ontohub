@@ -1,6 +1,6 @@
 require 'spec_helper'
 
-describe SshAccess do
+describe SSHAccess do
 
   let(:permission) { create :permission, role: 'reader' }
   let(:user) { permission.subject }

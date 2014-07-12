@@ -1,6 +1,6 @@
 require 'spec_helper'
 
-describe SshAccessController do
+describe SSHAccessController do
 
   let(:repository) { create :repository }
   let(:user) { create :user }
