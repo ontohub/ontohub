@@ -19,8 +19,8 @@ class SshAccess
         'private_r' => %w{read},
         'private_rw' => %w{read write},
       },
-      owner: [],
-      editor: []
+      owner: %{read write},
+      editor: %{read write},
     }
   }
 
