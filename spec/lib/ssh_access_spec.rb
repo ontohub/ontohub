@@ -11,49 +11,49 @@ describe SshAccess do
     it 'should allow read on public readable repository' do
       repository.access = 'public_r'
       access = described_class.determine_permission('read', nil, repository)
-      expect(access).to be_true
+      expect(access).to be true
     end
 
     it 'should disallow write on public readable repository' do
       repository.access = 'public_r'
       access = described_class.determine_permission('write', nil, repository)
-      expect(access).to be_false
+      expect(access).to be false
     end
 
     it 'should allow read on public read-writeable repository' do
       repository.access = 'public_rw'
       access = described_class.determine_permission('read', nil, repository)
-      expect(access).to be_true
+      expect(access).to be true
     end
 
     it 'should allow write on public read-writeable repository' do
       repository.access = 'public_rw'
       access = described_class.determine_permission('write', nil, repository)
-      expect(access).to be_true
+      expect(access).to be true
     end
 
     it 'should disallow read on private readable repository' do
       repository.access = 'private_r'
       access = described_class.determine_permission('read', nil, repository)
-      expect(access).to be_false
+      expect(access).to be false
     end
 
     it 'should disallow write on private readable repository' do
       repository.access = 'private_r'
       access = described_class.determine_permission('write', nil, repository)
-      expect(access).to be_false
+      expect(access).to be false
     end
 
     it 'should disallow read on private read-writeable repository' do
       repository.access = 'private_rw'
       access = described_class.determine_permission('read', nil, repository)
-      expect(access).to be_false
+      expect(access).to be false
     end
 
     it 'should disallow write on private read-writeable repository' do
       repository.access = 'private_rw'
       access = described_class.determine_permission('write', nil, repository)
-      expect(access).to be_false
+      expect(access).to be false
     end
 
   end
@@ -66,13 +66,13 @@ describe SshAccess do
       it 'should allow write on public readable repository' do
         repository.access = 'public_r'
         access = described_class.determine_permission('write', permission, repository)
-        expect(access).to be_true
+        expect(access).to be true
       end
 
       it 'should allow write on private readable repository' do
         repository.access = 'private_r'
         access = described_class.determine_permission('write', permission, repository)
-        expect(access).to be_true
+        expect(access).to be true
       end
     end
 
@@ -82,62 +82,62 @@ describe SshAccess do
       it 'should allow write on public readable repository' do
         repository.access = 'public_r'
         access = described_class.determine_permission('write', permission, repository)
-        expect(access).to be_true
+        expect(access).to be true
       end
 
       it 'should allow write on private readable repository' do
         repository.access = 'private_r'
         access = described_class.determine_permission('write', permission, repository)
-        expect(access).to be_true
+        expect(access).to be true
       end
     end
 
     it 'should allow read on public readable repository' do
       repository.access = 'public_r'
       access = described_class.determine_permission('read', permission, repository)
-      expect(access).to be_true
+      expect(access).to be true
     end
 
     it 'should disallow write on public readable repository' do
       repository.access = 'public_r'
       access = described_class.determine_permission('write', permission, repository)
-      expect(access).to be_false
+      expect(access).to be false
     end
 
     it 'should allow read on public read-writeable repository' do
       repository.access = 'public_rw'
       access = described_class.determine_permission('read', permission, repository)
-      expect(access).to be_true
+      expect(access).to be true
     end
 
     it 'should allow write on public read-writeable repository' do
       repository.access = 'public_rw'
       access = described_class.determine_permission('write', permission, repository)
-      expect(access).to be_true
+      expect(access).to be true
     end
 
     it 'should allow read on private readable repository' do
       repository.access = 'private_r'
       access = described_class.determine_permission('read', permission, repository)
-      expect(access).to be_true
+      expect(access).to be true
     end
 
     it 'should disallow write on private readable repository' do
       repository.access = 'private_r'
       access = described_class.determine_permission('write', permission, repository)
-      expect(access).to be_false
+      expect(access).to be false
     end
 
     it 'should allow read on private read-writeable repository' do
       repository.access = 'private_rw'
       access = described_class.determine_permission('read', permission, repository)
-      expect(access).to be_true
+      expect(access).to be true
     end
 
     it 'should allow write on private read-writeable repository' do
       repository.access = 'private_rw'
       access = described_class.determine_permission('write', permission, repository)
-      expect(access).to be_true
+      expect(access).to be true
     end
   end
 
