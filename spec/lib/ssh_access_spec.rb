@@ -56,6 +56,12 @@ describe SshAccess do
       expect(access).to be false
     end
 
+    it 'should raise error on write to mirror repository' do
+      repository.source_address = 'http://some_source_address.example.com'
+      expect { described_class.determine_permission('write', nil, repository) }.
+        to raise_error
+    end
+
   end
 
   context 'with permission' do
@@ -74,6 +80,12 @@ describe SshAccess do
         access = described_class.determine_permission('write', permission, repository)
         expect(access).to be true
       end
+
+      it 'should raise error on write to mirror repository' do
+        repository.source_address = 'http://some_source_address.example.com'
+        expect { described_class.determine_permission('write', permission, repository) }.
+          to raise_error
+      end
     end
 
     context 'denoting editor rights' do
@@ -89,6 +101,12 @@ describe SshAccess do
         repository.access = 'private_r'
         access = described_class.determine_permission('write', permission, repository)
         expect(access).to be true
+      end
+
+      it 'should raise error on write to mirror repository' do
+        repository.source_address = 'http://some_source_address.example.com'
+        expect { described_class.determine_permission('write', permission, repository) }.
+          to raise_error
       end
     end
 
@@ -138,6 +156,12 @@ describe SshAccess do
       repository.access = 'private_rw'
       access = described_class.determine_permission('write', permission, repository)
       expect(access).to be true
+    end
+
+    it 'should raise error on write to mirror repository' do
+      repository.source_address = 'http://some_source_address.example.com'
+      expect { described_class.determine_permission('write', permission, repository) }.
+        to raise_error
     end
   end
 
