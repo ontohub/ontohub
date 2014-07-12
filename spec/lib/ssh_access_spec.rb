@@ -2,7 +2,7 @@ require 'spec_helper'
 
 describe SshAccess do
 
-  let(:permission) { create :permission }
+  let(:permission) { create :permission, role: 'reader' }
   let(:user) { permission.subject }
   let(:repository) { permission.item }
 
@@ -59,6 +59,38 @@ describe SshAccess do
   end
 
   context 'with permission' do
+
+    context 'denoting owner rights' do
+      let(:permission) { create :permission, role: 'owner' }
+
+      it 'should allow write on public readable repository' do
+        repository.access = 'public_r'
+        access = described_class.determine_permission('write', permission, repository)
+        expect(access).to be_true
+      end
+
+      it 'should allow write on private readable repository' do
+        repository.access = 'private_r'
+        access = described_class.determine_permission('write', permission, repository)
+        expect(access).to be_true
+      end
+    end
+
+    context 'denoting editor rights' do
+      let(:permission) { create :permission, role: 'editor' }
+
+      it 'should allow write on public readable repository' do
+        repository.access = 'public_r'
+        access = described_class.determine_permission('write', permission, repository)
+        expect(access).to be_true
+      end
+
+      it 'should allow write on private readable repository' do
+        repository.access = 'private_r'
+        access = described_class.determine_permission('write', permission, repository)
+        expect(access).to be_true
+      end
+    end
 
     it 'should allow read on public readable repository' do
       repository.access = 'public_r'
