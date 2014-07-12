@@ -50,4 +50,22 @@ describe SshAccessController do
 
   end
 
+  context 'should return false-permission on valid request with write to mirror' do
+    let(:repository) { create :repository, source_address: 'http://some_source_address.example.com', source_type: 'git' }
+    let!(:key) { create :key, user: user }
+    before do
+      get :index, repository_id: repository.to_param, key_id: key.id.to_s, permission: 'write'
+    end
+
+    it { should respond_with :success }
+    it 'contains correct permission' do
+      expect(response.body).to include('"allowed":false')
+    end
+
+    it 'contains error message which is suitable for the user' do
+      expect(response.body).to include('"provide_to_user":true')
+    end
+
+  end
+
 end
