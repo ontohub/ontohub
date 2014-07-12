@@ -43,11 +43,11 @@ class SshAccess
 
     def included_in?(*groups, repository, requested_permission)
       in_map = groups.reduce(PERMISSION_MAP) { |map, group| map[group] }
-      in_map[repository.access].include?(requested_permission)
+      !! in_map[repository.access].try(:include?, requested_permission)
     end
 
     def included_in_role?(role, requested_permission)
-      PERMISSION_MAP[:permission][role].include?(requested_permission)
+      !! PERMISSION_MAP[:permission][role].try(:include?, requested_permission)
     end
 
     def extract_permission_params(params, repository)
