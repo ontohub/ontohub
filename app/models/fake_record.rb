@@ -5,7 +5,8 @@ class FakeRecord
   include ActiveModel::Conversion
   include ActiveModel::Validations
 
-  class RecordNotSavedError < StandardError; end
+  class Error < ::StandardError; end
+  class RecordNotSavedError < Error; end
 
   def self.create(attributes = nil, options = {}, &block)
     if attributes.is_a?(Array)
