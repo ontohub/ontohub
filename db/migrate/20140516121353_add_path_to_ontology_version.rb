@@ -13,6 +13,13 @@ class AddPathToOntologyVersion < ActiveRecord::Migration
   end
 
   def down
+    Ontology.all.each do |o|
+      if o.current_version
+        o.basepath = o.current_version.basepath
+        o.file_extension = o.current_version.file_extension
+      end
+    end
+
     remove_column :ontology_versions, :basepath
     remove_column :ontology_versions, :file_extension
   end
