@@ -8,7 +8,7 @@ describe RepositorySettingsController do
     before do
       get :index, repository_id: repository.to_param
     end
-    
+
     it 'should redirect to url_maps index' do
       response.should redirect_to [repository, :url_maps]
     end

@@ -13,7 +13,7 @@ class OntologyTest < ActiveSupport::TestCase
   should have_many :entities
 
   should have_and_belong_to_many :projects
-  
+
   should have_db_index(:iri).unique(true)
   should have_db_index(:state)
   should have_db_index(:language_id)
@@ -41,7 +41,7 @@ class OntologyTest < ActiveSupport::TestCase
     setup do
       @ontology = FactoryGirl.create :ontology
     end
-    
+
     context 'with name' do
       setup do
         @name = "fooo"
@@ -51,7 +51,7 @@ class OntologyTest < ActiveSupport::TestCase
         assert_equal @name, @ontology.to_s
       end
     end
-    
+
     context 'without name' do
       setup do
         @ontology.name = nil
@@ -61,7 +61,7 @@ class OntologyTest < ActiveSupport::TestCase
       end
     end
   end
-  
+
   context 'checking ordering of Ontology list' do
     setup do
       Ontology::States::STATES.each do |state|

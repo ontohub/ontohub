@@ -11,10 +11,10 @@ class CreateLogicMappings < ActiveRecord::Migration
       t.boolean :projection # or translation
       t.string :faithfulness
       t.string :theoroidalness
-      
+
       t.timestamps :null => false
     end
-    
+
     change_table :logic_mappings do |t|
       t.index :source_id
       t.index :target_id

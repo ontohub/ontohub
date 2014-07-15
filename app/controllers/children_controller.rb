@@ -1,8 +1,8 @@
-# 
+#
 # Lists entities of an ontology
-# 
+#
 class ChildrenController < InheritedResources::Base
-  
+
   belongs_to :ontology
 
   actions :index

@@ -8,7 +8,7 @@ class OntologyTypeTest < ActiveSupport::TestCase
     end
     should have_db_index(:name).unique(true)
   end
-    
+
   context 'Validations' do
     ['http://example.com/', 'https://example.com/', 'file://path/to/file'].each do |val|
       should allow_value(val).for :documentation
@@ -18,5 +18,5 @@ class OntologyTypeTest < ActiveSupport::TestCase
   [nil, '', 'fooo'].each do |val|
     should_not allow_value(val).for :documentation
   end
-  
+
 end

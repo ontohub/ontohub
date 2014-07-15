@@ -5,8 +5,8 @@ class SentenceTest < ActiveSupport::TestCase
   context 'Migrations' do
     %w( ontology_id comments_count ).each do |column|
       should have_db_column(column).of_type(:integer)
-    end   
-  
+    end
+
     %w( range ).each do |column|
       should have_db_column(column).of_type(:string)
     end
@@ -25,34 +25,34 @@ class SentenceTest < ActiveSupport::TestCase
   end
 
   context 'OntologyInstance' do
-  	setup do
-  		@ontology = FactoryGirl.create :single_ontology
-  	end
+    setup do
+      @ontology = FactoryGirl.create :single_ontology
+    end
 
-  	context 'creating Sentences' do
-  		setup do
-	  		@sentence_hash = {
-	  			'name' => '... (if exists)',
+    context 'creating Sentences' do
+      setup do
+        @sentence_hash = {
+          'name' => '... (if exists)',
           'range' => 'Examples/Reichel:40.9'
-	  		}
+        }
 
-	      @ontology.sentences.update_or_create_from_hash @sentence_hash
-  		end
+        @ontology.sentences.update_or_create_from_hash @sentence_hash
+      end
 
-  		context 'correct attribute' do
-  			setup do
-  				@sentence = @ontology.sentences.first
-  			end
+      context 'correct attribute' do
+        setup do
+          @sentence = @ontology.sentences.first
+        end
 
-  			%w[name range].each do |attr|
-  				should "be #{attr}" do
-  					assert_equal @sentence_hash[attr], eval("@sentence.#{attr}")
-  				end
-  			end
-  		end
-  	end
+        %w[name range].each do |attr|
+          should "be #{attr}" do
+            assert_equal @sentence_hash[attr], eval("@sentence.#{attr}")
+          end
+        end
+      end
+    end
 
-  	context 'OWL2 sentences' do
+    context 'OWL2 sentences' do
       setup do
         @ontology = FactoryGirl.create :single_ontology
         user = FactoryGirl.create :user

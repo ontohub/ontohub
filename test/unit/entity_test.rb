@@ -6,7 +6,7 @@ class EntityTest < ActiveSupport::TestCase
     %w( ontology_id comments_count ).each do |column|
       should have_db_column(column).of_type(:integer)
     end
-  
+
     %w( kind range ).each do |column|
       should have_db_column(column).of_type(:string)
     end
@@ -26,33 +26,33 @@ class EntityTest < ActiveSupport::TestCase
   end
 
   context 'OntologyInstance' do
-  	setup do
-  		@ontology = FactoryGirl.create :single_ontology
-  	end
+    setup do
+      @ontology = FactoryGirl.create :single_ontology
+    end
 
-  	context 'creating CommonLogic Entities' do
-  		setup do
-	  		@entity_hash = {
-	  			'name' => 'nat',
-	  			'range' => '28.9',
-	  			'kind' =>  'sort',
-	  			'text' => 'nat'
-	  		}
+    context 'creating CommonLogic Entities' do
+      setup do
+        @entity_hash = {
+          'name' => 'nat',
+          'range' => '28.9',
+          'kind' =>  'sort',
+          'text' => 'nat'
+        }
 
-	      @ontology.entities.update_or_create_from_hash @entity_hash
-  		end
+        @ontology.entities.update_or_create_from_hash @entity_hash
+      end
 
-  		context 'attributes' do
-  			setup do
-  				@entity = @ontology.entities.first
-  			end
+      context 'attributes' do
+        setup do
+          @entity = @ontology.entities.first
+        end
 
-  			%w[name range kind text].each do |attr|
-  				should "be #{attr}" do
-  					assert_equal @entity_hash[attr], eval("@entity.#{attr}")
-  				end
-  			end       
-        
+        %w[name range kind text].each do |attr|
+          should "be #{attr}" do
+            assert_equal @entity_hash[attr], eval("@entity.#{attr}")
+          end
+        end
+
         should "have display_name nil" do
           assert_nil @entity.display_name
         end
@@ -61,14 +61,14 @@ class EntityTest < ActiveSupport::TestCase
           assert_nil @entity.iri
         end
       end
-  	end
-    
+    end
+
     context 'When creating OWL2 Entities' do
       context 'with fragment in URI' do
         setup do
           @entity = FactoryGirl.create :entity_owl2
         end
-        
+
         should 'display_name attribute be the fragment'  do
           assert_equal "1", @entity.display_name
         end
@@ -77,7 +77,7 @@ class EntityTest < ActiveSupport::TestCase
           assert_equal "http://example.com/resource#2", @entity.iri
         end
       end
-      
+
       context 'without fragment in URI, the display_name attribute' do
         setup do
           @entity_hash = {
@@ -85,10 +85,10 @@ class EntityTest < ActiveSupport::TestCase
             'name' => '<http://example.com/resource>'
           }
 
-	        @ontology.entities.update_or_create_from_hash @entity_hash
-  				@entity = @ontology.entities.first
+          @ontology.entities.update_or_create_from_hash @entity_hash
+          @entity = @ontology.entities.first
         end
-        
+
         should 'be the last path segment' do
           assert_equal "resource", @entity.display_name
         end

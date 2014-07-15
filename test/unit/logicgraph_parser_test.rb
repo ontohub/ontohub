@@ -10,7 +10,7 @@ class LogicgraphParserTest < ActiveSupport::TestCase
         OntologyParser.parse open_fixture('empty.xml'),
           symbol: Proc.new{ |h| @symbols << h }
       end
-      
+
       should 'not find any symbol' do
         assert_equal 0, @symbols.count
       end

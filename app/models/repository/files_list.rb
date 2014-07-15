@@ -7,7 +7,7 @@ module Repository::FilesList
       v[:index] = i
     end
 
-    grouped = Hash[contents.group_by do | e | 
+    grouped = Hash[contents.group_by do | e |
       { type: e[:type], name: basename(e[:name]) }
     end.map do | k, v |
       [k[:name], v]

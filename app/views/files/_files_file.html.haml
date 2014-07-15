@@ -32,7 +32,8 @@
               = text_area_tag 'message', params[:message] || '', id: 'message', required: true
             .row.btn-group.codemirror-controls
               = f.button 'Commit', type: 'submit', id: 'codemirror-btn-commit', class: 'btn btn-primary'
-              = f.button 'Discard', type: 'cancel', id: 'codemirror-btn-discard', class: 'btn btn-danger'
+              = f.button t('files.discard'), type: 'cancel', id: 'codemirror-btn-discard', class: 'btn btn-danger'
+      = render partial: 'modal_discard'
     - unless @info[:ontologies].empty?
       %h4
         Defining

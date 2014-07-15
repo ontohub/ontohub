@@ -5,7 +5,7 @@
 # * processing - Inserting fetched commits into the local database-
 # * done       - Everthing is fine, nothing to do-
 # * failed     - Something has gone wrong.
-# 
+#
 module Repository::Importing
   extend ActiveSupport::Concern
 
@@ -91,6 +91,9 @@ module Repository::Importing
       params[:name]           = name
       params[:source_type]    = type
       params[:source_address] = source
+      params[:access]         = params[:access] ?
+        Repository::Access.as_read_only(params[:access]) :
+        Repository::Access::DEFAULT_OPTION
 
       r = Repository.new(params)
       r.user = user

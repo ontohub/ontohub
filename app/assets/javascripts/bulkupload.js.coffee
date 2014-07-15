@@ -1,18 +1,18 @@
 $ ->
   form = $("#bulkupload")
   return unless form[0]
-  
+
   uploader =
     form: form
     running: false
-    
+
     # Pattern to the the URIs
     uriPattern: /(https?:\/\/?\S+)/g
     jobs: []
     created: 0
     failed: 0
     remaining: 0
-    
+
     # Inititialize the Uploader
     init: ->
       self = this
@@ -30,16 +30,16 @@ $ ->
           self.cancel()
         else
           self.run()
-    
+
     # hides all except the given action
     showAction: (action) ->
       @actions.children().each ->
         $(this).toggle $(this).hasClass(action)
-    
+
     # extracts URIs from the textarea
     getURIs: ->
       @form.find("textarea").val().match @uriPattern
-    
+
     # Starts the Uploader
     run: ->
       uris = @getURIs()
@@ -52,16 +52,16 @@ $ ->
       @initProgress uris.length
       @createJobs uris
       @nextJob()
-    
+
     # Initializes the progressbar
     initProgress: (max) ->
       @updateStats "remaining", max
       @progressbar.progressbar max: max
-    
+
     # Updates the progressbar
     updateProgress: ->
       @progressbar.progressbar "option", "value", @created + @failed
-    
+
     # create jobs
     createJobs: (uris) ->
       self = this
@@ -70,17 +70,17 @@ $ ->
         li = $("<li></li>").data("uri", uri).text(uri)
         li.appendTo list
         self.jobs.push li
-      
+
       @textarea.replaceWith list
-    
+
     # Handler for the cancel button
     cancel: ->
       @showAction "restart"
-    
+
     # Mark the uploader as finished
     finished: ->
       @cancel()
-    
+
     # is called when the current job is done
     jobDone: ->
       @updateStats "remaining", -1
@@ -89,18 +89,18 @@ $ ->
         @nextJob()
       else
         @finished()
-    
+
     # updates the created/failed/remaining counter
     updateStats: (field, change) ->
       this[field] += change
       @statsContainer.find("." + field + " .count").text this[field]
-    
+
     # executes the next job
     nextJob: ->
       self = this
       job = @jobs.shift()
       uri = job.data("uri")
-      
+
       # display the current job
       @statusUri.text uri
       window.setTimeout (->
@@ -126,5 +126,5 @@ $ ->
         ).complete ->
           self.jobDone()
       ), 500
-  
+
   uploader.init()

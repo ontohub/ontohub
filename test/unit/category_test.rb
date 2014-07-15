@@ -27,7 +27,7 @@ class CategoryTest < ActiveSupport::TestCase
   end
 
   context 'extracting names from sentences' do
-    setup do 
+    setup do
       @ontology = FactoryGirl.create :ontology
       @ontology.entities.push(FactoryGirl.create :entity, :kind => 'Class', :name => "Business_and_administration")
       @ontology.entities.push(FactoryGirl.create :entity, :kind => 'Class', :name => "Accounting_and_taxation")

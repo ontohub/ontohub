@@ -54,6 +54,8 @@ class ExternalRepository
         host = match[4]
         path = match[7]
         File.join(host, path)
+      elsif URI::regexp(['file']).match(iri)
+        iri.sub('file:///', '')
       else
         iri
       end

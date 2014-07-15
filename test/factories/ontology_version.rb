@@ -9,8 +9,13 @@ FactoryGirl.define do
     after(:create) do |version|
       version.ontology.reload
     end
+
+    after(:build) do |version|
+      version.do_not_parse!
+    end
+
   end
-  
+
   factory :ontology_version_with_file, :parent => :ontology_version do
     raw_file { File.open "test/fixtures/ontologies/owl/pizza.owl" }
   end

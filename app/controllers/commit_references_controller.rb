@@ -1,5 +1,5 @@
 class CommitReferencesController < ApplicationController
   def show
-    #redirect_to 
+    #redirect_to
   end
 end

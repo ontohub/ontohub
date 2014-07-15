@@ -1,14 +1,14 @@
 require 'test_helper'
 
 class UsersControllerTest < ActionController::TestCase
-  
+
   should route(:get, "/users/id").to(:controller=> :users, :action => :show, :id => 'id')
-  
+
   context 'User Instance' do
     setup do
       @user = FactoryGirl.create :user
     end
-    
+
     context 'without data' do
       context 'on GET to show' do
         setup do
@@ -19,7 +19,7 @@ class UsersControllerTest < ActionController::TestCase
         should render_template :show
       end
     end
-    
+
     context 'with data' do
       setup do
         FactoryGirl.create :comment, :user => @user
@@ -35,5 +35,5 @@ class UsersControllerTest < ActionController::TestCase
       end
     end
   end
-  
+
 end

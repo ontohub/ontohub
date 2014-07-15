@@ -7,7 +7,7 @@ class LogicTest < ActiveSupport::TestCase
       @user = FactoryGirl.create :user
       @logic = FactoryGirl.create :logic, user: @user
     end
-    
+
     should 'have to_s' do
       assert_equal @logic.name, @logic.to_s
     end
@@ -34,5 +34,5 @@ class LogicTest < ActiveSupport::TestCase
     end
 
   end
-  
+
 end

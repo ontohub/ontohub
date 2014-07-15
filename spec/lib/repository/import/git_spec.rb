@@ -3,7 +3,7 @@ require 'spec_helper'
 describe "git import" do
 
   let(:tmpdir){  }
-  
+
   let(:remote_path){ Pathname.new("/tmp/ontohub/remote") }
   let(:remote_repo){ GitRepository.new(remote_path.to_s) }
   let(:git_root){ Ontohub::Application.config.git_root }

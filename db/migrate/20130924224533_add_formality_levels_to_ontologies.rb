@@ -6,7 +6,7 @@ class AddFormalityLevelsToOntologies < ActiveRecord::Migration
 
       t.timestamps
     end
-    
+
     change_table :formality_levels do |t|
       t.index :name, :unique => true
     end

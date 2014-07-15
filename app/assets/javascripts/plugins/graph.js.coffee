@@ -65,12 +65,10 @@ d3NodesEdges = (data) ->
       is_center: (node.id == center.id)
       aggregates: data.nodes_aggregate["#{node.id}"]
     links[node.id] = nodes.length - 1
-  edges = []
-  for edge in data.edges
-    edges.push
-      source: links[edge.source_id]
-      target: links[edge.target_id]
-      info: edge
+  edges = _.map data.edges, (edge) ->
+    source: links[edge.source_id]
+    target: links[edge.target_id]
+    info: edge
   [nodes,edges,data.node_url,data.edge_url]
 
 nodeDisplayName = (node) ->
@@ -96,10 +94,8 @@ displayGraph = (data) ->
     if the_mode == "normal"
       edges
     else if the_mode == "import"
-      import_edges = []
-      for import_edge in edges
-        if import_edge.info.kind == "import"
-          import_edges.push(import_edge)
+      import_edges = _.filter edges, (edge) ->
+        edge.info.kind == "import"
       import_edges
 
   drawGraph = (nodes, edges) ->

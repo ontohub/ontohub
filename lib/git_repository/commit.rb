@@ -37,7 +37,7 @@ module GitRepository::Commit
     tree     = build_tree(entry, old_tree, target_path.split('/'))
 
     userinfo[:time] ||= Time.now
-    
+
     # Commit Sha
     commit_oid = Rugged::Commit.create @repo,
       author:    userinfo,
@@ -45,7 +45,7 @@ module GitRepository::Commit
       committer: userinfo,
       parents:   commit_parents,
       tree:      tree
-    
+
     rugged_commit = @repo.lookup(commit_oid)
 
     if @repo.empty?

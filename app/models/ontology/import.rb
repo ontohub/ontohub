@@ -1,5 +1,5 @@
 module Ontology::Import
-	extend ActiveSupport::Concern
+  extend ActiveSupport::Concern
 
   def import_xml(io, code_io, user)
     now = Time.now
@@ -131,6 +131,7 @@ module Ontology::Import
               else
                 ontology = self
                 ontology.present = true
+                versions << ontology.versions.current
               end
             end
           end
@@ -201,7 +202,10 @@ module Ontology::Import
           end
         }
       save!
-      versions.each(&:save!)
+      versions.compact.each do |version|
+        version.save!
+        version.ontology.update_version!(to: version)
+      end
       ontologies.each(&:create_translated_sentences)
 
     end

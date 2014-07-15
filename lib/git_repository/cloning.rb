@@ -11,13 +11,13 @@ module GitRepository::Cloning
       url:    url,
       fetch:  '+refs/*:refs/*',
       mirror: 'true'
-    
+
     pull
   end
 
   def clone_svn(url)
     options = { url: url }
-    
+
     # Do we have a standard layout?
     if self.class.svn_ls(url).split("\n") == %w( branches/ tags/ trunk/ )
       options.merge! \
@@ -56,7 +56,7 @@ module GitRepository::Cloning
     get_config('svn-remote.svn.fetch').starts_with?('trunk:')
   end
 
-  # Sets the reference of a local branch 
+  # Sets the reference of a local branch
   def reset_branch(old_head_oid, branch, ref)
     with_head_change old_head_oid do
       git_exec 'branch', '-f', branch, ref

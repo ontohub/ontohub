@@ -1,6 +1,6 @@
 source 'https://rubygems.org'
 
-gem 'rails', '~> 3.2.18'
+gem 'rails', '~> 3.2.19'
 gem 'rack-protection'
 gem 'secure_headers'
 
@@ -30,12 +30,13 @@ group :assets do
   gem 'uglifier', '>= 1.0.3'
   gem 'handlebars_assets', '~> 0.14.1'
   gem 'hamlbars', '~> 2.0'
+  gem 'underscore-rails', '~> 1.6.0'
 end
 
 gem 'haml-rails'
 
 # Project configuration
-gem 'rails_config'
+gem 'rails_config', '~> 0.3.0'
 
 # Fancy Forms
 gem 'simple_form'
@@ -69,8 +70,8 @@ gem 'acts_as_tree'
 gem "rest-client"
 
 # Background-Jobs
-gem 'sidekiq', '~> 2.17'
-gem 'sidetiq', '~> 0.5'
+gem 'sidekiq', '~> 3.1'
+gem 'sidetiq'
 gem 'sidekiq-failures'
 gem 'sinatra', require: false, group: [:development, :production]
 
@@ -108,7 +109,7 @@ group :test do
   gem "capybara"
   gem "capybara-webkit"
   gem "launchy"
-  
+
   # Recording of HTTP Requests
   gem "vcr"
   gem "webmock", '~> 1.9.0'
@@ -125,6 +126,7 @@ group :development do
   gem 'sunspot_solr', :git => 'git://github.com/digineo/sunspot.git'
   gem "rails-erd"
   gem 'quiet_assets'
+  gem 'invoker', '~> 1.2.0'
 end
 
 group :development, :test do

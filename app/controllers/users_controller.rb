@@ -1,8 +1,8 @@
-# 
+#
 # Displays a user profile
-# 
+#
 class UsersController < InheritedResources::Base
-  
+
   actions :show
   respond_to :json, :xml
 
@@ -22,5 +22,5 @@ class UsersController < InheritedResources::Base
       end
     end
   end
-  
+
 end

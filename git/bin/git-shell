@@ -4,14 +4,35 @@
 # 
 
 unless ENV['SSH_CONNECTION']
-  puts "Only ssh allowed"
+  STDERR.puts "Only ssh allowed"
   exit 1
 end
 
 require File.expand_path('../../lib/init',  __FILE__)
-require 'git_shell'
+begin
+  require 'git_shell'
 
-key_id  = ARGV[0]
-command = ENV['SSH_ORIGINAL_COMMAND']
+  key_id  = ARGV[0]
+  command = ENV['SSH_ORIGINAL_COMMAND']
 
-GitShell.new(key_id, command).exec
+  GitShell.new(key_id, command).exec
+rescue StandardError, ScriptError => error
+  Rails.logger.error do
+    <<-ERROR
+Could not perform git push for
+  Key-Id:<#{key_id}> and command:<#{command}>.
+We also encountered this error:
+  <##{error.class}> <#{error.message}>
+With this stacktrace:
+  #{error.backtrace.join('\n')}
+    ERROR
+  end
+  STDERR.puts <<-ERROR
+We encountered a system error while processing your
+git-interaction attempt.
+The git command was not processed; your data
+is safe. Please try again in a few minutes.
+Contact an admin if this issue persists.
+  ERROR
+  exit 1
+end

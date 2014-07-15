@@ -12,6 +12,10 @@ module Ontology::Versions
         def current
           reorder('number DESC').first
         end
+
+        def newest
+          reorder('number DESC')
+        end
       end
 
     attr_accessible :versions_attributes
@@ -75,7 +79,7 @@ module Ontology::Versions
     end
 
   end
-  
+
   # Updates the ontology and returns the new version
   def save_file(file, message, user)
     repository.save_file(file, path, message, user)

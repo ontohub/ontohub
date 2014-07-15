@@ -11,7 +11,7 @@
 
 - else
   - if @hierarchy_exists
-    - unless show_classes?
+    - if show_classes?(@active_kind)
       - unless @page_selected
         .btn-group#ontology_selections
           = link_to 'Class Hierarchy', '#hierarchy', class: 'btn btn-default mode btn-primary', id: 'hierarchy'

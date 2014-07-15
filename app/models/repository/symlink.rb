@@ -1,6 +1,6 @@
-# 
+#
 # Generates a symlink for exposing the repositories via git daemon
-# 
+#
 module Repository::Symlink
   extend ActiveSupport::Concern
 
@@ -26,5 +26,5 @@ module Repository::Symlink
   def symlink_remove
     symlink_name.unlink if symlink_name.exist?
   end
-  
+
 end

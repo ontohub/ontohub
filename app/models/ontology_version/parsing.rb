@@ -2,10 +2,10 @@ module OntologyVersion::Parsing
 
   extend ActiveSupport::Concern
   include Hets::ErrorHandling
-  
+
   included do
     @queue = 'hets'
-    
+
     after_create :async_parse, :if => :commit_oid?
     attr_accessor :fast_parse
   end
@@ -38,14 +38,14 @@ module OntologyVersion::Parsing
 
     do_or_set_failed do
       refresh_checksum! unless checksum?
-      
+
       # run hets if necessary
       cmd = generate_xml(structure_only: structure_only) if refresh_cache || !xml_file?
       return if cmd == :abort
 
       # Import version
       self.ontology.import_version self, self.user
-      
+
       update_state! :done
     end
   end
@@ -54,7 +54,7 @@ module OntologyVersion::Parsing
   def generate_xml(structure_only: false)
     paths = Hets.parse(raw_path!, ontology.repository.url_maps, xml_dir, structure_only: structure_only)
     path = paths.last
-    
+
     set_pp_xml_name(paths, perform_save: false)
     set_xml_name(paths)
     # move generated file to destination
@@ -63,7 +63,7 @@ module OntologyVersion::Parsing
     handle_hets_execution_error(e, self)
     :abort
   end
-  
+
   def parse_full
     parse(structure_only: false)
   end

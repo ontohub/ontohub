@@ -1,5 +1,5 @@
 # A language propulation procedure.
-# 
+#
 # TODO Transform this code in an iterator to enable unit testing
 #
 # Author: Daniel Couto Vale <danielvale@uni-bremen.de>

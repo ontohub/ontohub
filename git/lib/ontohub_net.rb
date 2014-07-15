@@ -1,8 +1,11 @@
 require 'net/http'
 require 'openssl'
 require 'json'
+require File.expand_path('../../../lib/uri_fetcher/errors', File.realdirpath(__FILE__))
+require File.expand_path('../../../lib/uri_fetcher', File.realdirpath(__FILE__))
 
 class OntohubNet
+  include UriFetcher
 
   GIT_CMD_MAP = {
     'git-upload-pack' => 'read',
@@ -27,6 +30,8 @@ class OntohubNet
     resp = get(build_url)
     resp_hash = JSON.parse(resp.body)
 
+    raise UnexpectedStatusCodeError.new(response: resp) unless resp.code == '200'
+
     !!(resp.code == '200' && resp_hash['allowed'])
   end
 
@@ -40,26 +45,28 @@ class OntohubNet
     Rails.logger.debug "Performing GET #{url}"
 
     url  = URI.parse(url)
-    http = Net::HTTP.new(url.host, url.port)
 
-    if URI::HTTPS === url
-      http.use_ssl = true
-      http.verify_mode = OpenSSL::SSL::VERIFY_NONE
-    end
+    response = fetch_uri_content(url, limit: NO_REDIRECT)
 
-    request = Net::HTTP::Get.new(url.request_uri)
-
-    response = nil
-
-    http.start {|http| http.request(request) }.tap do |resp|
-      response = resp
-      if resp.code == "200"
-        Rails.logger.debug { "Received response #{resp.code} => <#{resp.body}>." }
-      else
-        Rails.logger.error { "API call <GET #{url}> failed: #{resp.code} => <#{resp.body}>." }
-      end
+    Rails.logger.debug do
+      <<-MSG
+Received response #{response.code} => <#{response.body}>.
+      MSG
     end
     response
+  rescue UriFetcher::TooManyRedirectionsError => error
+    response = error.last_response
+    Rails.logger.error do
+      <<-ERROR
+API call <GET #{url}> failed:
+  #{response.code} => <#{response.body}>.
+We also encountered this error:
+  <##{error.class}> <#{error.message}>
+With this stacktrace:
+  #{error.backtrace.join('\n')}
+      ERROR
+    end
+    raise
   end
 
   private

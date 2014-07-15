@@ -2,7 +2,7 @@
 # requires git and git-svn to be installed for the functions clone_git and clone_svn to work
 class GitRepository
   require 'git_repository/config'
-  
+
   include \
     Config,
     Cloning,
