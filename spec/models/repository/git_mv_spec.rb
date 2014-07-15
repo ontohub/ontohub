@@ -18,33 +18,51 @@ describe 'git mv', :process_jobs_synchronously do
   end
 
   context 'should detect ontology file renames' do
-    it { expect(repository.ontologies.with_path('PxMoved2.clif').size).to eq(1) }
-    it { expect(repository.ontologies.with_path('PxMoved.clif').size).to eq(0) }
-    it { expect(repository.ontologies.with_path('Px.clif').size).to eq(0) }
+    it 'PxMoved2.clif' do
+      expect(repository.ontologies.with_path('PxMoved2.clif').size).to eq(1)
+    end
 
-    it { expect(repository.ontologies.with_path('QyMoved.clif').size).to eq(1) }
-    it { expect(repository.ontologies.with_path('Qy.clif').size).to eq(0) }
+    it 'PxMoved.clif' do
+      expect(repository.ontologies.with_path('PxMoved.clif').size).to eq(0)
+    end
 
-    it { expect(repository.ontologies.with_path('RzMoved.clif').size).to eq(1) }
-    it { expect(repository.ontologies.with_path('Rz.clif').size).to eq(0) }
+    it 'Px.clif' do
+      expect(repository.ontologies.with_path('Px.clif').size).to eq(0)
+    end
+
+    it 'QyMoved.clif' do
+      expect(repository.ontologies.with_path('QyMoved.clif').size).to eq(1)
+    end
+
+    it 'Qy.clif' do
+      expect(repository.ontologies.with_path('Qy.clif').size).to eq(0)
+    end
+
+    it 'RzMoved.clif' do
+      expect(repository.ontologies.with_path('RzMoved.clif').size).to eq(1)
+    end
+
+    it 'Rz.clif' do
+      expect(repository.ontologies.with_path('Rz.clif').size).to eq(0)
+    end
   end
 
-  context 'should have only three ontologies' do
-    it { expect(repository.ontologies.size).to eq(3) }
+  it 'should have only three ontologies' do
+    expect(repository.ontologies.size).to eq(3)
   end
 
   context 'should create a version for each filename' do
-    it do
+    it 'PxMoved2.clif' do
       expect(repository.ontologies.with_path('PxMoved2.clif').first.
         versions.size).to eq(3)
     end
 
-    it do
+    it 'QyMoved.clif' do
       expect(repository.ontologies.with_path('QyMoved.clif').first.
         versions.size).to eq(2)
     end
 
-    it do
+    it 'RzMoved.clif' do
       expect(repository.ontologies.with_path('RzMoved.clif').first.
         versions.size).to eq(2)
     end
