@@ -6,14 +6,13 @@ describe OntologyVersionsController do
 
     let(:user) { create :user }
     let(:ontology) { create :distributed_ontology }
-    let(:version) { create :ontology_version, ontology: ontology }
+    let!(:version) { create :ontology_version, ontology: ontology }
     let(:ontology_child) { ontology.reload; ontology.children.first }
     let(:repository) { ontology.repository }
 
     before do
       parse_this(user, ontology, fixture_file('test2.xml'),
                  fixture_file('test2.pp.xml'))
-      version
     end
 
     context 'on GET to index of a child' do
