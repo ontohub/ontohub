@@ -33,10 +33,10 @@ module Hets
     end
 
     def procure_child_ontology(internal_iri)
-      # generate IRI for sub-ontology
+      # generate IRI for child-ontology
       child_iri = parent_ontology.iri_for_child(internal_iri)
 
-      # find or create sub-ontology by IRI
+      # find or create child-ontology by IRI
       ontology = parent_ontology.children.find_by_iri(child_iri)
       if ontology.nil?
         options = {

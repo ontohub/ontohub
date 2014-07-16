@@ -213,7 +213,7 @@ describe Ontology do
                  fixture_file('test1.pp.xml'))
     end
 
-    it 'should save logic' do
+    it 'should save the logic' do
       expect(ontology.logic.try(:name)).to eq('CASL')
     end
 
@@ -222,7 +222,7 @@ describe Ontology do
         expect(ontology.entities.count).to eq(2)
       end
 
-      it 'should be reflected in field' do
+      it 'should be reflected in the corresponding field' do
         expect(ontology.entities_count).to eq(ontology.entities.count)
       end
     end
@@ -232,7 +232,7 @@ describe Ontology do
         expect(ontology.sentences.count).to eq(1)
       end
 
-      it 'should be reflected in field' do
+      it 'should be reflected in the corresponding field' do
         expect(ontology.sentences_count).to eq(ontology.sentences.count)
       end
     end
@@ -255,11 +255,11 @@ describe Ontology do
       expect(ontology.children.count).to eq(4)
     end
 
-    it 'should have correct link count' do
+    it 'should have the correct link count' do
       expect(ontology.links.count).to eq(3)
     end
 
-    it 'should have logic DOL' do
+    it 'should have the DOL-logic assigned to the logic-field' do
       expect(ontology.logic.try(:name)).to eq('DOL')
     end
 
@@ -308,14 +308,14 @@ describe Ontology do
       expect(SingleOntology.count).to eq(4)
     end
 
-    it 'should create combined ontology' do
+    it 'should create a combined ontology' do
       expect(combined).to_not be_nil
     end
 
     context 'kinds' do
       let(:kinds) { combined.entities.map(&:kind) }
 
-      it 'should be assigned to symbols of combined ontology' do
+      it 'should be assigned to symbols of the combined ontology' do
         expect(kinds).to_not include('Undefined')
       end
     end
