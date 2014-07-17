@@ -1,8 +1,9 @@
 require 'database_cleaner'
 
 module DatabaseCleanerConfig
-  CLEAN_MODE = :truncation
-  CLEAN_OPTIONS = { except: %w(ontology_file_extensions) }
+  CLEAN_MODE = :transaction
+  INITIAL_CLEAN_MODE = :truncation
+  INITIAL_CLEAN_OPTIONS = { except: %w(ontology_file_extensions) }
 
   if defined?(RSpec) && RSpec.respond_to?(:configure)
     RSpec.configure do |config|
@@ -10,8 +11,13 @@ module DatabaseCleanerConfig
       config.use_transactional_fixtures = false
 
       config.before(:suite) do
-        DatabaseCleaner.strategy = CLEAN_MODE, CLEAN_OPTIONS
+        DatabaseCleaner.strategy = INITIAL_CLEAN_MODE, INITIAL_CLEAN_OPTIONS
         DatabaseCleaner.clean
+        DatabaseCleaner.strategy = CLEAN_MODE
+      end
+
+      config.before(:each) do
+        DatabaseCleaner.start
       end
 
       config.after(:each) do
@@ -26,7 +32,7 @@ module DatabaseCleanerConfig
 
   if defined? ActiveSupport::TestCase
     # Set strategy and clean once at load time
-    DatabaseCleaner.strategy = CLEAN_MODE, CLEAN_OPTIONS
+    DatabaseCleaner.strategy = INITIAL_CLEAN_MODE, INITIAL_CLEAN_OPTIONS
     DatabaseCleaner.clean
 
     class ActiveSupport::TestCase
