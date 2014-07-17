@@ -60,18 +60,18 @@ module FilesHelper
   end
 
   def file_exists?
-    @info[:type] == :file
+    resource.file?
   end
 
   def update_file
     if file_exists?
-      { 'upload_file[target_filename]' => @info[:file][:name] }
+      { 'repository_file[target_filename]' => resource.name }
     else
       { }
     end
   end
 
   def display_file?
-    @file[:size] <= Settings.max_read_filesize
+    resource.size <= Settings.max_read_filesize
   end
 end

@@ -6,6 +6,7 @@ class GitRepository
   include \
     Config,
     Cloning,
+    Files,
     GetCommit,
     GetObject,
     GetDiff,
@@ -39,6 +40,7 @@ class GitRepository
   end
 
   def dir?(path, commit_oid=nil)
+    path ||= '/'
     if empty?
       return false
     end
@@ -58,19 +60,26 @@ class GitRepository
     end
   end
 
-  def get_file(url, commit_oid=nil)
-    rugged_commit = get_commit(commit_oid)
-    if !rugged_commit && url.empty?
+  def get_file(path, commit_oid=nil)
+    begin
+      get_file!(path, commit_oid)
+    rescue GitRepository::PathNotFoundError
       nil
-    else
-      get_file_rugged(rugged_commit, url)
     end
+  end
+
+  def get_file!(path, commit_oid=nil)
+    path ||= '/'
+    rugged_commit = get_commit(commit_oid)
+    raise GitRepository::PathNotFoundError if !rugged_commit && path.empty?
+
+    GitFile.new(self, rugged_commit, path)
   end
 
   def get_path_of_dir(oid=nil, path=nil)
     path ||= ''
     path = path[0..-2] if(path[-1] == '/')
-    raise URLNotFoundError.new unless path_exists?(path, oid)
+    raise PathNotFoundError.new unless path_exists?(path, oid)
 
     path
   end
@@ -161,31 +170,10 @@ class GitRepository
     if url.empty?
       true
     else
-      tree = rugged_commit.tree
       nil != get_object(rugged_commit, url)
     end
   rescue Rugged::OdbError
     false
-  end
-
-  def get_file_rugged(rugged_commit, url='')
-    return nil unless path_exists_rugged?(rugged_commit, url)
-
-    object = get_object(rugged_commit, url)
-
-    if object.type == :blob
-      filename = url.split('/')[-1]
-      mime_info = self.class.mime_info(filename)
-      {
-        name: filename,
-        size: object.size,
-        content: object.content,
-        mime_type: mime_info[:mime_type],
-        mime_category: mime_info[:mime_category]
-      }
-    else
-      nil
-    end
   end
 
   def head

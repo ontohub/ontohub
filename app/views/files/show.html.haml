@@ -6,8 +6,8 @@
       In this page, you have direct access to the file system where the
       repository is stored.
 
-      - case @info[:type]
-        - when :file_base, :file
+      - case resource.type
+        - when :file
           Below are the contents of the file presented as text as well as its
           path relative to the repository home directory. If you want to see the
           contents of this file as ontologies, click on the ontology links above
@@ -20,21 +20,19 @@
 
 .pull-right.btn-group.breadcrumbs-buttons
   - if can? :write, repository
-    - if @info[:type] == :file && !in_ref_path? && display_file?
+    - if resource.file? && !in_ref_path? && display_file?
       = link_to 'Edit file', '#', id: 'codemirror-btn-edit', class: 'hide-when-editing btn btn-default btn-sm'
-    = link_to new_repository_file_path(repository, {'upload_file[target_directory]' => dirpath(repository)}.merge(update_file)), class: 'btn btn-default btn-sm' do
-      = file_exists? ? 'Update file' : 'Upload file'
-  - if @info[:type] == :file
+    = link_to new_repository_file_path(repository, {'repository_file[target_directory]' => dirpath(repository)}.merge(update_file)), class: 'btn btn-default btn-sm' do
+      = resource.dir? ? 'Upload file' : 'Update file'
+  - if resource.file?
     = link_to 'Download file', fancy_repository_path(repository, path: path, ref: oid, action: :download), class: 'btn btn-default btn-sm'
   = link_to fancy_repository_path(repository, action: :history, path: path, ref: ref), class: 'btn btn-default btn-sm' do
-    = @info[:type] == :file ? 'History of this file' : 'History of this directory'
+    = resource.file? ? 'History of this file' : 'History of this directory'
 
 = render partial: 'files/breadcrumbs'
 
-- case @info[:type]
-  - when :file_base_ambiguous
-    = render partial: 'files_file_base_ambiguous'
-  - when :file_base, :file
-    = render partial: 'files_file'
+- case resource.type
+  - when :file
+    = render partial: 'show_file'
   - when :dir
-    = render partial: 'files_dir'
+    = render partial: 'show_dir'

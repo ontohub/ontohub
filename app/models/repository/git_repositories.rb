@@ -3,7 +3,7 @@ require 'git_repository'
 module Repository::GitRepositories
   extend ActiveSupport::Concern
 
-  delegate :dir?, :points_through_file?, :has_changed?, :commits, to: :git
+  delegate :get_file, :dir?, :path_exists?, :points_through_file?, :has_changed?, :commits, to: :git
 
   included do
     after_create  :create_and_init_git
@@ -128,62 +128,7 @@ module Repository::GitRepositories
     dir = dir?(path, commit_oid) ? path : path.split('/')[0..-2].join('/')
     contents = git.folder_contents(commit_oid, dir)
 
-    contents.map{ |entry| entry[:path] }.select{ |p| p.starts_with?(path) }
-  end
-
-  def path_info(path=nil, commit_oid=nil)
-    path ||= '/'
-
-    if git.empty?
-      return { type: :dir, entries: [] }
-    end
-
-    if path_exists?(path, commit_oid)
-      file = git.get_file(path, commit_oid)
-      if file
-        {
-          type: :file,
-          file: file,
-          ontologies: ontologies.with_path(path).parents_first
-        }
-      else
-        entries = list_folder(path, commit_oid)
-        entries.each do |name, es|
-          es.each do |e|
-            e[:ontologies] = ontologies.with_path(e[:path]).parents_first
-          end
-          es.sort_by! { |e| -e[:ontologies].size }
-        end
-        {
-          type: :dir,
-          entries: entries
-        }
-      end
-    else
-      file = path.split('/')[-1]
-      path = path.split('/')[0..-2].join('/')
-
-      entries = git.folder_contents(commit_oid, path).select { |e| e[:name].split('.')[0] == file }
-
-      case
-      when entries.empty?
-        nil
-      when entries.size == 1
-        {
-          type: :file_base,
-          entry: entries[0],
-        }
-      else
-        {
-          type: :file_base_ambiguous,
-          entries: entries
-        }
-      end
-    end
-  end
-
-  def read_file(filepath, commit_oid=nil)
-    git.get_file(filepath, commit_oid)
+    contents.map{ |git_file| git_file.path }.select{ |p| p.starts_with?(path) }
   end
 
   # given a commit oid or a branch name, commit_id returns a hash of oid and branch name if existent

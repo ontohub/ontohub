@@ -73,7 +73,7 @@ module OntologyVersion::Files
 
   # returns the raw data directly from the repository
   def raw_data
-    repository.read_file(self.path, commit_oid)[:content].encoding_utf8
+    repository.get_file(self.path, commit_oid).content.encoding_utf8
   end
 
 end
