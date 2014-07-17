@@ -40,6 +40,8 @@ module Ontology::Import
             version.do_not_parse!
             version.commit_oid = commit_oid
             version.state = 'done'
+            version.basepath = ontology.basepath
+            version.file_extension = ontology.file_extension
             versions << version
           rescue
             ontology.present = false
@@ -119,6 +121,8 @@ module Ontology::Import
               version = ontology.versions.build
               version.user = user
               version.code_reference = code_reference_for(ontology.name, code_doc)
+              version.basepath = self.basepath
+              version.file_extension = self.file_extension
 
               versions << version
             else

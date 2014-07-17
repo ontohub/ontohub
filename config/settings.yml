@@ -26,6 +26,10 @@ action_mailer:
 # the website without confirming his account.
 allow_unconfirmed_access_for_days: 3
 
+# Limits for displaying file contents and diffs
+max_read_filesize: 524_288
+max_combined_diff_size: 1_048_576
+
 # Timeout for ontology parsing jobs in hours
 ontology_parse_timeout: 6
 
