@@ -14,7 +14,7 @@ module Repository::Access
   DEFAULT_OPTION = OPTIONS[0]
 
   included do
-    scope :pub, where("access != 'private'")
+    scope :pub, where("access NOT LIKE 'private%'")
     scope :accessible_by, ->(user) do
       if user
         where("access NOT LIKE 'private%'

@@ -15,6 +15,8 @@ class GitRepository
     Commit,
     History
 
+  delegate :path, to: :repo
+
   def initialize(path)
     if File.exists?(path)
       @repo = Rugged::Repository.new(path)
@@ -91,18 +93,25 @@ class GitRepository
       {
         refname: r.name,
         name: r.name.split('/')[-1],
-        oid: r.target
+        commit: r.target,
+        oid: r.target.oid
       }
     end
   end
 
-  def branch_oid(name)
-    ref = Rugged::Reference.lookup(@repo, "refs/heads/#{name}")
+  def branch_commit(name)
+    ref = @repo.references["refs/heads/#{name}"]
 
     if ref.nil?
       nil
     else
       ref.target
+    end
+  end
+
+  def branch_oid(name)
+    if commit = branch_commit(name)
+      commit.oid
     end
   end
 
@@ -122,7 +131,7 @@ class GitRepository
     if @repo.empty?
       nil
     else
-      @repo.head.target
+      @repo.head.target.oid
     end
   end
 

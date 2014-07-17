@@ -56,7 +56,7 @@ class FilesController < InheritedResources::Base
     @repository_file = resource_class.create(params.merge(user: current_user))
     if resource.valid?
       flash[:success] = "Successfully saved the uploaded file."
-      if ontology = repository.ontologies.find_by_file(resource.target_path)
+      if ontology = repository.ontologies.with_path(resource.target_path).without_parent.first
         redirect_to edit_repository_ontology_path(repository, ontology)
       else
         redirect_to fancy_repository_path(repository, path: resource.target_path)
