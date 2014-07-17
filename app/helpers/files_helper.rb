@@ -7,13 +7,13 @@ module FilesHelper
   end
 
   def group_commits(commits)
-    commits.group_by { |c| c[:committer][:time].strftime("%d.%m.%Y") }.map { |k, v| {commits: v, date: k} }
+    commits.group_by { |c| c.committer[:time].strftime("%d.%m.%Y") }.map { |k, v| {commits: v, date: k} }
   end
 
   def get_message(commit)
-    title = commit[:message].split("\n").first
+    title = commit.message.split("\n").first
     short_title = word_wrap(title, line_width: 70)
-    body = commit[:message].split("\n")[1..-1].join("\n")
+    body = commit.message.split("\n")[1..-1].join("\n")
     if short_title != title
       parts = short_title.split("\n")
       short_title = "#{parts[0]}..."
@@ -31,7 +31,7 @@ module FilesHelper
   end
 
   def short_oid(commit)
-    commit[:oid][0..6]
+    commit.oid[0..6]
   end
 
   def in_ref_path?
@@ -60,18 +60,18 @@ module FilesHelper
   end
 
   def file_exists?
-    @info[:type] == :file
+    resource.file?
   end
 
   def update_file
     if file_exists?
-      { 'upload_file[target_filename]' => @info[:file][:name] }
+      { 'repository_file[target_filename]' => resource.name }
     else
       { }
     end
   end
 
   def display_file?
-    @file[:size] <= Ontohub::Application.config.max_read_filesize
+    resource.size <= Settings.max_read_filesize
   end
 end

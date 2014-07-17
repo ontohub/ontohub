@@ -8,16 +8,18 @@ describe FilesController do
     let!(:do_child){ dist_ontology.children.first }
 
     before do
-      Repository.any_instance.stubs(:path_info).returns({
-        type: :file_base,
-        entry: {path: dist_ontology.basepath }
-      })
+      @repository_file = 'repository_file'
+      request.stub(:accepts) { [Mime::HTML] }
+      @repository_file.stub(:ontologies) { [dist_ontology] }
+      RepositoryFile.stub(:find_with_path) { @repository_file }
       @request.query_string = do_child.name
-      get :files, repository_id: repository.path, path: dist_ontology.name
+      get :show, repository_id: repository.path, path: dist_ontology.name
     end
 
     after do
-      Repository.any_instance.unstub(:path_info)
+      RepositoryFile.unstub(:find_with_path)
+      request.unstub(:accepts)
+      @repository_file.unstub(:ontologies)
     end
 
     context 'should allow us to get to a do-child' do
@@ -31,9 +33,20 @@ describe FilesController do
     let!(:repository){ create :repository }
 
     context "files" do
-      before { get :files, repository_id: repository.to_param }
+      before do
+        @repository_file = 'repository_file'
+        @repository_file.stub(:file?) { false }
+        RepositoryFile.stub(:find_with_path) { @repository_file }
+        get :show, repository_id: repository.to_param
+      end
+
+      after do
+        RepositoryFile.unstub(:find_with_path)
+        @repository_file.unstub(:file?)
+      end
+
       it { should respond_with :success }
-      it { should render_template :files }
+      it { should render_template :show }
     end
 
     context "signed in with write access" do
@@ -53,11 +66,11 @@ describe FilesController do
 
         context "with file" do
           before {
-            post :create, repository_id: repository.to_param, upload_file: {
+            post :create, repository_id: repository.to_param, repository_file: {
               target_directory: 'my_dir',
               target_filename:  'my_file',
               message: 'commit message',
-              file:    Rack::Test::UploadedFile.new(Rails.root.join('test','fixtures','ontologies','owl','pizza.owl'),'image/jpg')
+              temp_file: Rack::Test::UploadedFile.new(Rails.root.join('test','fixtures','ontologies','owl','pizza.owl'),'image/jpg')
             }
           }
           it { should respond_with :redirect }

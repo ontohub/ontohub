@@ -54,6 +54,8 @@ module Hets
       version = ontology.versions.build
       version.user = user
       version.code_reference = code_reference_for(ontology.name)
+      version.basepath = ontology.basepath
+      version.file_extension = ontology.file_extension
 
       hets_evaluator.versions << version
 

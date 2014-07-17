@@ -12,7 +12,6 @@ module PathsInitializer
       config.git_root     = config.data_root.join('repositories')
       config.symlink_path = config.data_root.join('git_daemon')
       config.commits_path = config.data_root.join('commits')
-      config.max_read_filesize = 512 * 1024
 
       settings = Settings.git
       if settings && settings.user

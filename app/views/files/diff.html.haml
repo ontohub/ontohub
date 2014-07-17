@@ -8,11 +8,13 @@
   - @changed_files.each do |file|
     %li
       = link_to "#file-#{file.path}" do
-        - if file.add?
+        - if file.added?
           %i.icon-plus
-        - elsif file.delete?
+        - elsif file.deleted?
           %i.icon-minus
-        - elsif file.change?
+        - elsif file.modified?
+          %i.icon-edit
+        - elsif file.renamed?
           %i.icon-edit
         = file.path
 
@@ -20,24 +22,26 @@
 - @changed_files.each do |file|
   .changed-file.well.well-small
     %h2.file-name
-      - if file.delete?
+      - if file.deleted?
         = link_to file.path, '#', 'data-toggle' => 'tooltip', 'data-original-title' => 'You cannot view a deleted file', 
           class: 'btn btn-default disabled', name: "file-#{file.path}"
       - else
         = link_to file.path, fancy_repository_path(repository, path: file.path, ref: oid), class: 'btn btn-default', name: "file-#{file.path}"
 
-    - if file.delete?
+    - if file.deleted?
       .alert.alert-info
         File was deleted
+    - elsif file.binary?
+      = link_to raw('<i class="icon-download-alt"></i> Download'), fancy_repository_path(repository.path, ref: oid, path: file.path), class: 'btn btn-default'
     - elsif file.editable?
       .diff-code
         - case file.diff
-        - when :file_too_large
-          File is too large to display.
-        - when :not_a_text_file
-          File is not a text file.
+        - when :diff_too_large
+          Diff is too large to display.
         - else
-          = file.diff.force_encoding('UTF-8').html_safe
+          - file.diff.each_line do |diff_line|
+            = diff_line.force_encoding('UTF-8')
+            %br
     - elsif file.mime_category == 'image'
       = image_tag fancy_repository_path(repository.path, ref: oid, path: file.path), alt: file.name
     - else
