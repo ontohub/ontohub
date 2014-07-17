@@ -2,13 +2,14 @@ namespace :hets do
 
   HETS_LOGFILE = Rails.root.join('log', 'hets.log')
   HETS_PIDFILE = Rails.root.join('tmp', 'pids', 'hets.pid')
+  HETS_CMD = "hets -X"
 
   desc 'Start a hets server'
   task :start do
     if already_running?
       puts 'Hets is already running...'
     else
-      pid = spawn("hets -X", [:out, :err] => [HETS_LOGFILE, 'w'])
+      pid = spawn(HETS_CMD, [:out, :err] => [HETS_LOGFILE, 'w'])
       write_pid(pid)
       Process.detach(pid)
     end
@@ -23,6 +24,11 @@ namespace :hets do
     else
       puts 'Hets is not running...'
     end
+  end
+
+  desc 'Run a hets server synchronously'
+  task :run do
+    exec(HETS_CMD)
   end
 
   def already_running?
