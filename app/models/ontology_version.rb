@@ -18,6 +18,7 @@ class OntologyVersion < ActiveRecord::Base
 
   validates_format_of :source_url,
     :with => URI::regexp(Settings.allowed_iri_schemes), :if => :source_url?
+  validates_presence_of :basepath
 
   scope :latest, order('id DESC')
   scope :done, state('done')
@@ -47,6 +48,9 @@ class OntologyVersion < ActiveRecord::Base
     {host: Settings.hostname}
   end
 
+  def path
+    "#{basepath}#{file_extension}"
+  end
 
   protected
 

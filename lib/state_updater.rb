@@ -9,8 +9,6 @@ module StateUpdater
     }
   end
 
-  protected
-
   def after_failed
     # override if necessary
   end

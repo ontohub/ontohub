@@ -21,6 +21,7 @@ before_install:
   - 'gem install bundler'
 
 script:
+  - bundle exec rake cucumber
   - bundle exec rake test:coveralls
 
 before_script:

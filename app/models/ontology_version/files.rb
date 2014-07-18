@@ -14,14 +14,14 @@ module OntologyVersion::Files
   def commit_raw_file
     return true if ontology.parent
     raise "raw file missing" unless @raw_file
-    ontology.path = @raw_file.original_filename if ontology.path.nil?
+    self.path = @raw_file.original_filename if self.path.nil?
     # otherwise the file upload is broken (no implicit conversion of ActionDispatch::Http::UploadedFile into String):
     tmp_file = if @raw_file.class == ActionDispatch::Http::UploadedFile
         @raw_file.tempfile
       else
         @raw_file
       end
-    repository.save_file(tmp_file, ontology.path, "message", user)
+    repository.save_file(tmp_file, self.path, "message", user)
   end
 
   def tmp_dir
@@ -30,7 +30,7 @@ module OntologyVersion::Files
 
   # path to the raw file
   def raw_path
-    tmp_dir.join("raw",ontology.path)
+    tmp_dir.join("raw",self.path)
   end
 
   # path to the raw file, checks out the raw file if is missing
@@ -73,7 +73,7 @@ module OntologyVersion::Files
 
   # returns the raw data directly from the repository
   def raw_data
-    repository.read_file(ontology.path, commit_oid)[:content].encoding_utf8
+    repository.get_file(self.path, commit_oid).content.encoding_utf8
   end
 
 end

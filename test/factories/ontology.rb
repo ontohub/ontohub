@@ -22,6 +22,8 @@ FactoryGirl.define do
         version = ontology.versions.build({
             commit_oid: '0'*40,
             user: nil,
+            basepath: SecureRandom.hex(10),
+            file_extension: '.owl'
           }, without_protection: true)
 
         version.fast_parse = true

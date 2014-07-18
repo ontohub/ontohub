@@ -1,9 +1,0 @@
-%h3 IRI Ambiguous
-%p
-  Please select a representation of
-  =params[:path]
-
-  %ul
-    -@info[:entries].each do |entry|
-      %li
-        = fancy_link fancy_repository_path(repository, path: entry[:path], ref: oid)

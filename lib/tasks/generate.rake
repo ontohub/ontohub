@@ -23,7 +23,7 @@ namespace :generate do
     ontologies = Ontology.where(logic_id: logics)
     ontologies.each do |ontology|
       begin
-        TarjanTree.new(ontology)
+        TarjanTree.for(ontology)
       rescue ActiveRecord::RecordNotFound => e
         puts "Could not create entity tree for: #{ontology.name} (#{ontology.id}) caused #{e}"
       end
@@ -37,7 +37,7 @@ namespace :generate do
     ontology.entity_groups.destroy_all
     #generating new
     begin
-      TarjanTree.new(ontology)
+      TarjanTree.for(ontology)
     rescue ActiveRecord::RecordNotFound => e
       puts "Could not create entity tree for: #{ontology.name} (#{ontology.id}) caused #{e}"
     end
