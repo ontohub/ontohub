@@ -3,7 +3,8 @@
     .btn-group.pull-right
       - additional_actions.each do |action_link|
         = action_link
-    =render "/repository_settings/modal"
+    .pull-right= modal_button(t("repository.delete"))
+    = repository_modal_body
   %nav
     %ul.nav.nav-tabs
       - pages.each do |page, path, count|
