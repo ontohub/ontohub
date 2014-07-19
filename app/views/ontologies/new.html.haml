@@ -14,7 +14,7 @@
   Choose one ore more categories:
   = render :partial => 'categories'
   = f.input :iri
-  = f.input :name
+  = f.input :name, as: :string
   = f.input :description, input_html: { class: 'span8' }
   
   = f.button :wrapped
