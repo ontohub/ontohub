@@ -167,6 +167,32 @@ module Super
     end
 
     def rebuild_index(sql_statement)
+      if m = sql_statement.match(/^\s*CREATE (?<unique>UNIQUE )?INDEX (?<index_name>\S+) ON (?<table_name>\S+) USING btree \((?<columns_list>([^,\s]+, )*(\S+))\)/)
+        unique = !! m['unique']
+
+        old_index_name = m['index_name']
+        new_index_name = translate(old_index_name)
+        index_name = new_index_name || old_index_name
+
+        old_table_name = m['table_name']
+        new_table_name = translate(old_table_name)
+        table_name = new_table_name || old_table_name
+
+        old_columns = m['columns_list'].split(', ')
+        new_columns = old_columns.map{ |c| translate(c) }
+
+        old_column_names = old_columns.map{ |c| "'#{c}'"}.join(', ')
+        column_names = old_columns.map{ |c| "'#{translate(c) || c}'" }.join(', ')
+
+        if [new_index_name, new_table_name, *new_columns].any?
+          push(:up, "remove_index '#{old_table_name}', name: '#{old_index_name}'")
+          push(:down, "add_index '#{old_table_name}', #{old_column_names}, unique: #{unique}, name: '#{old_index_name}'")
+
+          push(:up, "add_index '#{table_name}', #{column_names}, unique: #{unique}, name: '#{index_name}'")
+          push(:down, "remove_index '#{table_name}', name: '#{index_name}'")
+        end
+      end
+
     end
 
     def write_migration
