@@ -19,14 +19,6 @@ GIT
       escape (~> 0.0.4)
 
 GIT
-  remote: git://github.com/libgit2/rugged.git
-  revision: 1bd8a8859a2b6218731d34e8a691f06c8a961938
-  ref: 1bd8a8859a2b6218731d34e8a691f06c8a961938
-  submodules: true
-  specs:
-    rugged (0.19.0)
-
-GIT
   remote: git://github.com/llwt/codemirror-rails.git
   revision: df5231e3053773e37b27f8181738c7080cd1c3cd
   specs:
@@ -370,6 +362,7 @@ GEM
     ruby-graphviz (1.0.9)
     rubydns (0.8.4)
       eventmachine (~> 1.0.0)
+    rugged (0.21.0)
     safe_yaml (1.0.3)
     sass (3.2.19)
     sass-rails (3.2.6)
@@ -517,7 +510,7 @@ DEPENDENCIES
   rest-client
   rspec-rails (~> 2.0)
   ruby-graphviz (~> 1.0.8)
-  rugged!
+  rugged (= 0.21.0)
   sass-rails (~> 3.2.3)
   secure_headers
   shoulda
