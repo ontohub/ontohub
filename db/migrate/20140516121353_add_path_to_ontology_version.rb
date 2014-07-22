@@ -5,8 +5,8 @@ class AddPathToOntologyVersion < ActiveRecord::Migration
 
     Ontology.all.each do |o|
       o.versions.each do |v|
-        v.basepath = o.basepath
-        v.file_extension = o.file_extension
+        v.basepath = o.read_attribute(:basepath)
+        v.file_extension = o.read_attribute(:file_extension)
         v.save!
       end
     end
