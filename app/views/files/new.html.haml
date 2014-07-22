@@ -1,7 +1,7 @@
 %h1 Upload file to repository
 
-= simple_form_for @file, url: repository_files_path(repository), html: { class: 'form-horizontal', multipart: true } do |f|
-  = f.input :file, as: :file
+= simple_form_for resource, url: repository_files_path(repository), html: { class: 'form-horizontal', multipart: true } do |f|
+  = f.input :temp_file, as: :file, label: "File"
   = f.input :target_directory, placeholder: "leave this blank if you want to use the root directory"
   = f.input :target_filename, placeholder: "leave this blank if you do not want to change the filename"
   = f.input :message, as: :text, input_html: { rows: 5 }

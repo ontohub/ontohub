@@ -2,9 +2,6 @@ module GitRepository::GetObject
   # depends on GitRepository
   extend ActiveSupport::Concern
 
-
-  protected
-
   # can throw error: Rugged::OdbError: Object not found - failed to find pack entry
   def get_object(rugged_commit, object_path='')
     object = rugged_commit.tree

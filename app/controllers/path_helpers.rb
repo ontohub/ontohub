@@ -11,8 +11,8 @@ module PathHelpers
 
   def fancy_repository_path(repository, args)
     args ||= {}
-    action = args[:action] || :files
-    if !in_ref_path? && action == :files
+    action = args[:action] || :show
+    if !in_ref_path? && action == :show
       repository_tree_path repository, path: args[:path]
     else
       repository_ref_path repository_id: repository, ref: args[:ref], action: action, path: args[:path]
