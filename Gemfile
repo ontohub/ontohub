@@ -86,9 +86,7 @@ gem 'ruby-graphviz', "~> 1.0.8"
 gem "faker", "~> 1.2"
 
 # Git
-# rugged commit is on branch 'development', 2014/05/30
-# gem version 0.19 was terribly broken (segmentation faults)
-gem 'rugged', git: 'git://github.com/libgit2/rugged.git', ref: '1bd8a8859a2b6218731d34e8a691f06c8a961938', submodules: true
+gem 'rugged', '0.21.0'
 gem 'diffy'
 gem 'codemirror-rails', github: 'llwt/codemirror-rails'
 gem 'js-routes'
