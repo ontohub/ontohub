@@ -61,7 +61,7 @@ class RepositoryFile < FakeRecord
 
   def ontologies(child_name=nil)
     @ontologies ||= if file?
-      ontos = repository.ontologies.find_with_path(path).parents_first
+      ontos = repository.ontologies.with_path(path).parents_first
       ontos.map!{ |o| o.children.where(name: child_name) }.flatten! if child_name
       ontos
     end
