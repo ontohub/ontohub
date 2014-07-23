@@ -77,12 +77,12 @@ module Repository::GitRepositories
       ontology.present = true
       if !ontology.versions.find_by_commit_oid(commit_oid)
         # update existing ontology
-        version = create_version(ontology, commit_oid, user, fast_parse, do_not_parse)
+        version = create_version(ontology, filepath, commit_oid, user, fast_parse, do_not_parse)
       end
     else
       iri = generate_iri(File.basepath(filepath))
       ontology = create_ontology(filepath, iri)
-      version = create_version(ontology, commit_oid, user, fast_parse, do_not_parse)
+      version = create_version(ontology, filepath, commit_oid, user, fast_parse, do_not_parse)
     end
 
     version
@@ -109,11 +109,11 @@ module Repository::GitRepositories
     ontology
   end
 
-  def create_version(ontology, commit_oid, user, fast_parse, do_not_parse)
+  def create_version(ontology, filepath, commit_oid, user, fast_parse, do_not_parse)
     version = ontology.versions.build({ commit_oid: commit_oid,
                                         user: user,
-                                        basepath: ontology.basepath,
-                                        file_extension: ontology.file_extension,
+                                        basepath: File.basepath(filepath),
+                                        file_extension: File.extname(filepath),
                                         fast_parse: fast_parse },
                                       { without_protection: true })
     version.do_not_parse! if do_not_parse
