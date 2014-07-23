@@ -78,7 +78,7 @@ Ontohub::Application.routes.draw do
   get 'entities_search' => 'entities_search#index'
 
   resources :repositories do
-    resources :ssh_access, :only => :index
+    resources :s_s_h_access, :only => :index, path: 'ssh_access'
     resources :permissions, :only => [:index, :create, :update, :destroy]
     resources :url_maps, except: :show
     resources :errors, :only => :index
