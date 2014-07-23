@@ -69,18 +69,20 @@ module Repository::GitRepositories
     # we expect that this method is only called, when the ontology is 'present'
     return unless Ontology.file_extensions.include?(File.extname(filepath))
     version = nil
-    o = find_existing_ontology(filepath, previous_filepath)
+    ontology = find_existing_ontology(filepath, previous_filepath)
 
-    if o
-      return if !master_file?(o, previous_filepath || filepath)
-      o.present = true
-      if !o.versions.find_by_commit_oid(commit_oid)
-        version = create_version(o, commit_oid, user, fast_parse, do_not_parse)
+
+    if ontology
+      return if !master_file?(ontology, previous_filepath || filepath)
+      ontology.present = true
+      if !ontology.versions.find_by_commit_oid(commit_oid)
+        # update existing ontology
+        version = create_version(ontology, commit_oid, user, fast_parse, do_not_parse)
       end
     else
       iri = generate_iri(File.basepath(filepath))
-      o = create_ontology(filepath, iri)
-      version = create_version(o, commit_oid, user, fast_parse, do_not_parse)
+      ontology = create_ontology(filepath, iri)
+      version = create_version(ontology, commit_oid, user, fast_parse, do_not_parse)
     end
 
     version
