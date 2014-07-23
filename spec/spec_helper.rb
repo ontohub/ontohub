@@ -43,6 +43,13 @@ end
 # includes the convience-method `define_ontology('name.extension')`
 include OntologyUnited::Convenience
 
+def parse_this(user, ontology, xml_path, code_path)
+  evaluator = Hets::Evaluator.new(user, ontology,
+                                  path: xml_path,
+                                  code_path: code_path)
+  evaluator.import
+end
+
 def stub_ontology_file_extensions
   Ontology.stubs(:file_extensions_distributed).returns(
     %w[casl dol hascasl het].map!{ |ext| ".#{ext}" })
