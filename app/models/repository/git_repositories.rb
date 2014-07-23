@@ -44,11 +44,11 @@ module Repository::GitRepositories
     git.delete_file(user_info(user), filepath, &block)
   end
 
-  def save_file(tmp_file, filepath, message, user, iri=nil)
+  def save_file(tmp_file, filepath, message, user)
     version = nil
 
     git.add_file(user_info(user), tmp_file, filepath, message) do |commit_oid|
-      version = save_ontology(commit_oid, filepath, user, iri: iri)
+      version = save_ontology(commit_oid, filepath, user)
     end
     touch
     version
@@ -65,7 +65,7 @@ module Repository::GitRepositories
     commit
   end
 
-  def save_ontology(commit_oid, filepath, user=nil, iri: nil, fast_parse: false, do_not_parse: false, previous_filepath: nil)
+  def save_ontology(commit_oid, filepath, user=nil, fast_parse: false, do_not_parse: false, previous_filepath: nil)
     # we expect that this method is only called, when the ontology is 'present'
     return unless Ontology.file_extensions.include?(File.extname(filepath))
     version = nil
