@@ -79,17 +79,8 @@ module Repository::GitRepositories
     if o
       return if !master_file?(o, previous_filepath || filepath)
       o.present = true
-      unless o.versions.find_by_commit_oid(commit_oid)
-        # update existing ontology
-        version = o.versions.build({ commit_oid: commit_oid,
-                                     user: user,
-                                     basepath: basepath,
-                                     file_extension: file_extension,
-                                     fast_parse: fast_parse },
-                                   { without_protection: true })
-        o.ontology_version = version
-        version.do_not_parse! if do_not_parse
-        o.save!
+      if !o.versions.find_by_commit_oid(commit_oid)
+        version = create_version(o, commit_oid, user, fast_parse, do_not_parse)
       end
     else
       # create new ontology
@@ -104,17 +95,24 @@ module Repository::GitRepositories
       o.repository = self
       o.present = true
       o.save!
-      version = o.versions.build({ commit_oid: commit_oid,
-                                   user: user,
-                                   basepath: basepath,
-                                   file_extension: file_extension,
-                                   fast_parse: fast_parse },
-                                 { without_protection: true })
-      version.do_not_parse! if do_not_parse
-      version.save!
-      o.ontology_version = version
-      o.save!
+
+      version = create_version(o, commit_oid, user, fast_parse, do_not_parse)
     end
+
+    version
+  end
+
+  def create_version(ontology, commit_oid, user, fast_parse, do_not_parse)
+    version = ontology.versions.build({ commit_oid: commit_oid,
+                                        user: user,
+                                        basepath: ontology.basepath,
+                                        file_extension: ontology.file_extension,
+                                        fast_parse: fast_parse },
+                                      { without_protection: true })
+    version.do_not_parse! if do_not_parse
+    version.save!
+    ontology.ontology_version = version
+    ontology.save!
 
     version
   end
