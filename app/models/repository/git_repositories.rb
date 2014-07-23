@@ -68,29 +68,33 @@ module Repository::GitRepositories
   def save_ontology(commit_oid, filepath, user, fast_parse: false, do_not_parse: false, previous_filepath: nil)
     # we expect that this method is only called, when the ontology is 'present'
     return unless Ontology.file_extensions.include?(File.extname(filepath))
-    version = nil
-    ontology = find_existing_ontology(filepath, previous_filepath)
 
+    ontology = find_or_create_ontology(filepath, previous_filepath)
 
-    if ontology
-      return if !master_file?(ontology, previous_filepath || filepath)
-      ontology.present = true
-      if !ontology.versions.find_by_commit_oid(commit_oid)
-        # update existing ontology
-        version = create_version(ontology, filepath, commit_oid, user, fast_parse, do_not_parse)
-      end
-    else
-      iri = generate_iri(File.basepath(filepath))
-      ontology = create_ontology(filepath, iri)
-      version = create_version(ontology, filepath, commit_oid, user, fast_parse, do_not_parse)
-    end
+    return unless master_file?(ontology, previous_filepath || filepath)
+    return if ontology.versions.find_by_commit_oid(commit_oid)
+
+    version = create_version(ontology, filepath, commit_oid, user, fast_parse, do_not_parse)
+    ontology.present = true
+    ontology.save!
 
     version
   end
 
+  def find_or_create_ontology(filepath, previous_filepath)
+    ontology = find_existing_ontology(filepath, previous_filepath)
+
+    if !ontology
+      iri = generate_iri(File.basepath(filepath))
+      ontology = create_ontology(filepath, iri)
+    end
+
+    ontology
+  end
+
   def find_existing_ontology(filepath, previous_filepath)
     ontologies.with_basepath(
-      File.basepath(previous_filepath ? previous_filepath : filepath)).
+      File.basepath(previous_filepath || filepath)).
       without_parent.first
   end
 
@@ -112,7 +116,7 @@ module Repository::GitRepositories
   def create_version(ontology, filepath, commit_oid, user, fast_parse, do_not_parse)
     version = ontology.versions.build({ commit_oid: commit_oid,
                                         user: user,
-                                        basepath: File.basepath(filepath),
+                                        basepath: File.basepath(filepath), # We can't use the ontology's filepath bacause it might have changed
                                         file_extension: File.extname(filepath),
                                         fast_parse: fast_parse },
                                       { without_protection: true })
