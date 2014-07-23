@@ -75,7 +75,6 @@ module Repository::GitRepositories
       (previous_filepath ? File.basepath(previous_filepath) : basepath)).
       without_parent.first
 
-
     if o
       return if !master_file?(o, previous_filepath || filepath)
       o.present = true
@@ -83,23 +82,27 @@ module Repository::GitRepositories
         version = create_version(o, commit_oid, user, fast_parse, do_not_parse)
       end
     else
-      # create new ontology
-      clazz      = Ontology.file_extensions_distributed.include?(File.extname(filepath)) ? DistributedOntology : SingleOntology
-      o          = clazz.new
-      o.basepath = basepath
-      o.file_extension = file_extension
-
-      o.iri  = iri || generate_iri(basepath)
-      o.name = filepath.split('/')[-1].split(".")[0].capitalize
-
-      o.repository = self
-      o.present = true
-      o.save!
-
+      iri = generate_iri(basepath)
+      o = create_ontology(filepath, iri)
       version = create_version(o, commit_oid, user, fast_parse, do_not_parse)
     end
 
     version
+  end
+
+  def create_ontology(filepath, iri)
+    clazz = Ontology.file_extensions_distributed.include?(File.extname(filepath)) ? DistributedOntology : SingleOntology
+    ontology = clazz.new
+
+    ontology.basepath = File.basepath(filepath)
+    ontology.file_extension = File.extname(filepath)
+    ontology.iri = iri
+    ontology.name = filepath.split('/')[-1].split(".")[0].capitalize
+    ontology.repository = self
+    ontology.present = true
+    ontology.save!
+
+    ontology
   end
 
   def create_version(ontology, commit_oid, user, fast_parse, do_not_parse)
