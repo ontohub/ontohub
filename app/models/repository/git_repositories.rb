@@ -65,7 +65,7 @@ module Repository::GitRepositories
     commit
   end
 
-  def save_ontology(commit_oid, filepath, user=nil, fast_parse: false, do_not_parse: false, previous_filepath: nil)
+  def save_ontology(commit_oid, filepath, user, fast_parse: false, do_not_parse: false, previous_filepath: nil)
     # we expect that this method is only called, when the ontology is 'present'
     return unless Ontology.file_extensions.include?(File.extname(filepath))
     version = nil
