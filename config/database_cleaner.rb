@@ -38,6 +38,12 @@ module DatabaseCleanerConfig
 
     class ActiveSupport::TestCase
 
+      class_attribute :use_transactional_fixtures
+      class_attribute :use_instantiated_fixtures
+
+      self.use_transactional_fixtures = false
+      self.use_instantiated_fixtures  = false
+
       setup do
         DatabaseCleaner.start
       end
