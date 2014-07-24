@@ -40,7 +40,7 @@ def version_for_file(repository, path)
   version = repository.save_file path, basename, "#{basename} added", dummy_user
 end
 
-# includes the convience-method `define_ontology('name.extension')`
+# includes the convenience-method `define_ontology('name')`
 include OntologyUnited::Convenience
 
 def parse_this(user, ontology, xml_path, code_path)
