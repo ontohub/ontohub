@@ -56,7 +56,7 @@ module LinkHelper
       return ['data-type', "Private#{resource.class.to_s}"]
     end
 
-    if resource.is_a?(Repository) && resource.remote?
+    if resource.is_a?(Repository) && resource.mirror?
       return ['data-type', "Remote#{resource.class.to_s}"]
     end
 
