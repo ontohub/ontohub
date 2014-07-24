@@ -18,4 +18,12 @@ class SSHAccessController < InheritedResources::Base
                   provide_to_user: false}
   end
 
+  def self.controller_name
+    @controller_name = "s_s_h_access"
+  end
+
+  def self.controller_path
+    @controller_path = "s_s_h_access"
+  end
+
 end
