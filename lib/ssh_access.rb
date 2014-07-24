@@ -55,7 +55,7 @@ class SSHAccess
   end
 
   def write_to_mirror_repository?
-    repository.remote? && requested_permission == 'write'
+    repository.mirror? && requested_permission == 'write'
   end
 
   def not_a_write_to_mirror_repository!
