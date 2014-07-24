@@ -34,8 +34,13 @@ module DatabaseCleanerConfig
     # Set strategy and clean once at load time
     DatabaseCleaner.strategy = INITIAL_CLEAN_MODE, INITIAL_CLEAN_OPTIONS
     DatabaseCleaner.clean
+    DatabaseCleaner.strategy = CLEAN_MODE
 
     class ActiveSupport::TestCase
+
+      setup do
+        DatabaseCleaner.start
+      end
 
       teardown do
         DatabaseCleaner.clean
