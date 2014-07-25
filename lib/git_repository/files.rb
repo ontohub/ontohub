@@ -80,7 +80,7 @@ module GitRepository::Files
     end
 
     def last_change
-      @last_change ||= git.entry_info(path, oid)
+      @last_change ||= repository.entry_info(path, oid)
     end
 
     protected
