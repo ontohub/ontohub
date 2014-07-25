@@ -28,7 +28,7 @@ class HistoryEntries
 
   def grouped_commits
     @grouped_commits ||= commits.group_by do |c|
-      c[:committer][:time].strftime("%d.%m.%Y")
+      c.committer[:time].strftime("%d.%m.%Y")
     end.map do |k, v|
       {commits: v, date: k}
     end
