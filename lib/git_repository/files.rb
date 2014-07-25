@@ -40,11 +40,11 @@ module GitRepository::Files
 
     def content
       @content ||= case type
-        when :file
-          rugged_object.content
-        when :dir
-          repository.folder_contents(oid, path)
-        end
+      when :file
+        rugged_object.content
+      when :dir
+        repository.folder_contents(oid, path)
+      end
     end
 
     def file?
