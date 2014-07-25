@@ -7,7 +7,7 @@ Ontohub
 [![Dependency Status](https://gemnasium.com/ontohub/ontohub.svg)](https://gemnasium.com/ontohub/ontohub)
 
 
-A web-based repository for distributed ontologies.
+A web-based repository for distributed ontologies, models and specifications.
 
 An ontology is a formal, logic-based description of the concepts and
 relationships that are of interest to an agent (user or service) or to a
@@ -15,19 +15,20 @@ community of agents. The conceptual model of an ontology reflects a consensus,
 and the implementation of an ontology is often used to support a variety of
 applications such as web services, expert systems, or search engines. Therefore,
 ontologies are typically developed in teams. Ontohub wants to make this
-step as convenient as possible.
+step as convenient as possible. Besides ontologies, Ontohub also
+supports formal models and specifications, or more generally,
+logical theories.
 
 Ontohub aims at satisfying a subset of the requirements for an Open Ontology
 Repository (OOR) and is being developed in close donnection with the Distributed
-Ontology Language, which is part of the emerging Ontology Integration and
-Interoperability standard (OntoIOp, ISO Working Draft 17347).  For more
-information from this perspective, see [the Ontohub page in the Ontolog
-wiki](http://ontolog.cim3.net/cgi-bin/wiki.pl?Ontohub).
+Ontology, Modeling and Specification Language (DOL), which is part of the emerging Ontology, Model and Specification Integration and
+Interoperability standard (OntoIOp) at OMG.  For more
+information from this perspective, see [the Ontohub home page](http://ontoiop.org).
 
 This application started at the compact course [agile web development][0] given
 by [Carsten Bormann][1] at the University of Bremen in March, 2012. The
-concept and assignment came from [Till Mossakowski][2] and [Christoph
-Lange][3] of the [AG Bernd Krieg-Brückner][4].
+concept and assignment came from [Till Mossakowski][2], now in Magdeburg [3]
+and [Christoph Lange][4].
 
 Initial developers are [Julian Kornberger][5] and [Henning Müller][6].
 
@@ -45,9 +46,9 @@ in the Wiki.
 
 [0]: http://www.tzi.org/~cabo/awe12
 [1]: http://www.tzi.org/~cabo
-[2]: http://www.tzi.org/~till
-[3]: http://kwarc.info/clange
-[4]: http://www.informatik.uni-bremen.de/agbkb
+[2]: http://iws.cs.uni-magdeburg.de/~mossakow/
+[3]: http://theo.cs.uni-magdeburg.de/theo_eng.html
+[4]: http://wob.iai.uni-bonn.de/Wob/de/view/class217_id1582.html
 [5]: https://github.com/corny
 [6]: http://henning.orgizm.net
 [7]: https://github.com/ontohub/ontohub/wiki/Deployment
