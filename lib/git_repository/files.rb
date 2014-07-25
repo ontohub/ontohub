@@ -77,6 +77,7 @@ module GitRepository::Files
       [:repository, :path, :oid].all? do |attr|
         self.send(attr) == other.send(attr)
       end
+    end
 
     def last_change
       @last_change ||= git.entry_info(path, oid)
