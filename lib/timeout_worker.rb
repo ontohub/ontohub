@@ -30,7 +30,7 @@ Therefore the timeout-job will not continue. It will also not be rescheduled.
   end
 
   def state_not_terminal?(ontology_version)
-    !(ontology_version.state == 'failed' || ontology_version.state == 'done')
+    !OntologyVersion::States::TERMINAL_STATES.include?(ontology_version.state)
   end
 
 end
