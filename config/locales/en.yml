@@ -94,4 +94,10 @@ en:
   cancel: Cancel
   edit: Edit
   delete: Delete
-  processing_ontologies: Ontologies that are being processed
+  status:
+    processing_ontologies: Ontologies that are being processed
+    information_title: Information related to the status
+    information_description: |
+      This contains information about different aspects of the
+      application that might be relevant for administrative and
+      error-finding purposes.
