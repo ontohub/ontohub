@@ -1,7 +1,8 @@
 class StatusViewhelper
 
   TABS = [
-    ['Processing Ontologies', :ontologies, ->{ processing_ontologies_count }],
+    ['Processing Ontologies', :ontologies,
+     ->(v){ v.processing_ontologies_count }],
   ]
 
   HELPERS = {
@@ -9,10 +10,6 @@ class StatusViewhelper
   }
 
   attr_reader :tab, :view, :available_tabs
-
-  def self.processing_ontologies_count
-    StatusOntologyViewhelper.new(nil).processing_ontologies_count
-  end
 
   def initialize(view, tab)
     @view = view
@@ -22,8 +19,12 @@ class StatusViewhelper
 
   def initialize_data
     @available_tabs = TABS.map do |(tab_title, tab, count)|
-      [tab_title, tab, count ? count.call : nil]
+      [tab_title, tab, retrieve_count(tab, count)]
     end
+  end
+
+  def retrieve_count(tab, count_proc)
+    count_proc.call(initialize_helper(HELPERS[tab])) if count_proc
   end
 
   def inner_helper
