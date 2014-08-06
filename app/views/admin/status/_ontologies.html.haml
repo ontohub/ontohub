@@ -1,0 +1,8 @@
+- if view.any_processing_ontologies?
+  %h3= t(:processing_ontologies)
+  %ul.fancy_ontology_list
+    - view.processing_ontology_data.each do |data|
+      %li
+        %span= fancy_link data.ontology
+        has been running for
+        %span= data.running_for
