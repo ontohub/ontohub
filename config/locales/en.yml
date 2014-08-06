@@ -103,3 +103,4 @@ en:
       error-finding purposes.
     no_iri:
       no processing iri
+    errored_ontologies: Ontologies which encountered errors during evaluation

@@ -3,10 +3,13 @@ class StatusViewhelper
   TABS = [
     ['Processing Ontologies', :ontologies,
      ->(v){ v.processing_ontologies_count }],
+    ['Errored Ontologies', :errored_ontologies,
+     ->(v){ v.errored_ontologies_count }],
   ]
 
   HELPERS = {
     ontologies: StatusOntologyViewhelper,
+    errored_ontologies: StatusOntologyErrorViewhelper,
   }
 
   attr_reader :tab, :view, :available_tabs
