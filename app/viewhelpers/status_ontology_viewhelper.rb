@@ -1,12 +1,6 @@
-class StatusOntologyViewhelper
+class StatusOntologyViewhelper < ViewhelperBase
 
   STATE = 'processing'
-
-  attr_reader :view
-
-  def initialize(view)
-    @view = view
-  end
 
   def processing_ontologies_count
     processing_ontology_query.size
