@@ -1,7 +1,12 @@
 class StatusOntologyViewhelper
-  include ActionView::Helpers::DateHelper
 
   STATE = 'processing'
+
+  attr_reader :view
+
+  def initialize(view)
+    @view = view
+  end
 
   def processing_ontologies_count
     processing_ontology_query.size
@@ -12,7 +17,7 @@ class StatusOntologyViewhelper
       OpenStruct.new({
         ontology: ov.ontology,
         ontology_version: ov,
-        running_for: time_ago_in_words(ov.state_updated_at),
+        running_for: view.time_ago_in_words(ov.state_updated_at),
       })
     end
   end

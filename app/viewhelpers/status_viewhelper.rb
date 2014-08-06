@@ -11,7 +11,7 @@ class StatusViewhelper
   attr_reader :tab, :view, :available_tabs
 
   def self.processing_ontologies_count
-    StatusOntologyViewhelper.new.processing_ontologies_count
+    StatusOntologyViewhelper.new(nil).processing_ontologies_count
   end
 
   def initialize(view, tab)
@@ -31,7 +31,7 @@ class StatusViewhelper
   end
 
   def initialize_helper(helper_klass)
-    helper_klass.new
+    helper_klass.new(view)
   end
 
   def current?(other_tab)
