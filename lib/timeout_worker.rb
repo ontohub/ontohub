@@ -4,7 +4,7 @@ class TimeoutWorker < BaseWorker
 
   RESCHEDULE_TIME = 30 # minutes
 
-  include Sidekiq::Worker
+  sidekiq_options queue: 'default'
 
   def self.start_timeout_clock(ontology_version_id, hours_offset=nil)
     hours_offset ||= timeout_limit

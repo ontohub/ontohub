@@ -1,5 +1,6 @@
 # Worker for Sidekiq
 class RepositoryUpdateWorker < Worker
+  sidekiq_options queue: 'hets'
 
   # This worker does not play a direct role
   # in concurrency balancing, because this
