@@ -1,6 +1,7 @@
 class StatusViewhelper
 
   TABS = [
+    ['Overview', :overview],
     ['Processing Ontologies', :ontologies,
      ->(v){ v.processing_ontologies_count }],
     ['Errored Ontologies', :errored_ontologies,
@@ -8,6 +9,7 @@ class StatusViewhelper
   ]
 
   HELPERS = {
+    overview: StatusOverviewViewhelper,
     ontologies: StatusOntologyViewhelper,
     errored_ontologies: StatusOntologyErrorViewhelper,
   }

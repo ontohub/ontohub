@@ -105,3 +105,5 @@ en:
       no processing iri
     errored_ontologies: Ontologies which encountered errors during evaluation
     details: Details
+    ontology_count_by_state: Ontologies-count by state
+    iris_marked_as_processing: Count of iris that are processing
