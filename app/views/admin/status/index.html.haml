@@ -6,7 +6,7 @@
 %nav
   %ul.nav.nav-tabs
     - view.available_tabs.each do |(tab_title, tab, number)|
-      %li{class: view.current?(tab) ? 'active' : nil}
+      %li{class: class_for_tab(view, tab, number)}
         = link_to admin_status_path(tab: tab) do
           = tab_title
           - if number
