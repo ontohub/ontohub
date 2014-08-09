@@ -1,5 +1,7 @@
 class StatusViewhelper
 
+  DEFAULT_TAB = :overview
+
   TABS = [
     ['Overview', :overview],
     ['Processing Ontologies', :ontologies,
