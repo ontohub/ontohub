@@ -2,7 +2,7 @@ class StatusOverviewViewhelper < ViewhelperBase
   include WrappingRedis
 
   def ontology_count_by_state
-    fill_with_missing_states(Ontology.group(:state).count, 0)
+    states_map(0).merge!(Ontology.group(:state).count)
   end
 
   def processing_iris_count
@@ -10,9 +10,10 @@ class StatusOverviewViewhelper < ViewhelperBase
   end
 
   private
-  def fill_with_missing_states(hash, default)
+  def states_map(default)
+    hash = {}
     Ontology::States::STATES.each do |state|
-      hash[state.to_s] ||= default
+      hash[state] = default
     end
     hash
   end
