@@ -53,7 +53,7 @@ namespace :db do
   end
 
   namespace :redis do
-    desc "Clean redis triple store"
+    desc "Clean redis key value store"
     task :clean do
       cleanup_redis
     end
