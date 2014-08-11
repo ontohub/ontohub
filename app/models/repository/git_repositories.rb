@@ -44,11 +44,11 @@ module Repository::GitRepositories
     git.delete_file(user_info(user), filepath, &block)
   end
 
-  def save_file(tmp_file, filepath, message, user, iri=nil)
+  def save_file(tmp_file, filepath, message, user, iri=nil, do_not_parse: false)
     version = nil
 
     git.add_file(user_info(user), tmp_file, filepath, message) do |commit_oid|
-      version = save_ontology(commit_oid, filepath, user, iri: iri)
+      version = save_ontology(commit_oid, filepath, user, iri: iri, do_not_parse: do_not_parse)
     end
     touch
     version
