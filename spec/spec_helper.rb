@@ -9,7 +9,7 @@ use_simplecov
 require File.expand_path("../../config/environment", __FILE__)
 require 'rspec/rails'
 require 'rspec/autorun'
-require 'database_cleaner'
+require Rails.root.join('config', 'database_cleaner.rb')
 
 # Requires supporting ruby files with custom matchers and macros, etc,
 # in spec/support/ and its subdirectories.
@@ -50,38 +50,18 @@ def parse_this(user, ontology, xml_path, code_path)
   evaluator.import
 end
 
-def stub_ontology_file_extensions
-  Ontology.stubs(:file_extensions_distributed).returns(
-    %w[casl dol hascasl het].map!{ |ext| ".#{ext}" })
-  Ontology.stubs(:file_extensions_single).returns(
-    %w[owl obo hs exp maude elf hol isa thy prf omdoc hpf clf clif xml fcstd rdf xmi qvt tptp gen_trm baf].
-    map!{ |ext| ".#{ext}" })
-end
-
-def unstub_ontology_file_extensions
-  Ontology.unstub(:file_extensions_distributed)
-  Ontology.unstub(:file_extensions_single)
-end
-
 RSpec.configure do |config|
   # ## Mock Framework
   # config.mock_with :mocha
   # config.mock_with :flexmock
   # config.mock_with :rr
 
-  config.before(:suite) do
-    DatabaseCleaner.strategy = :truncation
-  end
-
   config.before(:each) do
     redis = WrappingRedis::RedisWrapper.new
     redis.del redis.keys.join(' ')
-    stub_ontology_file_extensions
   end
 
   config.after(:each) do
-    unstub_ontology_file_extensions
-    DatabaseCleaner.clean
   end
 
   config.expose_current_running_example_as :example
