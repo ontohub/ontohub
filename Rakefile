@@ -3,6 +3,7 @@
 # for example lib/tasks/capistrano.rake, and they will automatically be available to Rake.
 
 class Rake::Task
+  # methods found on http://blog.jayfields.com/2008/02/rake-task-overwriting.html
   def overwrite(&block)
     @actions.clear
     prerequisites.clear
