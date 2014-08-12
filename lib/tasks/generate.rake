@@ -19,9 +19,8 @@ namespace :generate do
       user = User.where(admin: true).first
       filepath = "#{Rails.root}/test/fixtures/ontologies/categories.owl"
       system("wget -O #{filepath} https://ontohub.org/repositories/meta/master/download/Domain_Fields_Core.owl")
-      path = File.join(filepath)
-      basename = File.basename(path)
-      version = repository.save_file path, basename, "#{basename} added", user, do_not_parse: true
+      basename = File.basename(filepath)
+      version = repository.save_file filepath, basename, "#{basename} added", user, do_not_parse: true
       version.parse
       version.ontology.create_categories
       system("rm #{filepath}")
