@@ -15,13 +15,14 @@ namespace :generate do
     if ontology
       ontology.create_categories
     else
-      repository = Repository.find_by_name "Default"
+      repository = Repository.where(name: "meta").first_or_create!(description: "Meta ontologies for Ontohub")
       user = User.where(admin: true).first
       filepath = "#{Rails.root}/test/fixtures/ontologies/categories.owl"
-      system("wget -O #{filepath} https://raw.githubusercontent.com/ontohub/OOR_Ontohub_API/master/Domain_Fields_Core.owl")
+      system("wget -O #{filepath} https://ontohub.org/repositories/meta/master/download/Domain_Fields_Core.owl")
       path = File.join(filepath)
       basename = File.basename(path)
-      version = repository.save_file path, basename, "#{basename} added", user
+      version = repository.save_file path, basename, "#{basename} added", user, do_not_parse: true
+      version.parse
       version.ontology.create_categories
       system("rm #{filepath}")
     end
@@ -42,7 +43,7 @@ namespace :generate do
       end
     end
   end
-  
+
   desc 'Generate entity tree for one specific OWL ontology'
   task :class_hierachy_for_specific_ontology, [:ontology_id] => :environment do |t,args|
     ontology = Ontology.find!(args.ontology_id)
