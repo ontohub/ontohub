@@ -154,21 +154,17 @@ describe Ontology do
 
   context 'when parsing an ontology which is referenced by another ontology', :needs_hets do
     let(:repository) { create :repository }
-    let(:list) do
+    let(:presentation) do
       referenced_ontology = nil
       ontology = define_ontology('Foo') do
-        ontohub = prefix('ontohub', self)
-        referenced_ontology = define('Bar') do
-          other_ontohub = prefix('other_ontohub', self)
-          other_ontohub.class('SomeBar')
+        this = prefix('ontohub')
+        imports define('Bar', as: :referenced_ontology) do
+          prefix('other_ontohub').class('SomeBar')
         end
-        imports referenced_ontology
-        ontohub.class('Bar').sub_class_of ontohub.class('Foo')
+        this.class('Bar').sub_class_of this.class('Foo')
       end
-      [ontology, referenced_ontology]
     end
-    let(:presentation) { list[0] }
-    let(:referenced_presentation) { list[1] }
+    let(:referenced_presentation) { presentation.referenced_ontology }
     let(:version) { version_for_file(repository, presentation.file.path) }
     let(:ontology) { version.ontology.reload }
 

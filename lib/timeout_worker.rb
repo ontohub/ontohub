@@ -4,7 +4,7 @@ class TimeoutWorker < BaseWorker
 
   RESCHEDULE_TIME = 30 # minutes
 
-  include Sidekiq::Worker
+  sidekiq_options queue: 'default'
 
   def self.start_timeout_clock(ontology_version_id, hours_offset=nil)
     hours_offset ||= timeout_limit
@@ -22,10 +22,15 @@ class TimeoutWorker < BaseWorker
     if state_not_terminal?(version)
       version.update_state!('failed', "The job reached the timeout limit of #{self.class.timeout_limit} hours.")
     end
+  rescue ActiveRecord::RecordNotFound
+    Rails.logger.warn <<-MSG
+Ontology Version with id <#{ontology_version_id}> could not be found.
+Therefore the timeout-job will not continue. It will also not be rescheduled.
+    MSG
   end
 
   def state_not_terminal?(ontology_version)
-    !(ontology_version.state == 'failed' || ontology_version.state == 'done')
+    !OntologyVersion::States::TERMINAL_STATES.include?(ontology_version.state)
   end
 
 end

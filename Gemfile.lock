@@ -1,6 +1,6 @@
 GIT
   remote: git://github.com/0robustus1/ontology-united.git
-  revision: 5e47706ce499ebf0d292cb876438e672b13e7f6a
+  revision: 1cb298d59e9220fc283f8b1c80314e053ce73285
   specs:
     ontology-united (0.0.2)
 
