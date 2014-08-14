@@ -4,23 +4,11 @@ require 'ontohub_net'
 
 class GitUpdate
 
-  ENV_KEY_REFNAME = 'GIT_UPDATE_REFNAME'
-  ENV_KEY_OLDREV = 'GIT_UPDATE_OLDREV'
-  ENV_KEY_NEWREV = 'GIT_UPDATE_NEWREV'
-
   def self.update_redis(repo_path, oldrev, newrev, refname, key_id)
     Subprocess.run 'redis-cli', 'rpush', "#{Settings.redis_namespace}:queue:default", {
       class: 'RepositoryUpdateWorker',
       args: [repo_path, oldrev, newrev, refname, key_id]
     }.to_json
-  end
-
-  def self.retrieve_update_environment
-    [
-      ENV[ENV_KEY_REFNAME],
-      ENV[ENV_KEY_OLDREV],
-      ENV[ENV_KEY_NEWREV],
-    ]
   end
 
   def initialize(repo_path, key_id, refs)
@@ -33,16 +21,8 @@ class GitUpdate
     @oldrev  = refs[1]
     @newrev  = refs[2]
 
-    set_update_environment
-
     @key_id = key_id
     @branch_name = /refs\/heads\/([\w\.-]+)/.match(@refname).to_a.last
-  end
-
-  def set_update_environment
-    ENV[ENV_KEY_REFNAME] = @refname
-    ENV[ENV_KEY_OLDREV] = @oldrev
-    ENV[ENV_KEY_NEWREV] = @newrev
   end
 
   def exec
