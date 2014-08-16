@@ -89,7 +89,6 @@ gem "faker", "~> 1.2"
 
 # Git
 gem 'rugged', '0.21.0'
-gem 'diffy', '~> 3.0.6'
 gem 'codemirror-rails', github: 'llwt/codemirror-rails'
 gem 'js-routes', '~> 0.9.8'
 
@@ -132,8 +131,6 @@ end
 
 group :development, :test do
   gem 'database_cleaner', '~> 1.3.0'
-  gem 'byebug', '~> 2.7.0'
-  gem 'pry-byebug', '~> 1.3.3'
   gem 'rspec-rails', '~> 2.0'
   gem 'better_errors', '~> 1.1.0'
   gem 'binding_of_caller', '~> 0.7.2'
