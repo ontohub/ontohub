@@ -4,6 +4,13 @@ require 'ontohub_net'
 
 class GitUpdate
 
+  def self.update_redis(repo_path, oldrev, newrev, refname, key_id)
+    Subprocess.run 'redis-cli', 'rpush', "#{Settings.redis_namespace}:queue:default", {
+      class: 'RepositoryUpdateWorker',
+      args: [repo_path, oldrev, newrev, refname, key_id]
+    }.to_json
+  end
+
   def initialize(repo_path, key_id, refs)
     @repo_path = repo_path.strip
     @repo_name = repo_path.sub(Settings.git_root.to_s, '').
@@ -23,7 +30,6 @@ class GitUpdate
     # we need to check user persmission per branch first
     if ssh?
       if api.allowed?('git-receive-pack', @repo_name, @key_id, @branch_name)
-        update_redis
         exit 0
       else
         STDERR.puts <<-MSG
@@ -35,7 +41,6 @@ for more information about permissions.
         exit 1
       end
     else
-      update_redis
       exit 0
     end
   rescue OntohubNet::UnexpectedStatusCodeError => error
@@ -58,10 +63,4 @@ If this issue persists please inform an Administrator.
     @key_id =~ /\Akey\-\d+\Z/
   end
 
-  def update_redis
-    Subprocess.run 'redis-cli', 'rpush', "#{Settings.redis_namespace}:queue:default", {
-      class: 'RepositoryUpdateWorker',
-      args: [@repo_path, @oldrev, @newrev, @refname, @key_id]
-    }.to_json
-  end
 end
