@@ -44,7 +44,7 @@ class RepositoryDirectory < FakeRecord
 
   def target_path
     @target_directory ||= ''
-    File.join(target_directory, name)
+    File.join(target_directory, name).sub(/^\//, '')
   end
 
 end

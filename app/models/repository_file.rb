@@ -104,7 +104,7 @@ class RepositoryFile < FakeRecord
   def target_path
     @target_directory ||= ''
     filename = target_filename.present? ? target_filename : temp_file.original_filename
-    File.join(target_directory, filename)
+    File.join(target_directory, filename).sub(/^\//, '')
   end
 
   def temp_file_exists?
