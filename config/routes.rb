@@ -140,6 +140,7 @@ Ontohub::Application.routes.draw do
     end
 
     resources :files, only: [:new, :create]
+    resources :directories, only: [:new, :create]
 
     get ':ref/files(/*path)',
       controller:  :files,
