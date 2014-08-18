@@ -60,6 +60,8 @@ module Hets
       version.pp_xml_name = parent_version.try(:pp_xml_name)
       version.xml_name = parent_version.try(:xml_name)
       version.file_extension = ontology.file_extension
+      # This version will not exist if the parsing fails
+      version.state = 'done'
       version.do_not_parse!
 
       hets_evaluator.versions << version
