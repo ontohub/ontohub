@@ -107,11 +107,8 @@ class RepositoryFile < FakeRecord
   # only for new/edit
   def target_path
     @target_directory ||= ''
-    str  = target_directory
-    str  = str[1,-1] if target_directory.starts_with?("/")
-    str  = str[0,-2] if target_directory.ends_with?("/")
-    str += "/" unless target_directory.empty?
-    str += target_filename.present? ? target_filename : temp_file.original_filename
+    filename = target_filename.present? ? target_filename : temp_file.original_filename
+    File.join(target_directory, filename)
   end
 
   def temp_file_exists?
