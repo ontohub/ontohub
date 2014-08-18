@@ -34,4 +34,8 @@ class FakeRecord
     nil
   end
 
+  def persisted?
+    false
+  end
+
 end
