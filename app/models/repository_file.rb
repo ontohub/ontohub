@@ -85,11 +85,6 @@ class RepositoryFile < FakeRecord
     path
   end
 
-  # Needed for a Model
-  def persisted?
-    false
-  end
-
   def grouped_content
     return @grouped unless @grouped.nil?
     ungrouped = content.each_with_index { |entry,i| entry.index = i }
