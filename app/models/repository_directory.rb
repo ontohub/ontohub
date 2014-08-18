@@ -1,3 +1,6 @@
+# RepositoryDirectory is only used for the creation of directories,
+# and NOT for information retrieval like directory listing.
+# For the latter, see RepositoryFile.
 class RepositoryDirectory < FakeRecord
   class DirectoryPathValidator < ActiveModel::Validator
     def validate(record)
