@@ -34,7 +34,6 @@ module Repository::GitRepositories
   end
 
   def delete_file(filepath, user, message = nil, &block)
-    message ||= "delete file #{filepath}"
     git.delete_file(user_info(user), filepath, &block)
   end
 
