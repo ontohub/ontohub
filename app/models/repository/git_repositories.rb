@@ -48,7 +48,8 @@ module Repository::GitRepositories
     version = nil
 
     git.add_file(user_info(user), tmp_file, filepath, message) do |commit_oid|
-      version = save_ontology(commit_oid, filepath, user, do_not_parse: do_not_parse)
+      save_options = Repository::Saving::SaveOptions.new(filepath, user, do_not_parse: do_not_parse)
+      version = save_ontology(commit_oid, save_options)
     end
     touch
     version
@@ -65,36 +66,36 @@ module Repository::GitRepositories
     commit
   end
 
-  def save_ontology(commit_oid, filepath, user, fast_parse: false, do_not_parse: false, previous_filepath: nil)
+  def save_ontology(commit_oid, save_options)
     # we expect that this method is only called, when the ontology is 'present'
-    return unless Ontology.file_extensions.include?(File.extname(filepath))
+    return unless Ontology.file_extensions.include?(File.extname(save_options.filepath))
 
-    ontology = find_or_create_ontology(filepath, previous_filepath)
+    ontology = find_or_create_ontology(save_options)
 
-    return unless master_file?(ontology, previous_filepath || filepath)
+    return unless master_file?(ontology, save_options)
     return if ontology.versions.find_by_commit_oid(commit_oid)
 
-    version = create_version(ontology, filepath, commit_oid, user, fast_parse, do_not_parse)
+    version = create_version(ontology, commit_oid, save_options)
     ontology.present = true
     ontology.save!
 
     version
   end
 
-  def find_or_create_ontology(filepath, previous_filepath)
-    ontology = find_existing_ontology(filepath, previous_filepath)
+  def find_or_create_ontology(save_options)
+    ontology = find_existing_ontology(save_options)
 
     if !ontology
-      iri = generate_iri(File.basepath(filepath))
-      ontology = create_ontology(filepath, iri)
+      iri = generate_iri(File.basepath(save_options.filepath))
+      ontology = create_ontology(save_options.filepath, iri)
     end
 
     ontology
   end
 
-  def find_existing_ontology(filepath, previous_filepath)
+  def find_existing_ontology(save_options)
     ontologies.with_basepath(
-      File.basepath(previous_filepath || filepath)).
+      File.basepath(save_options.pre_saving_filepath)).
       without_parent.first
   end
 
@@ -113,14 +114,15 @@ module Repository::GitRepositories
     ontology
   end
 
-  def create_version(ontology, filepath, commit_oid, user, fast_parse, do_not_parse)
-    version = ontology.versions.build({ commit_oid: commit_oid,
-                                        user: user,
-                                        basepath: File.basepath(filepath), # We can't use the ontology's filepath bacause it might have changed
-                                        file_extension: File.extname(filepath),
-                                        fast_parse: fast_parse },
-                                      { without_protection: true })
-    version.do_not_parse! if do_not_parse
+  def create_version(ontology, commit_oid, save_options)
+    version = ontology.versions.build(
+      { commit_oid: commit_oid,
+        user: save_options.user,
+        basepath: File.basepath(save_options.filepath), # We can't use the ontology's filepath bacause it might have changed
+        file_extension: File.extname(save_options.filepath),
+        fast_parse: save_options.fast_parse },
+      { without_protection: true })
+    version.do_not_parse! if save_options.do_not_parse
     version.save!
     ontology.ontology_version = version
     ontology.save!
@@ -181,14 +183,21 @@ module Repository::GitRepositories
     commits(options) { |commit|
       git.changed_files(commit.oid).each { |f|
         if f.added? || f.modified?
-          versions << save_ontology(commit.oid, f.path, options.delete(:user),
+          save_options = Repository::Saving::SaveOptions.new(
+            f.path,
+            options.delete(:user),
             fast_parse: has_changed?(f.path, commit.oid),
             do_not_parse: true)
+          versions << save_ontology(commit.oid, save_options)
         elsif f.renamed?
-          versions << save_ontology(commit.oid, f.path, options.delete(:user),
+          save_options = Repository::Saving::SaveOptions.new(
+            f.path,
+            options.delete(:user),
             fast_parse: has_changed?(f.path, commit.oid),
             do_not_parse: true,
             previous_filepath: f.delta.old_file[:path])
+          versions << save_ontology(commit.oid, save_options)
+        # TODO: elsif f.deleted?
         end
       }
     }
@@ -210,8 +219,8 @@ module Repository::GitRepositories
     {email: user.email, name: user.name}
   end
 
-  def master_file?(ontology, filepath)
-    ontology.path == filepath
+  def master_file?(ontology, save_options)
+    ontology.path == save_options.pre_saving_filepath
   end
 
   def generate_iri(basepath)
