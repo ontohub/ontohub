@@ -15,7 +15,7 @@ class GitRepository
     Commit,
     History
 
-  delegate :path, to: :repo
+  delegate :empty?, :path, to: :repo
 
   def initialize(path)
     if File.exists?(path)
@@ -33,10 +33,6 @@ class GitRepository
 
   def destroy
     FileUtils.rmtree(@repo.path)
-  end
-
-  def empty?
-    @repo.empty?
   end
 
   def dir?(path, commit_oid=nil)

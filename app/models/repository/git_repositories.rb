@@ -3,7 +3,7 @@ require 'git_repository'
 module Repository::GitRepositories
   extend ActiveSupport::Concern
 
-  delegate :get_file, :dir?, :path_exists?, :points_through_file?, :has_changed?, :commits, to: :git
+  delegate :empty?, :get_file, :dir?, :path_exists?, :points_through_file?, :has_changed?, :commits, to: :git
 
   included do
     after_create  :create_and_init_git
@@ -31,16 +31,11 @@ module Repository::GitRepositories
     git.destroy
   end
 
-  def empty?
-    git.empty?
-  end
-
   def is_head?(commit_oid=nil)
     git.is_head?(commit_oid)
   end
 
   def delete_file(filepath, user, message = nil, &block)
-    message ||= "delete file #{filepath}"
     git.delete_file(user_info(user), filepath, &block)
   end
 

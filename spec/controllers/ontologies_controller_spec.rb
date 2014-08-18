@@ -39,6 +39,9 @@ describe OntologiesController do
     context 'signed in' do
       before do
         sign_in user
+
+        allow_any_instance_of(Repository).
+          to receive(:delete_file).and_return('0'*40)
       end
 
       context 'successful deletion' do
