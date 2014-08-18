@@ -2,10 +2,9 @@ class RepositoryDirectory < FakeRecord
   class DirectoryPathValidator < ActiveModel::Validator
     def validate(record)
       if record.repository.points_through_file?(record.target_path)
-        record.errors[:target_directory] = "Error! This path points to or through a file."
-      end
-      if record.repository.dir?(record.target_path)
-        record.errors[:directory_name] = "Error! This path already exists."
+        record.errors[:name] = "Error! This path points to or through a file."
+      elsif record.repository.path_exists?(record.target_path)
+        record.errors[:name] = "Error! This path already exists."
       end
     end
   end
