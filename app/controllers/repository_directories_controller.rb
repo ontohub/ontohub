@@ -1,14 +1,9 @@
 class RepositoryDirectoriesController < InheritedResources::Base
-  defaults resource_class: RepositoryDirectory
   actions :new, :create
 
   helper_method :repository
   before_filter :check_write_permissions, only: [:new, :create]
   before_filter :check_read_permissions
-
-  def new
-    resource
-  end
 
   def create
     if resource.valid?
