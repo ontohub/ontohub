@@ -1,3 +1,10 @@
+AllCops:
+  Exclude:
+    - 'test/**/*'
+    - 'spec/**/*'
+    - 'features/**/*'
+    - 'script/**/*'
+
 # These are all the cops that are enabled in the default configuration.
 
 Style/AccessModifierIndentation:
@@ -28,7 +35,7 @@ Style/AlignParameters:
   Description: >-
                  Align the parameters of a method call if they span more
                  than one line.
-  Enabled: true
+  Enabled: false
 
 Style/AndOr:
   Description: 'Use &&/|| instead of and/or.'
@@ -141,7 +148,7 @@ Style/DeprecatedHashMethods:
 
 Style/Documentation:
   Description: 'Document classes and non-namespace modules.'
-  Enabled: true
+  Enabled: false
 
 Style/DotPosition:
   Description: 'Checks the position of the dot in multi-line method calls.'
@@ -149,11 +156,11 @@ Style/DotPosition:
 
 Style/DoubleNegation:
   Description: 'Checks for uses of double negation (!!).'
-  Enabled: true
+  Enabled: false
 
 Style/EachWithObject:
   Description: 'Prefer `each_with_object` over `inject` or `reduce`.'
-  Enabled: true
+  Enabled: false
 
 Style/EmptyLineBetweenDefs:
   Description: 'Use empty lines between defs.'
@@ -165,7 +172,7 @@ Style/EmptyLines:
 
 Style/EmptyLinesAroundAccessModifier:
   Description: "Keep blank lines around access modifiers."
-  Enabled: true
+  Enabled: false
 
 Style/EmptyLinesAroundBody:
   Description: "Keeps track of empty lines around expression bodies."
@@ -401,7 +408,7 @@ Style/RegexpLiteral:
                  `MaxSlashes` '/' characters.
                  Use %r only for regular expressions matching more than
                  `MaxSlashes` '/' character.
-  Enabled: true
+  Enabled: false
 
 Style/RescueModifier:
   Description: 'Avoid using rescue in its modifier form.'
@@ -419,7 +426,7 @@ Style/Semicolon:
 
 Style/SignalException:
   Description: 'Checks for proper usage of fail and raise.'
-  Enabled: true
+  Enabled: false
 
 Style/SingleLineBlockParams:
   Description: 'Enforces the names of some block params.'
@@ -640,7 +647,7 @@ Lint/AmbiguousRegexpLiteral:
 
 Lint/AssignmentInCondition:
   Description: "Don't use assignment in conditions."
-  Enabled: true
+  Enabled: false
 
 Lint/BlockAlignment:
   Description: 'Align block ends correctly.'
