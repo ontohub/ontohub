@@ -92,7 +92,7 @@ class RepositoryFile < FakeRecord
     ungrouped = content.each_with_index { |entry,i| entry.index = i }
     intermediate_grouped = ungrouped.group_by { |e| {type: e.type, name: basename(e.name)} }
     @grouped = intermediate_grouped.reduce({}) do |hash, (key, value)|
-      hash[key[:name]] = value
+      hash[key] = value
       hash
     end
   end
