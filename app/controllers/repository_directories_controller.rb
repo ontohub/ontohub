@@ -1,4 +1,4 @@
-class DirectoriesController < InheritedResources::Base
+class RepositoryDirectoriesController < InheritedResources::Base
   defaults resource_class: RepositoryDirectory
   actions :new, :create
 
