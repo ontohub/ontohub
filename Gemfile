@@ -83,6 +83,8 @@ gem 'progress_bar', '~> 1.0.2'
 # gem 'sunspot_rails', :git => 'git://github.com/digineo/sunspot.git'
 gem 'elasticsearch-model', '~> 0.1.4'
 gem 'elasticsearch-rails', '~> 0.1.4'
+gem 'elasticsearch', '~> 1.0.4'
+gem 'elasticsearch-extensions', '~> 0.0.15'
 
 # Graph visualization
 gem 'ruby-graphviz', "~> 1.0.8"
