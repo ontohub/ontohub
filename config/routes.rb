@@ -117,7 +117,7 @@ Ontohub::Application.routes.draw do
     end
 
     resources :files, only: [:new, :create]
-    resources :directories, only: [:new, :create]
+    resources :repository_directories, only: [:new, :create]
 
     # action: history, diff, entries_info, files
     get ':ref/files(/*path)',
