@@ -48,6 +48,7 @@ class GitRepository
   end
 
   def path_exists?(url, commit_oid=nil)
+    return false if empty?
     rugged_commit = get_commit(commit_oid)
     if !rugged_commit && url.empty?
       true
