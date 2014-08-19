@@ -12,17 +12,17 @@ class RepositoryDirectory < FakeRecord
     end
   end
 
-  attr_reader :repository, :user, :target_directory, :name
+  attr_accessor :repository, :user, :target_directory, :name
   validates :name, :repository, :user, presence: true
   validates_with DirectoryPathValidator
 
 
   def initialize(*args, &block)
-    opts = args.shift.symbolize_keys
+    opts = (args.shift || {}).symbolize_keys
     @repository = Repository.find_by_path(opts[:repository_id])
     @user = opts[:user]
-    @target_directory = opts[:repository_directory][:target_directory]
-    @name = opts[:repository_directory][:name]
+    @target_directory = (opts[:repository_directory] || {})[:target_directory]
+    @name = (opts[:repository_directory] || {})[:name]
   end
 
   def save!
