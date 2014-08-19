@@ -35,4 +35,8 @@ class Repository < ActiveRecord::Base
     path
   end
 
+  def blank?
+    !self
+  end
+
 end
