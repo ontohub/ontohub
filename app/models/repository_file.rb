@@ -98,7 +98,11 @@ class RepositoryFile < FakeRecord
   end
 
   def basename(name)
-    name.split('.')[0..-2].join('.')
+    if name.length > 0 && name[1..-1].include?('.')
+      name.split('.')[0..-2].join('.')
+    else
+      name
+    end
   end
 
 
