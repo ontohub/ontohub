@@ -69,7 +69,9 @@ class RepositoryFile < FakeRecord
 
   def content
     @content ||= if dir?
-      file.content.map do |git_file|
+      file.content.sort_by do |git_file|
+        "#{git_file.type}#{git_file.name.downcase}"
+      end.map do |git_file|
         self.class.new(repository: self.repository, git_file: git_file)
       end
     else
