@@ -5,7 +5,7 @@ which don't allow for empty directories, a file named
 %i .gitkeep
 will be created in the new directory.
 
-= simple_form_for resource, url: repository_directories_path(repository), html: { class: 'form-horizontal' } do |f|
+= simple_form_for resource, url: repository_repository_directories_path(repository), html: { class: 'form-horizontal' } do |f|
   = f.input :target_directory, as: :hidden
   = f.input :target_directory, disabled: true
   = f.input :name
