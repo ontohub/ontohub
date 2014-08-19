@@ -53,4 +53,38 @@ describe RepositoryDirectory do
       end
     end
   end
+
+  context 'fields' do
+    let(:repository_directory) { FactoryGirl.build :repository_directory }
+    it 'path should be target_directory plus name' do
+      repository_directory.target_directory = 'dir'
+      expect(repository_directory.target_path).
+        to eq(File.join(repository_directory.target_directory, repository_directory.name))
+    end
+  end
+
+  context 'directory creation' do
+    let(:repository_directory) { FactoryGirl.build :repository_directory }
+    let(:repository) { repository_directory.repository }
+    let(:user) { repository_directory.repository.user }
+
+    it 'should create the directory in the git repository' do
+      expect(repository.path_exists?(repository_directory.target_path)).to be_falsy
+      repository_directory.save
+      expect(repository.path_exists?(repository_directory.target_path)).to be_truthy
+    end
+
+    it 'should create the directory in the git repository in a subdirectory' do
+      repository_directory.target_directory = 'test'
+      expect(repository.path_exists?(repository_directory.target_path)).to be_falsy
+      repository_directory.save
+      expect(repository.path_exists?(repository_directory.target_path)).to be_truthy
+    end
+
+    it 'should create a .gitkeep file' do
+      repository_directory.save
+      expect(repository.path_exists?(File.join(repository_directory.target_path, '.gitkeep'))).
+        to be_truthy
+    end
+  end
 end
