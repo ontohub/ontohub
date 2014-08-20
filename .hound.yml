@@ -5,6 +5,8 @@ AllCops:
     - 'features/**/*'
     - 'script/**/*'
 
+ShowCopNames: true
+
 # These are all the cops that are enabled in the default configuration.
 
 Style/AccessModifierIndentation:
