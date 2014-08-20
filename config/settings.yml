@@ -101,6 +101,9 @@ git:
 # saved.
 external_repository_name: 'External'
 
+access_token:
+  expiration_minutes: 360
+
 allowed_iri_schemes:
   - http
   - https

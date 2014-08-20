@@ -6,6 +6,8 @@ module Repository::AssociationsAndAttributes
       has_many :url_maps, dependent: :destroy
       has_many :commits, dependent: :destroy
 
+      has_one :access_token
+
       attr_accessible :name,
                       :description,
                       :source_type,
