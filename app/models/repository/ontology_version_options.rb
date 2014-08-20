@@ -1,5 +1,5 @@
-module Repository::Saving
-  class SaveOptions
+class Repository
+  class OntologyVersionOptions
 
     attr_reader :filepath, :user, :fast_parse, :do_not_parse, :previous_filepath
 
