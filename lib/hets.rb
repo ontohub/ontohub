@@ -110,14 +110,42 @@ we expected it to be matchable by this regular expression:
     config.minimum_version
   end
 
+  class Options
+    attr_accessor :access_token, :structure_only, :url_catalog
+
+    def initialize(access_token: nil, structure_only: false, url_catalog: [])
+      @access_token = access_token
+      @structure_only = structure_only
+      @url_catalog = url_catalog
+    end
+
+    def args
+      access_token_args +
+      structure_only_args +
+      url_catalog_args
+    end
+
+    def access_token_args
+      access_token ? ["--access-token=#{access_token}"] : []
+    end
+
+    def structure_only_args
+      structure_only ? ['-s'] : []
+    end
+
+    def url_catalog_args
+      url_catalog.empty? ? [] : ['-C', url_catalog.join(',')]
+    end
+  end
+
   def self.qualified_loc_id_for(resource)
     "http://#{Settings.hostname}#{resource.versioned_locid}"
   end
 
-  def self.parse_via_api(resource, url_catalog = [], structure_only: false)
-    mode = structure_only ? :fast_run : :default
+  def self.parse_via_api(resource, options = nil)
+    mode = (options && options.structure_only) ? :fast_run : :default
 
-    parse_caller = Hets::ParseCaller.new(HetsInstance.choose!, url_catalog)
+    parse_caller = Hets::ParseCaller.new(HetsInstance.choose!, options)
 
     parse_caller.call(qualified_loc_id_for(resource), with_mode: mode)
   end
@@ -135,7 +163,7 @@ we expected it to be matchable by this regular expression:
   end
 
   # Runs hets with input_file and returns XML output file path.
-  def self.parse(input_file, url_catalog = [], output_path = nil, structure_only: false)
+  def self.parse(input_file, output_path = nil, options = nil)
 
     # Arguments to run the subprocess
     args = [config.path, *%w( -o pp.xml -o xml --full-signatures -a none -v2 --full-theories )]
@@ -145,9 +173,8 @@ we expected it to be matchable by this regular expression:
       args += ['-O', output_path]
     end
 
-    args += ['-s'] if structure_only
-
-    args += ['-C', url_catalog.join(',')] unless url_catalog.empty?
+    # options is of class Hets::Options
+    args += options.args if options
 
     # Configure stack size
     args += ['+RTS', "-K#{config.stack_size}", '-RTS']

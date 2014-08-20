@@ -8,7 +8,7 @@ describe Hets, :needs_hets do
 
   context 'Output directory parameter' do
     before do
-      xml_paths = Hets.parse(ontology_file('owl/pizza'), [], '/tmp')
+      xml_paths = Hets.parse(ontology_file('owl/pizza'), '/tmp')
       @xml_path = xml_paths.last
     end
 
@@ -23,7 +23,7 @@ describe Hets, :needs_hets do
       let(:user) { create :user }
 
       before do
-        xml_paths = Hets.parse(ontology_file(path), [], '/tmp')
+        xml_paths = Hets.parse(ontology_file(path), '/tmp')
         @xml_path = xml_paths.last
         @pp_path = xml_paths.first
       end
@@ -45,9 +45,10 @@ describe Hets, :needs_hets do
       'https://colore.oor.net=https://develop.ontohub.org/colore/ontologies']
     end
     let(:catalog_args) do
-      # any_args is a "don't care which and how many arguments" in rspeck mocks.
+      # any_args is a "don't care which and how many arguments" in rspec mocks.
       [any_args, '-C', url_catalog.join('/'), any_args]
     end
+    let(:options) { Hets::Options.new(url_catalog: url_catalog) }
 
     before do
       allow(Subprocess).to receive(:run).with(*catalog_args).
@@ -55,11 +56,11 @@ describe Hets, :needs_hets do
     end
 
     it 'have called hets with the catalog' do
-      expect(Hets.parse(input_file, url_catalog, '/tmp')).to eq(['some_file'])
+      expect(Hets.parse(input_file, '/tmp', options)).to eq(['some_file'])
     end
 
     it 'created a subprocess with catalog arguments' do
-      Hets.parse(input_file, url_catalog, '/tmp')
+      Hets.parse(input_file, '/tmp', options)
       expect(Subprocess).to(have_received(:run).with(*catalog_args))
     end
   end
