@@ -8,7 +8,7 @@ FactoryGirl.define do
     "#{Faker::Lorem.word}_#{n}"
   end
 
-  factory :ontology do
+  factory :ontology do |ontology|
     association :repository
     iri { FactoryGirl.generate :iri }
     name { FactoryGirl.generate :name }
