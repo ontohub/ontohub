@@ -48,7 +48,8 @@ module Repository::GitRepositories
     version = nil
 
     git.add_file(user_info(user), tmp_file, filepath, message) do |commit_oid|
-      ontology_version_options = Repository::OntologyVersionOptions.new(filepath, user, do_not_parse: do_not_parse)
+      ontology_version_options = Repository::OntologyVersionOptions.new(
+        filepath, user, do_not_parse: do_not_parse)
       version = save_ontology(commit_oid, ontology_version_options)
     end
     touch
