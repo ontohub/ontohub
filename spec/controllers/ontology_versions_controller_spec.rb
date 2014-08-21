@@ -6,7 +6,6 @@ describe OntologyVersionsController do
 
     let(:user) { create :user }
     let(:ontology) { create :distributed_ontology }
-    let!(:version) { create :ontology_version, ontology: ontology }
     let(:ontology_child) { ontology.reload; ontology.children.first }
     let(:repository) { ontology.repository }
 
@@ -21,7 +20,7 @@ describe OntologyVersionsController do
       end
 
       it 'should assign the parents versions' do
-        expect(assigns(:versions)).to eq([version])
+        expect(assigns(:versions)).to eq([ontology_child.current_version])
       end
     end
 
