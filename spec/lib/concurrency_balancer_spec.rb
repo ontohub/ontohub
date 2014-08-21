@@ -48,6 +48,34 @@ describe ConcurrencyBalancer do
     end
   end
 
+  context 'unlocking a marked iri "on error"' do
+    it 'should not complain' do
+      redis.sadd ConcurrencyBalancer::REDIS_KEY, 'iri'
+      expect { balancer.unmark_as_processing_on_error('iri') }.
+        not_to raise_error
+    end
+
+    it 'should work nicely' do
+      redis.sadd ConcurrencyBalancer::REDIS_KEY, 'iri'
+      balancer.unmark_as_processing_on_error('iri')
+      expect(redis.sismember ConcurrencyBalancer::REDIS_KEY, 'iri').
+        to be_falsy
+    end
+  end
+
+  context 'unlocking an unmarked iri "on error"' do
+    it 'should not complain' do
+      expect { balancer.unmark_as_processing_on_error('iri') }.
+        not_to raise_error
+    end
+
+    it 'should work nicely' do
+      balancer.unmark_as_processing_on_error('iri')
+      expect(redis.sismember ConcurrencyBalancer::REDIS_KEY, 'iri').
+        to be_falsy
+    end
+  end
+
   context 'using the sequential lock' do
     it 'should fail when lock is taken' do
       redis.sadd(ConcurrencyBalancer::SEQUENTIAL_LOCK_KEY, true)

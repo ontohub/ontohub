@@ -318,4 +318,37 @@ describe Ontology do
 
   end
 
+  context 'Import Ontology with an error occurring while parsing' do
+    let(:user) { create :user }
+    let(:ontology) { create :single_ontology }
+    let(:error_text) { 'An error occurred' }
+
+    before do
+      # Stub ontology_end because this is always run after the iri
+      # has been locked by the ConcurrencyBalancer.
+      allow_any_instance_of(Hets::NodeEvaluator).
+        to receive(:ontology_end).and_raise(error_text)
+    end
+
+    it 'should propagate the error' do
+      expect { parse_this(user, ontology, fixture_file('test1.xml'),
+                 fixture_file('test1.pp.xml')) }.
+        to raise_error(Exception, error_text)
+    end
+
+    it 'should be possible to parse it again (no AlreadyProcessingError)' do
+      begin
+        parse_this(user, ontology, fixture_file('test1.xml'),
+                 fixture_file('test1.pp.xml'))
+      rescue Exception => e
+        allow_any_instance_of(Hets::NodeEvaluator).
+          to receive(:ontology_end).and_call_original
+
+        expect { parse_this(user, ontology, fixture_file('test1.xml'),
+                 fixture_file('test1.pp.xml')) }.
+          not_to raise_error
+      end
+    end
+  end
+
 end
