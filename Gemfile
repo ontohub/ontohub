@@ -115,7 +115,7 @@ group :test do
 
   gem 'cucumber-rails', '~> 1.4', require: false
   # Code Coverage Analysis
-  gem 'coveralls', '~> 0.7.0', require: false
+  gem 'simplecov', '~> 0.9.0', require: false
 
   # Writing test ontologies
   gem 'ontology-united', github: '0robustus1/ontology-united'
