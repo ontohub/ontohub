@@ -7,6 +7,7 @@ use_simplecov
 
 require File.expand_path('../../config/environment', __FILE__)
 require 'rails/test_help'
+require 'mocha/mini_test'
 
 require Rails.root.join('config', 'database_cleaner.rb')
 

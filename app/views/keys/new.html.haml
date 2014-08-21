@@ -1,7 +1,7 @@
 %h2= @page_title = 'Add new SSH Key'
 
 = simple_form_for resource, html: { class: 'form-horizontal' } do |f|
-  = f.input :name
+  = f.input :name, as: :string
   = f.input :key
   .control-group
     .controls= f.button :submit, disable_with: t(:wait), class: 'btn btn-primary'

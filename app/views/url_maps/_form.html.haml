@@ -1,4 +1,4 @@
 = simple_form_for [repository, resource], html: {class: 'form-horizontal' } do |f|
-  = f.input :source, input_html: { class: 'input-xlarge' }, required: true
-  = f.input :target, input_html: { class: 'input-xlarge' }, required: true
+  = f.input :source, input_html: { class: 'input-xlarge' }, required: true, as: :string
+  = f.input :target, input_html: { class: 'input-xlarge' }, required: true, as: :string
   = f.button :wrapped

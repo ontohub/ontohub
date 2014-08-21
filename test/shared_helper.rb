@@ -34,7 +34,6 @@ module SharedHelper
   end
 
   def use_simplecov
-
     SimpleCov.start do
       add_group "Models",      "app/models"
       add_group "Controllers", "app/controllers"
@@ -48,11 +47,6 @@ module SharedHelper
       gemsets.each do |gemset|
         add_filter AppRootFilter.new("#{gemset}/")
       end
-    end
-
-    if defined? Coveralls
-      # is loaded in the Rake task 'test:coveralls'
-      Coveralls.wear_merged!('rails')
     end
   end
 

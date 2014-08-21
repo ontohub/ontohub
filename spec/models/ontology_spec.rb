@@ -367,7 +367,6 @@ describe Ontology do
       expect { parse_this(user, ontology, fixture_file('test1.xml'),
                  fixture_file('test1.pp.xml')) }.
         to raise_error(Exception, error_text)
-      Hets::NodeEvaluator.any_instance.unstub(:ontology_end)
     end
 
     it 'should be possible to parse it again (no AlreadyProcessingError)' do

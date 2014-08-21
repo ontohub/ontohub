@@ -26,6 +26,8 @@ class OntologyVersion < ActiveRecord::Base
 
   delegate :repository, to: :ontology
 
+  acts_as_tree
+
   # updated_at of the latest version
   def self.last_updated_at
     latest.first.try(:updated_at)
