@@ -4,6 +4,7 @@ module Hets
     ROOT = 'DGraph'
     ONTOLOGY = 'DGNode'
     SYMBOL = 'Symbol'
+    SYMBOL_LIST = 'Symbols'
     AXIOM = 'Axiom'
     IMPAXIOMS = 'ImpAxioms'
     AXIOMS = 'Axioms'
@@ -56,6 +57,8 @@ module Hets
             @current_link['map'] << @current_symbol
           end
           @current_axiom['symbol_hashes'] << @current_symbol if @current_axiom
+        when SYMBOL_LIST
+          @in_symbol_list = true
         when IMPAXIOMS
           @in_imp_axioms = true
         when AXIOMS
@@ -104,9 +107,12 @@ module Hets
           else
             # return the current symcol
             in_mapping_link = @current_link && @current_link['map']
-            call_back(:symbol, order, @current_symbol) unless in_mapping_link
+            perform_callback = @in_symbol_list && !in_mapping_link
+            call_back(:symbol, order, @current_symbol) if perform_callback
           end
           @current_symbol = nil
+        when SYMBOL_LIST
+          @in_symbol_list = false
         when IMPAXIOMS
           @in_imp_axioms = false
         when AXIOMS
