@@ -2,6 +2,7 @@ require 'sidekiq/worker'
 
 # Worker for Sidekiq
 class Worker < BaseWorker
+  sidekiq_options queue: 'hets'
 
   # Because of the JSON-Parsing the hash which contains
   # the try_count will contain the try_count key
@@ -18,7 +19,9 @@ class Worker < BaseWorker
       clazz.constantize.send method, *args
     when 'record'
       id = args.shift
-      clazz.constantize.find(id).send method, *args
+      klass = clazz.constantize
+      TimeoutWorker.start_timeout_clock(id) if klass == OntologyVersion
+      klass.find(id).send method, *args
     else
       raise ArgumentError, "unsupported type: #{type}"
     end

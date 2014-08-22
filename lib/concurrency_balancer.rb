@@ -33,6 +33,12 @@ class ConcurrencyBalancer
     raise UnmarkedProcessingError, "This iri <#{iri}> should've being marked as done, but wasn't marked as processing beforehand" unless successful
   end
 
+  # This unlocks the iri on an error in order to
+  # allow processing it again another time.
+  def unmark_as_processing_on_error(iri)
+    successful = redis.srem REDIS_KEY, iri
+  end
+
   # Basic sequential lock which ensures that only one
   # (concurrently executed job) can be really executed
   # at the same time (used as part of the sequential queue).

@@ -73,11 +73,31 @@ class Ontology < ActiveRecord::Base
 
   scope :list, includes(:logic).order('ontologies.state asc, ontologies.entities_count desc')
 
+  scope :with_path, ->(path) do
+    condition = <<-CONDITION
+      ("ontology_versions"."file_extension" = :extname)
+        OR (("ontology_versions"."file_extension" IS NULL)
+          AND ("ontologies"."file_extension" = :extname))
+    CONDITION
 
-  scope :find_with_path, ->(path) do
-    where "ontologies.basepath = :basepath AND ontologies.file_extension = :file_extension",
-      basepath: File.basepath(path),
-      file_extension: File.extname(path)
+    with_basepath(File.basepath(path)).
+      where(condition, extname: File.extname(path)).
+      readonly(false)
+  end
+
+  scope :with_basepath, ->(path) do
+    join = <<-JOIN
+      LEFT JOIN "ontology_versions"
+      ON "ontologies"."ontology_version_id" = "ontology_versions"."id"
+    JOIN
+
+    condition = <<-CONDITION
+      ("ontology_versions"."basepath" = :path)
+        OR (("ontology_versions"."basepath" IS NULL)
+          AND ("ontologies"."basepath" = :path))
+    CONDITION
+
+    joins(join).where(condition, path: path).readonly(false)
   end
 
   scope :parents_first, order('(CASE WHEN ontologies.parent_id IS NULL THEN 1 ELSE 0 END) DESC, ontologies.parent_id asc')
@@ -114,10 +134,6 @@ class Ontology < ActiveRecord::Base
     self.is?('OWL') || self.is?('OWL2')
   end
 
-  def path
-    "#{basepath}#{file_extension}"
-  end
-
   def symbols
     entities
   end
@@ -133,11 +149,6 @@ class Ontology < ActiveRecord::Base
   # Title for links
   def title
     name? ? iri : nil
-  end
-
-
-  def self.find_by_file(file)
-    s_find_by_file(file).first
   end
 
   def self.find_with_iri(iri)
@@ -217,13 +228,27 @@ class Ontology < ActiveRecord::Base
       where('imported = ?', true)
   end
 
-  protected
-
-  scope :s_find_by_file, ->(file) do
-    where "ontologies.basepath = :basepath AND ontologies.file_extension = :file_extension AND ontologies.parent_id IS NULL",
-      basepath: File.basepath(file),
-      file_extension: File.extname(file)
+  def current_version
+    self.versions.current
   end
+
+  def basepath
+    has_versions? ? current_version.basepath : read_attribute(:basepath)
+  end
+
+  def file_extension
+    has_versions? ? current_version.file_extension : read_attribute(:file_extension)
+  end
+
+  def path
+    "#{basepath}#{file_extension}"
+  end
+
+  def has_versions?
+    current_version.present?
+  end
+
+  protected
 
   def import_links
     Link.where(source_id: self.id, kind: "import")

@@ -1,5 +1,5 @@
 class OntologyBatchParseWorker < BaseWorker
-  sidekiq_options retry: false
+  sidekiq_options retry: false, queue: 'hets'
 
   def perform(*args, try_count: 1)
     establish_arguments(args, try_count: try_count)
@@ -13,6 +13,8 @@ class OntologyBatchParseWorker < BaseWorker
     return if versions.empty?
 
     version_id, opts = versions.head
+    TimeoutWorker.start_timeout_clock(version_id)
+
     version = OntologyVersion.find(version_id)
 
     opts.each do |method_name, value|

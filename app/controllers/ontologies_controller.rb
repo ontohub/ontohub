@@ -97,7 +97,7 @@ class OntologiesController < InheritedResources::Base
   def oops_state
     respond_to do |format|
       format.json do
-        respond_with resource.versions.current.try(:request)
+        respond_with resource.current_version.try(:request)
       end
     end
   end

@@ -1,0 +1,15 @@
+- if view.any_processing_ontologies?
+  %h3= t('status.processing_ontologies')
+  .row
+    %ul.fancy_ontology_list.col-md-6
+      - view.processing_ontology_data.each do |data|
+        %li.status_box.well.well-sm
+          .first-line
+            - if data.ontology_version
+              %span= fancy_link data.ontology
+              has been running for
+              %span= data.running_for
+          - unless data.ontology && data.ontology.distributed?
+            .second_line
+              %span{class: "label label-#{data.processing_iri ? 'default' : 'danger'}"}
+                = data.processing_iri ? data.processing_iri : t('status.no_iri')

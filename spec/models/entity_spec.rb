@@ -13,7 +13,7 @@ describe Entity do
     let(:xml_path) { Rails.root + 'test/fixtures/ontologies/xml/' + 'pizza.xml' }
 
     before do
-      ontology.import_xml_from_file xml_path, nil, user
+      parse_this(user, ontology, xml_path, nil)
     end
 
     it 'should have the correct number of described entities' do

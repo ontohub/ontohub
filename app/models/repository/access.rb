@@ -4,7 +4,7 @@ module Repository::Access
 
   class RemoteAccessValidator < ActiveModel::Validator
     def validate(record)
-      if record.remote? && (record.private_rw? || record.public_rw?)
+      if record.mirror? && (record.private_rw? || record.public_rw?)
         record.errors[:access] = "Error! Write access is not allowed for a mirrored repositry."
       end
     end
@@ -14,7 +14,7 @@ module Repository::Access
   DEFAULT_OPTION = OPTIONS[0]
 
   included do
-    scope :pub, where("access != 'private'")
+    scope :pub, where("access NOT LIKE 'private%'")
     scope :accessible_by, ->(user) do
       if user
         where("access NOT LIKE 'private%'

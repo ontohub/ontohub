@@ -1,0 +1,17 @@
+#!/usr/bin/env ruby
+#
+# This file was placed here by Ontohub.
+# It makes sure that your pushed commits will be processed properly.
+#
+
+require File.expand_path('../../lib/init',  File.realdirpath(__FILE__))
+require 'git_update'
+
+key_id    = ENV['KEY_ID']
+repo_path = `pwd`.strip
+
+# post-receive can get many branches (with git push --all)
+STDIN.read.split("\n").each do |refs|
+  oldrev, newrev, refname = refs.split(' ')
+  GitUpdate.update_redis(repo_path, oldrev, newrev, refname, key_id) if refname = 'refs/heads/master'
+end

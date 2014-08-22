@@ -1,9 +1,21 @@
 class Permission < ActiveRecord::Base
-
+  MINIMAL_OWNER_COUNT = 1
   ROLES = %w(owner editor reader)
 
   # thrown if the last admin/owner tries to remove itself
   class PowerVaccuumError < StandardError; end
+
+  class OwnerCountValidator < ActiveModel::Validator
+    def validate(record)
+      if record.degrading_owner? && record.minimal_owner_count_reached?
+        record.errors[:item_id] = I18n.t('permission.errors.falling_short_of_owner_count',
+          minimal_count: MINIMAL_OWNER_COUNT,
+          item: record.item.class)
+      end
+    end
+  end
+
+  validates_with OwnerCountValidator
 
   attr_accessible :subject, :subject_id, :subject_type, :role
 
@@ -47,5 +59,25 @@ class Permission < ActiveRecord::Base
     a_index <=> b_index
   end
 
+  def destroy
+    if self.role == 'owner' && self.minimal_owner_count_reached?
+      raise PowerVaccuumError, I18n.t('permission.errors.falling_short_of_owner_count',
+            minimal_count: MINIMAL_OWNER_COUNT,
+            item: self.item.class)
+    end
+    super
+  end
+
+  def was_already_owner?
+    self.persisted? && self.role_was == 'owner'
+  end
+
+  def minimal_owner_count_reached?
+    self.item.permissions.owner.size <= MINIMAL_OWNER_COUNT
+  end
+
+  def degrading_owner?
+    self.was_already_owner? && self.role_changed?
+  end
 
 end

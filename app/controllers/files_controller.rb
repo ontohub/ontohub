@@ -1,28 +1,18 @@
-class FilesController < ApplicationController
+class FilesController < InheritedResources::Base
+  defaults resource_class: RepositoryFile
+  defaults singleton: true
 
   helper_method :repository, :ref, :oid, :path, :branch_name
   before_filter :check_write_permissions, only: [:new, :create, :update]
   before_filter :check_read_permissions
 
-  def files
-    @info = repository.path_info(params[:path], oid)
-
-    raise Repository::FileNotFoundError, path if @info.nil?
-
+  def show
     if owl_api_header_in_accept_header?
       send_download(path, oid)
     elsif existing_file_requested_as_html?
-      case @info[:type]
-      when :file
-        @file = repository.read_file(path, oid)
-      when :file_base
-        ontology = repository.ontologies.
-                    where(basepath: File.basepath(@info[:entry][:path])).
-                    order('id asc').first
-        if request.query_string.present?
-          ontology = ontology.children.
-            where(name: request.query_string).first
-        end
+      # TODO: the query_string check should be done in the iri router
+      if request.query_string.present?
+        ontology = resource.ontologies.first.children.where(name: request.query_string).first
         redirect_to [repository, ontology]
       end
     else
@@ -53,23 +43,23 @@ class FilesController < ApplicationController
     if repository.empty?
       @commits = []
     else
-      @current_file = repository.read_file(path, oid) if path && !repository.dir?(path)
+      @current_file = repository.get_file(path, oid) if path && !repository.dir?(path)
       @commits = repository.commits(start_oid: oid, path: path, offset: offset, limit: @per_page)
     end
   end
 
   def new
-    build_file
+    @repository_file = resource_class.build(params.merge(user: current_user))
   end
 
   def create
-    if build_file.valid?
-      repository.save_file @file.file.path, @file.filepath, @file.message, current_user
+    @repository_file = resource_class.create(params.merge(user: current_user))
+    if resource.valid?
       flash[:success] = "Successfully saved the uploaded file."
-      if ontology = repository.ontologies.find_by_file(@file.filepath)
+      if ontology = repository.ontologies.with_path(resource.target_path).without_parent.first
         redirect_to edit_repository_ontology_path(repository, ontology)
       else
-        redirect_to fancy_repository_path(repository, path: @file.filepath)
+        redirect_to fancy_repository_path(repository, path: resource.target_path)
       end
     else
       render :new
@@ -77,25 +67,20 @@ class FilesController < ApplicationController
   end
 
   def update
-    if update_file.valid?
-      repository.save_file @file_changed.file.path, @file_changed.filepath, @file_changed.message, current_user
-      FileUtils.rm_rf(@file_changed.file.path)
+    @repository_file = resource_class.create(params.merge(user: current_user))
+    if resource.valid?
       flash[:success] = "Successfully changed the file."
-      redirect_to fancy_repository_path(repository, path: @file_changed.filepath)
+      redirect_to fancy_repository_path(repository, path: resource.target_path)
     else
-      @info = repository.path_info(params[:path], oid)
-      @file = repository.read_file(path, oid)
-
-      @info[:file][:content] = params[:content]
-      @file[:content] = params[:content]
-
-      flash[:error] = @file_changed.errors
-
-      render :files
+      render :show
     end
   end
 
   protected
+
+  def resource
+    @repository_file ||= resource_class.find_with_path(params)
+  end
 
   def repository
     @repository ||= Repository.find_by_path!(params[:repository_id])
@@ -103,27 +88,6 @@ class FilesController < ApplicationController
 
   def ref
     params[:ref] || 'master'
-  end
-
-  def build_file
-    args = params[:upload_file].merge({repository: repository}) unless params[:upload_file].nil?
-    @file ||= UploadFile.new(args)
-  end
-
-  def update_file
-    filepath = Rails.root.join('tmp', 'files', oid, "#{Time.now.nsec}_#{params[:path].split('/')[-1]}")
-    FileUtils.mkdir_p(filepath.split[0])
-
-    tmp_file = File.open(filepath, 'w+') do |f|
-      f.write(params[:content])
-    end
-
-    @file_changed = UploadFile.new(
-      target_directory: params[:path].split('/')[0..-2].join('/'),
-      target_filename: params[:path].split('/')[-1],
-      message: params[:message],
-      repository: repository,
-      file: File.new(filepath))
   end
 
   def check_read_permissions
@@ -135,7 +99,7 @@ class FilesController < ApplicationController
   end
 
   def send_download(path, oid)
-    render text: repository.read_file(path, oid)[:content],
+    render text: repository.get_file(path, oid).content,
            content_type: Mime::Type.lookup('application/force-download')
   end
 
@@ -166,7 +130,7 @@ class FilesController < ApplicationController
   end
 
   def existing_file_requested_as_html?
-    request.accepts.first == Mime::HTML || @info[:type] != :file
+    request.accepts.first == Mime::HTML || !resource.file?
   end
 
 end

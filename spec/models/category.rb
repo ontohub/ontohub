@@ -32,8 +32,7 @@ describe Category do
     before do
       @user = FactoryGirl.create :user
       @ontology = FactoryGirl.create :single_ontology
-      @ontology.import_xml_from_file fixture_file('Domain_Fields_Core.xml'),
-        fixture_file('Domain_Fields_Core.pp.xml'), @user
+      parse_this(@user, @ontology, fixture_file('Domain_Fields_Core.xml'), fixture_file('Domain_Fields_Core.pp.xml'))
       @ontology.create_categories
     end
 

@@ -31,7 +31,7 @@ module RepositoriesHelper
 
   def access_options
     t('repository.access.options').select do |k,v|
-      if @repository.remote?
+      if @repository.mirror?
         k.to_s.split('_')[1] == 'r'
       else
         true
@@ -39,4 +39,7 @@ module RepositoriesHelper
     end.invert
   end
 
+  def repository_modal_body
+    modal_body(t("delete_repository"), t("delete_repository_desc"), (controller_name == "repositories" ? resource : parent), t("repository.delete"))
+  end
 end

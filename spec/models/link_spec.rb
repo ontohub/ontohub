@@ -19,9 +19,7 @@ describe Link do
           let(:link) { dist_ontology.links.first }
 
           before do
-            dist_ontology.
-              import_xml_from_file fixture_file('reference.xml'),
-                fixture_file('reference.pp.xml'), user
+            parse_this(user, dist_ontology, fixture_file('reference.xml'), fixture_file('reference.pp.xml'))
           end
 
           it 'should have the link-source set correctly' do
@@ -30,6 +28,15 @@ describe Link do
           it 'should have the link-target set correctly' do
             expect(link.target).to eq(target_ontology)
           end
+
+          it 'has a link-version set' do
+            expect(link.link_version).to_not be_nil
+          end
+
+          it 'has a link-version that points to the current link-version' do
+            expect(link.link_version).to eq(link.versions.current)
+          end
+
         end
       end
     end

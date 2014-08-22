@@ -59,6 +59,10 @@ class ApplicationController < ActionController::Base
     params[:all].present?
   end
 
+  def paginate_for(collection)
+    Kaminari.paginate_array(collection).page(params[:page])
+  end
+
   helper_method :display_all?
 
 end
