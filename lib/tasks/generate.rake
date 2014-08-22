@@ -11,7 +11,7 @@ end
 namespace :generate do
   desc 'Import the categories for the ontologies'
   task :categories => :environment do
-    repository = Repository.where(name: "meta").first_or_create!(description: "Meta ontologies for Ontohub")
+    repository = Repository.where(name: 'meta').first_or_create!(description: 'Meta ontologies for Ontohub')
     ontology = repository.ontologies.where("name ilike '%Domain Fields Core'").first
     if ontology
       ontology.create_categories
