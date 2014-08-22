@@ -16,7 +16,6 @@ namespace :generate do
     if ontology
       ontology.create_categories
     else
-      repository = Repository.where(name: "meta").first_or_create!(description: "Meta ontologies for Ontohub")
       user = User.where(admin: true).first
       filepath = "#{Rails.root}/test/fixtures/ontologies/categories.owl"
       system("wget -O #{filepath} https://ontohub.org/repositories/meta/master/download/Domain_Fields_Core.owl")
