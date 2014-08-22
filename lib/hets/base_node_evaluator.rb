@@ -63,6 +63,9 @@ module Hets
         default_method_name = :"#{node_type}_#{order}"
         self.send(default_method_name, *args) if respond_to?(default_method_name)
       end
+    rescue Exception => e
+      cancel_concurrency_handling_on_error
+      raise e
     end
 
     private
@@ -95,6 +98,12 @@ module Hets
     def finish_concurrency_handling
       all_dgnodes_parsed = next_dgnode_stack_id == hets_evaluator.dgnode_count
       concurrency.mark_as_finished_processing(dgnode_stack.last) if all_dgnodes_parsed
+    end
+
+    def cancel_concurrency_handling_on_error
+      dgnode_stack.reverse_each do |dgnode|
+        concurrency.unmark_as_processing_on_error(dgnode)
+      end
     end
 
   end
