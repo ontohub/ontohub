@@ -45,7 +45,7 @@ module OntologyVersion::Parsing
   def generate_xml(structure_only: false)
     hets_options =
       Hets::HetsOptions.new(:'url-catalog' => ontology.repository.url_maps,
-                            :'access-token' => ontology.repository.access_token_get_or_generate)
+                            :'access-token' => ontology.repository.generate_access_token)
     input_io = Hets.parse_via_api(ontology, hets_options,
                                   structure_only: structure_only)
     [:all_is_well, input_io]

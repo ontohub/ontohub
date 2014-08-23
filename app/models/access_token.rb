@@ -12,16 +12,6 @@ class AccessToken < ActiveRecord::Base
     Time.now > expiration
   end
 
-  def refresh!
-    self.expiration = self.class.fresh_expiration_date
-    save!
-  end
-
-  def replace
-    self.destroy
-    self.class.build_for(repository)
-  end
-
   def self.build_for(repository)
     AccessToken.new({repository: repository,
       expiration: fresh_expiration_date,
