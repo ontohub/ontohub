@@ -203,6 +203,8 @@ Style/EvenOdd:
 Style/FileName:
   Description: 'Use snake_case for source file names.'
   Enabled: true
+  Exclude:
+    - 'db/**/*'
 
 Style/FlipFlop:
   Description: 'Checks for flip flops'
