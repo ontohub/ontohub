@@ -69,7 +69,8 @@ module Repository::GitRepositories
 
   def save_ontology(commit_oid, ontology_version_options)
     # we expect that this method is only called, when the ontology is 'present'
-    return unless Ontology.file_extensions.include?(File.extname(ontology_version_options.filepath))
+    return unless Ontology.file_extensions.include?(
+      File.extname(ontology_version_options.filepath))
 
     ontology = find_or_create_ontology(ontology_version_options)
 
