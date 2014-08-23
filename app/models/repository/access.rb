@@ -14,7 +14,7 @@ module Repository::Access
   DEFAULT_OPTION = OPTIONS[0]
 
   included do
-    has_one :access_token
+    has_many :access_token
 
     scope :pub, where("access NOT LIKE 'private%'")
     scope :accessible_by, ->(user) do
@@ -34,22 +34,18 @@ module Repository::Access
       inclusion: { in: Repository::Access::OPTIONS }
   end
 
-  def access_token_get_or_generate
+  def generate_access_token
     if is_private
-      if access_token
-        if access_token.expired?
-          self.access_token = access_token.replace
-          save
-        else
-          access_token.refresh!
-        end
-      else
-        self.access_token = AccessToken.build_for(self)
-        save
-      end
+      access_token = AccessToken.build_for(self)
+      self.access_token << access_token
+      save
 
       access_token
     end
+  end
+
+  def destroy_expired_access_tokens
+    access_tokens.select(&:expired?).map(&:destroy)
   end
 
   def is_private
