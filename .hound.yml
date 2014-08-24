@@ -533,6 +533,7 @@ Style/SpecialGlobalVars:
 Style/StringLiterals:
   Description: 'Checks if uses of quotes match the configured preference.'
   Enabled: true
+  EnforcedStyle: single_quotes
 
 Style/Tab:
   Description: 'No hard tabs.'
