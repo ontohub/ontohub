@@ -10,9 +10,9 @@ module Sentence::Readability
       end
     end
 
-    if new_text != self.text
-      self.display_text = new_text
-      save!
-    end
+    new_text.gsub!(/\s+/, ' ')
+
+    self.display_text = new_text
+    save!
   end
 end
