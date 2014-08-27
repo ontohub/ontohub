@@ -20,11 +20,12 @@ namespace :generate do
       filepath = "#{Rails.root}/test/fixtures/ontologies/categories.owl"
       system("wget -O #{filepath} https://ontohub.org/repositories/meta/master/download/Domain_Fields_Core.owl")
       basename = File.basename(filepath)
-      version = repository.save_file filepath, basename, "#{basename} added", user, do_not_parse: true
+      version = repository.save_file(filepath, basename, "#{basename} added", user, do_not_parse: true)
       version.parse
-      version.ontology.create_categories
       system("rm #{filepath}")
+      ontology = version.ontology
     end
+    ontology.create_categories
   end
 
   desc 'Generate entity trees for ALL OWL ontologies'
