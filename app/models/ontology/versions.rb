@@ -18,6 +18,13 @@ module Ontology::Versions
         end
       end
 
+    has_many :persisted_errors,
+      through: :versions
+
+    has_one :current_error,
+      through: :ontology_version
+
+
     attr_accessible :versions_attributes
     accepts_nested_attributes_for :versions
 
