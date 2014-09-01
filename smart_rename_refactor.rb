@@ -194,8 +194,10 @@ module Super
     def rename_table(sql_statement)
       if sql_statement =~ /^\s*CREATE TABLE (\S+)/
         old_name = $1
-        new_name = translate(old_name)
-        push(:change, "rename_table '#{old_name}', '#{new_name}'") if new_name
+        if new_name = translate(old_name)
+          push(:up, "rename_table '#{old_name}', '#{new_name}'")
+          push(:down, "rename_table '#{new_name}', '#{old_name}'")
+        end
       end
     end
 
@@ -205,8 +207,10 @@ module Super
         sql_statement.lines[1..-2].each do |column_line|
           if column_line =~ /^\s+(\S+)\s+/
             column_name = $1
-            new_column_name = translate(column_name)
-            push(:change, "rename_column '#{table_name}', '#{column_name}', '#{new_column_name}'") if new_column_name
+            if new_column_name = translate(column_name)
+              push(:up, "rename_column '#{table_name}', '#{column_name}', '#{new_column_name}'")
+              push(:down, "rename_column '#{table_name}', '#{new_column_name}', '#{column_name}'")
+            end
           end
         end
       end
