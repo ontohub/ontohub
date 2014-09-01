@@ -120,6 +120,7 @@ module Super
         rename_columns(sql_statement)
         rename_table(sql_statement)
         rebuild_index(sql_statement)
+        rename_in_function(sql_statement)
       end
 
       puts migration_commands.map(&:inspect).join("\n") if dry_run && verbose
@@ -143,6 +144,51 @@ module Super
       sql_statements.map do |statement|
         statement.split(' ')[0..1].join(' ')
       end.uniq
+    end
+
+    def rename_in_function(sql_statement)
+      if m = sql_statement.match(/^\s*CREATE FUNCTION (?<signature>.+?\))(?<header>.+?)(\s*LANGUAGE (?<language>.+?))\s*AS\s+(?<name>.+?)\s*BEGIN\s+(?<body>.+?)\s*END;/m)
+
+        translated = [m[:signature],m[:header], m[:name], m[:body]].map { |t| translate t }
+        if translated.any?
+          new_signature = translate(m[:signature]) || m[:signature]
+          new_header = translate(m[:header]) || m[:header]
+          new_name = translate(m[:name]) || m[:name]
+          new_body = translate(m[:body]) || m[:body]
+
+          drop_old_function = <<-DROP_FUNCTION
+      DROP FUNCTION #{m[:signature]};
+    DROP_FUNCTION
+
+          drop_new_function = <<-DROP_FUNCTION
+      DROP FUNCTION #{new_signature};
+    DROP_FUNCTION
+
+          create_old_function = <<-CREATE_FUNCTION
+      CREATE OR REPLACE FUNCTION #{m[:signature]}
+      #{m[:header]} AS #{m[:name]}
+      BEGIN
+      #{m[:body]}
+      END;
+      #{m[:name]} language #{m[:language]};
+    CREATE_FUNCTION
+
+          create_new_function = <<-CREATE_FUNCTION
+      CREATE OR REPLACE FUNCTION #{new_signature}
+      #{new_header} AS #{m[:name]}
+      BEGIN
+      #{new_body}
+      END;
+      #{new_name} language #{m[:language]};
+    CREATE_FUNCTION
+
+          push(:up, "execute <<-SQL\n#{drop_old_function}    SQL\n")
+          push(:up, "execute <<-SQL\n#{create_new_function}    SQL\n")
+
+          push(:down, "execute <<-SQL\n#{drop_new_function}    SQL\n")
+          push(:down, "execute <<-SQL\n#{create_old_function}    SQL\n")
+        end
+      end
     end
 
     def rename_table(sql_statement)
