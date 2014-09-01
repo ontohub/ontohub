@@ -235,11 +235,12 @@ module Super
         column_names = old_columns.map{ |c| "'#{translate(c) || c}'" }.join(', ')
 
         if [new_index_name, new_table_name, *new_columns].any?
-          push(:up, "remove_index '#{old_table_name}', name: '#{old_index_name}'")
-          push(:down, "add_index '#{old_table_name}', #{old_column_names}, unique: #{unique}, name: '#{old_index_name}'")
+          # At this point, the index is already on the new table, but with the old name
+          push(:up, "remove_index '#{table_name}', name: '#{old_index_name}'")
+          push(:down, "add_index '#{old_table_name}', [#{old_column_names}], unique: #{unique}, name: '#{old_index_name}'")
 
-          push(:up, "add_index '#{table_name}', #{column_names}, unique: #{unique}, name: '#{index_name}'")
-          push(:down, "remove_index '#{table_name}', name: '#{index_name}'")
+          push(:up, "add_index '#{table_name}', [#{column_names}], unique: #{unique}, name: '#{index_name}'")
+          push(:down, "remove_index '#{old_table_name}', name: '#{index_name}'")
         end
       end
 
