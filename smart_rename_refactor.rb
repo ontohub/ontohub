@@ -255,23 +255,26 @@ module Super
           end
           f << "  end\n"
         end
-        f << "end\n"
+        f << "end\n\n"
       end
     end
 
     def translate(name)
       REPLACE_WORDS.each do |old_name, new_name|
-        result = case name
-        when /#{old_name}/
-          name.gsub($&, new_name)
-        when /#{pluralize(old_name)}/
-          name.gsub($&, pluralize(new_name))
-        when /#{camelize(old_name)}/
-          name.gsub($&, camelize(new_name))
-        when /#{camelize(pluralize(old_name))}/
-          name.gsub($&, camelize(pluralize(new_name)))
+        result = name.dup
+        if result.match /#{old_name}/
+          result.gsub!($&, new_name)
         end
-        return result if result
+        if result.match /#{pluralize(old_name)}/
+          result.gsub!($&, pluralize(new_name))
+        end
+        if result.match /#{camelize(old_name)}/
+          result.gsub!($&, camelize(new_name))
+        end
+        if result.match /#{camelize(pluralize(old_name))}/
+          result.gsub!($&, camelize(pluralize(new_name)))
+        end
+        return result if result != name
       end
       nil
     end
