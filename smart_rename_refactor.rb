@@ -121,6 +121,8 @@ module Super
         rename_table(sql_statement)
         rebuild_index(sql_statement)
         rename_in_function(sql_statement)
+        rename_primary_keys(sql_statement)
+        rebuild_foreign_keys(sql_statement)
       end
 
       puts migration_commands.map(&:inspect).join("\n") if dry_run && verbose
@@ -243,7 +245,39 @@ module Super
           push(:down, "remove_index '#{old_table_name}', name: '#{index_name}'")
         end
       end
+    end
 
+    def rename_primary_keys(sql_statement)
+      if m = sql_statement.match(/ALTER TABLE ONLY (?<table>\S+)\s*ADD CONSTRAINT (?<name>\S+)\s+PRIMARY KEY/)
+
+        table = translate(m[:table]) || m[:table]
+        new_name = translate(m[:name])
+
+        if new_name
+          push(:up,   "execute \"ALTER TABLE ONLY #{table} RENAME CONSTRAINT #{m[:name]} TO #{new_name};\"")
+          push(:down, "execute \"ALTER TABLE ONLY #{table} RENAME CONSTRAINT #{new_name} TO #{m[:name]};\"")
+        end
+      end
+    end
+
+    def rebuild_foreign_keys(sql_statement)
+      if m = sql_statement.match(/ALTER TABLE ONLY (?<table>\S+)\s*ADD CONSTRAINT (?<name>\S+)\s+FOREIGN KEY \((?<key>\S+)\)\s+REFERENCES (?<ref>\S+\(\S+\))(?<ondelete>[^\n]*)/)
+
+        table = translate(m[:table]) || m[:table]
+        new_name = translate(m[:name]) || m[:name]
+        new_key = translate(m[:key]) || m[:key]
+        new_ref = translate(m[:ref]) || m[:ref]
+
+        translated = [m[:name], m[:key], m[:ref]].map { |t| translate(t) }
+
+        if translated.any?
+          push(:up,   "execute \"ALTER TABLE ONLY #{table} DROP CONSTRAINT #{m[:name]};\"")
+          push(:up,   "execute \"ALTER TABLE ONLY #{table} ADD CONSTRAINT #{new_name} FOREIGN KEY (#{new_key}) REFERENCES #{new_ref}#{m[:ondelete]}\"")
+
+          push(:down, "execute \"ALTER TABLE ONLY #{table} DROP CONSTRAINT #{new_name};\"")
+          push(:down, "execute \"ALTER TABLE ONLY #{table} ADD CONSTRAINT #{m[:name]} FOREIGN KEY (#{m[:key]}) REFERENCES #{m[:ref]}#{m[:ondelete]}\"")
+        end
+      end
     end
 
     def write_migration
