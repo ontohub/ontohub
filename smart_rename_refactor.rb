@@ -324,5 +324,5 @@ module Super
   end
 end
 
-# Super::RenameRefactorProvider.new(verbose: false, dry_run: false).run
-Super::MigrationProvider.new(verbose: true, dry_run: true).run
+Super::RenameRefactorProvider.new(verbose: false, dry_run: false).run
+Super::MigrationProvider.new(verbose: false, dry_run: false).run
