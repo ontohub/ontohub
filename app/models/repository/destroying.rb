@@ -17,6 +17,10 @@ module Repository::Destroying
     raise e.class, "Can't delete repository: It contains an #{Settings.OMS} that is imported by another repository."
   end
 
+  def can_be_deleted?
+    ontologies.map(&:can_be_deleted?).all?
+  end
+
   protected
 
   def mark_as_destroying
