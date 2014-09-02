@@ -18,6 +18,10 @@ module Repository::Destroying
     #{Settings.OMS.with_indefinite_article} that is imported by another repository."
   end
 
+  def can_be_deleted?
+    ontologies.map(&:can_be_deleted?).all?
+  end
+
   protected
 
   def mark_as_destroying
