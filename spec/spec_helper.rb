@@ -58,7 +58,7 @@ RSpec.configure do |config|
 
   config.before(:each) do
     redis = WrappingRedis::RedisWrapper.new
-    redis.del redis.keys.join(' ')
+    redis.del redis.keys if redis.keys.any?
   end
 
   config.after(:each) do
