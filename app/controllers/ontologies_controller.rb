@@ -69,6 +69,7 @@ class OntologiesController < InheritedResources::Base
       format.json do
         respond_with resource
       end
+      format.text { send_download }
     end
   end
 
@@ -139,6 +140,12 @@ class OntologiesController < InheritedResources::Base
   helper_method :repository
   def repository
     parent
+  end
+
+  private
+  def send_download
+    render text: resource.repository.get_file(resource.path).content,
+           content_type: Mime::Type.lookup('application/force-download')
   end
 
 
