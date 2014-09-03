@@ -4,6 +4,9 @@ module Repository::Destroying
   included do
     @destroying ||= []
     before_destroy :mark_as_destroying, prepend: true
+
+    scope :destroying, where(destroying: true)
+    scope :active, where(destroying: false)
   end
 
   def is_destroying?
