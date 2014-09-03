@@ -34,6 +34,7 @@ en:
       clone_list_link: repository clone-urls
   repository:
     delete: Delete Repository
+    delete_error: "Can't delete repository: It contains %{oms} that is imported by another repository."
     errors: Errors
     permissions: Permissions
     edit: Edit repository
