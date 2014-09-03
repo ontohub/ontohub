@@ -48,7 +48,7 @@ module Repository::GitRepositories
     version = nil
 
     git.add_file(user_info(user), tmp_file, filepath, message) do |commit_oid|
-      ontology_version_options = Repository::OntologyVersionOptions.new(
+      ontology_version_options = OntologyVersionOptions.new(
         filepath, user, do_not_parse: do_not_parse)
       version = save_ontology(commit_oid, ontology_version_options)
     end
@@ -187,14 +187,14 @@ module Repository::GitRepositories
     commits(options) { |commit|
       git.changed_files(commit.oid).each { |f|
         if f.added? || f.modified?
-          ontology_version_options = Repository::OntologyVersionOptions.new(
+          ontology_version_options = OntologyVersionOptions.new(
             f.path,
             options.delete(:user),
             fast_parse: has_changed?(f.path, commit.oid),
             do_not_parse: true)
           versions << save_ontology(commit.oid, ontology_version_options)
         elsif f.renamed?
-          ontology_version_options = Repository::OntologyVersionOptions.new(
+          ontology_version_options = OntologyVersionOptions.new(
             f.path,
             options.delete(:user),
             fast_parse: has_changed?(f.path, commit.oid),
