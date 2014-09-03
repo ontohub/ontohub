@@ -41,7 +41,8 @@ module ApplicationHelper
       return @resource_chain
     end
 
-    @resource_chain = [ Repository.active.find_by_path!( controller_name=='repositories' ? params[:id] : params[:repository_id] )]
+    @resource_chain = [Repository.active.find_by_path!(
+      controller_name == 'repositories' ? params[:id] : params[:repository_id])]
 
     if id = params[:commit_reference_id]
       @resource_chain << CommitReference.new(id)
