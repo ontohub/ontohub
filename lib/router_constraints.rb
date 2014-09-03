@@ -52,3 +52,28 @@ class IRIRouterConstraint < RouterConstraint
     return result
   end
 end
+
+class MIMERouterConstraint < RouterConstraint
+  attr_accessor :mime_types
+
+  def initialize(*mime_types)
+    self.mime_types = mime_types.flatten.map { |m| Mime::Type.lookup(m) }
+    super()
+  end
+
+  def matches?(request)
+    mime_types.any? { |m| request.accepts.first == m }
+  end
+end
+
+class GroupedConstraint
+  attr_accessor :constraints
+
+  def initialize(*args)
+    self.constraints = args.flatten
+  end
+
+  def matches?(request)
+    constraints.all? { |c| c.matches?(request) }
+  end
+end
