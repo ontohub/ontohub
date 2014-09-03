@@ -14,6 +14,7 @@ module Repository::Destroying
   end
 
   def destroy
+    Rails.logger.info "Destroy #{self.class} #{self} (id: #{id})"
     super
   rescue StandardError => e
     unmark_as_destroying
@@ -21,6 +22,7 @@ module Repository::Destroying
   end
 
   def destroy_asynchonously
+    Rails.logger.info "Mark #{self.class} #{self} (id: #{id}) as destroying"
     self.destroying = true
     save!
     async(:destroy)
