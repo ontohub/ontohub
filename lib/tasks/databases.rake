@@ -69,5 +69,5 @@ end
 def cleanup_redis
   require Rails.root.join('lib', 'wrapping_redis.rb')
   include WrappingRedis
-  redis.del redis.keys.join(' ')
+  redis.del redis.keys if redis.keys.any?
 end

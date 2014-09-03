@@ -1,0 +1,15 @@
+- view = StatusViewhelper.new(self, @tab)
+
+%h2= t('status.information_title')
+%p.status_description= t('status.information_description')
+
+%nav
+  %ul.nav.nav-tabs
+    - view.available_tabs.each do |(tab_title, tab, number)|
+      %li{class: class_for_tab(view, tab, number)}
+        = link_to admin_status_path(tab: tab) do
+          = tab_title
+          - if number
+            %span.badge= number
+
+= view.render
