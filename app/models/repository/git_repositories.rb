@@ -102,7 +102,8 @@ module Repository::GitRepositories
   end
 
   def create_ontology(filepath, iri)
-    clazz = Ontology.file_extensions_distributed.include?(File.extname(filepath)) ? DistributedOntology : SingleOntology
+    clazz = Ontology.file_extensions_distributed.include?(
+      File.extname(filepath)) ? DistributedOntology : SingleOntology
     ontology = clazz.new
 
     ontology.basepath = File.basepath(filepath)
@@ -120,7 +121,8 @@ module Repository::GitRepositories
     version = ontology.versions.build(
       { commit_oid: commit_oid,
         user: ontology_version_options.user,
-        basepath: File.basepath(ontology_version_options.filepath), # We can't use the ontology's filepath bacause it might have changed
+        # We can't use the ontology's filepath bacause it might have changed
+        basepath: File.basepath(ontology_version_options.filepath),
         file_extension: File.extname(ontology_version_options.filepath),
         fast_parse: ontology_version_options.fast_parse },
       { without_protection: true })
