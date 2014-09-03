@@ -14,8 +14,13 @@ module Repository::Destroying
     super
   rescue StandardError => e
     unmark_as_destroying
-    raise e.class, "Can't delete repository: It contains
-    #{Settings.OMS.with_indefinite_article} that is imported by another repository."
+    raise e.class, I18n.t('repository.delete_error', oms: Settings.OMS.with_indefinite_article)
+  end
+
+  def destroy_asynchonously
+    self.destroying = true
+    save!
+    async(:destroy)
   end
 
   def can_be_deleted?
