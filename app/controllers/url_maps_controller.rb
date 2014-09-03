@@ -24,13 +24,13 @@ class UrlMapsController < InheritedResources::Base
   end
 
   def check_read_permissions
-    authorize! :show, Repository.find_by_path(params[:repository_id])
+    authorize! :show, Repository.active.find_by_path(params[:repository_id])
   end
 
   helper_method :repository
   def repository
     if action_name == "index"
-      Repository.find_by_path(params[:repository_id])
+      Repository.active.find_by_path(params[:repository_id])
     else
       resource.repository
     end
