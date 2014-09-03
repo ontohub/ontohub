@@ -13,33 +13,34 @@ FactoryGirl.define do
 
     initialize_with do
       path = generate :git_repository_path
+      exec_silently = ->(cmd) { Subprocess.run('bash', '-c', cmd) }
 
       FileUtils.mkdir_p(path)
       Dir.chdir(path) do
-        `git init .`
-        `git config --local user.email "tester@localhost.localdomain"`
-        `git config --local user.name "Tester"`
-        `echo "(P x)" > Px.clif`
-        `echo "(Q y)" > Qy.clif`
-        `echo "(R z)" > Rz.clif`
-        `git add Px.clif`
-        `git commit -m "add Px.clif"`
-        `git add Qy.clif`
-        `git commit -m "add Qy.clif"`
-        `git add Rz.clif`
-        `git commit -m "add Rz.clif"`
-        `git mv Px.clif PxMoved.clif`
-        `git commit -m "move Px.clif to PxMoved.clif"`
-        `git mv PxMoved.clif PxMoved2.clif`
-        `git commit -m "move PxMoved.clif to PxMoved2.clif"`
-        `git mv Qy.clif QyMoved.clif`
-        `git mv Rz.clif RzMoved.clif`
-        `git commit -m "move Qy.clif to QyMoved.clif, Rz.clif to RzMoved.clif"`
+        exec_silently.call('git init .')
+        exec_silently.call('git config --local user.email "tester@localhost.localdomain"')
+        exec_silently.call('git config --local user.name "Tester"')
+        exec_silently.call('echo "(P x)" > Px.clif')
+        exec_silently.call('echo "(Q y)" > Qy.clif')
+        exec_silently.call('echo "(R z)" > Rz.clif')
+        exec_silently.call('git add Px.clif')
+        exec_silently.call('git commit -m "add Px.clif"')
+        exec_silently.call('git add Qy.clif')
+        exec_silently.call('git commit -m "add Qy.clif"')
+        exec_silently.call('git add Rz.clif')
+        exec_silently.call('git commit -m "add Rz.clif"')
+        exec_silently.call('git mv Px.clif PxMoved.clif')
+        exec_silently.call('git commit -m "move Px.clif to PxMoved.clif"')
+        exec_silently.call('git mv PxMoved.clif PxMoved2.clif')
+        exec_silently.call('git commit -m "move PxMoved.clif to PxMoved2.clif"')
+        exec_silently.call('git mv Qy.clif QyMoved.clif')
+        exec_silently.call('git mv Rz.clif RzMoved.clif')
+        exec_silently.call('git commit -m "move Qy.clif to QyMoved.clif, Rz.clif to RzMoved.clif"')
 
         # convert to bare repository
-        `rm -rf *.clif`
-        `mv .git/* .`
-        `rm -rf .git`
+        exec_silently.call('rm -rf *.clif')
+        exec_silently.call('mv .git/* .')
+        exec_silently.call('rm -rf .git')
       end
 
       new(path)

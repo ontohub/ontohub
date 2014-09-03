@@ -30,9 +30,11 @@ module Hets
     def import
       callback = NodeEvaluator.new(self)
       code_document = Nokogiri::XML(File.open(code_path)) if code_path
-      callback.process(:all, :start)
-      parser.parse(callback: callback)
-      callback.process(:all, :end)
+      ActiveRecord::Base.transaction requires_new: true do
+        callback.process(:all, :start)
+        parser.parse(callback: callback)
+        callback.process(:all, :end)
+      end
     end
 
     def ontologies
