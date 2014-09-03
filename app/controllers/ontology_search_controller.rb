@@ -37,6 +37,6 @@ class OntologySearchController < ApplicationController
   private
 
   def repository
-    Repository.find_by_path params[:repository_id]
+    Repository.active.find_by_path params[:repository_id]
   end
 end

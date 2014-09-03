@@ -31,7 +31,7 @@ class RepositoryFile < FakeRecord
   end
 
   def self.find_with_basepath(opts)
-    repository = Repository.find_by_path(opts[:repository_id])
+    repository = Repository.active.find_by_path(opts[:repository_id])
     oid        = compute_ref(repository, opts[:ref])[:oid]
     dir_path   = opts[:path].split('/')[0..-2].join('/')
 
@@ -138,14 +138,14 @@ class RepositoryFile < FakeRecord
   end
 
   def initialize_for_read(opts)
-    @repository = Repository.find_by_path(opts[:repository_id])
+    @repository = Repository.active.find_by_path(opts[:repository_id])
     commit_id   = repository.commit_id(opts[:ref] || Settings.git.default_branch)
     commit_id   = {oid: nil} if repository.empty?
     @file       = repository.git.get_file!(opts[:path] || '/', commit_id[:oid])
   end
 
   def initialize_for_create_and_update(opts)
-    @repository = Repository.find_by_path(opts[:repository_id])
+    @repository = Repository.active.find_by_path(opts[:repository_id])
 
     opts = prepare_opts_on_file_upload(opts)
 
