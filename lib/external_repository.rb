@@ -3,6 +3,18 @@ class ExternalRepository
 
   class << self
 
+    def create_ontology(internal_iri, name: internal_iri)
+      options = {
+        name: name,
+        iri: determine_iri(internal_iri),
+        basepath: determine_path(internal_iri, :basepath),
+        file_extension: determine_path(internal_iri, :extension),
+        repository_id: repository.id,
+        present: true,
+      }
+      SingleOntology.create!(options, without_protection: true)
+    end
+
     def repository
       Repository.where(name: Settings.external_repository_name).first_or_create
     end

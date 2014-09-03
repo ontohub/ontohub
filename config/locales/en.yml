@@ -94,3 +94,16 @@ en:
   cancel: Cancel
   edit: Edit
   delete: Delete
+  status:
+    processing_ontologies: Ontologies that are being processed
+    information_title: Information related to the status
+    information_description: |
+      This contains information about different aspects of the
+      application that might be relevant for administrative and
+      error-finding purposes.
+    no_iri:
+      no processing iri
+    errored_ontologies: Ontologies which encountered errors during evaluation
+    details: Details
+    ontology_count_by_state: Ontologies-count by state
+    iris_marked_as_processing: Count of iris that are processing
