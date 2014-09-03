@@ -186,14 +186,24 @@ class Ontology < ActiveRecord::Base
   end
 
   def destroy
-    # if repository destroying, then check if imported externally
     raise Ontology::DeleteError unless can_be_deleted?
     super
   end
 
   def can_be_deleted?
-    !(is_imported? &&
-         (!repository.is_destroying? || is_imported_from_other_repository?))
+    if repository.destroying
+      can_be_deleted_with_whole_repository?
+    else
+      can_be_deleted_alone?
+    end
+  end
+
+  def can_be_deleted_alone?
+    !is_imported?
+  end
+
+  def can_be_deleted_with_whole_repository?
+    !is_imported_from_other_repository?
   end
 
   def imported_ontologies
