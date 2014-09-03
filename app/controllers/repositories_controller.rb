@@ -22,10 +22,13 @@ class RepositoriesController < InheritedResources::Base
   end
 
   def destroy
-    super
-  rescue Ontology::DeleteError => e
-    flash[:error] = e.message
-    redirect_to resource
+    if resource.can_be_deleted?
+      resource.destroy_asynchonously
+      redirect_to repositories_path
+    else
+      flash[:error] = I18n.t('repository.delete_error')
+      redirect_to resource
+    end
   end
 
   protected
