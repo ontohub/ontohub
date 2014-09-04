@@ -30,6 +30,10 @@ $ ->
       source_address_el.val().trim().length > 0
 
     was_source_address_set = is_source_address_set()
+
+    reset_was_source_address_set = () ->
+      was_source_address_set = is_source_address_set()
+
     change_options = (event) ->
       if !was_source_address_set && is_source_address_set()
         modify_access_list 'mirror'
@@ -40,9 +44,9 @@ $ ->
 
     change_type_display = (event) ->
       if !was_source_address_set && is_source_address_set()
-        type_el.fadeIn()
+        type_el.stop(true,true).fadeIn({queue: false}).css({display: 'none'}).slideDown()
       else if was_source_address_set && !is_source_address_set()
-        type_el.fadeOut()
+        type_el.stop(true,true).fadeOut({queue: false}).slideUp()
       else if !was_source_address_set && !is_source_address_set()
         type_el.hide()
       else
@@ -53,4 +57,5 @@ $ ->
 
     source_address_el.on('input', change_options)
     source_address_el.on('input', change_type_display)
+    source_address_el.on('input', reset_was_source_address_set)
   return
