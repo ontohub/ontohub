@@ -51,6 +51,6 @@ $ ->
     change_options()
     change_type_display()
 
-    source_address_el.on('change', change_options)
-    source_address_el.on('change', change_type_display)
+    source_address_el.on('input', change_options)
+    source_address_el.on('input', change_type_display)
   return
