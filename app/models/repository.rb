@@ -1,7 +1,5 @@
 class Repository < ActiveRecord::Base
-
   include Permissionable
-
   include Repository::Access
   include Repository::Destroying
   include Repository::GitRepositories
@@ -38,5 +36,4 @@ class Repository < ActiveRecord::Base
   def blank?
     !self
   end
-
 end
