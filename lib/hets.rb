@@ -1,14 +1,7 @@
 require 'date'
 
 module Hets
-
-  class HetsError < ::StandardError; end
-  class ExecutionError < HetsError; end
-  class DeploymentError < HetsError; end
-  class VersionOutdatedError < DeploymentError; end
-  class ConfigDateFormatError < DeploymentError; end
-  class VersionDateFormatError < DeploymentError; end
-  class InvalidHetsVersionFormatError < DeploymentError; end
+  include Errors
 
   class Config
 
