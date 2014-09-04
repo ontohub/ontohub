@@ -10,7 +10,9 @@ $ ->
     options_non_mirror = _.clone(options_all)
     options_mirror     = _.filter(options_all, mirror_option)
 
-    # If options are not set one by one, the select box won't change.
+    type_el = $($('#repository_form #remote_type')[0])
+
+    # If options are not set one by one, the select box wont change.
     set_options = (options, converter, last_value) ->
       input_access_el.options.length = 0
       for option, index in options
@@ -36,7 +38,19 @@ $ ->
       else if !was_source_address_set && !is_source_address_set()
         modify_access_list 'non_mirror'
 
+    change_type_display = (event) ->
+      if !was_source_address_set && is_source_address_set()
+        type_el.fadeIn()
+      else if was_source_address_set && !is_source_address_set()
+        type_el.fadeOut()
+      else if !was_source_address_set && !is_source_address_set()
+        type_el.hide()
+      else
+        type_el.show()
+
     change_options()
+    change_type_display()
 
     source_address_el.on('change', change_options)
+    source_address_el.on('change', change_type_display)
   return

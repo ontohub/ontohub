@@ -17,6 +17,8 @@ module Repository::Importing
   included do
     include StateUpdater
 
+    attr_accessor :remote_type
+
     scope :with_source, where("source_type IS NOT null")
 
     # Ready for pulling
