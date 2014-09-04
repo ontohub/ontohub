@@ -16,6 +16,10 @@ describe 'Repository Remote' do
       it 'should become a non-mirrored repository' do
         expect(repository.mirror?).to be_falsy
       end
+
+      it 'should become a forked repository' do
+        expect(repository.fork?).to be_truthy
+      end
     end
   end
 
@@ -29,6 +33,10 @@ describe 'Repository Remote' do
 
     it 'should be a non-mirrored repository' do
       expect(repository.mirror?).to be_falsy
+    end
+
+    it 'should be a forked repository' do
+      expect(repository.fork?).to be_truthy
     end
   end
 end

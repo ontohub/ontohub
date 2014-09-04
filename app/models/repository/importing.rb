@@ -29,18 +29,21 @@ module Repository::Importing
     }
 
     validates_inclusion_of :state,       in: STATES
-    validates_with SourceTypeValidator, if: :mirror?
+    validates_with SourceTypeValidator, if: :source_address?
 
-    before_validation ->{ detect_source_type }
-    after_create ->{ async_remote :clone }, if: :mirror?
+    before_validation ->() { detect_source_type if new_record? }
+    after_create ->() { async_remote :clone }, if: :source_address?
   end
 
   def mirror?
-    source_address?
+    source_address? && source_type?
+  end
+
+  def fork?
+    source_address? && !source_type?
   end
 
   def convert_to_local!
-    self.source_address = nil
     self.source_type = nil
     save!
   end
