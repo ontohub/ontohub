@@ -16,7 +16,6 @@ class RepositoryDirectory < FakeRecord
   validates :name, :repository, :user, presence: true
   validates_with DirectoryPathValidator
 
-
   def initialize(*args, &block)
     opts = (args.shift || {}).symbolize_keys
     @repository = Repository.find_by_path(opts[:repository_id])
@@ -48,6 +47,4 @@ class RepositoryDirectory < FakeRecord
     @target_directory ||= ''
     File.join(target_directory, name).sub(/^\//, '')
   end
-
 end
-
