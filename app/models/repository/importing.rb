@@ -58,7 +58,7 @@ module Repository::Importing
   end
 
   # executes a pull/clone job
-  def remote_send(method, remote_type=nil)
+  def remote_send(method, remote_type = nil)
     # build arguments
     args    = []
     args   << source_address if method == 'clone'
@@ -68,21 +68,29 @@ module Repository::Importing
     method += '_svn' if source_type == 'svn'
 
     do_or_set_failed do
-      update_state! 'fetching'
-      result = git.send(method, *args)
-      convert_to_local! if remote_type == 'fork'
-
-      update_state! 'processing'
-      suspended_save_ontologies \
-        start_oid:  result.current,
-        stop_oid:   result.previous,
-        walk_order: Rugged::SORT_REVERSE
-
-      self.imported_at = Time.now
-      update_state! 'done'
-
-      result
+      process_fetch(method, args, remote_type)
     end
+  end
+
+  def process_fetch(method, args, remote_type)
+    update_state! 'fetching'
+    result = git.send(method, *args)
+    convert_to_local! if remote_type == 'fork'
+
+    update_state! 'processing'
+    update_database_after_fetch(result)
+
+    self.imported_at = Time.now
+    update_state! 'done'
+
+    result
+  end
+
+  def update_database_after_fetch(range)
+    suspended_save_ontologies \
+      start_oid:  range.current,
+      stop_oid:   range.previous,
+      walk_order: Rugged::SORT_REVERSE
   end
 
   module ClassMethods
