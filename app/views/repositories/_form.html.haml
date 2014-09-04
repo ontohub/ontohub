@@ -5,5 +5,12 @@
 
   - if resource.new_record?
     = f.input :source_address, as: :url
-  
+
+  - if !resource.new_record? && resource.mirror?
+    .form-group
+      = f.label t('repository.un_mirror.label')
+      .col-lg-10
+        = check_box_tag :un_mirror
+        = t 'repository.un_mirror.text'
+
   = f.button :wrapped

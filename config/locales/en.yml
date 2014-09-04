@@ -54,6 +54,9 @@ en:
         name: Directory name
       hint:
         slashes: Use slashes to directly create subdirectories.
+    un_mirror:
+      label: Un-mirror
+      text: If you un-mirror this repository, it won't get synchronized with the remote reposoitory any more. There is no possibility to synchronize it ever again.
   permission:
     delete_header: Are you sure you want to delete the permission?
     delete_desc: If you remove this %{role} permission, %{subject} won't be able to access the %{class} %{item} according to it.
