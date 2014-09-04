@@ -17,6 +17,10 @@ class HetsInstance < ActiveRecord::Base
     up
   end
 
+  def to_s
+    "#{name}(#{uri})"
+  end
+
   protected
   def check_up_state
     Hets::VersionCaller.new(self).call
