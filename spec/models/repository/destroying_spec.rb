@@ -4,7 +4,7 @@ describe 'Repository destroying' do
   let(:repository) { create :repository }
 
   before do
-    repository.destroy_asynchonously
+    repository.destroy_asynchronously
   end
 
   it 'should create a job' do
