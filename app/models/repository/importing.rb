@@ -38,8 +38,8 @@ module Repository::Importing
   end
 
   def convert_to_local!
-    source_address = nil
-    source_type = nil
+    self.source_address = nil
+    self.source_type = nil
     save!
   end
 
