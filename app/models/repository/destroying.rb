@@ -2,8 +2,8 @@ module Repository::Destroying
   extend ActiveSupport::Concern
 
   included do
-    scope :destroying, where(destroying: true)
-    scope :active, where(destroying: false)
+    scope :destroying, ->() { where(destroying: true) }
+    scope :active, ->() { where(destroying: false) }
   end
 
   def destroy
