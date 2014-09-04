@@ -58,7 +58,7 @@ module Repository::Importing
   end
 
   # executes a pull/clone job
-  def remote_send(method, remote_type)
+  def remote_send(method, remote_type=nil)
     # build arguments
     args    = []
     args   << source_address if method == 'clone'
