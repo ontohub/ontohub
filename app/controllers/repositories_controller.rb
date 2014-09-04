@@ -28,7 +28,7 @@ class RepositoriesController < InheritedResources::Base
 
   def destroy
     if resource.can_be_deleted?
-      resource.destroy_asynchonously
+      resource.destroy_asynchronously
       redirect_to repositories_path
     else
       flash[:error] = I18n.t('repository.delete_error')

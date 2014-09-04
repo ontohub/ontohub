@@ -13,7 +13,7 @@ module Repository::Destroying
     raise e.class, I18n.t('repository.delete_error', oms: Settings.OMS.with_indefinite_article)
   end
 
-  def destroy_asynchonously
+  def destroy_asynchronously
     Rails.logger.info "Mark #{self.class} #{self} (id: #{id}) as destroying"
     self.destroying = true
     save!
