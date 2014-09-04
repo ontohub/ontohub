@@ -54,11 +54,11 @@ module Repository::Importing
   def async_remote(method)
     raise "object is #{state}" if locked?
     update_state! 'pending'
-    async :remote_send, method
+    async :remote_send, method, remote_type
   end
 
   # executes a pull/clone job
-  def remote_send(method)
+  def remote_send(method, remote_type)
     # build arguments
     args    = []
     args   << source_address if method == 'clone'
@@ -70,6 +70,7 @@ module Repository::Importing
     do_or_set_failed do
       update_state! 'fetching'
       result = git.send(method, *args)
+      convert_to_local! if remote_type == 'fork'
 
       update_state! 'processing'
       suspended_save_ontologies \
