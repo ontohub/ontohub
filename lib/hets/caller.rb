@@ -24,7 +24,20 @@ module Hets
 
     def perform(api_uri, method=:get)
       raise NotImplementedError, 'No HTTP-Verb other than GET supported' unless method == :get
-      fetch_uri_content(api_uri)
+      get_caller = performing_instance(api_uri)
+      get_caller.call(http_result_options)
+    end
+
+    def http_result_options
+      {write_file: true, file_type: Tempfile}
+    end
+
+    def performing_instance(api_uri)
+      get_caller = GetCaller.new(api_uri)
+      get_caller.has_actual_content_through do |response|
+        has_actual_content?(response)
+      end
+      get_caller
     end
 
     def has_actual_content?(response)

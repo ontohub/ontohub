@@ -97,6 +97,15 @@ we expected it to be matchable by this regular expression:
     Hets::Config.new.minimal_version_string
   end
 
+  def self.parse_via_api(resource, url_catalog = [], structure_only: false)
+    iri = resource.iri
+    mode = structure_only ? :fast_run : :default
+
+    parse_caller = Hets::ParseCaller.new(HetsInstance.choose, url_catalog)
+
+    parse_caller.call(iri, with_mode: mode)
+  end
+
   # Runs hets with input_file and returns XML output file path.
   def self.parse(input_file, url_catalog = [], output_path = nil, structure_only: false)
 

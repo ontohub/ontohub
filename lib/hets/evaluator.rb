@@ -5,6 +5,7 @@ module Hets
     attr_accessor :parser, :callback
     attr_accessor :concurrency, :dgnode_stack, :ontology_aliases
     attr_accessor :versions, :now, :dgnode_count
+    attr_accessor :io
 
     # As there are many approaches to parsing an ontology
     # file, we provide two versions:
@@ -13,12 +14,13 @@ module Hets
     # new(user, ontology, path: some_path)
     # If the version is set, the path and code_path will be extracted from the
     # version object.
-    def initialize(user, ontology, version: nil, path: nil)
+    def initialize(user, ontology, version: nil, path: nil, io: nil)
       self.version = version
       self.path = path
       self.ontology = ontology
       self.user = user
       self.ontologies_count = 0
+      self.io = io
       initialize_handling
     end
 
@@ -48,7 +50,7 @@ module Hets
 
     private
     def initialize_handling
-      self.parser = Parser.new(path)
+      self.parser = Parser.new(io || path)
       self.concurrency = ConcurrencyBalancer.new
       self.versions = []
       self.dgnode_stack = []
