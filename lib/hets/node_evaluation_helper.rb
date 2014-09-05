@@ -53,7 +53,6 @@ module Hets
 
       version = ontology.versions.build
       version.user = user
-      version.code_reference = code_reference_for(ontology.name)
       version.basepath = ontology.basepath
       version.parent = parent_version
       version.commit_oid = parent_version.try(:commit_oid)
@@ -142,14 +141,6 @@ module Hets
           end_line: match[:end_line].to_i,
           end_column: match[:end_column].to_i)
       end
-    end
-
-    def code_reference_for(ontology_name)
-      code_doc = hets_evaluator.code_document
-      return if code_doc.nil?
-      elements = code_doc.xpath("//*[contains(@name, '##{ontology_name}')]")
-      code_range = elements.first.try(:attr, "range")
-      code_reference_from_range(code_range)
     end
 
   end
