@@ -18,7 +18,7 @@ class OntologyVersion < ActiveRecord::Base
 
   validates_format_of :source_url,
     :with => URI::regexp(Settings.allowed_iri_schemes), :if => :source_url?
-  validates_presence_of :basepath
+# validates_presence_of :basepath
 
   scope :latest, order('id DESC')
   scope :done, state('done')
