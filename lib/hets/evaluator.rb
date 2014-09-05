@@ -19,7 +19,6 @@ module Hets
       self.ontology = ontology
       self.user = user
       self.ontologies_count = 0
-      establish_paths
       initialize_handling
     end
 
@@ -48,13 +47,6 @@ module Hets
     end
 
     private
-    def establish_paths
-      if version
-        @path = version.xml_path
-        @code_path = version.code_reference_path
-      end
-    end
-
     def initialize_handling
       self.parser = Parser.new(path)
       self.concurrency = ConcurrencyBalancer.new

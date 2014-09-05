@@ -27,13 +27,6 @@ module OntologyVersion::Parsing
   end
 
   def parse(refresh_cache: false, structure_only: self.fast_parse)
-#    do_or_set_failed do
-#      condition = ['checksum = ? and id != ?', self.checksum, self.id]
-#      if OntologyVersion.where(condition).any?
-#        raise Exception.new('Another file with same checksum already exists.')
-#      end
-#    end
-
     update_state! :processing
 
     do_or_set_failed do
@@ -55,8 +48,6 @@ module OntologyVersion::Parsing
     paths = Hets.parse(raw_path!, ontology.repository.url_maps, xml_dir, structure_only: structure_only)
     path = paths.last
 
-    set_pp_xml_name(paths, perform_save: false)
-    set_xml_name(paths)
     # move generated file to destination
     File.rename path, xml_path
   rescue Hets::ExecutionError => e
@@ -71,18 +62,4 @@ module OntologyVersion::Parsing
   def parse_fast
     parse(structure_only: true)
   end
-
-  protected
-  def set_pp_xml_name(paths, perform_save: true)
-    if paths.size > 1
-      self.pp_xml_name = File.basename(paths.first)
-      save! if perform_save
-    end
-  end
-
-  def set_xml_name(paths, perform_save: true)
-    self.xml_name = File.basename(paths.last)
-    save! if perform_save
-  end
-
 end

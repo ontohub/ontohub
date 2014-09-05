@@ -56,8 +56,6 @@ module Hets
       version.basepath = ontology.basepath
       version.parent = parent_version
       version.commit_oid = parent_version.try(:commit_oid)
-      version.pp_xml_name = parent_version.try(:pp_xml_name)
-      version.xml_name = parent_version.try(:xml_name)
       version.file_extension = ontology.file_extension
       # This version will not exist if the parsing fails
       version.state = 'done'

@@ -39,26 +39,6 @@ module OntologyVersion::Files
     raw_path
   end
 
-  def xml_dir
-    tmp_dir.join('xml')
-  end
-
-  # path to xml file (hets output)
-  def xml_path
-    return nil unless xml_name
-    xml_dir.join(xml_name)
-  end
-
-  # path to xml file (hets output) with code positions
-  def code_reference_path
-    return nil unless pp_xml_name
-    xml_dir.join(pp_xml_name)
-  end
-
-  def xml_file?
-    xml_path.try(:exist?)
-  end
-
   def raw_file?
     File.exists? raw_path
   end
