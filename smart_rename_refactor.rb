@@ -322,7 +322,40 @@ module Super
       MIGRATION_DIRPATH.join("#{Time.now.utc.strftime("%Y%m%d%H%M%S")}_rename_via_script.rb")
     end
   end
+
+  class FactoryFilesRenameProvider
+    attr_accessor :verbose, :dry_run
+
+    DIR = Pathname.new(File.join('test', 'factories'))
+
+    def initialize(verbose: false, dry_run: true)
+      self.verbose = verbose
+      self.dry_run = dry_run
+    end
+
+    def run
+      files_list.each do |filename|
+        rename_file(filename)
+      end
+    end
+
+    def files_list
+      Dir.entries(DIR).select { |e| !%w(. ..).include?(e) }
+    end
+
+    def rename_file(filename)
+      puts "#{DIR.join(filename)} --> #{DIR.join(new_name(filename))}" if verbose
+      FileUtils.mv(DIR.join(filename), DIR.join(new_name(filename))) unless dry_run
+    end
+
+    def new_name(filename)
+      parts = filename.split('.')
+      basename = "#{parts.first}_factory"
+      [basename, *parts[1..-1]].join('.')
+    end
+  end
 end
 
 Super::MigrationProvider.new(verbose: false, dry_run: false).run
 Super::RenameRefactorProvider.new(verbose: true, dry_run: false).run
+Super::FactoryFilesRenameProvider.new(verbose: false, dry_run: false).run
