@@ -36,7 +36,7 @@ module Repository::Access
 
   def generate_access_token
     if is_private
-      access_token = AccessToken.build_for(self)
+      access_token = AccessToken.create_for(self)
       self.access_token << access_token
       save
 
