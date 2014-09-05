@@ -11,7 +11,21 @@ end
 namespace :generate do
   desc 'Import the categories for the ontologies'
   task :categories => :environment do
-    Ontology.where("name ilike '%Domain Fields Core'").first.create_categories
+    repository = Repository.where(name: 'meta').first_or_create!(description: 'Meta ontologies for Ontohub')
+    ontology = repository.ontologies.where("name ilike '%Domain Fields Core'").first
+    if ontology
+      ontology.create_categories
+    else
+      user = User.where(admin: true).first
+      filepath = "#{Rails.root}/test/fixtures/ontologies/categories.owl"
+      system("wget -O #{filepath} https://ontohub.org/repositories/meta/master/download/Domain_Fields_Core.owl")
+      basename = File.basename(filepath)
+      version = repository.save_file(filepath, basename, "#{basename} added", user, do_not_parse: true)
+      version.parse
+      system("rm #{filepath}")
+      ontology = version.ontology
+    end
+    ontology.create_categories
   end
 
   desc 'Generate entity trees for ALL OWL ontologies'
@@ -29,7 +43,7 @@ namespace :generate do
       end
     end
   end
-  
+
   desc 'Generate entity tree for one specific OWL ontology'
   task :class_hierachy_for_specific_ontology, [:ontology_id] => :environment do |t,args|
     ontology = Ontology.find!(args.ontology_id)

@@ -1,0 +1,11 @@
+.modal.fade{"tabindex"=>"-1", "role"=>"dialog", "aria-labelledby"=>"deleteRepository", "aria-hidden"=>"true", id: modal_id}
+  .modal-dialog
+    .modal-content
+      .modal-header
+        %button.btn.close{"data-dismiss" => "modal", "aria-hidden"=>"true"}
+        = header_text
+      .modal-body
+        = simple_format body_text
+      .modal-footer
+        %button.btn.btn-default{"data-dismiss" => "modal"}=t("cancel")
+        = link_to button_text, path, method: method, class: "btn #{btn_class}", remote: remote

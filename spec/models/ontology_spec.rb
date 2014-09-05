@@ -152,23 +152,19 @@ describe Ontology do
 
   end
 
-  context 'when parsing an ontology which is referenced by another ontology' do
+  context 'when parsing an ontology which is referenced by another ontology', :needs_hets do
     let(:repository) { create :repository }
-    let(:list) do
+    let(:presentation) do
       referenced_ontology = nil
       ontology = define_ontology('Foo') do
-        ontohub = prefix('ontohub', self)
-        referenced_ontology = define('Bar') do
-          other_ontohub = prefix('other_ontohub', self)
-          other_ontohub.class('SomeBar')
+        this = prefix('ontohub')
+        imports define('Bar', as: :referenced_ontology) do
+          prefix('other_ontohub').class('SomeBar')
         end
-        imports referenced_ontology
-        ontohub.class('Bar').sub_class_of ontohub.class('Foo')
+        this.class('Bar').sub_class_of this.class('Foo')
       end
-      [ontology, referenced_ontology]
     end
-    let(:presentation) { list[0] }
-    let(:referenced_presentation) { list[1] }
+    let(:referenced_presentation) { presentation.referenced_ontology }
     let(:version) { version_for_file(repository, presentation.file.path) }
     let(:ontology) { version.ontology.reload }
 
@@ -182,7 +178,7 @@ describe Ontology do
         FileUtils.cp(absolute_path, filepath)
         filepath
       end
-      version.parse
+      version
       ExternalRepository.unstub(:download_iri)
     end
 
@@ -201,6 +197,157 @@ describe Ontology do
 
     it 'should have a referenced ontology with an ontology-version' do
       expect(referenced_ontology.ontology_version).to_not be_nil
+    end
+  end
+
+  context 'Import single Ontology' do
+    let(:user) { create :user }
+    let(:ontology) { create :single_ontology }
+
+    before do
+      parse_this(user, ontology, fixture_file('test1.xml'),
+                 fixture_file('test1.pp.xml'))
+    end
+
+    it 'should save the logic' do
+      expect(ontology.logic.try(:name)).to eq('CASL')
+    end
+
+    context 'entity count' do
+      it 'should be correct' do
+        expect(ontology.entities.count).to eq(2)
+      end
+
+      it 'should be reflected in the corresponding field' do
+        expect(ontology.entities_count).to eq(ontology.entities.count)
+      end
+    end
+
+    context 'sentence count' do
+      it 'should be correct' do
+        expect(ontology.sentences.count).to eq(1)
+      end
+
+      it 'should be reflected in the corresponding field' do
+        expect(ontology.sentences_count).to eq(ontology.sentences.count)
+      end
+    end
+  end
+
+  context 'Import distributed Ontology' do
+    let(:user) { create :user }
+    let(:ontology) { create :distributed_ontology }
+
+    before do
+      parse_this(user, ontology, fixture_file('test2.xml'),
+                 fixture_file('test2.pp.xml'))
+    end
+
+    it 'should create all single ontologies' do
+      expect(SingleOntology.count).to eq(4)
+    end
+
+    it 'should have all children ontologies' do
+      expect(ontology.children.count).to eq(4)
+    end
+
+    it 'should have the correct link count' do
+      expect(ontology.links.count).to eq(3)
+    end
+
+    it 'should have the DOL-logic assigned to the logic-field' do
+      expect(ontology.logic.try(:name)).to eq('DOL')
+    end
+
+    it 'should have no entities' do
+      expect(ontology.entities.count).to eq(0)
+    end
+
+    it 'should have no sentences' do
+      expect(ontology.sentences.count).to eq(0)
+    end
+
+    context 'first child ontology' do
+      let(:child) { ontology.children.where(name: 'sp__E1').first }
+
+      it 'should have entities' do
+        expect(child.entities.count).to eq(2)
+      end
+
+      it 'should have one sentence' do
+        expect(child.sentences.count).to eq(1)
+      end
+    end
+
+    context 'all child ontologies' do
+      it 'should have the same state as the parent' do
+        ontology.children.each do |child|
+          expect(child.state).to eq(ontology.state)
+        end
+      end
+    end
+
+  end
+
+  context 'Import another distributed Ontology' do
+    let(:user) { create :user }
+    let(:ontology) { create :distributed_ontology }
+    let(:combined) { ontology.children.where(name: 'VAlignedOntology').first }
+
+    before do
+      parse_this(user, ontology, fixture_file('align.xml'),
+                 fixture_file('align.pp.xml'))
+    end
+
+    it 'should create single ontologies' do
+      assert_equal 4, SingleOntology.count
+      expect(SingleOntology.count).to eq(4)
+    end
+
+    it 'should create a combined ontology' do
+      expect(combined).to_not be_nil
+    end
+
+    context 'kinds' do
+      let(:kinds) { combined.entities.map(&:kind) }
+
+      it 'should be assigned to symbols of the combined ontology' do
+        expect(kinds).to_not include('Undefined')
+      end
+    end
+
+  end
+
+  context 'Import Ontology with an error occurring while parsing' do
+    let(:user) { create :user }
+    let(:ontology) { create :single_ontology }
+    let(:error_text) { 'An error occurred' }
+
+    before do
+      # Stub ontology_end because this is always run after the iri
+      # has been locked by the ConcurrencyBalancer.
+      allow_any_instance_of(Hets::NodeEvaluator).
+        to receive(:ontology_end).and_raise(error_text)
+    end
+
+    it 'should propagate the error' do
+      expect { parse_this(user, ontology, fixture_file('test1.xml'),
+                 fixture_file('test1.pp.xml')) }.
+        to raise_error(Exception, error_text)
+    end
+
+    it 'should be possible to parse it again (no AlreadyProcessingError)' do
+      begin
+        parse_this(user, ontology, fixture_file('test1.xml'),
+                 fixture_file('test1.pp.xml'))
+      rescue Exception => e
+        allow_any_instance_of(Hets::NodeEvaluator).
+          to receive(:ontology_end).and_call_original
+
+        expect { parse_this(user, ontology, fixture_file('test1.xml'),
+                 fixture_file('test1.pp.xml')) }.
+          not_to raise_error
+      end
     end
   end
 

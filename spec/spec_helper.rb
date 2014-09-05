@@ -9,7 +9,7 @@ use_simplecov
 require File.expand_path("../../config/environment", __FILE__)
 require 'rspec/rails'
 require 'rspec/autorun'
-require 'database_cleaner'
+require Rails.root.join('config', 'database_cleaner.rb')
 
 # Requires supporting ruby files with custom matchers and macros, etc,
 # in spec/support/ and its subdirectories.
@@ -26,7 +26,11 @@ class ActionController::TestRequest
 end
 
 def fixture_file(name)
-  Rails.root + 'test/fixtures/ontologies/xml/' + name
+  ontology_file("xml/#{name}")
+end
+
+def ontology_file(path)
+  Rails.root + "test/fixtures/ontologies/" + path
 end
 
 def add_fixture_file(repository, relative_file)
@@ -40,20 +44,24 @@ def version_for_file(repository, path)
   version = repository.save_file path, basename, "#{basename} added", dummy_user
 end
 
-# includes the convience-method `define_ontology('name.extension')`
+# includes the convenience-method `define_ontology('name')`
 include OntologyUnited::Convenience
 
-def stub_ontology_file_extensions
-  Ontology.stubs(:file_extensions_distributed).returns(
-    %w[casl dol hascasl het].map!{ |ext| ".#{ext}" })
-  Ontology.stubs(:file_extensions_single).returns(
-    %w[owl obo hs exp maude elf hol isa thy prf omdoc hpf clf clif xml fcstd rdf xmi qvt tptp gen_trm baf].
-    map!{ |ext| ".#{ext}" })
-end
-
-def unstub_ontology_file_extensions
-  Ontology.unstub(:file_extensions_distributed)
-  Ontology.unstub(:file_extensions_single)
+def parse_this(user, ontology, xml_path, code_path)
+  opts =
+    if ontology.current_version
+      version = ontology.current_version
+      allow(version).to receive(:xml_path) { xml_path }
+      allow(version).to receive(:code_reference_path) { code_path }
+      {version: version}
+    else
+      {
+        path: xml_path,
+        code_path: code_path
+      }
+    end
+  evaluator = Hets::Evaluator.new(user, ontology, opts)
+  evaluator.import
 end
 
 RSpec.configure do |config|
@@ -61,20 +69,14 @@ RSpec.configure do |config|
   # config.mock_with :mocha
   # config.mock_with :flexmock
   # config.mock_with :rr
-
-  config.before(:suite) do
-    DatabaseCleaner.strategy = :truncation
-  end
+  config.mock_with :rspec
 
   config.before(:each) do
     redis = WrappingRedis::RedisWrapper.new
-    redis.del redis.keys.join(' ')
-    stub_ontology_file_extensions
+    redis.del redis.keys if redis.keys.any?
   end
 
   config.after(:each) do
-    unstub_ontology_file_extensions
-    DatabaseCleaner.clean
   end
 
   config.expose_current_running_example_as :example

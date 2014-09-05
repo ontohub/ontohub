@@ -1,5 +1,5 @@
 class OntologyBatchParseWorker < BaseWorker
-  sidekiq_options retry: false
+  sidekiq_options retry: false, queue: 'hets'
 
   def perform(*args, try_count: 1)
     establish_arguments(args, try_count: try_count)

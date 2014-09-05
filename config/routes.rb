@@ -1,5 +1,5 @@
 require 'sidekiq/web' if defined? Sidekiq
-
+require Rails.root.join('lib', 'router_constraints.rb')
 
 Ontohub::Application.routes.draw do
 
@@ -43,6 +43,7 @@ Ontohub::Application.routes.draw do
     resources :teams, :only => :index
     resources :users
     resources :jobs, :only => :index
+    resources :status, only: :index
   end
 
   authenticate :user, lambda { |u| u.admin? } do
@@ -119,10 +120,23 @@ Ontohub::Application.routes.draw do
     resources :files, only: [:new, :create]
 
     # action: history, diff, entries_info, files
+    get ':ref/files(/*path)',
+      controller:  :files,
+      action:      :show,
+      as:          :ref,
+      constraints: FilesRouterConstraint.new
+
+    # action: history, diff, entries_info, files
     get ':ref/:action(/:path)',
       controller:  :files,
       as:          :ref,
       constraints: { path: /.*/ }
+
+    # get ':ref/files(/:path)',
+    #   controller: :files,
+    #   action:     :files,
+    #   as:         :ref,
+    #   constraints: FilesRouter.new
   end
 
   post ':repository_id/:path',
@@ -131,11 +145,17 @@ Ontohub::Application.routes.draw do
     as:          :repository_tree,
     constraints: { path: /.*/ }
 
-  get ':repository_id(/:path)',
-    controller:  :files,
-    action:      :files,
-    as:          :repository_tree,
-    constraints: { path: /.*/ }
+  get ':repository_id(/*path)',
+    controller: :files,
+    action:     :show,
+    as:         :repository_tree,
+    constraints: FilesRouterConstraint.new
+
+  get '*path',
+    controller:  :ontologies,
+    action:      :show,
+    as:          :iri,
+    constraints: IRIRouterConstraint.new
 
   root :to => 'home#index'
 

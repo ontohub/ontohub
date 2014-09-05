@@ -21,7 +21,8 @@ before_install:
   - 'gem install bundler'
 
 script:
-  - bundle exec rake test:coveralls
+  - bundle exec rake cucumber
+  - bundle exec rake
 
 before_script:
   - psql -c 'create database ontohub_test;' -U postgres

@@ -1,15 +1,18 @@
 <?xml version='1.0' ?>
-<Lib name="home/henning/downloads/align">
+<Lib name="align">
   <Logic name="OWL" range="1.1" />
-  <SpecDefn name="home/henning/downloads/align?Source" range="3.1-6.1">
-    <Basicspec range="4.3-6.1">Class: Woman
+  <SpecDefn name="Source" range="3.1-3.17">
+    <Basicspec range="4.3-7.1">Class: Person
+Class: Woman
        SubClassOf: Person</Basicspec>
   </SpecDefn>
-  <SpecDefn name="home/henning/downloads/align?Onto1" range="8.1-12.1">
-    <Basicspec range="9.3-12.1">Class: Woman
-       SubClassOf: Person</Basicspec>
+  <SpecDefn name="Onto1" range="7.1-11.3">
+    <Basicspec range="8.3-11.1">Class: Person
+Class: Woman
+       SubClassOf: Person
+Class: Bank</Basicspec>
   </SpecDefn>
-  <ViewDefn name="home/henning/downloads/align?V1" range="14.1-17.1">
+  <ViewDefn name="V1" range="13.1-13.27">
     <Source>
       <Actuals name="Source" />
     </Source>
@@ -20,11 +23,13 @@
       <SymbMapItems>Person |-&gt; Person, Woman |-&gt; Woman</SymbMapItems>
     </Mapping>
   </ViewDefn>
-  <SpecDefn name="home/henning/downloads/align?Onto2" range="19.1-23.1">
-    <Basicspec range="20.3-23.1">Class: Woman
-       SubClassOf: HumanBeing</Basicspec>
+  <SpecDefn name="Onto2" range="17.1-21.3">
+    <Basicspec range="18.4-21.1">Class: HumanBeing
+Class: Woman
+       SubClassOf: HumanBeing
+Class: Bank</Basicspec>
   </SpecDefn>
-  <ViewDefn name="home/henning/downloads/align?V2" range="25.1-28.1">
+  <ViewDefn name="V2" range="23.1-23.27">
     <Source>
       <Actuals name="Source" />
     </Source>
@@ -35,7 +40,12 @@
       <SymbMapItems>Person |-&gt; HumanBeing, Woman |-&gt; Woman</SymbMapItems>
     </Mapping>
   </ViewDefn>
-  <SpecDefn name="home/henning/downloads/align?VAlignedOntology" range="30.1-32.1">
+  <SpecDefn name="VAlignedOntology" range="27.1-32.3">
     <Unsupported>combine Source, Onto1, Onto2, V1, V2</Unsupported>
+    <Right>
+      <Annotation range="29.3-29.45">%% 1:Person is identified with 2:HumanBeing</Annotation>
+      <Annotation range="30.3-30.39">%% 1:Woman is identified with 2:Woman</Annotation>
+      <Annotation range="31.3-31.40">%% 1:Bank and 2:Bank are kept distinct</Annotation>
+    </Right>
   </SpecDefn>
 </Lib>

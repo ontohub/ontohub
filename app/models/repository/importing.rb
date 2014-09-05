@@ -27,13 +27,13 @@ module Repository::Importing
     }
 
     validates_inclusion_of :state,       in: STATES
-    validates_with SourceTypeValidator, if: :remote?
+    validates_with SourceTypeValidator, if: :mirror?
 
     before_validation ->{ detect_source_type }
-    after_create ->{ async_remote :clone }, if: :remote?
+    after_create ->{ async_remote :clone }, if: :mirror?
   end
 
-  def remote?
+  def mirror?
     source_address?
   end
 
@@ -114,7 +114,7 @@ module Repository::Importing
 
   class SourceTypeValidator < ActiveModel::Validator
     def validate(record)
-      if record.remote? && !record.source_type.present?
+      if record.mirror? && !record.source_type.present?
         record.errors[:source_address] = "not a valid remote repository (types supported: #{SOURCE_TYPES.join(', ')})"
         record.errors[:source_type] = "not present"
       end

@@ -33,7 +33,7 @@ describe Hets, :needs_hets do
         assert_nothing_raised do
           ontology = FactoryGirl.create :ontology
           user = FactoryGirl.create :user
-          ontology.import_xml_from_file @xml_path, @pp_path, user
+          parse_this(user, ontology, @xml_path, @pp_path)
           `git checkout #{@xml_path} 2>/dev/null`
         end
       end

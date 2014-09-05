@@ -36,6 +36,7 @@ class OntologiesController < InheritedResources::Base
 
   def update
     resource.category_ids = user_selected_categories
+    params[:ontology].try(:except!, :iri)
     super
   end
 

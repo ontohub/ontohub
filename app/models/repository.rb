@@ -4,7 +4,6 @@ class Repository < ActiveRecord::Base
 
   include Repository::Access
   include Repository::Destroying
-  include Repository::FilesList
   include Repository::GitRepositories
   include Repository::Importing
   include Repository::Ontologies

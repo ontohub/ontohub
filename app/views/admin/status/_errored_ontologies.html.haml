@@ -1,0 +1,13 @@
+- if view.any_errored_ontologies?
+  %h3= t('status.errored_ontologies')
+
+  %ul
+    - view.errored_ontology_data.each do |(error, ontology_versions)|
+      .row
+        %li
+          %h4= error
+          %ul.fancy_ontology_list
+            - ontology_versions.each do |ontology_version|
+              %li.col-md-4
+                %span= fancy_link ontology_version.ontology
+                = link_to t('status.details'), [ontology_version.ontology.repository, ontology_version.ontology, :ontology_versions]

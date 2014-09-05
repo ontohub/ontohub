@@ -1,0 +1,43 @@
+.row
+  %h3
+    =path
+    %span.show-when-editing.label.label-info Edit mode
+
+= form_for(repository, url: fancy_repository_path(repository, path: path, ref: oid), method: :post, html: {class: 'form-horizontal edit-form'}) do |f|
+  .col-md-9
+    - if display_file?
+      = text_area_tag 'content', resource.content.force_encoding('UTF-8'), id: 'code-area', 'data-mime-type' => get_mime_string(resource.name, resource.mime_type)
+    - else
+      %p
+        File too large to display.
+        = link_to "Download #{resource.name}.", fancy_repository_path(repository, path: path, ref: oid, action: :download)
+
+  .col-md-3
+    - if can? :write, repository
+      .row
+        .pull-right
+          .show-when-editing.well.well-small
+            %p
+              You are now in editing mode and may change the text directly in the
+              text area on the left. To save the changes, simply add a brief
+              description as a commit message and click the commit button below.
+            %p.warning
+              If someone else is editing the same file simultaneously only one
+              of the changes will be saved.
+            .alert.alert-error.alert-warning Please enter a commit message.
+            #message-group
+              = label_tag 'message', class: 'control-label' do
+                %abbr.required *
+                Message
+              = text_area_tag 'message', params[:message] || '', id: 'message', required: true
+            .row.btn-group.codemirror-controls
+              = f.button 'Commit', type: 'submit', id: 'codemirror-btn-commit', class: 'btn btn-primary'
+              = f.button t('files.discard'), type: 'cancel', id: 'codemirror-btn-discard', class: 'btn btn-danger'
+      = render partial: 'modal_discard'
+    - unless resource.ontologies.empty?
+      %h4
+        Defining
+        = pluralize resource.ontologies.size, 'ontology'
+      %ul.ontology-list
+        - resource.ontologies.each do |ontology|
+          %li= fancy_link ontology

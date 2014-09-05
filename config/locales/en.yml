@@ -43,6 +43,15 @@ en:
         private_rw: Private readable and writable
         public_r: Public readable
         public_rw: Public readable and writable
+  permission:
+    delete_header: Are you sure you want to delete the permission?
+    delete_desc: If you remove this %{role} permission, %{subject} won't be able to access the %{class} %{item} according to it.
+    delete_btn: Delete Permission
+    errors:
+      falling_short_of_owner_count: |
+        You can't remove this owner permission, as deleting
+        it would leave the %{item} with too few owners.
+        The threshold level is: %{minimal_count}.
   files:
     discard: Discard
     discard_confirmation: You made changes to the code. Are you sure you want to discard them?
@@ -83,3 +92,18 @@ en:
       This action is irreversible!
   discard_changes: Are you sure
   cancel: Cancel
+  edit: Edit
+  delete: Delete
+  status:
+    processing_ontologies: Ontologies that are being processed
+    information_title: Information related to the status
+    information_description: |
+      This contains information about different aspects of the
+      application that might be relevant for administrative and
+      error-finding purposes.
+    no_iri:
+      no processing iri
+    errored_ontologies: Ontologies which encountered errors during evaluation
+    details: Details
+    ontology_count_by_state: Ontologies-count by state
+    iris_marked_as_processing: Count of iris that are processing

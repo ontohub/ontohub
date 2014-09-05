@@ -47,9 +47,16 @@ namespace :db do
   task :recreate do
     Rake::Task["db:migrate:clean"].invoke
     cleanup_git_folders
-    cleanup_redis
+    Rake::Task["db:redis:clean"].invoke
     Rake::Task["db:seed"].invoke
     Rake::Task["repos:create"].invoke
+  end
+
+  namespace :redis do
+    desc "Clean redis key value store"
+    task :clean do
+      cleanup_redis
+    end
   end
 end
 
@@ -60,6 +67,7 @@ def cleanup_git_folders
 end
 
 def cleanup_redis
+  require Rails.root.join('lib', 'wrapping_redis.rb')
   include WrappingRedis
-  redis.del redis.keys.join(' ')
+  redis.del redis.keys if redis.keys.any?
 end

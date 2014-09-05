@@ -5,6 +5,21 @@ class PermissionsController < PrivilegeList::Base
 
   belongs_to :repository, finder: :find_by_path!
 
+  def destroy
+    destroy! do
+      redirect_to(:back) and return
+    end
+  rescue Permission::PowerVaccuumError => e
+    flash[:alert] = e.message
+    redirect_to :back
+  end
+
+  def update
+    super
+  rescue ActiveRecord::RecordInvalid => e
+    render text: e.message
+  end
+
   protected
 
   def relation_list
