@@ -5,6 +5,7 @@ class HistoryEntriesPage < FakeRecord
   PER_PAGE = 25
 
   attr_reader :repository, :oid, :path, :current_file, :commits
+  attr_reader :commit_id, :page, :offset
 
   def self.find(opts)
     begin
