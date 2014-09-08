@@ -4,6 +4,7 @@ module GitRepository::Files
 
   class GitFile
     attr_reader :path, :oid, :mime_type, :mime_category
+    attr_accessor :repository, :rugged_object
 
     def initialize(repository, rugged_commit, path)
       @path = path
@@ -78,8 +79,5 @@ module GitRepository::Files
         self.send(attr) == other.send(attr)
       end
     end
-
-    protected
-    attr_accessor :repository, :rugged_object
   end
 end
