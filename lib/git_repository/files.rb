@@ -79,10 +79,6 @@ module GitRepository::Files
       end
     end
 
-    def last_change
-      @last_change ||= repository.entry_info(path, oid)
-    end
-
     protected
     attr_accessor :repository, :rugged_object
   end
