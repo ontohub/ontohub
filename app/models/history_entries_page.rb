@@ -18,7 +18,7 @@ class HistoryEntriesPage < FakeRecord
   def initialize(opts)
     @repository   = Repository.find_by_path(opts[:repository_id])
 
-    @commit_id    = self.class.compute_ref(repository, opts[:ref])
+    @commit_id    = compute_ref(repository, opts[:ref])
     @oid          = commit_id[:oid]
 
     @path         = opts[:path]
@@ -46,9 +46,8 @@ class HistoryEntriesPage < FakeRecord
 
   protected
 
-  attr_reader :commit_id, :page, :offset
 
-  def self.compute_ref(repository, ref)
+  def compute_ref(repository, ref)
     repository.commit_id(ref || DEFAULT_BRANCH)
   end
 
