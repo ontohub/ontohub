@@ -1,3 +1,6 @@
+# This class fetches commits for displaying a page in the history view.
+# Its initializer expects the params hash as an argument to fetch the correct
+# commit range.
 class HistoryEntriesPage < FakeRecord
   PER_PAGE = 25
 
@@ -35,7 +38,9 @@ class HistoryEntriesPage < FakeRecord
   end
 
   def paginated_array
-    Kaminari.paginate_array(commits, total_count: ensure_next_page_exists).page(page).per(PER_PAGE)
+    Kaminari.paginate_array(commits,
+      total_count: total_count_such_that_next_page_exists).
+      page(page).per(PER_PAGE)
   end
 
   protected
@@ -46,7 +51,9 @@ class HistoryEntriesPage < FakeRecord
     repository.commit_id(ref || DEFAULT_BRANCH)
   end
 
-  def ensure_next_page_exists
+  # This ensures that the 'next' button always exists in the view.
+  # The only other option would be not to have the 'next' button at all.
+  def total_count_such_that_next_page_exists
     page * (PER_PAGE + 1)
   end
 
