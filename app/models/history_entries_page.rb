@@ -44,9 +44,6 @@ class HistoryEntriesPage < FakeRecord
       page(page).per(PER_PAGE)
   end
 
-  protected
-
-
   def compute_ref(repository, ref)
     repository.commit_id(ref || DEFAULT_BRANCH)
   end
