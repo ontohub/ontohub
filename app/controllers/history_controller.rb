@@ -1,5 +1,5 @@
 class HistoryController < InheritedResources::Base
-  defaults resource_class: HistoryEntries
+  defaults resource_class: HistoryEntriesPage
   defaults singleton: true
   actions :show
 
@@ -8,7 +8,7 @@ class HistoryController < InheritedResources::Base
   protected
 
   def resource
-    @history_entries ||= HistoryEntries.find(params)
+    @history_entries ||= HistoryEntriesPage.find(params)
   end
 
   def check_read_permissions
