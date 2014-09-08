@@ -53,6 +53,4 @@ class HistoryEntriesPage < FakeRecord
   def total_count_such_that_next_page_exists
     page * (PER_PAGE + 1)
   end
-
 end
-
