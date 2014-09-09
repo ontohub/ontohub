@@ -40,6 +40,6 @@ module RepositoriesHelper
   end
 
   def repository_modal_body
-    modal_body(t("delete_repository"), t("delete_repository_desc",oms: Settings.OMS.pluralize), (controller_name == "repositories" ? resource : parent), t("repository.delete"))
+    modal_body(t("delete_repository"), t("delete_repository_desc"), (controller_name == "repositories" ? resource : parent), t("repository.delete"))
   end
 end
