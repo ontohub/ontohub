@@ -154,21 +154,17 @@ describe Ontology do
 
   context 'when parsing an ontology which is referenced by another ontology', :needs_hets do
     let(:repository) { create :repository }
-    let(:list) do
+    let(:presentation) do
       referenced_ontology = nil
       ontology = define_ontology('Foo') do
-        ontohub = prefix('ontohub', self)
-        referenced_ontology = define('Bar') do
-          other_ontohub = prefix('other_ontohub', self)
-          other_ontohub.class('SomeBar')
+        this = prefix('ontohub')
+        imports define('Bar', as: :referenced_ontology) do
+          prefix('other_ontohub').class('SomeBar')
         end
-        imports referenced_ontology
-        ontohub.class('Bar').sub_class_of ontohub.class('Foo')
+        this.class('Bar').sub_class_of this.class('Foo')
       end
-      [ontology, referenced_ontology]
     end
-    let(:presentation) { list[0] }
-    let(:referenced_presentation) { list[1] }
+    let(:referenced_presentation) { presentation.referenced_ontology }
     let(:version) { version_for_file(repository, presentation.file.path) }
     let(:ontology) { version.ontology.reload }
 
@@ -320,6 +316,39 @@ describe Ontology do
       end
     end
 
+  end
+
+  context 'Import Ontology with an error occurring while parsing' do
+    let(:user) { create :user }
+    let(:ontology) { create :single_ontology }
+    let(:error_text) { 'An error occurred' }
+
+    before do
+      # Stub ontology_end because this is always run after the iri
+      # has been locked by the ConcurrencyBalancer.
+      allow_any_instance_of(Hets::NodeEvaluator).
+        to receive(:ontology_end).and_raise(error_text)
+    end
+
+    it 'should propagate the error' do
+      expect { parse_this(user, ontology, fixture_file('test1.xml'),
+                 fixture_file('test1.pp.xml')) }.
+        to raise_error(Exception, error_text)
+    end
+
+    it 'should be possible to parse it again (no AlreadyProcessingError)' do
+      begin
+        parse_this(user, ontology, fixture_file('test1.xml'),
+                 fixture_file('test1.pp.xml'))
+      rescue Exception => e
+        allow_any_instance_of(Hets::NodeEvaluator).
+          to receive(:ontology_end).and_call_original
+
+        expect { parse_this(user, ontology, fixture_file('test1.xml'),
+                 fixture_file('test1.pp.xml')) }.
+          not_to raise_error
+      end
+    end
   end
 
 end

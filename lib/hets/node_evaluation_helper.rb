@@ -55,11 +55,22 @@ module Hets
       version.user = user
       version.code_reference = code_reference_for(ontology.name)
       version.basepath = ontology.basepath
+      version.parent = parent_version
+      version.commit_oid = parent_version.try(:commit_oid)
+      version.pp_xml_name = parent_version.try(:pp_xml_name)
+      version.xml_name = parent_version.try(:xml_name)
       version.file_extension = ontology.file_extension
+      # This version will not exist if the parsing fails
+      version.state = 'done'
+      version.do_not_parse!
 
       hets_evaluator.versions << version
 
       ontology
+    end
+
+    def parent_version
+      hets_evaluator.version if parent_ontology
     end
 
     def alias_iris_for_links!(current_element)

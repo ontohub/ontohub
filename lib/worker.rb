@@ -2,6 +2,7 @@ require 'sidekiq/worker'
 
 # Worker for Sidekiq
 class Worker < BaseWorker
+  sidekiq_options queue: 'hets'
 
   # Because of the JSON-Parsing the hash which contains
   # the try_count will contain the try_count key

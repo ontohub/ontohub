@@ -11,8 +11,15 @@ module OntologyVersion::States
 
   include StateUpdater
 
+  TERMINAL_STATES = %w(failed done)
+
   included do
-    after_save :after_update_state, if: :state_changed?
+    after_save :after_update_state, if: :change_applicable?
+  end
+
+  def change_applicable?
+    state_changed? &&
+    parent.nil?
   end
 
   def state_message

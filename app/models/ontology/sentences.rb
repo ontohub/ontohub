@@ -64,7 +64,7 @@ module Ontology::Sentences
           entity_mapping_id: mapping,
           audience_id: audience,
           sentence_id: sentence,
-          ontology_id: mapping.link.source).first_or_initialize
+          ontology_id: sentence.ontology).first_or_initialize
         translated_sentence.translated_text = translated_text
         translated_sentence.save
         translated_sentence

@@ -43,6 +43,7 @@ Ontohub::Application.routes.draw do
     resources :teams, :only => :index
     resources :users
     resources :jobs, :only => :index
+    resources :status, only: :index
   end
 
   authenticate :user, lambda { |u| u.admin? } do
