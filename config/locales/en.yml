@@ -6,8 +6,8 @@ en:
     You probably shouldn't remove this account, as deleting
     it would leave the system with too few admins.
     The threshold level is: %{minimal_count}.
-  in_process_ontologies: "%{oms} with pending work:"
-  ontology_versions_status: "In-process %{oms}-version found:"
+  in_process_ontologies: "Ontologies with pending work:"
+  ontology_versions_status: "In-process ontology-version found:"
   wait: 'Please wait …'
   relation_list:
     team_user:
