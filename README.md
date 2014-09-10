@@ -26,7 +26,7 @@ information from this perspective, see [the Ontohub home page](http://ontoiop.or
 
 This application started at the compact course [agile web development][0] given
 by [Carsten Bormann][1] at the University of Bremen in March, 2012. The
-concept and assignment came from [Till Mossakowski][2], now in Magdeburg [3]
+concept and assignment came from [Till Mossakowski][2], now in [Magdeburg][3]
 and [Christoph Lange][4].
 
 Initial developers are [Julian Kornberger][5] and [Henning Müller][6].
@@ -39,7 +39,7 @@ Installation
 
 A guide to set up your own instance of ontohub you can find in the [deployment guide][7].
 
-Also a guide for development environment for [Mac][8] and [Ubuntu][9]
+Also a guide for development environment for [Mac OS X][8] and [Ubuntu][9]
 in the Wiki.
 
 
