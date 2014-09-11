@@ -203,6 +203,8 @@ Style/EvenOdd:
 Style/FileName:
   Description: 'Use snake_case for source file names.'
   Enabled: true
+  Exclude:
+    - 'db/**/*'
 
 Style/FlipFlop:
   Description: 'Checks for flip flops'
@@ -531,6 +533,8 @@ Style/SpecialGlobalVars:
 Style/StringLiterals:
   Description: 'Checks if uses of quotes match the configured preference.'
   Enabled: true
+  Style: 'single_quotes'
+  EnforcedStyle: single_quotes
 
 Style/Tab:
   Description: 'No hard tabs.'
