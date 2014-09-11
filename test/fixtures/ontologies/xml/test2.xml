@@ -1,32 +1,70 @@
 <?xml version='1.0' ?>
-<DGraph filename="/home/till/CASL/Hets-lib/./test/test2.casl" libname="test/test2" nextlinkid="3">
-  <DGNode name="sp__E1" logic="CASL" refname="sp" relxpath="/Extension/Spec[1]">
+<DGraph filename="/ontologies/test2.casl" libname="test2" dgnodes="4" dgedges="3" nextlinkid="3">
+  <DGNode name="sp__E1" range="/ontologies/test2.casl:2.3-5.1" reference="false" logic="CASL" refname="sp" relxpath="/Extension/Spec[1]">
     <Declarations>
-      <Symbol kind="sort" name="s" range="/home/till/CASL/Hets-lib/./test/test2.casl:2.8">sort s</Symbol>
-      <Symbol kind="op" name="f" range="/home/till/CASL/Hets-lib/./test/test2.casl:3.6">op f : s -&gt; s</Symbol>
+      <Symbol kind="sort" name="s" iri="s" range="/ontologies/test2.casl:2.8">sort s</Symbol>
+      <Symbol kind="op" name="f" iri="f" range="/ontologies/test2.casl:3.6">op f : s -&gt; s</Symbol>
     </Declarations>
+    <Symbols>
+      <Symbol kind="sort" name="s" iri="s" range="/ontologies/test2.casl:2.8">sort s</Symbol>
+      <Symbol kind="op" name="f" iri="f" range="/ontologies/test2.casl:3.6">op f : s -&gt; s</Symbol>
+    </Symbols>
     <Axioms>
-      <Axiom name="Ax1" range="/home/till/CASL/Hets-lib/./test/test2.casl:3.8-4.25">
-        <Text>forall x : s . f(x) = x %(Ax1)%</Text>
-        <Symbol kind="op" name="f" range="/home/till/CASL/Hets-lib/./test/test2.casl:4.18">op f : s -&gt; s</Symbol>
-        <Symbol kind="sort" name="s" range="/home/till/CASL/Hets-lib/./test/test2.casl:3.11">sort s</Symbol>
+      <Axiom name="Ax1" range="/ontologies/test2.casl:3.8-4.25">
+        <Text>forall x : s . f(x) = x</Text>
+        <Symbol kind="op" name="f" iri="f" range="/ontologies/test2.casl:4.18">op f : s -&gt; s</Symbol>
+        <Symbol kind="sort" name="s" iri="s" range="/ontologies/test2.casl:3.11">sort s</Symbol>
       </Axiom>
     </Axioms>
   </DGNode>
-  <DGNode name="sp__T" logic="CASL" refname="sp" relxpath="/Extension/Spec[2]/Translation">
+  <DGNode name="sp__T" range="/ontologies/test2.casl:7.1-7.4" reference="false" logic="CASL" refname="sp" relxpath="/Extension/Spec[2]/Translation">
+    <Symbols>
+      <Symbol kind="sort" name="s" iri="s" range="/ontologies/test2.casl:2.8">sort s</Symbol>
+      <Symbol kind="op" name="f" iri="f" range="/ontologies/test2.casl:3.6">op f : s -&gt; s</Symbol>
+    </Symbols>
     <Axioms>
-      <Axiom name="Ax1" range="/home/till/CASL/Hets-lib/./test/test2.casl:3.8-6.25">
-        <Text>. exists x : s . f(x) = x %(Ax1)%</Text>
-        <Symbol kind="op" name="f" range="/home/till/CASL/Hets-lib/./test/test2.casl:6.18">op f : s -&gt; s</Symbol>
-        <Symbol kind="sort" name="s" range="/home/till/CASL/Hets-lib/./test/test2.casl:3.11">sort s</Symbol>
+      <Axiom name="Ax1" range="/ontologies/test2.casl:3.8-6.25">
+        <Text>. exists x : s . f(x) = x</Text>
+        <Symbol kind="op" name="f" iri="f" range="/ontologies/test2.casl:6.18">op f : s -&gt; s</Symbol>
+        <Symbol kind="sort" name="s" iri="s" range="/ontologies/test2.casl:3.11">sort s</Symbol>
       </Axiom>
     </Axioms>
+    <ImpAxioms>
+      <Axiom name="Ax1_2" range="/ontologies/test2.casl:3.8-4.25">
+        <Text>forall x : s . f(x) = x</Text>
+        <Symbol kind="op" name="f" iri="f" range="/ontologies/test2.casl:4.18">op f : s -&gt; s</Symbol>
+        <Symbol kind="sort" name="s" iri="s" range="/ontologies/test2.casl:3.11">sort s</Symbol>
+        <ComorphismOrigin>id_CASL.SubPCSOL=E</ComorphismOrigin>
+      </Axiom>
+    </ImpAxioms>
   </DGNode>
-  <DGNode name="sp" logic="CASL" refname="sp" relxpath="/Extension/Spec[2]" />
-  <DGNode name="sp1" logic="CASL" refname="sp1" relxpath="/">
+  <DGNode name="sp" reference="false" logic="CASL" refname="sp" relxpath="/Extension/Spec[2]">
+    <Symbols>
+      <Symbol kind="sort" name="s" iri="s" range="/ontologies/test2.casl:2.8">sort s</Symbol>
+      <Symbol kind="op" name="f" iri="f" range="/ontologies/test2.casl:3.6">op f : s -&gt; s</Symbol>
+    </Symbols>
+    <ImpAxioms>
+      <Axiom name="Ax1" range="/ontologies/test2.casl:3.8-6.25">
+        <Text>. exists x : s . f(x) = x</Text>
+        <Symbol kind="op" name="f" iri="f" range="/ontologies/test2.casl:6.18">op f : s -&gt; s</Symbol>
+        <Symbol kind="sort" name="s" iri="s" range="/ontologies/test2.casl:3.11">sort s</Symbol>
+        <ComorphismOrigin>id_CASL.SubPCSOL=E</ComorphismOrigin>
+      </Axiom>
+      <Axiom name="Ax1_2" range="/ontologies/test2.casl:3.8-4.25">
+        <Text>forall x : s . f(x) = x</Text>
+        <Symbol kind="op" name="f" iri="f" range="/ontologies/test2.casl:4.18">op f : s -&gt; s</Symbol>
+        <Symbol kind="sort" name="s" iri="s" range="/ontologies/test2.casl:3.11">sort s</Symbol>
+        <ComorphismOrigin>id_CASL.SubPCSOL=E</ComorphismOrigin>
+      </Axiom>
+    </ImpAxioms>
+  </DGNode>
+  <DGNode name="sp1" range="/ontologies/test2.casl:10.6-10.9" reference="false" logic="CASL" refname="sp1" relxpath="/">
     <Hidden>
-      <Symbol range="/home/till/CASL/Hets-lib/./test/test2.casl:3.6">op f : s -&gt; s</Symbol>
+      <Symbol range="/ontologies/test2.casl:3.6">op f : s -&gt; s</Symbol>
     </Hidden>
+    <Symbols>
+      <Symbol kind="sort" name="s" iri="s" range="/ontologies/test2.casl:2.8">sort s</Symbol>
+    </Symbols>
   </DGNode>
   <DGLink source="sp__E1" target="sp__T" linkid="0">
     <Type>GlobalDefInc</Type>

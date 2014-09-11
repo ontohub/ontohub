@@ -32,6 +32,8 @@ module Ontology::Entities
         e.kind = hash['kind']
       end
 
+      e.iri = hash['iri']
+
       if e.range.to_s.include?(':')
         # remove path from range
         # Examples/Reichel:28.9 -> 28.9

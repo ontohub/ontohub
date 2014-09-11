@@ -10,7 +10,7 @@ class RepositoriesController < InheritedResources::Base
   end
 
   def update
-    params[:repository].except! :source_address, :source_type
+    params[:repository].except!(:source_address, :source_type, :name)
     super
   end
 

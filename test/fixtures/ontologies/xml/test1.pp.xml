@@ -1,6 +1,6 @@
 <?xml version='1.0' ?>
-<Lib name="/home/till/CASL/Hets-lib/test/test1">
-  <SpecDefn name="/home/till/CASL/Hets-lib/test/test1#sp" range="1.1-5.1">
+<Lib name="test1">
+  <SpecDefn name="sp" range="1.1-5.3">
     <Basicspec range="2.3-5.1">
       <Sort_items SortsKind="NonEmptySorts" range="2.3-2.8">
         <Sort_decl range="2.8">
