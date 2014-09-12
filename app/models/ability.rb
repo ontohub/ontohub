@@ -21,7 +21,9 @@ class Ability
         end
       end
       can [:write], Repository do |subject|
-        if subject.private_r?
+        if subject.mirror?
+          false
+        elsif subject.private_r?
           false
         elsif subject.private_rw?
           subject.permission?(:editor, user)
