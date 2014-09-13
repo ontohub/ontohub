@@ -1,4 +1,8 @@
 class SingleOntology < Ontology
+
+  include Elasticsearch::Model
+  include Elasticsearch::Model::Callbacks
+
   def self.model_name
     Ontology.model_name
   end
