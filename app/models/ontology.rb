@@ -41,7 +41,6 @@ class Ontology < ActiveRecord::Base
   has_many :target_links, class_name: 'Link', foreign_key: 'target_id', dependent: :destroy
 
   has_and_belongs_to_many :license_models
-  has_and_belongs_to_many :formality_levels
 
   attr_accessible :iri, :name, :description, :acronym, :documentation,
                   :logic_id,
@@ -53,7 +52,7 @@ class Ontology < ActiveRecord::Base
                   :alternative_iris,
                   :ontology_type_id,
                   :license_model_ids,
-                  :formality_level_ids,
+                  :formality_level_id,
                   :task_ids,
                   :project_ids
 
