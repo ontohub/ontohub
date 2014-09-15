@@ -1,5 +1,7 @@
 class Task < ActiveRecord::Base
 
+  scope :not_empty, joins(:ontologies).group('tasks.id')
+
   has_and_belongs_to_many :ontologies
 
   attr_accessible :name, :description
@@ -11,6 +13,10 @@ class Task < ActiveRecord::Base
 
   def to_s
     name
+  end
+
+  def name_with_ontology_count
+    "#{self.to_s} (#{self.ontologies.count})"
   end
 
 end
