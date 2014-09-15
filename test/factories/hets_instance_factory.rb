@@ -8,13 +8,9 @@ FactoryGirl.define do
     "hets_instance-#{n}"
   end
 
-  factory :hets_instance do
+  factory :hets_instance, aliases: [:local_hets_instance] do
     name { FactoryGirl.generate :hets_instance_name }
-    uri { FactoryGirl.generate :uri }
-
-    factory :local_hets_instance do
-      uri { 'http://localhost:8000' }
-    end
+    uri { 'http://localhost:8000' }
   end
 
 end
