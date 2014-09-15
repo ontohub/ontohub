@@ -5,6 +5,8 @@ module UriFetcher
   DEFAULT_REDIRECTS = 10
 
   class GetCaller
+    include UriFetcher::Errors
+
     attr_accessor :uri, :redirect_limit, :previous_response, :current_response
     attr_accessor :content_test_block, :write_file, :file_type
 
