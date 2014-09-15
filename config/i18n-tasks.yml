@@ -4,9 +4,22 @@ search:
     - "app/helpers"
     - "app/presenters"
     - "app/views"
+    - "app/models"
+    - "lib"
 
 ignore_unused:
   - activerecord.*
   - date.*
   - simple_form.*
   - time.*
+  - '*.help*'
+  - '*.placeholder*'
+  - repository.access.*
+  - Link
+  - LogicMapping
+
+ignore_missing:
+  - views.pagination.*
+  - help
+  - placeholder
+  - simple_form.*
