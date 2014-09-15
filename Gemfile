@@ -127,8 +127,6 @@ group :test do
 end
 
 group :development do
-  # pre-packaged Solr distribution for use in development
-  gem 'sunspot_solr', :git => 'git://github.com/digineo/sunspot.git'
   gem "rails-erd", '~> 1.1.0'
   gem 'quiet_assets', '~> 1.0.3'
   gem 'invoker', '~> 1.2.0'
