@@ -6,7 +6,7 @@ class FormalityLevelsController < InheritedResources::Base
   def create
     create! do |success, failure|
       if parent
-        parent.formality_levels << resource
+        parent.formality_level = resource
         parent.save
       end
       success.html { redirect_to [*resource_chain, :formality_levels] }
