@@ -10,6 +10,7 @@ require File.expand_path("../../config/environment", __FILE__)
 require 'rspec/rails'
 require 'rspec/autorun'
 require Rails.root.join('config', 'database_cleaner.rb')
+require 'addressable/template'
 require 'webmock/rspec'
 
 # Requires supporting ruby files with custom matchers and macros, etc,
@@ -26,12 +27,46 @@ class ActionController::TestRequest
 
 end
 
-def fixture_file(name)
-  ontology_file("xml/#{name}")
+def fixture_file(name, ext='xml')
+  ontology_file("xml/#{name}.#{ext}")
 end
 
-def ontology_file(path)
-  Rails.root + "test/fixtures/ontologies/" + path
+def ontology_file(path, ext=nil)
+  fixture_path = Rails.root + "test/fixtures/ontologies/"
+  portion =
+    if ext
+      "#{path}.#{ext}"
+    elsif path.include?('.')
+      path
+    else
+      "#{path}.#{path.to_s.split('/').first}"
+    end
+  fixture_path.join(portion)
+end
+
+def hets_uri
+  hets_instance = HetsInstance.choose
+  if hets_instance.nil?
+    FactoryGirl.create(:local_hets_instance)
+    hets_instance = HetsInstance.choose
+  end
+  %r{#{hets_instance.uri}/dg/.*}
+end
+
+def stub_hets_for(fixture_file)
+  stub_request(:get, 'http://localhost:8000/version').
+    to_return(body: Hets.minimal_version_string)
+  stub_request(:get, hets_uri).
+    to_return(body: fixture_file.read)
+end
+
+def setup_hets
+  let(:hets_instance) { create(:local_hets_instance) }
+  before do
+    stub_request(:get, 'http://localhost:8000/version').
+      to_return(body: Hets.minimal_version_string)
+    hets_instance
+  end
 end
 
 def add_fixture_file(repository, relative_file)
@@ -48,21 +83,11 @@ end
 # includes the convenience-method `define_ontology('name')`
 include OntologyUnited::Convenience
 
-def parse_this(user, ontology, xml_path, code_path)
-  opts =
-    if ontology.current_version
-      version = ontology.current_version
-      allow(version).to receive(:xml_path) { xml_path }
-      allow(version).to receive(:code_reference_path) { code_path }
-      {version: version}
-    else
-      {
-        path: xml_path,
-        code_path: code_path
-      }
-    end
-  evaluator = Hets::Evaluator.new(user, ontology, opts)
+def parse_this(user, ontology, fixture_file)
+  file = File.open(fixture_file)
+  evaluator = Hets::Evaluator.new(user, ontology, io: file)
   evaluator.import
+  file.close unless file.closed?
 end
 
 RSpec.configure do |config|
