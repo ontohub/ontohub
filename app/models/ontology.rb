@@ -32,7 +32,6 @@ class Ontology < ActiveRecord::Base
   belongs_to :logic, counter_cache: true
   belongs_to :ontology_type
   belongs_to :repository
-  belongs_to :license_model
   belongs_to :formality_level
   belongs_to :task
 
