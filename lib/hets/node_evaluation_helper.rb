@@ -58,7 +58,6 @@ module Hets
       version.commit_oid = parent_version.try(:commit_oid)
       version.file_extension = ontology.file_extension
       # This version will not exist if the parsing fails
-      version.state = 'done'
       version.do_not_parse!
 
       hets_evaluator.versions << version

@@ -3,6 +3,7 @@ require 'spec_helper'
 describe Ontology do
 
   let(:user) { create :user }
+  setup_hets
 
   context 'when naming an ontology' do
     let(:ontology) { create :ontology }
@@ -16,15 +17,16 @@ describe Ontology do
   context 'when deleting' do
     context 'a general ontology' do
       let(:ontology) { create :ontology }
+
       it 'should delete the defining file as well' do
         file = ontology.path
         repository = ontology.repository
 
         repository.git.commit_file(repository.user_info(user), 'file deletion test', file, 'add file')
 
-        expect(repository.path_exists?(file)).to be_true
+        expect(repository.path_exists?(file)).to be(true)
         ontology.destroy_with_parent(user)
-        expect(repository.path_exists?(file)).to be_false
+        expect(repository.path_exists?(file)).to be(false)
       end
 
       it 'should be deleted' do
@@ -116,8 +118,13 @@ describe Ontology do
     context 'a distributed ontology' do
       let(:user) { create :user }
       let(:repository) { create :repository, user: user }
+
+      before do
+        stub_hets_for(fixture_file('partial_order'))
+      end
+
       it 'should have logic DOL' do
-        path = File.join(Rails.root, 'test', 'fixtures', 'ontologies', 'casl', 'partial_order.casl')
+        path = ontology_file('casl/partial_order')
         version = repository.save_file(
           path,
           'partial_order.casl',
@@ -136,12 +143,15 @@ describe Ontology do
 
     context 'the logically translated ontology' do
 
+      before do
+        stub_hets_for(fixture_file('double_mapped_logic_translated_blendoid'))
+      end
       it 'should contain imported sentences' do
         expect(ontology.imported_sentences).to_not be_empty
       end
 
       it 'should contain logic translations' do
-        expect(ontology.contains_logic_translations?).to be_true
+        expect(ontology.contains_logic_translations?).to be(true)
       end
 
       it 'should have an ontology-version' do
@@ -152,61 +162,60 @@ describe Ontology do
 
   end
 
-  context 'when parsing an ontology which is referenced by another ontology', :needs_hets do
-    let(:repository) { create :repository }
-    let(:presentation) do
-      referenced_ontology = nil
-      ontology = define_ontology('Foo') do
-        this = prefix('ontohub')
-        imports define('Bar', as: :referenced_ontology) do
-          prefix('other_ontohub').class('SomeBar')
-        end
-        this.class('Bar').sub_class_of this.class('Foo')
-      end
-    end
-    let(:referenced_presentation) { presentation.referenced_ontology }
-    let(:version) { version_for_file(repository, presentation.file.path) }
-    let(:ontology) { version.ontology.reload }
+  # context 'when parsing an ontology which is referenced by another ontology', :needs_hets do
+  #   let(:repository) { create :repository }
+  #   let(:presentation) do
+  #     referenced_ontology = nil
+  #     ontology = define_ontology('Foo') do
+  #       this = prefix('ontohub')
+  #       imports define('Bar', as: :referenced_ontology) do
+  #         prefix('other_ontohub').class('SomeBar')
+  #       end
+  #       this.class('Bar').sub_class_of this.class('Foo')
+  #     end
+  #   end
+  #   let(:referenced_presentation) { presentation.referenced_ontology }
+  #   let(:version) { version_for_file(repository, presentation.file.path) }
+  #   let(:ontology) { version.ontology.reload }
 
-    before do
-      ExternalRepository.stub(:download_iri) do |external_iri|
-        absolute_path = external_iri.sub('file://', '')
-        dir = Pathname.new('/tmp/reference_ontologies/').
-          join(ExternalRepository.determine_path(external_iri, :dirpath))
-        ExternalRepository.send(:ensure_path_existence, dir)
-        filepath = dir.join(ExternalRepository.send(:determine_basename, external_iri))
-        FileUtils.cp(absolute_path, filepath)
-        filepath
-      end
-      version
-      ExternalRepository.unstub(:download_iri)
-    end
+  #   before do
+  #     ExternalRepository.stub(:download_iri) do |external_iri|
+  #       absolute_path = external_iri.sub('file://', '')
+  #       dir = Pathname.new('/tmp/reference_ontologies/').
+  #         join(ExternalRepository.determine_path(external_iri, :dirpath))
+  #       ExternalRepository.send(:ensure_path_existence, dir)
+  #       filepath = dir.join(ExternalRepository.send(:determine_basename, external_iri))
+  #       FileUtils.cp(absolute_path, filepath)
+  #       filepath
+  #     end
+  #     version
+  #     ExternalRepository.unstub(:download_iri)
+  #   end
 
-    let(:referenced_ontology) do
-      name = File.basename(referenced_presentation.name, '.owl')
-      Ontology.where("name LIKE '#{name}%'").first!
-    end
+  #   let(:referenced_ontology) do
+  #     name = File.basename(referenced_presentation.name, '.owl')
+  #     Ontology.where("name LIKE '#{name}%'").first!
+  #   end
 
-    it 'should import an ontology with that name' do
-      expect(ontology.direct_imported_ontologies).to include(referenced_ontology)
-    end
+  #   it 'should import an ontology with that name' do
+  #     expect(ontology.direct_imported_ontologies).to include(referenced_ontology)
+  #   end
 
-    it 'should have an ontology-version' do
-      expect(ontology.ontology_version).to_not be_nil
-    end
+  #   it 'should have an ontology-version' do
+  #     expect(ontology.ontology_version).to_not be_nil
+  #   end
 
-    it 'should have a referenced ontology with an ontology-version' do
-      expect(referenced_ontology.ontology_version).to_not be_nil
-    end
-  end
+  #   it 'should have a referenced ontology with an ontology-version' do
+  #     expect(referenced_ontology.ontology_version).to_not be_nil
+  #   end
+  # end
 
   context 'Import single Ontology' do
     let(:user) { create :user }
     let(:ontology) { create :single_ontology }
 
     before do
-      parse_this(user, ontology, fixture_file('test1.xml'),
-                 fixture_file('test1.pp.xml'))
+      parse_this(user, ontology, fixture_file('test1'))
     end
 
     it 'should save the logic' do
@@ -239,8 +248,7 @@ describe Ontology do
     let(:ontology) { create :distributed_ontology }
 
     before do
-      parse_this(user, ontology, fixture_file('test2.xml'),
-                 fixture_file('test2.pp.xml'))
+      parse_this(user, ontology, fixture_file('test2'))
     end
 
     it 'should create all single ontologies' do
@@ -295,8 +303,7 @@ describe Ontology do
     let(:combined) { ontology.children.where(name: 'VAlignedOntology').first }
 
     before do
-      parse_this(user, ontology, fixture_file('align.xml'),
-                 fixture_file('align.pp.xml'))
+      parse_this(user, ontology, fixture_file('align'))
     end
 
     it 'should create single ontologies' do
@@ -331,21 +338,18 @@ describe Ontology do
     end
 
     it 'should propagate the error' do
-      expect { parse_this(user, ontology, fixture_file('test1.xml'),
-                 fixture_file('test1.pp.xml')) }.
+      expect { parse_this(user, ontology, fixture_file('test1')) }.
         to raise_error(Exception, error_text)
     end
 
     it 'should be possible to parse it again (no AlreadyProcessingError)' do
       begin
-        parse_this(user, ontology, fixture_file('test1.xml'),
-                 fixture_file('test1.pp.xml'))
+        parse_this(user, ontology, fixture_file('test1'))
       rescue Exception => e
         allow_any_instance_of(Hets::NodeEvaluator).
           to receive(:ontology_end).and_call_original
 
-        expect { parse_this(user, ontology, fixture_file('test1.xml'),
-                 fixture_file('test1.pp.xml')) }.
+        expect { parse_this(user, ontology, fixture_file('test1')) }.
           not_to raise_error
       end
     end
