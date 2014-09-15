@@ -37,6 +37,7 @@ describe OntologyVersion do
     before do
       # Clear Jobs
       Worker.jobs.clear
+      stub_hets_for(fixture_file('pizza'))
     end
 
     context 'without exception' do
@@ -58,7 +59,7 @@ describe OntologyVersion do
 
     context 'on sidekiq shutdown' do
       before do
-        allow(Hets).to receive(:parse).and_raise(Sidekiq::Shutdown)
+        allow(Hets).to receive(:parse_via_api).and_raise(Sidekiq::Shutdown)
         ontology_version
         expect { Worker.drain }.to raise_error(Sidekiq::Shutdown)
       end
@@ -70,7 +71,7 @@ describe OntologyVersion do
 
     context 'on hets error' do
       before do
-        allow(Hets).to receive(:parse).
+        allow(Hets).to receive(:parse_via_api).
           and_raise(Hets::HetsError, "serious error")
         ontology_version
         expect { Worker.drain }.to raise_error(Hets::HetsError)
@@ -86,7 +87,7 @@ describe OntologyVersion do
       let(:ontology_version) { ontology.save_file(ontology_file('owl/pizza.owl'), 'message', user) }
 
       before do
-        allow(Hets).to receive(:parse).
+        allow(Hets).to receive(:parse_via_api).
           and_raise(Hets::HetsError, "first error")
         allow_any_instance_of(OntologyVersion).to receive(:after_failed).and_raise('second exception')
         ontology_version
