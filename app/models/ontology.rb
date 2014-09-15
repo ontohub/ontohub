@@ -33,7 +33,6 @@ class Ontology < ActiveRecord::Base
   belongs_to :ontology_type
   belongs_to :repository
   belongs_to :formality_level
-  belongs_to :task
 
   has_many :entity_groups
   has_many :alternative_iris, dependent: :destroy
