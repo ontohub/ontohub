@@ -66,8 +66,7 @@ describe Sentence do
 
 
       before do
-        parse_this(user, ontology, fixture_file('generations.xml'),
-                   fixture_file('generations.pp.xml'))
+        parse_this(user, ontology, fixture_file('generations'))
       end
 
       it 'should have display_text set' do
