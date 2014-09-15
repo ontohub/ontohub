@@ -61,3 +61,5 @@ config/environments/*.local.yml
 
 # Ignore output of SimpleCov
 /coverage
+
+test/fixtures/ontologies/xml
