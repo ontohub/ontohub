@@ -51,11 +51,6 @@ describe OntologyVersion do
         expect(ontology.reload.state).to eq('done')
       end
 
-      it 'should have checksum' do
-        checksum_regex = /^[a-z0-9]{40}$/
-        expect(ontology_version.reload.checksum).to match(checksum_regex)
-      end
-
       it 'should have state_updated_at' do
         expect(ontology_version.state_updated_at).to_not be_nil
       end
