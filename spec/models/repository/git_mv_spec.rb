@@ -13,7 +13,9 @@ describe 'git mv', :process_jobs_synchronously do
 
   let(:remote_repository) { create :git_repository_with_moved_ontologies }
   let(:repository) { create :repository,
-    source_address: remote_repository.path, source_type: 'git' }
+    source_address: remote_repository.path,
+    source_type: 'git',
+    remote_type: 'mirror' }
 
   before do
     stub_hets_for(hets_out_file('Px'), with: 'Px')

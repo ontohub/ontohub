@@ -10,14 +10,13 @@ module Repository::Importing
   extend ActiveSupport::Concern
 
   SOURCE_TYPES = %w( git svn )
+  REMOTE_TYPES = %w( fork mirror )
   STATES = State::STATES
 
   IMPORT_INTERVAL = 15.minutes
 
   included do
     include StateUpdater
-
-    attr_accessor :remote_type
 
     scope :with_source, where("source_type IS NOT null")
 
@@ -30,21 +29,26 @@ module Repository::Importing
 
     validates_inclusion_of :state,       in: STATES
     validates_with SourceTypeValidator, if: :source_address?
+    validates_presence_of :remote_type, if: :source_address?
+    validates_with RemoteTypeValidator
 
-    before_validation ->() { detect_source_type if new_record? }
+    before_validation ->() do
+      self.remote_type = nil unless source_address?
+      detect_source_type if new_record?
+    end
     after_create ->() { async_remote :clone }, if: :source_address?
   end
 
   def mirror?
-    source_address? && source_type?
+    remote_type == 'mirror'
   end
 
   def fork?
-    source_address? && !source_type?
+    remote_type == 'fork'
   end
 
   def convert_to_local!
-    self.source_type = nil
+    self.remote_type = 'fork'
     save!
   end
 
@@ -97,10 +101,15 @@ module Repository::Importing
   end
 
   module ClassMethods
-    # creates a new repository and imports the contents from the remote repository
+    # Creates a new repository and imports the contents from the remote
+    # repository.
     def import_remote(type, user, source, name, params={})
-      raise ArgumentError, "invalid source type: #{type}" unless SOURCE_TYPES.include?(type)
-      raise Repository::ImportError, "#{source} is not a #{type} repository" unless GitRepository.send "is_#{type}_repository?", source
+      unless SOURCE_TYPES.include?(type)
+        raise ArgumentError, "invalid source type: #{type}"
+      end
+      unless GitRepository.send "is_#{type}_repository?", source
+        raise Repository::ImportError, "#{source} is not a #{type} repository"
+      end
 
       params[:name]           = name
       params[:source_type]    = type
@@ -118,20 +127,34 @@ module Repository::Importing
 
   protected
 
-  def detect_source_type
-    if GitRepository.is_git_repository?(source_address)
-      self.source_type = 'git'
-    elsif GitRepository.is_svn_repository?(source_address)
-      self.source_type = 'svn'
+  class RemoteTypeValidator < ActiveModel::Validator
+    def validate(record)
+      if REMOTE_TYPES.include?(record.remote_type) &&
+        !record.source_address.present?
+        record.errors[:remote_type] =
+          "Source address not set for #{record.remote_type}"
+      elsif record.remote_type == 'mirror' && !record.source_type?
+        record.errors[:remote_type] =
+          "Source type not set for #{record.remote_type}"
+      end
     end
   end
 
   class SourceTypeValidator < ActiveModel::Validator
     def validate(record)
       if record.mirror? && !record.source_type.present?
-        record.errors[:source_address] = "not a valid remote repository (types supported: #{SOURCE_TYPES.join(', ')})"
+        record.errors[:source_address] = "not a valid remote repository " +
+          "(types supported: #{SOURCE_TYPES.join(', ')})"
         record.errors[:source_type] = "not present"
       end
+    end
+  end
+
+  def detect_source_type
+    if GitRepository.is_git_repository?(source_address)
+      self.source_type = 'git'
+    elsif GitRepository.is_svn_repository?(source_address)
+      self.source_type = 'svn'
     end
   end
 end
