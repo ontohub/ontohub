@@ -1,0 +1,161 @@
+#!/usr/bin/env ruby
+
+require 'fileutils'
+require 'pathname'
+
+module Backup
+  class Backup
+    MAINTENANCE_FILE = 'maintenance.txt'
+
+    SQL_DUMP_FILE = 'ontohub_sql_dump.postgresql'
+    REPOSITORY_FILE = 'ontohub_repositories.tar.gz'
+
+    DATA_DIRS = %w(data/repositories data/git_daemon)
+
+    attr_reader :db_name, :data_root, :backup_root, :backup_instance_dir
+    attr_reader :dry_run, :verbose, :sql_dump_without_su
+
+    def initialize(db_name, data_root, backup_root,
+      verbose: false, dry_run: true, sql_dump_without_su: false)
+      @db_name = db_name
+      @data_root = Pathname.new(data_root)
+      @backup_root = Pathname.new(backup_root)
+
+      @dry_run = dry_run
+      @verbose = verbose
+      @sql_dump_without_su = sql_dump_without_su
+    end
+
+    def create
+      enable_maintenance_mode
+      initialize_backup
+      create_sql_dump
+      create_repository_archive
+      # We needed to create the directory for the script to continue later on.
+      Dir.rmdir(backup_instance_dir) if dry_run
+      disable_maintenance_mode
+      puts "created backup in #{backup_instance_dir}"
+    end
+
+    def restore(backup_name)
+      enable_maintenance_mode
+      initialize_restore(backup_name)
+      restore_sql_dump
+      restore_repository_archive
+      disable_maintenance_mode
+      puts "restored backup from #{backup_instance_dir}"
+    end
+
+    protected
+
+    def new_backup_name
+      Time.now.strftime("%Y-%m-%d_%H-%M-%S")
+    end
+
+    def initialize_backup
+      @backup_instance_dir = backup_root.join(new_backup_name)
+      puts "FileUtils.mkdir_p #{backup_instance_dir}" if verbose
+      # Create directory even in dry run to let the script continue.
+      FileUtils.mkdir_p(backup_instance_dir)
+    end
+
+    def create_sql_dump
+      Dir.chdir(backup_instance_dir) do
+        if sql_dump_without_su
+          exec "pg_dump -U postgres -Fc #{db_name} > #{SQL_DUMP_FILE}"
+        else
+          exec "sudo -u postgres pg_dump -Fc #{db_name} > #{SQL_DUMP_FILE}"
+        end
+      end
+    end
+
+    def create_repository_archive
+      Dir.chdir(data_root.join('..')) do
+        archive_file = backup_instance_dir.join(REPOSITORY_FILE)
+        exec(["tar -czvf #{archive_file}", *DATA_DIRS].join(' '))
+      end
+    end
+
+    def initialize_restore(backup_name)
+      @backup_instance_dir = backup_root.join(backup_name)
+      unless Dir.exists?(backup_instance_dir)
+        puts "Error: Backup '#{backup_name}' does not exist in #{backup_root}."
+        exit
+      end
+    end
+
+    def restore_sql_dump
+      Dir.chdir(backup_instance_dir) do
+        if sql_dump_without_su
+          exec "pg_restore -c -U postgres -d #{db_name} #{SQL_DUMP_FILE}"
+        else
+          exec "sudo -u postgres pg_restore -c -d #{db_name} #{SQL_DUMP_FILE}"
+        end
+      end
+    end
+
+    def restore_repository_archive
+      Dir.chdir(data_root.join('..')) do
+        puts "FileUtils.rm_r #{DATA_DIRS}" if verbose
+        FileUtils.rm_r DATA_DIRS unless dry_run
+        archive_file = backup_instance_dir.join(REPOSITORY_FILE)
+        exec(["tar -xzvf #{archive_file}", *DATA_DIRS].join(' '))
+      end
+    end
+
+    def enable_maintenance_mode
+      puts "FileUtils.touch #{maintenance_file}" if verbose
+      FileUtils.touch maintenance_file unless dry_run
+    end
+
+    def disable_maintenance_mode
+      puts "FileUtils.rm #{maintenance_file}" if verbose
+      FileUtils.rm maintenance_file unless dry_run
+    end
+
+    def exec(command)
+      puts "[executing next command in #{Dir.getwd}]" if verbose
+      puts command if verbose
+      system(command) unless dry_run
+    end
+
+    def maintenance_file
+      data_root.join(MAINTENANCE_FILE)
+    end
+  end
+end
+
+def data_root(rails_root)
+  File.realpath(rails_root.join('data'))
+end
+
+def on_development_system?(rails_root)
+  !File.symlink?(rails_root.join('data'))
+end
+
+# We assume, this script runs in "RAILS_ROOT/script/".
+RAILS_ROOT = Pathname.new(__FILE__).dirname.join('..')
+
+DATABASE = on_development_system?(RAILS_ROOT) ? 'ontohub_development' : 'ontohub'
+BACKUP_ROOT = File.realpath('/home/ontohub/ontohub_data_backup')
+
+backup = Backup::Backup.new(DATABASE, data_root(RAILS_ROOT), BACKUP_ROOT,
+  sql_dump_without_su: on_development_system?(RAILS_ROOT),
+  dry_run: false, verbose: true)
+
+case ARGV.first
+when 'create'
+  backup.create
+when 'restore'
+  if ARGV.length == 1
+    puts 'To restore a backup, you need to specify one with the arguments'
+    puts '"restore backup_name"'
+    exit
+  end
+  backup_name = ARGV[1]
+  backup.restore(backup_name)
+else
+  puts 'unknown or missing parameter'
+  puts 'use parameter "create" or "restore <backup_name>"'
+  exit
+end
