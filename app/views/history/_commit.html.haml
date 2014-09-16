@@ -10,16 +10,16 @@
   .col-md-3
     .pull-right
       .btn-group
-        - if @current_file && repository.path_exists?(path, commit.oid)
+        - if current_file && repository.path_exists?(path, commit.oid)
           = link_to fancy_repository_path(repository, ref: commit.oid, path: path), class: 'btn btn-xs btn-default', 'data-toggle' => 'tooltip', 'data-original-title' => 'View file contents' do
             %i.icon-file
             Show file
-        - elsif @current_file
+        - elsif current_file
           = link_to '#', class: 'btn btn-xs btn-default disabled', 'data-toggle' => 'tooltip', 'data-original-title' => 'You cannot view a deleted file' do
             %i.icon-file
             Show file
 
-        - if @current_file
+        - if current_file
           = link_to short_oid(commit), fancy_repository_path(repository, ref: commit.oid, action: :diff), class: 'btn btn-xs btn-default oid-btn'
           = link_to fancy_repository_path(repository, ref: commit.oid), class: 'btn btn-xs btn-primary' do
             %i.icon-chevron-right

@@ -69,7 +69,7 @@ class User < ActiveRecord::Base
 
   def accessible_ids(type)
     user_permissions = permissions.where(item_type: type)
-    user_permissions + team_permissions.where(item_type: type)
+    user_permissions += team_permissions.where(item_type: type)
     user_permissions.map{|p| p.item_id}
   end
 

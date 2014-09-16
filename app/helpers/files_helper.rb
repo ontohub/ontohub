@@ -38,14 +38,6 @@ module FilesHelper
     !params[:ref].nil?
   end
 
-  def history_pagination(commits, current_page, per_page)
-    Kaminari.paginate_array(commits, total_count: ensure_next_page_exists(current_page, per_page)).page(current_page).per(per_page)
-  end
-
-  def ensure_next_page_exists(current_page, per_page)
-    Integer(current_page || 1)*(per_page+1)
-  end
-
   def dirpath(repository)
     return '' if params[:path].nil?
     parts = params[:path].split('/')
