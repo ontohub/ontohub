@@ -3,7 +3,7 @@
 require 'fileutils'
 require 'pathname'
 
-module Super
+module Backup
   class Backup
     MAINTENANCE_FILE = 'maintenance.txt'
 
@@ -134,7 +134,7 @@ RAILS_ROOT = Pathname.new(__FILE__).dirname.join('..')
 DATABASE = on_development_system?(RAILS_ROOT) ? 'ontohub_development' : 'ontohub'
 BACKUP_ROOT = '/tmp/ontohub_backup'
 
-backup = Super::Backup.new(DATABASE, data_root(RAILS_ROOT), BACKUP_ROOT,
+backup = Backup::Backup.new(DATABASE, data_root(RAILS_ROOT), BACKUP_ROOT,
   sql_dump_without_su: on_development_system?(RAILS_ROOT),
   dry_run: false, verbose: true)
 
