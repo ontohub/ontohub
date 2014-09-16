@@ -59,6 +59,7 @@ describe SSHAccess do
     it 'should raise error on write to mirror repository' do
       repository.source_address = 'http://some_source_address.example.com'
       repository.source_type = 'git'
+      repository.remote_type = 'mirror'
       expect { described_class.determine_permission('write', nil, repository) }.
         to raise_error(SSHAccess::InvalidAccessOnMirrorError)
     end
@@ -85,6 +86,7 @@ describe SSHAccess do
       it 'should raise error on write to mirror repository' do
         repository.source_address = 'http://some_source_address.example.com'
         repository.source_type = 'git'
+        repository.remote_type = 'mirror'
         expect { described_class.determine_permission('write', permission, repository) }.
           to raise_error(SSHAccess::InvalidAccessOnMirrorError)
       end
@@ -108,6 +110,7 @@ describe SSHAccess do
       it 'should raise error on write to mirror repository' do
         repository.source_address = 'http://some_source_address.example.com'
         repository.source_type = 'git'
+        repository.remote_type = 'mirror'
         expect { described_class.determine_permission('write', permission, repository) }.
           to raise_error(SSHAccess::InvalidAccessOnMirrorError)
       end
@@ -164,6 +167,7 @@ describe SSHAccess do
     it 'should raise error on write to mirror repository' do
       repository.source_address = 'http://some_source_address.example.com'
       repository.source_type = 'git'
+      repository.remote_type = 'mirror'
       expect { described_class.determine_permission('write', permission, repository) }.
         to raise_error(SSHAccess::InvalidAccessOnMirrorError)
     end

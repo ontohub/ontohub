@@ -25,7 +25,7 @@ describe "git import" do
       remote_repo.commit_file(userinfo, "(#{n})", "file-#{n}.clif", "add #{n}")
     end
 
-    @repository = Repository.import_remote('git', user, "file://#{remote_path}", 'local import', description: 'just an imported repo')
+    @repository = Repository.import_remote('git', user, "file://#{remote_path}", 'local import', description: 'just an imported repo', remote_type: 'mirror')
 
     # Run clone job
     Worker.drain

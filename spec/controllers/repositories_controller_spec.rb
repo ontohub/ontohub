@@ -47,8 +47,8 @@ describe RepositoriesController do
       context 'mirror' do
         before do
           post :create, repository: { name: 'repo',
-            source_address: "file://#{git_repository.path}" },
-            remote_type: 'mirror'
+            source_address: "file://#{git_repository.path}",
+            remote_type: 'mirror' }
         end
 
         after do
@@ -65,8 +65,8 @@ describe RepositoriesController do
       context 'fork' do
         before do
           post :create, repository: { name: 'repo',
-            source_address: "file://#{git_repository.path}" },
-            remote_type: 'fork'
+            source_address: "file://#{git_repository.path}",
+            remote_type: 'fork' }
         end
 
         it { should respond_with :found }

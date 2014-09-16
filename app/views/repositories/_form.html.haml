@@ -7,15 +7,7 @@
     = f.input :source_address, as: :url
 
     #remote_type.form-group
-      = f.label t('repository.remote_type.label')
-      .col-lg-10
-        = radio_button_tag(:remote_type, 'mirror', [nil, 'mirror'].include?(params[:remote_type]))
-        = label_tag t('repository.remote_type.mirror')
-
-        = radio_button_tag(:remote_type, 'fork', params[:remote_type]=='fork')
-        = label_tag t('repository.remote_type.fork')
-
-        = t 'repository.remote_type.text'
+      = f.input :remote_type, collection: Repository::REMOTE_TYPES, include_blank: false, as: :radio_buttons, hint: t('repository.remote_type.text')
 
   - if !resource.new_record? && resource.mirror?
     .form-group
