@@ -4,7 +4,7 @@ require 'active_support'
 require 'fileutils'
 require 'pathname'
 
-module Super
+module RenameRefactor
 
   AFFECTED_FILETYPES = %w[
     rb
@@ -356,6 +356,6 @@ module Super
   end
 end
 
-Super::MigrationProvider.new(verbose: false, dry_run: false).run
-Super::RenameRefactorProvider.new(verbose: true, dry_run: false).run
-Super::FactoryFilesRenameProvider.new(verbose: false, dry_run: false).run
+RenameRefactor::MigrationProvider.new(verbose: false, dry_run: false).run
+RenameRefactor::RenameRefactorProvider.new(verbose: true, dry_run: false).run
+RenameRefactor::FactoryFilesRenameProvider.new(verbose: false, dry_run: false).run
