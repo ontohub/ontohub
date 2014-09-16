@@ -104,19 +104,23 @@ module Backup
     end
 
     def enable_maintenance_mode
-      puts "FileUtils.touch #{data_root.join(MAINTENANCE_FILE)}" if verbose
-      FileUtils.touch data_root.join(MAINTENANCE_FILE) unless dry_run
+      puts "FileUtils.touch #{maintenance_file}" if verbose
+      FileUtils.touch maintenance_file unless dry_run
     end
 
     def disable_maintenance_mode
-      puts "FileUtils.rm #{data_root.join(MAINTENANCE_FILE)}" if verbose
-      FileUtils.rm data_root.join(MAINTENANCE_FILE) unless dry_run
+      puts "FileUtils.rm #{maintenance_file}" if verbose
+      FileUtils.rm maintenance_file unless dry_run
     end
 
     def exec(command)
       puts "[executing next command in #{Dir.getwd}]" if verbose
       puts command if verbose
       system(command) unless dry_run
+    end
+
+    def maintenance_file
+      data_root.join(MAINTENANCE_FILE)
     end
   end
 end
