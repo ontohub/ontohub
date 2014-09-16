@@ -356,6 +356,9 @@ module RenameRefactor
   end
 end
 
-RenameRefactor::MigrationProvider.new(verbose: false, dry_run: false).run
-RenameRefactor::RenameRefactorProvider.new(verbose: true, dry_run: false).run
-RenameRefactor::FactoryFilesRenameProvider.new(verbose: false, dry_run: false).run
+# Run the script from Rails.root (assuming this file is in script/)
+Dir.chdir(File.join(File.dirname(__FILE__), '..')) do
+  RenameRefactor::MigrationProvider.new(verbose: false, dry_run: false).run
+  RenameRefactor::RenameRefactorProvider.new(verbose: true, dry_run: false).run
+  RenameRefactor::FactoryFilesRenameProvider.new(verbose: false, dry_run: false).run
+end
