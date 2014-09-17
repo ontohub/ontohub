@@ -12,6 +12,6 @@ describe 'Repository destroying' do
   end
 
   it 'should mark the repository as destroying' do
-    expect(repository.destroying).to be_truthy
+    expect(repository.is_destroying).to be_truthy
   end
 end
