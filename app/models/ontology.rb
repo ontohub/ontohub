@@ -189,7 +189,7 @@ class Ontology < ActiveRecord::Base
   end
 
   def can_be_deleted?
-    if repository.destroying
+    if repository.is_destroying
       can_be_deleted_with_whole_repository?
     else
       can_be_deleted_alone?
