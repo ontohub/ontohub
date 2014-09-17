@@ -2,20 +2,28 @@ module Repository::Destroying
   extend ActiveSupport::Concern
 
   included do
-    scope :destroying, ->() { where(destroying: true) }
-    scope :active, ->() { where(destroying: false) }
+    scope :destroying, ->() { where(is_destroying: true) }
+    scope :active, ->() { where(is_destroying: false) }
   end
 
+  # Only use `destroy_asynchronously` if you want to destroy a repository.
+  # It prepares the deletion by setting a flag, which enables the deletion
+  # of its ontologies.
   def destroy
     Rails.logger.info "Destroy #{self.class} #{self} (id: #{id})"
     super
   rescue StandardError => e
+    self.destroying = false
+    save!
     raise e.class, I18n.t('repository.delete_error', oms: Settings.OMS)
   end
 
   def destroy_asynchronously
-    Rails.logger.info "Mark #{self.class} #{self} (id: #{id}) as destroying"
-    self.destroying = true
+    unless can_be_deleted?
+      raise Repository::DeleteError, I18n.t('repository.delete_error')
+    end
+    Rails.logger.info "Mark #{self.class} #{self} (id: #{id}) as is_destroying"
+    self.is_destroying = true
     save!
     async(:destroy)
   end
