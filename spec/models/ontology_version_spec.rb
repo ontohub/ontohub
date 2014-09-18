@@ -37,7 +37,7 @@ describe OntologyVersion do
     before do
       # Clear Jobs
       Worker.jobs.clear
-      stub_hets_for(fixture_file('pizza'))
+      stub_hets_for(hets_out_file('pizza'))
     end
 
     context 'without exception' do

@@ -16,9 +16,9 @@ describe 'git mv', :process_jobs_synchronously do
     source_address: remote_repository.path, source_type: 'git' }
 
   before do
-    stub_hets_for(fixture_file('Px'), with: 'Px')
-    stub_hets_for(fixture_file('Qy'), with: 'Qy')
-    stub_hets_for(fixture_file('Rz'), with: 'Rz')
+    stub_hets_for(hets_out_file('Px'), with: 'Px')
+    stub_hets_for(hets_out_file('Qy'), with: 'Qy')
+    stub_hets_for(hets_out_file('Rz'), with: 'Rz')
   end
 
   after do

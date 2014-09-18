@@ -19,7 +19,7 @@ describe Link do
           let(:link) { dist_ontology.links.first }
 
           before do
-            parse_this(user, dist_ontology, fixture_file('reference'))
+            parse_this(user, dist_ontology, hets_out_file('reference'))
           end
 
           it 'should have the link-source set correctly' do

@@ -27,12 +27,12 @@ class ActionController::TestRequest
 
 end
 
-def fixture_file(name, ext='xml')
-  ontology_file("xml/#{name}.#{ext}")
+def fixture_file(path)
+  fixture_path = Rails.root.join('test/fixtures/')
+  fixture_path.join(path)
 end
 
 def ontology_file(path, ext=nil)
-  fixture_path = Rails.root + "test/fixtures/ontologies/"
   portion =
     if ext
       "#{path}.#{ext}"
@@ -41,7 +41,11 @@ def ontology_file(path, ext=nil)
     else
       "#{path}.#{path.to_s.split('/').first}"
     end
-  fixture_path.join(portion)
+  fixture_file("ontologies/#{portion}")
+end
+
+def hets_out_file(name, ext='xml')
+  ontology_file("hets-out/#{name}.#{ext}")
 end
 
 def hets_uri(portion = nil)

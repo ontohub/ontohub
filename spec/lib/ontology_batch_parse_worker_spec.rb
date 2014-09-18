@@ -19,7 +19,7 @@ describe OntologyBatchParseWorker do
       balancer.mark_as_processing_or_complain(ontology.iri)
       OntologyVersion.any_instance.stubs(:raw_path!).returns(
         ontology_file('clif/sequential_parse'))
-      stub_hets_for(fixture_file('sequential_parse'))
+      stub_hets_for(hets_out_file('sequential_parse'))
     end
 
     after do

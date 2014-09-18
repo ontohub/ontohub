@@ -33,7 +33,7 @@ describe Entity do
     let(:user) { create :user }
 
     before do
-      parse_this(user, ontology, fixture_file('pizza'))
+      parse_this(user, ontology, hets_out_file('pizza'))
     end
 
     it 'should have the correct number of described entities' do

@@ -66,7 +66,7 @@ describe Sentence do
 
 
       before do
-        parse_this(user, ontology, fixture_file('generations'))
+        parse_this(user, ontology, hets_out_file('generations'))
       end
 
       it 'should have display_text set' do

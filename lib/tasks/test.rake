@@ -14,7 +14,7 @@ namespace :test do
       '--full-signatures',
       '-a none',
       '-v2',
-      '-O test/fixtures/ontologies/xml',
+      '-O test/fixtures/ontologies/hets-out',
       '+RTS -K1G -RTS',
       '--full-theories',
     ]

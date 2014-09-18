@@ -7,7 +7,7 @@ describe TarjanTree do
       let(:user) { create :user }
 
       before do
-        parse_this(user, ontology, fixture_file('cycle'))
+        parse_this(user, ontology, hets_out_file('cycle'))
         ontology.reload
       end
 

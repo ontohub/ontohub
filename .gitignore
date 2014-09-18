@@ -63,3 +63,6 @@ config/environments/*.local.yml
 /coverage
 
 test/fixtures/ontologies/xml
+
+test/fixtures/ontologies/hets-out/*
+!test/fixtures/ontologies/hets-out/.gitkeep
