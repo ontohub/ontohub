@@ -10,8 +10,7 @@ describe OntologyVersionsController do
     let(:repository) { ontology.repository }
 
     before do
-      parse_this(user, ontology, fixture_file('test2.xml'),
-                 fixture_file('test2.pp.xml'))
+      parse_this(user, ontology, fixture_file('test2'))
     end
 
     context 'on GET to index of a child' do
