@@ -31,10 +31,9 @@ describe Entity do
   context 'when importing an ontology' do
     let(:ontology) { create :ontology }
     let(:user) { create :user }
-    let(:xml_path) { Rails.root + 'test/fixtures/ontologies/xml/' + 'pizza.xml' }
 
     before do
-      parse_this(user, ontology, xml_path, nil)
+      parse_this(user, ontology, fixture_file('pizza'))
     end
 
     it 'should have the correct number of described entities' do
@@ -43,7 +42,7 @@ describe Entity do
       commented_entities = ontology.entities.
         where('comment IS NOT NULL')
       described_entities_count = labeled_entities.size + commented_entities.size
-      described_entities_count.should be(115)
+      described_entities_count.should eq(115)
     end
 
   end
