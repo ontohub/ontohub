@@ -5,10 +5,9 @@ describe TarjanTree do
   context 'owl classhierachy' do
       let(:ontology) { create :ontology }
       let(:user) { create :user }
-      let(:xml_path) { Rails.root + 'test/fixtures/ontologies/xml/' + 'cycle.xml' }
 
       before do
-        parse_this(user, ontology, xml_path, nil)
+        parse_this(user, ontology, fixture_file('cycle'))
         ontology.reload
       end
 
