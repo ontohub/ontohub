@@ -4,8 +4,12 @@ describe EntityMapping do
 
   context 'when importing an ontology', :needs_hets do
     let(:repository) { create :repository }
-    let(:version) { add_fixture_file(repository, 'dol/simple_mapping.dol') }
+    let(:version) { add_fixture_file(repository, 'dol/simple_mapping') }
     let(:dist_ontology) { version.ontology }
+
+    before do
+      stub_hets_for(fixture_file('simple_mapping'))
+    end
 
     context 'which has mapped symbols' do
       let(:ontology) { dist_ontology.children.find_by_name('test') }

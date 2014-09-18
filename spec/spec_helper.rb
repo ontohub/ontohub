@@ -70,7 +70,7 @@ def setup_hets
 end
 
 def add_fixture_file(repository, relative_file)
-  path = File.join(Rails.root, 'test', 'fixtures', 'ontologies', relative_file)
+  path = ontology_file(relative_file)
   version_for_file(repository, path)
 end
 
