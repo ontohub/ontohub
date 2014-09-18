@@ -12,6 +12,8 @@ FactoryGirl.define do
     skip_create
 
     initialize_with do
+      root_path = File.expand_path('../../../', __FILE__)
+      fixture_path = File.join(root_path, 'test/fixtures/ontologies/clif/')
       path = generate :git_repository_path
       exec_silently = ->(cmd) { Subprocess.run('bash', '-c', cmd) }
 
@@ -20,9 +22,9 @@ FactoryGirl.define do
         exec_silently.call('git init .')
         exec_silently.call('git config --local user.email "tester@localhost.localdomain"')
         exec_silently.call('git config --local user.name "Tester"')
-        exec_silently.call('echo "(P x)" > Px.clif')
-        exec_silently.call('echo "(Q y)" > Qy.clif')
-        exec_silently.call('echo "(R z)" > Rz.clif')
+        exec_silently.call("cp #{fixture_path}/Px.clif Px.clif")
+        exec_silently.call("cp #{fixture_path}/Qy.clif Qy.clif")
+        exec_silently.call("cp #{fixture_path}/Rz.clif Rz.clif")
         exec_silently.call('git add Px.clif')
         exec_silently.call('git commit -m "add Px.clif"')
         exec_silently.call('git add Qy.clif')

@@ -1,6 +1,8 @@
 require 'spec_helper'
 
 describe 'git mv', :process_jobs_synchronously do
+  setup_hets
+
   let(:userinfo) do
     {
       email: 'janjansson.com',
@@ -12,6 +14,12 @@ describe 'git mv', :process_jobs_synchronously do
   let(:remote_repository) { create :git_repository_with_moved_ontologies }
   let(:repository) { create :repository,
     source_address: remote_repository.path, source_type: 'git' }
+
+  before do
+    stub_hets_for(fixture_file('Px'), with: 'Px')
+    stub_hets_for(fixture_file('Qy'), with: 'Qy')
+    stub_hets_for(fixture_file('Rz'), with: 'Rz')
+  end
 
   after do
     remote_repository.destroy

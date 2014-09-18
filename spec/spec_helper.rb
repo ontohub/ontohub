@@ -44,19 +44,20 @@ def ontology_file(path, ext=nil)
   fixture_path.join(portion)
 end
 
-def hets_uri
+def hets_uri(portion = nil)
   hets_instance = HetsInstance.choose
   if hets_instance.nil?
     FactoryGirl.create(:local_hets_instance)
     hets_instance = HetsInstance.choose
   end
-  %r{#{hets_instance.uri}/dg/.*}
+  specific = "#{portion}.*" if portion
+  %r{#{hets_instance.uri}/dg/.*#{specific}}
 end
 
-def stub_hets_for(fixture_file)
+def stub_hets_for(fixture_file, with: nil)
   stub_request(:get, 'http://localhost:8000/version').
     to_return(body: Hets.minimal_version_string)
-  stub_request(:get, hets_uri).
+  stub_request(:get, hets_uri(with)).
     to_return(body: fixture_file.read)
 end
 
