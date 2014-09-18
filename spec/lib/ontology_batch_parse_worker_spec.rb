@@ -3,6 +3,7 @@ require 'spec_helper'
 # We try to be explicit when using sidekiq
 # testing modes. However inline! is the default
 describe OntologyBatchParseWorker do
+  setup_hets
 
   let(:balancer) { ConcurrencyBalancer.new }
 
@@ -17,7 +18,8 @@ describe OntologyBatchParseWorker do
       end
       balancer.mark_as_processing_or_complain(ontology.iri)
       OntologyVersion.any_instance.stubs(:raw_path!).returns(
-        Rails.root + 'test/fixtures/ontologies/clif/sequential_parse.clif')
+        ontology_file('clif/sequential_parse'))
+      stub_hets_for(fixture_file('sequential_parse'))
     end
 
     after do
