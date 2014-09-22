@@ -1,0 +1,25 @@
+# -*- mode: ruby -*-
+# vi: set ft=ruby :
+
+VAGRANTFILE_API_VERSION = "2"
+
+Vagrant.configure(VAGRANTFILE_API_VERSION) do |config|
+  # Every Vagrant virtual environment requires a box to build off of.
+  # We are using the cloud server version of Ubuntu 14.04 Trusy Tahr.
+  config.vm.box = "ubuntu/trusty64"
+
+  # Configurate the virtual machine to use 2GB of RAM
+  config.vm.provider :virtualbox do |vb|
+    vb.customize ["modifyvm", :id, "--memory", "2048"]
+  end
+
+  # Add i386 architecture to support the udrawgraph package.
+  config.vm.provision :shell, privileged: true, 
+    :inline => "dpkg --add-architecture i386"
+ 
+  # Use Chef Solo to provision our virtual machine
+  config.vm.provision :chef_solo do |chef|
+    chef.cookbooks_path = ["cookbooks"]
+    chef.add_recipe "ontohub"
+  end
+end

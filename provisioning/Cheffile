@@ -1,0 +1,9 @@
+site "http://community.opscode.com/api/v1"
+
+cookbook 'apt'
+cookbook 'ruby'
+cookbook 'rvm'
+cookbook 'postgresql'
+cookbook 'hets', :path => 'hets'
+cookbook 'ontohub', :path => 'ontohub'
+
