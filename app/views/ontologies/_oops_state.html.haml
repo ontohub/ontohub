@@ -1,11 +1,20 @@
 - if req = oops_request
   .state{class: req.state, 'data-uri' => oops_data_uri, 'data-button' => 'Show results', 'data-reload_uri' => oops_data_reload_uri}
-    %span.oops OOPS state: #{status(req)}
+    %span.oops
+      OOPS state:
+      - if req.state == 'failed'
+        %span.label.label-danger
+          #{status(req)}
+      - elsif req.state == 'done'
+        %span.label.label-success
+          #{status(req)}
+    %br
     - if req.state == 'failed'
       (#{req.last_error})
     - elsif req.state == 'done'
-      (#{req.responses.count} Responses)
+      = t("oops.responses", all: req.responses.size, global: global_responses.size)
       - if global_responses
+        %br
         = link_to 'Show global issues', '#', class: 'pitfalls'
   .pitfalls{style: 'display: none'}
     %dl.oops-responses
