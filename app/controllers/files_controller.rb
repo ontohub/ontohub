@@ -30,7 +30,9 @@ class FilesController < InheritedResources::Base
 
   def diff
     @message = repository.commit_message(oid)
-    @changed_files = repository.changed_files(oid)
+    diff = Diff.new(params)
+    diff.compute
+    @changed_files = diff.changed_files
   end
 
   def new

@@ -8,9 +8,10 @@ module GitRepository::History
     delegate :oid, :message, :committer, :author, to: :rugged_commit
 
     def initialize(commit, commits_to_diff: nil, path: nil)
-      @rugged_commit   = commit
-      @commits_to_diff = commits_to_diff ? commits_to_diff : commit.parents
-      @path            = path
+      @rugged_commit = commit
+      @commits_to_diff =
+        commits_to_diff.present? ? commits_to_diff : commit.parents
+      @path = path
     end
 
     # Diff against _all_ parents
