@@ -22,4 +22,4 @@
 - else
   %ul.repository-commits
     - resource.recent_changes.each do |commit|
-      = render partial: 'files/commit', locals: { repository: resource, commit: commit }
+      = render partial: 'history/commit', locals: { repository: resource, commit: commit, current_file: nil }
