@@ -33,21 +33,6 @@ class FilesController < InheritedResources::Base
     @changed_files = repository.changed_files(oid)
   end
 
-  def history
-    @per_page = 25
-    page = @page = params[:page].nil? ? 1 : params[:page].to_i
-    offset = page > 0 ? (page - 1) * @per_page : 0
-
-    @ontology = repository.primary_ontology(path)
-
-    if repository.empty?
-      @commits = []
-    else
-      @current_file = repository.get_file(path, oid) if path && !repository.dir?(path)
-      @commits = repository.commits(start_oid: oid, path: path, offset: offset, limit: @per_page)
-    end
-  end
-
   def new
     @repository_file = resource_class.build(params.merge(user: current_user))
   end
