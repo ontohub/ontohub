@@ -28,11 +28,6 @@ class FilesController < InheritedResources::Base
     render json: repository.entries_info(oid, path)
   end
 
-  def diff
-    @message = repository.commit_message(oid)
-    @changed_files = repository.changed_files(oid)
-  end
-
   def new
     @repository_file = resource_class.build(params.merge(user: current_user))
   end
