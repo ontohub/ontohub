@@ -6,6 +6,7 @@ class OntologyVersion < ActiveRecord::Base
   include OntologyVersion::Parsing
   include OntologyVersion::Numbers
   include OntologyVersion::OopsRequests
+  include IRIUrlBuilder::Includeable
 
   include Rails.application.routes.url_helpers
   include ActionDispatch::Routing::UrlFor

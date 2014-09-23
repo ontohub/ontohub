@@ -21,6 +21,7 @@ class Ontology < ActiveRecord::Base
   include Ontology::LicenseModels
   include Ontology::FileExtensions
   include Ontology::Searching
+  include IRIUrlBuilder::Includeable
   include GraphStructures::SpecificFetchers::Links
 
   # Multiple Class Features
