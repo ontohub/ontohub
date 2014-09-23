@@ -20,7 +20,8 @@ class Diff < FakeRecord
       raw_diffs = @diff.split('diff --git a/')[1..-1]
 
       changed_files.each do |file_change|
-        diff = raw_diffs.select { |d| d.start_with?(file_change.old_path) }.first
+        diff = raw_diffs.
+          select { |d| d.start_with?(file_change.old_path) }.first
         file_change.diff = diff_without_metadata(diff, file_change.status)
       end
       @computed = true
