@@ -20,21 +20,8 @@ class Diff < FakeRecord
       raw_diffs = @diff.split('diff --git a/')[1..-1]
 
       changed_files.each do |file_change|
-        d = raw_diffs.select { |d| d.start_with?(file_change.old_path) }.first
-
-        # the first n lines are just metadata
-        n = case file_change.status
-        when :added
-          6
-        when :deleted
-          6
-        when :modified
-          5
-        when :renamed
-          5
-        end
-
-        file_change.diff = d.split("\n", n).last[0..-2]
+        diff = raw_diffs.select { |d| d.start_with?(file_change.old_path) }.first
+        file_change.diff = diff_without_metadata(diff, file_change.status)
       end
       @computed = true
     end
@@ -46,5 +33,22 @@ class Diff < FakeRecord
 
   def compute_ref(repository, ref)
     repository.commit_id(ref || Settings.git.default_branch)
+  end
+
+  def diff_without_metadata(diff, status)
+    diff.split("\n", metadata_line_count(status)).last[0..-1]
+  end
+
+  def metadata_line_count(status)
+    case status
+    when :added
+      6
+    when :deleted
+      6
+    when :modified
+      5
+    when :renamed
+      5
+    end
   end
 end
