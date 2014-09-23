@@ -98,7 +98,7 @@ we expected it to be matchable by this regular expression:
   end
 
   def self.parse_via_api(resource, url_catalog = [], structure_only: false)
-    iri = resource.iri
+    iri = resource.versioned_iri
     mode = structure_only ? :fast_run : :default
 
     parse_caller = Hets::ParseCaller.new(HetsInstance.choose, url_catalog)
