@@ -15,6 +15,13 @@ Ontohub::Application.routes.draw do
       IRIRouterConstraint.new,
       MIMERouterConstraint.new('text/plain', 'text/html'))
 
+  get 'ref/:version_number/:repository_id(/*path)/:file',
+    controller:  :ontologies,
+    action:      :show,
+    as:          :versioned_ontology_iri,
+    constraints: GroupedConstraint.new(
+      RefIRIRouterConstraint.new,
+      MIMERouterConstraint.new('text/plain', 'text/html'))
   #
   ###############
 

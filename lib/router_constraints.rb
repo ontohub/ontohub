@@ -40,8 +40,9 @@ end
 
 
 class IRIRouterConstraint < RouterConstraint
-  def matches?(request)
-    ontology = Ontology.find_with_iri(request.original_url)
+  def matches?(request, path=nil)
+    path ||= request.original_fullpath
+    ontology = Ontology.find_with_iri(path)
     result = !ontology.nil?
 
     if result
@@ -50,6 +51,14 @@ class IRIRouterConstraint < RouterConstraint
     end
 
     return result
+  end
+end
+
+class RefIRIRouterConstraint < IRIRouterConstraint
+  def matches?(request)
+    # remove the ref/:version_number portion from path
+    path = request.original_fullpath.sub(%r{\A/ref/\d+/}, '')
+    super(request, path)
   end
 end
 
