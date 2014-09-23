@@ -35,7 +35,7 @@ module OntologyVersion::Parsing
       return if cmd == :abort
 
       # Import version
-      self.ontology.import_version(self, self.user, input_io)
+      ontology.import_version(self, self.user, input_io)
 
       update_state! :done
     end

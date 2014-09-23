@@ -1,6 +1,5 @@
 module Hets
   class ParseCaller < Caller
-
     # Server-Instances should be started with the following
     # arguments: `hets +RTS -K1G -RTS -a none`
     MODE_ARGUMENTS = {
@@ -13,7 +12,7 @@ module Hets
 
     attr_accessor :url_catalog
 
-    def initialize(hets_instance, url_catalog=[])
+    def initialize(hets_instance, url_catalog = [])
       self.url_catalog = url_catalog
       msg = "<#{hets_instance}> not up."
       raise Hets::InactiveInstanceError, msg unless hets_instance.up?
@@ -31,6 +30,5 @@ module Hets
       query_hash = {}
       query_hash[:"url-catalog"] = url_catalog.join(',') if url_catalog.present?
     end
-
   end
 end

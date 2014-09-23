@@ -248,7 +248,7 @@ class Ontology < ActiveRecord::Base
   end
 
   def file_in_repository
-    repository.get_file(self.path)
+    repository.get_file(path)
   end
 
   protected

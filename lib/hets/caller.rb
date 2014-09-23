@@ -10,7 +10,7 @@ module Hets
       self.hets_instance = hets_instance
     end
 
-    def build_api_uri(command, arguments=[], query_string={})
+    def build_api_uri(command, arguments = [], query_string = {})
       hierarchy = [hets_instance.uri, command, *arguments].join('/')
       query_part =
         if query_string && !query_string.empty?
@@ -22,7 +22,7 @@ module Hets
       URI.parse(api_uri)
     end
 
-    def perform(api_uri, method=:get)
+    def perform(api_uri, method = :get)
       raise NotImplementedError, 'No HTTP-Verb other than GET supported' unless method == :get
       get_caller = performing_instance(api_uri)
       get_caller.call(http_result_options)
@@ -43,6 +43,5 @@ module Hets
     def has_actual_content?(response)
       response.is_a?(Net::HTTPSuccess)
     end
-
   end
 end

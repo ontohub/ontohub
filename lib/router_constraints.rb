@@ -40,7 +40,7 @@ end
 
 
 class IRIRouterConstraint < RouterConstraint
-  def matches?(request, path=nil)
+  def matches?(request, path = nil)
     path ||= request.original_fullpath
     ontology = Ontology.find_with_iri(path)
     result = !ontology.nil?

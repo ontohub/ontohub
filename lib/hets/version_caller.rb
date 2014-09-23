@@ -1,6 +1,5 @@
 module Hets
   class VersionCaller < Caller
-
     CMD = 'version'
     METHOD = :get
 
@@ -17,6 +16,5 @@ module Hets
     def http_result_options
       {}
     end
-
   end
 end
