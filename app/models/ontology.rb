@@ -247,6 +247,10 @@ class Ontology < ActiveRecord::Base
     current_version.present?
   end
 
+  def file_in_repository
+    repository.get_file(self.path)
+  end
+
   protected
 
   def import_links

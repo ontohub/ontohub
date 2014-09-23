@@ -55,6 +55,10 @@ class OntologyVersion < ActiveRecord::Base
     "#{basepath}#{file_extension}"
   end
 
+  def file_in_repository
+    ontology.repository.get_file(ontology.path, commit_oid)
+  end
+
   protected
 
   def raw_file_size_maximum

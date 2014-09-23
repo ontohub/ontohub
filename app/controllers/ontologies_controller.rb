@@ -144,8 +144,14 @@ class OntologiesController < InheritedResources::Base
 
   private
   def send_download
-    render text: resource.repository.get_file(resource.path).content,
+    asset = version || resource
+    render text: asset.file_in_repository.content,
            content_type: Mime::Type.lookup('application/force-download')
+  end
+
+  def version
+    args = {number: params[:version_number], ontology: resource}
+    @version ||= OntologyVersion.where(args).first if params[:version_number]
   end
 
 
