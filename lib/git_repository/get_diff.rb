@@ -51,7 +51,7 @@ module GitRepository::GetDiff
     end
   end
 
-  def diff(commit_oid=nil, *opts)
+  def diff(commit_oid = nil, *opts)
     if rugged_commit = get_commit(commit_oid)
       patch = GitRepository::History::Commit.new(rugged_commit, *opts).
         combined_diff.patch
@@ -61,7 +61,7 @@ module GitRepository::GetDiff
   end
 
   # returns a list of files changed by a commit
-  def changed_files(commit_oid=nil)
+  def changed_files(commit_oid = nil)
     rugged_commit = get_commit(commit_oid)
     file_changes = []
     if rugged_commit
