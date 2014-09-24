@@ -34,7 +34,7 @@ module OntologyHelper
   def status(resource)
     html = content_tag :span, resource.state
 
-    if %w(pending downloading processing).include? resource.state
+    if %w(pending fetching processing).include? resource.state
       html << " " << image_tag('spinner-16x16.gif', class: 'spinner')
     end
 

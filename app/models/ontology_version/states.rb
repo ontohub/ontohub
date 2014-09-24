@@ -1,7 +1,7 @@
 #
 # states:
 # * pending
-# * downloading
+# * fetching
 # * processing
 # * failed
 # * done
