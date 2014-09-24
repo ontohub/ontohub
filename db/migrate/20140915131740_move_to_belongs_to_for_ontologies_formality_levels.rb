@@ -1,10 +1,10 @@
 class MoveToBelongsToForOntologiesFormalityLevels < ActiveRecord::Migration
   def up
-    FormalityLevel.find_each do |form|
-      if form.ontologies.any?
-        form.ontologies.each do |ont|
-          ont.formality_level_id = form.id
-          ont.save!
+    FormalityLevel.find_each do |formality_level|
+      if formality_level.ontologies.any?
+        formality_level.ontologies.each do |ontology|
+          ontology.formality_level_id = formality_level.id
+          ontology.save!
         end
       end
     end
@@ -18,10 +18,11 @@ class MoveToBelongsToForOntologiesFormalityLevels < ActiveRecord::Migration
       t.column(:formality_level_id, :integer, null: false)
     end
 
-    Ontology.find_each do |ont|
-      if ont.formality_level_id
-        ont.formality_levels << FormalityLevel.find(ont.formality_level_id)
-        ont.save!
+    Ontology.find_each do |ontology|
+      if ontology.formality_level_id
+        ontology.formality_levels << FormalityLevel.
+          find(ontology.formality_level_id)
+        ontology.save!
       end
     end
   end
