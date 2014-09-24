@@ -23,9 +23,11 @@ module DatabaseCleanerConfig
       config.after(:each) do
         DatabaseCleaner.clean
 
-        # Remove repositories
-        dir = Rails.root.join("tmp","repositories")
-        dir.rmtree if dir.exist?
+        # Remove repositories and other data created in a test
+        %w(data test).each do |d|
+          dir = Rails.root.join('tmp', d)
+          dir.rmtree if dir.exist?
+        end
       end
     end
   end
