@@ -19,14 +19,8 @@ module Ontology::Searching
       integer :ontology_type_id do
         ontology_type.id if ontology_type
       end
-      integer :license_model_id do
-        license_model.id if license_model
-      end
       integer :formality_level_id do
         formality_level.id if formality_level
-      end
-      integer :task_id do
-        task.id if task
       end
       integer :project_ids, multiple: true
       integer :repository_id
