@@ -13,7 +13,7 @@ Ontohub::Application.routes.draw do
   resources :users, only: :show
   resources :keys, except: [:show, :edit, :update]
 
-  resources :logics do
+  resources :logics, only: [:index, :show] do
     resources :supports, :only => [:create, :update, :destroy, :index]
     resources :graphs, :only => [:index]
   end

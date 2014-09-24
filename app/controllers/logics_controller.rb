@@ -2,6 +2,7 @@
 # Controller for Logics
 #
 class LogicsController < InheritedResources::Base
+  actions :index, :show
 
   respond_to :json, :xml
   has_pagination
@@ -18,10 +19,6 @@ class LogicsController < InheritedResources::Base
     end
   end
 
-  def create
-    @logic.user = current_user
-    super
-  end
 
   def show
     @tab = params[:tab].try(:to_sym)
