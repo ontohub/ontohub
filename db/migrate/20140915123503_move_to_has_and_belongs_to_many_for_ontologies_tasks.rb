@@ -31,8 +31,10 @@ class MoveToHasAndBelongsToManyForOntologiesTasks < ActiveRecord::Migration
       end
     end
 
-    remove_foreign_key(:ontologies_tasks, name: 'ontologies_tasks_task_id_fk')
-    remove_foreign_key(:ontologies_tasks, name: 'ontologies_tasks_ontology_id_fk')
+    remove_foreign_key(:ontologies_tasks,
+                       name: 'ontologies_tasks_task_id_fk')
+    remove_foreign_key(:ontologies_tasks,
+                       name: 'ontologies_tasks_ontology_id_fk')
     remove_index(:ontologies_tasks, column: [:ontology_id, :task_id])
 
     drop_table(:ontologies_tasks)
