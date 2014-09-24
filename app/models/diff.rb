@@ -1,5 +1,5 @@
 class Diff < FakeRecord
-  attr_reader :repository, :oid, :changed_files, :commit
+  attr_reader :repository, :oid, :changed_files
 
   def self.find(opts)
     new(opts)
@@ -10,17 +10,18 @@ class Diff < FakeRecord
     @commit_id = compute_ref(repository, opts[:ref])
 
     @oid = @commit_id[:oid]
-
     @changed_files = repository.changed_files(oid)
-    @diff = repository.git.diff(oid)
+
+    @computed = false
   end
 
   def compute
     if !@computed && @diff != :diff_too_large
-      raw_diffs = @diff.split('diff --git a/')[1..-1]
+      raw_diffs = repository.git.diff(oid).split('diff --git ')[1..-1]
 
       changed_files.each do |file_change|
-        diff = raw_diffs.select { |d| d.start_with?(file_change.old_path) }.first
+        diff = raw_diffs.
+          select { |d| d[2..-1].start_with?(file_change.old_path) }.first
         file_change.diff = diff_without_metadata(diff, file_change.status)
       end
       @computed = true
