@@ -45,7 +45,7 @@ class HistoryEntriesPage < FakeRecord
   end
 
   def compute_ref(repository, ref)
-    repository.commit_id(ref || DEFAULT_BRANCH)
+    repository.commit_id(ref || Settings.git.default_branch)
   end
 
   # This ensures that the 'next' button always exists in the view.
