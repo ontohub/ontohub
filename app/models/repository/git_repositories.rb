@@ -219,6 +219,15 @@ module Repository::GitRepositories
     end
   end
 
+  def applicable_for_priority?(commits_count, highest_change_file_count)
+    (commits_count <= priority_settings.commits) &&
+      (highest_change_file_count <= priority_settings.changed_files_per_commit)
+  end
+
+  def priority_settings
+    @priority_settings ||= OpenStruct.new(Settings.git[:push_priority])
+  end
+
   def user_info(user)
     {email: user.email, name: user.name}
   end
