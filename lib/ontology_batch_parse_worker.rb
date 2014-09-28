@@ -1,6 +1,10 @@
 class OntologyBatchParseWorker < BaseWorker
   sidekiq_options retry: false, queue: 'hets'
 
+  def self.perform_async_with_priority(priority_mode, *args)
+    perform_async_on_queue('priority_push', *args)
+  end
+
   def perform(*args, try_count: 1)
     establish_arguments(args, try_count: try_count)
     @args = args
