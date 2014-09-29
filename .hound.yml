@@ -545,6 +545,7 @@ Style/TrailingBlankLines:
   Enabled: true
 
 Style/TrailingComma:
+  EnforcedStyleForMultiline: comma
   Description: 'Checks for trailing comma in parameter lists and literals.'
   Enabled: true
 
