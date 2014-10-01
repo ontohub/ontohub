@@ -23,12 +23,12 @@ module IRIUrlBuilder
 
     # return path unless the basepath only consists of the filename
     def path
-      path = File.dirname(ontology.basepath)
+      path = File.dirname(ontology_version.basepath)
       path if path != '.'
     end
 
     def file
-      File.basename(ontology.basepath)
+      File.basename(ontology_version.basepath)
     end
 
     def ontology_version

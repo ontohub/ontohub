@@ -56,7 +56,7 @@ class OntologyVersion < ActiveRecord::Base
   end
 
   def file_in_repository
-    ontology.repository.get_file(ontology.path, commit_oid)
+    ontology.repository.get_file(path, commit_oid)
   end
 
   protected
