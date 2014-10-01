@@ -9,10 +9,10 @@ module Hets
 
     # As there are many approaches to parsing an ontology
     # file, we provide two versions:
-    # new(user, ontology, version: some_version)
+    # new(user, ontology, version: some_version, io: some_io)
     # and
-    # new(user, ontology, path: some_path)
-    # If the version is set, the path and code_path will be extracted from the
+    # new(user, ontology, path: some_path, io: some_io)
+    # where some_io needs to be an instance of IO or a Tempfile.
     # version object.
     def initialize(user, ontology, version: nil, path: nil, io: nil)
       self.version = version
