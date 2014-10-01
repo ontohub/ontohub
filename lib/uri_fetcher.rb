@@ -15,6 +15,8 @@ module UriFetcher
       self.redirect_limit = redirect_limit
     end
 
+    # Currently only File and Tempfile are
+    # allowed for file_type.
     def call(write_file: nil, file_type: File)
       self.write_file = write_file
       self.file_type = file_type
