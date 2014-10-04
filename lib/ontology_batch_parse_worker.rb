@@ -3,9 +3,9 @@ class OntologyBatchParseWorker < BaseWorker
 
   def self.perform_async_with_priority(priority_mode, *args)
     if priority_mode
-      perform_async_on_queue('priority_push', *args)
+      perform_async_on_queue('priority_push', 'priority_push', *args)
     else
-      perform_async(*args)
+      perform_async(nil, *args)
     end
   end
 
@@ -54,7 +54,6 @@ class SequentialOntologyBatchParseWorker < OntologyBatchParseWorker
 
   def perform(*args, try_count: 1)
     establish_arguments(args, try_count: try_count)
-    @queue = args.shift if args.length == 2
     ConcurrencyBalancer.sequential_lock do
       execute_perform(try_count, args.first)
     end
@@ -64,7 +63,7 @@ class SequentialOntologyBatchParseWorker < OntologyBatchParseWorker
 
   def handle_concurrency_issue
     SequentialOntologyBatchParseWorker.
-      perform_async_with_priority(@queue, *@args, try_count: @try_count+1)
+      perform_async(*@args, try_count: @try_count+1)
   end
 
 end
