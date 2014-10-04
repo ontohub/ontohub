@@ -40,9 +40,25 @@ describe OntologyBatchParseWorker do
         OntologyBatchParseWorker.new.perform(
           optioned_versions, try_count: ConcurrencyBalancer::MAX_TRIES-1)
         expect(OntologyBatchParseWorker.jobs.first['args']).to eq([
-          optioned_versions, "try_count" => ConcurrencyBalancer::MAX_TRIES])
+          nil, optioned_versions,
+          "try_count" => ConcurrencyBalancer::MAX_TRIES])
       end
     end
+
+    context 'working with the priority queue' do
+      it 'should place a job on the priority-queue, when called with priority mode' do
+        OntologyBatchParseWorker.perform_async_with_priority(true, [])
+        expect(OntologyBatchParseWorker.jobs.first["queue"]).
+               to eq('priority_push')
+      end
+
+      it 'should place a job on the hets-queue, when called without priority mode' do
+        OntologyBatchParseWorker.perform_async_with_priority(false, [])
+        expect(OntologyBatchParseWorker.jobs.first["queue"]).
+               to eq('hets')
+      end
+    end
+
   end
 
 end
