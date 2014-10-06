@@ -109,8 +109,12 @@ module Backup
 
     def restore_repository_archive
       Dir.chdir(data_root.join('..')) do
+        puts "FileUtils.chmod_R 0770, #{DATA_DIRS}" if verbose
+        FileUtils.chmod_R 0770, DATA_DIRS unless dry_run
+
         puts "FileUtils.rm_r #{DATA_DIRS}" if verbose
         FileUtils.rm_r DATA_DIRS unless dry_run
+
         archive_file = backup_instance_dir.join(REPOSITORY_FILE)
         exec(["tar -xzvf #{archive_file}", *DATA_DIRS].join(' '))
       end
