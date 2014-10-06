@@ -82,11 +82,7 @@ module Backup
 
     def create_sql_dump
       Dir.chdir(backup_instance_dir) do
-        if sql_dump_as_postgres_user
-          exec "pg_dump -U postgres -Fc #{db_name} > #{SQL_DUMP_FILE}"
-        else
-          exec "pg_dump -Fc #{db_name} > #{SQL_DUMP_FILE}"
-        end
+        exec "pg_dump#{pg_user_switch} -Fc #{db_name} > #{SQL_DUMP_FILE}"
       end
     end
 
@@ -107,11 +103,7 @@ module Backup
 
     def restore_sql_dump
       Dir.chdir(backup_instance_dir) do
-        if sql_dump_as_postgres_user
-          exec "pg_restore -c -U postgres -d #{db_name} #{SQL_DUMP_FILE}"
-        else
-          exec "pg_restore -c -d #{db_name} #{SQL_DUMP_FILE}"
-        end
+        exec "pg_restore -c#{pg_user_switch} -d #{db_name} #{SQL_DUMP_FILE}"
       end
     end
 
@@ -142,6 +134,10 @@ module Backup
 
     def maintenance_file
       data_root.join(MAINTENANCE_FILE)
+    end
+
+    def pg_user_switch
+      sql_dump_as_postgres_user ? ' -U postgres' : ''
     end
 
     def self.backup_dirs_allowed_to_delete(entries)
