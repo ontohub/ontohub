@@ -1,11 +1,6 @@
 module Repository::Destroying
   extend ActiveSupport::Concern
 
-  included do
-    scope :destroying, ->() { where(is_destroying: true) }
-    scope :active, ->() { where(is_destroying: false) }
-  end
-
   # Only use `destroy_asynchronously` if you want to destroy a repository.
   # It prepares the deletion by setting a flag, which enables the deletion
   # of its ontologies.
