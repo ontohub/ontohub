@@ -14,7 +14,7 @@ describe GitRepository do
     context 'create repository' do
 
       it 'should not exist before creation' do
-        expect(File.exists?(path)).to be_false
+        expect(File.exists?(path)).to be(false)
       end
 
       context 'after creation' do
@@ -22,12 +22,12 @@ describe GitRepository do
 
         before { repository_new } # access it to create it
 
-        it { expect(File.exists?(path)).to be_true }
-        it { expect(repository_new.empty?).to be_true }
+        it { expect(File.exists?(path)).to be(true) }
+        it { expect(repository_new.empty?).to be(true) }
 
         context 'deletion' do
           before { repository_new.destroy }
-          it { expect(File.exists?(path)).to be_false }
+          it { expect(File.exists?(path)).to be(false) }
         end
       end
     end
