@@ -42,7 +42,8 @@ class OntologyBatchParseWorker < BaseWorker
     if @try_count >= ConcurrencyBalancer::MAX_TRIES
       SequentialOntologyBatchParseWorker.perform_async(*@args)
     else
-      self.class.perform_async_with_priority(@queue, *@args, try_count: @try_count+1)
+      self.class.
+        perform_async_with_priority(@queue, *@args, try_count: @try_count + 1)
     end
     true
   end
@@ -63,7 +64,7 @@ class SequentialOntologyBatchParseWorker < OntologyBatchParseWorker
 
   def handle_concurrency_issue
     SequentialOntologyBatchParseWorker.
-      perform_async(*@args, try_count: @try_count+1)
+      perform_async(*@args, try_count: @try_count + 1)
   end
 
 end

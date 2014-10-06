@@ -213,7 +213,8 @@ module Repository::GitRepositories
                                    current_file_count].max
     }
 
-    priority = applicable_for_priority?(commits_count, highest_change_file_count)
+    priority = applicable_for_priority?(commits_count,
+                                        highest_change_file_count)
     schedule_batch_parsing(versions, priority_mode: priority)
   end
 
