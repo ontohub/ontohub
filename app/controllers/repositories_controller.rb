@@ -17,7 +17,7 @@ class RepositoriesController < InheritedResources::Base
   end
 
   def index
-    @repositories = Repository.active.accessible_by(current_user)
+    @repositories = Repository.accessible_by(current_user)
     super
   end
 

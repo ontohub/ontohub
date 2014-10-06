@@ -63,7 +63,7 @@ class FilesController < InheritedResources::Base
   end
 
   def repository
-    @repository ||= Repository.active.find_by_path!(params[:repository_id])
+    @repository ||= Repository.find_by_path!(params[:repository_id])
   end
 
   def ref
