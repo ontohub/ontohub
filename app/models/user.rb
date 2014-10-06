@@ -78,7 +78,7 @@ class User < ActiveRecord::Base
   end
 
   def accessible_repositories
-    Repository.active.where(id: accessible_ids('Repository'))
+    Repository.where(id: accessible_ids('Repository'))
   end
 
   protected
