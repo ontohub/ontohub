@@ -5,6 +5,11 @@ require 'pathname'
 
 module Backup
   class Backup
+    # Amount of backups that have to be there at least
+    BACKUPS_COUNT = 3
+    # Backups are valid for 7 days
+    BACKUPS_VALIDITY_TIME = 7 * 60 * 60 * 24
+
     MAINTENANCE_FILE = 'maintenance.txt'
 
     SQL_DUMP_FILE = 'ontohub_sql_dump.postgresql'
@@ -35,6 +40,7 @@ module Backup
       Dir.rmdir(backup_instance_dir) if dry_run
       disable_maintenance_mode
       puts "created backup in #{backup_instance_dir}"
+      self.class.prune(backup_root)
     end
 
     def restore(backup_name)
@@ -44,6 +50,21 @@ module Backup
       restore_repository_archive
       disable_maintenance_mode
       puts "restored backup from #{backup_instance_dir}"
+    end
+
+    def self.prune(backup_root)
+      if !Dir.exists?(backup_root)
+        puts "Nothing to prune: There is no backup directory."
+        return
+      end
+      now = Time.now
+      backup_dirs_allowed_to_delete(Dir.new(backup_root).entries).each do |dir|
+        backup = backup_root.join(dir)
+        if now - File.new(backup).ctime > BACKUPS_VALIDITY_TIME
+          puts "removing old backup: #{dir}"
+          FileUtils.rm_r(backup)
+        end
+      end
     end
 
     protected
@@ -122,6 +143,10 @@ module Backup
     def maintenance_file
       data_root.join(MAINTENANCE_FILE)
     end
+
+    def self.backup_dirs_allowed_to_delete(entries)
+      entries.reject{ |entry| %w(. ..).include?(entry) }[0..-(BACKUPS_COUNT+1)]
+    end
   end
 end
 
@@ -154,8 +179,10 @@ when 'restore'
   end
   backup_name = ARGV[1]
   backup.restore(backup_name)
+when 'prune'
+  Backup::Backup.prune(BACKUP_ROOT)
 else
   puts 'unknown or missing parameter'
-  puts 'use parameter "create" or "restore <backup_name>"'
+  puts 'use parameter "create" or "restore <backup_name>" or "prune"'
   exit
 end
