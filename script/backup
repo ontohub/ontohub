@@ -18,17 +18,17 @@ module Backup
     DATA_DIRS = %w(data/repositories data/git_daemon)
 
     attr_reader :db_name, :data_root, :backup_root, :backup_instance_dir
-    attr_reader :dry_run, :verbose, :sql_dump_without_su
+    attr_reader :dry_run, :verbose, :sql_dump_as_postgres_user
 
     def initialize(db_name, data_root, backup_root,
-      verbose: false, dry_run: true, sql_dump_without_su: false)
+      verbose: false, dry_run: true, sql_dump_as_postgres_user: false)
       @db_name = db_name
       @data_root = Pathname.new(data_root)
       @backup_root = Pathname.new(backup_root)
 
       @dry_run = dry_run
       @verbose = verbose
-      @sql_dump_without_su = sql_dump_without_su
+      @sql_dump_as_postgres_user = sql_dump_as_postgres_user
     end
 
     def create
@@ -82,10 +82,10 @@ module Backup
 
     def create_sql_dump
       Dir.chdir(backup_instance_dir) do
-        if sql_dump_without_su
+        if sql_dump_as_postgres_user
           exec "pg_dump -U postgres -Fc #{db_name} > #{SQL_DUMP_FILE}"
         else
-          exec "sudo -u postgres pg_dump -Fc #{db_name} > #{SQL_DUMP_FILE}"
+          exec "pg_dump -Fc #{db_name} > #{SQL_DUMP_FILE}"
         end
       end
     end
@@ -107,10 +107,10 @@ module Backup
 
     def restore_sql_dump
       Dir.chdir(backup_instance_dir) do
-        if sql_dump_without_su
+        if sql_dump_as_postgres_user
           exec "pg_restore -c -U postgres -d #{db_name} #{SQL_DUMP_FILE}"
         else
-          exec "sudo -u postgres pg_restore -c -d #{db_name} #{SQL_DUMP_FILE}"
+          exec "pg_restore -c -d #{db_name} #{SQL_DUMP_FILE}"
         end
       end
     end
@@ -173,7 +173,7 @@ BACKUP_ROOT = if on_development_system?(RAILS_ROOT)
   end
 
 backup = Backup::Backup.new(DATABASE, data_root(RAILS_ROOT), BACKUP_ROOT,
-  sql_dump_without_su: on_development_system?(RAILS_ROOT),
+  sql_dump_as_postgres_user: on_development_system?(RAILS_ROOT),
   dry_run: false, verbose: true)
 
 case ARGV.first
