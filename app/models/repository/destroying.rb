@@ -14,7 +14,7 @@ module Repository::Destroying
     Rails.logger.info "Destroy #{self.class} #{self} (id: #{id})"
     super
   rescue StandardError => e
-    self.destroying = false
+    self.is_destroying = false
     save!
     raise e.class, I18n.t('repository.delete_error', oms: Settings.OMS)
   end

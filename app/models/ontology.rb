@@ -100,6 +100,9 @@ class Ontology < ActiveRecord::Base
 
   scope :parents_first, order('(CASE WHEN ontologies.parent_id IS NULL THEN 1 ELSE 0 END) DESC, ontologies.parent_id asc')
 
+  def repository
+    Repository.unscoped.find(repository_id)
+  end
 
   def generate_name(name)
     match = name.match(%r{
