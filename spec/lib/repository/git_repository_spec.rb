@@ -31,5 +31,35 @@ describe GitRepository do
         end
       end
     end
+
+    context 'when pushing' do
+      let(:repository) { create :repository }
+      let(:bare_git) { create :git_repository_small_push }
+
+      before do
+        path = repository.local_path
+        FileUtils.rm_r(path)
+        FileUtils.mv(bare_git.path, path)
+        Sidekiq::Testing.fake! do
+          repository.suspended_save_ontologies(walk_order: Rugged::SORT_REVERSE)
+        end
+      end
+
+      context 'a "small" push' do
+        it 'shall receive priority' do
+          job = OntologyBatchParseWorker.jobs.first
+          expect(job['queue']).to eq('priority_push')
+        end
+      end
+
+      context 'a "big" push' do
+        let(:bare_git) { create :git_repository_big_push }
+
+        it 'shall not receive priority' do
+          job = OntologyBatchParseWorker.jobs.first
+          expect(job['queue']).to_not eq('priority_push')
+        end
+      end
+    end
   end
 end
