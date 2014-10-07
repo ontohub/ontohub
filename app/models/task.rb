@@ -1,6 +1,6 @@
 class Task < ActiveRecord::Base
 
-  has_many :ontologies
+  has_and_belongs_to_many :ontologies
 
   attr_accessible :name, :description
 

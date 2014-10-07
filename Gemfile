@@ -23,7 +23,7 @@ group :assets do
   gem 'compass',        '~> 0.12.1'
   gem 'font_awesome', '~> 3.101.0'
   gem 'jquery-rails', '~> 3.1.1'
-  gem 'jquery-ui-rails', '~> 5.0.0'
+  gem 'jquery-ui-rails', '4.2.1'
   gem 'momentjs-rails', '~> 2.8.1'
   gem 'd3_rails', '~> 3.4.10'
   gem 'therubyracer', '~> 0.12.1'
@@ -99,7 +99,7 @@ gem 'js-routes', '~> 0.9.8'
 gem 'dagnabit', '~> 3.0.1'
 
 group :test do
-  gem 'mocha', '~> 1.1.0', require: 'mocha/setup'
+  gem 'mocha', '~> 1.1.0', require: false
   gem 'shoulda', '~> 3.5.0'
   gem "shoulda_routing_macros", "~> 0.1.2"
   gem "factory_girl_rails", '~> 4.4.1'
@@ -134,6 +134,7 @@ group :development, :test do
   gem 'rspec-rails', '~> 2.0'
   gem 'better_errors', '~> 1.1.0'
   gem 'binding_of_caller', '~> 0.7.2'
+  gem 'pry-byebug', '~> 2.0.0'
 end
 
 group :production do

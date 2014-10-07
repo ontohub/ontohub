@@ -4,6 +4,7 @@ module GitRepository::Files
 
   class GitFile
     attr_reader :path, :oid, :mime_type, :mime_category
+    attr_accessor :repository, :rugged_object
 
     def initialize(repository, rugged_commit, path)
       @path = path
@@ -16,7 +17,7 @@ module GitRepository::Files
         return
       end
       if !repository.path_exists?(path, rugged_commit.oid)
-        fail GitRepository::PathNotFoundError, "Path doesn't exist: #{path}"
+        raise GitRepository::PathNotFoundError, "Path doesn't exist: #{path}"
       end
       self.rugged_object = repository.get_object(rugged_commit, path)
 
@@ -40,11 +41,11 @@ module GitRepository::Files
 
     def content
       @content ||= case type
-        when :file
-          rugged_object.content
-        when :dir
-          repository.folder_contents(oid, path)
-        end
+      when :file
+        rugged_object.content
+      when :dir
+        repository.folder_contents(oid, path)
+      end
     end
 
     def file?
@@ -66,7 +67,7 @@ module GitRepository::Files
     end
 
     def name
-      path.split('/')[-1]
+      @name ||= path.split('/')[-1]
     end
 
     def last_change
@@ -78,8 +79,5 @@ module GitRepository::Files
         self.send(attr) == other.send(attr)
       end
     end
-
-    protected
-    attr_accessor :repository, :rugged_object
   end
 end

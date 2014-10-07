@@ -29,18 +29,47 @@ end
 
 class UnreservedValidator < ActiveModel::Validator
 
-  REVERSED_NAMES = Rails.application.routes.routes.map{ |r| r.path.spec.to_s }.compact.map{ |s| s.split('/')[1] }.compact.map{ |s| s.split('(',2)[0] }.map{ |s| s.split(':',2)[0] }.select(&:present?).uniq
-
   def validate(record)
     if is_reserved_name?(record.path)
       record.errors[:name] = "is a reserved name"
     end
   end
 
+  protected
+
   # toplevel namespaces in routing are reserved words
   def is_reserved_name?(name)
-    REVERSED_NAMES.include?(name)
+    RESERVED_NAMES.include?(name)
   end
+
+  def self.toplevel_namespaces
+    Rails.application.routes.routes.
+      map { |r| toplevel_route(r.path.spec.to_s) }.uniq.compact
+  end
+
+  def self.toplevel_route(route)
+    non_present_to_nil(remove_colon(remove_parens(first_hierarchy_part(route))))
+  end
+
+  def self.first_hierarchy_part(route)
+    route.split('/', 3)[1] || ''
+  end
+
+  def self.remove_parens(route_part)
+    route_part.split('(', 2).first || ''
+  end
+
+  def self.remove_colon(route_part)
+    route_part.split(':', 2).first || ''
+  end
+
+  def self.non_present_to_nil(route_part)
+    route_part.present? ? route_part : nil
+  end
+
+  # It is against our code style conventions to place a constant here,
+  # but it is necessary to have all the inherent methods defined above of it.
+  RESERVED_NAMES = toplevel_namespaces
 end
 
 class NameNotChangedAfterSetValidator < ActiveModel::Validator

@@ -13,7 +13,7 @@ Ontohub::Application.routes.draw do
   resources :users, only: :show
   resources :keys, except: [:show, :edit, :update]
 
-  resources :logics do
+  resources :logics, only: [:index, :show] do
     resources :supports, :only => [:create, :update, :destroy, :index]
     resources :graphs, :only => [:index]
   end
@@ -119,24 +119,23 @@ Ontohub::Application.routes.draw do
 
     resources :files, only: [:new, :create]
 
-    # action: history, diff, entries_info, files
     get ':ref/files(/*path)',
       controller:  :files,
       action:      :show,
       as:          :ref,
       constraints: FilesRouterConstraint.new
 
-    # action: history, diff, entries_info, files
+    get ':ref/history(/:path)',
+      controller:  :history,
+      action:      :show,
+      as:          :history,
+      constraints: { path: /.*/ }
+
+    # action: diff, entries_info
     get ':ref/:action(/:path)',
       controller:  :files,
       as:          :ref,
       constraints: { path: /.*/ }
-
-    # get ':ref/files(/:path)',
-    #   controller: :files,
-    #   action:     :files,
-    #   as:         :ref,
-    #   constraints: FilesRouter.new
   end
 
   post ':repository_id/:path',

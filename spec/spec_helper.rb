@@ -26,7 +26,11 @@ class ActionController::TestRequest
 end
 
 def fixture_file(name)
-  Rails.root + 'test/fixtures/ontologies/xml/' + name
+  ontology_file("xml/#{name}")
+end
+
+def ontology_file(path)
+  Rails.root + "test/fixtures/ontologies/" + path
 end
 
 def add_fixture_file(repository, relative_file)
@@ -44,9 +48,19 @@ end
 include OntologyUnited::Convenience
 
 def parse_this(user, ontology, xml_path, code_path)
-  evaluator = Hets::Evaluator.new(user, ontology,
-                                  path: xml_path,
-                                  code_path: code_path)
+  opts =
+    if ontology.current_version
+      version = ontology.current_version
+      allow(version).to receive(:xml_path) { xml_path }
+      allow(version).to receive(:code_reference_path) { code_path }
+      {version: version}
+    else
+      {
+        path: xml_path,
+        code_path: code_path
+      }
+    end
+  evaluator = Hets::Evaluator.new(user, ontology, opts)
   evaluator.import
 end
 
@@ -55,10 +69,11 @@ RSpec.configure do |config|
   # config.mock_with :mocha
   # config.mock_with :flexmock
   # config.mock_with :rr
+  config.mock_with :rspec
 
   config.before(:each) do
     redis = WrappingRedis::RedisWrapper.new
-    redis.del redis.keys.join(' ')
+    redis.del redis.keys if redis.keys.any?
   end
 
   config.after(:each) do

@@ -1,8 +1,5 @@
 %h2= @page_title = 'Logics'
 
-- if can? :create, Logic
-  .pull-right
-    = link_to 'Create Logic', :new_logic, class: 'btn btn-primary'
 
 %p
   = pluralize(Logic.count, "logic")

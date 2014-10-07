@@ -64,7 +64,8 @@ module Permissionable
   end
 
   def add_permission
-    permissions.create! :subject => self.user, :role => 'owner'
+    permissions.where(subject_id: user, subject_type: user.class).
+      first_or_create!(subject: user, role: 'owner')
   end
 
 end

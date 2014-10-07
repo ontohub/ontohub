@@ -18,13 +18,15 @@ class OntologyVersion < ActiveRecord::Base
 
   validates_format_of :source_url,
     :with => URI::regexp(Settings.allowed_iri_schemes), :if => :source_url?
-  validates_presence_of :basepath
+# validates_presence_of :basepath
 
   scope :latest, order('id DESC')
   scope :done, state('done')
   scope :failed, state('failed')
 
   delegate :repository, to: :ontology
+
+  acts_as_tree
 
   # updated_at of the latest version
   def self.last_updated_at

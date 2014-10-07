@@ -21,7 +21,9 @@ class Ability
         end
       end
       can [:write], Repository do |subject|
-        if subject.private_r?
+        if subject.mirror?
+          false
+        elsif subject.private_r?
           false
         elsif subject.private_rw?
           subject.permission?(:editor, user)
@@ -39,13 +41,9 @@ class Ability
       end
 
       # Logics
-      can [:update], Logic do |subject|
-        subject.permission?(:editor, user)
-      end
       can [:destroy, :permissions], Logic do |subject|
         subject.permission?(:owner, user)
       end
-      can [:create], Logic
 
       # LogicMappings
       can [:update], LogicMapping do |subject|

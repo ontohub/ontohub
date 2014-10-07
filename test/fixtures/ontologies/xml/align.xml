@@ -1,70 +1,79 @@
 <?xml version='1.0' ?>
-<DGraph filename="/home/henning/downloads/align.het" libname="home/henning/downloads/align" dgnodes="4" dgedges="5" nextlinkid="5">
-  <DGNode name="Source" logic="OWL2" refname="Source" relxpath="/">
+<DGraph filename="/ontologies/align.dol" libname="align" dgnodes="4" dgedges="5" nextlinkid="5">
+  <DGNode name="Source" range="/ontologies/align.dol:3.1-3.17" reference="false" logic="OWL" refname="Source" relxpath="/">
     <Declarations>
-      <Symbol kind="Class" name="Person" range="/home/henning/downloads/align.het:4.10-4.15">Class Person</Symbol>
-      <Symbol kind="Class" name="Woman" range="/home/henning/downloads/align.het:5.10-5.14">Class Woman</Symbol>
+      <Symbol kind="Class" name="Person" iri="http://www.dfki.de/sks/hets/ontology/unamed#Person" range="/ontologies/align.dol:4.10-4.15">Class Person</Symbol>
+      <Symbol kind="Class" name="Woman" iri="http://www.dfki.de/sks/hets/ontology/unamed#Woman" range="/ontologies/align.dol:5.10-5.14">Class Woman</Symbol>
     </Declarations>
     <Symbols>
-      <Symbol kind="Class" name="Person" range="/home/henning/downloads/align.het:4.10-4.15">Class Person</Symbol>
-      <Symbol kind="Class" name="Woman" range="/home/henning/downloads/align.het:5.10-5.14">Class Woman</Symbol>
+      <Symbol kind="Class" name="Person" iri="http://www.dfki.de/sks/hets/ontology/unamed#Person" range="/ontologies/align.dol:4.10-4.15">Class Person</Symbol>
+      <Symbol kind="Class" name="Woman" iri="http://www.dfki.de/sks/hets/ontology/unamed#Woman" range="/ontologies/align.dol:5.10-5.14">Class Woman</Symbol>
     </Symbols>
     <Axioms>
-      <Axiom name="Ax1" range="/home/henning/downloads/align.het:5.10-5.33">
+      <Axiom name="Ax1" range="/ontologies/align.dol:5.10-5.33">
         <Text>Class: Woman
        SubClassOf: Person</Text>
-        <Symbol kind="Class" name="Person" range="/home/henning/downloads/align.het:5.28-5.33">Class Person</Symbol>
-        <Symbol kind="Class" name="Woman" range="/home/henning/downloads/align.het:5.10-5.14">Class Woman</Symbol>
+        <Symbol kind="Class" name="Person" iri="http://www.dfki.de/sks/hets/ontology/unamed#Person" range="/ontologies/align.dol:5.28-5.33">Class Person</Symbol>
+        <Symbol kind="Class" name="Woman" iri="http://www.dfki.de/sks/hets/ontology/unamed#Woman" range="/ontologies/align.dol:5.10-5.14">Class Woman</Symbol>
       </Axiom>
     </Axioms>
   </DGNode>
-  <DGNode name="Onto1" logic="OWL2" refname="Onto1" relxpath="/">
+  <DGNode name="Onto1" range="/ontologies/align.dol:7.1-11.3" reference="false" logic="OWL" refname="Onto1" relxpath="/">
     <Declarations>
-      <Symbol kind="Class" name="Bank" range="/home/henning/downloads/align.het:11.10-11.13">Class Bank</Symbol>
-      <Symbol kind="Class" name="Person" range="/home/henning/downloads/align.het:9.10-9.15">Class Person</Symbol>
-      <Symbol kind="Class" name="Woman" range="/home/henning/downloads/align.het:10.10-10.14">Class Woman</Symbol>
+      <Symbol kind="Class" name="Bank" iri="http://www.dfki.de/sks/hets/ontology/unamed#Bank" range="/ontologies/align.dol:10.10-10.13">Class Bank</Symbol>
+      <Symbol kind="Class" name="Person" iri="http://www.dfki.de/sks/hets/ontology/unamed#Person" range="/ontologies/align.dol:8.10-8.15">Class Person</Symbol>
+      <Symbol kind="Class" name="Woman" iri="http://www.dfki.de/sks/hets/ontology/unamed#Woman" range="/ontologies/align.dol:9.10-9.14">Class Woman</Symbol>
     </Declarations>
     <Symbols>
-      <Symbol kind="Class" name="Bank" range="/home/henning/downloads/align.het:11.10-11.13">Class Bank</Symbol>
-      <Symbol kind="Class" name="Person" range="/home/henning/downloads/align.het:9.10-9.15">Class Person</Symbol>
-      <Symbol kind="Class" name="Woman" range="/home/henning/downloads/align.het:10.10-10.14">Class Woman</Symbol>
+      <Symbol kind="Class" name="Bank" iri="http://www.dfki.de/sks/hets/ontology/unamed#Bank" range="/ontologies/align.dol:10.10-10.13">Class Bank</Symbol>
+      <Symbol kind="Class" name="Person" iri="http://www.dfki.de/sks/hets/ontology/unamed#Person" range="/ontologies/align.dol:8.10-8.15">Class Person</Symbol>
+      <Symbol kind="Class" name="Woman" iri="http://www.dfki.de/sks/hets/ontology/unamed#Woman" range="/ontologies/align.dol:9.10-9.14">Class Woman</Symbol>
     </Symbols>
     <Axioms>
-      <Axiom name="Ax1" range="/home/henning/downloads/align.het:10.10-10.33">
+      <Axiom name="Ax1" range="/ontologies/align.dol:9.10-9.33">
         <Text>Class: Woman
        SubClassOf: Person</Text>
-        <Symbol kind="Class" name="Person" range="/home/henning/downloads/align.het:10.28-10.33">Class Person</Symbol>
-        <Symbol kind="Class" name="Woman" range="/home/henning/downloads/align.het:10.10-10.14">Class Woman</Symbol>
+        <Symbol kind="Class" name="Person" iri="http://www.dfki.de/sks/hets/ontology/unamed#Person" range="/ontologies/align.dol:9.28-9.33">Class Person</Symbol>
+        <Symbol kind="Class" name="Woman" iri="http://www.dfki.de/sks/hets/ontology/unamed#Woman" range="/ontologies/align.dol:9.10-9.14">Class Woman</Symbol>
       </Axiom>
     </Axioms>
   </DGNode>
-  <DGNode name="Onto2" logic="OWL2" refname="Onto2" relxpath="/">
+  <DGNode name="Onto2" range="/ontologies/align.dol:17.1-21.3" reference="false" logic="OWL" refname="Onto2" relxpath="/">
     <Declarations>
-      <Symbol kind="Class" name="Bank" range="/home/henning/downloads/align.het:22.10-22.13">Class Bank</Symbol>
-      <Symbol kind="Class" name="HumanBeing" range="/home/henning/downloads/align.het:20.10-20.19">Class HumanBeing</Symbol>
-      <Symbol kind="Class" name="Woman" range="/home/henning/downloads/align.het:21.10-21.14">Class Woman</Symbol>
+      <Symbol kind="Class" name="Bank" iri="http://www.dfki.de/sks/hets/ontology/unamed#Bank" range="/ontologies/align.dol:20.10-20.13">Class Bank</Symbol>
+      <Symbol kind="Class" name="HumanBeing" iri="http://www.dfki.de/sks/hets/ontology/unamed#HumanBeing" range="/ontologies/align.dol:18.11-18.20">Class HumanBeing</Symbol>
+      <Symbol kind="Class" name="Woman" iri="http://www.dfki.de/sks/hets/ontology/unamed#Woman" range="/ontologies/align.dol:19.10-19.14">Class Woman</Symbol>
     </Declarations>
     <Symbols>
-      <Symbol kind="Class" name="Bank" range="/home/henning/downloads/align.het:22.10-22.13">Class Bank</Symbol>
-      <Symbol kind="Class" name="HumanBeing" range="/home/henning/downloads/align.het:20.10-20.19">Class HumanBeing</Symbol>
-      <Symbol kind="Class" name="Woman" range="/home/henning/downloads/align.het:21.10-21.14">Class Woman</Symbol>
+      <Symbol kind="Class" name="Bank" iri="http://www.dfki.de/sks/hets/ontology/unamed#Bank" range="/ontologies/align.dol:20.10-20.13">Class Bank</Symbol>
+      <Symbol kind="Class" name="HumanBeing" iri="http://www.dfki.de/sks/hets/ontology/unamed#HumanBeing" range="/ontologies/align.dol:18.11-18.20">Class HumanBeing</Symbol>
+      <Symbol kind="Class" name="Woman" iri="http://www.dfki.de/sks/hets/ontology/unamed#Woman" range="/ontologies/align.dol:19.10-19.14">Class Woman</Symbol>
     </Symbols>
     <Axioms>
-      <Axiom name="Ax1" range="/home/henning/downloads/align.het:21.10-21.37">
+      <Axiom name="Ax1" range="/ontologies/align.dol:19.10-19.37">
         <Text>Class: Woman
        SubClassOf: HumanBeing</Text>
-        <Symbol kind="Class" name="HumanBeing" range="/home/henning/downloads/align.het:21.28-21.37">Class HumanBeing</Symbol>
-        <Symbol kind="Class" name="Woman" range="/home/henning/downloads/align.het:21.10-21.14">Class Woman</Symbol>
+        <Symbol kind="Class" name="HumanBeing" iri="http://www.dfki.de/sks/hets/ontology/unamed#HumanBeing" range="/ontologies/align.dol:19.28-19.37">Class HumanBeing</Symbol>
+        <Symbol kind="Class" name="Woman" iri="http://www.dfki.de/sks/hets/ontology/unamed#Woman" range="/ontologies/align.dol:19.10-19.14">Class Woman</Symbol>
       </Axiom>
     </Axioms>
   </DGNode>
-  <DGNode name="VAlignedOntology" logic="OWL2">
+  <DGNode name="VAlignedOntology" range="/ontologies/align.dol:27.10-27.26" reference="false" logic="OWL">
     <Symbols>
-      <Symbol kind="Class" name="1:Bank" range="/home/henning/downloads/align.het:11.10-11.15">Class 1:Bank</Symbol>
-      <Symbol kind="Class" name="2:Bank" range="/home/henning/downloads/align.het:22.10-22.15">Class 2:Bank</Symbol>
-      <Symbol kind="Class" name="Person" range="/home/henning/downloads/align.het:4.10-4.15">Class Person</Symbol>
-      <Symbol kind="Class" name="Woman" range="/home/henning/downloads/align.het:5.10-5.14">Class Woman</Symbol>
+      <Symbol kind="Class" name="1:Bank" iri="http://www.dfki.de/sks/hets/ontology/unamed#Bank1" range="/ontologies/align.dol:10.10-10.15">Class 1:Bank</Symbol>
+      <Symbol kind="Class" name="2:Bank" iri="http://www.dfki.de/sks/hets/ontology/unamed#Bank2" range="/ontologies/align.dol:20.10-20.15">Class 2:Bank</Symbol>
+      <Symbol kind="Class" name="Person" iri="http://www.dfki.de/sks/hets/ontology/unamed#Person" range="/ontologies/align.dol:4.10-4.15">Class Person</Symbol>
+      <Symbol kind="Class" name="Woman" iri="http://www.dfki.de/sks/hets/ontology/unamed#Woman" range="/ontologies/align.dol:5.10-5.14">Class Woman</Symbol>
     </Symbols>
+    <ImpAxioms>
+      <Axiom name="Ax1" range="/ontologies/align.dol:4.10-5.14">
+        <Text>Class: Woman
+       SubClassOf: Person</Text>
+        <Symbol kind="Class" name="Person" iri="http://www.dfki.de/sks/hets/ontology/unamed#Person" range="/ontologies/align.dol:4.10-4.15">Class Person</Symbol>
+        <Symbol kind="Class" name="Woman" iri="http://www.dfki.de/sks/hets/ontology/unamed#Woman" range="/ontologies/align.dol:5.10-5.14">Class Woman</Symbol>
+        <ComorphismOrigin>id_OWL.NP-sROIQ-D|-|</ComorphismOrigin>
+      </Axiom>
+    </ImpAxioms>
   </DGNode>
   <DGLink source="Source" target="Onto1" linkid="0" name="V1">
     <Type>GlobalUnprovenThmInc</Type>
@@ -74,34 +83,34 @@
     <Type>GlobalUnprovenThm</Type>
     <GMorphism name="id_OWL.NP-sROIQ-D|-|">
       <map>
-        <Symbol kind="Class" name="Person" range="/home/henning/downloads/align.het:4.10-4.15">Class Person</Symbol>
-        <Symbol kind="Class" name="HumanBeing" range="/home/henning/downloads/align.het:26.14-26.23">Class HumanBeing</Symbol>
+        <Symbol kind="Class" name="Person" iri="http://www.dfki.de/sks/hets/ontology/unamed#Person" range="/ontologies/align.dol:4.10-4.15">Class Person</Symbol>
+        <Symbol kind="Class" name="HumanBeing" iri="http://www.dfki.de/sks/hets/ontology/unamed#HumanBeing" range="/ontologies/align.dol:24.15-24.24">Class HumanBeing</Symbol>
       </map>
     </GMorphism>
   </DGLink>
-  <DGLink source="Source" target="VAlignedOntology" linkid="4">
+  <DGLink source="Source" target="VAlignedOntology" linkid="2">
     <Type>GlobalDef</Type>
     <GMorphism name="id_OWL.NP-sROIQ-D|-|" />
   </DGLink>
-  <DGLink source="Onto1" target="VAlignedOntology" linkid="3">
+  <DGLink source="Onto1" target="VAlignedOntology" linkid="4">
     <Type>GlobalDef</Type>
     <GMorphism name="id_OWL.NP-sROIQ-D|-|">
       <map>
-        <Symbol kind="Class" name="Bank" range="/home/henning/downloads/align.het:11.10-11.13">Class Bank</Symbol>
-        <Symbol kind="Class" name="1:Bank" range="/home/henning/downloads/align.het:11.10-11.15">Class 1:Bank</Symbol>
+        <Symbol kind="Class" name="Bank" iri="http://www.dfki.de/sks/hets/ontology/unamed#Bank" range="/ontologies/align.dol:10.10-10.13">Class Bank</Symbol>
+        <Symbol kind="Class" name="1:Bank" iri="http://www.dfki.de/sks/hets/ontology/unamed#Bank1" range="/ontologies/align.dol:10.10-10.15">Class 1:Bank</Symbol>
       </map>
     </GMorphism>
   </DGLink>
-  <DGLink source="Onto2" target="VAlignedOntology" linkid="2">
+  <DGLink source="Onto2" target="VAlignedOntology" linkid="3">
     <Type>GlobalDef</Type>
     <GMorphism name="id_OWL.NP-sROIQ-D|-|">
       <map>
-        <Symbol kind="Class" name="Bank" range="/home/henning/downloads/align.het:22.10-22.13">Class Bank</Symbol>
-        <Symbol kind="Class" name="2:Bank" range="/home/henning/downloads/align.het:22.10-22.15">Class 2:Bank</Symbol>
+        <Symbol kind="Class" name="Bank" iri="http://www.dfki.de/sks/hets/ontology/unamed#Bank" range="/ontologies/align.dol:20.10-20.13">Class Bank</Symbol>
+        <Symbol kind="Class" name="2:Bank" iri="http://www.dfki.de/sks/hets/ontology/unamed#Bank2" range="/ontologies/align.dol:20.10-20.15">Class 2:Bank</Symbol>
       </map>
       <map>
-        <Symbol kind="Class" name="HumanBeing" range="/home/henning/downloads/align.het:20.10-20.19">Class HumanBeing</Symbol>
-        <Symbol kind="Class" name="Person" range="/home/henning/downloads/align.het:4.10-4.15">Class Person</Symbol>
+        <Symbol kind="Class" name="HumanBeing" iri="http://www.dfki.de/sks/hets/ontology/unamed#HumanBeing" range="/ontologies/align.dol:18.11-18.20">Class HumanBeing</Symbol>
+        <Symbol kind="Class" name="Person" iri="http://www.dfki.de/sks/hets/ontology/unamed#Person" range="/ontologies/align.dol:4.10-4.15">Class Person</Symbol>
       </map>
     </GMorphism>
   </DGLink>

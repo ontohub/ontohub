@@ -153,6 +153,43 @@ describe FilesController do
         end
       end
     end
+
+    context "signed in, on mirror repository" do
+      let(:user){ create(:permission, item: repository).subject }
+      before do
+        sign_in user
+        repository.source_address = 'http://some_source_address.example.com'
+        repository.source_type = 'git'
+        repository.save
+      end
+
+      context "new" do
+        before { get :new, repository_id: repository.to_param }
+        it { should respond_with :redirect }
+        it { should set_the_flash.to(/not authorized/) }
+      end
+
+      context "create" do
+        context "without file" do
+          before { post :create, repository_id: repository.to_param }
+          it { should respond_with :redirect }
+          it { should set_the_flash.to(/not authorized/) }
+        end
+
+        context "with file" do
+          before {
+            post :create, repository_id: repository.to_param, repository_file: {
+              target_directory: 'my_dir',
+              target_filename:  'my_file',
+              message: 'commit message',
+              temp_file: Rack::Test::UploadedFile.new(Rails.root.join('test','fixtures','ontologies','owl','pizza.owl'),'image/jpg')
+            }
+          }
+          it { should respond_with :redirect }
+          it { should set_the_flash.to(/not authorized/) }
+        end
+      end
+    end
   end
 
 end
