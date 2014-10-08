@@ -94,7 +94,8 @@ module Backup
     def create_repository_archive
       Dir.chdir(data_root.join('..')) do
         archive_file = backup_instance_dir.join(REPOSITORY_FILE)
-        exec('tar', '-czvf', archive_file.to_s, *DATA_DIRS.map(&:to_s))
+        exec('tar', verbose ? '-v' : '', '-czf', archive_file.to_s,
+          *DATA_DIRS.map(&:to_s))
       end
     end
 
@@ -147,13 +148,14 @@ To continue, I try the command again using sudo.
     def extract_archive
       archive_file = backup_instance_dir.join(REPOSITORY_FILE)
       puts <<-MSG
+
 Super user privileges are needed to reset the file permissions as
 they were before the backup. If you refuse to enter the password
 (Crtl-C) or enter a wrong password, only the permissions will not be
 restored and all restored files will belong to the current user/group.
       MSG
-      try_as_sudo_with_fallback('tar', '-xzvf', archive_file.to_s,
-        *DATA_DIRS.map(&:to_s))
+      try_as_sudo_with_fallback('tar', verbose ? '-v' : '', '-xzf',
+        archive_file.to_s, *DATA_DIRS.map(&:to_s))
     end
 
     def remove_tmpdir(tmpdir)
