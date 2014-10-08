@@ -1,7 +1,10 @@
 #!/usr/bin/env ruby
 
+require 'tmpdir.rb'
 require 'fileutils'
 require 'pathname'
+require 'pry'
+require 'pry-byebug'
 
 module Backup
   class Backup
@@ -109,15 +112,58 @@ module Backup
 
     def restore_repository_archive
       Dir.chdir(data_root.join('..')) do
-        puts "FileUtils.chmod_R 0770, #{DATA_DIRS}" if verbose
-        FileUtils.chmod_R 0770, DATA_DIRS unless dry_run
-
-        puts "FileUtils.rm_r #{DATA_DIRS}" if verbose
-        FileUtils.rm_r DATA_DIRS unless dry_run
-
-        archive_file = backup_instance_dir.join(REPOSITORY_FILE)
-        exec(["tar -xzvf #{archive_file}", *DATA_DIRS].join(' '))
+        tmpdir = Dir.mktmpdir
+        begin
+          move_data_dirs_to_tmpdir(tmpdir)
+          extract_archive
+          remove_tmpdir(tmpdir)
+        rescue => e
+          puts <<-MSG
+An error occured while restoring the repositories:
+#{e.message}
+You can find the pre-restore repositories at #{tmpdir}
+Do something about it.
+          MSG
+          raise e
+        end
       end
+    end
+
+    def move_data_dirs_to_tmpdir(tmpdir)
+      puts "FileUtils.mv(#{DATA_DIRS}, #{tmpdir})" if verbose
+      FileUtils.mv(DATA_DIRS, tmpdir) unless dry_run
+    rescue Errno::EACCES
+      puts <<-MSG
+As the current user I have no access to move the repository data
+directories #{DATA_DIRS.join(' ')} to a temporary directory #{tmpdir}.
+This is used as a backup for the case of an error while restoring.
+To continue, I try the command again using sudo.
+      MSG
+      exec('sudo', 'mv', *DATA_DIRS.map(&:to_s), tmpdir)
+    end
+
+    def extract_archive
+      archive_file = backup_instance_dir.join(REPOSITORY_FILE)
+      puts <<-MSG
+Super user privileges are needed to reset the file permissions as
+they were before the backup. If you refuse to enter the password
+(Crtl-C) or enter a wrong password, only the permissions will not be
+restored and all restored files will belong to the current user/group.
+      MSG
+      try_as_sudo_with_fallback('tar', '-xzvf', archive_file.to_s,
+        *DATA_DIRS.map(&:to_s))
+    end
+
+    def remove_tmpdir(tmpdir)
+      puts "FileUtils.remove_entry(#{tmpdir})" if verbose
+      FileUtils.remove_entry(tmpdir) # even do this in dry run
+    rescue Errno::EACCES
+      puts <<-MSG
+As the current user I have no access to remove the temporary
+directory #{tmpdir}.
+To continue, I try the command again using sudo.
+      MSG
+      exec('sudo', 'rm', '-r', tmpdir)
     end
 
     def enable_maintenance_mode
@@ -134,6 +180,22 @@ module Backup
       puts "[executing next command in #{Dir.getwd}]" if verbose
       puts command if verbose
       system(command) unless dry_run
+    end
+
+    def try_as_sudo_with_fallback(command)
+      unless exec("sudo #{command}")
+        # Wrong sudo password
+        sudo_not_given_fallback(command)
+      end
+    rescue Exception => e
+      # Ctrl-C when asked for password
+      raise e unless e.is_a?(Interrupt)
+      sudo_not_given_fallback(command)
+    end
+
+    def sudo_not_given_fallback(command)
+      puts 'Super user privileges not granted. Trying as normal user.'
+      exec(command)
     end
 
     def maintenance_file
