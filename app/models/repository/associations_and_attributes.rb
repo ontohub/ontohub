@@ -5,8 +5,7 @@ module Repository::AssociationsAndAttributes
       has_many :ontologies, dependent: :destroy
       has_many :url_maps, dependent: :destroy
       has_many :commits, dependent: :destroy
-
-      has_one :access_token
+      has_many :access_tokens, dependent: :destroy
 
       attr_accessible :name,
                       :description,

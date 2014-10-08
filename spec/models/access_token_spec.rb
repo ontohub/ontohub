@@ -5,7 +5,7 @@ describe AccessToken do
   let(:repository) { create :repository }
 
   before do
-    repository.access_token << access_token
+    repository.access_tokens << access_token
     repository.save
   end
 
