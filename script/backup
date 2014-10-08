@@ -58,7 +58,7 @@ module Backup
 
     def self.prune(backup_root)
       if !Dir.exists?(backup_root)
-        puts "Nothing to prune: There is no backup directory."
+        $stderr.puts "Nothing to prune: There is no backup directory."
         return
       end
       now = Time.now
@@ -101,7 +101,7 @@ module Backup
     def initialize_restore(backup_name)
       @backup_instance_dir = backup_root.join(backup_name)
       unless Dir.exists?(backup_instance_dir)
-        puts "Error: Backup '#{backup_name}' does not exist in #{backup_root}."
+        $stderr.puts "Error: Backup '#{backup_name}' does not exist in #{backup_root}."
         exit
       end
     end
@@ -266,8 +266,8 @@ when 'create'
   backup.create
 when 'restore'
   if ARGV.length == 1
-    puts 'To restore a backup, you need to specify one with the arguments'
-    puts '"restore backup_name"'
+    $stderr.puts 'To restore a backup, you need to specify one with the arguments'
+    $stderr.puts '"restore backup_name"'
     exit
   end
   backup_name = ARGV[1]
@@ -275,7 +275,7 @@ when 'restore'
 when 'prune'
   Backup::Backup.prune(BACKUP_ROOT)
 else
-  puts 'unknown or missing parameter'
-  puts 'use parameter "create" or "restore <backup_name>" or "prune"'
+  $stderr.puts 'unknown or missing parameter'
+  $stderr.puts 'use parameter "create" or "restore <backup_name>" or "prune"'
   exit
 end
