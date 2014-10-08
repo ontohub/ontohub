@@ -10,9 +10,9 @@ require 'pry-byebug'
 module Backup
   class Backup
     # Amount of backups that have to be there at least
-    BACKUPS_COUNT = 3
-    # Backups are valid for 7 days
-    BACKUPS_VALIDITY_TIME = 7 * 60 * 60 * 24
+    BACKUPS_COUNT = 30
+    # Backups are kept for at least 365 days
+    BACKUPS_VALIDITY_TIME = 365 * 60 * 60 * 24
 
     MAINTENANCE_FILE = 'maintenance.txt'
 
