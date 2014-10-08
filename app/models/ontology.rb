@@ -43,6 +43,7 @@ class Ontology < ActiveRecord::Base
   has_and_belongs_to_many :license_models
 
   attr_accessible :iri, :name, :description, :acronym, :documentation,
+                  :has_file,
                   :logic_id,
                   :category_ids,
                   :acronym,
