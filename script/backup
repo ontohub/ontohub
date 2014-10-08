@@ -1,10 +1,19 @@
 #!/usr/bin/env ruby
 
+require 'tmpdir.rb'
 require 'fileutils'
 require 'pathname'
+require 'open3'
+require 'pry'
+require 'pry-byebug'
 
 module Backup
   class Backup
+    # Amount of backups that have to be there at least
+    BACKUPS_COUNT = 3
+    # Backups are valid for 7 days
+    BACKUPS_VALIDITY_TIME = 7 * 60 * 60 * 24
+
     MAINTENANCE_FILE = 'maintenance.txt'
 
     SQL_DUMP_FILE = 'ontohub_sql_dump.postgresql'
@@ -13,20 +22,21 @@ module Backup
     DATA_DIRS = %w(data/repositories data/git_daemon)
 
     attr_reader :db_name, :data_root, :backup_root, :backup_instance_dir
-    attr_reader :dry_run, :verbose, :sql_dump_without_su
+    attr_reader :dry_run, :verbose, :sql_dump_as_postgres_user
 
     def initialize(db_name, data_root, backup_root,
-      verbose: false, dry_run: true, sql_dump_without_su: false)
+      verbose: false, dry_run: true, sql_dump_as_postgres_user: false)
       @db_name = db_name
       @data_root = Pathname.new(data_root)
       @backup_root = Pathname.new(backup_root)
 
       @dry_run = dry_run
       @verbose = verbose
-      @sql_dump_without_su = sql_dump_without_su
+      @sql_dump_as_postgres_user = sql_dump_as_postgres_user
     end
 
     def create
+      puts 'Creating backup...'
       enable_maintenance_mode
       initialize_backup
       create_sql_dump
@@ -34,7 +44,8 @@ module Backup
       # We needed to create the directory for the script to continue later on.
       Dir.rmdir(backup_instance_dir) if dry_run
       disable_maintenance_mode
-      puts "created backup in #{backup_instance_dir}"
+      puts "Created backup in #{backup_instance_dir}"
+      self.class.prune(backup_root)
     end
 
     def restore(backup_name)
@@ -43,7 +54,22 @@ module Backup
       restore_sql_dump
       restore_repository_archive
       disable_maintenance_mode
-      puts "restored backup from #{backup_instance_dir}"
+      puts "Restored backup from #{backup_instance_dir}"
+    end
+
+    def self.prune(backup_root)
+      if !Dir.exists?(backup_root)
+        $stderr.puts "Nothing to prune: There is no backup directory."
+        return
+      end
+      now = Time.now
+      backup_dirs_allowed_to_delete(Dir.new(backup_root).entries).each do |dir|
+        backup = backup_root.join(dir)
+        if now - File.new(backup).ctime > BACKUPS_VALIDITY_TIME
+          puts "removing old backup: #{dir}"
+          FileUtils.rm_r(backup)
+        end
+      end
     end
 
     protected
@@ -60,67 +86,164 @@ module Backup
     end
 
     def create_sql_dump
+      puts 'Creating SQL dump...'
       Dir.chdir(backup_instance_dir) do
-        if sql_dump_without_su
-          exec "pg_dump -U postgres -Fc #{db_name} > #{SQL_DUMP_FILE}"
-        else
-          exec "sudo -u postgres pg_dump -Fc #{db_name} > #{SQL_DUMP_FILE}"
-        end
+        exec('pg_dump', pg_user_switch, '-Fc', db_name,
+          file_dest: SQL_DUMP_FILE)
       end
     end
 
     def create_repository_archive
+      puts 'Creating repository archive...'
       Dir.chdir(data_root.join('..')) do
         archive_file = backup_instance_dir.join(REPOSITORY_FILE)
-        exec(["tar -czvf #{archive_file}", *DATA_DIRS].join(' '))
+        exec('tar', verbose ? '-v' : '', '-czf', archive_file.to_s,
+          *DATA_DIRS.map(&:to_s))
       end
     end
 
     def initialize_restore(backup_name)
       @backup_instance_dir = backup_root.join(backup_name)
       unless Dir.exists?(backup_instance_dir)
-        puts "Error: Backup '#{backup_name}' does not exist in #{backup_root}."
+        $stderr.puts "Error: Backup '#{backup_name}' does not exist in #{backup_root}."
         exit
       end
     end
 
     def restore_sql_dump
+      'Restoring SQL dump...'
       Dir.chdir(backup_instance_dir) do
-        if sql_dump_without_su
-          exec "pg_restore -c -U postgres -d #{db_name} #{SQL_DUMP_FILE}"
-        else
-          exec "sudo -u postgres pg_restore -c -d #{db_name} #{SQL_DUMP_FILE}"
-        end
+        exec('pg_restore', '-c', pg_user_switch, '-d', db_name, SQL_DUMP_FILE)
       end
     end
 
     def restore_repository_archive
+      puts 'Restoring repository archive...'
       Dir.chdir(data_root.join('..')) do
-        puts "FileUtils.rm_r #{DATA_DIRS}" if verbose
-        FileUtils.rm_r DATA_DIRS unless dry_run
-        archive_file = backup_instance_dir.join(REPOSITORY_FILE)
-        exec(["tar -xzvf #{archive_file}", *DATA_DIRS].join(' '))
+        tmpdir = Dir.mktmpdir
+        move_data_dirs_to_tmpdir(tmpdir)
+        begin
+          extract_archive
+          remove_tmpdir(tmpdir)
+        rescue => e
+          puts <<-MSG
+
+An error occured while restoring the repositories:
+#{e.message}
+You can find the pre-restore repositories at #{tmpdir}
+Do something about it.
+          MSG
+          raise e
+        end
       end
     end
 
+    def move_data_dirs_to_tmpdir(tmpdir)
+      puts "FileUtils.mv(#{DATA_DIRS}, #{tmpdir})" if verbose
+      FileUtils.mv(DATA_DIRS, tmpdir) unless dry_run
+    rescue Errno::EACCES
+      puts <<-MSG
+
+As the current user I have no access to move the repository data
+directories #{DATA_DIRS.join(' ')} to a temporary directory #{tmpdir}.
+This is used as a backup for the case of an error while restoring.
+To continue, I try the command again using sudo.
+      MSG
+      exec('sudo', 'mv', *DATA_DIRS.map(&:to_s), tmpdir)
+    end
+
+    def extract_archive
+      archive_file = backup_instance_dir.join(REPOSITORY_FILE)
+      puts <<-MSG
+
+Super user privileges are needed to reset the file permissions as
+they were before the backup. If you refuse to enter the password
+(Crtl-C) or enter a wrong password, only the permissions will not be
+restored and all restored files will belong to the current user/group.
+      MSG
+      try_as_sudo_with_fallback('tar', verbose ? '-v' : '', '-xzf',
+        archive_file.to_s, *DATA_DIRS.map(&:to_s))
+    end
+
+    def remove_tmpdir(tmpdir)
+      puts "FileUtils.remove_entry(#{tmpdir})" if verbose
+      FileUtils.remove_entry(tmpdir) # even do this in dry run
+    rescue Errno::EACCES
+      puts <<-MSG
+
+As the current user I have no access to remove the temporary
+directory #{tmpdir}.
+To continue, I try the command again using sudo.
+      MSG
+      exec('sudo', 'rm', '-r', tmpdir)
+    end
+
     def enable_maintenance_mode
+      puts 'Enabling maintenance mode...'
       puts "FileUtils.touch #{maintenance_file}" if verbose
       FileUtils.touch maintenance_file unless dry_run
     end
 
     def disable_maintenance_mode
+      puts 'Disabling maintenance mode...'
       puts "FileUtils.rm #{maintenance_file}" if verbose
       FileUtils.rm maintenance_file unless dry_run
     end
 
-    def exec(command)
+    def exec(*args, file_dest: nil)
       puts "[executing next command in #{Dir.getwd}]" if verbose
-      puts command if verbose
-      system(command) unless dry_run
+      out = args.join(' ')
+      out << " > #{file_dest}" if file_dest
+      puts out if verbose
+      Subprocess.run(*args, file_dest: file_dest) unless dry_run
+    end
+
+    def try_as_sudo_with_fallback(*args)
+      _out, _err, exit_code = exec('sudo', *args)
+      unless exit_code.success?
+        sudo_not_given_fallback(*args) # Wrong sudo password
+      end
+    rescue Exception => e
+      raise e unless e.is_a?(Interrupt) # Ctrl-C when asked for password
+      sudo_not_given_fallback(*args)
+    end
+
+    def sudo_not_given_fallback(*args)
+      puts 'Super user privileges not granted. Trying as normal user.'
+      exec(*args)
     end
 
     def maintenance_file
       data_root.join(MAINTENANCE_FILE)
+    end
+
+    def pg_user_switch
+      sql_dump_as_postgres_user ? ' -U postgres' : ''
+    end
+
+    def self.backup_dirs_allowed_to_delete(entries)
+      entries.reject{ |entry| %w(. ..).include?(entry) }[0..-(BACKUPS_COUNT+1)]
+    end
+  end
+
+  class Subprocess
+    def self.run(*args, file_dest: nil)
+      stdin, stdout, stderr, wait_thr, io_dest = run_streaming(*args,
+        file_dest: file_dest)
+      exit_code = wait_thr.value # wait for the process to finish
+      io_dest.close if io_dest
+
+      [stdout.read, stderr.read, exit_code]
+    end
+
+    def self.run_streaming(*args, file_dest: nil)
+      stdin, stdout, stderr, wait_thr = Open3.popen3(*args)
+      io_dest = nil
+      if file_dest
+        io_dest = File.open(file_dest, 'w')
+        IO.copy_stream(stdout, io_dest)
+      end
+      [stdin, stdout, stderr, wait_thr, io_dest]
     end
   end
 end
@@ -136,11 +259,19 @@ end
 # We assume, this script runs in "RAILS_ROOT/script/".
 RAILS_ROOT = Pathname.new(__FILE__).dirname.join('..')
 
-DATABASE = on_development_system?(RAILS_ROOT) ? 'ontohub_development' : 'ontohub'
-BACKUP_ROOT = File.realpath('/home/ontohub/ontohub_data_backup')
+DATABASE = if on_development_system?(RAILS_ROOT)
+    'ontohub_development'
+  else
+    'ontohub'
+  end
+BACKUP_ROOT = if on_development_system?(RAILS_ROOT)
+    RAILS_ROOT.join('tmp', 'backup')
+  else
+    File.realpath('/home/ontohub/ontohub_data_backup')
+  end
 
 backup = Backup::Backup.new(DATABASE, data_root(RAILS_ROOT), BACKUP_ROOT,
-  sql_dump_without_su: on_development_system?(RAILS_ROOT),
+  sql_dump_as_postgres_user: on_development_system?(RAILS_ROOT),
   dry_run: false, verbose: true)
 
 case ARGV.first
@@ -148,14 +279,16 @@ when 'create'
   backup.create
 when 'restore'
   if ARGV.length == 1
-    puts 'To restore a backup, you need to specify one with the arguments'
-    puts '"restore backup_name"'
+    $stderr.puts 'To restore a backup, you need to specify one with the arguments'
+    $stderr.puts '"restore backup_name"'
     exit
   end
   backup_name = ARGV[1]
   backup.restore(backup_name)
+when 'prune'
+  Backup::Backup.prune(BACKUP_ROOT)
 else
-  puts 'unknown or missing parameter'
-  puts 'use parameter "create" or "restore <backup_name>"'
+  $stderr.puts 'unknown or missing parameter'
+  $stderr.puts 'use parameter "create" or "restore <backup_name>" or "prune"'
   exit
 end
