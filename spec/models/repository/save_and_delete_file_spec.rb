@@ -40,9 +40,12 @@ describe 'Repository saving a file' do
         expect(repository.ontologies.first.name).to eq('Save_file')
       end
 
-      it 'create a new ontology with only one version pointing to the commit' do
+      it 'create a new ontology with only one version' do
+        expect(repository.ontologies.first.versions.count).to eq(1)
+      end
+
+      it 'create a new ontology with its version pointing to the commit' do
         o = repository.ontologies.first
-        expect(o.versions.count).to eq(1)
         expect(o.versions.first[:commit_oid]).to eq(@version.commit_oid)
       end
 
@@ -50,33 +53,57 @@ describe 'Repository saving a file' do
         v = repository.ontologies.first.versions.first
         expect(v.user).to eq(user)
       end
+
+      it 'should have the ontology marked as having a file' do
+        expect(repository.ontologies.first.has_file).to be_truthy
+      end
+    end
+
+    context 'updating' do
+      let(:file_path2)   do
+        tmpfile = Tempfile.new('repository_test')
+        tmpfile.write(content*2)
+        tmpfile.close
+
+        tmpfile
+      end
+
+      before do
+        repository.save_file(file_path, target_path, message, user)
+        repository.save_file(file_path2, target_path, message, user)
+      end
+
+      it 'create a new ontology version' do
+        expect(repository.ontologies.
+          where(basepath: File.basepath(target_path)).first!.versions.count).
+          to eq(2)
+      end
+    end
+  end
+
+  context 'delete the file' do
+    before do
+      @version_save = repository.save_file(file_path, target_path, message, user)
+      @version_del = repository.delete_file(target_path, user)
+    end
+
+    it 'delete the file in the git repository' do
+      expect(repository.git.path_exists?(target_path)).to be_falsy
+    end
+
+    it 'should have the ontology marked as having no file' do
+      expect(repository.ontologies.first.has_file).to be_falsy
+    end
+
+    it 'should have the ontology marked as having a file at the old version' do
+      expect(repository.ontologies.first.has_file(@version_save.commit_oid)).
+        to be_truthy
     end
 
     context 'that already exists' do
       it 'create a job' do
         expect { repository.save_file(file_path, target_path, message, user) }.
-          to(change { Worker.jobs.count }.from(0).to(1))
-      end
-
-      context 'saving' do
-        let(:file_path2)   do
-          tmpfile = Tempfile.new('repository_test')
-          tmpfile.write(content*2)
-          tmpfile.close
-
-          tmpfile
-        end
-
-        before do
-          repository.save_file(file_path, target_path, message, user)
-          repository.save_file(file_path2, target_path, message, user)
-        end
-
-        it 'create a noew ontology version' do
-          expect(repository.ontologies.
-            where(basepath: File.basepath(target_path)).first!.versions.count).
-            to eq(2)
-        end
+          to(change { Worker.jobs.count }.by(1))
       end
     end
   end
