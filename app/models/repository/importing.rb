@@ -73,7 +73,7 @@ module Repository::Importing
       suspended_save_ontologies \
         start_oid:  result.current,
         stop_oid:   result.previous,
-        walk_order: Rugged::SORT_REVERSE
+        walk_order: :reverse
 
       self.imported_at = Time.now
       update_state! 'done'
