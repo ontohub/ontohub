@@ -85,10 +85,11 @@ describe FilesController do
           let(:message)      { "message" }
 
           before do
-            FileUtils.rm_rf(tmp_filepath)
-            File.open(tmp_filepath, 'w+') { |f| f.write("unchanged") }
+            tmpfile = Tempfile.new('repository_test')
+            tmpfile.write('unchanged')
+            tmpfile.close
 
-            repository.save_file_only(tmp_filepath, filepath, message, user)
+            repository.save_file_only(tmpfile, filepath, message, user)
           end
 
           context "without validation error" do
@@ -145,12 +146,39 @@ describe FilesController do
             expect(flash[:success]).not_to be_nil
           end
           it "should have added a file" do
-            expect(repository.path_exists? filepath).to be_true
+            expect(repository.path_exists? filepath).to be_truthy
           end
           it "should actually not have added a file" do
             pending "this should be another controller action"
           end
         end
+      end
+
+      context "destroy" do
+        let(:filepath)     { "existing-file" }
+        let(:tmp_filepath) { Rails.root.join('tmp', filepath) }
+        let(:message)      { "message" }
+
+        before do
+          tmpfile = Tempfile.new('repository_test')
+          tmpfile.write('unchanged')
+          tmpfile.close
+
+          repository.save_file_only(tmpfile, filepath, message, user)
+        end
+
+        before do
+          delete :destroy, repository_id: repository.to_param, path: filepath
+        end
+
+        it { should respond_with :found }
+        it "should not show an error" do
+          expect(flash[:error]).to be_nil
+        end
+        it "should show a success message" do
+          expect(flash[:success]).not_to be_nil
+        end
+        it { should set_the_flash.to(/success/i) }
       end
     end
 

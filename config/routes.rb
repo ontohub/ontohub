@@ -171,6 +171,12 @@ Ontohub::Application.routes.draw do
     as:          :repository_tree,
     constraints: { path: /.*/ }
 
+  delete ':repository_id/*path',
+    controller: :files,
+    action:     :destroy,
+    as:         :repository_tree,
+    constraints: FilesRouterConstraint.new
+
   get ':repository_id(/*path)',
     controller: :files,
     action:     :show,

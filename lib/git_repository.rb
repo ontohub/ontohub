@@ -89,6 +89,21 @@ class GitRepository
     path.split("/")[0..-2].join("/")
   end
 
+  def deepest_existing_dir(path, commit_oid = nil)
+    path ||= '/'
+    dirs = path.split('/')
+
+    dir = nil
+    Array(0..dirs.length-1).reverse.each do |i|
+      if dir.nil?
+        path = dirs[0..i].join('/')
+        dir = path if dir?(path, commit_oid)
+      end
+    end
+
+    dir
+  end
+
   # Given a commit oid or a branch name, commit_id returns a hash of oid and
   # branch name if existent.
   def commit_id(ref)
