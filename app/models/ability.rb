@@ -1,7 +1,7 @@
 class Ability
   include CanCan::Ability
 
-  def initialize(user)
+  def initialize(user, access_token)
     # Define abilities for the passed in user here.
 
     user ||= User.new # guest user (not logged in)
@@ -15,7 +15,10 @@ class Ability
         if subject.is_private
           subject.permission?(:reader, user) ||
           subject.permission?(:editor, user) ||
-          subject.permission?(:owner, user)
+          subject.permission?(:owner, user) ||
+          subject.access_tokens.unexpired.any? do |token|
+            token.to_s == access_token
+          end
         else
           true
         end
@@ -118,7 +121,10 @@ class Ability
       can :read, Category
     else
       can :show, Repository do |subject|
-        !subject.is_private
+        !subject.is_private ||
+        subject.access_tokens.unexpired.any? do |token|
+          token.to_s == access_token
+        end
       end
 
       can :read, Project
