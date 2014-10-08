@@ -5,13 +5,12 @@ module Repository::Access
   DEFAULT_OPTION = OPTIONS[0]
 
   def generate_access_token
-    if is_private
-      access_token = AccessToken.create_for(self)
-      self.access_token << access_token
-      save
+    return unless is_private
+    access_token = AccessToken.create_for(self)
+    self.access_tokens << access_token
+    save
 
-      access_token
-    end
+    access_token
   end
 
   def destroy_expired_access_tokens
