@@ -40,6 +40,7 @@ module Repository::Git
   def delete_file(filepath, user, message = nil, &block)
     commit_oid = git.delete_file(user_info(user), filepath, &block)
     commit_for!(commit_oid).commit_oid
+    mark_ontology_as_having_file(filepath, false)
   end
 
   def save_file(tmp_file, filepath, message, user, do_not_parse: false)
