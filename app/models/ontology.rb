@@ -195,6 +195,14 @@ class Ontology < ActiveRecord::Base
     current_version.locid
   end
 
+  def has_file(commit_oid = nil)
+    if !repository.is_head?(commit_oid)
+      repository.path_exists?(path, commit_oid)
+    else
+      read_attribute(:has_file)
+    end
+  end
+
   protected
 
   def import_mappings
