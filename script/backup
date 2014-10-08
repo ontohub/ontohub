@@ -3,6 +3,7 @@
 require 'tmpdir.rb'
 require 'fileutils'
 require 'pathname'
+require 'open3'
 require 'pry'
 require 'pry-byebug'
 
@@ -85,14 +86,15 @@ module Backup
 
     def create_sql_dump
       Dir.chdir(backup_instance_dir) do
-        exec "pg_dump#{pg_user_switch} -Fc #{db_name} > #{SQL_DUMP_FILE}"
+        exec('pg_dump', pg_user_switch, '-Fc', db_name,
+          file_dest: SQL_DUMP_FILE)
       end
     end
 
     def create_repository_archive
       Dir.chdir(data_root.join('..')) do
         archive_file = backup_instance_dir.join(REPOSITORY_FILE)
-        exec(["tar -czvf #{archive_file}", *DATA_DIRS].join(' '))
+        exec('tar', '-czvf', archive_file.to_s, *DATA_DIRS.map(&:to_s))
       end
     end
 
@@ -106,7 +108,7 @@ module Backup
 
     def restore_sql_dump
       Dir.chdir(backup_instance_dir) do
-        exec "pg_restore -c#{pg_user_switch} -d #{db_name} #{SQL_DUMP_FILE}"
+        exec('pg_restore', '-c', pg_user_switch, '-d', db_name, SQL_DUMP_FILE)
       end
     end
 
@@ -176,26 +178,26 @@ To continue, I try the command again using sudo.
       FileUtils.rm maintenance_file unless dry_run
     end
 
-    def exec(command)
+    def exec(*args, file_dest: nil)
       puts "[executing next command in #{Dir.getwd}]" if verbose
-      puts command if verbose
-      system(command) unless dry_run
+      out = args.join(' ')
+      out << " > #{file_dest}" if file_dest
+      puts out if verbose
+      Subprocess.run(*args, file_dest: file_dest) unless dry_run
     end
 
-    def try_as_sudo_with_fallback(command)
-      unless exec("sudo #{command}")
-        # Wrong sudo password
-        sudo_not_given_fallback(command)
+    def try_as_sudo_with_fallback(*args)
+      unless exec('sudo', *args)
+        sudo_not_given_fallback(*args) # Wrong sudo password
       end
     rescue Exception => e
-      # Ctrl-C when asked for password
-      raise e unless e.is_a?(Interrupt)
-      sudo_not_given_fallback(command)
+      raise e unless e.is_a?(Interrupt) # Ctrl-C when asked for password
+      sudo_not_given_fallback(*args)
     end
 
-    def sudo_not_given_fallback(command)
+    def sudo_not_given_fallback(*args)
       puts 'Super user privileges not granted. Trying as normal user.'
-      exec(command)
+      exec(*args)
     end
 
     def maintenance_file
@@ -208,6 +210,27 @@ To continue, I try the command again using sudo.
 
     def self.backup_dirs_allowed_to_delete(entries)
       entries.reject{ |entry| %w(. ..).include?(entry) }[0..-(BACKUPS_COUNT+1)]
+    end
+  end
+
+  class Subprocess
+    def self.run(*args, file_dest: nil)
+      stdin, stdout, stderr, wait_thr, io_dest = run_streaming(*args,
+        file_dest: file_dest)
+      exit_code = wait_thr.value # wait for the process to finish
+      io_dest.close if io_dest
+
+      [stdout.read, stderr.read, exit_code]
+    end
+
+    def self.run_streaming(*args, file_dest: nil)
+      stdin, stdout, stderr, wait_thr = Open3.popen3(*args)
+      io_dest = nil
+      if file_dest
+        io_dest = File.open(file_dest, 'w')
+        IO.copy_stream(stdout, io_dest)
+      end
+      [stdin, stdout, stderr, wait_thr, io_dest]
     end
   end
 end
