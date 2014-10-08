@@ -36,6 +36,7 @@ module Repository::GitRepositories
   def delete_file(filepath, user, message = nil, &block)
     message ||= "delete file #{filepath}"
     git.delete_file(user_info(user), filepath, &block)
+    mark_ontology_as_having_file(filepath, false)
   end
 
   def save_file(tmp_file, filepath, message, user, do_not_parse: false)
