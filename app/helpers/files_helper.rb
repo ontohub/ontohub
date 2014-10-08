@@ -66,4 +66,8 @@ module FilesHelper
   def display_file?
     resource.size <= Settings.max_read_filesize
   end
+
+  def can_change_file?
+    can?(:write, repository) && resource.file? && !in_ref_path?
+  end
 end

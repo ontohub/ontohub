@@ -14,12 +14,18 @@
       = fancy_link resource.ontology_type
 
 %small
-  #{Settings.OMS} defined
   - if resource.parent
-    by
-    %span= fancy_link(resource.parent)
-  in the file
-  = fancy_link repository_tree_path(resource.repository, resource.path)
+    %p
+      This #{Settings.OMS} is a child of
+      %span= fancy_link(resource.parent)
+  %p
+    - if resource.has_file
+      #{Settings.OMS} defined in the file
+      = fancy_link repository_tree_path(resource.repository, resource.path)
+    - else
+      The defining file
+      = resource.path
+      of this #{Settings.OMS} was deleted.
   - if resource.documentation
     See for detailed documentation
     = link_to resource.documentation, resource.documentation

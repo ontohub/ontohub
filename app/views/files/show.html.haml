@@ -20,7 +20,7 @@
 
 .pull-right.btn-group.breadcrumbs-buttons
   - if can? :write, repository
-    - if resource.file? && !in_ref_path? && display_file?
+    - if can_change_file? && display_file?
       = link_to 'Edit file', '#', id: 'codemirror-btn-edit', class: 'hide-when-editing btn btn-default btn-sm'
     = link_to new_repository_file_path(repository, {'repository_file[target_directory]' => dirpath(repository)}.merge(update_file)), class: 'btn btn-default btn-sm' do
       = resource.dir? ? 'Upload file' : 'Update file'
@@ -28,6 +28,11 @@
     = link_to 'Download file', fancy_repository_path(repository, path: path, ref: oid, action: :download), class: 'btn btn-default btn-sm'
   = link_to fancy_repository_path(repository, action: :history, path: path, ref: ref), class: 'btn btn-default btn-sm' do
     = resource.file? ? 'History of this file' : 'History of this directory'
+  - if can_change_file?
+    = modal_button(t('files.delete.button_text'), btn_class: 'btn btn-danger btn-sm')
+
+- if can_change_file?
+  = modal_body(t('files.delete.header_text'), t('files.delete.body_text', path: resource.path), fancy_repository_path(repository, path: path), t('files.delete.button_text'))
 
 = render partial: 'files/breadcrumbs'
 
