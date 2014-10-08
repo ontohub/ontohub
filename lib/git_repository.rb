@@ -94,7 +94,7 @@ class GitRepository
     dirs = path.split('/')
 
     dir = nil
-    Array(0..dirs.length-1).reverse.each do |i|
+    Array(0..dirs.length - 1).reverse.each do |i|
       if dir.nil?
         path = dirs[0..i].join('/')
         dir = path if dir?(path, commit_oid)
