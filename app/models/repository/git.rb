@@ -227,11 +227,10 @@ module Repository::Git
 
   def mark_ontology_as_having_file(path, has_file)
     ontos = ontologies.with_path(path)
-    if ontos.any?{ |onto| onto.has_file != has_file }
-      ontos.each do |onto|
-        onto.has_file = has_file
-        onto.save
-      end
+    return unless ontos.any? { |onto| onto.has_file != has_file }
+    ontos.each do |onto|
+      onto.has_file = has_file
+      onto.save
     end
   end
 

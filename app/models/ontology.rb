@@ -204,7 +204,7 @@ class Ontology < ActiveRecord::Base
 
   def has_file(commit_oid = nil)
     if repository.is_head?(commit_oid)
-      read_attribute(:has_file)
+      self[:has_file]
     else
       repository.path_exists?(path, commit_oid)
     end
