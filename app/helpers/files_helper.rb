@@ -71,4 +71,8 @@ module FilesHelper
     RepositoryDirectory.new(params.merge(
       repository_directory: {target_directory: dirpath(repository)}))
   end
+
+  def can_change_file?
+    can?(:write, repository) && resource.file? && !in_ref_path?
+  end
 end
