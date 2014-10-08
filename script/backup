@@ -116,8 +116,8 @@ module Backup
     def restore_repository_archive
       Dir.chdir(data_root.join('..')) do
         tmpdir = Dir.mktmpdir
+        move_data_dirs_to_tmpdir(tmpdir)
         begin
-          move_data_dirs_to_tmpdir(tmpdir)
           extract_archive
           remove_tmpdir(tmpdir)
         rescue => e
