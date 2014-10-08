@@ -4,12 +4,14 @@ class AccessToken < ActiveRecord::Base
   belongs_to :repository
   attr_accessible :expiration, :token
 
+  scope :unexpired, ->() { where('expiration > ?', Time.now) }
+
   def to_s
     token
   end
 
   def expired?
-    Time.now > expiration
+    expiration <= Time.now
   end
 
   def self.create_for(repository)
