@@ -22,6 +22,7 @@ module Ontology::AssociationsAndAttributes
 
     attr_accessible :iri, :locid
     attr_accessible :name, :description, :acronym, :documentation,
+                    :has_file,
                     :logic_id,
                     :category_ids,
                     :acronym,
