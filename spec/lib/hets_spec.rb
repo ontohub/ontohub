@@ -41,17 +41,29 @@ describe Hets, :needs_hets do
   end
 
   context 'with url-catalog' do
-    before do
-      xml_paths = Hets.parse \
-        Rails.root.join("test/fixtures/ontologies/clif/monoid.clif"),
-        ["http://colore.oor.net=http://develop.ontohub.org/colore/ontologies"],
-        '/tmp'
-      @xml_path = xml_paths.last
-      @pp_path = xml_paths.first
+    let(:input_file) { ontology_file('clif/monoid.clif') }
+    let(:url_catalog) do
+      ['http://colore.oor.net=http://develop.ontohub.org/colore/ontologies',
+      'https://colore.oor.net=https://develop.ontohub.org/colore/ontologies']
+    end
+    let(:catalog_args) do
+      [any_args, '-C', url_catalog.join('/'), any_args]
     end
 
-    it 'have created output file' do
-      assert File.exists? @xml_path
+    before do
+      allow(Subprocess).to(receive(:run).and_call_original)
+      allow(Subprocess).to(receive(:run).with(*catalog_args) do
+        'Writing file: some_file'
+      end)
+    end
+
+    it 'have called hets with the catalog' do
+      expect(Hets.parse(input_file, url_catalog, '/tmp')).to eq(['some_file'])
+    end
+
+    it 'created a subprocess with catalog arguments' do
+      Hets.parse(input_file, url_catalog, '/tmp')
+      expect(Subprocess).to(have_received(:run).with(*catalog_args))
     end
 
     # This test is disabled, because for this ontology, the XML output of hets
