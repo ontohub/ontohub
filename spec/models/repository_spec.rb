@@ -1,6 +1,12 @@
 require 'spec_helper'
 
 describe Repository do
+  context 'associations' do
+    %i(ontologies permissions).each do |association|
+      it { should have_many(association) }
+    end
+  end
+
   let(:user)       { FactoryGirl.create :user }
   let(:repository) { FactoryGirl.create :repository, user: user }
 
