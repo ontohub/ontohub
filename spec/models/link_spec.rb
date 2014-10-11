@@ -1,6 +1,11 @@
 require 'spec_helper'
 
 describe Link do
+  context 'associations' do
+    %i(source target).each do |association|
+      it { should belong_to(association) }
+    end
+  end
 
   let(:user) { create :user }
   let(:repository) { create :repository }
