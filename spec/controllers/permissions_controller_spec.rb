@@ -1,14 +1,14 @@
 require 'spec_helper'
 
 describe PermissionsController do
-  let(:owner)      { create :user }
-  let(:permission) { create(:permission, subject: owner, role: 'owner') }
+  context 'owner degradation' do
+    let(:owner)      { create :user }
+    let(:permission) { create(:permission, subject: owner, role: 'owner') }
 
-  before { sign_in owner }
+    before { sign_in owner }
 
-  ERROR_TEXT = "You can't remove this owner permission"
+    ERROR_TEXT = "You can't remove this owner permission"
 
-  describe 'owner degradation' do
     context 'one owner' do
       render_views
 
@@ -67,6 +67,22 @@ describe PermissionsController do
         put :update, repository_id: permission.item.to_param, id: permission.id,
           permission: { id: permission.id, role: 'editor' }
         expect(response.body).not_to have_content(ERROR_TEXT)
+      end
+    end
+  end
+
+  context 'permissions' do
+    let(:ontology) { FactoryGirl.create :ontology }
+    let(:user) { FactoryGirl.create :user }
+
+    context 'on GET to index' do
+      context 'not signed in' do
+        before do
+          get :index, repository_id: ontology.repository.to_param
+        end
+
+        it { should set_the_flash.to(/not authorized/) }
+        it { should redirect_to(:root) }
       end
     end
   end
