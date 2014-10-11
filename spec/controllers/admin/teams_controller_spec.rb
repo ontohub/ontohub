@@ -1,35 +1,33 @@
-require 'test_helper'
+require 'spec_helper'
 
-class Admin::TeamsControllerTest < ActionController::TestCase
-
+describe Admin::TeamsController do
   context 'on GET to index' do
     context 'not signed in' do
-      setup do
+      before do
         get :index
       end
 
-      should set_the_flash.to(/admin privileges/)
-      should respond_with :redirect
+      it { should set_the_flash.to(/admin privileges/) }
+      it { should respond_with :redirect }
     end
 
     context 'signed in as normal user' do
-      setup do
+      before do
         sign_in FactoryGirl.create :user
         get :index
       end
 
-      should set_the_flash.to(/admin privileges/)
-      should respond_with :redirect
+      it { should set_the_flash.to(/admin privileges/) }
+      it { should respond_with :redirect }
     end
 
     context 'signed in as admin user' do
-      setup do
+      before do
         sign_in FactoryGirl.create :admin
         get :index
       end
 
-      should respond_with :success
+      it { should respond_with :success }
     end
   end
-
 end
