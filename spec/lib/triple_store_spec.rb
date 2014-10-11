@@ -5,6 +5,88 @@ require 'spec_helper'
 # Original author: Daniel Couto Vale <danielvale@uni-bremen.de>
 #
 describe TripleStore do
+  context 'TripleStore itself' do
+    context 'Empty Triple List:' do
+      let(:store) { TripleStore.new([]) }
+
+      it "expect no subjects" do
+        expect(store.subjects('b','c')).to eq([])
+      end
+      it "expect no predicates" do
+        expect(store.predicates('a','c')).to eq([])
+      end
+      it "expect no objects" do
+        expect(store.objects('a','b')).to eq([])
+      end
+    end
+
+    context 'One-triple list:' do
+      let(:store) { TripleStore.new([['a','b','c']]) }
+
+      it "expect one subject" do
+        expect(store.subjects('b','c')).to eq(['a'])
+      end
+      it "expect one predicate" do
+        expect(store.predicates('a','c')).to eq(['b'])
+      end
+      it "expect one object" do
+        expect(store.objects('a','b')).to eq(['c'])
+      end
+      it "expect no subjects" do
+        expect(store.subjects('b','d')).to eq([])
+      end
+      it "expect no predicates" do
+        expect(store.predicates('a','d')).to eq([])
+      end
+      it "expect no objects" do
+        expect(store.objects('a','d')).to eq([])
+      end
+    end
+
+    context 'Four-triple list:' do
+      let(:store) do
+        TripleStore.new([
+          ['a','b','c'],
+          ['a','b','d'],
+          ['a','e','d'],
+          ['f','e','d']])
+      end
+
+      # Subjects
+      it "expect one subject for b-c" do
+        expect(store.subjects('b','c')).to eq(['a'])
+      end
+      it "expect one subject for b-d" do
+        expect(store.subjects('b','d')).to eq(['a'])
+      end
+      it "expect two subjects for e-d" do
+        expect(store.subjects('e','d')).to eq(['a', 'f'])
+      end
+
+      # Predicates
+      it "expect one predicate for a-c" do
+        expect(store.predicates('a','c')).to eq(['b'])
+      end
+      it "expect two predicates for a-d" do
+        expect(store.predicates('a','d')).to eq(['b','e'])
+      end
+      it "expect one predicate for f-d" do
+        expect(store.predicates('f','d')).to eq(['e'])
+      end
+
+      # Objects
+      it "expect two objects for a-b" do
+        expect(store.objects('a','b')).to eq(['c', 'd'])
+      end
+      it "expect one object for a-e" do
+        expect(store.objects('a','e')).to eq(['d'])
+      end
+      it "expect one object for f-e" do
+        expect(store.objects('f','e')).to eq(['d'])
+      end
+    end
+  end
+
   context 'Language population' do
     context 'Empty Triple List:' do
       let(:store) { TripleStore.new [] }
