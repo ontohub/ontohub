@@ -1,8 +1,7 @@
 require 'spec_helper'
 
 describe RepositoriesController do
-
-  describe 'deleting a repository' do
+  context 'deleting a repository' do
     let(:ontology){ create :ontology }
     let(:repository){ ontology.repository }
     let(:user){ create(:permission, role: 'owner', item: repository).subject }
@@ -34,6 +33,32 @@ describe RepositoriesController do
         it{ response.should redirect_to repository }
       end
     end
+  end
+
+  context 'Repository instance' do
+    render_views
+
+    let!(:repository) { FactoryGirl.create :repository }
+
+    context 'on GET to index' do
+      before do
+        get :index
+      end
+
+      it { should respond_with :success }
+      it { should render_template :index }
+      it { should render_template 'repositories/_repository' }
+    end
+
+    context 'on GET to show' do
+      before do
+        get :show, id: repository.path
+      end
+
+      it { should respond_with :success }
+      it { should render_template :show }
+    end
+
   end
 
 end
