@@ -1,9 +1,82 @@
 require 'spec_helper'
 
 describe Ontology do
-
   let(:user) { create :user }
   setup_hets
+
+  context 'associations' do
+    %i(language logic ontology_version ontology_type).each do |association|
+      it { should belong_to(association) }
+    end
+
+    %i(versions comments sentences entities).each do |association|
+      it { should have_many(association) }
+    end
+
+    %i(projects).each do |association|
+      it { should have_and_belong_to_many(association) }
+    end
+  end
+
+  context 'migrations' do
+    it { should have_db_index(:iri).unique(true) }
+    it { should have_db_index(:state) }
+    it { should have_db_index(:language_id) }
+    it { should have_db_index(:logic_id) }
+  end
+
+  context 'attributes' do
+    it { should strip_attribute :name }
+    it { should strip_attribute :iri }
+    it { should_not strip_attribute :description }
+  end
+
+  context 'Validations' do
+    ['http://example.com/', 'https://example.com/', 'file://path/to/file'].
+      each do |val|
+      it { should allow_value(val).for :iri }
+    end
+
+    it { should_not allow_value(nil).for :iri }
+
+    [
+      'http://example.com/',
+      'https://example.com/',
+      'file://path/to/file',
+      '',
+      nil
+    ].each do |val|
+      it { should allow_value(val).for :documentation }
+    end
+
+    it { should_not allow_value('fooo').for :documentation }
+  end
+
+  context 'ontology instance' do
+    let(:ontology) { FactoryGirl.create :ontology }
+
+    context 'with name' do
+      let(:name) { 'fooo' }
+
+      before do
+        ontology.name = name
+      end
+
+      it 'have to_s' do
+        expect(ontology.to_s).to eq(name)
+      end
+    end
+
+    context 'without name' do
+      before do
+        ontology.name = nil
+      end
+
+      it 'have to_s' do
+        expect(ontology.to_s).to eq(ontology.iri)
+      end
+    end
+  end
 
   context 'when naming an ontology' do
     let(:ontology) { create :ontology }
@@ -403,6 +476,136 @@ describe Ontology do
       it 'should be reflected in the corresponding field' do
         expect(child_with_theorem.theorems_count).
           to eq(child_with_theorem.theorems.count)
+      end
+    end
+  end
+
+  context 'checking ordering of Ontology list' do
+    before do
+      Ontology::States::STATES.each do |state|
+        FactoryGirl.create :ontology, state: state
+      end
+    end
+    let(:ontology_list) { Ontology.list }
+    let(:done_state) { 'done' }
+
+    it 'list done ontologies first' do
+      expect(ontology_list.first.state).to eq(done_state)
+    end
+  end
+
+  context 'determining active version of ontology' do
+    context 'with only one version' do
+      let(:ontology_one_version) do
+        FactoryGirl.create(:ontology_version).ontology
+      end
+      it 'be equal to current version' do
+        expect(ontology_one_version.active_version).
+          to eq(ontology_one_version.ontology_version)
+      end
+    end
+
+    context 'if current is done' do
+      let(:ontology_two_versions) do
+        FactoryGirl.create(:ontology_version).ontology
+      end
+      before do
+        FactoryGirl.create(:ontology_version, ontology: ontology_two_versions)
+      end
+
+      it 'be equal to current version' do
+        expect(ontology_two_versions.active_version).
+          to eq(ontology_two_versions.ontology_version)
+      end
+    end
+
+    context 'if current failed' do
+      let!(:ontology) { FactoryGirl.create :ontology }
+      let!(:done_version) do
+        FactoryGirl.create :ontology_version,
+          state: 'done', ontology: ontology
+      end
+      let!(:failed_version) do
+        FactoryGirl.create(:ontology_version,
+          state: 'failed', ontology: ontology)
+      end
+
+      before do
+        ontology.ontology_version = failed_version
+        ontology.state = 'failed'
+        ontology.save
+      end
+
+      it 'be equal to second to latest version' do
+        expect(ontology.active_version).to eq(done_version)
+      end
+    end
+  end
+
+  context 'correctness of non_current_active_version? question' do
+    let!(:admin) { FactoryGirl.create(:user, admin: true) }
+    let!(:user) { FactoryGirl.create(:user) }
+    let!(:owner) { FactoryGirl.create(:user) }
+    let!(:ontology) { FactoryGirl.create(:ontology) }
+    let!(:failed_version) do
+      FactoryGirl.create(:ontology_version,
+        state: 'failed', user: owner, ontology: ontology)
+    end
+
+    let!(:current_ontology) { FactoryGirl.create(:ontology) }
+    let!(:current_ontology_version) do
+      FactoryGirl.create(:ontology_version,
+        state: 'done', user: owner, ontology: current_ontology)
+    end
+    before do
+      FactoryGirl.create(:ontology_version,
+                         state: 'done',
+                         user: owner,
+                         ontology: ontology)
+      ontology.ontology_version = failed_version
+      ontology.state = 'failed'
+      ontology.save
+      current_ontology.ontology_version = current_ontology_version
+      current_ontology.save
+    end
+
+    context 'be true, iff the active version != current one '\
+      'according to user' do
+
+      it 'not the non-current active version' do
+        expect(ontology.non_current_active_version?).to be(false)
+      end
+
+      it 'not the non-current active version for the user' do
+        expect(ontology.non_current_active_version?(user)).to be(false)
+      end
+
+      it 'not the non-current active version for the admin' do
+        expect(ontology.non_current_active_version?(admin)).to be(true)
+      end
+
+      it 'not the non-current active version for the owner' do
+        expect(ontology.non_current_active_version?(owner)).to be(true)
+      end
+    end
+
+    context 'be false, iff the active version == current one '\
+      'according to user' do
+
+      it 'not the non-current active version' do
+        expect(current_ontology.non_current_active_version?).to be(false)
+      end
+
+      it 'not the non-current active version for the user' do
+        expect(current_ontology.non_current_active_version?(user)).to be(false)
+      end
+
+      it 'not the non-current active version for the admin' do
+        expect(current_ontology.non_current_active_version?(admin)).to be(false)
+      end
+
+      it 'not the non-current active version for the owner' do
+        expect(current_ontology.non_current_active_version?(owner)).to be(false)
       end
     end
   end
