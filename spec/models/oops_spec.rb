@@ -16,7 +16,7 @@ describe Oops do
         do_request :valid, url: 'http://sweet.jpl.nasa.gov/1.1/sunrealm.owl'
       end
       it 'return a list' do
-        expect(result.size).to eq(5)
+        expect(result.size).to eq(2)
       end
     end
   end
