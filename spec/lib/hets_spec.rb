@@ -47,6 +47,7 @@ describe Hets, :needs_hets do
       'https://colore.oor.net=https://develop.ontohub.org/colore/ontologies']
     end
     let(:catalog_args) do
+      # any_args is a "don't care which and how many arguments" in rspeck mocks.
       [any_args, '-C', url_catalog.join('/'), any_args]
     end
 
