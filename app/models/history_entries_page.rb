@@ -19,7 +19,7 @@ class HistoryEntriesPage < FakeRecord
     @repository   = Repository.find_by_path(opts[:repository_id])
 
     @commit_id    = compute_ref(repository, opts[:ref])
-    @oid          = commit_id[:oid]
+    @oid          = commit_id[:oid] unless repository.empty?
 
     @path         = opts[:path]
     @current_file = repository.get_file(path, oid) if path && !repository.dir?(path)
