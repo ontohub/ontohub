@@ -52,9 +52,8 @@ describe Hets, :needs_hets do
 
     before do
       allow(Subprocess).to(receive(:run).and_call_original)
-      allow(Subprocess).to(receive(:run).with(*catalog_args) do
-        'Writing file: some_file'
-      end)
+      allow(Subprocess).to receive(:run).with(*catalog_args).
+        and_return('Writing file: some_file')
     end
 
     it 'have called hets with the catalog' do
