@@ -171,11 +171,12 @@ class Ontology < ActiveRecord::Base
 
   def destroy_with_parent(user)
     if parent
-      repository.delete_file(parent.path, user, "Delete ontology #{parent}") do
+      repository.delete_file(parent.path, user, "Delete #{Settings.OMS} #{parent}") do
         parent.destroy
       end
     else
-      repository.delete_file(path, user, "Delete ontology #{self}") do
+      repository.delete_file(path, user, "Delete  #{self}") do
+      repository.delete_file(parent.path, user, "Delete #{Settings.OMS} #{parent}") do
         destroy
       end
     end
