@@ -13,10 +13,6 @@ describe Repository do
       stub_hets_for(hets_out_file('Px'), with: 'Px')
     end
 
-    after do
-      FileUtils.rm_rf(repository.source_address)
-    end
-
     it 'should create a bulk job on a queue' do
       expect { repository.remote_send('clone') }.
         to change(OntologyBatchParseWorker.jobs, :size)
