@@ -64,4 +64,8 @@ class Logic < ActiveRecord::Base
     LogicMapping.find_all_by_target_id self.id
   end
 
+  def to_param
+    name
+  end
+
 end
