@@ -2,7 +2,7 @@
   .state{class: req.state, 'data-uri' => oops_data_uri, 'data-button' => 'Show results', 'data-reload_uri' => oops_data_reload_uri}
     %span.oops
       OOPS state:
-      %span.label{:class => determine_label_type(req.state)}
+      %span.label{class: determine_label_type(req.state)}
         =req.state
     %br
     - if req.state == 'failed'
