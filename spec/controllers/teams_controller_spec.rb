@@ -3,9 +3,7 @@ require 'spec_helper'
 describe TeamsController do
   context 'not signed in' do
     context 'on GET to index' do
-      before do
-        get :index
-      end
+      before { get :index }
 
       it { should set_the_flash.to(/not authorized/) }
       it { should redirect_to(:root) }
@@ -14,23 +12,17 @@ describe TeamsController do
 
   context 'signed in' do
     let(:user) { FactoryGirl.create :user }
-    before do
-      sign_in user
-    end
+    before { sign_in user }
 
     context 'on GET to index without teams' do
-      before do
-        get :index
-      end
+      before { get :index }
 
       it { should respond_with :success }
       it { should render_template :index }
     end
 
     context 'on GET to new' do
-      before do
-        get :new
-      end
+      before { get :new }
 
       it { should respond_with :success }
       it { should render_template :new }
@@ -40,27 +32,21 @@ describe TeamsController do
       let(:team) { FactoryGirl.create :team, admin_user: user }
 
       context 'on GET to index' do
-        before do
-          get :index
-        end
+        before { get :index }
 
         it { should respond_with :success }
         it { should render_template :index }
       end
 
       context 'on GET to show' do
-        before do
-          get :show, id: team.to_param
-        end
+        before { get :show, id: team.to_param }
 
         it { should respond_with :success }
         it { should render_template :show }
       end
 
       context 'on GET to edit' do
-        before do
-          get :edit, id: team.to_param
-        end
+        before { get :edit, id: team.to_param }
 
         it { should respond_with :success }
         it { should render_template :edit }
@@ -68,9 +54,7 @@ describe TeamsController do
 
       context 'on DELETE to destroy' do
         context 'by team admin' do
-          before do
-            delete :destroy, id: team.id
-          end
+          before { delete :destroy, id: team.id }
 
           it { should redirect_to(Team) }
           it { should set_the_flash.to(/destroyed/) }

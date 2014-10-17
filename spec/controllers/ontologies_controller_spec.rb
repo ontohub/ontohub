@@ -14,9 +14,7 @@ describe OntologiesController do
     end
 
     context 'on collection' do
-      before do
-        post :retry_failed, repository_id: repository.to_param
-      end
+      before { post :retry_failed, repository_id: repository.to_param }
 
       it{ response.should redirect_to [repository, :ontologies] }
     end
@@ -73,32 +71,24 @@ describe OntologiesController do
     let(:ontology) { FactoryGirl.create :single_ontology, state: 'done' }
     let(:repository) { ontology.repository }
     let(:user) { FactoryGirl.create :user }
-    before do
-      2.times { FactoryGirl.create :entity, ontology: ontology }
-    end
+    before { 2.times { FactoryGirl.create :entity, ontology: ontology } }
 
     context 'on GET to index' do
       context 'for a repository' do
-        before do
-          get :index, repository_id: repository.to_param
-        end
+        before { get :index, repository_id: repository.to_param }
 
         it { should respond_with :success }
         it { should render_template :index_repository }
       end
       context 'for the whole website' do
-        before do
-          get :index
-        end
+        before { get :index }
         it { should respond_with :success }
         it { should render_template :index_global }
       end
     end
 
     context 'on GET to show' do
-      before do
-        Entity.delete_all
-      end
+      before { Entity.delete_all }
 
       context 'with format json' do
         before do

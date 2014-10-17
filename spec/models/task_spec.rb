@@ -13,9 +13,7 @@ describe Task do
     end
 
     context 'when name is already taken' do
-      before do
-        Task.create!(name: 'foo')
-      end
+      before { Task.create!(name: 'foo') }
       it { should_not allow_value('foo').for :name }
     end
 

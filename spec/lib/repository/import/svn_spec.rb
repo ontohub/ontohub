@@ -48,9 +48,7 @@ describe "svn import" do
   end
 
   context 'synchronizing without new commits' do
-    before do
-      @result = @repository.remote_send :pull
-    end
+    before { @result = @repository.remote_send :pull }
 
     it 'unchaned HEAD' do
       @result.previous.should == @result.current

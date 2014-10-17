@@ -16,9 +16,7 @@ describe HomeController do
 
   context 'on GET to index' do
     context 'not signed in' do
-      before do
-        get :index
-      end
+      before { get :index }
       it { should respond_with :success }
       it { should render_template :index }
       end

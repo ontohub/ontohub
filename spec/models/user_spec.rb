@@ -46,9 +46,7 @@ describe User do
     end
 
     context 'after deletion' do
-      before do
-        user.delete
-      end
+      before { user.delete }
 
       it 'have blank email' do
         expect(user.email).to be_nil

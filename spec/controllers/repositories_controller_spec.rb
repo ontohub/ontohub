@@ -7,14 +7,10 @@ describe RepositoriesController do
     let(:user){ create(:permission, role: 'owner', item: repository).subject }
 
     context 'signed in' do
-      before do
-        sign_in user
-      end
+      before { sign_in user }
 
       context 'successful deletion' do
-        before do
-          delete :destroy, id: repository.to_param
-        end
+        before { delete :destroy, id: repository.to_param }
 
         it{ should respond_with :found }
         it{ response.should redirect_to Repository }
@@ -41,9 +37,7 @@ describe RepositoriesController do
     let!(:repository) { FactoryGirl.create :repository }
 
     context 'on GET to index' do
-      before do
-        get :index
-      end
+      before { get :index }
 
       it { should respond_with :success }
       it { should render_template :index }
@@ -51,9 +45,7 @@ describe RepositoriesController do
     end
 
     context 'on GET to show' do
-      before do
-        get :show, id: repository.path
-      end
+      before { get :show, id: repository.path }
 
       it { should respond_with :success }
       it { should render_template :show }

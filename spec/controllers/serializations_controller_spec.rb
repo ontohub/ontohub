@@ -6,14 +6,10 @@ describe SerializationsController do
   let!(:serial) { FactoryGirl.create :serialization, language: language }
 
   context 'signed in as owner' do
-    before do
-      sign_in user
-    end
+    before { sign_in user }
 
     context 'on get to show' do
-      before do
-        get :show, id: serial.id
-      end
+      before { get :show, id: serial.id }
 
       it { should respond_with :success }
       it { should render_template :show }
@@ -21,9 +17,7 @@ describe SerializationsController do
     end
 
     context 'on get to new' do
-      before do
-        get :new
-      end
+      before { get :new }
 
       it { should respond_with :success }
       it { should render_template :new }
@@ -78,9 +72,7 @@ describe SerializationsController do
     end
 
     context 'on POST to DELETE' do
-      before do
-        delete :destroy, id: serial.id
-      end
+      before { delete :destroy, id: serial.id }
 
       it 'remove the record' do
         expect(Serialization.find_by_id(serial.id)).to be_nil
@@ -88,9 +80,7 @@ describe SerializationsController do
     end
 
     context 'on GET to EDIT' do
-      before do
-        get :edit, id: serial.id
-      end
+      before { get :edit, id: serial.id }
       it { should respond_with :success }
       it { should render_template :edit }
       it { should_not set_the_flash }
@@ -102,18 +92,14 @@ describe SerializationsController do
     before { sign_in user2 }
 
     context 'on get to show' do
-      before do
-        get :show, id: serial.id
-      end
+      before { get :show, id: serial.id }
       it { should respond_with :success }
       it { should render_template :show }
       it { should_not set_the_flash }
     end
 
     context 'on get to new' do
-      before do
-        get :new
-      end
+      before { get :new }
 
       it { should respond_with :success }
       it { should render_template :new }
@@ -168,9 +154,7 @@ describe SerializationsController do
     end
 
     context 'on POST to DELETE' do
-      before do
-        delete :destroy, id: serial.id
-      end
+      before { delete :destroy, id: serial.id }
 
       it 'remove the record' do
         expect(Serialization.find_by_id(serial.id)).to be_nil
@@ -178,9 +162,7 @@ describe SerializationsController do
     end
 
     context 'on GET to EDIT' do
-      before do
-        get :edit, id: serial.id
-      end
+      before { get :edit, id: serial.id }
       it { should respond_with :success }
       it { should render_template :edit }
       it { should_not set_the_flash }
@@ -189,18 +171,14 @@ describe SerializationsController do
 
   context 'not signed in' do
     context 'on get to show' do
-      before do
-        get :show, id: serial.id, language_id: language.id
-      end
+      before { get :show, id: serial.id, language_id: language.id }
       it { should respond_with :success }
       it { should render_template :show }
       it { should_not set_the_flash }
     end
 
     context 'on get to new' do
-      before do
-        get :new, language_id: language.id
-      end
+      before { get :new, language_id: language.id }
 
       it { should respond_with :redirect }
       it { should set_the_flash }
@@ -234,9 +212,7 @@ describe SerializationsController do
     end
 
     context 'on POST to DELETE' do
-      before do
-        delete :destroy, id: serial.id
-      end
+      before { delete :destroy, id: serial.id }
 
       it 'not remove the record' do
         expect(Serialization.find_by_id(serial.id)).to eq(serial)

@@ -77,9 +77,7 @@ describe PermissionsController do
 
     context 'on GET to index' do
       context 'not signed in' do
-        before do
-          get :index, repository_id: ontology.repository.to_param
-        end
+        before { get :index, repository_id: ontology.repository.to_param }
 
         it { should set_the_flash.to(/not authorized/) }
         it { should redirect_to(:root) }

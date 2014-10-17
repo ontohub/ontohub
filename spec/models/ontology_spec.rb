@@ -58,9 +58,7 @@ describe Ontology do
     context 'with name' do
       let(:name) { 'fooo' }
 
-      before do
-        ontology.name = name
-      end
+      before { ontology.name = name }
 
       it 'have to_s' do
         expect(ontology.to_s).to eq(name)
@@ -68,9 +66,7 @@ describe Ontology do
     end
 
     context 'without name' do
-      before do
-        ontology.name = nil
-      end
+      before { ontology.name = nil }
 
       it 'have to_s' do
         expect(ontology.to_s).to eq(ontology.iri)

@@ -15,9 +15,7 @@ describe FormalityLevel do
     end
 
     context "when 'foo' is already taken" do
-      before do
-        FormalityLevel.create!(name: 'foo')
-      end
+      before { FormalityLevel.create!(name: 'foo') }
 
       it { should_not allow_value('foo').for(:name) }
     end

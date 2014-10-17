@@ -3,9 +3,7 @@ require 'spec_helper'
 describe Admin::TeamsController do
   context 'on GET to index' do
     context 'not signed in' do
-      before do
-        get :index
-      end
+      before { get :index }
 
       it { should set_the_flash.to(/admin privileges/) }
       it { should respond_with :redirect }

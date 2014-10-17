@@ -6,9 +6,7 @@ describe LogicsController do
 
   context 'on GET to show' do
     context 'not signed in' do
-      before do
-        get :show, id: logic.to_param
-      end
+      before { get :show, id: logic.to_param }
 
       it { should respond_with :success }
       it { should render_template :show }
@@ -28,9 +26,7 @@ describe LogicsController do
   end
 
   context 'in GET to index' do
-    before do
-      get :index
-    end
+    before { get :index }
 
     it { should respond_with :success }
     it { should render_template :index }

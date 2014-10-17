@@ -5,9 +5,7 @@ describe UsersController do
 
   context 'without data' do
     context 'on GET to show' do
-      before do
-        get :show, id: user.to_param
-      end
+      before { get :show, id: user.to_param }
 
       it { should respond_with :success }
       it { should render_template :show }
@@ -20,9 +18,7 @@ describe UsersController do
       FactoryGirl.create :ontology_version_with_file, user: user
     end
     context 'on GET to show' do
-      before do
-        get :show, id: user.to_param
-      end
+      before { get :show, id: user.to_param }
 
       it { should respond_with :success }
       it { should render_template :show }

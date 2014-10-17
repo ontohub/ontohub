@@ -6,9 +6,7 @@ describe LanguagesController do
 
   context 'on GET to show' do
     context 'not signed in' do
-      before do
-        get :show, id: language.to_param
-      end
+      before { get :show, id: language.to_param }
 
       it { should respond_with :success }
       it { should render_template :show }
@@ -28,9 +26,7 @@ describe LanguagesController do
   end
 
   context 'in GET to index' do
-    before do
-      get :index
-    end
+    before { get :index }
 
     it { should respond_with :success }
     it { should render_template :index }
@@ -138,9 +134,7 @@ describe LanguagesController do
     end
 
     context 'not signed in' do
-      before do
-        delete :destroy, id: language.id
-      end
+      before { delete :destroy, id: language.id }
 
       it 'leave the record' do
         expect(Language.find_by_name(language.name)).to be_truthy

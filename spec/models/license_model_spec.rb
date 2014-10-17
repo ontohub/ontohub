@@ -14,9 +14,7 @@ describe LicenseModel do
     end
 
     context 'when name is already taken' do
-      before do
-        LicenseModel.create!(name: 'foo', url: 'http://foo.com')
-      end
+      before { LicenseModel.create!(name: 'foo', url: 'http://foo.com') }
       it { should_not allow_value('foo').for :name }
     end
 

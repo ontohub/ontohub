@@ -29,18 +29,14 @@ describe LanguageAdjointsController do
     before { sign_in user }
 
     context 'on get to show' do
-      before do
-        get :show, id: adjoint.id, mapping_id: mapping.id
-      end
+      before { get :show, id: adjoint.id, mapping_id: mapping.id }
       it { should respond_with :success }
       it { should render_template :show }
       it { should_not set_the_flash }
     end
 
     context 'on get to new' do
-      before do
-        get :new, mapping_id: mapping.id
-      end
+      before { get :new, mapping_id: mapping.id }
 
       it { should respond_with :success }
       it { should render_template :new }
@@ -99,9 +95,7 @@ describe LanguageAdjointsController do
     end
 
     context 'on POST to DELETE' do
-      before do
-        delete :destroy, id: adjoint.id, mapping_id: mapping.id
-      end
+      before { delete :destroy, id: adjoint.id, mapping_id: mapping.id }
 
       it 'remove the record' do
         expect(LanguageAdjoint.find_by_id(adjoint.id)).to be_nil
@@ -109,9 +103,7 @@ describe LanguageAdjointsController do
     end
 
     context 'on GET to EDIT' do
-      before do
-        get :edit, id: adjoint.id, mapping_id: mapping.id
-      end
+      before { get :edit, id: adjoint.id, mapping_id: mapping.id }
       it { should respond_with :success }
       it { should render_template :edit }
       it { should_not set_the_flash }
@@ -123,18 +115,14 @@ describe LanguageAdjointsController do
     before { sign_in user2 }
 
     context 'on get to show' do
-      before do
-        get :show, id: adjoint.id, mapping_id: mapping.id
-      end
+      before { get :show, id: adjoint.id, mapping_id: mapping.id }
       it { should respond_with :success }
       it { should render_template :show }
       it { should_not set_the_flash }
     end
 
     context 'on get to new' do
-      before do
-        get :new, mapping_id: mapping.id
-      end
+      before { get :new, mapping_id: mapping.id }
 
       it { should respond_with :success }
       it { should render_template :new }
@@ -181,9 +169,7 @@ describe LanguageAdjointsController do
     end
 
     context 'on POST to DELETE' do
-      before do
-        delete :destroy, id: adjoint.id, translation_id: mapping.id
-      end
+      before { delete :destroy, id: adjoint.id, translation_id: mapping.id }
 
       it 'not remove the record' do
         expect(LanguageAdjoint.find_by_id(adjoint.id)).to eq(adjoint)
@@ -191,9 +177,7 @@ describe LanguageAdjointsController do
     end
 
     context 'on GET to EDIT' do
-      before do
-        get :edit, id: adjoint.id, translation_id: mapping.id
-      end
+      before { get :edit, id: adjoint.id, translation_id: mapping.id }
       it { should respond_with :redirect }
       it { should set_the_flash.to(/not authorized/i) }
     end
@@ -201,18 +185,14 @@ describe LanguageAdjointsController do
 
   context 'not signed in' do
     context 'on get to show' do
-      before do
-        get :show, id: adjoint.id, translation_id: mapping.id
-      end
+      before { get :show, id: adjoint.id, translation_id: mapping.id }
       it { should respond_with :success }
       it { should render_template :show }
       it { should_not set_the_flash }
     end
 
     context 'on get to new' do
-      before do
-        get :new, translation_id: mapping.id
-      end
+      before { get :new, translation_id: mapping.id }
 
       it { should respond_with :redirect }
       it { should set_the_flash }
@@ -247,9 +227,7 @@ describe LanguageAdjointsController do
     end
 
     context 'on POST to DELETE' do
-      before do
-        delete :destroy, id: adjoint.id, translation_id: mapping.id
-      end
+      before { delete :destroy, id: adjoint.id, translation_id: mapping.id }
 
       it 'not remove the record' do
         expect(LanguageAdjoint.find_by_id(adjoint.id)).to eq(adjoint)

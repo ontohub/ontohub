@@ -10,23 +10,17 @@ describe LanguageMappingsController do
   end
 
   context 'signed in as owner' do
-    before do
-      sign_in user
-    end
+    before { sign_in user }
 
     context 'on get to show' do
-      before do
-        get :show, id: mapping.id, language_id: source_language.id
-      end
+      before { get :show, id: mapping.id, language_id: source_language.id }
       it { should respond_with :success }
       it { should render_template :show }
       it { should_not set_the_flash }
     end
 
     context 'on get to new' do
-      before do
-        get :new, language_id: source_language.id
-      end
+      before { get :new, language_id: source_language.id }
 
       it { should respond_with :success }
       it { should render_template :new }
@@ -86,9 +80,7 @@ describe LanguageMappingsController do
     end
 
     context 'on POST to DELETE' do
-      before do
-        delete :destroy, id: mapping.id, language_id: source_language.id
-      end
+      before { delete :destroy, id: mapping.id, language_id: source_language.id }
 
       it 'remove the record' do
         expect(LanguageMapping.find_by_id(mapping.id)).to be_nil
@@ -96,9 +88,7 @@ describe LanguageMappingsController do
     end
 
     context 'on GET to EDIT' do
-      before do
-        get :edit, id: mapping.id, language_id: source_language.id
-      end
+      before { get :edit, id: mapping.id, language_id: source_language.id }
       it { should respond_with :success }
       it { should render_template :edit }
       it { should_not set_the_flash }
@@ -112,18 +102,14 @@ describe LanguageMappingsController do
     before { sign_in user2 }
 
     context 'on get to show' do
-      before do
-        get :show, id: mapping.id, language_id: source_language.id
-      end
+      before { get :show, id: mapping.id, language_id: source_language.id }
       it { should respond_with :success }
       it { should render_template :show }
       it { should_not set_the_flash }
     end
 
     context 'on get to new' do
-      before do
-        get :new, language_id: source_language.id
-      end
+      before { get :new, language_id: source_language.id }
 
       it { should respond_with :success }
       it { should render_template :new }
@@ -172,9 +158,7 @@ describe LanguageMappingsController do
     end
 
     context 'on POST to DELETE' do
-      before do
-        delete :destroy, id: mapping.id, language_id: source_language.id
-      end
+      before { delete :destroy, id: mapping.id, language_id: source_language.id }
 
       it 'not remove the record' do
         expect(LanguageMapping.find_by_id(mapping.id)).to eq(mapping)
@@ -182,9 +166,7 @@ describe LanguageMappingsController do
     end
 
     context 'on GET to EDIT' do
-      before do
-        get :edit, id: mapping.id, language_id: source_language.id
-      end
+      before { get :edit, id: mapping.id, language_id: source_language.id }
       it { should respond_with :redirect }
       it { should set_the_flash.to(/not authorized/i) }
     end
@@ -192,18 +174,14 @@ describe LanguageMappingsController do
 
   context 'not signed in' do
     context 'on get to show' do
-      before do
-        get :show, id: mapping.id, language_id: source_language.id
-      end
+      before { get :show, id: mapping.id, language_id: source_language.id }
       it { should respond_with :success }
       it { should render_template :show }
       it { should_not set_the_flash }
     end
 
     context 'on get to new' do
-      before do
-        get :new, language_id: source_language.id
-      end
+      before { get :new, language_id: source_language.id }
 
       it { should respond_with :redirect }
       it { should set_the_flash }
@@ -241,9 +219,7 @@ describe LanguageMappingsController do
   end
 
   context 'on POST to DELETE' do
-    before do
-      delete :destroy, id: mapping.id, language_id: source_language.id
-    end
+    before { delete :destroy, id: mapping.id, language_id: source_language.id }
 
     it 'not remove the record' do
       expect(LanguageMapping.find_by_id(mapping.id)).to eq(mapping)
