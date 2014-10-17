@@ -1,8 +1,8 @@
 require 'spec_helper'
 
 describe Teams::PermissionsController do
-  let!(:team) { FactoryGirl.create :team }
-  let!(:permission) { FactoryGirl.create :permission, subject: team }
+  let!(:team) { create :team }
+  let!(:permission) { create :permission, subject: team }
 
   context 'on GET to index' do
     context 'not signed in' do
@@ -16,7 +16,7 @@ describe Teams::PermissionsController do
       render_views
 
       before do
-        sign_in FactoryGirl.create :user
+        sign_in create :user
         get :index, team_id: team.to_param
       end
 

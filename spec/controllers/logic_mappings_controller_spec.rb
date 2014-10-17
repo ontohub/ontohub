@@ -1,11 +1,11 @@
 require 'spec_helper'
 
 describe LogicMappingsController do
-  let!(:user) { FactoryGirl.create :user }
-  let!(:target_logic) { FactoryGirl.create :logic, user: user }
-  let!(:source_logic) { FactoryGirl.create :logic, user: user }
+  let!(:user) { create :user }
+  let!(:target_logic) { create :logic, user: user }
+  let!(:source_logic) { create :logic, user: user }
   let!(:mapping) do
-    FactoryGirl.create :logic_mapping,
+    create :logic_mapping,
       source: source_logic, target: target_logic, user: user
   end
 
@@ -97,7 +97,7 @@ describe LogicMappingsController do
   end
 
   context 'signed in as not-owner' do
-    let!(:user2) { FactoryGirl.create :user }
+    let!(:user2) { create :user }
     before { sign_in user2 }
 
     context 'on get to show' do

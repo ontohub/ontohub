@@ -72,8 +72,8 @@ describe PermissionsController do
   end
 
   context 'permissions' do
-    let(:ontology) { FactoryGirl.create :ontology }
-    let(:user) { FactoryGirl.create :user }
+    let(:ontology) { create :ontology }
+    let(:user) { create :user }
 
     context 'on GET to index' do
       context 'not signed in' do

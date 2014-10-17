@@ -87,7 +87,7 @@ def add_fixture_file(repository, relative_file)
 end
 
 def version_for_file(repository, path)
-  dummy_user = FactoryGirl.create :user
+  dummy_user = create :user
   basename = File.basename(path)
   version = repository.save_file path, basename, "#{basename} added", dummy_user
 end

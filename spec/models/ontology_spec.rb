@@ -53,7 +53,7 @@ describe Ontology do
   end
 
   context 'ontology instance' do
-    let(:ontology) { FactoryGirl.create :ontology }
+    let(:ontology) { create :ontology }
 
     context 'with name' do
       let(:name) { 'fooo' }
@@ -479,7 +479,7 @@ describe Ontology do
   context 'checking ordering of Ontology list' do
     before do
       Ontology::States::STATES.each do |state|
-        FactoryGirl.create :ontology, state: state
+        create :ontology, state: state
       end
     end
     let(:ontology_list) { Ontology.list }
@@ -493,7 +493,7 @@ describe Ontology do
   context 'determining active version of ontology' do
     context 'with only one version' do
       let(:ontology_one_version) do
-        FactoryGirl.create(:ontology_version).ontology
+        create(:ontology_version).ontology
       end
       it 'be equal to current version' do
         expect(ontology_one_version.active_version).
@@ -503,10 +503,10 @@ describe Ontology do
 
     context 'if current is done' do
       let(:ontology_two_versions) do
-        FactoryGirl.create(:ontology_version).ontology
+        create(:ontology_version).ontology
       end
       before do
-        FactoryGirl.create(:ontology_version, ontology: ontology_two_versions)
+        create(:ontology_version, ontology: ontology_two_versions)
       end
 
       it 'be equal to current version' do
@@ -516,13 +516,13 @@ describe Ontology do
     end
 
     context 'if current failed' do
-      let!(:ontology) { FactoryGirl.create :ontology }
+      let!(:ontology) { create :ontology }
       let!(:done_version) do
-        FactoryGirl.create :ontology_version,
+        create :ontology_version,
           state: 'done', ontology: ontology
       end
       let!(:failed_version) do
-        FactoryGirl.create(:ontology_version,
+        create(:ontology_version,
           state: 'failed', ontology: ontology)
       end
 
@@ -539,22 +539,22 @@ describe Ontology do
   end
 
   context 'correctness of non_current_active_version? question' do
-    let!(:admin) { FactoryGirl.create(:user, admin: true) }
-    let!(:user) { FactoryGirl.create(:user) }
-    let!(:owner) { FactoryGirl.create(:user) }
-    let!(:ontology) { FactoryGirl.create(:ontology) }
+    let!(:admin) { create(:user, admin: true) }
+    let!(:user) { create(:user) }
+    let!(:owner) { create(:user) }
+    let!(:ontology) { create(:ontology) }
     let!(:failed_version) do
-      FactoryGirl.create(:ontology_version,
+      create(:ontology_version,
         state: 'failed', user: owner, ontology: ontology)
     end
 
-    let!(:current_ontology) { FactoryGirl.create(:ontology) }
+    let!(:current_ontology) { create(:ontology) }
     let!(:current_ontology_version) do
-      FactoryGirl.create(:ontology_version,
+      create(:ontology_version,
         state: 'done', user: owner, ontology: current_ontology)
     end
     before do
-      FactoryGirl.create(:ontology_version,
+      create(:ontology_version,
                          state: 'done',
                          user: owner,
                          ontology: ontology)

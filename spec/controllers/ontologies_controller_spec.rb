@@ -68,10 +68,10 @@ describe OntologiesController do
   end
 
   context 'Ontology Instance' do
-    let(:ontology) { FactoryGirl.create :single_ontology, state: 'done' }
+    let(:ontology) { create :single_ontology, state: 'done' }
     let(:repository) { ontology.repository }
-    let(:user) { FactoryGirl.create :user }
-    before { 2.times { FactoryGirl.create :entity, ontology: ontology } }
+    let(:user) { create :user }
+    before { 2.times { create :entity, ontology: ontology } }
 
     context 'on GET to index' do
       context 'for a repository' do
@@ -122,7 +122,7 @@ describe OntologiesController do
 
       context 'with entity of kind Class' do
         before do
-          entity = FactoryGirl.create :entity, ontology: ontology, kind: 'Class'
+          entity = create :entity, ontology: ontology, kind: 'Class'
           get :show,
             repository_id: repository.to_param,
             id:            ontology.to_param

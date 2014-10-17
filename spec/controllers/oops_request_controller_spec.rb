@@ -2,7 +2,7 @@ require 'spec_helper'
 
 describe OopsRequestsController do
   context 'OntologyVersion OOPS-Integration' do
-    let!(:version) { FactoryGirl.create :ontology_version_with_file }
+    let!(:version) { create :ontology_version_with_file }
     let!(:ontology) { version.ontology }
     let!(:repository) { ontology.repository }
 
@@ -28,7 +28,7 @@ describe OopsRequestsController do
       context 'send second request' do
         context 'while pending, processing or done' do
           before do
-            FactoryGirl.create :oops_request,
+            create :oops_request,
               state: :pending, ontology_version: version
             post :create,
               repository_id: repository.to_param,
@@ -43,7 +43,7 @@ describe OopsRequestsController do
 
         context 'when failed' do
           before do
-            FactoryGirl.create :oops_request,
+            create :oops_request,
               ontology_version: version, state: :failed
             post :create,
               repository_id: repository.to_param,
@@ -59,7 +59,7 @@ describe OopsRequestsController do
       context 'on GET to SHOW' do
         context 'with OopsRequest' do
           before do
-            FactoryGirl.create :oops_request,
+            create :oops_request,
               ontology_version: version,
               state: :pending
             get :show,

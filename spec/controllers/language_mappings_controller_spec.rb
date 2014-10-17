@@ -1,11 +1,11 @@
 require 'spec_helper'
 
 describe LanguageMappingsController do
-  let!(:user) { FactoryGirl.create :user }
-  let!(:target_language) { FactoryGirl.create :language, user: user }
-  let!(:source_language) { FactoryGirl.create :language, user: user }
+  let!(:user) { create :user }
+  let!(:target_language) { create :language, user: user }
+  let!(:source_language) { create :language, user: user }
   let!(:mapping) do
-    FactoryGirl.create :language_mapping,
+    create :language_mapping,
     source: source_language, target: target_language, user: user
   end
 
@@ -98,7 +98,7 @@ describe LanguageMappingsController do
 
 
   context 'signed in as not-owner' do
-    let!(:user2) { FactoryGirl.create :user }
+    let!(:user2) { create :user }
     before { sign_in user2 }
 
     context 'on get to show' do

@@ -8,10 +8,10 @@ describe Category do
 
   context 'get ontologies of a category and subcategories' do
     before do
-      edge = FactoryGirl.create(:c_edge)
+      edge = create(:c_edge)
 
-      onto1 = FactoryGirl.create(:ontology)
-      onto2 = FactoryGirl.create(:ontology)
+      onto1 = create(:ontology)
+      onto2 = create(:ontology)
 
       onto1.categories = [Category.find(edge.parent_id)]
       onto1.save!
@@ -34,9 +34,9 @@ describe Category do
 
   context 'creation of categories from ontology' do
     before do
-      @user = FactoryGirl.create :user
-      @ontology = FactoryGirl.create :single_ontology
-      parse_this(@user, @ontology, hets_out_file('Domain_Fields_Core.xml'), hets_out_file('Domain_Fields_Core.pp.xml'))
+      @user = create :user
+      @ontology = create :single_ontology
+      parse_this(@user, @ontology, fixture_file('Domain_Fields_Core.xml'), fixture_file('Domain_Fields_Core.pp.xml'))
       @ontology.create_categories
     end
 

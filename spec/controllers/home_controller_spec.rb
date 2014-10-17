@@ -23,7 +23,7 @@ describe HomeController do
 
     context 'signed in' do
       before do
-        sign_in FactoryGirl.create :user
+        sign_in create :user
         get :index
       end
       it { should respond_with :success }

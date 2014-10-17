@@ -21,7 +21,7 @@ describe 'LogicgraphParser Stub' do
 
   context "LogicgraphParser" do
     context 'parsing stub' do
-      let!(:user) { FactoryGirl.create :admin }
+      let!(:user) { create :admin }
       it 'should set up without an error' do
         expect do
           LogicgraphParser.parse open_fixture('LogicGraph.xml'),

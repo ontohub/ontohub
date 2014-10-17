@@ -8,15 +8,15 @@ describe Autocomplete do
   end
 
   context 'for users and teams' do
-    let!(:foo) { FactoryGirl.create :user, name: 'foo' }
-    let!(:foobar) { FactoryGirl.create :user, name: 'foobar' }
-    let!(:team_bars) { FactoryGirl.create :team, name: 'special bars' }
-    let!(:team_faker) { FactoryGirl.create :team, name: 'faker' }
+    let!(:foo) { create :user, name: 'foo' }
+    let!(:foobar) { create :user, name: 'foobar' }
+    let!(:team_bars) { create :team, name: 'special bars' }
+    let!(:team_faker) { create :team, name: 'faker' }
 
     before do
       # should never be found
-      FactoryGirl.create :user, name: 'xxyyzz'
-      FactoryGirl.create :team, name: 'aabbbccc'
+      create :user, name: 'xxyyzz'
+      create :team, name: 'aabbbccc'
     end
 
     context 'searching for user' do
@@ -80,7 +80,7 @@ describe Autocomplete do
   end
 
   context 'autocomplete with exclusion' do
-    let(:users) { 5.times.map{|i| FactoryGirl.create :user, name: "foo#{i}" } }
+    let(:users) { 5.times.map{|i| create :user, name: "foo#{i}" } }
     let(:result) do
       ac = Autocomplete.new
       ac.add_scope('User', users.shift(2).map(&:id))

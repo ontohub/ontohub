@@ -7,7 +7,7 @@ describe DistributedOntology do
 
   context 'distributed ontology instance' do
     let(:ontology) do
-      FactoryGirl.create :distributed_ontology, iri: 'http://example.com/foo'
+      create :distributed_ontology, iri: 'http://example.com/foo'
     end
 
     it 'generate sub iri' do

@@ -1,10 +1,10 @@
 require 'spec_helper'
 
 describe GraphsController do
-  let(:source) { FactoryGirl.create(:logic) }
-  let(:target) { FactoryGirl.create(:logic) }
+  let(:source) { create(:logic) }
+  let(:target) { create(:logic) }
   let(:mapping) do
-    FactoryGirl.create(:logic_mapping, source: source, target: target)
+    create(:logic_mapping, source: source, target: target)
   end
 
   context 'on GET to index' do
@@ -19,7 +19,7 @@ describe GraphsController do
       it { should respond_with :success }
     end
     context 'valid response when there are no mappings/links' do
-      let(:unlinked_source) { FactoryGirl.create(:logic) }
+      let(:unlinked_source) { create(:logic) }
       before { get :index, logic_id: unlinked_source, format: :json }
 
       it { should respond_with :success }

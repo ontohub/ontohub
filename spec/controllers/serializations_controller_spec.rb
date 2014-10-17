@@ -1,9 +1,9 @@
 require 'spec_helper'
 
 describe SerializationsController do
-  let!(:user) { FactoryGirl.create :user }
-  let!(:language) { FactoryGirl.create :language, user: user }
-  let!(:serial) { FactoryGirl.create :serialization, language: language }
+  let!(:user) { create :user }
+  let!(:language) { create :language, user: user }
+  let!(:serial) { create :serialization, language: language }
 
   context 'signed in as owner' do
     before { sign_in user }
@@ -88,7 +88,7 @@ describe SerializationsController do
   end
 
   context 'signed in as not-owner' do
-    let(:user2) { FactoryGirl.create :user }
+    let(:user2) { create :user }
     before { sign_in user2 }
 
     context 'on get to show' do

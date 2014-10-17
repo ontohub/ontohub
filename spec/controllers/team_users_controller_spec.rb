@@ -3,9 +3,9 @@ require 'spec_helper'
 describe TeamUsersController do
   render_views
 
-  let!(:admin) { FactoryGirl.create :user } # team admin
-  let!(:user)  { FactoryGirl.create :user }
-  let!(:team)  { FactoryGirl.create :team, admin_user: admin }
+  let!(:admin) { create :user } # team admin
+  let!(:user)  { create :user }
+  let!(:team)  { create :team, admin_user: admin }
 
   context 'on GET to index' do
     context 'as admin' do

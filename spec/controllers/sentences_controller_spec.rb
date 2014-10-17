@@ -1,7 +1,7 @@
 require 'spec_helper'
 
 describe SentencesController do
-  let!(:sentence) { FactoryGirl.create :sentence }
+  let!(:sentence) { create :sentence }
   let!(:ontology) { sentence.ontology }
 
   context 'on GET to index' do

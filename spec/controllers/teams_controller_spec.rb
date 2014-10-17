@@ -11,7 +11,7 @@ describe TeamsController do
   end
 
   context 'signed in' do
-    let(:user) { FactoryGirl.create :user }
+    let(:user) { create :user }
     before { sign_in user }
 
     context 'on GET to index without teams' do
@@ -29,7 +29,7 @@ describe TeamsController do
     end
 
     context 'with teams' do
-      let(:team) { FactoryGirl.create :team, admin_user: user }
+      let(:team) { create :team, admin_user: user }
 
       context 'on GET to index' do
         before { get :index }
@@ -61,7 +61,7 @@ describe TeamsController do
         end
 
         context 'by non-admin' do
-          let!(:member) { FactoryGirl.create :user }
+          let!(:member) { create :user }
           before do
             team.users << member
             sign_in member

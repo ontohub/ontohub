@@ -2,7 +2,7 @@ require 'spec_helper'
 
 describe 'OopsRequest::States' do
   context 'new oops request' do
-    let(:request) { FactoryGirl.create :oops_request }
+    let(:request) { create :oops_request }
     before { allow_any_instance_of(OopsRequest).to(receive(:async_run)) }
 
     it 'be pending' do

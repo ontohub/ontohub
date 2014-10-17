@@ -21,7 +21,7 @@ describe Team do
   end
 
   context 'team instance' do
-    let(:team) { FactoryGirl.create :team }
+    let(:team) { create :team }
     it 'have to_s' do
       expect(team.to_s).to eq(team.name)
     end

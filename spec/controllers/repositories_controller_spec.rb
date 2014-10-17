@@ -34,7 +34,7 @@ describe RepositoriesController do
   context 'Repository instance' do
     render_views
 
-    let!(:repository) { FactoryGirl.create :repository }
+    let!(:repository) { create :repository }
 
     context 'on GET to index' do
       before { get :index }

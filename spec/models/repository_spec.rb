@@ -7,11 +7,13 @@ describe Repository do
     end
   end
 
-  let(:user)       { FactoryGirl.create :user }
-  let(:repository) { FactoryGirl.create :repository, user: user }
+  let(:user)       { create :user }
+  let(:repository) { create :repository, user: user }
 
   context 'a repository with a reserved name should be invalid' do
-    let(:repository_invalid) { FactoryGirl.build :repository, user: user, name: 'repositories' }
+    let(:repository_invalid) do
+      build :repository, user: user, name: 'repositories'
+    end
     it { expect(repository_invalid.invalid?).to be_true }
 
     context 'error messages' do
@@ -66,15 +68,15 @@ describe Repository do
     end
 
     context 'made private' do
-      let(:editor) { FactoryGirl.create :user }
-      let(:readers) { [FactoryGirl.create(:user), FactoryGirl.create(:user), FactoryGirl.create(:user)] }
+      let(:editor) { create :user }
+      let(:readers) { [create(:user), create(:user), create(:user)] }
 
       before do
         repository.access = 'private_rw'
         repository.save
 
-        FactoryGirl.create(:permission, subject: editor, role: 'editor', item: repository)
-        readers.each { |r| FactoryGirl.create(:permission, subject: r, role: 'reader', item: repository) }
+        create(:permission, subject: editor, role: 'editor', item: repository)
+        readers.each { |r| create(:permission, subject: r, role: 'reader', item: repository) }
       end
 
       context 'not clear reader premissions when saved, but not set public' do

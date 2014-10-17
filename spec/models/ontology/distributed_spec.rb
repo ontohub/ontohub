@@ -1,9 +1,9 @@
 require 'spec_helper'
 
 describe 'Ontology::Distributed' do
-  let(:single) { FactoryGirl.create(:single_ontology) }
-  let(:hetero_distributed) { FactoryGirl.create(:heterogeneous_ontology) }
-  let(:homogeneous_distributed) { FactoryGirl.create(:homogeneous_ontology) }
+  let(:single) { create(:single_ontology) }
+  let(:hetero_distributed) { create(:heterogeneous_ontology) }
+  let(:homogeneous_distributed) { create(:homogeneous_ontology) }
 
   context 'heterogeneity' do
     it 'always be false if ontology is not distributed' do
@@ -41,7 +41,7 @@ describe 'Ontology::Distributed' do
       end
 
       context 'can be filtered according to a specific logic' do
-        let(:ontology) { FactoryGirl.create(:heterogeneous_ontology) }
+        let(:ontology) { create(:heterogeneous_ontology) }
         let(:logic) { ontology.children.first.logic }
         let!(:ontologies) { Ontology.also_distributed_in(logic) }
 
@@ -90,8 +90,8 @@ describe 'Ontology::Distributed' do
 
     context 'collections' do
       before do
-        FactoryGirl.create_list(:heterogeneous_ontology, 10)
-        FactoryGirl.create_list(:homogeneous_ontology, 10)
+        create_list(:heterogeneous_ontology, 10)
+        create_list(:homogeneous_ontology, 10)
       end
 
       context 'return only distributed homogeneous ontologies' do
@@ -106,7 +106,7 @@ describe 'Ontology::Distributed' do
       end
 
       context 'can be filtered according to a specific logic' do
-        let(:ontology) { FactoryGirl.create(:homogeneous_ontology) }
+        let(:ontology) { create(:homogeneous_ontology) }
         let(:logic) { ontology.children.first.logic }
         let(:ontologies) { Ontology.distributed_in(logic) }
 

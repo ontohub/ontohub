@@ -2,7 +2,7 @@ require 'spec_helper'
 
 describe GraphDataFetcher do
   context 'determine the mapping class correctly' do
-    let(:source) { FactoryGirl.create(:logic) }
+    let(:source) { create(:logic) }
     let(:fetcher) { GraphDataFetcher.new(center: source) }
 
     it 'produce a LogicMapping source in case of a logic' do
@@ -32,11 +32,11 @@ describe GraphDataFetcher do
   end
 
   context 'logic specific tests' do
-    let!(:user) { FactoryGirl.create :user }
-    let!(:source) { FactoryGirl.create(:logic, user: user) }
-    let!(:target) { FactoryGirl.create(:logic, user: user) }
+    let!(:user) { create :user }
+    let!(:source) { create(:logic, user: user) }
+    let!(:target) { create(:logic, user: user) }
     let!(:mapping) do
-      FactoryGirl.create(:logic_mapping,
+      create(:logic_mapping,
         source: source, target: target, user: user)
     end
     let!(:fetcher) { GraphDataFetcher.new(center: source) }
@@ -59,10 +59,10 @@ describe GraphDataFetcher do
   end
 
   context 'ontology specific tests' do
-    let!(:source) { FactoryGirl.create(:single_ontology, state: 'done') }
-    let!(:target) { FactoryGirl.create(:single_ontology, state: 'done') }
+    let!(:source) { create(:single_ontology, state: 'done') }
+    let!(:target) { create(:single_ontology, state: 'done') }
     let!(:mapping) do
-      FactoryGirl.create(:link,
+      create(:link,
         source: source, target: target, ontology: source)
     end
     let!(:fetcher) { GraphDataFetcher.new(center: source) }
@@ -85,7 +85,7 @@ describe GraphDataFetcher do
   end
 
   context 'distributed ontology specific tests with valid request' do
-    let!(:distributed) { FactoryGirl.create(:linked_distributed_ontology) }
+    let!(:distributed) { create(:linked_distributed_ontology) }
     let!(:children) { distributed.children.map{|o| Ontology.find(o.id)} }
     let!(:links) { Link.where(ontology_id: distributed.id) }
     let!(:fetcher) { GraphDataFetcher.new(center: distributed) }

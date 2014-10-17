@@ -1,27 +1,27 @@
 require 'spec_helper'
 
 describe LanguageAdjointsController do
-  let!(:source) { FactoryGirl.create(:logic) }
-  let!(:target) { FactoryGirl.create(:logic) }
+  let!(:source) { create(:logic) }
+  let!(:target) { create(:logic) }
   let!(:mapping) do
-    FactoryGirl.create(:logic_mapping, source: source, target: target)
+    create(:logic_mapping, source: source, target: target)
   end
 
-  let!(:user) { FactoryGirl.create :user }
-  let!(:target_language) { FactoryGirl.create :language, user: user }
-  let!(:source_language) { FactoryGirl.create :language, user: user }
+  let!(:user) { create :user }
+  let!(:target_language) { create :language, user: user }
+  let!(:source_language) { create :language, user: user }
   let!(:mapping) do
-    FactoryGirl.create :language_mapping,
+    create :language_mapping,
       source: source_language, target: target_language, user: user
   end
-  let!(:target_language2) { FactoryGirl.create :language, user: user }
-  let!(:source_language2) { FactoryGirl.create :language, user: user }
+  let!(:target_language2) { create :language, user: user }
+  let!(:source_language2) { create :language, user: user }
   let!(:mapping2) do
-    FactoryGirl.create :language_mapping,
+    create :language_mapping,
       source: source_language2, target: target_language2, user: user
   end
   let!(:adjoint) do
-    FactoryGirl.create :language_adjoint,
+    create :language_adjoint,
       translation: mapping, projection: mapping2, user: user
   end
 
@@ -111,7 +111,7 @@ describe LanguageAdjointsController do
   end
 
   context 'signed in as not-owner' do
-    let!(:user2) { FactoryGirl.create :user }
+    let!(:user2) { create :user }
     before { sign_in user2 }
 
     context 'on get to show' do

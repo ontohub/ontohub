@@ -55,10 +55,10 @@ describe Permission do
   end
 
   context 'repository' do
-    let(:repository) { FactoryGirl.create :repository }
+    let(:repository) { create :repository }
 
     context 'admin user' do
-      let(:admin) { FactoryGirl.create :admin }
+      let(:admin) { create :admin }
 
       %i(owner editor).each do |perm|
         it "have #{perm} permission" do
@@ -68,7 +68,7 @@ describe Permission do
     end
 
     context 'owner user' do
-      let(:permission) { FactoryGirl.create :permission, item: repository }
+      let(:permission) { create :permission, item: repository }
 
       %i(owner editor).each do |perm|
         it "have #{perm} permission" do
@@ -79,7 +79,7 @@ describe Permission do
 
     context 'editor user' do
       let(:permission) do
-        FactoryGirl.create :permission,
+        create :permission,
           item: repository, role: 'editor'
       end
 
@@ -93,9 +93,9 @@ describe Permission do
     end
 
     context 'team user' do
-      let(:team_user) { FactoryGirl.create :team_user }
+      let(:team_user) { create :team_user }
       let!(:permission) do
-        FactoryGirl.create :permission,
+        create :permission,
           item: repository, subject: team_user.team
       end
 
@@ -115,8 +115,8 @@ describe Permission do
     end
 
     context 'user on other team' do
-      let(:team_user) { FactoryGirl.create :team_user }
-      let(:permission) { FactoryGirl.create :permission, item: repository }
+      let(:team_user) { create :team_user }
+      let(:permission) { create :permission, item: repository }
 
       %i(owner editor).each do |perm|
         it "not have #{perm} permission" do
@@ -126,7 +126,7 @@ describe Permission do
     end
 
     context 'some user' do
-      let(:user) { FactoryGirl.create :user }
+      let(:user) { create :user }
 
       %i(owner editor).each do |perm|
         it "not have #{perm} permission" do

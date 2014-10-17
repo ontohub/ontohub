@@ -11,7 +11,7 @@ describe Admin::TeamsController do
 
     context 'signed in as normal user' do
       before do
-        sign_in FactoryGirl.create :user
+        sign_in create :user
         get :index
       end
 
@@ -21,7 +21,7 @@ describe Admin::TeamsController do
 
     context 'signed in as admin user' do
       before do
-        sign_in FactoryGirl.create :admin
+        sign_in create :admin
         get :index
       end
 

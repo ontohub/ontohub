@@ -8,9 +8,9 @@ describe TeamUser do
   end
 
   context 'team with admin and user' do
-    let(:team_admin) { FactoryGirl.create :user } # admin in team
-    let(:team_user) { FactoryGirl.create :user } # non-admin in team
-    let(:admin_user) { FactoryGirl.create :team_user, user: team_admin }
+    let(:team_admin) { create :user } # admin in team
+    let(:team_user) { create :user } # non-admin in team
+    let(:admin_user) { create :team_user, user: team_admin }
     let(:team) { admin_user.team }
     let(:non_admim_user) { team.team_users.non_admin.first }
     before { team.users << team_user }

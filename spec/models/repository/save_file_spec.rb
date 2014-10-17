@@ -1,8 +1,8 @@
 require 'spec_helper'
 
 describe 'Repository saving a file' do
-  let(:user)        { FactoryGirl.create :user }
-  let(:repository)  { FactoryGirl.create :repository, user: user }
+  let(:user)        { create :user }
+  let(:repository)  { create :repository, user: user }
   let(:target_path) { 'save_file.clif' }
   let(:message)     { 'test message' }
   let(:content)     { "(Cat x)\n" }

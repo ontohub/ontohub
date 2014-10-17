@@ -3,8 +3,8 @@ require 'spec_helper'
 describe AutocompleteController do
   context 'users and teams' do
     let!(:term) { 'foo' }
-    let!(:user) { FactoryGirl.create :user, name: "#{term}user" }
-    let!(:team) { FactoryGirl.create :team, name: "#{term}team" }
+    let!(:user) { create :user, name: "#{term}user" }
+    let!(:team) { create :team, name: "#{term}team" }
 
     context 'on GET to index' do
       context 'with results' do

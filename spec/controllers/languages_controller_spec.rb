@@ -1,8 +1,8 @@
 require 'spec_helper'
 
 describe LanguagesController do
-  let!(:user) { FactoryGirl.create :user }
-  let!(:language) { FactoryGirl.create :language, user: user }
+  let!(:user) { create :user }
+  let!(:language) { create :language, user: user }
 
   context 'on GET to show' do
     context 'not signed in' do
@@ -34,7 +34,7 @@ describe LanguagesController do
   end
 
   context 'on POST to create' do
-    let!(:language2) { FactoryGirl.build(:language) }
+    let!(:language2) { build(:language) }
     before do
       sign_in user
       post :create, language: {
@@ -95,7 +95,7 @@ describe LanguagesController do
     end
 
     context 'not permitted' do
-      let!(:user2) { FactoryGirl.create :user }
+      let!(:user2) { create :user }
       let!(:oldname) { language.name }
       before do
         sign_in user2
@@ -145,7 +145,7 @@ describe LanguagesController do
     end
 
     context 'not permitted' do
-      let!(:user2) { FactoryGirl.create :user }
+      let!(:user2) { create :user }
       before do
         sign_in user2
         delete :destroy, id: language.id

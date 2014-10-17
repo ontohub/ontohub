@@ -1,27 +1,27 @@
 require 'spec_helper'
 
 describe LogicAdjointsController do
-  let!(:source) { FactoryGirl.create(:logic) }
-  let!(:target) { FactoryGirl.create(:logic) }
+  let!(:source) { create(:logic) }
+  let!(:target) { create(:logic) }
   let!(:mapping) do
-    FactoryGirl.create(:logic_mapping, source: source, target: target)
+    create(:logic_mapping, source: source, target: target)
   end
 
-  let!(:user) { FactoryGirl.create :user }
-  let!(:target_logic) { FactoryGirl.create :logic, user: user }
-  let!(:source_logic) { FactoryGirl.create :logic, user: user }
+  let!(:user) { create :user }
+  let!(:target_logic) { create :logic, user: user }
+  let!(:source_logic) { create :logic, user: user }
   let!(:mapping) do
-    FactoryGirl.create :logic_mapping,
+    create :logic_mapping,
       source: source_logic, target: target_logic, user: user
   end
-  let!(:target_logic2) { FactoryGirl.create :logic, user: user }
-  let!(:source_logic2) { FactoryGirl.create :logic, user: user }
+  let!(:target_logic2) { create :logic, user: user }
+  let!(:source_logic2) { create :logic, user: user }
   let!(:mapping2) do
-    FactoryGirl.create :logic_mapping,
+    create :logic_mapping,
       source: source_logic2, target: target_logic2, user: user
   end
   let!(:adjoint) do
-    FactoryGirl.create :logic_adjoint,
+    create :logic_adjoint,
       translation: mapping, projection: mapping2, user: user
   end
 
@@ -111,7 +111,7 @@ describe LogicAdjointsController do
   end
 
   context 'signed in as not-owner' do
-    let!(:user2) { FactoryGirl.create :user }
+    let!(:user2) { create :user }
     before { sign_in user2 }
 
     context 'on get to show' do

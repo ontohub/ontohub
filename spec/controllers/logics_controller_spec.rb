@@ -1,8 +1,8 @@
 require 'spec_helper'
 
 describe LogicsController do
-  let!(:user) { FactoryGirl.create :user }
-  let!(:logic) { FactoryGirl.create :logic, user: user }
+  let!(:user) { create :user }
+  let!(:logic) { create :logic, user: user }
 
   context 'on GET to show' do
     context 'not signed in' do

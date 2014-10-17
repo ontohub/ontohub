@@ -2,8 +2,8 @@ require 'spec_helper'
 
 describe Logic do
   context 'Logic instance' do
-    let(:user) { FactoryGirl.create :user }
-    let(:logic) { FactoryGirl.create :logic, user: user }
+    let(:user) { create :user }
+    let(:logic) { create :logic, user: user }
 
     it 'have to_s' do
       expect(logic.to_s).to eq(logic.name)

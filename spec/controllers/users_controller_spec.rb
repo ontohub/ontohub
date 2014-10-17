@@ -1,7 +1,7 @@
 require 'spec_helper'
 
 describe UsersController do
-  let!(:user) { FactoryGirl.create :user }
+  let!(:user) { create :user }
 
   context 'without data' do
     context 'on GET to show' do
@@ -14,8 +14,8 @@ describe UsersController do
 
   context 'with data' do
     before do
-      FactoryGirl.create :comment, user: user
-      FactoryGirl.create :ontology_version_with_file, user: user
+      create :comment, user: user
+      create :ontology_version_with_file, user: user
     end
     context 'on GET to show' do
       before { get :show, id: user.to_param }

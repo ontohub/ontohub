@@ -4,9 +4,9 @@ describe EntitiesController do
   render_views
 
   context 'Ontology Instance' do
-    let!(:user) { FactoryGirl.create :user }
-    let!(:logic) { FactoryGirl.create :logic, user: user }
-    let!(:ontology) { FactoryGirl.create :single_ontology, logic: logic }
+    let!(:user) { create :user }
+    let!(:logic) { create :logic, user: user }
+    let!(:ontology) { create :single_ontology, logic: logic }
     let!(:repository) { ontology.repository }
 
     context 'on GET to index' do
@@ -21,9 +21,9 @@ describe EntitiesController do
   end
 
   context 'OWL Ontology instance' do
-    let!(:user) { FactoryGirl.create :user }
-    let!(:logic) { FactoryGirl.create :logic, name: 'OWL', user: user }
-    let!(:ontology) { FactoryGirl.create :single_ontology, logic: logic }
+    let!(:user) { create :user }
+    let!(:logic) { create :logic, name: 'OWL', user: user }
+    let!(:ontology) { create :single_ontology, logic: logic }
     let!(:repository) { ontology.repository }
 
     context 'on GET to index' do

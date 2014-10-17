@@ -2,9 +2,9 @@ require 'spec_helper'
 
 describe 'OopsRequest::Responses' do
   context 'creating a oops request' do
-    let!(:version) { FactoryGirl.create :ontology_version }
+    let!(:version) { create :ontology_version }
     let!(:entity) do
-      FactoryGirl.create :entity,
+      create :entity,
         ontology: version.ontology,
         name:     'Must be present',
         text:     '',

@@ -5,17 +5,17 @@ describe OntologySearch do
   context 'OntologySearch' do
     let!(:os) { OntologySearch.new }
 
-    let!(:l1) { FactoryGirl.create :logic }
-    let!(:l2) { FactoryGirl.create :logic }
-    let!(:l3) { FactoryGirl.create :logic, name: o1.name }
+    let!(:l1) { create :logic }
+    let!(:l2) { create :logic }
+    let!(:l3) { create :logic, name: o1.name }
 
-    let!(:o1) { FactoryGirl.create :ontology, logic: l1 }
-    let!(:o2) { FactoryGirl.create :ontology, logic: l2 }
-    let!(:o3) { FactoryGirl.create :ontology, logic: l3 }
+    let!(:o1) { create :ontology, logic: l1 }
+    let!(:o2) { create :ontology, logic: l2 }
+    let!(:o3) { create :ontology, logic: l3 }
 
-    let(:e1) { FactoryGirl.create :entity }
-    let(:e2) { FactoryGirl.create :entity, name: o1.name }
-    let(:e3) { FactoryGirl.create :entity }
+    let(:e1) { create :entity }
+    let(:e2) { create :entity, name: o1.name }
+    let(:e3) { create :entity }
 
     let(:ontologies) { [o1, o2, o3] }
     let(:entities) { [e1, e2, e3] }

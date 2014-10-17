@@ -27,7 +27,7 @@ describe User do
 
   context 'User instance' do
     let(:mails_sent) { ActionMailer::Base.deliveries.size }
-    let(:user) { FactoryGirl.create :user }
+    let(:user) { create :user }
 
     it 'not send email to *@example.com' do
       expect(ActionMailer::Base.deliveries.size).to eq(mails_sent)
@@ -61,7 +61,7 @@ describe User do
 
   context 'Another user instance' do
     let!(:mails_sent) { ActionMailer::Base.deliveries.size }
-    let!(:user) { FactoryGirl.create :user, email: 'user@noexample.com' }
+    let!(:user) { create :user, email: 'user@noexample.com' }
 
     it 'send email' do
       expect(ActionMailer::Base.deliveries.size).to eq(mails_sent+1)
@@ -69,7 +69,7 @@ describe User do
   end
 
   context 'Admin instance' do
-    let(:admins) { 2.times.map { FactoryGirl.create :admin } }
+    let(:admins) { 2.times.map { create :admin } }
 
     it 'destroy one admin' do
       expect(admins.first.destroy).to be_truthy
