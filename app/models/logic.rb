@@ -64,4 +64,10 @@ class Logic < ActiveRecord::Base
     LogicMapping.find_all_by_target_id self.id
   end
 
+  def standardization_iri
+    if standardization_status
+      "http://purl.net/dol/1.0/standardization##{standardization_status}"
+    end
+  end
+
 end

@@ -2,7 +2,7 @@ module Ontology::Tasks
   extend ActiveSupport::Concern
 
   included do
-    has_many :tasks
+    has_and_belongs_to_many :tasks
   end
 
 end
