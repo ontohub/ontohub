@@ -67,8 +67,15 @@ class Logic < ActiveRecord::Base
     LogicMapping.find_all_by_target_id self.id
   end
 
+
   def to_param
     slug
+  end
+
+  def standardization_iri
+    if standardization_status
+      "http://purl.net/dol/1.0/standardization##{standardization_status}"
+    end
   end
 
   private
@@ -79,4 +86,5 @@ class Logic < ActiveRecord::Base
            '*' => 'Star',
            '=' => 'Eq')
   end
+
 end
