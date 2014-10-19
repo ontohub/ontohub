@@ -16,16 +16,12 @@ namespace :test do
     File.join('test/fixtures/ontologies/hets-out/', basename)
   end
 
+  def hets_args
+    YAML.load(File.open('config/hets.yml'))['cmd_line_options']
+  end
+
   def perform_hets_on(file)
-    args = [
-      '-o xml',
-      '--full-signatures',
-      '-a none',
-      '-v2',
-      '-O test/fixtures/ontologies/hets-out',
-      '+RTS -K1G -RTS',
-      '--full-theories',
-    ]
+    args = hets_args << '-O test/fixtures/ontologies/hets-out'
     system("hets #{args.join(' ')} #{file}")
   end
 
