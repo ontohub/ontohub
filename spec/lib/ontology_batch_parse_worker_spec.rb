@@ -62,7 +62,7 @@ describe OntologyBatchParseWorker do
     context 'and when a new job needs to be scheduled' do
 
       before do
-        OntologyVersion.any_instance.stub(:parse).
+        allow_any_instance_of(OntologyVersion).to receive(:parse).
           and_raise(ConcurrencyBalancer::AlreadyProcessingError)
       end
 
