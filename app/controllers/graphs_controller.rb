@@ -1,7 +1,8 @@
 class GraphsController < InheritedResources::Base
 
   respond_to :json, :html
-  belongs_to :logic, :ontology, :single_ontology, :distributed_ontology, polymorphic: true
+  belongs_to :ontology, :single_ontology, :distributed_ontology, polymorphic: true
+  belongs_to :logic, finder: :find_by_name!, polymorphic: true
   before_filter :check_read_permissions
 
   def index
