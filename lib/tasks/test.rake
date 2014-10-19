@@ -7,8 +7,16 @@ namespace :test do
     Rake::Task['db:migrate:clean'].invoke
   end
 
-  desc 'Update all ontology fixtures'
-  task :freshen_ontology_fixtures do
+  def hets_path
+    `which hets`.strip
+  end
+
+  def hets_out_file_for(ontology_file)
+    basename = File.basename(ontology_file).sub(/\.[^.]+$/, '.xml')
+    File.join('test/fixtures/ontologies/hets-out/', basename)
+  end
+
+  def perform_hets_on(file)
     args = [
       '-o xml',
       '--full-signatures',
@@ -18,12 +26,21 @@ namespace :test do
       '+RTS -K1G -RTS',
       '--full-theories',
     ]
-    hets = ->(file) { system("hets #{args.join(' ')} #{file}") }
+    system("hets #{args.join(' ')} #{file}")
+  end
+
+  def ontology_files
     globbed_files = Dir.glob('test/fixtures/ontologies/**/*')
-    files = globbed_files.select { |f| !f.end_with?('xml') && !File.directory?(f) }
-    files.each do |file|
+    globbed_files.select do |file|
+      !file.end_with?('xml') && !File.directory?(file)
+    end
+  end
+
+  desc 'Update all ontology fixtures'
+  task :freshen_ontology_fixtures do
+    ontology_files.each do |file|
       puts "Calling hets for: #{file}"
-      hets[file]
+      perform_hets_on(file)
     end
   end
 
