@@ -60,6 +60,15 @@ describe GitRepository do
           expect(job['queue']).to_not eq('priority_push')
         end
       end
+
+      context 'a push with a "big" commit' do
+        let(:bare_git) { create :git_repository_big_commit }
+
+        it 'shall not receive priority' do
+          job = OntologyBatchParseWorker.jobs.first
+          expect(job['queue']).to_not eq('priority_push')
+        end
+      end
     end
   end
 end
