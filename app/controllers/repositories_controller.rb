@@ -1,5 +1,7 @@
 class RepositoriesController < InheritedResources::Base
 
+  respond_to :html, :text
+
   defaults finder: :find_by_path!
 
   load_and_authorize_resource :except => [:index]
