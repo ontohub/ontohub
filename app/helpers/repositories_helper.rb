@@ -16,6 +16,10 @@ module RepositoriesHelper
     link_to method, "##{method}", class: 'clone_method_link', data: {clone: method}
   end
 
+  def clone_type
+    params[:clone_type] || 'git'
+  end
+
   def repository_clone_url(repository, clone_type: 'git', port: nil)
     case clone_type
     when 'git'
