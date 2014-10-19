@@ -19,6 +19,6 @@
 
   .col-md-8
     .pull-right
-      = link_to 'Upload an ' + Settings.OMS + ' file', new_repository_file_path(parent, 'upload_file[path]' => params[:path]), class: 'btn btn-link' if can? :write, repository
+      = link_to 'Upload' + Settings.OMS.articlerize + ' file', new_repository_file_path(parent, 'upload_file[path]' => params[:path]), class: 'btn btn-link' if can? :write, repository
     .clearfix
     #OntologySearch{pagination: 'paginated', role: 'filter'}

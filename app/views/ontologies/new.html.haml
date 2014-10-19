@@ -1,6 +1,6 @@
 = repository_nav parent, :ontologies
 
-%h3= @page_title = "Create an #{Settings.OMS}"
+%h3= @page_title = "Create #{Settings.OMS.articlerize}"
 
 = simple_form_for [parent, resource], html: { class: 'form-horizontal' } do |f|
   
