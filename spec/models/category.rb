@@ -23,11 +23,11 @@ describe Category do
       @child_category = Category.find(edge.child_id)
     end
 
-    it do
+    it 'parent ontology should have 2 related ontologies' do
       @parent_category.related_ontologies.count.should == 2
     end
 
-    it do
+    it 'child ontology should have 1 related ontology' do
       @child_category.related_ontologies.count.should == 1
     end
   end

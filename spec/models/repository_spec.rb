@@ -14,11 +14,15 @@ describe Repository do
     let(:repository_invalid) do
       build :repository, user: user, name: 'repositories'
     end
-    it { expect(repository_invalid.invalid?).to be_true }
+    it 'be invalid' do
+      expect(repository_invalid.invalid?).to be(true)
+    end
 
     context 'error messages' do
       before { repository_invalid.invalid? }
-      it { expect(repository_invalid.errors[:name].any?).to be_true }
+      it 'have errors' do
+        expect(repository_invalid.errors[:name].any?).to be(true)
+      end
     end
   end
 
@@ -80,19 +84,25 @@ describe Repository do
       end
 
       context 'not clear reader premissions when saved, but not set public' do
-        it { expect(repository.permissions.where(role: 'reader').count).to eq(3) }
+        it 'have three readers' do
+          expect(repository.permissions.where(role: 'reader').count).to eq(3)
+        end
 
         context 'change name' do
           before do
             repository.name += "_foo"
             repository.save
           end
-          it { expect(repository.permissions.where(role: 'reader').count). to eq(3) }
+          it 'have three readers' do
+            expect(repository.permissions.where(role: 'reader').count). to eq(3)
+          end
         end
       end
 
       context 'clear reader premissions when set public' do
-        it { expect(repository.permissions.where(role: 'reader').count).to eq(3) }
+        it 'have three readers' do
+          expect(repository.permissions.where(role: 'reader').count).to eq(3)
+        end
 
         context 'change access' do
           before do
@@ -100,7 +110,9 @@ describe Repository do
             repository.save
           end
 
-          it { expect(repository.permissions.where(role: 'reader').count). to eq(0) }
+          it 'have no readers' do
+            expect(repository.permissions.where(role: 'reader').count). to eq(0)
+          end
         end
       end
     end
