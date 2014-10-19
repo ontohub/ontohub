@@ -16,6 +16,14 @@ namespace :test do
     File.join('test/fixtures/ontologies/hets-out/', basename)
   end
 
+  def on_outdated_files(files, &block)
+    files.each do |file|
+      hets_file = hets_out_file_for(file)
+      out_of_date = !FileUtils.uptodate?(hets_file, Array(hets_path))
+      block.call(file) if out_of_date
+    end
+  end
+
   def hets_args
     YAML.load(File.open('config/hets.yml'))['cmd_line_options']
   end
@@ -34,7 +42,7 @@ namespace :test do
 
   desc 'Update all ontology fixtures'
   task :freshen_ontology_fixtures do
-    ontology_files.each do |file|
+    on_outdated_files(ontology_files) do |file|
       puts "Calling hets for: #{file}"
       perform_hets_on(file)
     end
