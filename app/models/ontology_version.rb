@@ -6,6 +6,7 @@ class OntologyVersion < ActiveRecord::Base
   include OntologyVersion::Parsing
   include OntologyVersion::Numbers
   include OntologyVersion::OopsRequests
+  include IRIUrlBuilder::Includeable
 
   include Rails.application.routes.url_helpers
   include ActionDispatch::Routing::UrlFor
@@ -52,6 +53,10 @@ class OntologyVersion < ActiveRecord::Base
 
   def path
     "#{basepath}#{file_extension}"
+  end
+
+  def file_in_repository
+    ontology.repository.get_file(path, commit_oid)
   end
 
   protected

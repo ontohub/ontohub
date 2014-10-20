@@ -1,13 +1,13 @@
 module Hets
   class Parser
-    attr_accessor :path, :callback
+    attr_accessor :resource, :callback
 
-    def initialize(xml_path)
-      self.path = xml_path
+    def initialize(resource)
+      self.resource = resource
     end
 
     def parse(callback: nil)
-      input = File.open(path)
+      input = resource.respond_to?(:close) ? resource : File.open(resource)
       parser(callback).parse(input)
       input.close
     end
