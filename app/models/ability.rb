@@ -41,13 +41,9 @@ class Ability
       end
 
       # Logics
-      can [:update], Logic do |subject|
-        subject.permission?(:editor, user)
-      end
       can [:destroy, :permissions], Logic do |subject|
         subject.permission?(:owner, user)
       end
-      can [:create], Logic
 
       # LogicMappings
       can [:update], LogicMapping do |subject|
