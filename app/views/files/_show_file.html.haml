@@ -1,4 +1,4 @@
-.row
+r.row
   %h3
     =path
     %span.show-when-editing.label.label-info Edit mode
@@ -37,7 +37,8 @@
     - unless resource.ontologies.empty?
       %h4
         Defining
-        = pluralize resource.ontologies.size, 'ontology'
+
+        = pluralize resource.ontologies.size, 'ontology', Settings.OMS
       %ul.ontology-list
         - resource.ontologies.each do |ontology|
           %li= fancy_link ontology
