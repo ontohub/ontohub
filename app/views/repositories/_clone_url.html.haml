@@ -1,5 +1,5 @@
 .clone_urls
-  - clone_methods(visible: 'git').each do |(clone_type, visible)|
+  - clone_methods.each do |(clone_type, visible)|
     %p.clone_url_block{data: {clone: clone_type, default_visible: visible.to_s}}
       Clone with
       %span= clone_type
