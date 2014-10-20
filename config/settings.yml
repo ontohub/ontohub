@@ -50,6 +50,9 @@ exception_notifier:
 git:
   verify_url: http://localhost/
   default_branch: 'master'
+  push_priority:
+    commits: 1
+    changed_files_per_commit: 5
 
 allowed_iri_schemes:
   - http
