@@ -5,9 +5,9 @@ class RepositoryDirectory < FakeRecord
   class DirectoryPathValidator < ActiveModel::Validator
     def validate(record)
       if record.repository.points_through_file?(record.target_path)
-        record.errors[:name] = "Error! This path points to or through a file."
+        record.errors[:name] = 'Error! This path points to or through a file.'
       elsif record.repository.path_exists?(record.target_path)
-        record.errors[:name] = "Error! This path already exists."
+        record.errors[:name] = 'Error! This path already exists.'
       end
     end
   end
@@ -16,7 +16,7 @@ class RepositoryDirectory < FakeRecord
   validates :name, :repository, :user, presence: true
   validates_with DirectoryPathValidator
 
-  def initialize(*args, &block)
+  def initialize(*args, &_block)
     opts = (args.shift || {}).symbolize_keys
     @repository = Repository.find_by_path(opts[:repository_id])
     @user = opts[:user]
@@ -29,7 +29,8 @@ class RepositoryDirectory < FakeRecord
     begin
       temp_file = Tempfile.new('.gitkeep')
       message = "Create directory #{name}"
-      repository.save_file(temp_file.path, File.join(target_path, '.gitkeep'), message, user)
+      repository.save_file(temp_file.path, File.join(target_path, '.gitkeep'),
+        message, user)
     ensure
       temp_file.unlink
     end
