@@ -69,9 +69,11 @@ class RepositoryFile < FakeRecord
 
   def content
     @content ||= if dir?
-      file.content.sort_by do |git_file|
+      files_sorted = file.content.sort_by do |git_file|
         "#{git_file.type}#{git_file.name.downcase}"
-      end.map do |git_file|
+      end
+
+      files_sorted.map do |git_file|
         self.class.new(repository: self.repository, git_file: git_file)
       end
     else
@@ -109,7 +111,12 @@ class RepositoryFile < FakeRecord
   # only for new/edit
   def target_path
     @target_directory ||= ''
-    filename = target_filename.present? ? target_filename : temp_file.original_filename
+    filename =
+      if target_filename.present?
+        target_filename
+      else
+        temp_file.original_filename
+      end
     File.join(target_directory, filename).sub(/^\//, '')
   end
 
