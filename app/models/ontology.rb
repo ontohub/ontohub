@@ -32,9 +32,7 @@ class Ontology < ActiveRecord::Base
   belongs_to :logic, counter_cache: true
   belongs_to :ontology_type
   belongs_to :repository
-  belongs_to :license_model
   belongs_to :formality_level
-  belongs_to :task
 
   has_many :entity_groups
   has_many :alternative_iris, dependent: :destroy
@@ -42,7 +40,6 @@ class Ontology < ActiveRecord::Base
   has_many :target_links, class_name: 'Link', foreign_key: 'target_id', dependent: :destroy
 
   has_and_belongs_to_many :license_models
-  has_and_belongs_to_many :formality_levels
 
   attr_accessible :iri, :name, :description, :acronym, :documentation,
                   :logic_id,
@@ -54,7 +51,7 @@ class Ontology < ActiveRecord::Base
                   :alternative_iris,
                   :ontology_type_id,
                   :license_model_ids,
-                  :formality_level_ids,
+                  :formality_level_id,
                   :task_ids,
                   :project_ids
 

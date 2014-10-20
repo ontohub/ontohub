@@ -135,6 +135,7 @@ group :development, :test do
   gem 'better_errors', '~> 1.1.0'
   gem 'binding_of_caller', '~> 0.7.2'
   gem 'i18n-tasks', '~> 0.7.6'
+  gem 'pry-byebug', '~> 2.0.0'
 end
 
 group :production do
