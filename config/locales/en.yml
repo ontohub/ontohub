@@ -110,3 +110,5 @@ en:
     iris_marked_as_processing: Count of iris that are processing
     overview: Overview
     other_data: Other data
+  ontologies:
+    download: download
