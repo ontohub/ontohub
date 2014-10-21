@@ -1,5 +1,5 @@
 class Watcher
-  RAILS_ROOT = ENV['RAILS_ROOT'] || File.dirname(__FILE__) + "/../.."
+  RAILS_ROOT = ENV['RAILS_ROOT'] || File.dirname(__FILE__) + '/../..'
 
   attr_accessor :count
 
@@ -14,7 +14,7 @@ class Watcher
   def group
   end
 
-  def start_cmd(*args)
+  def start_cmd(*_args)
   end
 
   def pid_file
@@ -42,7 +42,7 @@ class Watcher
       end
 
       # Determine the state on startup
-      w.transition(:init, { true => :up, false => :start }) do |on|
+      w.transition(:init, true => :up, false => :start ) do |on|
         on.condition(:process_running) do |c|
           c.running = true
         end

@@ -6,7 +6,7 @@ class SidekiqWorkers < Watcher
   end
 
   def start_cmd(queues, concurrency)
-    queue_opt = Array(queues).map{|q| " -q '#{q}'"}.join
+    queue_opt = Array(queues).map { |q| " -q '#{q}'" }.join
     %W(
       exec nice bin/sidekiq
       -c #{concurrency}
