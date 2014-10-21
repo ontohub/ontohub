@@ -3,6 +3,28 @@ require Rails.root.join('lib', 'router_constraints.rb')
 
 Ontohub::Application.routes.draw do
 
+  # IRI Routing #
+  ###############
+  #
+
+  get ':repository_id(/*path)/:file',
+    controller:  :ontologies,
+    action:      :show,
+    as:          :ontology_iri,
+    constraints: GroupedConstraint.new(
+      IRIRouterConstraint.new,
+      MIMERouterConstraint.new('text/plain', 'text/html'))
+
+  get 'ref/:version_number/:repository_id(/*path)/:file',
+    controller:  :ontologies,
+    action:      :show,
+    as:          :versioned_ontology_iri,
+    constraints: GroupedConstraint.new(
+      RefIRIRouterConstraint.new,
+      MIMERouterConstraint.new('text/plain', 'text/html'))
+  #
+  ###############
+
   resources :ontology_types, only: :show
   get '/after_signup', to: 'home#show' , as: 'after_sign_up'
 

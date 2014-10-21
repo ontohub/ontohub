@@ -1,5 +1,9 @@
 class BaseWorker
   include Sidekiq::Worker
+  # Allows to specify a queue for one job only.
+  def self.perform_async_on_queue(queue, *args)
+    client_push('class' => self, 'args' => args, 'queue' => queue)
+  end
 
   # Because of the JSON-Parsing the hash which contains the try_count will
   # contain the try_count key as a string and not as a symbol (which is

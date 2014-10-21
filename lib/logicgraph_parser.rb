@@ -70,6 +70,7 @@ module LogicgraphParser
           logic.name = key
           logic.standardization_status = "Unofficial"
         end
+        logic.description = nil
         logic
       end
     end
@@ -84,6 +85,7 @@ module LogicgraphParser
           language.iri = iri
           language.name = key
         end
+        language.description = nil
         language
       end
     end
@@ -204,8 +206,10 @@ module LogicgraphParser
     def characters(text)
       case @path.last
         when DESCRIPTION
-          @current_logic.description = text if @current_logic
-          @current_language.description = text if @current_language
+          @current_logic.description ||= '' if @current_logic
+          @current_logic.description << text if @current_logic
+          @current_language.description ||= '' if @current_language
+          @current_language.description << text if @current_language
       end
     end
 

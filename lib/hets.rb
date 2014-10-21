@@ -1,20 +1,13 @@
 require 'date'
 
 module Hets
-
-  class HetsError < ::StandardError; end
-  class ExecutionError < HetsError; end
-  class DeploymentError < HetsError; end
-  class VersionOutdatedError < DeploymentError; end
-  class ConfigDateFormatError < DeploymentError; end
-  class VersionDateFormatError < DeploymentError; end
-  class InvalidHetsVersionFormatError < DeploymentError; end
+  include Errors
 
   class Config
 
     VERSION_RE = %r{v\d+\.\d+,\s*(\d+)$}
 
-    attr_reader :path, :library_path, :stack_size, :env
+    attr_reader :path, :library_path, :stack_size, :env, :yaml
 
     def initialize
       yaml = YAML.load_file(File.join(Rails.root, 'config', 'hets.yml'))
@@ -23,6 +16,7 @@ module Hets
       @library_path = first_which_exists yaml['hets_lib']
       @stack_size   = yaml['stack_size'] || '1G'
       @env          = yaml['env'] || {}
+      @yaml         = yaml
 
       raise DeploymentError, 'Could not find hets'     unless @path
       raise DeploymentError, 'Hets library not found.' unless @library_path
@@ -34,6 +28,18 @@ module Hets
         @env[key.upcase] = first_which_exists yaml[key]
       end
 
+    end
+
+    def minimal_version_string
+      "v#{minimum_version}, #{minimum_revision}"
+    end
+
+    def minimum_version
+      yaml['version_minimum_version']
+    end
+
+    def minimum_revision
+      yaml['version_minimum_revision']
     end
 
 
@@ -85,6 +91,19 @@ we expected it to be matchable by this regular expression:
       STDERR.puts message
     end
 
+  end
+
+  def self.minimal_version_string
+    Hets::Config.new.minimal_version_string
+  end
+
+  def self.parse_via_api(resource, url_catalog = [], structure_only: false)
+    iri = resource.versioned_iri
+    mode = structure_only ? :fast_run : :default
+
+    parse_caller = Hets::ParseCaller.new(HetsInstance.choose, url_catalog)
+
+    parse_caller.call(iri, with_mode: mode)
   end
 
   # Runs hets with input_file and returns XML output file path.
