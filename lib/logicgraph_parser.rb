@@ -70,6 +70,7 @@ module LogicgraphParser
           logic.name = key
           logic.standardization_status = "Unofficial"
         end
+        logic.description = nil
         logic
       end
     end
@@ -84,6 +85,7 @@ module LogicgraphParser
           language.iri = iri
           language.name = key
         end
+        language.description = nil
         language
       end
     end
