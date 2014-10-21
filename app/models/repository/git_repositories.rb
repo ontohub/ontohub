@@ -179,8 +179,13 @@ module Repository::GitRepositories
 
   def suspended_save_ontologies(options={})
     versions = []
+    commits_count = 0
+    highest_change_file_count = 0
     commits(options) { |commit|
+      commits_count += 1
+      current_file_count = 0
       git.changed_files(commit.oid).each { |f|
+        current_file_count += 1
         if f.added? || f.modified?
           ontology_version_options = OntologyVersionOptions.new(
             f.path,
@@ -199,19 +204,33 @@ module Repository::GitRepositories
         # TODO: elsif f.deleted?
         end
       }
+      highest_change_file_count = [highest_change_file_count,
+                                   current_file_count].max
     }
 
-    schedule_batch_parsing(versions)
+    priority = applicable_for_priority?(commits_count,
+                                        highest_change_file_count)
+    schedule_batch_parsing(versions, priority_mode: priority)
   end
 
-  def schedule_batch_parsing(versions)
+  def schedule_batch_parsing(versions, priority_mode: false)
     grouped_versions = versions.compact.group_by(&:path)
     grouped_versions.each do |k,versions|
       optioned_versions = versions.map do |version|
         [version.id, { fast_parse: version.fast_parse }]
       end
-      OntologyBatchParseWorker.perform_async(optioned_versions)
+      OntologyBatchParseWorker.
+        perform_async_with_priority(priority_mode, optioned_versions)
     end
+  end
+
+  def applicable_for_priority?(commits_count, highest_change_file_count)
+    (commits_count <= priority_settings.commits) &&
+      (highest_change_file_count <= priority_settings.changed_files_per_commit)
+  end
+
+  def priority_settings
+    @priority_settings ||= OpenStruct.new(Settings.git[:push_priority])
   end
 
   def user_info(user)
