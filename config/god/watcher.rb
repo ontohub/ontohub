@@ -27,7 +27,7 @@ class Watcher
       w.dir           = RAILS_ROOT
       w.group         = group
       w.name          = "#{group}-#{@count}"
-      w.pid_file      = pid_file
+      w.pid_file      = pid_file if pid_file
 
       w.interval      = 30.seconds
       w.start         = start_cmd(*args)
