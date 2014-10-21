@@ -7,9 +7,13 @@ class SidekiqWorkers < Watcher
 
   def start_cmd(queues, concurrency)
     queue_opt = Array(queues).map{|q| " -q '#{q}'"}.join
-    <<-EXEC << queue_opt
-exec nice bin/sidekiq -c #{concurrency} --pidfile #{pid_file} --logfile log/sidekiq.log
-    EXEC
+    %W(
+      exec nice bin/sidekiq
+      -c #{concurrency}
+      --pidfile #{pid_file}
+      --logfile log/sidekiq.log
+      #{queue_opt}
+    ).join(' ')
   end
 
   def pid_file
