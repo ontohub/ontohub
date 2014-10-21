@@ -27,6 +27,9 @@ var delay = (function(){
 })();
 
 $(function() {
+  $('.selectpicker').selectpicker({
+      style: 'btn-primary btn-group btn-group-sm',
+  });
   $("#query").keyup(function(e) {
     delay(search(this), 200);
   });
@@ -38,3 +41,5 @@ $(function() {
     search(this)();
   });
 });
+
+

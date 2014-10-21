@@ -12,27 +12,27 @@
           = collection_select nil, :ontology_type, OntologyType.not_empty,
                               :id, :name_with_ontology_count,
                               {include_blank: "#{Settings.OMS.capitalize} Type", selected: params[:ontology_type]},
-                              class: "btn btn-primary dropdown-toggle"
+                              class: "selectpicker"
         .btn-group.btn-group-sm
           = collection_select nil, :project, Project.not_empty,
                               :id, :name_with_ontology_count,
                               {include_blank: "Project", selected: params[:project]},
-                              class: "btn btn-primary dropdown-toggle"
+                              class: "selectpicker"
         .btn-group.btn-group-sm
           = collection_select nil, :formality_level, FormalityLevel.not_empty,
                               :id, :name_with_ontology_count,
                               {include_blank: "Formality", selected: params[:formality]},
-                              class: "btn btn-primary dropdown-toggle"
+                              class: "selectpicker"
         .btn-group.btn-group-sm
           = collection_select nil, :license, LicenseModel.not_empty,
                               :id, :name_with_ontology_count,
                               {include_blank: "License Model", selected: params[:license]},
-                              class: "btn btn-primary dropdown-toggle"
+                              class: "selectpicker"
         .btn-group.btn-group-sm
           = collection_select nil, :task, Task.not_empty,
                               :id, :name_with_ontology_count,
                               {include_blank: "Task", selected: params[:task]},
-                              class: "btn btn-primary dropdown-toggle"
+                              class: "selectpicker"
 
     .row
       .col-md-10
