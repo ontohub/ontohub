@@ -204,8 +204,14 @@ module LogicgraphParser
     def characters(text)
       case @path.last
         when DESCRIPTION
-          @current_logic.description = text if @current_logic
-          @current_language.description = text if @current_language
+          if @current_logic
+            @current_logic.description ||= ''
+            @current_logic.description << text
+          end
+          if @current_language
+            @current_language.description ||= ''
+            @current_language.description << text
+          end
       end
     end
 
