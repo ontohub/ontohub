@@ -1,8 +1,6 @@
 require 'spec_helper'
 
 describe Oops do
-  WebMock.allow_net_connect!(net_http_connect_on_start: true)
-
   context 'doing a oops request' do
     context 'with invalid url' do
       it 'raise error' do
