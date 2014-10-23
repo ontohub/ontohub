@@ -75,5 +75,4 @@ class Logic < ActiveRecord::Base
   def set_slug
     self.slug = name.gsub(/[\s*.=]/, '_')
   end
-
 end
