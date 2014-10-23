@@ -6,8 +6,6 @@ en:
     You probably shouldn't remove this account, as deleting
     it would leave the system with too few admins.
     The threshold level is: %{minimal_count}.
-  in_process_ontologies: "Ontologies with pending work:"
-  ontology_versions_status: "In-Process Ontology-Version found:"
   wait: 'Please wait …'
   relation_list:
     team_user:
@@ -30,6 +28,10 @@ en:
       logic: Enter characters to search for a language
   Link: Ontology-Link
   LogicMapping: Logic-Mapping
+  repositories:
+    index:
+      clone_list_prefix: There is also a complete list of
+      clone_list_link: repository clone-urls
   repository:
     delete: Delete Repository
     errors: Errors
@@ -90,7 +92,6 @@ en:
       If you delete this repository, all ontologies, which are related to this repository, will be deleted too.
 
       This action is irreversible!
-  discard_changes: Are you sure
   cancel: Cancel
   edit: Edit
   delete: Delete
@@ -107,5 +108,9 @@ en:
     details: Details
     ontology_count_by_state: Ontologies-count by state
     iris_marked_as_processing: Count of iris that are processing
+    overview: Overview
+    other_data: Other data
+  ontologies:
+    download: download
   oops:
-    responses: We have %{all} Responses, %{global} of them represent global issues.
+    responses: We have %{all} Responses, %{global} of them represent global 

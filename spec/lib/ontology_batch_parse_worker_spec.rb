@@ -3,6 +3,7 @@ require 'spec_helper'
 # We try to be explicit when using sidekiq
 # testing modes. However inline! is the default
 describe OntologyBatchParseWorker do
+  setup_hets
 
   let(:balancer) { ConcurrencyBalancer.new }
 
@@ -17,7 +18,8 @@ describe OntologyBatchParseWorker do
       end
       balancer.mark_as_processing_or_complain(ontology.iri)
       OntologyVersion.any_instance.stubs(:raw_path!).returns(
-        Rails.root + 'test/fixtures/ontologies/clif/sequential_parse.clif')
+        ontology_file('clif/sequential_parse'))
+      stub_hets_for(hets_out_file('sequential_parse'))
     end
 
     after do
@@ -40,9 +42,51 @@ describe OntologyBatchParseWorker do
         OntologyBatchParseWorker.new.perform(
           optioned_versions, try_count: ConcurrencyBalancer::MAX_TRIES-1)
         expect(OntologyBatchParseWorker.jobs.first['args']).to eq([
-          optioned_versions, "try_count" => ConcurrencyBalancer::MAX_TRIES])
+          nil, optioned_versions,
+          "try_count" => ConcurrencyBalancer::MAX_TRIES])
       end
     end
+
+    context 'working with the priority queue' do
+      it 'should place a job on the priority-queue, when called with priority mode' do
+        OntologyBatchParseWorker.perform_async_with_priority(true, [])
+        expect(OntologyBatchParseWorker.jobs.first["queue"]).
+               to eq('priority_push')
+      end
+
+      it 'should place a job on the hets-queue, when called without priority mode' do
+        OntologyBatchParseWorker.perform_async_with_priority(false, [])
+        expect(OntologyBatchParseWorker.jobs.first["queue"]).
+               to eq('hets')
+      end
+    end
+
+    context 'and when a new job needs to be scheduled' do
+
+      before do
+        allow_any_instance_of(OntologyVersion).to receive(:parse).
+          and_raise(ConcurrencyBalancer::AlreadyProcessingError)
+      end
+
+      it 'should be placed in priority if it started this way' do
+        optioned_versions = [[version.id, {"fast_parse" => version.fast_parse}]]
+        OntologyBatchParseWorker.new.
+          perform('priority_push',
+                  optioned_versions,
+                  try_count: ConcurrencyBalancer::MAX_TRIES-1)
+        expect(OntologyBatchParseWorker.jobs.first['queue']).
+          to eq('priority_push')
+      end
+
+      it 'should not be placed in priority if it did not start this way' do
+        optioned_versions = [[version.id, {"fast_parse" => version.fast_parse}]]
+        OntologyBatchParseWorker.new.
+          perform(optioned_versions, try_count: ConcurrencyBalancer::MAX_TRIES-1)
+        expect(OntologyBatchParseWorker.jobs.first['queue']).
+          to eq('hets')
+      end
+    end
+
   end
 
 end

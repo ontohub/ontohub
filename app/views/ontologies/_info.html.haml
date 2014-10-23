@@ -25,7 +25,8 @@
     = link_to resource.documentation, resource.documentation
 
 
-%p= link_to resource.iri, download_path(resource) if download_path(resource)
+%p
+  %span.iri-link= link_to resource.iri, resource.iri
 %p= resource.description
 
 - if resource.oops_supported?

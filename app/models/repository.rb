@@ -11,6 +11,8 @@ class Repository < ActiveRecord::Base
   include Repository::Symlink
   include Repository::Validations
 
+  DEFAULT_CLONE_TYPE = 'git'
+
   has_many :ontologies, dependent: :destroy
   has_many :url_maps, dependent: :destroy
 
