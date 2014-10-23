@@ -31,7 +31,10 @@ class Logic < ActiveRecord::Base
   # * may be the original logician or anyone else
   belongs_to :user
 
-  attr_accessible :name, :iri, :description, :standardization_status, :defined_by, :user
+  attr_accessible :name, :iri, :slug
+  attr_accessible :description, :standardization_status, :defined_by, :user
+
+  before_save :set_slug, if: :name_changed?
 
   validates_presence_of :name
   validates_uniqueness_of :name, if: :name_changed?
@@ -66,6 +69,11 @@ class Logic < ActiveRecord::Base
 
   def to_param
     name
+  end
+
+  private
+  def set_slug
+    self.slug = name.gsub(/[\s*.=]/, '_')
   end
 
 end
