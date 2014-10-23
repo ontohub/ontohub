@@ -68,7 +68,7 @@ class Logic < ActiveRecord::Base
   end
 
   def to_param
-    name
+    slug
   end
 
   private
