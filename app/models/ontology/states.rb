@@ -1,7 +1,7 @@
 module Ontology::States
   extend ActiveSupport::Concern
 
-  STATES = %w(pending downloading processing done failed)
+  STATES = State::STATES
 
   included do
     validates_inclusion_of :state, :in => STATES

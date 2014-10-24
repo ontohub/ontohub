@@ -112,3 +112,5 @@ en:
     other_data: Other data
   ontologies:
     download: download
+  oops:
+    responses: We have %{all} Responses, %{global} of them represent global 
