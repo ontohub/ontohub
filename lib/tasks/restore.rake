@@ -37,8 +37,8 @@ namespace :restore do
       end
     end
 
-    OntologyVersion.where(basepath: nil).map(&:ontology).uniq.map do |o|
-      restore_last_known_path(o.versions.last)
+    OntologyVersion.where(basepath: nil).map(&:ontology).uniq.map do |ontology|
+      restore_last_known_path(ontology.versions.last)
     end
   end
 end
