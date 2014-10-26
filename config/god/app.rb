@@ -12,8 +12,10 @@ SidekiqWorkers.configure do
 
     # one worker for the sequential queue
     watch 'sequential', 1
+
+    watch 'priority_push', 1
   else
     # one worker for all queues
-    watch %w(hets default sequential), 1
+    watch %w(hets default sequential priority_push), 1
   end
 end

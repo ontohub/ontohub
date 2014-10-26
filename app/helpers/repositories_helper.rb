@@ -1,6 +1,6 @@
 module RepositoriesHelper
 
-  def clone_methods(visible: nil)
+  def clone_methods(visible: Repository::DEFAULT_CLONE_TYPE)
     methods = %w{git ssh-git}
     methods.map! { |method| [method, method == visible]} if visible
     methods
@@ -14,6 +14,10 @@ module RepositoriesHelper
 
   def clone_method_link(method)
     link_to method, "##{method}", class: 'clone_method_link', data: {clone: method}
+  end
+
+  def clone_type
+    params[:clone_type] || Repository::DEFAULT_CLONE_TYPE
   end
 
   def repository_clone_url(repository, clone_type: 'git', port: nil)

@@ -69,6 +69,7 @@ class OntologiesController < InheritedResources::Base
       format.json do
         respond_with resource
       end
+      format.text { send_download }
     end
   end
 
@@ -139,6 +140,18 @@ class OntologiesController < InheritedResources::Base
   helper_method :repository
   def repository
     parent
+  end
+
+  private
+  def send_download
+    asset = version || resource
+    render text: asset.file_in_repository.content,
+           content_type: Mime::Type.lookup('application/force-download')
+  end
+
+  def version
+    args = {number: params[:version_number], ontology: resource}
+    @version ||= OntologyVersion.where(args).first if params[:version_number]
   end
 
 

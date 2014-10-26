@@ -21,6 +21,7 @@ class Ontology < ActiveRecord::Base
   include Ontology::LicenseModels
   include Ontology::FileExtensions
   include Ontology::Searching
+  include IRIUrlBuilder::Includeable
   include GraphStructures::SpecificFetchers::Links
 
   # Multiple Class Features
@@ -149,9 +150,10 @@ class Ontology < ActiveRecord::Base
   end
 
   def self.find_with_iri(iri)
-    ontology = self.find_by_iri(iri)
+    ontology = where('iri LIKE ?', '%' << iri).first
     if ontology.nil?
-      ontology = AlternativeIri.find_by_iri(iri).try(:ontology)
+      ontology = AlternativeIri.where('iri LIKE ?', '%' << iri).
+        first.try(:ontology)
     end
 
     ontology
@@ -243,6 +245,10 @@ class Ontology < ActiveRecord::Base
 
   def has_versions?
     current_version.present?
+  end
+
+  def file_in_repository
+    repository.get_file(path)
   end
 
   protected

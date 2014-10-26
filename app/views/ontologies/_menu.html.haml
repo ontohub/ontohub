@@ -1,6 +1,9 @@
 - if current_version
   .pull-right
     .btn-group
+      - if download_path(resource)
+        .btn-group
+          = link_to t('ontologies.download'), download_path(resource), class: 'btn btn-default'
       - if show_evaluate?
         .btn-group
           %button.btn.btn-default.dropdown-toggle{'data-toggle' => 'dropdown'}

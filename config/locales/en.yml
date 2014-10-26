@@ -22,14 +22,18 @@ en:
   search:
     help: "Enter all words that must be included in the entities. You can search a special kind by adding a 'kind:<value>'"
   support:
-    placeholder: 
+    placeholder:
       language: Support an new logic
       logic: Support an new language
-    help: 
+    help:
       language: Enter characters to search for a logic
       logic: Enter characters to search for a language
   Link: Ontology-Link
   LogicMapping: Logic-Mapping
+  repositories:
+    index:
+      clone_list_prefix: There is also a complete list of
+      clone_list_link: repository clone-urls
   repository:
     delete: Delete Repository
     errors: Errors
@@ -81,16 +85,14 @@ en:
     what_happens: |
           For full qualified access to Ontohub you have to confirm your e-mail address.
           We have sent an mail with instructions for you.
-    wiki: | 
+    wiki: |
         You can find more information about Ontohub in the %{link}.
         Moreover, context specific information is available with the "Help" button, leading to a specfic wiki page.
     need_help: Need Help?
   delete_repository: Are you sure about deleting the Repository?
   delete_repository_desc: |
       If you delete this repository, all %{Settings.OMS.pluralize}, which are related to this repository, will be deleted too.
-                            
-      This action is irreversible!
-  discard_changes: Are you sure
+         This action is irreversible!
   cancel: Cancel
   edit: Edit
   delete: Delete
@@ -107,3 +109,9 @@ en:
     details: Details
     ontology_count_by_state: Ontologies-count by state
     iris_marked_as_processing: Count of iris that are processing
+    overview: Overview
+    other_data: Other data
+  ontologies:
+    download: download
+  oops:
+    responses: We have %{all} Responses, %{global} of them represent global 

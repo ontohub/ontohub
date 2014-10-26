@@ -54,6 +54,7 @@ module Hets
     def ontology_end(*ignore_args)
       logic_callback.ontology_end({}, ontology)
 
+      ontology.current_version.state = 'done' if ontology.parent
       ontology.save!
 
       finish_concurrency_handling
