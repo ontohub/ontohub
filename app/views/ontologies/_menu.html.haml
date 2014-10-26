@@ -16,7 +16,7 @@
         = link_to 'Edit', [:edit, *resource_chain], class: 'btn btn-default'
       - if can? :write, resource.repository
         - if resource.is_imported?
-          .btn.btn-default.tooltip-btn{:"data-toggle"=>"tooltip", :"data-original-title" => "Can't delete an #{Settings.OMS} that's imported by another one.", :"data-container" => 'body', disabled: true}
+          .btn.btn-default.tooltip-btn{:"data-toggle"=>"tooltip", :"data-original-title" => "Can't delete #{Settings.OMS.with_indefinite_article} that's imported by another one.", :"data-container" => 'body', disabled: true}
             %span.allow-tooltips
               Delete
         - else
