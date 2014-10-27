@@ -28,4 +28,6 @@ Rake::Task['db:test:clone_structure'].prerequisites.delete('db:test:load_structu
 Rake::Task['db:test:clone_structure'].prerequisites << 'db:test:purge'
 
 # Run all test suites per default
+Rake::Task['default'].prerequisites.delete('spec')
+Rake::Task['default'].prerequisites.delete('cucumber')
 task :default => [:"test:freshen_ontology_fixtures", :spec, :cucumber, :test]
