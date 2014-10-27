@@ -10,7 +10,7 @@ module Repository::Importing
   extend ActiveSupport::Concern
 
   SOURCE_TYPES = %w( git svn )
-  STATES = %w( pending fetching processing done failed )
+  STATES = State::STATES
 
   IMPORT_INTERVAL = 15.minutes
 

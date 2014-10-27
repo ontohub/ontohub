@@ -13,5 +13,4 @@ repo_path = `pwd`.strip
 # post-receive can get many branches (with git push --all)
 STDIN.read.split("\n").each do |refs|
   oldrev, newrev, refname = refs.split(' ')
-  GitUpdate.update_redis(repo_path, oldrev, newrev, refname, key_id) if refname = 'refs/heads/master'
-end
+  GitUpdate.update_redis(repo_path, oldrev, newrev, refname, key_id) if refname == 'refs/heads/master'

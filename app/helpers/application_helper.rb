@@ -77,4 +77,8 @@ module ApplicationHelper
   def to_name(sym)
     sym.to_s.gsub('_', ' ')
   end
+
+  def determine_label_type(state)
+    State::STATE_LABEL[state.to_sym]
+  end
 end
