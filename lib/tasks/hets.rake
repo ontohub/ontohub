@@ -6,7 +6,7 @@ namespace :hets do
 
   desc "Create Hets Instance if neccessary"
   task :generate_first_instance do
-    HetsInstance.first_or_create(name: "localhost:8000", uri: "http://localhost:8000")
+    HetsInstance.first_or_create(name: 'localhost:8000', uri: 'http://localhost:8000')
   end
 
 
