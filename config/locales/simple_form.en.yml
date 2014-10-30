@@ -2,6 +2,11 @@ en:
   simple_form:
     "yes": 'Yes'
     "no": 'No'
+    options:
+      repository:
+        remote_type:
+          fork: Fork
+          mirror: Mirror
     
     creating: "Creating..."
     updating: 'Updating...'
@@ -30,6 +35,8 @@ en:
       logic:
         extension: File extension
         mimetype: MIME-Type
+      repository:
+        remote_type: Remote Type
     hints:
       ontology_version:
     placeholders:
