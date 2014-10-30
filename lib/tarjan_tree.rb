@@ -42,7 +42,7 @@ class TarjanTree
   def inheritance_sentences(ontology)
     ontology.sentences.where <<-SQL
       text NOT LIKE '%Thing%' AND
-      text ~* '[^\s]+\s+[^\s]+\s+SubClassOf:+\s+[^\s]+'
+      text ~* '[^\s]+\s+[^\s]+\s+SubClassOf:+\s+[^\s]+$'
     SQL
   end
 
