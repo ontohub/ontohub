@@ -3,6 +3,8 @@ namespace :test do
   # We want to purge our database our own way, without deleting everything
   Rake::Task['db:test:purge'].overwrite do
     Rails.env = 'test'
+    # Taken from https://github.com/rails/rails/blob/3-2-stable/activerecord/lib/active_record/railties/databases.rake#L512
+    ActiveRecord::Base.establish_connection(ActiveRecord::Base.configurations['test'])
     Rake::Task['db:redis:clean'].invoke
     Rake::Task['db:migrate:clean'].invoke
   end
