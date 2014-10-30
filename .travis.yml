@@ -32,4 +32,4 @@ before_script:
   - sudo apt-get install libsane libgphoto2-2 hets-core subversion udrawgraph git-svn
   - sudo hets -update
   - RAILS_ENV=test bundle exec rake db:migrate || true
-  - RAILS_ENV=test bundle exec rake sunspot:solr:start
+  - TEST_CLUSTER_NODES=1 bundle exec rake elasticsearch:start
