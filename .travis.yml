@@ -23,7 +23,8 @@ before_install:
 
 script:
   - bundle exec rake
-  - TEST_CLUSTER_COMMAND=/usr/share/elasticsearch/bin/elasticsearch TEST_CLUSTER_PARAMS='-Des.default.path.conf=/etc/elasticsearch/ -Des.default.path.logs==/var/log/elasticsearch/' bundle exec rake test_full
+  - TEST_CLUSTER_COMMAND=/usr/share/elasticsearch/bin/elasticsearch TEST_CLUSTER_PARAMS='-Des.default.path.conf=/etc/elasticsearch/ -Des.default.path.logs==/var/log/elasticsearch/' bundle exec rake
+  - bundle exec rake test_full
 
 before_script:
   - psql -c 'create database ontohub_test;' -U postgres
@@ -34,4 +35,3 @@ before_script:
   - sudo apt-get install libsane libgphoto2-2 hets-core subversion udrawgraph git-svn
   - sudo hets -update
   - RAILS_ENV=test bundle exec rake db:migrate || true
-
