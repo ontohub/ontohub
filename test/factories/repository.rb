@@ -23,6 +23,7 @@ FactoryGirl.define do
         commit_add2 = git_repository.commit_file(userinfo, File.read(File.join(fixture_path, filepath2)), filepath2, message)
         commit_add3 = git_repository.commit_file(userinfo, File.read(File.join(fixture_path, 'cat2.clif')), filepath1, message)
 
+        repository.remote_type ||= 'mirror'
         repository.source_type = 'git'
         repository.source_address = path
       end
@@ -32,6 +33,7 @@ FactoryGirl.define do
       repository.after(:build) do |repository|
         path = File.join(Ontohub::Application.config.git_root, 'repository')
         git_repository = GitRepository.new(path)
+        repository.remote_type ||= 'mirror'
         repository.source_type = 'git'
         repository.source_address = path
       end
