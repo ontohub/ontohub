@@ -14,13 +14,19 @@ module Entity::Readability
     else
       self.display_name = name
     end
-
+    set_obo_display_name_if_applicable
   end
 
   def name_is_iri_and_in_text
     self.text[self.name][URI::regexp(Settings.allowed_iri_schemes)]
   rescue StandardError
     false
+  end
+
+  def set_obo_display_name_if_applicable
+    if ontology.file_extension == '.obo' && label
+      self.display_name = label
+    end
   end
 
 end
