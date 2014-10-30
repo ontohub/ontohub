@@ -11,6 +11,7 @@ branches:
 
 services:
   - redis-server
+  - elasticsearch
 
 notifications:
   email: false
