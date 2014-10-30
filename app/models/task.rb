@@ -16,7 +16,6 @@ class Task < ActiveRecord::Base
   end
 
   def name_with_ontology_count
-    "#{self.to_s} (#{self.ontologies.count})"
+    "#{self} (#{self.ontologies.count})"
   end
-
 end

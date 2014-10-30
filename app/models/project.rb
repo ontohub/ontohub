@@ -1,6 +1,6 @@
 class Project < ActiveRecord::Base
 
-  scope :not_empty, joins(:ontologies).group("projects.id")
+  scope :not_empty, joins(:ontologies).group('projects.id')
 
   has_and_belongs_to_many :ontologies
 
@@ -30,7 +30,6 @@ class Project < ActiveRecord::Base
   end
 
   def name_with_ontology_count
-    "#{self.to_s} (#{self.ontologies.count})"
+    "#{self} (#{self.ontologies.count})"
   end
-
 end

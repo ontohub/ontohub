@@ -1,6 +1,6 @@
 class OntologyType < ActiveRecord::Base
 
-  scope :not_empty, joins(:ontologies).group("ontology_types.id")
+  scope :not_empty, joins(:ontologies).group('ontology_types.id')
 
   has_many :ontologies
 
@@ -20,7 +20,6 @@ class OntologyType < ActiveRecord::Base
   end
 
   def name_with_ontology_count
-    "#{self.to_s} (#{self.ontologies.count})"
+    "#{self} (#{self.ontologies.count})"
   end
-
 end

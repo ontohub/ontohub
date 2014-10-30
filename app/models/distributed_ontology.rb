@@ -1,5 +1,4 @@
 class DistributedOntology < Ontology
-
   include Elasticsearch::Model
   include Elasticsearch::Model::Callbacks
 
@@ -13,5 +12,4 @@ class DistributedOntology < Ontology
   def to_partial_path
     'ontology'
   end
-
 end

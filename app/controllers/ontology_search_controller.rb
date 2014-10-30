@@ -28,7 +28,6 @@ class OntologySearchController < ApplicationController
     end
 
     @search_response = paginate_for(@search_response)
-    render "shared/_ontology_search"
+    render 'shared/_ontology_search'
   end
-
 end

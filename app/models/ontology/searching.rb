@@ -6,8 +6,8 @@ module Ontology::Searching
     include Elasticsearch::Model::Callbacks
 
     mapping do
-      indexes :name, type: 'string', :analyzer => 'snowball'
-      indexes :description, :analyzer => 'snowball'
+      indexes :name, type: 'string', analyzer: 'snowball'
+      indexes :description, analyzer: 'snowball'
     end
 
     scope :filter_by_ontology_type, ->(type_id) { where(ontology_type_id: type_id) }

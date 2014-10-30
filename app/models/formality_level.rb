@@ -1,6 +1,6 @@
 class FormalityLevel < ActiveRecord::Base
 
-  scope :not_empty, joins(:ontologies).group("formality_levels.id")
+  scope :not_empty, joins(:ontologies).group('formality_levels.id')
 
   has_many :ontologies
 
@@ -16,6 +16,6 @@ class FormalityLevel < ActiveRecord::Base
   end
 
   def name_with_ontology_count
-    "#{self.to_s} (#{self.ontologies.count})"
+    "#{self} (#{self.ontologies.count})"
   end
 end

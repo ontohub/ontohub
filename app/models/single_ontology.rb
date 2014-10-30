@@ -1,5 +1,4 @@
 class SingleOntology < Ontology
-
   include Elasticsearch::Model
   include Elasticsearch::Model::Callbacks
 
