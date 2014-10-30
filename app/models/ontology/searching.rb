@@ -9,7 +9,6 @@ module Ontology::Searching
       indexes :name, type: 'string', :analyzer => 'snowball'
       indexes :description, :analyzer => 'snowball'
     end
-  end
 
     scope :filter_by_ontology_type, ->(type_id) { where(ontology_type_id: type_id) }
 
