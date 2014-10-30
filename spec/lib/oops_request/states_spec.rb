@@ -12,9 +12,8 @@ describe 'OopsRequest::States' do
     context 'aftert processed with error' do
       let(:message) { 'some error message' }
       before do
-        allow_any_instance_of(OopsRequest).to(receive(:execute_and_save) do
-          raise Oops::Error, message
-        end)
+        allow_any_instance_of(OopsRequest).to(receive(:execute_and_save).
+          and_raise(Oops::Error, message))
       end
 
       it 'raises error' do
