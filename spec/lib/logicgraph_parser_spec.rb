@@ -2,7 +2,7 @@ require 'spec_helper'
 
 describe LogicgraphParser do
   def open_fixture(name)
-    File.open(fixture_file(name))
+    File.open(fixture_file(File.join('ontologies', 'xml', name)))
   end
 
   context "LogicgraphParser" do
