@@ -3,6 +3,11 @@ require 'spec_helper'
 describe Oops do
   context 'doing a oops request' do
     context 'with invalid url' do
+      before do
+        allow(Oops::Client).to receive(:execute_request).and_return(
+          File.read(fixture_file("oops/invalid_request.xml")))
+      end
+
       it 'raise error' do
         expect { do_request :invalid, url: 'http://example.com/' }.
           to raise_error(Oops::Error, /reach ontohub/)
@@ -10,6 +15,10 @@ describe Oops do
     end
 
     context 'with valid url' do
+      before do
+        allow(Oops::Client).to receive(:execute_request).and_return(
+          File.read(fixture_file("oops/valid_request.xml")))
+      end
       let!(:result) do
         do_request :valid, url: 'http://sweet.jpl.nasa.gov/1.1/sunrealm.owl'
       end
@@ -19,7 +28,7 @@ describe Oops do
     end
   end
 
-  context 'parsing a oops response' do
+  context 'parsing an oops response' do
     let!(:result) do
       Oops::Response.parse File.read(
         "#{Rails.root}/test/fixtures/oops/sunrealm.xml")
