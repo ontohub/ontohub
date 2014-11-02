@@ -1,7 +1,7 @@
-%h2= @page_title = 'Ontologies'
+%h2= @page_title = Settings.OMS.pluralize.capitalize
 
 %p
-  = pluralize @count, 'ontology'
+  = pluralize @count, Settings.OMS
   currently available
 
 .clearfix
