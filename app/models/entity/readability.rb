@@ -28,5 +28,4 @@ module Entity::Readability
       self.display_name = label
     end
   end
-
 end

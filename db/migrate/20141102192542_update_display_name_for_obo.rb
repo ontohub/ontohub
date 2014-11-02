@@ -10,7 +10,10 @@ class UpdateDisplayNameForObo < ActiveRecord::Migration
       begin
         TarjanTree.for(ontology)
       rescue ActiveRecord::RecordNotFound => e
-        Rails.logger.warn "Could not create entity tree for: #{ontology.name} (#{ontology.id}) caused #{e}"
+        Rails.logger.warn <<-MSG
+Could not create entity tree for:
+  #{ontology.name} (#{ontology.id}) caused #{e}
+        MSG
       end
     end
   end
@@ -26,7 +29,10 @@ class UpdateDisplayNameForObo < ActiveRecord::Migration
       begin
         TarjanTree.for(ontology)
       rescue ActiveRecord::RecordNotFound => e
-        Rails.logger.warn "Could not create entity tree for: #{ontology.name} (#{ontology.id}) caused #{e}"
+        Rails.logger.warn <<-MSG
+Could not create entity tree for:
+  #{ontology.name} (#{ontology.id}) caused #{e}
+        MSG
       end
     end
   end
