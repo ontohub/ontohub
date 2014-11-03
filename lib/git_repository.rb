@@ -109,12 +109,12 @@ class GitRepository
   end
 
   def branches
-    repo.refs.map do |r|
+    repo.refs.map do |ref|
       {
-        refname: r.name,
-        name: r.name.split('/')[-1],
-        commit: r.target,
-        oid: r.target.oid
+        refname: ref.name,
+        name: ref.name.split('/')[-1],
+        commit: ref.target,
+        oid: ref.target.oid
       }
     end
   end
