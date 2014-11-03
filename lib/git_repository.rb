@@ -186,8 +186,7 @@ class GitRepository
 
   protected
 
-  def path_exists_rugged?(rugged_commit, path='')
-    path ||= '/'
+  def path_exists_rugged?(rugged_commit, path='/')
     if path.empty?
       true
     else
