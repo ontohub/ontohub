@@ -153,7 +153,12 @@ Ontohub::Application.routes.draw do
       as:          :history,
       constraints: { path: /.*/ }
 
-    # action: diff, entries_info
+    get ':ref/diff',
+      controller:  :diffs,
+      action:      :show,
+      as:          :diffs
+
+    # action: entries_info
     get ':ref/:action(/:path)',
       controller:  :files,
       as:          :ref,
