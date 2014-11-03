@@ -187,11 +187,7 @@ class GitRepository
   protected
 
   def path_exists_rugged?(rugged_commit, path='/')
-    if path.empty?
-      true
-    else
-      nil != get_object(rugged_commit, path)
-    end
+    path.empty? || !get_object(rugged_commit, path).nil?
   rescue Rugged::OdbError
     false
   end
