@@ -21,8 +21,6 @@ Elasticsearch::Model.client = Elasticsearch::Client.new host: "localhost:#{elast
 # in spec/support/ and its subdirectories.
 Dir[Rails.root.join("spec/support/**/*.rb")].each { |f| require f }
 
-WebMock.allow_net_connect!(net_http_connect_on_start: true)
-
 class ActionController::TestRequest
 
   attr_writer :query_string
