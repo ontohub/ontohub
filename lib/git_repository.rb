@@ -17,7 +17,7 @@ class GitRepository
 
   attr_reader :repo
 
-  delegate :path, to: :repo
+  delegate :path, :empty?, to: :repo
 
   def initialize(path)
     if File.exists?(path)
@@ -30,10 +30,6 @@ class GitRepository
 
   def destroy
     FileUtils.rmtree(self.path)
-  end
-
-  def empty?
-    repo.empty?
   end
 
   def dir?(path, commit_oid=nil)
