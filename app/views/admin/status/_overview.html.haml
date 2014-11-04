@@ -2,7 +2,7 @@
 
 .row
   .col-md-3
-    %h4= t('status.ontology_count_by_state', oms: Settings.OMS.pluralize.capitalize)
+    %h4= t('status.ontology_count_by_state')
     %table.mapping_table.table-condensed
       - view.ontology_count_by_state.each do |(state, ontology_count)|
         %tr

@@ -13,7 +13,7 @@ module LinkHelper
     return nil unless resource
 
     clazz = resource.class
-    clazz = Settings.OMS.capitalize if clazz.to_s.include?(Settings.OMS.capitalize)
+    clazz = 'Ontology' if clazz.to_s.include?('Ontology')
     data_type, value = determine_image_type(resource)
 
     name = block_given? ? yield(resource) : resource

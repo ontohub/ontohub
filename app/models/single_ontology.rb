@@ -4,6 +4,6 @@ class SingleOntology < Ontology
   end
 
   def to_partial_path
-    Settings.OMS
+    'ontology'
   end
 end

@@ -1,5 +1,5 @@
 - if view.any_errored_ontologies?
-  %h3= t('status.errored_ontologies', oms: Settings.OMS.pluralize.capitalize)
+  %h3= t('status.errored_ontologies')
 
   %ul
     - view.errored_ontology_data.each do |(error, ontology_versions)|

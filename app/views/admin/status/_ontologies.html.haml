@@ -1,5 +1,5 @@
 - if view.any_processing_ontologies?
-  %h3= t('status.processing_ontologies', oms: Settings.OMS.pluralize.capitalize)
+  %h3= t('status.processing_ontologies')
   .row
     %ul.fancy_ontology_list.col-md-6
       - view.processing_ontology_data.each do |data|
