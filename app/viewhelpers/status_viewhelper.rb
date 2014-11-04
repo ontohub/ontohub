@@ -4,9 +4,9 @@ class StatusViewhelper
 
   TABS = [
     ['Overview', :overview],
-    ['Processing Ontologies', :ontologies,
+    ['Processing ' + Settings.OMS.capitalize.pluralize , :ontologies,
      ->(v){ v.processing_ontologies_count }],
-    ['Errored Ontologies', :errored_ontologies,
+    ['Errored ' + Settings.OMS.capitalize.pluralize, :errored_ontologies,
      ->(v){ v.errored_ontologies_count }],
   ]
 

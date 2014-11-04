@@ -53,7 +53,7 @@ module NavigationHelper
       [*page, count]
     end
 
-    @page_title = ontology.to_s
+    @page_title = Settings.OMS
     @page_title = "#{current_page.capitalize} · #{@page_title}" if current_page != pages[0][0]
 
     render :partial => '/ontologies/info', :locals => {

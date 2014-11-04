@@ -51,7 +51,7 @@ module Ontology::Entities
   end
 
   def create_entity_tree
-    raise StandardError.new('Ontology is not OWL') unless self.owl?
+    raise StandardError.new(Settings.OMS.capitalize + ' is not OWL') unless self.owl?
 
     # Delete previous set of categories
     delete_edges

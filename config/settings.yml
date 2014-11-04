@@ -12,9 +12,9 @@ name: "MyOntohub"
 hostname: example.com
 
 
-#Generalizing term "Ontology",ALternatives are M:Models and S:Specification
+#Generalization- O:ontology,alternatives are M:models and S:specification
 OMS: ontology
-#In case of Model,this should be used.
+#In case of model,this should be used.
 OMS_qualifier: modeling
 
 # Optional asset host for delivery of static files (css, images, javascripts)

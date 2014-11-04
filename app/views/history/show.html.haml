@@ -13,7 +13,7 @@
     - if oid
       - if ontology
         .pull-right.btn-group.breadcrumbs-buttons
-          = link_to 'Show '+ Settings.OMS.capitalize + ' versions', repository_ontology_ontology_versions_path(repository, @ontology), class: 'btn btn-default btn-sm'
+          = link_to 'Show ' + Settings.OMS.capitalize + ' versions', repository_ontology_ontology_versions_path(repository, @ontology), class: 'btn btn-default btn-sm'
 
       = render partial: 'files/breadcrumbs'
 
