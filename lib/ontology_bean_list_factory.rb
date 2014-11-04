@@ -32,17 +32,17 @@ class OntologyBeanListFactory
     if !ontology.distributed?
       {
         src: "/assets/icons/single_ontology.svg",
-        alt: "Standalone #{Settings.OMS.capitalize}"
+        alt: "Standalone #{Settings.OMS.capitalize}",
       }
     elsif ontology.heterogeneous?
       {
         src: "/assets/icons/distributed_heterogeneous_ontology.svg",
-        alt: "Distributed Heterogeneous #{Settings.OMS.capitalize}"
+        alt: "Distributed Heterogeneous #{Settings.OMS.capitalize}",
       }
     else
       {
         src: "/assets/icons/distributed_homogeneous_ontology.svg",
-        alt: "Distributed Homogeneous #{Settings.OMS.capitalize}"
+        alt: "Distributed Homogeneous #{Settings.OMS.capitalize}",
       }
     end
   end
