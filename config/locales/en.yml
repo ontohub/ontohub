@@ -114,3 +114,7 @@ en:
     download: download
   oops:
     responses: We have %{all} Responses, %{global} of them represent global 
+  goal_status:
+    error:
+      failure_reason_missing: failure_reason must be present when status is failed.
+      failure_reason_present: failure_reason can only be set when status is failed.
