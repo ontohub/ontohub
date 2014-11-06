@@ -13,6 +13,7 @@ class RepositoryDirectory < FakeRecord
   end
 
   attr_accessor :repository, :user, :target_directory, :name
+
   validates :name, :repository, :user, presence: true
   validates_with DirectoryPathValidator
 
@@ -22,6 +23,8 @@ class RepositoryDirectory < FakeRecord
     @user = opts[:user]
     @target_directory = (opts[:repository_directory] || {})[:target_directory]
     @name = (opts[:repository_directory] || {})[:name]
+
+    @name.strip! if @name
   end
 
   def save!
@@ -42,6 +45,10 @@ class RepositoryDirectory < FakeRecord
 
   def to_param
     path
+  end
+
+  def path
+    target_path
   end
 
   def target_path
