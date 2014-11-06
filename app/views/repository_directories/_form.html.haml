@@ -1,0 +1,4 @@
+= simple_form_for resource, url: repository_repository_directories_path(repository), remote: true, html: { class: 'form-inline' } do |f|
+  = f.input :target_directory, as: :hidden
+  = f.input :name, label: false, input_html: {class: 'input-sm'}
+  = f.submit 'Create subdirectory', class: 'btn btn-primary btn-sm'
