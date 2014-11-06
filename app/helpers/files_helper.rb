@@ -68,7 +68,7 @@ module FilesHelper
   end
 
   def new_repository_directory
-    RepositoryDirectory.new(params.merge({
-      repository_directory: {target_directory: dirpath(repository)}}))
+    RepositoryDirectory.new(params.merge(
+      repository_directory: {target_directory: dirpath(repository)}))
   end
 end

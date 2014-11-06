@@ -8,7 +8,7 @@ class RepositoryDirectoriesController < InheritedResources::Base
   def create
     if resource.valid?
       resource.save
-      render partial: 'files/link_to_file', locals: { entry: resource },
+      render partial: 'files/link_to_file', locals: {entry: resource},
         status: 201
     else
       render partial: 'form', status: 422
