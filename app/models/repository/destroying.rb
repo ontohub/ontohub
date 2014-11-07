@@ -14,7 +14,8 @@ module Repository::Destroying
     super
   rescue StandardError => e
     unmark_as_destroying
-    raise e.class, "Can't delete repository: It contains #{Settings.OMS.with_indefinite_article} that is imported by another repository."
+    raise e.class, "Can't delete repository: It contains
+    #{Settings.OMS.with_indefinite_article} that is imported by another repository."
   end
 
   protected
