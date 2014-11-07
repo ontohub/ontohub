@@ -14,7 +14,8 @@ module Repository::Destroying
     super
   rescue StandardError => e
     unmark_as_destroying
-    raise e.class, "Can't delete repository: It contains an #{Settings.OMS} that is imported by another repository."
+    raise e.class, "Can't delete repository: It contains an \
+    #{Settings.OMS} that is imported by another repository."
   end
 
   protected
