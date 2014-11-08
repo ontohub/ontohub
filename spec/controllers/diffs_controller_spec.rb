@@ -5,7 +5,7 @@ describe DiffsController do
   let!(:repository) { create :repository, user: user }
 
   before do
-    repository.save_file(fixture_file('empty.xml'), 'hello.txt', 'init', user)
+    repository.save_file(fixture_file('ontologies/xml/empty.xml'), 'hello.txt', 'init', user)
   end
 
   context 'public read access' do
