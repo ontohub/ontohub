@@ -101,9 +101,8 @@ module Hets
       source_iri = location ? location : internal_iri
       begin
         commit_oid = ExternalRepository.add_to_repository(
-          internal_iri,
-          "add reference #{Settings.OMS}: #{internal_iri} from #{source_iri}", 
-          user, location: source_iri)
+          internal_iri, "add reference #{Settings.OMS}: #{internal_iri} \
+          from #{source_iri}", user, location: source_iri)
         version = ontology.versions.build
         version.user = user
         version.do_not_parse!
