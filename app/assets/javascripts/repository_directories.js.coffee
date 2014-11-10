@@ -37,6 +37,10 @@ $ ->
     animateOut = (element, callback) ->
       element.stop(true, true).fadeOut({queue: false}).slideUp(callback)
 
+    remove_empty_repository_hint = () ->
+      hint_line = $('#empty_repository_hint')
+      animateOut(hint_line)
+
     handle_form_submission = (event) ->
       form = $(this)
       values = form.serialize()
@@ -44,6 +48,7 @@ $ ->
       success_callback = (html, text_status, jqXHR) ->
         parent = form.parent()
         remove_form_clone(form, () -> add_to_table(html, parent))
+        remove_empty_repository_hint()
 
       error_callback = (jqXHR) ->
         form.html(jqXHR.responseText)
