@@ -1,7 +1,9 @@
 require 'spec_helper'
 
 describe OntologySearch do
-  WebMock.allow_net_connect!(net_http_connect_on_start: true)
+  before { WebMock.allow_net_connect!(net_http_connect_on_start: true) }
+  after { WebMock.disable_net_connect! }
+
   context 'OntologySearch' do
     let!(:os) { OntologySearch.new }
 
