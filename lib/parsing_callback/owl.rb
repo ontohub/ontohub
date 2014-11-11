@@ -23,10 +23,11 @@ module ParsingCallback::OWL
           case m['annotation_type']
           when 'label'
             entity.label = m['annotation']
+            entity.save
           when 'comment'
             entity.comment = m['annotation']
+            entity.save
           end if entity
-          entity.save
         end
         false
       else
