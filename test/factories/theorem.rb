@@ -5,8 +5,8 @@ FactoryGirl.define do
 
   factory :theorem do
     association :ontology, factory: :single_ontology
+    association :proof_status
     name { generate :theorem_name }
     text { Faker::Lorem.sentence }
-    proof_status { 'OPN' }
   end
 end
