@@ -5,7 +5,7 @@ class Sentence < ActiveRecord::Base
   belongs_to :ontology
   has_and_belongs_to_many :entities
   has_many :translated_sentences, dependent: :destroy
-  default_scope where(imported: false)
+  default_scope where(imported: false, type: nil)
 
   def hierarchical_class_names
     match = self.text.match(%r{
