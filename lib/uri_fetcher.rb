@@ -8,11 +8,13 @@ module UriFetcher
     include UriFetcher::Errors
 
     attr_accessor :uri, :redirect_limit, :previous_response, :current_response
+    attr_accessor :error_handler
     attr_accessor :content_test_block, :write_file, :file_type
 
-    def initialize(uri, redirect_limit: DEFAULT_REDIRECTS)
+    def initialize(uri, redirect_limit: DEFAULT_REDIRECTS, error_handler: nil)
       self.uri = uri
       self.redirect_limit = redirect_limit
+      self.error_handler = error_handler
     end
 
     # Currently only File and Tempfile are
@@ -49,12 +51,16 @@ module UriFetcher
         response.read_body
         recall
       else
+        success = try_error_handling(response)
         response.read_body
-        msg = <<-MSG
-Can't follow the response from #{uri} anymore.
-        MSG
-        raise UnfollowableResponseError.new(msg, last_response: response)
+        if success == false
+          raise UnfollowableResponseError.new(last_response: response)
+        end
       end
+    end
+
+    def try_error_handling(response)
+      error_handler.call(response)
     end
 
     def recall
