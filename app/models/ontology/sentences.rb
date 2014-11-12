@@ -5,6 +5,8 @@ module Ontology::Sentences
     has_many :sentences,
       autosave: false,
       extend:   Methods
+
+    has_many :theorems
     include GraphStructures::SqlHelper
 
     def translated_sentences

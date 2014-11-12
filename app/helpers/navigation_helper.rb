@@ -43,6 +43,7 @@ module NavigationHelper
       pages << [:children,  [*resource_chain, :children]]
     else
       pages << [:sentences, [*resource_chain, :sentences]]
+      pages << [:theorems,  [*resource_chain, :theorems]]
     end
 
     actions = []
@@ -117,7 +118,7 @@ module NavigationHelper
   def in_subcontroller?(page, current_page)
     case page
       when :entities
-        %w(classes sentences).include? controller_name
+        %w(classes sentences theorems).include? controller_name
       when :metadata
         in_metadata?
     end
