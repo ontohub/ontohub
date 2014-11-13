@@ -1,6 +1,11 @@
 require 'spec_helper'
 
 describe ProofAttempt do
+  context 'Associations' do
+    it { should belong_to(:theorem) }
+    it { should belong_to(:proof_status) }
+  end
+
   context 'Updating Theorem Proof Status' do
     let(:proof_attempt) { create :proof_attempt }
     let(:theorem) { proof_attempt.theorem }
