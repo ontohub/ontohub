@@ -1,7 +1,9 @@
 class ProofStatus < ActiveRecord::Base
   self.primary_key = :identifier
 
-  attr_accessible :description, :identifier, :name, :category
+  attr_accessible :label, :description, :identifier, :name, :category
+
+  validates_presence_of :label
 
   def to_s
     identifier

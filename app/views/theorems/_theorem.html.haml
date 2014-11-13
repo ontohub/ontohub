@@ -1,4 +1,5 @@
 %tr
   %td= theorem.name
   %td= format_for_view(theorem)
-  %td= theorem.proof_status
+  %td
+    %span{class: "label label-#{theorem.proof_status.label}"}= theorem.proof_status
