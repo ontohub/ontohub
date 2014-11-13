@@ -1,6 +1,11 @@
 require 'spec_helper'
 
 describe Theorem do
+  context 'Associations' do
+    it { should have_many(:proof_attempts) }
+    it { should belong_to(:proof_status) }
+  end
+
   context 'update_proof_status' do
     context 'from decisive status' do
       let(:theorem) { create :theorem, proof_status: ProofStatus.find('SOL') }
