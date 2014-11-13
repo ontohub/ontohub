@@ -13,6 +13,7 @@ module Hets
     register :symbol, :end, to: :symbol
     register :axiom, :end, to: :axiom
     register :imported_axiom, :end, to: :imported_axiom
+    register :theorem, :end, to: :theorem
     register :link, :end, to: :link
 
     def dgraph(current_element)
@@ -86,6 +87,15 @@ module Hets
         ontology.sentences_count += 1
 
         logic_callback.axiom(current_element, sentence)
+      end
+    end
+
+    def theorem(current_element)
+      if logic_callback.pre_theorem(current_element)
+        theorem = ontology.theorems.update_or_create_from_hash(current_element, hets_evaluator.now)
+        ontology.theorems_count += 1
+
+        logic_callback.theorem(current_element, theorem)
       end
     end
 
