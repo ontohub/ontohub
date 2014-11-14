@@ -67,6 +67,11 @@ en:
       If you discard the changes, the textarea on the left will be reset to the previous state.
 
       This action is irreversible!
+  ontology:
+    deleted:
+      label: File deleted
+      info: The defining file %{path} of this %{oms} was deleted. However, you can check the
+      last_file_version: last version of that file
   sentences:
     index:
       display_only_self_defined_sentences:

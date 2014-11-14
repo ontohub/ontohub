@@ -254,11 +254,20 @@ class Ontology < ActiveRecord::Base
     repository.get_file(path)
   end
 
+  def file_deleted?(commit_oid = nil)
+    !has_file?(commit_oid)
+  end
+
+  # alias_method doesn't work for this one.
+  def has_file?(commit_oid = nil)
+    has_file(commit_oid)
+  end
+
   def has_file(commit_oid = nil)
-    if !repository.is_head?(commit_oid)
-      repository.path_exists?(path, commit_oid)
-    else
+    if repository.is_head?(commit_oid)
       read_attribute(:has_file)
+    else
+      repository.path_exists?(path, commit_oid)
     end
   end
 
