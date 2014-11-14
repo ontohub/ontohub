@@ -54,16 +54,16 @@ module UriFetcher
         response.read_body
         recall
       else
-        success = try_error_handling(response)
-        response.read_body
-        if success == false
+        try_error_handling_or_do(response) do
+          response.read_body
           raise UnfollowableResponseError.new(last_response: response)
         end
       end
     end
 
-    def try_error_handling(response)
-      error_handler.call(response)
+    def try_error_handling_or_do(response, &block)
+      success_response = error_handler.call(response)
+      success_response == false ? block.call : success_response
     end
 
     def recall
