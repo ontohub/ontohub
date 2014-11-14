@@ -127,7 +127,7 @@ module RenameRefactor
       end
 
       puts migration_commands.map(&:inspect).join("\n") if dry_run && verbose
-      write_migration
+      write_migration unless dry_run
     end
 
     def clean_slate
