@@ -55,4 +55,10 @@ module OntologyHelper
     html
   end
 
+  def last_file_path(resource)
+    repository_ref_path(repository_id: resource.repository.to_param,
+      ref: resource.current_version.commit_oid,
+      path: resource.current_version.path,
+      action: :show)
+  end
 end

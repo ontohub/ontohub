@@ -6,6 +6,9 @@
     - if resource.logic
       = link_to resource.logic.to_s, resource.logic
   = resource.acronym
+  - if resource.file_deleted?
+    %small
+      %span.label.label-warning= t 'ontology.deleted.label'
 
 - if resource.ontology_type
   %small
@@ -19,13 +22,12 @@
       This #{Settings.OMS} is a child of
       %span= fancy_link(resource.parent)
   %p
-    - if resource.has_file
+    - if resource.has_file?
       #{Settings.OMS} defined in the file
       = fancy_link repository_tree_path(resource.repository, resource.path)
     - else
-      The defining file
-      = resource.path
-      of this #{Settings.OMS} was deleted.
+      = t 'ontology.deleted.info', path: resource.path, oms: Settings.OMS
+      = raw "#{link_to t('ontology.deleted.last_file_version'), last_file_path(resource)}."
   - if resource.documentation
     See for detailed documentation
     = link_to resource.documentation, resource.documentation
