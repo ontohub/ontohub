@@ -55,10 +55,10 @@ module RenameRefactor
 
     def replace_in_file(file, old_word, new_word)
       commands = [
-        "gsub(\"#{old_word}\",\"#{new_word}\")",
-        "gsub(\"#{pluralize(old_word)}\",\"#{pluralize(new_word)}\")",
-        "gsub(\"#{camelize(old_word)}\",\"#{camelize(new_word)}\")",
-        "gsub(\"#{camelize(pluralize(old_word))}\","\
+        "gsub(/\\y#{old_word}\\y/,\"#{new_word}\")",
+        "gsub(/\\y#{pluralize(old_word)}\\y/,\"#{pluralize(new_word)}\")",
+        "gsub(/\\y#{camelize(old_word)}\\y/,\"#{camelize(new_word)}\")",
+        "gsub(/\\y#{camelize(pluralize(old_word))}\\y/,"\
           "\"#{camelize(pluralize(new_word))}\")",
       ]
       tmp_file = "> /tmp/awk_tmp_file && mv /tmp/awk_tmp_file #{file}"
@@ -95,7 +95,7 @@ module RenameRefactor
     end
 
     def awk
-      'awk'
+      'gawk'
     end
   end
 
