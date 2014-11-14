@@ -2,7 +2,15 @@ module Hets
   module Errors
     class HetsError < ::StandardError; end
 
-    class ExecutionError < HetsError; end
+    class ExecutionError < HetsError
+      attr_reader :abort_execution
+
+      def initialize(msg=nil, abort_execution: false)
+        @abort_execution = abort_execution
+        super(msg)
+      end
+    end
+
     class DeploymentError < HetsError; end
 
     class FiletypeNotDeterminedError < HetsError; end
