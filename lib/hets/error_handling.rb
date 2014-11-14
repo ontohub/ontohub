@@ -4,6 +4,8 @@ module Hets
     def handle_hets_execution_error(error, ontology_version)
       if error.message.lines.last =~ /\*\*\* Error: unknown XML format/
         mark_as_non_ontology(ontology_version.ontology)
+      else
+        raise error
       end
     end
 
