@@ -18,6 +18,7 @@ $ ->
     setup_form_clone = (clone_el) ->
       setup_form_submission_handling(clone_el)
       animateIn(clone_el)
+      $('input[name="repository_directory[name]"]', clone_el).focus()
 
     remove_form_clone = (form_el, callback) ->
       animateOut(form_el, () ->
