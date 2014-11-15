@@ -1,6 +1,6 @@
 
 namespace :deploy do
-  
+
   desc 'Restart application'
   task :restart do
     on roles(:app) do
@@ -18,12 +18,12 @@ namespace :deploy do
   end
 
   desc "Moves and replaces the secret-token if missing in shared directory"
-  task :symlink_secret do 
+  task :symlink_secret do
     on roles(:app) do
       filename       = 'secret_token.rb'
       release_secret = release_path.join("config/initializers/#{filename}")
       shared_secret  = shared_path.join("config/#{filename}")
-      
+
       unless test "[ -f #{shared_secret} ]"
         within release_path do
           execute :rake, "secret:replace"
@@ -31,11 +31,20 @@ namespace :deploy do
         execute :mkdir, "-p #{shared_path.join('config')}"
         execute :mv, "#{release_secret} #{shared_secret}"
       end
-      
+
       # symlink secret token
       execute :ln, "-nfs #{shared_secret} #{release_secret}"
     end
   end
+
+  desc "Create Hets Instance if neccessary"
+  task :create_hets_instances do
+    on roles(:app) do
+      execute :rake, 'hets:generate_first_instance'
+    end
+  end
+
+  after :updated, :create_hets_instances
 
   after :updated, :symlink_secret
   after :updated, :set_revision
