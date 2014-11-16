@@ -3,17 +3,16 @@ module Sentence::Readability
 
   def set_display_text!
     if text
-      new_text = self.text.dup
+      self.display_text = text.dup
 
-      self.entities.each do |entity|
-        unless entity.display_name.nil?
-          new_text.gsub!(entity.iri, entity.display_name)
+      entities.each do |entity|
+        if entity.display_name && entity.iri
+          display_text.gsub!(entity.iri, entity.display_name)
         end
       end
 
-      new_text.gsub!(/\s+/, ' ')
+      display_text.gsub!(/\s+/, ' ')
 
-      self.display_text = new_text
       save!
     end
   end
