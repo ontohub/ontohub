@@ -3,7 +3,9 @@ require 'git_repository'
 module Repository::GitRepositories
   extend ActiveSupport::Concern
 
-  delegate :empty?, :get_file, :dir?, :path_exists?, :points_through_file?, :has_changed?, :commits, to: :git
+  delegate :commit_id, :commits, :dir?, :empty?, :get_file, :has_changed?,
+    :is_head?, :path_exists?, :paths_starting_with, :points_through_file?,
+    to: :git
 
   included do
     after_create  :create_and_init_git
@@ -29,10 +31,6 @@ module Repository::GitRepositories
 
   def destroy_git
     git.destroy
-  end
-
-  def is_head?(commit_oid=nil)
-    git.is_head?(commit_oid)
   end
 
   def delete_file(filepath, user, message = nil, &block)
@@ -127,37 +125,6 @@ module Repository::GitRepositories
     ontology.save!
 
     version
-  end
-
-  def path_exists?(path, commit_oid=nil)
-    path ||= '/'
-    git.path_exists?(path, commit_oid)
-  end
-
-  def paths_starting_with(path, commit_oid=nil)
-    dir = dir?(path, commit_oid) ? path : path.split('/')[0..-2].join('/')
-    contents = git.folder_contents(commit_oid, dir)
-
-    contents.map{ |git_file| git_file.path }.select{ |p| p.starts_with?(path) }
-  end
-
-  # given a commit oid or a branch name, commit_id returns a hash of oid and branch name if existent
-  def commit_id(oid)
-    return { oid: git.head_oid, branch_name: 'master' } if oid.nil?
-    if oid.match /[0-9a-fA-F]{40}/
-      branch_names = git.branches.select { |b| b[:oid] == oid }
-      if branch_names.empty?
-        { oid: oid, branch_name: nil }
-      else
-        { oid: oid, branch_name: branch_names[0][:name] }
-      end
-    else
-      if git.branch_oid(oid).nil?
-        nil
-      else
-        { oid: git.branch_oid(oid), branch_name: oid }
-      end
-    end
   end
 
   def commit_message(oid=nil)
