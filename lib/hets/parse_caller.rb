@@ -29,6 +29,7 @@ module Hets
     def build_query_string
       query_hash = {}
       query_hash[:"url-catalog"] = url_catalog.join(',') if url_catalog.present?
+      query_hash
     end
   end
 end

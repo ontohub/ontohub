@@ -1,7 +1,7 @@
 require File.expand_path('../sidekiq_workers',  __FILE__)
 require File.expand_path('../hets_workers',  __FILE__)
 
-RAILS_ROOT = ENV['RAILS_ROOT'] || File.dirname(__FILE__) + "/../.."
+RAILS_ROOT = ENV['RAILS_ROOT'] || File.dirname(__FILE__) + '/../..'
 
 God.pid_file_directory = File.join(RAILS_ROOT, 'tmp/pids/')
 

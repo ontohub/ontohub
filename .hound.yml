@@ -269,7 +269,7 @@ Style/IndentHash:
 
 Style/Lambda:
   Description: 'Use the new lambda literal syntax for single-line blocks.'
-  Enabled: true
+  Enabled: false
 
 Style/LambdaCall:
   Description: 'Use lambda.call(...) instead of lambda.(...).'
