@@ -1,6 +1,5 @@
 module Hets
   module NodeEvaluationHelper
-
     def clean_ontology(ontology)
       ontology.entities.destroy_all
       ontology.all_sentences.destroy_all
@@ -147,6 +146,5 @@ module Hets
         Logic.reset_counters(logic_id, :ontologies)
       end
     end
-
   end
 end
