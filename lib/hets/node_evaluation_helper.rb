@@ -140,5 +140,13 @@ module Hets
       end
     end
 
+    # if it is possible for ontologies to be a relation we should optimize the
+    # call by using #select instead of #map.
+    def update_ontologies_per_logic_count!(ontologies)
+      Logic.where(id: ontologies.map(&:logic_id)).pluck(:id).each do |logic_id|
+        Logic.reset_counters(logic_id, :ontologies)
+      end
+    end
+
   end
 end
