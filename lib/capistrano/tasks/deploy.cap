@@ -40,7 +40,11 @@ namespace :deploy do
   desc "Create Hets Instance if neccessary"
   task :create_hets_instances do
     on roles(:app) do
-      execute :rake, 'hets:generate_first_instance'
+      within current_path do
+        with rails_env: fetch(:rails_env) do
+          execute :rake, 'hets:generate_first_instance'
+        end
+      end
     end
   end
 
