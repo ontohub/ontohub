@@ -24,7 +24,7 @@ class OntologyVersionsController < InheritedResources::Base
       end
     end
   rescue Errno::ENOENT, NoMethodError => e
-    redirect_to collection_path, flash: {error: "The file was \
+    redirect_to collection_path, flash: {error: "The file was
       not found: #{e.message}"}
   end
 
@@ -47,7 +47,7 @@ class OntologyVersionsController < InheritedResources::Base
 
   def check_changeable
     unless parent.changeable?
-      redirect_to collection_path, flash: {error: 'There are pending \
+      redirect_to collection_path, flash: {error: 'There are pending
         #{Settings.OMS} versions.'}
     end
   end
