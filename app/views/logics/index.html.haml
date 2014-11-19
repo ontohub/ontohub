@@ -9,7 +9,7 @@
     = "#{t :have , count: @counter } #{Settings.OMS.pluralize} defined"
     = link_to "show all logics", logics_path(all: true)
   - else
-    = link_to "show only logics with "+Settings.OMS.pluralize, logics_path
+    = link_to "show only logics with #{Settings.OMS.pluralize}", logics_path
 
 = pagination do
   %table

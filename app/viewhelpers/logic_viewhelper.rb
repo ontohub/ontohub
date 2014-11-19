@@ -14,9 +14,9 @@ class LogicViewhelper
       ['Supports', :supports],
       [Settings.OMS.pluralize.capitalize,
          :ontologies, @resource.ontologies.size],
-      ['Homogeneous distributed ' + Settings.OMS.pluralize, :distributed,
+      ["Homogeneous distributed #{Settings.OMS.pluralize}", :distributed,
         Ontology.distributed_in(@resource).size],
-      ['Heterogeneous distributed ' + Settings.OMS.pluralize,
+      ["Heterogeneous distributed #{Settings.OMS.pluralize}",
          :heterogeneous_distributed,
          Ontology.also_distributed_in(@resource).size],
     ]

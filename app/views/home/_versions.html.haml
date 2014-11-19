@@ -11,7 +11,7 @@
 %h2 Recently Updated #{Settings.OMS.pluralize.capitalize}
 
 .pull-right
-  = link_to 'Browse '+ Settings.OMS.pluralize.capitalize, ontologies_path, class: 'btn btn-primary', type: 'button'
+  = link_to "Browse #{Settings.OMS.pluralize.capitalize}", ontologies_path, class: 'btn btn-primary', type: 'button'
 
 - @versions.each do |version|
   %div

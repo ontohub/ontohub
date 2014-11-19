@@ -75,8 +75,7 @@ class OntologiesController < InheritedResources::Base
 
   def destroy
     if resource.is_imported?
-      flash[:error] = "Can't delete an #{Settings.OMS}
-      that is imported by another one."
+      flash[:error] = "Can't delete an #{Settings.OMS} that is imported by another one."
       redirect_to resource_chain
     else
       resource.destroy_with_parent(current_user)
