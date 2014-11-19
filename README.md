@@ -42,6 +42,12 @@ A guide to set up your own instance of ontohub you can find in the [deployment g
 Also a guide for development environment for [Mac OS X][8] and [Ubuntu][9]
 in the Wiki.
 
+License
+--------
+
+Copyright © 2012 [Universität Bremen](http://www.uni-bremen.de/) and
+ [Universität Magdeburg](http://iws.cs.uni-magdeburg.de/), released under
+the [GNU AGPL 3.0](http://www.gnu.org/licenses/agpl-3.0.html) license.
 
 [0]: http://www.tzi.org/~cabo/awe12
 [1]: http://www.tzi.org/~cabo

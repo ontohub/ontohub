@@ -30,6 +30,14 @@ version_minimum_revision: 1409841736
 
 stack_size: 1G
 
+cmd_line_options:
+  - '-o xml'
+  - '--full-signatures'
+  - '-a none'
+  - '-v2'
+  - '+RTS -K1G -RTS'
+  - '--full-theories'
+
 # Environment variables to set for running Hets
 env:
   LANG: en_US.UTF-8

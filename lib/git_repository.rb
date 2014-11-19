@@ -15,7 +15,9 @@ class GitRepository
     Commit,
     History
 
-  delegate :path, to: :repo
+  attr_reader :repo
+
+  delegate :path, :empty?, to: :repo
 
   def initialize(path)
     if File.exists?(path)
@@ -26,20 +28,11 @@ class GitRepository
     end
   end
 
-  # DELETEME (exists only for debugging purpose)
-  def repo
-    @repo
-  end
-
   def destroy
-    FileUtils.rmtree(@repo.path)
+    FileUtils.rmtree(self.path)
   end
 
-  def empty?
-    @repo.empty?
-  end
-
-  def dir?(path, commit_oid=nil)
+  def dir?(path, commit_oid = nil)
     path ||= '/'
     if empty?
       return false
@@ -51,16 +44,24 @@ class GitRepository
     !object.nil? && object.type == :tree
   end
 
-  def path_exists?(url, commit_oid=nil)
+  def path_exists?(path, commit_oid = nil)
     rugged_commit = get_commit(commit_oid)
-    if !rugged_commit && url.empty?
+    if !rugged_commit && path.empty?
       true
     else
-      path_exists_rugged?(rugged_commit, url)
+      path_exists_rugged?(rugged_commit, path)
     end
   end
 
-  def get_file(path, commit_oid=nil)
+  def paths_starting_with(path, commit_oid = nil)
+    dir = dir?(path, commit_oid) ? path : path.split('/')[0..-2].join('/')
+    contents = folder_contents(commit_oid, dir)
+
+    contents.map { |git_file| git_file.path }.
+      select { |p| p.starts_with?(path) }
+  end
+
+  def get_file(path, commit_oid = nil)
     begin
       get_file!(path, commit_oid)
     rescue GitRepository::PathNotFoundError
@@ -68,7 +69,7 @@ class GitRepository
     end
   end
 
-  def get_file!(path, commit_oid=nil)
+  def get_file!(path, commit_oid = nil)
     path ||= '/'
     rugged_commit = get_commit(commit_oid)
     raise GitRepository::PathNotFoundError if !rugged_commit && path.empty?
@@ -76,7 +77,7 @@ class GitRepository
     GitFile.new(self, rugged_commit, path)
   end
 
-  def get_path_of_dir(oid=nil, path=nil)
+  def get_path_of_dir(oid = nil, path = nil)
     path ||= ''
     path = path[0..-2] if(path[-1] == '/')
     raise PathNotFoundError.new unless path_exists?(path, oid)
@@ -88,19 +89,47 @@ class GitRepository
     path.split("/")[0..-2].join("/")
   end
 
+  # Given a commit oid or a branch name, commit_id returns a hash of oid and
+  # branch name if existent.
+  def commit_id(ref)
+    return {oid: head_oid, branch_name: 'master'} if ref.nil?
+    if ref.match(/[0-9a-fA-F]{40}/)
+      commit_id_by_oid(ref)
+    else
+      commit_id_by_branch_name(ref)
+    end
+  end
+
+  def commit_id_by_oid(oid)
+    branch_names = branches_by_oid(oid)
+    {oid: oid, branch_name: branch_names.empty? ? nil : branch_names[0][:name]}
+  end
+
+  def commit_id_by_branch_name(name)
+    if branch_oid(name).nil?
+      nil
+    else
+      {oid: branch_oid(name), branch_name: name}
+    end
+  end
+
+  def branches_by_oid(oid)
+    branches.select { |b| b[:oid] == oid }
+  end
+
   def branches
-    @repo.refs.map do |r|
+    repo.refs.map do |ref|
       {
-        refname: r.name,
-        name: r.name.split('/')[-1],
-        commit: r.target,
-        oid: r.target.oid
+        refname: ref.name,
+        name: ref.name.split('/')[-1],
+        commit: ref.target,
+        oid: ref.target.oid,
       }
     end
   end
 
   def branch_commit(name)
-    ref = @repo.references["refs/heads/#{name}"]
+    ref = repo.references["refs/heads/#{name}"]
 
     if ref.nil?
       nil
@@ -115,8 +144,8 @@ class GitRepository
     end
   end
 
-  def build_target_path(url, file_name)
-    file_path = url.dup
+  def build_target_path(path, file_name)
+    file_path = path.dup
     file_path << '/' if file_path[-1] != '/' && !file_path.empty?
     file_path << file_name
 
@@ -124,14 +153,14 @@ class GitRepository
   end
 
   def is_head?(commit_oid=nil)
-    commit_oid == nil || (!@repo.empty? && commit_oid == head_oid)
+    commit_oid.nil? || (!empty? && commit_oid == head_oid)
   end
 
   def head_oid
-    if @repo.empty?
+    if empty?
       nil
     else
-      @repo.head.target.oid
+      repo.head.target.oid
     end
   end
 
@@ -166,17 +195,13 @@ class GitRepository
 
   protected
 
-  def path_exists_rugged?(rugged_commit, url='')
-    if url.empty?
-      true
-    else
-      nil != get_object(rugged_commit, url)
-    end
+  def path_exists_rugged?(rugged_commit, path = '/')
+    path.empty? || !get_object(rugged_commit, path).nil?
   rescue Rugged::OdbError
     false
   end
 
   def head
-    @repo.lookup(head_oid)
+    repo.lookup(head_oid)
   end
 end

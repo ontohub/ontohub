@@ -4,6 +4,12 @@ namespace :hets do
   HETS_PIDFILE = Rails.root.join('tmp', 'pids', 'hets.pid')
   HETS_CMD = "hets -X"
 
+  desc "Create Hets Instance if neccessary"
+  task :generate_first_instance => :environment do
+    HetsInstance.first_or_create(name: 'localhost:8000', uri: 'http://localhost:8000')
+  end
+
+
   desc 'Start a hets server'
   task :start do
     if already_running?

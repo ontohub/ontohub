@@ -16,6 +16,8 @@
           %i.icon-edit
         - elsif file.renamed?
           %i.icon-edit
+          = file.old_path
+          %i.glyphicon.glyphicon-arrow-right
         = file.path
 
 %h3 Changes

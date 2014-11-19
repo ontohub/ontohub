@@ -3,6 +3,7 @@
 #
 class LogicsController < InheritedResources::Base
   actions :index, :show
+  defaults finder: :find_by_slug!
 
   respond_to :json, :xml
   has_pagination
