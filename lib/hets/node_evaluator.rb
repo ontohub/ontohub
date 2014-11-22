@@ -25,6 +25,7 @@ module Hets
         version.ontology.update_version!(to: version)
       end
       hets_evaluator.ontologies.each(&:create_translated_sentences)
+      update_ontologies_per_logic_count!(hets_evaluator.ontologies)
     end
 
     def ontology_start(current_element)
