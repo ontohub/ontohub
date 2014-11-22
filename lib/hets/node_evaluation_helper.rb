@@ -93,7 +93,7 @@ module Hets
           # fail here with a lock issue instead of the
           # 'more than one ontology' issue.
           if hets_evaluator.ontologies_count > 0
-            raise "more than one ontology found"
+            raise "more than one #{Settings.OMS} found"
           else
             ontohub_iri = parent_ontology.iri
           end

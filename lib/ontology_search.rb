@@ -24,7 +24,8 @@ class OntologySearch
   def make_filters_map
     filters_map = {
       'OntologyType' => [
-        {'name' => 'Ontologies', 'value' => nil, 'count' => 0},
+        {'name' => Settings.OMS.capitalize.pluralize,
+           'value' => nil, 'count' => 0},
         *types
       ],
       'Repository' => [
@@ -160,7 +161,9 @@ class OntologySearch
   end
 
   def types
-    model_to_filters_map(OntologyType) { |type| type.name.sub(/Ontology/, 'ontologies') }
+    model_to_filters_map(OntologyType) do |type|
+      type.name.sub(/Ontology/, Settings.OMS.pluralize)
+    end 
   end
 
   def repositories

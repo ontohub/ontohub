@@ -35,8 +35,10 @@ module Ontology::Links
       source_iri = hash['source_iri'] || iri_for_child(hash['source'])
       target_iri = hash['target_iri'] || iri_for_child(hash['target'])
 
-      source = Ontology.find_with_iri(source_iri) || (raise ArgumentError, "source ontology not found: #{source_iri}")
-      target = Ontology.find_with_iri(target_iri) || (raise ArgumentError, "target ontology not found: #{target_iri}")
+      source = Ontology.find_with_iri(source_iri) || (raise ArgumentError,
+        "source #{Settings.OMS} not found: #{source_iri}")
+      target = Ontology.find_with_iri(target_iri) || (raise ArgumentError,
+        "target #{Settings.OMS} not found: #{target_iri}")
 
       # linktype
       linktype = hash['type']
