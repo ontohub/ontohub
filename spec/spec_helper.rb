@@ -102,6 +102,18 @@ def parse_this(user, ontology, fixture_file)
   file.close unless file.closed?
 end
 
+# Recording HTTP Requests
+VCR.configure do |c|
+  c.cassette_library_dir = 'test/fixtures/vcr'
+  c.hook_into :webmock
+  c.ignore_localhost = true
+  c.ignore_hosts \
+    '127.0.0.1',
+    'localhost',
+    'colore.googlecode.com',
+    'trac.informatik.uni-bremen.de'
+end
+
 RSpec.configure do |config|
   # ## Mock Framework
   # config.mock_with :mocha
