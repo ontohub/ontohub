@@ -7,10 +7,10 @@ describe Theorem do
   end
 
   context 'update_proof_status' do
-    context 'from decisive status' do
+    context 'from solved status' do
       let(:theorem) { create :theorem, proof_status: ProofStatus.find('SOL') }
 
-      context 'to decisive status' do
+      context 'to solved status' do
         before { theorem.update_proof_status(ProofStatus.find('SAT')) }
 
         it 'theorem has updated status' do
@@ -18,7 +18,7 @@ describe Theorem do
         end
       end
 
-      context 'to non-decisive status' do
+      context 'to unsolved status' do
         before { theorem.update_proof_status(ProofStatus.find('USD')) }
 
         it 'theorem still has previous status' do
@@ -27,10 +27,10 @@ describe Theorem do
       end
     end
 
-    context 'from non-decisive status' do
+    context 'from unsolved status' do
       let(:theorem) { create :theorem, proof_status: ProofStatus.find('UNK') }
 
-      context 'to decisive status' do
+      context 'to solved status' do
         before { theorem.update_proof_status(ProofStatus.find('SAT')) }
 
         it 'theorem has updated status' do
@@ -38,7 +38,7 @@ describe Theorem do
         end
       end
 
-      context 'to non-decisive status' do
+      context 'to unsolved status' do
         before { theorem.update_proof_status(ProofStatus.find('USD')) }
 
         it 'theorem has updated status' do
