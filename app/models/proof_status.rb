@@ -1,7 +1,9 @@
 class ProofStatus < ActiveRecord::Base
+  include ProofStatus::CreateFromOntology
+
   self.primary_key = :identifier
 
-  attr_accessible :label, :description, :identifier, :name, :category
+  attr_accessible :label, :description, :identifier, :name, :solved
 
   validates_presence_of :label
 
@@ -13,7 +15,7 @@ class ProofStatus < ActiveRecord::Base
     identifier
   end
 
-  def decisive?
-    %w(solved deductive preserving).include?(category)
+  def solved?
+    solved
   end
 end

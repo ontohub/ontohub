@@ -15,7 +15,7 @@ class Theorem < Sentence
   end
 
   def update_proof_status(proof_status)
-    if proof_status.decisive? || !self.proof_status.decisive?
+    if proof_status.solved? || !self.proof_status.solved?
       self.proof_status = proof_status
       save
     end
