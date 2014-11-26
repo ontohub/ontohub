@@ -15,6 +15,7 @@ class OntologiesController < InheritedResources::Base
   before_filter :check_read_permissions
 
   def index
+    @search_response = paginate_for(Ontology.scoped)
     if in_repository?
       @count = end_of_association_chain.total_count
       render :index_repository

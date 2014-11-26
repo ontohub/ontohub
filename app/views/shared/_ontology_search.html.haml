@@ -4,7 +4,7 @@
   = pluralize @count, Settings.OMS
   currently available
 
-#search_form
+#search_form_div
   = form_tag search_ontologies_path, method: :get, id: :search_form do
     %p
       .btn-group
@@ -36,7 +36,7 @@
 
     .row
       .col-md-10
-        = text_field_tag :query, params[:query], class: "form-control"
+        = text_field_tag :query, params[:query], class: "form-control", id: :query
       .col-md-2
         = submit_tag "Search", name: nil, class: "form-control"
 
