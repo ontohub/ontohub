@@ -7,23 +7,23 @@ class OntologySearchController < ApplicationController
       @search_response = Ontology.scoped
     end
 
-    unless params[:ontology_type].empty?
+    if params[:ontology_type].present?
       @search_response = @search_response.filter_by_ontology_type(params[:ontology_type])
     end
 
-    unless params[:project].empty?
+    if params[:project].present?
       @search_response = @search_response.filter_by_project(params[:project])
     end
 
-    unless params[:formality_level].empty?
+    if params[:formality_level].present?
       @search_response = @search_response.filter_by_formality(params[:formality_level])
     end
 
-    unless params[:license].empty?
+    if params[:license].present?
       @search_response = @search_response.filter_by_license(params[:license])
     end
 
-    unless params[:task].empty?
+    if params[:task].present?
       @search_response = @search_response.filter_by_task(params[:task])
     end
 
