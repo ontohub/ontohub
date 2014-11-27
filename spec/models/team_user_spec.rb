@@ -32,7 +32,7 @@ describe TeamUser do
     end
 
     it 'not destroy the last admin' do
-      expect { assert admin_user.destroy }.
+      expect { admin_user.destroy }.
         to raise_error(Permission::PowerVaccuumError)
     end
 
