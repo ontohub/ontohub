@@ -63,6 +63,3 @@ VCR.configure do |c|
     'colore.googlecode.com',
     'trac.informatik.uni-bremen.de'
 end
-
-# disable sunspot during tests
-Sunspot.session = Sunspot::Rails::StubSessionProxy.new(Sunspot.session)
