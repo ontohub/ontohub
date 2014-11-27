@@ -19,7 +19,7 @@
     %ul.dropdown-menu
       %li
         - (1..9).each do |i|
-          = link_to i, parent_path(*resource_chain, parent, :depth => i)
+          = link_to i, "#{parent_path(*resource_chain, parent)}/graphs?#{{depth: i}.to_query}"
   - if parent.is_a?(Ontology)
     and show
     .btn-group#ontology_selections
