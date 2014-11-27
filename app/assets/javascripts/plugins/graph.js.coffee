@@ -50,6 +50,12 @@ resetSelections = ->
   removeClass('g.node', 'selected')
   removeClass('path', 'selected')
 
+templateName = (edge_type, template_type) ->
+  if edge_type == 'LogicMapping'
+    "graphs/logic_mappings_#{template_type}"
+  else if edge_type == 'Link'
+    "graphs/links_#{template_type}"
+
 addSVGMarker = (svg_element, payload) ->
   svg_element.append("svg:defs").selectAll("marker")
     .data(payload)
@@ -171,10 +177,7 @@ displayGraph = (data) ->
         node_url: node_url
         node: node
         url: "#{node_url}/#{node.info.id}/"
-      if edge_type == 'LogicMapping'
-        template = 'graphs/logic_mappings_node'
-      else if edge_type == 'Link'
-        template = 'graphs/links_node'
+      template = templateName(edge_type, 'node')
       info_list.html(HandlebarsTemplates[template](payload)) if template
       $("div#d3_context").html(info_list)
 
@@ -185,10 +188,7 @@ displayGraph = (data) ->
       payload =
         edge_url: edge_url
         edge: edge
-      if edge_type == "LogicMapping"
-        template = 'graphs/logic_mappings_edge'
-      else if edge_type == "Link"
-        template = 'graphs/links_edge'
+      template = templateName(edge_type, 'edge')
       info_list.html(HandlebarsTemplates[template](payload)) if template
       $("div#d3_context").html(info_list)
 
