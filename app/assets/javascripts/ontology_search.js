@@ -1,22 +1,22 @@
 jQuery.ajaxSettings.cache = false;
 
 var search = function(self) {
-      return function() {
-        $.ajax({
-          url: $(self).closest("form").attr("action"),
-          type: 'GET',
-          data: $(self).closest("form").serialize(),
-          success: function(d) {
-            if($(".pagination").length) {
-              $(".pagination:first").replaceWith($(d).find(".pagination:first"));
-            } else {
-              $(d).find(".pagination:first").insertBefore($("#search_response"));
-            }
-            $("#search_response").replaceWith($(d).find("#search_response"));
-          }
-        });
-      };
-    };
+  return function() {
+    $.ajax({
+      url: $(self).closest("form").attr("action"),
+      type: 'GET',
+      data: $(self).closest("form").serialize(),
+      success: function(d) {
+        if($(".pagination").length) {
+          $(".pagination:first").replaceWith($(d).find(".pagination:first"));
+        } else {
+          $(d).find(".pagination:first").insertBefore($("#search_response"));
+        }
+        $("#search_response").replaceWith($(d).find("#search_response"));
+      }
+    });
+  };
+};
 
 var delay = (function(){
   var timer = 0;
@@ -28,8 +28,8 @@ var delay = (function(){
 
 $(function() {
   $('.selectpicker').selectpicker({
-      style: 'btn-primary btn-group btn-group-sm',
-      width: 'auto',
+    style: 'btn-primary btn-group btn-group-sm',
+    width: 'auto',
   });
   $("#query").keyup(function(e) {
     delay(search(this), 200);
