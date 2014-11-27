@@ -25,6 +25,7 @@ module Hets
         version.ontology.update_version!(to: version)
       end
       hets_evaluator.ontologies.each(&:create_translated_sentences)
+      update_ontologies_per_logic_count!(hets_evaluator.ontologies)
     end
 
     def ontology_start(current_element)
@@ -104,8 +105,8 @@ module Hets
       begin
         commit_oid = ExternalRepository.add_to_repository(
           internal_iri,
-          "add reference ontology: #{internal_iri} from #{source_iri}", user,
-          location: source_iri)
+          "add reference #{Settings.OMS}: #{internal_iri} from #{source_iri}",
+          user, location: source_iri)
         version = ontology.versions.build
         version.user = user
         version.do_not_parse!

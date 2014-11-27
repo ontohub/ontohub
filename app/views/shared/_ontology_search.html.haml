@@ -1,8 +1,8 @@
-%h2 Ontologies
+%h2 #{Settings.OMS.pluralize.capitalize}
 
 = form_tag '', method: :get do
   .input-group
-    = text_field_tag :search, params[:search], placeholder: 'Ontology, symbol or logic', class: 'form-control'
+    = text_field_tag :search, params[:search], placeholder: "#{Settings.OMS.capitalize}, symbol or logic", class: 'form-control'
     %span.input-group-btn
       %button.btn.btn-primary{type: 'submit'}
         %span.glyphicon.glyphicon-search

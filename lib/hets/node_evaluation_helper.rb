@@ -1,6 +1,5 @@
 module Hets
   module NodeEvaluationHelper
-
     def clean_ontology(ontology)
       ontology.entities.destroy_all
       ontology.all_sentences.destroy_all
@@ -94,7 +93,7 @@ module Hets
           # fail here with a lock issue instead of the
           # 'more than one ontology' issue.
           if hets_evaluator.ontologies_count > 0
-            raise "more than one ontology found"
+            raise "more than one #{Settings.OMS} found"
           else
             ontohub_iri = parent_ontology.iri
           end
@@ -140,5 +139,12 @@ module Hets
       end
     end
 
+    # if it is possible for ontologies to be a relation we should optimize the
+    # call by using #select instead of #map.
+    def update_ontologies_per_logic_count!(ontologies)
+      Logic.where(id: ontologies.map(&:logic_id)).pluck(:id).each do |logic_id|
+        Logic.reset_counters(logic_id, :ontologies)
+      end
+    end
   end
 end

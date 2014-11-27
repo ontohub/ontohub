@@ -12,12 +12,13 @@ class LogicViewhelper
     @available_tabs = [
       ['Mappings', :mappings],
       ['Supports', :supports],
-      ['Ontologies', :ontologies, @resource.ontologies.size],
-      ['homogeneous Distributed Ontologies', :distributed,
+      [Settings.OMS.pluralize.capitalize,
+         :ontologies, @resource.ontologies.size],
+      ["Homogeneous distributed #{Settings.OMS.pluralize}", :distributed,
         Ontology.distributed_in(@resource).size],
-      ['heterogeneous Distributed Ontologies',
-        :heterogeneous_distributed,
-        Ontology.also_distributed_in(@resource).size]
+      ["Heterogeneous distributed #{Settings.OMS.pluralize}",
+         :heterogeneous_distributed,
+         Ontology.also_distributed_in(@resource).size],
     ]
     @available_tab_links = [
       ['Graph',

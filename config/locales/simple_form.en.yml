@@ -32,7 +32,6 @@ en:
         mimetype: MIME-Type
     hints:
       ontology_version:
-        source_url: Please enter the URL to import the ontology from.
     placeholders:
       comment:
         text: Write a new comment
