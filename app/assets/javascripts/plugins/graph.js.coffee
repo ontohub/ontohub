@@ -31,7 +31,7 @@ d3.select('div#graph_depth_setting ul li a').on 'click', (e) ->
     , "json")
 
 randomNumber = (min, max) ->
-  return Math.random() * (max - min) + min
+  Math.random() * (max - min) + min
 
 resetSelections = ->
   d3.selectAll('g.node').classed('selected', false)
