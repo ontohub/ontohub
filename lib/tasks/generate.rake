@@ -43,8 +43,9 @@ namespace :generate do
       end
     end
   end
+  
+  desc 'Generate entity tree for one specific OWL ontologies'
 
-  desc 'Generate entity tree for one specific OWL ontology'
   task :class_hierachy_for_specific_ontology, [:ontology_id] => :environment do |t,args|
     ontology = Ontology.find!(args.ontology_id)
     #cleaning up to prevent duplicated entity_groups
