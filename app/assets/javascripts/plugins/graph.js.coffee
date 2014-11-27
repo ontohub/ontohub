@@ -13,11 +13,7 @@ mode = "normal"
 sentence_klasses = ["non_theorem", "proven", "unproven"]
 
 graphs_uri = window.location.href
-re = /\?[^/]+$/
-if graphs_uri.search(re) != -1
-  graphs_uri = graphs_uri.replace(re, "/graphs$&")
-else
-  graphs_uri += "/graphs" if graphs_uri.search(/\/graphs/) == -1
+  .replace(/\/graphs(\?[^/]+|\/)?$/, '/graphs')
 
 d3.select('div#graph_depth_setting ul li a').on 'click', (e) ->
   d3.event.preventDefault()
