@@ -33,19 +33,6 @@ d3.select('div#graph_depth_setting ul li a').on 'click', (e) ->
 randomNumber = (min, max) ->
   return Math.random() * (max - min) + min
 
-addClass = (selector, klass) ->
-  el = $(selector)
-  el.attr('class', el.attr('class') + " #{klass}")
-
-removeClass = (selector, klass) ->
-  func = (index, attr) ->
-    if attr
-      attr.replace("#{klass}", '')
-    else
-      ''
-  el = $(selector)
-  el.attr('class', func)
-
 resetSelections = ->
   d3.selectAll('g.node').classed('selected', false)
   d3.selectAll('path').classed('selected', false)
