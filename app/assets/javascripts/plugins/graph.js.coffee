@@ -19,12 +19,12 @@ if graphs_uri.search(re) != -1
 else
   graphs_uri += "/graphs" if graphs_uri.search(/\/graphs/) == -1
 
-$('div#graph_depth_setting ul li a').on 'click', (e) ->
-  e.preventDefault()
-  depth = parseInt($(this).html())
+d3.select('div#graph_depth_setting ul li a').on 'click', (e) ->
+  d3.event.preventDefault()
+  depth = parseInt(d3.select(this).html())
 
-  $('div#graph_depth_setting > a').html(depth)
-    .append($('<span />', class: 'caret'))
+  d3.select('div#graph_depth_setting > a').html(depth)
+    .append('span').attr('class', 'caret')
 
   $.get("#{graphs_uri}?depth=#{depth}", (data) ->
       displayGraph(data)
@@ -47,8 +47,8 @@ removeClass = (selector, klass) ->
   el.attr('class', func)
 
 resetSelections = ->
-  removeClass('g.node', 'selected')
-  removeClass('path', 'selected')
+  d3.selectAll('g.node').classed('selected', false)
+  d3.selectAll('path').classed('selected', false)
 
 templateName = (edge_type, template_type) ->
   if edge_type == 'LogicMapping'
@@ -72,7 +72,7 @@ addSVGMarker = (svg_element, payload) ->
       .attr("d", "M0,-6L10,0L0,6")
 
 jQuery ->
-  $("div#d3_graph").html(HandlebarsTemplates['graphs/loading']({}))
+  d3.select("div#d3_graph").html(HandlebarsTemplates['graphs/loading']({}))
   $.get(graphs_uri, (data) ->
       displayGraph(data)
     , "json")
@@ -110,7 +110,7 @@ displayGraph = (data) ->
   node_url = nodes_edges[2]
   edge_url = nodes_edges[3]
 
-  addClass($('a#all'), 'btn-primary')
+  d3.select('a#all').classed('btn-primary', true)
 
   edgesForMode = (the_mode) ->
     if the_mode == "normal"
@@ -127,7 +127,7 @@ displayGraph = (data) ->
     zoom_listener = d3.behavior.zoom().
       scaleExtent([0.1, 3]).on("zoom", zoom)
 
-    $("div#d3_graph").html("")
+    d3.select("div#d3_graph").html("")
     svg = d3.select("div#d3_graph")
       .append('svg')
       .attr('width', width)
@@ -170,53 +170,53 @@ displayGraph = (data) ->
       .attr("data-label", (d) -> d.label)
 
     embedNodeInfo = (node) ->
-      info_list = $('<ul />', id: 'node_info')
       payload =
         node_url: node_url
         node: node
         url: "#{node_url}/#{node.info.id}/"
       template = templateName(edge_type, 'node')
-      info_list.html(HandlebarsTemplates[template](payload)) if template
-      $("div#d3_context").html(info_list)
+      if template
+        d3.select("div#d3_context").html('')
+          .append('ul').attr('id', 'node_info')
+          .html(HandlebarsTemplates[template](payload))
 
     embedEdgeInfo = (edge) ->
-      info_list = $('<ul />', id: 'edge_info')
       payload =
         edge_url: edge_url
         edge: edge
       template = templateName(edge_type, 'edge')
-      info_list.html(HandlebarsTemplates[template](payload)) if template
-      $("div#d3_context").html(info_list)
+      if template
+        d3.select("div#d3_context").html('')
+          .append('ul').attr('id', 'edge_info')
+          .html(HandlebarsTemplates[template](payload))
 
-    $("g.node").on "click", (e) ->
-      e.preventDefault()
+    d3.selectAll("g.node").on "click", (node_data) ->
+      d3.event.preventDefault()
       resetSelections()
       default_classes = "node"
       classes = "#{default_classes} selected"
-      node_data = d3.select(this).data()[0]
       # use attr, because jquery-class doesn't work
       if window.selected_node != this
         $(window.selected_node).attr('class', default_classes)
       window.selected_node = this
-      $(this).attr('class', classes)
+      d3.select(this).attr('class', classes)
       embedNodeInfo(node_data)
 
-    $("g > path").on "click", (e) ->
-      e.preventDefault()
+    d3.selectAll("g > path").on "click", (path_data) ->
+      d3.event.preventDefault()
       resetSelections()
-      path_data = d3.select(this).data()[0]
-      addClass($(this), 'selected')
+      d3.select(this).classed('selected', true)
       embedEdgeInfo(path_data)
 
-    $('path').on('mouseenter', (e) ->
-      removeClass('g.node', 'highlight')
+    d3.select('path').on('mouseenter', (e) ->
+      d3.selectAll('g.node').classed('highlight', false)
       path_data = d3.select(this).data()[0]
       source_index = path_data.source.index
       target_index = path_data.target.index
-      addClass($(node[0][source_index]), 'highlight')
-      addClass($(node[0][target_index]), 'highlight')
+      d3.select(node[0][source_index]).classed('highlight', true)
+      d3.select(node[0][target_index]).classed('highlight', true)
     )
-    $('path').on('mouseleave', (e) -> removeClass('g.node', 'highlight'))
+    d3.select('path').on('mouseleave', (e) -> d3.selectAll('g.node').classed('highlight', false))
 
     node.append("circle").
       attr("r", (d) -> if d.is_center then 10 else 7)
@@ -262,16 +262,16 @@ displayGraph = (data) ->
   drawGraph(nodes, edgesForMode(mode))
 
   actOnModeButton = (the_mode, button) ->
-    removeClass('a.mode', 'btn-primary')
+    d3.select('a.mode').classed('btn-primary', true)
     mode = the_mode
-    addClass($(button), 'btn-primary')
+    d3.select(button).classed('btn-primary', true)
     drawGraph(nodes, edgesForMode(mode))
 
 
-  $('a#import').on('click', (e) ->
-    e.preventDefault()
-    actOnModeButton("import", $(this)))
+  d3.select('a#import').on('click', (e) ->
+    d3.event.preventDefault()
+    actOnModeButton("import", this))
 
-  $('a#all').on('click', (e) ->
-    e.preventDefault()
-    actOnModeButton("normal", $(this)))
+  d3.select('a#all').on('click', (e) ->
+    d3.event.preventDefault()
+    actOnModeButton("normal", this))
