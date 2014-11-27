@@ -12,6 +12,7 @@ class OntologySearchController < ApplicationController
       @search_response = Ontology.scoped
     end
     refine_search_response
+    @search_response
   end
 
   def refine_search_response
@@ -36,5 +37,6 @@ class OntologySearchController < ApplicationController
     if params[:task].present?
       @search_response = @search_response.filter_by_task(params[:task])
     end
+    @search_response
   end
 end
