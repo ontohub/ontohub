@@ -16,7 +16,8 @@ class OntologySearchController < ApplicationController
 
   def refine_search_response
     if params[:ontology_type].present?
-      @search_response = @search_response.filter_by_ontology_type(params[:ontology_type])
+      @search_response = @search_response.
+        filter_by_ontology_type(params[:ontology_type])
     end
 
     if params[:project].present?
@@ -24,7 +25,8 @@ class OntologySearchController < ApplicationController
     end
 
     if params[:formality_level].present?
-      @search_response = @search_response.filter_by_formality(params[:formality_level])
+      @search_response = @search_response.
+        filter_by_formality(params[:formality_level])
     end
 
     if params[:license].present?
