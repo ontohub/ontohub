@@ -8,6 +8,36 @@ FactoryGirl.define do
     initialize_with { new(generate :git_repository_path) }
   end
 
+  factory :git_repository_with_commits, class: GitRepository do |git_repository|
+    skip_create
+
+    initialize_with do
+      path = generate :git_repository_path
+      exec_silently = ->(cmd) { Subprocess.run('bash', '-c', cmd) }
+
+      FileUtils.mkdir_p(path)
+      Dir.chdir(path) do
+        exec_silently.call('git init .')
+        exec_silently.call(
+          'git config --local user.email "tester@localhost.localdomain"')
+        exec_silently.call('git config --local user.name "Tester"')
+        exec_silently.call('echo "(P x)" > file-0.clif')
+        exec_silently.call('echo "(Q y)" > file-1.clif')
+        exec_silently.call('git add file-0.clif')
+        exec_silently.call('git commit -m "add file-0.clif"')
+        exec_silently.call('git add file-1.clif')
+        exec_silently.call('git commit -m "add file-1.clif"')
+
+        # convert to bare repository
+        exec_silently.call('rm -rf *.clif')
+        exec_silently.call('mv .git/* .')
+        exec_silently.call('rm -rf .git')
+      end
+
+      new(path)
+    end
+  end
+
   factory :git_repository_with_moved_ontologies, class: GitRepository do |git_repository|
     skip_create
 
