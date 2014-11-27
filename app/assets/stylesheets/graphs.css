@@ -9,6 +9,7 @@ div#d3_graph {
 div#d3_context {
   min-height: 20em;
   max-height: 100%;
+  overflow: scroll;
 }
 
 path.link {
