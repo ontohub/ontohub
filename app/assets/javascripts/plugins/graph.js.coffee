@@ -15,16 +15,14 @@ sentence_klasses = ["non_theorem", "proven", "unproven"]
 graphs_uri = window.location.href
   .replace(/\/graphs(\?[^/]+|\/)?$/, '/graphs')
 
-d3.select('div#graph_depth_setting ul li a').on 'click', (e) ->
+d3.selectAll('div#graph_depth_setting ul li a').on 'click', (e) ->
   d3.event.preventDefault()
   depth = parseInt(d3.select(this).html())
 
   d3.select('div#graph_depth_setting > a').html(depth)
     .append('span').attr('class', 'caret')
 
-  $.get("#{graphs_uri}?depth=#{depth}", (data) ->
-      displayGraph(data)
-    , "json")
+  $.get("#{graphs_uri}?depth=#{depth}", displayGraph, "json")
 
 randomNumber = (min, max) ->
   Math.random() * (max - min) + min
@@ -56,9 +54,7 @@ addSVGMarker = (svg_element, payload) ->
 
 jQuery ->
   d3.select("div#d3_graph").html(HandlebarsTemplates['graphs/loading']({}))
-  $.get(graphs_uri, (data) ->
-      displayGraph(data)
-    , "json")
+  $.get(graphs_uri, displayGraph, "json")
 
 d3NodesEdges = (data) ->
   nodes = []
