@@ -14,7 +14,7 @@ describe 'OopsRequest::Responses' do
 
     before do
       allow(Oops::Client).to(receive(:execute_request) do
-        File.read("#{Rails.root}/test/fixtures/oops/sunrealm.xml")
+        File.read(fixture_file("oops/sunrealm.xml"))
       end)
       request.send :execute_and_save
     end

@@ -33,8 +33,7 @@ describe Oops do
 
   context 'parsing an oops response' do
     let!(:result) do
-      Oops::Response.parse File.read(
-        "#{Rails.root}/test/fixtures/oops/sunrealm.xml")
+      Oops::Response.parse File.read(fixture_file("oops/sunrealm.xml"))
     end
     it 'return correct amount of elements' do
       expect(result.size).to eq(5)

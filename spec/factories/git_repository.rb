@@ -13,7 +13,7 @@ FactoryGirl.define do
 
     initialize_with do
       root_path = File.expand_path('../../../', __FILE__)
-      fixture_path = File.join(root_path, 'test/fixtures/ontologies/clif/')
+      fixture_path = File.join(root_path, 'spec/fixtures/ontologies/clif/')
       path = generate :git_repository_path
       exec_silently = ->(cmd) { Subprocess.run('bash', '-c', cmd) }
 

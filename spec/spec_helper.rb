@@ -32,7 +32,7 @@ class ActionController::TestRequest
 end
 
 def fixture_file(path)
-  fixture_path = Rails.root.join('test/fixtures/')
+  fixture_path = Rails.root.join('spec/fixtures/')
   fixture_path.join(path)
 end
 
@@ -104,7 +104,7 @@ end
 
 # Recording HTTP Requests
 VCR.configure do |c|
-  c.cassette_library_dir = 'test/fixtures/vcr'
+  c.cassette_library_dir = 'spec/fixtures/vcr'
   c.hook_into :webmock
   c.ignore_localhost = true
   c.ignore_hosts \

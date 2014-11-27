@@ -18,6 +18,6 @@ FactoryGirl.define do
   end
 
   factory :ontology_version_with_file, :parent => :ontology_version do
-    raw_file { File.open "test/fixtures/ontologies/owl/pizza.owl" }
+    raw_file { File.open 'spec/fixtures/ontologies/owl/pizza.owl' }
   end
 end

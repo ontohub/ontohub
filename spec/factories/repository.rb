@@ -7,7 +7,7 @@ FactoryGirl.define do
       repository.after(:build) do |repository|
 
         root_path = File.expand_path('../../../', __FILE__)
-        fixture_path = File.join(root_path, 'test/fixtures/ontologies/clif/')
+        fixture_path = File.join(root_path, 'spec/fixtures/ontologies/clif/')
 
         path = File.join(Ontohub::Application.config.git_root, 'repository')
         git_repository = GitRepository.new(path)
