@@ -50,7 +50,7 @@ resetSelections = ->
   removeClass('g.node', 'selected')
   removeClass('path', 'selected')
 
-add_svg_marker = (svg_element, payload) ->
+addSVGMarker = (svg_element, payload) ->
   svg_element.append("svg:defs").selectAll("marker")
     .data(payload)
         .enter().append("svg:marker")
@@ -139,28 +139,22 @@ displayGraph = (data) ->
     force.start()
 
     # Arrows
-    add_svg_marker svg_group, [klass] for klass in sentence_klasses
+    addSVGMarker svg_group, [klass] for klass in sentence_klasses
 
     path = svg_group.append("svg:g").selectAll("path").
       data(force.links()).
       enter().
-      append("svg:path").
-      attr("class", (d) ->
-        proveable = !! d.info.theorem
-        proven = !! d.info.proven
-        if proveable
-          return "link proven" if proven
-          "link unproven"
-        else
-          "link").
-      attr("marker-end", (d) ->
-        proveable = !! d.info.theorem
-        proven = !! d.info.proven
-        if proveable
-          return "url(#proven)" if proven
-          "url(#unproven)"
-        else
-          "url(#non_theorem)")
+      append("svg:path")
+    path.attr "class", (d) ->
+        proven = "link proven" if !! d.info.proven
+        unproven = "link unproven"
+        not_proveable = "link" unless !! d.info.theorem
+        not_proveable || proven || unproven
+    path.attr "marker-end", (d) ->
+        proven = "url(#proven)" if !! d.info.proven
+        unproven = "url(#unproven)"
+        not_proveable = "url(#non_theorem)" unless !! d.info.proven
+        not_proveable || proven || unproven
 
     node = svg_group.selectAll(".node")
       .data(force.nodes())
