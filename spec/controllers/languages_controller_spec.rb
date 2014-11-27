@@ -83,11 +83,11 @@ describe LanguagesController do
       end
 
       it 'leave the record' do
-        assert Language.find_by_name(oldname)
+        expect(Language.find_by_name(oldname)).to be_truthy
       end
 
       it 'not change the record' do
-        assert !Language.find_by_name("test3")
+        expect(Language.find_by_name("test3")).to be_falsy
       end
 
       it { should respond_with :redirect }
