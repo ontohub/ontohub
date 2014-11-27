@@ -405,7 +405,6 @@ describe Ontology do
     end
 
     it 'should create single ontologies' do
-      assert_equal 4, SingleOntology.count
       expect(SingleOntology.count).to eq(4)
     end
 
