@@ -166,13 +166,10 @@ displayGraph = (data) ->
       .data(force.nodes())
       .enter().append("g")
       .attr("class", "node")
-      .attr("data-label", (d) ->
-        d.label)
+      .attr("data-label", (d) -> d.label)
 
     embedNodeInfo = (node) ->
-      info_list = $('<ul />',
-        id: 'node_info')
-      template = null
+      info_list = $('<ul />', id: 'node_info')
       payload =
         node_url: node_url
         node: node
@@ -182,9 +179,7 @@ displayGraph = (data) ->
       $("div#d3_context").html(info_list)
 
     embedEdgeInfo = (edge) ->
-      info_list = $('<ul />',
-        id: 'edge_info')
-      template = null
+      info_list = $('<ul />', id: 'edge_info')
       payload =
         edge_url: edge_url
         edge: edge
@@ -220,19 +215,15 @@ displayGraph = (data) ->
       addClass($(node[0][source_index]), 'highlight')
       addClass($(node[0][target_index]), 'highlight')
     )
-    $('path').on('mouseleave', (e) ->
-      removeClass('g.node', 'highlight'))
+    $('path').on('mouseleave', (e) -> removeClass('g.node', 'highlight'))
 
     node.append("circle").
-      attr("r", (d) ->
-        return 10 if d.is_center
-        7)
+      attr("r", (d) -> if d.is_center then 10 else 7)
 
     node.append("text").
       attr("x", 12).
       attr("dy", ".35em").
-      text((d) ->
-        nodeDisplayName(d))
+      text(nodeDisplayName)
 
     calc_offsets = (d) ->
       d.arc_offset_a = randomNumber(55, 15) if d.arc_offset_a == undefined
@@ -247,12 +238,12 @@ displayGraph = (data) ->
         d.pos_offset_b = 1 if (rand % 2) == 0
 
     tick = ->
-      node.attr("transform", (d) ->
+      node.attr "transform", (d) ->
         if d.is_center
           d.x = width/2
           d.y = height/2
-        "translate(#{d.x},#{d.y})")
-      path.attr("d", (d) ->
+        "translate(#{d.x},#{d.y})"
+      path.attr "d", (d) ->
         dx = d.target.x - d.source.x
         dy = d.target.y - d.source.y
         dr = Math.sqrt(dx*dx + dy*dy)*2
@@ -264,7 +255,7 @@ displayGraph = (data) ->
           "M#{d.source.x},#{d.source.y-0.6}" +
           "A-#{d.arc_offset_a},-#{d.arc_offset_b} 0 " +
           "#{d.pos_offset_a},#{d.pos_offset_b} #{d.target.x-4},#{d.target.y}"
-      )
+
     force.on('tick', tick)
 
   drawGraph(nodes, edgesForMode(mode))
