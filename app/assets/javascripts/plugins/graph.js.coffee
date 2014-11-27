@@ -59,16 +59,17 @@ templateName = (edge_type, template_type) ->
 addSVGMarker = (svg_element, payload) ->
   svg_element.append("svg:defs").selectAll("marker")
     .data(payload)
-        .enter().append("svg:marker")
-          .attr("id", String)
-          .attr("viewBox", "0 -5 10 10")
-          .attr("refX", 14.5)
-          .attr("refY", -0.0)
-          .attr("markerWidth", 6)
-          .attr("markerHeight", 6)
-          .attr("orient", "auto")
-        .append("svg:path")
-          .attr("d", "M0,-6L10,0L0,6")
+    .enter()
+    .append("svg:marker")
+      .attr("id", String)
+      .attr("viewBox", "0 -5 10 10")
+      .attr("refX", 14.5)
+      .attr("refY", -0.0)
+      .attr("markerWidth", 6)
+      .attr("markerHeight", 6)
+      .attr("orient", "auto")
+    .append("svg:path")
+      .attr("d", "M0,-6L10,0L0,6")
 
 jQuery ->
   $("div#d3_graph").html(HandlebarsTemplates['graphs/loading']({}))
@@ -127,13 +128,13 @@ displayGraph = (data) ->
       scaleExtent([0.1, 3]).on("zoom", zoom)
 
     $("div#d3_graph").html("")
-    svg = d3.select("div#d3_graph").
-      append('svg').
-      attr('width', width).
-      attr('height', height).
-      call(zoom_listener)
-    svg_group = svg.append('g').
-      attr('class', 'graph')
+    svg = d3.select("div#d3_graph")
+      .append('svg')
+      .attr('width', width)
+      .attr('height', height)
+      .call(zoom_listener)
+    svg_group = svg.append('g')
+      .attr('class', 'graph')
 
     force = d3.layout.force()
     force.nodes(nodes)
@@ -147,10 +148,10 @@ displayGraph = (data) ->
     # Arrows
     addSVGMarker svg_group, [klass] for klass in sentence_klasses
 
-    path = svg_group.append("svg:g").selectAll("path").
-      data(force.links()).
-      enter().
-      append("svg:path")
+    path = svg_group.append("svg:g").selectAll("path")
+      .data(force.links())
+      .enter()
+      .append("svg:path")
     path.attr "class", (d) ->
         proven = "link proven" if !! d.info.proven
         unproven = "link unproven"
