@@ -10,6 +10,7 @@ force_charge = -400
 colors = d3.scale.category10()
 edge_type = null # May be LogicMapping or Link
 mode = "normal"
+sentence_klasses = ["non_theorem", "proven", "unproven"]
 
 graphs_uri = window.location.href
 re = /\?[^/]+$/
@@ -48,6 +49,20 @@ removeClass = (selector, klass) ->
 resetSelections = ->
   removeClass('g.node', 'selected')
   removeClass('path', 'selected')
+
+add_svg_marker = (svg_element, payload) ->
+  svg_element.append("svg:defs").selectAll("marker")
+    .data(payload)
+        .enter().append("svg:marker")
+          .attr("id", String)
+          .attr("viewBox", "0 -5 10 10")
+          .attr("refX", 14.5)
+          .attr("refY", -0.0)
+          .attr("markerWidth", 6)
+          .attr("markerHeight", 6)
+          .attr("orient", "auto")
+        .append("svg:path")
+          .attr("d", "M0,-6L10,0L0,6")
 
 jQuery ->
   $("div#d3_graph").html(HandlebarsTemplates['graphs/loading']({}))
@@ -124,19 +139,8 @@ displayGraph = (data) ->
     force.start()
 
     # Arrows
-    for klass in ["non_theorem", "proven", "unproven"]
-      svg_group.append("svg:defs").selectAll("marker")
-        .data([klass])
-        .enter().append("svg:marker")
-          .attr("id", String)
-          .attr("viewBox", "0 -5 10 10")
-          .attr("refX", 14.5)
-          .attr("refY", -0.0)
-          .attr("markerWidth", 6)
-          .attr("markerHeight", 6)
-          .attr("orient", "auto")
-        .append("svg:path")
-          .attr("d", "M0,-6L10,0L0,6")
+    add_svg_marker svg_group, [klass] for klass in sentence_klasses
+
     path = svg_group.append("svg:g").selectAll("path").
       data(force.links()).
       enter().
