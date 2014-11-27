@@ -99,11 +99,20 @@ displayGraph = (data) ->
       import_edges
 
   drawGraph = (nodes, edges) ->
+    zoom = ->
+      svg_group.attr("transform",
+        "translate(#{d3.event.translate}), scale(#{d3.event.scale})")
+    zoom_listener = d3.behavior.zoom().
+      scaleExtent([0.1, 3]).on("zoom", zoom)
+
     $("div#d3_graph").html("")
     svg = d3.select("div#d3_graph").
       append('svg').
       attr('width', width).
-      attr('height', height)
+      attr('height', height).
+      call(zoom_listener)
+    svg_group = svg.append('g').
+      attr('class', 'graph')
 
     force = d3.layout.force()
     force.nodes(nodes)
@@ -116,7 +125,7 @@ displayGraph = (data) ->
 
     # Arrows
     for klass in ["non_theorem", "proven", "unproven"]
-      svg.append("svg:defs").selectAll("marker")
+      svg_group.append("svg:defs").selectAll("marker")
         .data([klass])
         .enter().append("svg:marker")
           .attr("id", String)
@@ -128,7 +137,7 @@ displayGraph = (data) ->
           .attr("orient", "auto")
         .append("svg:path")
           .attr("d", "M0,-6L10,0L0,6")
-    path = svg.append("svg:g").selectAll("path").
+    path = svg_group.append("svg:g").selectAll("path").
       data(force.links()).
       enter().
       append("svg:path").
@@ -149,7 +158,7 @@ displayGraph = (data) ->
         else
           "url(#non_theorem)")
 
-    node = svg.selectAll(".node")
+    node = svg_group.selectAll(".node")
       .data(force.nodes())
       .enter().append("g")
       .attr("class", "node")
