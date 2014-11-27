@@ -1,7 +1,7 @@
 # This file is copied to spec/ when you run 'rails generate rspec:install'
 ENV["RAILS_ENV"] ||= 'test'
 
-require File.expand_path("../../test/shared_helper", __FILE__)
+require File.expand_path("../../spec/shared_helper", __FILE__)
 
 include SharedHelper
 use_simplecov
