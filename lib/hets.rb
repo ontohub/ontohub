@@ -4,6 +4,7 @@ module Hets
   include Errors
 
   class Config
+    include Hets::Errors
 
     VERSION_RE = %r{v\d+\.\d+,\s*(\d+)$}
 
