@@ -3,7 +3,8 @@
 # (or created alongside the db with db:setup).
 
 # Clean the database
-DatabaseCleaner.clean_with :truncation, except: %w(ontology_file_extensions)
+DatabaseCleaner.clean_with :truncation,
+  except: %w(ontology_file_extensions proof_statuses)
 
 # Output seed information iff environment variable VERBOSE_SEEDS is set to 1
 ActiveRecord::Base.logger = Logger.new($stdout) if ENV["VERBOSE_SEEDS"] == '1'

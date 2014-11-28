@@ -120,6 +120,7 @@ Ontohub::Application.routes.draw do
       resources :children, :only => :index
       resources :entities, :only => :index
       resources :sentences, :only => :index
+      resources :theorems, only: :index
       resources :links do
         get 'update_version', :on => :member
       end
