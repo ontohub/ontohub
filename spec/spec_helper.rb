@@ -109,6 +109,10 @@ RSpec.configure do |config|
   # config.mock_with :rr
   config.mock_with :rspec
 
+  config.before(:suite) do
+    FactoryGirl.create :proof_statuses
+  end
+
   config.before(:each) do
     redis = WrappingRedis::RedisWrapper.new
     redis.del redis.keys if redis.keys.any?
