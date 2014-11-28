@@ -22,6 +22,9 @@ module ParsingCallback
     def axiom(hash, axiom)
     end
 
+    def theorem(hash, theorem)
+    end
+
     def link(hash, link)
     end
 
@@ -34,6 +37,10 @@ module ParsingCallback
     end
 
     def pre_axiom(hash)
+      true
+    end
+
+    def pre_theorem(hash)
       true
     end
 

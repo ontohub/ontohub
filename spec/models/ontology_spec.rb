@@ -383,4 +383,26 @@ describe Ontology do
     end
   end
 
+  context 'Import Ontology with a theorem' do
+    let(:user) { create :user }
+    let(:ontology) { create :distributed_ontology }
+    let(:child_with_theorem) do
+      ontology.children.where(name: 'strict_partial_order').first
+    end
+
+    before do
+      parse_this(user, ontology, hets_out_file('partial_order'))
+    end
+
+    context 'theorem count' do
+      it 'should be correct' do
+        expect(child_with_theorem.theorems.count).to eq(1)
+      end
+
+      it 'should be reflected in the corresponding field' do
+        expect(child_with_theorem.theorems_count).
+          to eq(child_with_theorem.theorems.count)
+      end
+    end
+  end
 end

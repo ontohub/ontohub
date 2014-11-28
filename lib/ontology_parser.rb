@@ -13,18 +13,20 @@ module OntologyParser
 
   # Listener for the SAX Parser
   class Listener < Nokogiri::XML::SAX::Document
-    MAP      = "map"
-    ROOT     = 'DGraph'
-    ONTOLOGY = 'DGNode'
-    SYMBOL   = 'Symbol'
-    AXIOM    = 'Axiom'
+    MAP       = "map"
+    ROOT      = 'DGraph'
+    ONTOLOGY  = 'DGNode'
+    SYMBOL    = 'Symbol'
+    AXIOM     = 'Axiom'
+    THEOREM   = 'Theorem'
     IMPAXIOMS = 'ImpAxioms'
     AXIOMS    = 'Axioms'
-    LINK     = 'DGLink'
-    TEXT     = 'Text'
-    TYPE     = 'Type'
-    MORPHISM = 'GMorphism'
-    IMPORT   = 'Reference'
+    THEOREMS  = 'Theorems'
+    LINK      = 'DGLink'
+    TEXT      = 'Text'
+    TYPE      = 'Type'
+    MORPHISM  = 'GMorphism'
+    IMPORT    = 'Reference'
 
     # the callback function is called for each Symbol tag
     def initialize(callbacks)
@@ -63,6 +65,13 @@ module OntologyParser
           @current_axiom['symbols'] = []
           @current_axiom['symbol_hashes'] = []
           @current_axiom['text'] = ''
+        when THEOREMS
+          @in_theorems = true
+        when THEOREM
+          @current_theorem = Hash[*[attributes]]
+          @current_theorem['symbols'] = []
+          @current_theorem['symbol_hashes'] = []
+          @current_theorem['text'] = ''
         when LINK
           @current_link = Hash[*[attributes]]
         when MORPHISM
@@ -79,6 +88,7 @@ module OntologyParser
           @current_symbol['text'] << text if @current_symbol
         when TEXT
           @current_axiom['text'] << text if @current_axiom
+          @current_theorem['text'] << text if @current_theorem
         when TYPE # there is no other use of TYPE in this code
           @current_link['type'] = text if @current_link
       end
@@ -98,8 +108,11 @@ module OntologyParser
           if @current_axiom
             # add to current axiom
             @current_axiom['symbols'] << @current_symbol['text']
+          elsif @current_theorem
+            # add to current theorem
+            @current_theorem['symbols'] << @current_symbol['text']
           else
-            # return the current symcol
+            # return the current symbol
             in_mapping_link = @current_link && @current_link['map']
             callback(:symbol, @current_symbol) unless in_mapping_link
           end
@@ -120,6 +133,12 @@ module OntologyParser
           end
           # return the current axiom
           @current_axiom = nil
+        when THEOREMS
+          @in_theorems = false
+        when THEOREM
+          callback(:theorem, @current_theorem) if @in_theorems
+          # return the current theorem
+          @current_theorem = nil
         when LINK
           # return the current link
           callback(:link, @current_link)
@@ -139,7 +158,5 @@ module OntologyParser
       block = @callbacks[name]
       block.call(args) if block
     end
-
   end
-
 end

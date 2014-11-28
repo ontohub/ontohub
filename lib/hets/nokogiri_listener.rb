@@ -6,8 +6,10 @@ module Hets
     SYMBOL = 'Symbol'
     SYMBOL_LIST = 'Symbols'
     AXIOM = 'Axiom'
+    THEOREM = 'Theorem'
     IMPAXIOMS = 'ImpAxioms'
     AXIOMS = 'Axioms'
+    THEOREMS = 'Theorems'
     LINK = 'DGLink'
     TEXT = 'Text'
     TYPE = 'Type'
@@ -18,6 +20,7 @@ module Hets
       ONTOLOGY => :ontology,
       SYMBOL => :symbol,
       AXIOM => :axiom,
+      THEOREM => :theorem,
       LINK => :link,
     }
 
@@ -29,6 +32,7 @@ module Hets
       @current_ontology = nil
       @current_symbol   = nil
       @current_axiom    = nil
+      @current_theorem  = nil
       @current_link     = nil
       @in_imp_axioms    = false
     end
@@ -68,6 +72,13 @@ module Hets
         @current_axiom['symbols'] = []
         @current_axiom['symbol_hashes'] = []
         @current_axiom['text'] = ''
+      when THEOREMS
+        @in_theorems = true
+      when THEOREM
+        @current_theorem = Hash[*[attributes]]
+        @current_theorem['symbols'] = []
+        @current_theorem['symbol_hashes'] = []
+        @current_theorem['text'] = ''
       when LINK
         @current_link = Hash[*[attributes]]
       when MORPHISM
@@ -84,6 +95,7 @@ module Hets
         @current_symbol['text'] << text if @current_symbol
       when TEXT
         @current_axiom['text'] << text if @current_axiom
+        @current_theorem['text'] << text if @current_theorem
       when TYPE # there is no other use of TYPE in this code
         @current_link['type'] = text if @current_link
       end
@@ -104,6 +116,9 @@ module Hets
         if @current_axiom
           # add to current axiom
           @current_axiom['symbols'] << @current_symbol['text']
+        elsif @current_theorem
+          # add to current theorem
+          @current_theorem['symbols'] << @current_symbol['text']
         else
           # return the current symcol
           in_mapping_link = @current_link && @current_link['map']
@@ -129,6 +144,12 @@ module Hets
         end
         # return the current axiom
         @current_axiom = nil
+      when THEOREMS
+        @in_theorems = false
+      when THEOREM
+        call_back(:theorem, order, @current_theorem) if @in_theorems
+        # return the current theorem
+        @current_theorem = nil
       when LINK
         # return the current link
         call_back(:link, order, @current_link)
