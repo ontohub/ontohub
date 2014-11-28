@@ -2,7 +2,6 @@
 # Lists theorems of an ontology
 #
 class TheoremsController < InheritedResources::Base
-
   belongs_to :ontology
 
   actions :index
