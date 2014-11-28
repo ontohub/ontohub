@@ -5,6 +5,8 @@ module Hets
     class ExecutionError < HetsError; end
     class DeploymentError < HetsError; end
 
+    class FiletypeNotDeterminedError < HetsError; end
+
     class VersionOutdatedError < DeploymentError; end
     class ConfigDateFormatError < DeploymentError; end
     class VersionDateFormatError < DeploymentError; end
