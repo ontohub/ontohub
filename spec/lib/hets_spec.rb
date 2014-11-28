@@ -8,7 +8,7 @@ describe Hets, :needs_hets do
 
   context 'Output directory parameter' do
     before do
-      xml_paths = Hets.parse(ontology_file('owl/pizza'), [], '/tmp')
+      xml_paths = Hets.parse(ontology_file('owl/pizza'), '/tmp')
       @xml_path = xml_paths.last
     end
 
@@ -23,7 +23,7 @@ describe Hets, :needs_hets do
       let(:user) { create :user }
 
       before do
-        xml_paths = Hets.parse(ontology_file(path), [], '/tmp')
+        xml_paths = Hets.parse(ontology_file(path), '/tmp')
         @xml_path = xml_paths.last
         @pp_path = xml_paths.first
       end
@@ -38,29 +38,52 @@ describe Hets, :needs_hets do
     end
   end
 
+  context 'with access-token' do
+    let(:input_file) { ontology_file('clif/cat.clif') }
+    let(:access_token) { 'my_access_token' }
+
+    # any_args is a "don't care which and how many arguments" in rspec mocks.
+    let(:call_args) { [any_args, "--access_token=#{access_token}", any_args] }
+    let(:options) { Hets::Options.new(access_token: access_token) }
+
+    before do
+      allow(Subprocess).to receive(:run).with(*call_args).
+        and_return('Writing file: some_file')
+    end
+
+    it 'have called hets with the access-token' do
+      expect(Hets.parse(input_file, '/tmp', options)).to eq(['some_file'])
+    end
+
+    it 'created a subprocess with access-token arguments' do
+      Hets.parse(input_file, '/tmp', options)
+      expect(Subprocess).to(have_received(:run).with(*call_args))
+    end
+  end
+
   context 'with url-catalog' do
     let(:input_file) { ontology_file('clif/monoid.clif') }
     let(:url_catalog) do
       ['http://colore.oor.net=http://develop.ontohub.org/colore/ontologies',
       'https://colore.oor.net=https://develop.ontohub.org/colore/ontologies']
     end
-    let(:catalog_args) do
-      # any_args is a "don't care which and how many arguments" in rspeck mocks.
-      [any_args, '-C', url_catalog.join('/'), any_args]
-    end
+
+    # any_args is a "don't care which and how many arguments" in rspec mocks.
+    let(:call_args) { [any_args, '-C', url_catalog.join(','), any_args] }
+    let(:options) { Hets::Options.new(url_catalog: url_catalog) }
 
     before do
-      allow(Subprocess).to receive(:run).with(*catalog_args).
+      allow(Subprocess).to receive(:run).with(*call_args).
         and_return('Writing file: some_file')
     end
 
     it 'have called hets with the catalog' do
-      expect(Hets.parse(input_file, url_catalog, '/tmp')).to eq(['some_file'])
+      expect(Hets.parse(input_file, '/tmp', options)).to eq(['some_file'])
     end
 
     it 'created a subprocess with catalog arguments' do
-      Hets.parse(input_file, url_catalog, '/tmp')
-      expect(Subprocess).to(have_received(:run).with(*catalog_args))
+      Hets.parse(input_file, '/tmp', options)
+      expect(Subprocess).to(have_received(:run).with(*call_args))
     end
   end
 

@@ -7,9 +7,9 @@ describe Ability do
   let(:owner){  create :user } # owner
 
   context 'Repository' do
-    let(:editor){ create :user } # editor
-    let(:reader){ create :user } # reader
-    let(:item){   create(:permission, subject: owner, role: 'owner').item }
+    let(:editor) { create :user } # editor
+    let(:reader) { create :user } # reader
+    let(:item) { create(:permission, subject: owner, role: 'owner').item }
 
     before do
       create(:permission, subject: editor, role: 'editor', item: item)
@@ -17,7 +17,7 @@ describe Ability do
     end
 
     context 'guest' do
-      subject(:ability){ Ability.new(User.new) }
+      subject(:ability){ Ability.new(User.new, nil) }
 
       it 'not be allowed: new, create' do
         [:new, :create].each do |perm|
@@ -37,7 +37,7 @@ describe Ability do
     end
 
     context 'reader' do
-      subject(:ability){ Ability.new(reader) }
+      subject(:ability){ Ability.new(reader, nil) }
 
       it 'be allowed: new, create' do
         [:new, :create].each do |perm|
@@ -57,7 +57,7 @@ describe Ability do
     end
 
     context 'owner' do
-      subject(:ability){ Ability.new(owner) }
+      subject(:ability){ Ability.new(owner, nil) }
 
       it 'be allowed: new, create' do
         [:new, :create].each do |perm|
@@ -79,7 +79,7 @@ describe Ability do
     end
 
     context 'editor' do
-      subject(:ability){ Ability.new(editor) }
+      subject(:ability){ Ability.new(editor, nil) }
 
       it 'be allowed: write' do
         [:show, :write].each do |perm|
@@ -98,7 +98,14 @@ describe Ability do
   context 'Private Repository' do
     let(:editor){ create :user } # editor
     let(:reader){ create :user } # reader
-    let(:item){   create(:repository, access: 'private_rw', user: owner) }
+    let!(:access_token) { create :access_token }
+    let(:item) do
+      repo = access_token.repository
+      create(:permission, subject: owner, role: 'owner', item: repo)
+      repo.access = 'private_rw'
+      repo.save
+      repo
+    end
 
     before do
       create(:permission, subject: editor, role: 'editor', item: item)
@@ -106,17 +113,32 @@ describe Ability do
     end
 
     context 'guest' do
-      subject(:ability){ Ability.new(User.new) }
+      subject(:ability){ Ability.new(User.new, nil) }
 
       it 'not be allowed: anything' do
         [:show, :update, :write].each do |perm|
           should_not be_able_to(perm, item)
         end
       end
+
+      context 'with access token' do
+        subject(:ability){ Ability.new(User.new, access_token.to_s) }
+
+
+        it 'not be allowed: change' do
+          [:update, :write].each do |perm|
+            should_not be_able_to(perm, item)
+          end
+        end
+
+        it 'be allowed: read' do
+          should be_able_to(:show, item)
+        end
+      end
     end
 
     context 'reader' do
-      subject(:ability){ Ability.new(reader) }
+      subject(:ability){ Ability.new(reader, nil) }
 
       it 'not be allowed: to manage' do
         [:update, :write].each do |perm|
@@ -130,7 +152,7 @@ describe Ability do
     end
 
     context 'editor' do
-      subject(:ability){ Ability.new(editor) }
+      subject(:ability){ Ability.new(editor, nil) }
 
       it 'be allowed: to read and manage' do
         [:show, :write].each do |perm|
@@ -140,7 +162,7 @@ describe Ability do
     end
 
     context 'owner' do
-      subject(:ability){ Ability.new(owner) }
+      subject(:ability){ Ability.new(owner, nil) }
 
       it 'be allowed: everything' do
         [:show, :update, :write].each do |perm|
@@ -161,7 +183,7 @@ describe Ability do
     end
 
     context 'guest' do
-      subject(:ability){ Ability.new(User.new) }
+      subject(:ability){ Ability.new(User.new, nil) }
 
       it 'not be allowed: anything' do
         [:show, :update, :write].each do |perm|
@@ -173,13 +195,13 @@ describe Ability do
     context 'reader, editor, owner' do
       it 'not be allowed: to write' do
         [reader, editor, owner].each do |role|
-          Ability.new(role).should_not be_able_to(:write, item)
+          Ability.new(role, nil).should_not be_able_to(:write, item)
         end
       end
 
       it 'be allowed: to read' do
         [reader, editor, owner].each do |role|
-          Ability.new(role).should be_able_to(:show, item)
+          Ability.new(role, nil).should be_able_to(:show, item)
         end
       end
     end
@@ -187,12 +209,12 @@ describe Ability do
     context 'update:' do
       it 'reader, editor should be allowed' do
         [reader, editor].each do |role|
-          Ability.new(role).should_not be_able_to(:update, item)
+          Ability.new(role, nil).should_not be_able_to(:update, item)
         end
       end
 
       it 'owner should not be allowed' do
-        Ability.new(owner).should be_able_to(:update, item)
+        Ability.new(owner, nil).should be_able_to(:update, item)
       end
     end
   end
@@ -202,7 +224,7 @@ describe Ability do
     let(:memberteam){ create(:team_user, user: other).team }
     let(:otherteam){  create(:team_user, user: other).team }
 
-    subject(:ability){ Ability.new(user) }
+    subject(:ability){ Ability.new(user, nil) }
 
     before do
       memberteam.users << user
@@ -241,7 +263,7 @@ describe Ability do
     let(:comment){ create :comment }
 
     context 'author' do
-      subject(:ability){ Ability.new(comment.user) }
+      subject(:ability){ Ability.new(comment.user, nil) }
 
       it 'destroy his own comment' do
         should be_able_to(:destroy, comment)
@@ -253,7 +275,7 @@ describe Ability do
     end
 
     context 'admin' do
-      subject(:ability){ Ability.new(create :admin) }
+      subject(:ability){ Ability.new(create(:admin), nil) }
 
       it 'destroy others comment' do
         should be_able_to(:destroy, comment)
@@ -261,7 +283,7 @@ describe Ability do
     end
 
     context 'comments repository owner' do
-      subject(:ability){ Ability.new(owner) }
+      subject(:ability){ Ability.new(owner, nil) }
 
       before do
         create(:permission, subject: owner, role: 'owner', item: comment.commentable.repository)
@@ -273,7 +295,7 @@ describe Ability do
     end
 
     context 'comments repository editor' do
-      subject(:ability){ Ability.new(owner) }
+      subject(:ability){ Ability.new(owner, nil) }
       before do
         create(:permission, subject: owner, role: 'editor', item: comment.commentable.repository)
       end

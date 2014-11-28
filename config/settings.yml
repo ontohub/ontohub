@@ -60,6 +60,9 @@ git:
     commits: 1
     changed_files_per_commit: 5
 
+access_token:
+  expiration_minutes: 360
+
 allowed_iri_schemes:
   - http
   - https

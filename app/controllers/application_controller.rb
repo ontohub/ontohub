@@ -40,6 +40,10 @@ class ApplicationController < ActionController::Base
 
   protected
 
+  def current_ability
+      @current_ability ||= Ability.new(current_user, params[:"access-token"])
+  end
+
   def authenticate_admin!
     unless admin?
       flash[:error] = 'you need admin privileges for this action'
