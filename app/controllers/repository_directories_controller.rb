@@ -8,17 +8,18 @@ class RepositoryDirectoriesController < InheritedResources::Base
   def create
     if resource.valid?
       resource.save
-      flash[:success] = "Successfully created the subdirectory."
-      redirect_to fancy_repository_path(repository, path: resource.target_path)
+      render partial: 'files/link_to_file', locals: {entry: resource},
+        status: 201
     else
-      render :new
+      render partial: 'form', status: 422
     end
   end
 
   protected
 
   def resource
-    @repository_directory ||= RepositoryDirectory.new(params.merge(user: current_user))
+    @repository_directory ||= RepositoryDirectory.new(params.merge(
+      user: current_user))
   end
 
   def repository

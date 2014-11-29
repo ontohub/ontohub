@@ -66,4 +66,9 @@ module FilesHelper
   def display_file?
     resource.size <= Settings.max_read_filesize
   end
+
+  def new_repository_directory
+    RepositoryDirectory.new(params.merge(
+      repository_directory: {target_directory: dirpath(repository)}))
+  end
 end
