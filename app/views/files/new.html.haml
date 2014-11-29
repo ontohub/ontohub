@@ -1,9 +1,13 @@
 %h1 Upload file to repository
 
 = simple_form_for resource, url: repository_files_path(repository), html: { class: 'form-horizontal', multipart: true } do |f|
-  = f.input :temp_file, as: :file, label: "File"
-  = f.input :target_directory, placeholder: "leave this blank if you want to use the root directory"
-  = f.input :target_filename, placeholder: "leave this blank if you do not want to change the filename"
-  = f.input :message, as: :text, input_html: { rows: 5 }
+  = field_set_tag 'File upload' do
+    = f.collection_radio_buttons :file_upload_type, [['local', 'local'], ['remote', 'remote']], :first, :last, label: "File upload type"
+    = f.input :temp_file, as: :file, label: "File", wrapper_html: {id: 'group-file_upload_local'}
+    = f.input :remote_file_iri, as: :string, label: 'remote location', wrapper_html: {id: 'group-file_upload_remote', style: 'display: none'}
+    = f.input :target_directory, placeholder: "leave this blank if you want to use the root directory"
+    = f.input :target_filename, placeholder: "leave this blank if you do not want to change the filename"
+  = field_set_tag 'Commit information' do
+    = f.input :message, as: :text, input_html: { rows: 5 }
 
   = f.submit 'Upload File', class: 'btn btn-primary'

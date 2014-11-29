@@ -14,7 +14,8 @@ class RepositoryFile < FakeRecord
     :oid, :file?, :dir?, :type, to: :file
 
   # only for new/edit
-  attr_reader :message, :temp_file, :target_directory, :target_filename
+  attr_reader :message, :target_directory, :target_filename
+  attr_reader :temp_file, :remote_file_iri, :file_upload_type
   validates :message, :temp_file, presence: true
   validates_with PathValidator, :if => :temp_file_exists?
 
