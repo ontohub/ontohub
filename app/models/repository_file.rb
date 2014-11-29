@@ -16,7 +16,9 @@ class RepositoryFile < FakeRecord
   # only for new/edit
   attr_reader :message, :target_directory, :target_filename
   attr_reader :temp_file, :remote_file_iri, :file_upload_type
-  validates :message, :temp_file, presence: true
+  validates :message, presence: true
+  validates :temp_file, presence: true, unless: :remote_file_iri?
+  validates :remote_file_iri, presence: true, unless: :temp_file?
   validates_with PathValidator, :if => :temp_file_exists?
 
   def self.find_with_path(opts)
@@ -123,6 +125,14 @@ class RepositoryFile < FakeRecord
 
   def temp_file_exists?
     temp_file.present?
+  end
+
+  def temp_file?
+    !temp_file.nil?
+  end
+
+  def remote_file_iri?
+    !remote_file_iri.nil?
   end
 
   protected
