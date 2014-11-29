@@ -25,7 +25,8 @@ describe "svn import" do
     Subprocess.run SCRIPT_SVN_CREATE_REPO, svn_baredir, svn_workdir
     Subprocess.run SCRIPT_SVN_ADD_COMMITS, svn_workdir, commit_count
 
-    @repository = Repository.import_remote('svn', user, svn_url, 'local import', description: 'just an imported repo')
+    @repository = Repository.import_remote('svn', user, svn_url, 'local import',
+      description: 'just an imported repo', remote_type: 'mirror')
 
     # Run clone job
     Worker.drain

@@ -51,7 +51,10 @@ describe SSHAccessController do
   end
 
   context 'should return false-permission on valid request with write to mirror' do
-    let(:repository) { create :repository, source_address: 'http://some_source_address.example.com', source_type: 'git' }
+    let(:repository) { create :repository,
+      source_address: 'http://some_source_address.example.com',
+      source_type: 'git',
+      remote_type: 'mirror' }
     let!(:key) { create :key, user: user }
     before do
       get :index, repository_id: repository.to_param, key_id: key.id.to_s, permission: 'write'
