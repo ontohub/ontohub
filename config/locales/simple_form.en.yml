@@ -38,3 +38,5 @@ en:
       metadatum:
         key: URI
         value: Value
+      repository_directory:
+        name: Directory name

@@ -17,13 +17,14 @@ describe Ontology do
   context 'when deleting' do
     context 'a general ontology' do
       let(:ontology) { create :ontology }
+      let(:file) { ontology.path }
+      let(:repository) { ontology.repository }
+
+      before do
+        repository.git.commit_file(repository.user_info(user), 'file deletion test', file, 'add file')
+      end
 
       it 'should delete the defining file as well' do
-        file = ontology.path
-        repository = ontology.repository
-
-        repository.git.commit_file(repository.user_info(user), 'file deletion test', file, 'add file')
-
         expect(repository.path_exists?(file)).to be(true)
         ontology.destroy_with_parent(user)
         expect(repository.path_exists?(file)).to be(false)

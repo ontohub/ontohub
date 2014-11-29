@@ -45,6 +45,8 @@ class GitRepository
   end
 
   def path_exists?(path, commit_oid = nil)
+    return true if path == '/' || path.empty?
+    return false if empty?
     rugged_commit = get_commit(commit_oid)
     if !rugged_commit && path.empty?
       true

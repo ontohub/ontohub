@@ -53,7 +53,8 @@ module Repository::GitRepositories
     commit = nil
     name = user ? user.name : Settings.fallback_commit_user
     email = user ? user.email : Settings.fallback_commit_email
-    git.add_file({email: email, name: name}, tmp_file, filepath, message) do |commit_oid|
+    userdata = {email: email, name: name}
+    git.add_file(userdata, tmp_file, filepath, message) do |commit_oid|
       commit = commit_oid
     end
     touch
