@@ -75,12 +75,23 @@ en:
         it would leave the %{item} with too few owners.
         The threshold level is: %{minimal_count}.
   files:
+    delete:
+      button_text: Delete File
+      header_text: Are you sure about deleting the file?
+      body_text:
+        If you delete the file %{path}, only the file is deleted from the repository.
+        The containing ontologies will still be accessible, but the file cannot be referenced any more from other ontology files.
     discard: Discard
     discard_confirmation: You made changes to the code. Are you sure you want to discard them?
     discard_desc: |
       If you discard the changes, the textarea on the left will be reset to the previous state.
 
       This action is irreversible!
+  ontology:
+    deleted:
+      label: File deleted
+      info: The defining file %{path} of this %{oms} was deleted. However, you can check the
+      last_file_version: last version of that file
   sentences:
     index:
       display_only_self_defined_sentences:

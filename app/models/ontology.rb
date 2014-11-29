@@ -43,6 +43,7 @@ class Ontology < ActiveRecord::Base
   has_and_belongs_to_many :license_models
 
   attr_accessible :iri, :name, :description, :acronym, :documentation,
+                  :has_file,
                   :logic_id,
                   :category_ids,
                   :acronym,
@@ -266,6 +267,23 @@ class Ontology < ActiveRecord::Base
 
   def file_in_repository
     repository.get_file(path)
+  end
+
+  def file_deleted?(commit_oid = nil)
+    !has_file?(commit_oid)
+  end
+
+  # alias_method doesn't work for this one.
+  def has_file?(commit_oid = nil)
+    has_file(commit_oid)
+  end
+
+  def has_file(commit_oid = nil)
+    if repository.is_head?(commit_oid)
+      read_attribute(:has_file)
+    else
+      repository.path_exists?(path, commit_oid)
+    end
   end
 
   protected
