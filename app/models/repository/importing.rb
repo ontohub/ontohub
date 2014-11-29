@@ -94,7 +94,7 @@ module Repository::Importing
     suspended_save_ontologies \
       start_oid:  range.current,
       stop_oid:   range.previous,
-      walk_order: Rugged::SORT_REVERSE
+      walk_order: :reverse
   end
 
   module ClassMethods

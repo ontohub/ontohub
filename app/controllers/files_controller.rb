@@ -49,11 +49,18 @@ class FilesController < InheritedResources::Base
   def update
     @repository_file = resource_class.create(params.merge(user: current_user))
     if resource.valid?
-      flash[:success] = "Successfully changed the file."
+      flash[:success] = "Successfully changed the file #{params[:path]}."
       redirect_to fancy_repository_path(repository, path: resource.target_path)
     else
       render :show
     end
+  end
+
+  def destroy
+    repository.delete_file(params[:path], current_user)
+    flash[:success] = "Successfully deleted the file #{params[:path]}."
+    redirect_to(fancy_repository_path(repository,
+      path: repository.deepest_existing_dir(params[:path])))
   end
 
   protected

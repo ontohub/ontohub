@@ -51,7 +51,7 @@ module GitRepository::History
   #                     :path (file to show changes for)
   #                     :limit (max number of commits)
   #                     :offset (number of commits to skip)
-  #                     :walk_order (Rugged-Walkorder)
+  #                     :walk_order (:reverse, :topo or nil)
   def commits(start_oid: nil, stop_oid: nil, path: nil, limit: nil, offset: 0, walk_order: nil, &block)
     return [] if @repo.empty?
     start_oid ||= head_oid
@@ -59,7 +59,9 @@ module GitRepository::History
     stop_oid = nil if stop_oid =~ /\A0+\z/
 
     walker = Rugged::Walker.new(@repo)
-    walker.sorting(walk_order) if walk_order
+    if rwo = rugged_walk_order(walk_order)
+      walker.sorting(rwo)
+    end
     walker.push(start_oid)
     walker.hide(stop_oid) if stop_oid
 
@@ -67,6 +69,17 @@ module GitRepository::History
       commits_path(walker, limit, offset, path, &block)
     else
       commits_all(walker, limit, offset, &block)
+    end
+  end
+
+  def rugged_walk_order(walk_order)
+    case walk_order
+    when :reverse
+      Rugged::SORT_REVERSE
+    when :topo
+      Rugged::SORT_TOPO
+    else
+      nil
     end
   end
 
