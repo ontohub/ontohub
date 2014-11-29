@@ -11,12 +11,6 @@ describe OntologyVersion do
 
   let(:user) { create :user }
 
-  context 'Validating OntologyVersion' do
-    %w(http://example.com/ https://example.com/).each do |url|
-      it { should allow_value(url).for :source_url }
-    end
-  end
-
   context 'OntologyVersion' do
     let(:ontology_version) { create :ontology_version }
 
