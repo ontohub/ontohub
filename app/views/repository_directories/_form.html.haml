@@ -1,4 +1,7 @@
-= simple_form_for resource, url: repository_repository_directories_path(repository), remote: true, html: { class: 'form-inline' } do |f|
-  = f.input :target_directory, as: :hidden
-  = f.input :name, label: false, input_html: {class: 'input-sm'}
-  = f.submit 'Create subdirectory', class: 'btn btn-primary btn-sm'
+= form_for resource, url: repository_repository_directories_path(repository), remote: true, html: {class: 'form-horizontal'} do |f|
+  = f.hidden_field :target_directory
+  .form-group.string.required.repository_directory_name
+    .col-lg-9
+      = f.text_field :name, placeholder: "#{t('repository_directory.form.placeholder.name')} - #{t('repository_directory.form.hint.slashes')}", class: 'string required form-control input-sm'
+    .col-lg-3
+      = f.submit t('repository_directory.form.submit'), class: 'btn btn-primary btn-sm'
