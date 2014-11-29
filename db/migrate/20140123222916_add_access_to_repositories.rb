@@ -5,7 +5,7 @@ class AddAccessToRepositories < ActiveRecord::Migration
 
     # This is PostgreSQL specific. In SQLite for example, a boolean typechanged
     # into a string becomes 't' or 'f'.
-    Repository.find_each do |repo|
+    Repository.unscoped.find_each do |repo|
       repo.access = 'private'  if repo.access == 'true'
       repo.access = 'public_r' if repo.access == 'false'
       repo.save! if repo.changed?
@@ -13,7 +13,7 @@ class AddAccessToRepositories < ActiveRecord::Migration
   end
 
   def down
-    Repository.find_each do |repo|
+    Repository.unscoped.find_each do |repo|
       repo.access = 'true'  if repo.access == 'private'
       repo.access = 'false' if repo.access.start_with? 'public_'
       repo.save! if repo.changed?

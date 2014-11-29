@@ -11,6 +11,9 @@ class Repository < ActiveRecord::Base
 
   DEFAULT_CLONE_TYPE = 'git'
 
+  class Error < ::StandardError; end
+  class DeleteError < Error; end
+
   has_many :ontologies, dependent: :destroy
   has_many :url_maps, dependent: :destroy
 
@@ -18,7 +21,8 @@ class Repository < ActiveRecord::Base
                   :description,
                   :source_type,
                   :source_address,
-                  :access
+                  :access,
+                  :is_destroying
   attr_accessor :user
 
   after_save :clear_readers
