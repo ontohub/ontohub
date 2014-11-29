@@ -2,7 +2,10 @@ require 'spec_helper'
 
 describe SidetiqWorker do
 
-  subject!{ create :repository, source_address: 'remote.git', source_type: 'git' }
+  subject! do
+    create :repository, source_address: 'remote.git', source_type: 'git',
+      remote_type: 'mirror'
+  end
   before{ Worker.clear }
 
   shared_examples 'perform' do |state, minutes, created_jobs_count|

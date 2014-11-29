@@ -21,8 +21,9 @@ class Repository < ActiveRecord::Base
                   :description,
                   :source_type,
                   :source_address,
-                  :access,
                   :is_destroying
+                  :remote_type,
+                  :access
   attr_accessor :user
 
   after_save :clear_readers

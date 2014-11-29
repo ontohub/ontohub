@@ -12,7 +12,8 @@ class RepositoriesController < InheritedResources::Base
   end
 
   def update
-    params[:repository].except!(:source_address, :source_type, :name)
+    resource.convert_to_local! if params[:un_mirror]
+    params[:repository].except!(:source_address, :source_type, :remote_type, :name)
     super
   end
 
