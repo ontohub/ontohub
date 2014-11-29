@@ -21,14 +21,14 @@ describe Repository do
     end
   end
 
-  context 'when deleting a repository' do
+  context 'when deleting a repository', :process_jobs_synchronously do
     let (:ontology) { create :ontology, repository: repository }
 
     context 'with ontologies that import internally' do
       it 'should not raise an error' do
         importing = create :ontology, repository: repository
         create :link, target: importing, source: ontology, kind: 'import'
-        expect { repository.destroy }.not_to raise_error
+        expect { repository.destroy_asynchronously }.not_to raise_error
       end
     end
 
@@ -37,7 +37,8 @@ describe Repository do
         repository2 = create :repository
         importing   = create :ontology, repository: repository2
         create :link, target: importing, source: ontology, kind: 'import'
-        expect { repository.destroy }.to raise_error(Ontology::DeleteError)
+        expect { repository.destroy_asynchronously }.to(
+          raise_error(Repository::DeleteError))
       end
     end
   end
