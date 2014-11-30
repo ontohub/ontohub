@@ -71,6 +71,15 @@ class RepositoryFile < FakeRecord
     end
   end
 
+  def source_filename
+    case file_upload_type
+    when 'local'
+      temp_file.original_filename
+    when 'remote'
+      remote_file_iri.split('/').last
+    end
+  end
+
   def ontologies(child_name=nil)
     @ontologies ||= if file?
       ontos = repository.ontologies.with_path(path).parents_first
@@ -127,7 +136,7 @@ class RepositoryFile < FakeRecord
       if target_filename.present?
         target_filename
       else
-        temp_file.original_filename
+        source_filename
       end
     File.join(target_directory, filename).sub(/^\//, '')
   end
