@@ -20,7 +20,6 @@ class LogicsController < InheritedResources::Base
     end
   end
 
-
   def show
     @tab = params[:tab].try(:to_sym)
     super do |format|
@@ -60,6 +59,4 @@ class LogicsController < InheritedResources::Base
   def all_logics?
     params[:all].present?
   end
-
-
 end
