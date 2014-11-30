@@ -67,7 +67,6 @@ class Logic < ActiveRecord::Base
     LogicMapping.find_all_by_target_id self.id
   end
 
-
   def to_param
     slug
   end
@@ -86,5 +85,4 @@ class Logic < ActiveRecord::Base
            '*' => 'Star',
            '=' => 'Eq')
   end
-
 end
