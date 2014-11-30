@@ -153,6 +153,10 @@ class RepositoryFile < FakeRecord
     !remote_file_iri.nil?
   end
 
+  def retrieve(iri)
+    FileRetriever.new(store_as: :tempfile).call(iri)
+  end
+
   protected
 
   def self.manipulating_file?(opts)
