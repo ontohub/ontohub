@@ -59,7 +59,16 @@ class RepositoryFile < FakeRecord
 
   def save!
     raise RecordNotSavedError unless valid?
-    repository.save_file(temp_file.path, target_path, message, user)
+    repository.save_file(source_file.path, target_path, message, user)
+  end
+
+  def source_file
+    case file_upload_type
+    when 'local'
+      temp_file
+    when 'remote'
+      @remote_file ||= retrieve(remote_file_iri)
+    end
   end
 
   def ontologies(child_name=nil)
@@ -146,7 +155,10 @@ class RepositoryFile < FakeRecord
   end
 
   def self.editing_file?(opts)
-    opts[:path].present? && (opts[:content].present? || opts[:temp_file].present?)
+    opts[:path].present? &&
+      (opts[:content].present? ||
+       opts[:temp_file].present? ||
+       opts[:remote_file_iri].present?)
   end
 
   def initialize_for_read(opts)
@@ -173,6 +185,8 @@ class RepositoryFile < FakeRecord
       @target_filename  = opts[:target_filename]
     end
     @temp_file  = opts[:temp_file]
+    @file_upload_type = opts[:file_upload_type]
+    @remote_file_iri = opts[:remote_file_iri]
   end
 
   def initialize_for_already_loaded_file(opts)
