@@ -35,6 +35,9 @@ class LogicsController < InheritedResources::Base
           :association => :language,
           :scope       => [Language]
       end
+      format.xml do
+        render :show, content_type: 'application/rdf+xml'
+      end
     end
   end
 
