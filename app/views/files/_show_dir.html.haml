@@ -1,4 +1,4 @@
-%table.table.table-condensed.table-hover.file-table
+%table.table.table-condensed.table-hover.file-table#directory-listing
   %tbody
     %tr#repository_directories_form_line_prototype
       %td
@@ -6,6 +6,12 @@
         %i.icon-folder-close
       %td{colspan: 3}
         = render partial: 'repository_directories/form', locals: { resource: new_repository_directory }
+    %tr#repository_directories_line_prototype
+      %td
+      %td.icon
+        %i.icon-folder-close
+      %td{colspan: 3}
+        %a
     - if resource.content.empty?
       %tr#empty_repository_hint
         %td{colspan: 5} This directory is empty.
@@ -30,6 +36,9 @@
               - else
                 %i.glyphicon.glyphicon-file
           %td.name
-            = render partial: 'link_to_file', locals: { entry: entry }
+            = link_to entry.name.force_encoding('UTF-8'), fancy_repository_path(repository, path: entry.path, ref: oid)
           %td.last-commit.muted
           %td.last-modified.muted
+
+#repository_directories_flash_message_prototype.flash.alert.alert-info
+  %a.close{data: {dismiss: 'alert'}} ×
