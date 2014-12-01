@@ -26,18 +26,24 @@ class RepositoryDirectoriesController < InheritedResources::Base
   end
 
   def create_json_data
-    created_directories = resource.created_directories
-    if created_directories.size > 1
-      additional_text = t('repository_directory.create_additional',
-        directories: created_directories.map { |d| "\"#{d}\"" }.join(', '))
-    end
+    success_message = t('repository_directory.create', name: resource)
+    success_message << " #{create_json_data_additional_text}"
+
     {
-      text: "#{t('repository_directory.create', name: resource.name)} #{additional_text}",
+      text: success_message,
       link: {
         url: fancy_repository_path(repository, path: resource.path),
-        text: resource.name
-      }
+        text: resource.name,
+      },
     }
+  end
+
+  def create_json_data_additional_text
+    created_directories = resource.created_directories
+    return if created_directories.size <= 1
+
+    t('repository_directory.create_additional',
+      directories: created_directories.map { |d| "\"#{d}\"" }.join(', '))
   end
 
   def check_read_permissions
