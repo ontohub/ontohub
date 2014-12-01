@@ -12,6 +12,18 @@ SimpleForm.setup do |config|
     end
   end
 
+  config.wrappers :'directory-create', tag: 'div', class: 'form-group col-lg-9',
+    error_class: 'has-error' do |b|
+    b.use :html5
+    b.use :placeholder
+    b.use :label
+    b.wrapper tag: 'div' do |ba|
+      ba.use :input
+      ba.use :error, wrap_with: {tag: 'span', class: 'help-inline'}
+      ba.use :hint,  wrap_with: {tag: 'p', class: 'help-block'}
+    end
+  end
+
   config.wrappers :prepend, tag: 'div', class: 'form-group',
     error_class: 'has-error' do |b|
     b.use :html5

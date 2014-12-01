@@ -2,6 +2,8 @@
 # and NOT for information retrieval like directory listing.
 # For the latter, see RepositoryFile.
 class RepositoryDirectory < FakeRecord
+  include Rails.application.routes.url_helpers
+
   class DirectoryPathValidator < ActiveModel::Validator
     def validate(record)
       if record.repository.points_through_file?(record.target_path)
@@ -37,6 +39,17 @@ class RepositoryDirectory < FakeRecord
     ensure
       temp_file.unlink
     end
+  end
+
+  def created_directories
+    dir_portions = []
+    dirs = []
+    name.split('/').each do |portion|
+      dir_portions << portion
+      dirs << dir_portions.join('/')
+    end
+
+    dirs
   end
 
   def to_s
