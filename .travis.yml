@@ -11,6 +11,7 @@ branches:
 
 services:
   - redis-server
+  - elasticsearch
 
 notifications:
   email: false
@@ -21,7 +22,7 @@ before_install:
   - 'gem install bundler'
 
 script:
-  - TEST_CLUSTER_COMMAND=/usr/share/elasticsearch/bin/elasticsearch TEST_CLUSTER_PARAMS='-Des.default.path.conf=/etc/elasticsearch/ -Des.default.path.logs==/var/log/elasticsearch/' bundle exec rake
+  - ELASTIC_TEST_PORT=9200 bundle exec rake
 
 before_script:
   - psql -c 'create database ontohub_test;' -U postgres
