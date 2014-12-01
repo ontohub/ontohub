@@ -62,7 +62,7 @@ en:
         slashes: Use slashes to directly create subdirectories.
   ontology:
     delete: Delete
-    delete_error: Can't delete an ontology that's imported by another one.
+    delete_error: Can't delete an %{oms} that's imported by another one.
     delete_confirm:
       text: "Really delete the ontology %{name}?\n\nThe %{parent_text}%{children_text}defining file %{path} will be deleted as well."
       parent: 'parent ontology including its children and the '
