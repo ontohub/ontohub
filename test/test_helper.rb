@@ -11,6 +11,9 @@ require 'mocha/mini_test'
 
 require Rails.root.join('config', 'database_cleaner.rb')
 
+WebMock.disable_net_connect!(allow_localhost: true)
+Elasticsearch::Model.client = Elasticsearch::Client.new host: 'localhost:9250'
+
 class ActiveSupport::TestCase
   # Add more helper methods to be used by all tests here...
 
