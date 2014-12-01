@@ -52,7 +52,7 @@ module Hets
     def initialize_handling
       self.parser = Parser.new(io || path)
       self.concurrency = ConcurrencyBalancer.new
-      self.versions = []
+      self.versions = Array(version)
       self.dgnode_stack = []
       self.ontology_aliases = {}
       self.now = Time.now
