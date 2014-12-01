@@ -8,8 +8,7 @@ class RepositoryDirectoriesController < InheritedResources::Base
   def create
     if resource.valid?
       resource.save
-      render partial: 'files/link_to_file', locals: {entry: resource},
-        status: 201
+      render json: create_json_data, status: 201
     else
       render partial: 'form', status: 422
     end
@@ -24,6 +23,21 @@ class RepositoryDirectoriesController < InheritedResources::Base
 
   def repository
     @repository ||= resource.repository
+  end
+
+  def create_json_data
+    created_directories = resource.created_directories
+    if created_directories.size > 1
+      additional_text = t('repository_directory.create_additional',
+        directories: created_directories.map { |d| "\"#{d}\"" }.join(', '))
+    end
+    {
+      text: "#{t('repository_directory.create', name: resource.name)} #{additional_text}",
+      link: {
+        url: fancy_repository_path(repository, path: resource.path),
+        text: resource.name
+      }
+    }
   end
 
   def check_read_permissions

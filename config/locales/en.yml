@@ -52,6 +52,8 @@ en:
       label: Un-mirror
       text: If you un-mirror this repository, it won't get synchronized with the remote reposoitory any more. There is no possibility to synchronize it ever again.
   repository_directory:
+    create: Successfully created directory "%{name}".
+    create_additional: "That is, the following directories have been created: %{directories}"
     form:
       submit: Create subdirectory
       placeholder:

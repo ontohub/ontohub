@@ -1,35 +1,32 @@
 $ ->
   if $('#repository_directories_form_line_prototype').length > 0
-    clone_and_prepend_to = (source_matcher, target_matcher, callback) ->
+    clone_element = (source_matcher) ->
       source_el = $($(source_matcher)[0])
-      target_el = $($(target_matcher)[0])
       clone_el = source_el.clone()
       clone_el.attr('id', null)
+      clone_el
+
+    clone_and_prepend_to = (source_matcher, target_matcher, callback) ->
+      target_el = $($(target_matcher)[0])
+      clone_el = clone_element(source_matcher)
       clone_el.prependTo(target_el)
       callback(clone_el) if callback
-
-    format_error_messages = (error_json) ->
-      _.each(error_json, (messages, key) ->
-        error_json[key] = _.reduce(messages, (acc, msg) ->
-          return acc + msg + "\n"
-        , "").trim()
-      )
 
     setup_form_clone = (clone_el) ->
       setup_form_submission_handling(clone_el)
       animateIn(clone_el)
       $('input[name="repository_directory[name]"]', clone_el).focus()
 
-    remove_form_clone = (form_el, callback) ->
-      animateOut(form_el, () ->
-        form_el.remove()
+    remove_form_clone = (remove_el, callback) ->
+      animateOut(remove_el, () ->
+        remove_el.remove()
         callback() if callback
       )
 
-    add_to_table = (directory_link, parent) ->
-      directory_el = $(directory_link)
-      parent.append(directory_el)
-      animateIn(directory_el)
+    add_to_table = (link_el) ->
+      table = $('#directory-listing')
+      table.prepend(link_el)
+      animateIn(link_el)
 
     animateIn = (element) ->
       element.stop(true, true).fadeIn({queue: false}).
@@ -42,14 +39,31 @@ $ ->
       hint_line = $('#empty_repository_hint')
       animateOut(hint_line)
 
+    show_flash_message = (message) ->
+      flash_messages_el = $('.flash-messages')
+      flash_prototype_el = $('#repository_directories_flash_message_prototype')
+      clone_and_prepend_to(flash_prototype_el, flash_messages_el, (clone_el) ->
+          clone_el.append(message)
+        )
+
+    directory_link = (link) ->
+      line_el = clone_element('#repository_directories_line_prototype')
+      anchor_el = $('a', line_el)
+      anchor_el.attr('href', link.url)
+      anchor_el.html(link.text)
+      console.log(line_el)
+      line_el
+
     handle_form_submission = (event) ->
       form = $(this)
       values = form.serialize()
 
-      success_callback = (html, text_status, jqXHR) ->
-        parent = form.parent()
-        remove_form_clone(form, () -> add_to_table(html, parent))
+      success_callback = (json, text_status, jqXHR) ->
+        html = json.html
+        form_tr = form.parent().parent()
+        remove_form_clone(form_tr, () -> add_to_table(directory_link(json.link)))
         remove_empty_repository_hint()
+        show_flash_message(json.text)
 
       error_callback = (jqXHR) ->
         form.html(jqXHR.responseText)
