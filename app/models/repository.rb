@@ -21,7 +21,7 @@ class Repository < ActiveRecord::Base
                   :description,
                   :source_type,
                   :source_address,
-                  :is_destroying
+                  :is_destroying,
                   :remote_type,
                   :access
   attr_accessor :user
