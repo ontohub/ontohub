@@ -26,6 +26,10 @@ module Hets
       end
       hets_evaluator.ontologies.each(&:create_translated_sentences)
       update_ontologies_per_logic_count!(hets_evaluator.ontologies)
+      hets_evaluator.ontologies.each do |ontology|
+        ontology.__elasticsearch__.index_document
+        ontology.__elasticsearch__.update_document
+      end
     end
 
     def ontology_start(current_element)
