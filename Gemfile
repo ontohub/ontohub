@@ -31,6 +31,7 @@ group :assets do
   gem 'handlebars_assets', '~> 0.14.1'
   gem 'hamlbars', '~> 2.1.1'
   gem 'underscore-rails', '~> 1.6.0'
+  gem 'bootstrap-select-rails', '~> 1.6.2'
 end
 
 gem 'haml-rails', '~> 0.4'
@@ -78,8 +79,11 @@ gem 'sidekiq-failures', '~> 0.4.3'
 gem 'sinatra', '~> 1.4.5', require: false, group: [:development, :production]
 
 # Search engine
-gem 'sunspot_rails', :git => 'git://github.com/digineo/sunspot.git'
 gem 'progress_bar', '~> 1.0.2'
+gem 'elasticsearch-model', '~> 0.1.4'
+gem 'elasticsearch-rails', '~> 0.1.4'
+gem 'elasticsearch', '~> 1.0.4'
+gem 'elasticsearch-extensions', '~> 0.0.15'
 
 # Graph visualization
 gem 'ruby-graphviz', "~> 1.0.8"
@@ -122,8 +126,6 @@ group :test do
 end
 
 group :development do
-  # pre-packaged Solr distribution for use in development
-  gem 'sunspot_solr', :git => 'git://github.com/digineo/sunspot.git'
   gem "rails-erd", '~> 1.1.0'
   gem 'quiet_assets', '~> 1.0.3'
   gem 'invoker', '~> 1.2.0'

@@ -13,6 +13,10 @@ require Rails.root.join('config', 'database_cleaner.rb')
 require 'addressable/template'
 require 'webmock/rspec'
 
+WebMock.disable_net_connect!(allow_localhost: true)
+elasticsearch_port = ENV['ELASTIC_TEST_PORT'].present? ? ENV['ELASTIC_TEST_PORT'] : '9250'
+Elasticsearch::Model.client = Elasticsearch::Client.new host: "localhost:#{elasticsearch_port}"
+
 # Requires supporting ruby files with custom matchers and macros, etc,
 # in spec/support/ and its subdirectories.
 Dir[Rails.root.join("spec/support/**/*.rb")].each { |f| require f }

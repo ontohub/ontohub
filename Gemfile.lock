@@ -5,20 +5,6 @@ GIT
     ontology-united (0.0.2)
 
 GIT
-  remote: git://github.com/digineo/sunspot.git
-  revision: 122f7c60207b9539903f06a66ce35a01cb1bf481
-  specs:
-    sunspot (2.0.0.pre.111215)
-      escape (~> 0.0.4)
-      pr_geohash (~> 1.0)
-      rsolr (~> 1.0.6)
-    sunspot_rails (2.0.0.pre.111215)
-      nokogiri
-      sunspot (= 2.0.0.pre.111215)
-    sunspot_solr (2.0.0.pre.111215)
-      escape (~> 0.0.4)
-
-GIT
   remote: git://github.com/llwt/codemirror-rails.git
   revision: df5231e3053773e37b27f8181738c7080cd1c3cd
   specs:
@@ -66,6 +52,7 @@ GEM
     acts_as_tree (2.0.0)
       activerecord (>= 3.0.0)
     addressable (2.3.6)
+    ansi (1.4.3)
     arel (3.0.3)
     bcrypt (3.1.7)
     better_errors (1.1.0)
@@ -75,6 +62,7 @@ GEM
       debug_inspector (>= 0.0.1)
     bootstrap-sass (3.0.3.0)
       sass (~> 3.2)
+    bootstrap-select-rails (1.6.2)
     builder (3.0.4)
     byebug (3.4.0)
       columnize (~> 0.8)
@@ -158,10 +146,25 @@ GEM
       json
       thread
       thread_safe
+    elasticsearch (1.0.5)
+      elasticsearch-api (= 1.0.5)
+      elasticsearch-transport (= 1.0.5)
+    elasticsearch-api (1.0.5)
+      multi_json
+    elasticsearch-extensions (0.0.15)
+      ansi
+      ruby-prof
+    elasticsearch-model (0.1.6)
+      activesupport (> 3)
+      elasticsearch (> 0.4)
+      hashie
+    elasticsearch-rails (0.1.6)
+    elasticsearch-transport (1.0.5)
+      faraday
+      multi_json
     em-proxy (0.1.8)
       eventmachine
     erubis (2.7.0)
-    escape (0.0.4)
     eventmachine (1.0.3)
     exception_notification (4.0.1)
       actionmailer (>= 3.0.4)
@@ -176,6 +179,8 @@ GEM
       railties (>= 3.0.0)
     faker (1.4.2)
       i18n (~> 0.5)
+    faraday (0.9.0)
+      multipart-post (>= 1.2, < 3)
     font_awesome (3.101.0)
     foreigner (1.6.1)
       activerecord (>= 3.0.0)
@@ -203,6 +208,7 @@ GEM
     has_scope (0.6.0.rc)
       actionpack (>= 3.2, < 5)
       activesupport (>= 3.2, < 5)
+    hashie (3.3.1)
     highline (1.6.21)
     hike (1.2.3)
     htmlentities (4.3.2)
@@ -265,6 +271,7 @@ GEM
       railties (>= 3.1)
     multi_json (1.10.1)
     multi_test (0.1.1)
+    multipart-post (2.0.0)
     net-scp (1.2.1)
       net-ssh (>= 2.6.5)
     net-ssh (2.9.1)
@@ -275,7 +282,6 @@ GEM
     orm_adapter (0.5.0)
     pg (0.17.1)
     polyglot (0.3.5)
-    pr_geohash (1.0.0)
     progress_bar (1.0.2)
       highline (~> 1.6.1)
       options (~> 2.3.0)
@@ -351,8 +357,6 @@ GEM
     rest-client (1.7.2)
       mime-types (>= 1.16, < 3.0)
       netrc (~> 0.7)
-    rsolr (1.0.10)
-      builder (>= 2.1.2)
     rspec-collection_matchers (1.0.0)
       rspec-expectations (>= 2.99.0.beta1)
     rspec-core (2.99.1)
@@ -369,6 +373,7 @@ GEM
       rspec-expectations (~> 2.99.0)
       rspec-mocks (~> 2.99.0)
     ruby-graphviz (1.0.9)
+    ruby-prof (0.15.1)
     rubydns (0.8.5)
       eventmachine (~> 1.0.0)
     rugged (0.21.0)
@@ -465,6 +470,7 @@ DEPENDENCIES
   better_errors (~> 1.1.0)
   binding_of_caller (~> 0.7.2)
   bootstrap-sass (~> 3.0.0)
+  bootstrap-select-rails (~> 1.6.2)
   cancan (~> 1.6.7)
   capistrano (~> 3.1.0)
   capistrano-rails (~> 1.1.1)
@@ -479,6 +485,10 @@ DEPENDENCIES
   dagnabit (~> 3.0.1)
   database_cleaner (~> 1.3.0)
   devise (~> 3.2.4)
+  elasticsearch (~> 1.0.4)
+  elasticsearch-extensions (~> 0.0.15)
+  elasticsearch-model (~> 0.1.4)
+  elasticsearch-rails (~> 0.1.4)
   exception_notification (~> 4.0.1)
   factory_girl_rails (~> 4.4.1)
   faker (~> 1.2)
@@ -531,8 +541,6 @@ DEPENDENCIES
   simplecov (~> 0.9.0)
   sinatra (~> 1.4.5)
   strip_attributes (~> 1.0)
-  sunspot_rails!
-  sunspot_solr!
   therubyracer (~> 0.12.1)
   uglifier (>= 1.0.3)
   underscore-rails (~> 1.6.0)

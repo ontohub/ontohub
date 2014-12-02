@@ -1,8 +1,1 @@
-%h2= @page_title = Settings.OMS.pluralize.capitalize
-
-%p
-  = pluralize @count, Settings.OMS
-  currently available
-
-.clearfix
-#OntologySearch{pagination: 'paginated', role: 'filter'}
+= render "/shared/ontology_search"

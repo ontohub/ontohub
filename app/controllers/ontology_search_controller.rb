@@ -1,42 +1,42 @@
-# Ontology search endpoints for the GWT search code.
 class OntologySearchController < ApplicationController
-  respond_to :json
-
-  def keywords
-    prefix = params[:prefix] || ''
-
-    if in_repository?
-      respond_with OntologySearch.new.make_repository_keyword_list_json(repository, prefix)
-    else
-      respond_with OntologySearch.new.make_global_keyword_list_json(prefix)
-    end
-  end
 
   def search
-    keywords = params[:keywords] || []
+    @search_response = paginate_for(search_response)
+    render 'shared/_ontology_search'
+  end
 
-    begin
-      keywords = keywords.map { |keyword| JSON.parse(keyword) }
-    rescue
-      raise ActionController::RoutingError.new('Not Found')
-    end
-
-    page = params[:page].to_i
-
-    if in_repository?
-      respond_with OntologySearch.new.make_bean_list_json(repository, keywords, page)
+  def search_response
+    if params[:query].present?
+      @search_response = Ontology.search(params[:query]).records
     else
-      respond_with OntologySearch.new.make_bean_list_json(nil, keywords, page)
+      @search_response = Ontology.scoped
     end
+    refine_search_response
+    @search_response
   end
 
-  def filters_map
-    respond_with OntologySearch.new.make_filters_map_json
-  end
+  def refine_search_response
+    if params[:ontology_type].present?
+      @search_response = @search_response.
+        filter_by_ontology_type(params[:ontology_type])
+    end
 
-  private
+    if params[:project].present?
+      @search_response = @search_response.filter_by_project(params[:project])
+    end
 
-  def repository
-    Repository.find_by_path params[:repository_id]
+    if params[:formality_level].present?
+      @search_response = @search_response.
+        filter_by_formality(params[:formality_level])
+    end
+
+    if params[:license].present?
+      @search_response = @search_response.filter_by_license(params[:license])
+    end
+
+    if params[:task].present?
+      @search_response = @search_response.filter_by_task(params[:task])
+    end
+    @search_response
   end
 end

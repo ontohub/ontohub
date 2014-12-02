@@ -1,5 +1,7 @@
 class OntologyType < ActiveRecord::Base
 
+  scope :not_empty, joins(:ontologies).group('ontology_types.id')
+
   has_many :ontologies
 
   attr_accessible :name, :description, :documentation
@@ -15,5 +17,9 @@ class OntologyType < ActiveRecord::Base
 
   def to_s
     name
+  end
+
+  def name_with_ontology_count
+    "#{self} (#{self.ontologies.count})"
   end
 end

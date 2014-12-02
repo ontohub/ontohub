@@ -11,6 +11,7 @@ branches:
 
 services:
   - redis-server
+  - elasticsearch
 
 notifications:
   email: false
@@ -21,7 +22,7 @@ before_install:
   - 'gem install bundler'
 
 script:
-  - bundle exec rake
+  - ELASTIC_TEST_PORT=9200 bundle exec rake
 
 before_script:
   - psql -c 'create database ontohub_test;' -U postgres
@@ -32,4 +33,3 @@ before_script:
   - sudo apt-get install libsane libgphoto2-2 hets-core subversion udrawgraph git-svn
   - sudo hets -update
   - RAILS_ENV=test bundle exec rake db:migrate || true
-  - RAILS_ENV=test bundle exec rake sunspot:solr:start
