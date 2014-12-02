@@ -1,5 +1,24 @@
 #!/bin/bash
 
+abort_unless_invoker_installed() {
+  result=`which invoker 2>&1`
+  if [[ "$?" -ne "0" ]]; then
+    echo ">>> Invoker not installed, please install"
+    exit 1
+  fi
+}
+
+initialize_new_invoker_instance() {
+  result=`invoker list 2>&1`
+  if [[ "$?" -eq "0" ]]; then
+    echo ">>> Invoker running, restarting..."
+    result=`invoker stop 2>&1`
+  else
+    echo ">>> Invoker not running, starting..."
+  fi
+  invoker start invoker.ini --daemon
+}
+
 execute_or_die() {
   cmd="$1"
   echo ">>> Executing '$cmd'"
@@ -11,6 +30,9 @@ execute_or_die() {
     exit 1
   fi
 }
+
+abort_unless_invoker_installed
+initialize_new_invoker_instance
 
 execute_or_die "rake elasticsearch:wipe"
 execute_or_die "rake db:migrate:clean"
