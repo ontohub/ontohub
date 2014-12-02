@@ -1,0 +1,18 @@
+#!/bin/bash
+
+execute_or_die() {
+  cmd="$1"
+  echo ">>> Executing '$cmd'"
+  result=`$cmd 2>&1`
+  state="$?"
+  if [[ "$state" -ne "0" ]]; then
+    echo "$result"
+    echo ">>> Failed to execute '$cmd', aborting further commands."
+    exit 1
+  fi
+}
+
+execute_or_die "rake elasticsearch:wipe"
+execute_or_die "rake db:migrate:clean"
+execute_or_die "redis-cli flushdb"
+execute_or_die "rake db:seed"
