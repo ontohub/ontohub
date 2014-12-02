@@ -53,17 +53,20 @@ class OntologiesController < InheritedResources::Base
     if !params[:repository_id]
       # redirect for legacy routing
       ontology = Ontology.find params[:id]
-      redirect_to [ontology.repository, ontology]
+      redirect_to [ontology.repository, ontology, params_to_pass_on_redirect]
       return
     end
 
     respond_to do |format|
       format.html do
-        if !resource.distributed?
-          redirect_to repository_ontology_entities_path(parent, resource,
-                       :kind => resource.entities.groups_by_kind.first.kind)
+        if resource.distributed?
+          redirect_to repository_ontology_children_path(parent, resource,
+            params_to_pass_on_redirect.merge(
+              kind: resource.entities.groups_by_kind.first.kind))
         else
-          redirect_to repository_ontology_children_path(parent, resource)
+          redirect_to repository_ontology_entities_path(parent, resource,
+            params_to_pass_on_redirect.merge(
+              kind: resource.entities.groups_by_kind.first.kind))
         end
       end
       format.json do
