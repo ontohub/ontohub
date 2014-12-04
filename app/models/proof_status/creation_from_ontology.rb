@@ -10,7 +10,7 @@ class ProofStatus
       def refresh_statuses
         old_statuses = ProofStatus.all.map(&:identifier)
         new_statuses = statuses
-        (old_statuses - new_statuses).each { |s| s.destroy }
+        (old_statuses - new_statuses).each(&:destroy)
 
         new_statuses.each { |status| refresh(status) }
       end
