@@ -103,7 +103,10 @@ module NavigationHelper
         'active' if controller == :repositories
       end
     else
-      'active' if [controller.to_s, controller.to_s.gsub('_', '/')].include?(params[:controller])
+      if [controller.to_s, controller.to_s.gsub('_', '/')].
+        include?(params[:controller])
+        'active'
+      end
     end
   end
 
