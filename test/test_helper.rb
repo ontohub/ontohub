@@ -11,6 +11,10 @@ require 'mocha/mini_test'
 
 require Rails.root.join('config', 'database_cleaner.rb')
 
+WebMock.disable_net_connect!(allow_localhost: true)
+elasticsearch_port = ENV['ELASTIC_TEST_PORT'].present? ? ENV['ELASTIC_TEST_PORT'] : '9250'
+Elasticsearch::Model.client = Elasticsearch::Client.new host: "localhost:#{elasticsearch_port}"
+
 class ActiveSupport::TestCase
   # Add more helper methods to be used by all tests here...
 
@@ -63,6 +67,3 @@ VCR.configure do |c|
     'colore.googlecode.com',
     'trac.informatik.uni-bremen.de'
 end
-
-# disable sunspot during tests
-Sunspot.session = Sunspot::Rails::StubSessionProxy.new(Sunspot.session)

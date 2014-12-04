@@ -18,8 +18,8 @@ module Hets
       @env          = yaml['env'] || {}
       @yaml         = yaml
 
-      raise DeploymentError, 'Could not find hets'     unless @path
-      raise DeploymentError, 'Hets library not found.' unless @library_path
+      raise Hets::DeploymentError, 'Could not find hets'     unless @path
+      raise Hets::DeploymentError, 'Hets library not found.' unless @library_path
 
       check_validity_of_version(yaml['version_minimum_revision'])
 

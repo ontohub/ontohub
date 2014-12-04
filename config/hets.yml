@@ -16,6 +16,7 @@ hets_lib:
   - /usr/local/opt/hets-lib
   - /usr/local/opt/hets-binary/Hets.app/Contents/Resources/Hets-lib
   - /Applications/Hets.app/Contents/Resources/Hets-lib
+  - /opt/hets-lib
 hets_owl_tools:
   - /usr/lib/hets/hets-owl-tools
   - ~/dev/hets/OWL2

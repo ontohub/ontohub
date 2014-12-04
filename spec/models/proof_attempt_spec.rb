@@ -13,7 +13,7 @@ describe ProofAttempt do
     before do
       allow(theorem).to receive(:update_proof_status)
       proof_attempt.proof_status = ProofStatus.find('SOL')
-      proof_attempt.save
+      proof_attempt.save!
     end
 
     it 'calls update_status on the theorem' do
