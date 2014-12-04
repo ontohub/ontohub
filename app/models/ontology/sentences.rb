@@ -9,6 +9,7 @@ module Ontology::Sentences
     has_many :theorems,
       autosave: false,
       extend: Methods
+
     include GraphStructures::SqlHelper
 
     def translated_sentences
