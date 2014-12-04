@@ -1,5 +1,5 @@
 class ProofStatus
-  module CreateFromOntology
+  module CreationFromOntology
     extend ActiveSupport::Concern
 
     module ClassMethods

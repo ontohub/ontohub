@@ -1,5 +1,5 @@
 class ProofStatus < ActiveRecord::Base
-  include ProofStatus::CreateFromOntology
+  include ProofStatus::CreationFromOntology
 
   self.primary_key = :identifier
 
