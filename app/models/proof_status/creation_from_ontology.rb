@@ -30,8 +30,8 @@ class ProofStatus
 
         return nil unless label_sentence
 
-        m = label_sentence.text.match(/#hasLabel[^#]+#(?<label>\w+)/)
-        m[:label]
+        match = label_sentence.text.match(/#hasLabel[^#]+#(?<label>\w+)/)
+        match[:label]
       end
 
       def proof_status_name(status)
@@ -73,8 +73,8 @@ class ProofStatus
         szs_ontology.sentences.
           where('text LIKE  ?', "Class: #{cls}%SubClassOf:%").
           each do |sentence|
-            m = sentence.text.match(/SubClassOf: (?<superclass>\w+)\z/)
-            result << m[:superclass] if m
+            match = sentence.text.match(/SubClassOf: (?<superclass>\w+)\z/)
+            result << match[:superclass] if m
           end
 
         result
@@ -96,8 +96,8 @@ class ProofStatus
         szs_ontology.sentences.
           where('text LIKE  ?', "Class: %SubClassOf: #{cls}").
           each do |sentence|
-            m = sentence.text.match(/^Class: (?<subclass>\w+)/)
-            result << m[:subclass] if m
+            match = sentence.text.match(/^Class: (?<subclass>\w+)/)
+            result << match[:subclass] if m
           end
 
         result
