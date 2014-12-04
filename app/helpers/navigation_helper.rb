@@ -126,7 +126,7 @@ module NavigationHelper
 
   # used for activating tabs in ontology view
   def in_metadata?
-    ontology_nav_metadata.map{ |m| m[1][-1].to_s }.include?(controller_name)
+    ontology_nav_metadata.map { |m| m[1][-1].to_s }.include?(controller_name)
   end
 
   protected
