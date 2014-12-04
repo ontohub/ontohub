@@ -1,5 +1,7 @@
 class LicenseModel < ActiveRecord::Base
 
+  scope :not_empty, joins(:ontologies).group('license_models.id')
+
   has_and_belongs_to_many :ontologies
 
   attr_accessible :name, :description, :url
@@ -19,4 +21,7 @@ class LicenseModel < ActiveRecord::Base
     name
   end
 
+  def name_with_ontology_count
+    "#{self} (#{self.ontologies.count})"
+  end
 end

@@ -21,19 +21,22 @@ class GraphsController < InheritedResources::Base
   end
 
   def graph_data
-    nodes_aggregate = nodes.reduce({}) do |mem, node|
-      mem[node.id] = node.aggregate
-      mem
-    end
-    data = {
+    {
       nodes: nodes,
       edges: edges,
       center: parent,
       node_url: nodes.any? ? url_for(graph_resource_chain) : nil,
       edge_url: edges.any? ? url_for(edges.first.class) : nil,
       edge_type: GraphDataFetcher.link_for(parent.class),
-      nodes_aggregate: nodes_aggregate
+      nodes_aggregate: nodes_aggregate,
     }
+  end
+
+  def nodes_aggregate
+    @nodes_aggregate ||= nodes.reduce({}) do |mem, node|
+      mem[node.id] = node.aggregate
+      mem
+    end
   end
 
   def graph_resource_chain

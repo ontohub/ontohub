@@ -103,7 +103,10 @@ module NavigationHelper
         'active' if controller == :repositories
       end
     else
-      'active' if [controller.to_s, controller.to_s.gsub('_', '/')].include? params[:controller]
+      if [controller.to_s, controller.to_s.gsub('_', '/')].
+        include?(params[:controller])
+        'active'
+      end
     end
   end
 
@@ -118,7 +121,7 @@ module NavigationHelper
   def in_subcontroller?(page, current_page)
     case page
       when :entities
-        %w(classes sentences theorems).include? controller_name
+        %w(classes sentences theorems).include?(controller_name)
       when :metadata
         in_metadata?
     end
@@ -126,7 +129,7 @@ module NavigationHelper
 
   # used for activating tabs in ontology view
   def in_metadata?
-    ontology_nav_metadata.map{ |m| m[1][-1].to_s }.include? controller_name
+    ontology_nav_metadata.map { |m| m[1][-1].to_s }.include?(controller_name)
   end
 
   protected

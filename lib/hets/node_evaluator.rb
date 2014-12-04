@@ -27,6 +27,10 @@ module Hets
       end
       hets_evaluator.ontologies.each(&:create_translated_sentences)
       update_ontologies_per_logic_count!(hets_evaluator.ontologies)
+      hets_evaluator.ontologies.each do |ontology|
+        ontology.__elasticsearch__.index_document
+        ontology.__elasticsearch__.update_document
+      end
     end
 
     def ontology_start(current_element)
@@ -65,31 +69,40 @@ module Hets
     end
 
     def symbol(current_element)
-      if logic_callback.pre_symbol(current_element)
-        entity = ontology.entities.update_or_create_from_hash(current_element, hets_evaluator.now)
-        ontology.entities_count += 1
+      return unless logic_callback.pre_symbol(current_element)
+      entity = ontology.entities.update_or_create_from_hash(
+        current_element, hets_evaluator.now)
+      ontology.entities_count += 1
 
-        logic_callback.symbol(current_element, entity)
-      end
+      logic_callback.symbol(current_element, entity)
     end
 
     def axiom(current_element)
-      if logic_callback.pre_axiom(current_element)
-        sentence = ontology.sentences.update_or_create_from_hash(current_element, hets_evaluator.now)
-        ontology.sentences_count += 1
+      return unless logic_callback.pre_axiom(current_element)
+      sentence = ontology.sentences.update_or_create_from_hash(
+        current_element, hets_evaluator.now)
+      ontology.sentences_count += 1
 
-        logic_callback.axiom(current_element, sentence)
-      end
+      logic_callback.axiom(current_element, sentence)
     end
 
     def imported_axiom(current_element)
-      if logic_callback.pre_axiom(current_element)
-        current_element['imported'] = true
-        sentence = ontology.sentences.update_or_create_from_hash(current_element, hets_evaluator.now)
-        ontology.sentences_count += 1
+      return unless logic_callback.pre_axiom(current_element)
+      current_element['imported'] = true
+      sentence = ontology.sentences.update_or_create_from_hash(
+        current_element, hets_evaluator.now)
+      ontology.sentences_count += 1
 
-        logic_callback.axiom(current_element, sentence)
-      end
+      logic_callback.axiom(current_element, sentence)
+    end
+
+    def theorem(current_element)
+      return unless logic_callback.pre_theorem(current_element)
+      theorem = ontology.theorems.update_or_create_from_hash(
+        current_element, hets_evaluator.now)
+      ontology.theorems_count += 1
+
+      logic_callback.theorem(current_element, theorem)
     end
 
     def theorem(current_element)
@@ -102,11 +115,11 @@ module Hets
     end
 
     def link(current_element)
-      if logic_callback.pre_link(current_element)
-        alias_iris_for_links!(current_element)
-        link = parent_ontology.links.update_or_create_from_hash(current_element, user, hets_evaluator.now)
-        logic_callback.link(current_element, link)
-      end
+      return unless logic_callback.pre_link(current_element)
+      alias_iris_for_links!(current_element)
+      link = parent_ontology.links.update_or_create_from_hash(
+        current_element, user, hets_evaluator.now)
+      logic_callback.link(current_element, link)
     end
 
     def import(current_element)
