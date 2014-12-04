@@ -56,8 +56,18 @@ end
 
 class RefIRIRouterConstraint < IRIRouterConstraint
   def matches?(request)
+    regex = %r{
+      (\?[^=]+$) # matches a lone MMT-argument
+      |
+      \?([^=;&]+)[&;].*$ # splits a lone MMT-arg from normal query-string
+      |
+      \?.*$ # drops a the whole standard query-string
+    }x
     # remove the ref/:version_number portion from path
-    path = request.original_fullpath.sub(%r{\A/ref/\d+/}, '')
+    path = request.original_fullpath.
+      sub(%r{\A/ref/\d+/}, '').
+      sub(regex, '\1')
+
     super(request, path)
   end
 end

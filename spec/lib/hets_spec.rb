@@ -91,4 +91,47 @@ describe Hets, :needs_hets do
     expect { Hets.parse(ontology_file('valid.xml')) }.
       to raise_error(Hets::ExecutionError)
   end
+
+  context 'api-calls' do
+    setup_hets
+
+    let(:ontology_iri) { 'http://localhost/ref/1/my_repo/my_ontology' }
+
+    before do
+      stub_request(:any, hets_uri)
+    end
+
+    context 'with access-token' do
+      let(:access_token) { 'my_access_token' }
+      let(:options) { Hets::Options.new(access_token: access_token) }
+
+      it 'call hets with the access token in the query string' do
+        parse_caller = Hets::ParseCaller.new(HetsInstance.choose, options)
+        begin
+          parse_caller.call(ontology_iri)
+        rescue
+        end
+        expect(WebMock).
+          to have_requested(:get, /\?(.*?;)?access-token=#{access_token}/)
+      end
+    end
+
+    context 'with url-catalog' do
+      let(:url_catalog) do
+        ['http://colore.oor.net=http://develop.ontohub.org/colore/ontologies',
+        'https://colore.oor.net=https://develop.ontohub.org/colore/ontologies']
+      end
+      let(:options) { Hets::Options.new(url_catalog: url_catalog) }
+
+      it 'call hets with the url-catalog in the query string' do
+        parse_caller = Hets::ParseCaller.new(HetsInstance.choose, options)
+        begin
+          parse_caller.call(ontology_iri)
+        rescue
+        end
+        expect(WebMock).to have_requested(
+          :get, /\?(.*?;)?url-catalog=#{url_catalog.join(',')}/)
+      end
+    end
+  end
 end
