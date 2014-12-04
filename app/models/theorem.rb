@@ -17,6 +17,6 @@ class Theorem < Sentence
   def update_proof_status(proof_status)
     return if !proof_status.solved? && self.proof_status.solved?
     self.proof_status = proof_status
-    save
+    save!
   end
 end

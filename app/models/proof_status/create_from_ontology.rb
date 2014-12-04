@@ -21,7 +21,7 @@ class ProofStatus
         proof_status.label = label(status)
         proof_status.description = description(status)
         proof_status.solved = solved?(status)
-        proof_status.save
+        proof_status.save!
       end
 
       def label(status)
