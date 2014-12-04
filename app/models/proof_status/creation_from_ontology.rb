@@ -4,7 +4,7 @@ class ProofStatus
 
     module ClassMethods
       def statuses
-        subclasses('Problem_Status')
+        szs_ontology.subclasses('Problem_Status')
       end
 
       def refresh_statuses
@@ -48,63 +48,13 @@ class ProofStatus
       end
 
       def solved?(status)
-        status == 'SOL' || superclass_of?('SOL', status)
+        status == 'SOL' || szs_ontology.superclass_of?('SOL', status)
       end
 
       protected
 
-      def superclass_of?(superclass, subclass)
-        superclasses(subclass).include?(superclass)
-      end
-
-      def superclasses(cls)
-        result = []
-
-        direct_superclasses(cls).each do |superclass|
-          result << superclass
-          result += superclasses(superclass)
-        end
-
-        result.uniq
-      end
-
-      def direct_superclasses(cls)
-        result = []
-        szs_ontology.sentences.
-          where('text LIKE  ?', "Class: #{cls}%SubClassOf:%").
-          each do |sentence|
-            match = sentence.text.match(/SubClassOf: (?<superclass>\w+)\z/)
-            result << match[:superclass] if m
-          end
-
-        result
-      end
-
-      def subclasses(cls)
-        result = []
-
-        direct_subclasses(cls).each do |subclass|
-          result << subclass
-          result += subclasses(subclass)
-        end
-
-        result.uniq
-      end
-
-      def direct_subclasses(cls)
-        result = []
-        szs_ontology.sentences.
-          where('text LIKE  ?', "Class: %SubClassOf: #{cls}").
-          each do |sentence|
-            match = sentence.text.match(/^Class: (?<subclass>\w+)/)
-            result << match[:subclass] if m
-          end
-
-        result
-      end
-
       def szs_ontology
-        Repository.find_by_path('meta').ontologies.where(
+        @szs_ontology ||= Repository.find_by_path('meta').ontologies.where(
           basepath: 'proof_statuses', file_extension: '.owl').first
       end
 
