@@ -41,7 +41,11 @@ class ApplicationController < ActionController::Base
   protected
 
   def current_ability
-      @current_ability ||= Ability.new(current_user, params[:"access-token"])
+    @current_ability ||= Ability.new(current_user, params[:'access-token'])
+  end
+
+  def params_to_pass_on_redirect
+    {:'access-token' => params[:'access-token']}
   end
 
   def authenticate_admin!
