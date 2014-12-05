@@ -44,13 +44,22 @@ module OntologyVersion::Parsing
   # generate XML by passing the raw ontology to Hets
   def generate_xml(structure_only: false)
     input_io = Hets.parse_via_api(ontology, Hets::Options.new(
-      access_token: ontology.repository.generate_access_token,
+      access_token: generate_access_token,
       structure_only: structure_only,
       url_catalog: ontology.repository.url_maps))
     [:all_is_well, input_io]
   rescue Hets::ExecutionError => e
     handle_hets_execution_error(e, self)
     e.abort_execution ? [:abort, nil] : raise(e)
+  end
+
+  def generate_access_token
+    return unless repository.is_private
+    access_token = AccessToken.create_for(self)
+    repository.access_tokens << access_token
+    repository.save!
+
+    access_token
   end
 
   def parse_full
