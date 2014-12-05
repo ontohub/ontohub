@@ -1,4 +1,4 @@
-class AddSzsStatuses < ActiveRecord::Migration
+class AddProofStatuses < ActiveRecord::Migration
   def up
     create_table :proof_statuses, id: false do |t|
       t.string :identifier, primary_key: true
