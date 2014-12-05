@@ -2,6 +2,7 @@ class AccessToken < ActiveRecord::Base
   belongs_to :repository
   attr_accessible :expiration, :token
 
+  scope :expired, ->() { where('expiration <= ?', Time.now) }
   scope :unexpired, ->() { where('expiration > ?', Time.now) }
 
   def to_s
@@ -10,6 +11,10 @@ class AccessToken < ActiveRecord::Base
 
   def expired?
     expiration <= Time.now
+  end
+
+  def self.destroy_expired
+    expired.find_each(&:destroy)
   end
 
   def self.create_for(ontology_version)
