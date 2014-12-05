@@ -26,7 +26,12 @@ describe 'Repository Access' do
   end
 
   context 'private repository' do
-    let(:repository) { create :repository, access: 'private_rw' }
+    let(:ontology_version) { create :ontology_version }
+    let(:repository) { ontology_version.repository }
+    before do
+      repository.access = 'private_rw'
+      repository.save
+    end
 
     context 'without access token' do
       it 'should not have a token yet' do
@@ -35,7 +40,7 @@ describe 'Repository Access' do
     end
 
     context 'after generate_access_token' do
-      let!(:access_token) { repository.generate_access_token }
+      let!(:access_token) { ontology_version.generate_access_token }
 
       it 'should generate a token' do
         expect(repository.access_tokens).not_to be_empty

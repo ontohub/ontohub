@@ -19,10 +19,4 @@ describe AccessToken do
       expect(access_token.expired?).to be_truthy
     end
   end
-
-  context 'to_s' do
-    it 'should have 2*LENGTH characters' do
-      expect(access_token.to_s.length).to eq(2*AccessToken::LENGTH)
-    end
-  end
 end
