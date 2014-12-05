@@ -23,18 +23,20 @@ class AccessToken < ActiveRecord::Base
     a
   end
 
-  protected
-
   def self.fresh_expiration_date
     Settings.access_token.expiration_minutes.minutes.from_now
   end
 
   def self.insecure_build_for(ontology_version)
     repository = ontology_version.repository
-    id = [repository.to_param, ontology_version.path,
-      Time.now.strftime("%Y-%m-%d-%H-%M-%S-%6N")].join("|")
-    AccessToken.new({repository: repository,
-      expiration: fresh_expiration_date,
-      token: Digest::SHA2.hexdigest(id)}, {without_protection: true})
+    id = [
+      repository.to_param, ontology_version.path,
+      Time.now.strftime('%Y-%m-%d-%H-%M-%S-%6N')
+    ].join('|')
+    AccessToken.new(
+      {repository: repository,
+       expiration: fresh_expiration_date,
+       token: Digest::SHA2.hexdigest(id)},
+      {without_protection: true})
   end
 end
