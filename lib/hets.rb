@@ -107,6 +107,11 @@ we expected it to be matchable by this regular expression:
     parse_caller.call(iri, with_mode: mode)
   end
 
+  def self.prove_via_api(resource, url_catalog = [])
+    prove_caller = Hets::ProveCaller.new(HetsInstance.choose, url_catalog)
+    prove_caller.call(resource.versioned_iri)
+  end
+
   def self.filetype(resource)
     iri = resource.versioned_iri
     filetype_caller = Hets::FiletypeCaller.new(HetsInstance.choose)
