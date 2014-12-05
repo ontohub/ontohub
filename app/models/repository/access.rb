@@ -34,9 +34,9 @@ module Repository::Access
       inclusion: { in: Repository::Access::OPTIONS }
   end
 
-  def generate_access_token
+  def generate_access_token(ontology_version)
     return unless is_private
-    access_token = AccessToken.create_for(self)
+    access_token = AccessToken.create_for(ontology_version)
     self.access_tokens << access_token
     save
 
