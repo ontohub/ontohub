@@ -67,48 +67,53 @@ module Hets
     end
 
     def symbol(current_element)
-      return unless logic_callback.pre_symbol(current_element)
-      entity = ontology.entities.update_or_create_from_hash(
-        current_element, hets_evaluator.now)
-      ontology.entities_count += 1
+      if logic_callback.pre_symbol(current_element)
+        entity = ontology.entities.update_or_create_from_hash(
+          current_element, hets_evaluator.now)
+        ontology.entities_count += 1
 
-      logic_callback.symbol(current_element, entity)
+        logic_callback.symbol(current_element, entity)
+      end
     end
 
     def axiom(current_element)
-      return unless logic_callback.pre_axiom(current_element)
-      sentence = ontology.sentences.update_or_create_from_hash(
-        current_element, hets_evaluator.now)
-      ontology.sentences_count += 1
+      if logic_callback.pre_axiom(current_element)
+        sentence = ontology.sentences.update_or_create_from_hash(
+          current_element, hets_evaluator.now)
+        ontology.sentences_count += 1
 
-      logic_callback.axiom(current_element, sentence)
+        logic_callback.axiom(current_element, sentence)
+      end
     end
 
     def imported_axiom(current_element)
-      return unless logic_callback.pre_axiom(current_element)
-      current_element['imported'] = true
-      sentence = ontology.sentences.update_or_create_from_hash(
-        current_element, hets_evaluator.now)
-      ontology.sentences_count += 1
+      if logic_callback.pre_axiom(current_element)
+        current_element['imported'] = true
+        sentence = ontology.sentences.update_or_create_from_hash(
+          current_element, hets_evaluator.now)
+        ontology.sentences_count += 1
 
-      logic_callback.axiom(current_element, sentence)
+        logic_callback.axiom(current_element, sentence)
+      end
     end
 
     def theorem(current_element)
-      return unless logic_callback.pre_theorem(current_element)
-      theorem = ontology.theorems.update_or_create_from_hash(
-        current_element, hets_evaluator.now)
-      ontology.theorems_count += 1
+      if logic_callback.pre_theorem(current_element)
+        theorem = ontology.theorems.update_or_create_from_hash(
+          current_element, hets_evaluator.now)
+        ontology.theorems_count += 1
 
-      logic_callback.theorem(current_element, theorem)
+        logic_callback.theorem(current_element, theorem)
+      end
     end
 
     def link(current_element)
-      return unless logic_callback.pre_link(current_element)
-      alias_iris_for_links!(current_element)
-      link = parent_ontology.links.update_or_create_from_hash(
-        current_element, user, hets_evaluator.now)
-      logic_callback.link(current_element, link)
+      if logic_callback.pre_link(current_element)
+        alias_iris_for_links!(current_element)
+        link = parent_ontology.links.update_or_create_from_hash(
+          current_element, user, hets_evaluator.now)
+        logic_callback.link(current_element, link)
+      end
     end
 
     def import(current_element)
