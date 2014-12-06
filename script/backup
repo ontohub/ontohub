@@ -4,8 +4,6 @@ require 'tmpdir.rb'
 require 'fileutils'
 require 'pathname'
 require 'open3'
-require 'pry'
-require 'pry-byebug'
 
 module Backup
   class Backup
