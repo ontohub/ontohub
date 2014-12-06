@@ -103,12 +103,8 @@ module Backup
     def initialize_restore(backup_name)
       @backup_instance_dir = backup_root.join(backup_name)
       unless Dir.exists?(backup_instance_dir)
-<<<<<<< HEAD
-        $stderr.puts "Error: Backup '#{backup_name}' does not exist in #{backup_root}."
-=======
         $stderr.puts (
           "Error: Backup '#{backup_name}' does not exist in #{backup_root}.")
->>>>>>> 635-backup-script
         exit
       end
     end
