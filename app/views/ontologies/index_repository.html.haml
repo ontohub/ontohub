@@ -21,4 +21,5 @@
     .pull-right
       = link_to "Upload an #{Settings.OMS} file", new_repository_file_path(parent, 'upload_file[path]' => params[:path]), class: 'btn btn-link' if can? :write, repository
     .clearfix
-    #OntologySearch{pagination: 'paginated', role: 'filter'}
+    = render 'ontology_search_response'
+
