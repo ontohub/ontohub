@@ -40,7 +40,7 @@
     - @top_level_pages.each do |(page_title, page)|
       %li{class: page==current_page || in_subcontroller?(page, current_page) ? 'active' : nil}
         = link_to page_title, [*resource_chain, page]
-  - if %w[entities sentences theorems children].include?(controller_name)
+  - if %w(entities sentences theorems children).include?(controller_name)
     %nav.nav_tab_level2
       %ul.nav.nav-tabs
         - @entities.each do |entity|
