@@ -20,6 +20,8 @@
 
 .pull-right.btn-group.breadcrumbs-buttons
   - if can? :write, repository
+    - if resource.dir?
+      .btn.btn-default.btn-sm#create_subdirectory Create Subdirectory
     - if resource.file? && !in_ref_path? && display_file?
       = link_to 'Edit file', '#', id: 'codemirror-btn-edit', class: 'hide-when-editing btn btn-default btn-sm'
     = link_to new_repository_file_path(repository, {'repository_file[target_directory]' => dirpath(repository)}.merge(update_file)), class: 'btn btn-default btn-sm' do

@@ -45,6 +45,15 @@ en:
         private_rw: Private readable and writable
         public_r: Public readable
         public_rw: Public readable and writable
+  repository_directory:
+    create: Successfully created directory "%{name}".
+    create_additional: "That is, the following directories have been created: %{directories}"
+    form:
+      submit: Create subdirectory
+      placeholder:
+        name: Directory name
+      hint:
+        slashes: Use slashes to directly create subdirectories.
   permission:
     delete_header: Are you sure you want to delete the permission?
     delete_desc: If you remove this %{role} permission, %{subject} won't be able to access the %{class} %{item} according to it.

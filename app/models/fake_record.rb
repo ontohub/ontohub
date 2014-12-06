@@ -5,7 +5,6 @@
 #   save! is supposed to raise a RecordNotSavedError when the record couldn't be
 #   saved, e.g. because of validation errors.
 class FakeRecord
-
   extend ActiveModel::Naming
   include ActiveModel::Conversion
   include ActiveModel::Validations
@@ -34,4 +33,7 @@ class FakeRecord
     nil
   end
 
+  def persisted?
+    false
+  end
 end

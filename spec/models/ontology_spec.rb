@@ -17,13 +17,14 @@ describe Ontology do
   context 'when deleting' do
     context 'a general ontology' do
       let(:ontology) { create :ontology }
+      let(:file) { ontology.path }
+      let(:repository) { ontology.repository }
+
+      before do
+        repository.git.commit_file(repository.user_info(user), 'file deletion test', file, 'add file')
+      end
 
       it 'should delete the defining file as well' do
-        file = ontology.path
-        repository = ontology.repository
-
-        repository.git.commit_file(repository.user_info(user), 'file deletion test', file, 'add file')
-
         expect(repository.path_exists?(file)).to be(true)
         ontology.destroy_with_parent(user)
         expect(repository.path_exists?(file)).to be(false)
@@ -39,11 +40,24 @@ describe Ontology do
     context 'a single ontology in a distributed ontology' do
       let(:distributed_ontology) { create :linked_distributed_ontology }
       let(:ontology) { distributed_ontology.children.first }
-      it 'should delete the parent and its child ontologies as well' do
-        params = distributed_ontology.children.map(&:to_param)
-        params << distributed_ontology.to_param
-        ontology.destroy_with_parent(user)
 
+      before do
+        stub = ->(_u, _t, _m, &block) { block.call('0'*40) }
+        allow_any_instance_of(Repository).to receive(:delete_file, &stub)
+      end
+
+      it 'should delete the parent' do
+        param = distributed_ontology.to_param
+
+        ontology.destroy_with_parent(user)
+        expect { Ontology.find(param) }.
+          to raise_error(ActiveRecord::RecordNotFound)
+      end
+
+      it 'should delete all child ontologies as well' do
+        params = distributed_ontology.children.map(&:to_param)
+
+        ontology.destroy_with_parent(user)
         params.each do |param|
           expect { Ontology.find(param) }.to raise_error(ActiveRecord::RecordNotFound)
         end
@@ -51,20 +65,35 @@ describe Ontology do
     end
 
     context 'a distributed ontology' do
-      let (:ontology) { create :distributed_ontology }
+      let (:ontology) { create :linked_distributed_ontology }
+
+      before do
+        stub = ->(_u, _t, _m, &block) { block.call('0'*40) }
+        allow_any_instance_of(Repository).to receive(:delete_file, &stub)
+      end
+
       it 'should delete the child ontologies as well' do
-        params = ontology.children.map(&:to_param)
-        params << ontology.to_param
+        param = ontology.to_param
         ontology.destroy_with_parent(user)
 
-        params.each do |param|
-          expect { Ontology.find(param) }.to raise_error(ActiveRecord::RecordNotFound)
-        end
+        expect { Ontology.find(param) }.to raise_error(ActiveRecord::RecordNotFound)
+      end
+
+      it 'should delete the child ontologies as well' do
+        params = ontology.children.map(&:to_param)
+        ontology.destroy_with_parent(user)
+
+        expect { Ontology.find(params) }.to raise_error(ActiveRecord::RecordNotFound)
       end
     end
 
     context 'an imported ontology' do
       let(:ontology) { create :ontology }
+
+      before do
+        stub = ->(_u, _t, _m, &block) { block.call('0'*40) }
+        allow_any_instance_of(Repository).to receive(:delete_file, &stub)
+      end
 
       it 'should not be allowed' do
         importing = create :ontology
