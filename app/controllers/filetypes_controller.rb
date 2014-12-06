@@ -15,6 +15,8 @@ class FiletypesController < ApplicationController
     {
       iri: iri,
       mime_type: mime_type,
+      extension: FileExtensionMimeTypeMapping.
+        find_by_mime_type(mime_type).try(:file_extension)
     }
   end
 end
