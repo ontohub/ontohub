@@ -231,7 +231,7 @@ Style/GlobalVars:
 
 Style/GuardClause:
   Description: 'Check for conditionals that can be replaced with guard clauses'
-  Enabled: true
+  Enabled: false
 
 Style/HashSyntax:
   Description: >-

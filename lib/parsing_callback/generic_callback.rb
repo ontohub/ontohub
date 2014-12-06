@@ -10,34 +10,41 @@ module ParsingCallback
 
     # Callbacks to be executed after an object has been created
     #
-    def ontology(hash, ontology)
+    def ontology(_hash, _ontology)
     end
 
-    def ontology_end(hash, ontology)
+    def ontology_end(_hash, _ontology)
     end
 
-    def symbol(hash, symbol)
+    def symbol(_hash, _symbol)
     end
 
-    def axiom(hash, axiom)
+    def axiom(_hash, _axiom)
     end
 
-    def link(hash, link)
+    def theorem(_hash, _theorem)
+    end
+
+    def link(_hash, _link)
     end
 
     # Callbacks to be executed only with the hash
     # returns a boolean value to decide, whether the
     # original callback should "go on"
     #
-    def pre_symbol(hash)
+    def pre_symbol(_hash)
       true
     end
 
-    def pre_axiom(hash)
+    def pre_axiom(_hash)
       true
     end
 
-    def pre_link(hash)
+    def pre_theorem(_hash)
+      true
+    end
+
+    def pre_link(_hash)
       true
     end
 

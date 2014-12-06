@@ -1,0 +1,13 @@
+= repository_nav parent.repository, :ontologies
+
+= ontology_nav @ontology, :theorems
+
+= pagination do
+  %table.sentences
+    %thead
+      %tr
+        %th Name
+        %th Text
+        %th Proof Status
+    %tbody
+      = render partial: 'theorem', collection: collection

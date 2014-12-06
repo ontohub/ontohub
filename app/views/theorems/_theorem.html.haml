@@ -1,0 +1,6 @@
+%tr
+  %td= theorem.name
+  %td= format_for_view(theorem)
+  %td
+    %span{class: "label label-#{theorem.proof_status.label}", title: theorem.proof_status.name, data: {toggle: 'popover', placement: 'top', content: theorem.proof_status.description}}
+      = theorem.proof_status

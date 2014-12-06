@@ -13,18 +13,20 @@ module OntologyParser
 
   # Listener for the SAX Parser
   class Listener < Nokogiri::XML::SAX::Document
-    MAP      = "map"
-    ROOT     = 'DGraph'
-    ONTOLOGY = 'DGNode'
-    SYMBOL   = 'Symbol'
-    AXIOM    = 'Axiom'
+    MAP       = 'map'
+    ROOT      = 'DGraph'
+    ONTOLOGY  = 'DGNode'
+    SYMBOL    = 'Symbol'
+    AXIOM     = 'Axiom'
+    THEOREM   = 'Theorem'
     IMPAXIOMS = 'ImpAxioms'
     AXIOMS    = 'Axioms'
-    LINK     = 'DGLink'
-    TEXT     = 'Text'
-    TYPE     = 'Type'
-    MORPHISM = 'GMorphism'
-    IMPORT   = 'Reference'
+    THEOREMS  = 'Theorems'
+    LINK      = 'DGLink'
+    TEXT      = 'Text'
+    TYPE      = 'Type'
+    MORPHISM  = 'GMorphism'
+    IMPORT    = 'Reference'
 
     # the callback function is called for each Symbol tag
     def initialize(callbacks)
@@ -41,46 +43,54 @@ module OntologyParser
     def start_element(name, attributes)
       @path << name
       case name
-        when ROOT
-          callback(:root, Hash[*[attributes]])
-        when ONTOLOGY
-          callback(:ontology, Hash[*[attributes]])
-        when IMPORT
-          callback(:import, Hash[*[attributes]])
-        when SYMBOL
-          @current_symbol = Hash[*[attributes]]
-          @current_symbol['text'] = ''
-          if @current_link && @current_link['map']
-            @current_link['map'] << @current_symbol
-          end
-          @current_axiom['symbol_hashes'] << @current_symbol if @current_axiom
-        when IMPAXIOMS
-          @in_imp_axioms = true
-        when AXIOMS
-          @in_axioms = true
-        when AXIOM
-          @current_axiom = Hash[*[attributes]]
-          @current_axiom['symbols'] = []
-          @current_axiom['symbol_hashes'] = []
-          @current_axiom['text'] = ''
-        when LINK
-          @current_link = Hash[*[attributes]]
-        when MORPHISM
-          @current_link['morphism'] = Hash[*[attributes]]['name'] if @current_link
-        when MAP
-          @current_link['map'] = []
+      when ROOT
+        callback(:root, Hash[*[attributes]])
+      when ONTOLOGY
+        callback(:ontology, Hash[*[attributes]])
+      when IMPORT
+        callback(:import, Hash[*[attributes]])
+      when SYMBOL
+        @current_symbol = Hash[*[attributes]]
+        @current_symbol['text'] = ''
+        if @current_link && @current_link['map']
+          @current_link['map'] << @current_symbol
+        end
+        @current_axiom['symbol_hashes'] << @current_symbol if @current_axiom
+      when IMPAXIOMS
+        @in_imp_axioms = true
+      when AXIOMS
+        @in_axioms = true
+      when AXIOM
+        @current_axiom = Hash[*[attributes]]
+        @current_axiom['symbols'] = []
+        @current_axiom['symbol_hashes'] = []
+        @current_axiom['text'] = ''
+      when THEOREMS
+        @in_theorems = true
+      when THEOREM
+        @current_theorem = Hash[*[attributes]]
+        @current_theorem['symbols'] = []
+        @current_theorem['symbol_hashes'] = []
+        @current_theorem['text'] = ''
+      when LINK
+        @current_link = Hash[*[attributes]]
+      when MORPHISM
+        @current_link['morphism'] = Hash[*[attributes]]['name'] if @current_link
+      when MAP
+        @current_link['map'] = []
       end
     end
 
     # a text node
     def characters(text)
       case @path.last
-        when SYMBOL
-          @current_symbol['text'] << text if @current_symbol
-        when TEXT
-          @current_axiom['text'] << text if @current_axiom
-        when TYPE # there is no other use of TYPE in this code
-          @current_link['type'] = text if @current_link
+      when SYMBOL
+        @current_symbol['text'] << text if @current_symbol
+      when TEXT
+        @current_axiom['text'] << text if @current_axiom
+        @current_theorem['text'] << text if @current_theorem
+      when TYPE # there is no other use of TYPE in this code
+        @current_link['type'] = text if @current_link
       end
     end
 
@@ -89,41 +99,50 @@ module OntologyParser
       @path.pop
 
       case name
-        when ONTOLOGY
-          callback(:ontology_end, @current_ontology)
-          @current_ontology = nil
-        when SYMBOL
-          return if @path.last == 'Hidden'
+      when ONTOLOGY
+        callback(:ontology_end, @current_ontology)
+        @current_ontology = nil
+      when SYMBOL
+        return if @path.last == 'Hidden'
 
-          if @current_axiom
-            # add to current axiom
-            @current_axiom['symbols'] << @current_symbol['text']
-          else
-            # return the current symcol
-            in_mapping_link = @current_link && @current_link['map']
-            callback(:symbol, @current_symbol) unless in_mapping_link
-          end
-          @current_symbol = nil
-        when IMPAXIOMS
-          @in_imp_axioms = false
-        when AXIOMS
-          @in_axioms = false
-        when AXIOM
-          # do not execute callbacks
-          # unless the axiom was inside a
-          # <Axioms> element or a <ImpAxioms>
-          # element
-          if @in_imp_axioms
-            callback(:imported_axiom, @current_axiom)
-          elsif @in_axioms
-            callback(:axiom, @current_axiom)
-          end
-          # return the current axiom
-          @current_axiom = nil
-        when LINK
-          # return the current link
-          callback(:link, @current_link)
-          @current_link = nil
+        if @current_axiom
+          # add to current axiom
+          @current_axiom['symbols'] << @current_symbol['text']
+        elsif @current_theorem
+          # add to current theorem
+          @current_theorem['symbols'] << @current_symbol['text']
+        else
+          # return the current symbol
+          in_mapping_link = @current_link && @current_link['map']
+          callback(:symbol, @current_symbol) unless in_mapping_link
+        end
+        @current_symbol = nil
+      when IMPAXIOMS
+        @in_imp_axioms = false
+      when AXIOMS
+        @in_axioms = false
+      when AXIOM
+        # do not execute callbacks
+        # unless the axiom was inside a
+        # <Axioms> element or a <ImpAxioms>
+        # element
+        if @in_imp_axioms
+          callback(:imported_axiom, @current_axiom)
+        elsif @in_axioms
+          callback(:axiom, @current_axiom)
+        end
+        # return the current axiom
+        @current_axiom = nil
+      when THEOREMS
+        @in_theorems = false
+      when THEOREM
+        callback(:theorem, @current_theorem) if @in_theorems
+        # return the current theorem
+        @current_theorem = nil
+      when LINK
+        # return the current link
+        callback(:link, @current_link)
+        @current_link = nil
       end
     end
 
@@ -139,7 +158,5 @@ module OntologyParser
       block = @callbacks[name]
       block.call(args) if block
     end
-
   end
-
 end
