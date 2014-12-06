@@ -1,0 +1,11 @@
+= pagination(@search_response) do
+  #search_response
+    - @search_response.each do |response|
+      %h2
+        = fancy_link(response)
+        = response.file_extension
+      .repository= fancy_link(response.repository)
+      .content= response.description if response.description.present?
+      .categories
+        - response.categories.each do |category|
+          = link_to category, category
