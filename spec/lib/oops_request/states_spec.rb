@@ -17,6 +17,8 @@ describe 'OopsRequest::States' do
       end
 
       it 'raises error' do
+        allow_any_instance_of(OopsRequest).to(receive(:execute_and_save).
+          and_raise(Oops::Error, message))
         expect { request.run }.to raise_error(Oops::Error)
       end
 
