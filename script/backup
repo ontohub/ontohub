@@ -86,7 +86,7 @@ module Backup
     def create_sql_dump
       puts 'Creating SQL dump...'
       Dir.chdir(backup_instance_dir) do
-        exec('pg_dump', pg_user_switch, '-Fc', db_name,
+        exec('pg_dump', *pg_user_switch, '-Fc', db_name,
           file_dest: SQL_DUMP_FILE)
       end
     end
@@ -112,7 +112,7 @@ module Backup
     def restore_sql_dump
       'Restoring SQL dump...'
       Dir.chdir(backup_instance_dir) do
-        exec('pg_restore', '-c', pg_user_switch, '-d', db_name, SQL_DUMP_FILE)
+        exec('pg_restore', '-c', *pg_user_switch, '-d', db_name, SQL_DUMP_FILE)
       end
     end
 
@@ -217,7 +217,7 @@ To continue, I try the command again using sudo.
     end
 
     def pg_user_switch
-      sql_dump_as_postgres_user ? ' -U postgres' : ''
+      sql_dump_as_postgres_user ? %w(-U postgres) : []
     end
 
     def self.backup_dirs_allowed_to_delete(entries)
