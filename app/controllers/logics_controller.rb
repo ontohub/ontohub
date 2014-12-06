@@ -10,7 +10,7 @@ class LogicsController < InheritedResources::Base
 
   respond_to :html
 
-  load_and_authorize_resource :except => [:index, :show]
+  #after_action :verify_authorized, :except => [:index, :show]
 
   def index
     super do |format|

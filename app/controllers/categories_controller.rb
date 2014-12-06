@@ -4,8 +4,6 @@ class CategoriesController < InheritedResources::Base
   belongs_to :ontology, optional: true
   before_filter :check_read_permissions
 
-  load_and_authorize_resource
-
   def index
     unless params[:ontology_id]
       @c_vertices = []

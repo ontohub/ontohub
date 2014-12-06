@@ -7,7 +7,7 @@ class LanguagesController < InheritedResources::Base
   has_pagination
   has_scope :search
 
-  load_and_authorize_resource :except => [:index, :show]
+  #after_action :verify_authorized, :except => [:index, :show]
 
   def index
     super do |format|

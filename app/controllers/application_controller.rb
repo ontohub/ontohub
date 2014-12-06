@@ -1,5 +1,5 @@
 class ApplicationController < ActionController::Base
-
+  include Pundit
   protect_from_forgery
   ensure_security_headers
 
@@ -9,8 +9,8 @@ class ApplicationController < ActionController::Base
 
   PARAMS_TO_PASS_ON_REDIRECT = %i(access-token)
 
-  # CanCan Authorization
-  rescue_from CanCan::AccessDenied do |exception|
+  # Pundit Authorization
+  rescue_from Pundit::NotAuthorizedError do |exception|
     if request.format.html?
       redirect_to root_url, alert: exception.message
     else

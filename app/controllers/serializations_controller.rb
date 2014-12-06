@@ -1,5 +1,5 @@
 class SerializationsController < InheritedResources::Base
   has_pagination
-  load_and_authorize_resource :except => [:index, :show]
+  #after_action :verify_authorized, :except => [:index, :show]
 
 end

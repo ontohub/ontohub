@@ -1,5 +1,5 @@
 class Ability
-  include CanCan::Ability
+  #include CanCan::Ability
 
   def initialize(user, access_token)
     # Define abilities for the passed in user here.

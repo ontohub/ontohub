@@ -4,7 +4,6 @@
 class TeamsController < InheritedResources::Base
 
   respond_to :json, :xml
-  load_and_authorize_resource
 
   def show
     super do |format|

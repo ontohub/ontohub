@@ -5,7 +5,7 @@ class LanguageMappingsController < GeneralMappingsController
 #  belongs_to :source, :class_name => "Language"
 #  belongs_to :target, :class_name => "Language"
 
-  load_and_authorize_resource :except => [:index, :show]
+  #after_action :verify_authorized, :except => [:index, :show]
 
   def create
     @language_mapping.user = current_user

@@ -3,7 +3,7 @@
 #
 class LanguageAdjointsController < AdjointsController
 
-  load_and_authorize_resource :except => [:index, :show]
+  #after_action :verify_authorized, :except => [:index, :show]
 
   def create
     @language_adjoint.user = current_user

@@ -6,7 +6,7 @@ class LogicMappingsController < GeneralMappingsController
 #  belongs_to :target, :class_name => "Logic"
   defaults finder: :find_by_slug!
 
-  load_and_authorize_resource :except => [:index, :show]
+  #after_action :verify_authorized, :except => [:index, :show]
 
   def create
     @logic_mapping.user = current_user
