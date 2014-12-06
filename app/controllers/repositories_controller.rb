@@ -8,6 +8,9 @@ class RepositoriesController < InheritedResources::Base
 
   def create
     resource.user = current_user
+    unless params[:source_address]
+      params[:repository].except!(:source_type, :remote_type)
+    end
     super
   end
 
