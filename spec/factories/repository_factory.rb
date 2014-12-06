@@ -38,5 +38,10 @@ FactoryGirl.define do
         repository.source_address = path
       end
     end
+
+    factory :repository_git_mirror do
+      remote_type { 'mirror' }
+      source_type { 'git' }
+    end
   end
 end
