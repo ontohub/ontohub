@@ -2,7 +2,7 @@
 
 .row
   .col-md-12
-    - if can? :create, Repository
+    - if policy(Repository).create?
       .pull-right
         = link_to 'Create Repository', :new_repository, class: 'btn btn-primary'
     %p
