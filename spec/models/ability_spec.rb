@@ -123,9 +123,11 @@ describe Ability do
         subject(:ability){ Ability.new(User.new, access_token.to_s) }
 
 
-        it 'not be allowed: change' do
+        context 'not be allowed: change' do
           %i(update write).each do |perm|
-            should_not be_able_to(perm, item)
+            it "via #{perm}" do
+              should_not be_able_to(perm, item)
+            end
           end
         end
 
