@@ -102,8 +102,6 @@ describe Ability do
     let(:item) do
       repo = access_token.repository
       create(:permission, subject: owner, role: 'owner', item: repo)
-      repo.access = 'private_rw'
-      repo.save
       repo
     end
 
