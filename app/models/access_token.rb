@@ -10,16 +10,21 @@ class AccessToken < ActiveRecord::Base
   end
 
   def self.create_for(ontology_version)
-    a = insecure_build_for(ontology_version) until !a.nil? && a.valid?
-    a.save!
-    a
+    # Although unlikely, the token could clash with another one. Generate tokens
+    # until there is no conflict. This should converge extremely fast.
+    access_token = nil
+    while access_token.nil? || access_token.invalid? do
+      access_token = build_for(ontology_version)
+    end
+    access_token.save!
+    access_token
   end
 
   def self.fresh_expiration_date
     Settings.access_token.expiration_minutes.minutes.from_now
   end
 
-  def self.insecure_build_for(ontology_version)
+  def self.build_for(ontology_version)
     repository = ontology_version.repository
     AccessToken.new(
       {repository: repository,
