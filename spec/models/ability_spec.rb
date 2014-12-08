@@ -20,7 +20,7 @@ describe Ability do
       subject(:ability){ Ability.new(User.new, nil) }
 
       it 'not be allowed: new, create' do
-        [:new, :create].each do |perm|
+        %i(new create).each do |perm|
           should_not be_able_to(perm, Repository.new)
         end
       end
@@ -30,7 +30,7 @@ describe Ability do
       end
 
       it 'not be allowed some actions' do
-        [:edit, :update, :destroy, :write].each do |perm|
+        %i(edit update destroy write).each do |perm|
           should_not be_able_to(perm, item)
         end
       end
@@ -40,13 +40,13 @@ describe Ability do
       subject(:ability){ Ability.new(reader, nil) }
 
       it 'be allowed: new, create' do
-        [:new, :create].each do |perm|
+        %i(new create).each do |perm|
           should be_able_to(perm, Repository.new)
         end
       end
 
       it 'not be allowed some actions' do
-        [:edit, :update, :destroy, :write].each do |perm|
+        %i(edit update destroy write).each do |perm|
           should_not be_able_to(perm, item)
         end
       end
@@ -60,19 +60,19 @@ describe Ability do
       subject(:ability){ Ability.new(owner, nil) }
 
       it 'be allowed: new, create' do
-        [:new, :create].each do |perm|
+        %i(new create).each do |perm|
           should be_able_to(perm, Repository.new)
         end
       end
 
       it 'be allowed: edit, update, destroy, permissions, write' do
-        [:show, :edit, :update, :destroy, :permissions].each do |perm|
+        %i(show edit update destroy permissions).each do |perm|
           should be_able_to(perm, item)
         end
       end
 
       it 'not be allowed on other: edit, update, destroy, permissions' do
-        [:edit, :update, :destroy, :permissions].each do |perm|
+        %i(edit update destroy permissions).each do |perm|
           should_not be_able_to(perm, create(:repository))
         end
       end
@@ -82,13 +82,13 @@ describe Ability do
       subject(:ability){ Ability.new(editor, nil) }
 
       it 'be allowed: write' do
-        [:show, :write].each do |perm|
+        %i(show write).each do |perm|
           should be_able_to(perm, item)
         end
       end
 
       it 'not be allowed: edit, update, destroy, permissions' do
-        [:edit, :update, :destroy, :permissions].each do |perm|
+        %i(edit update destroy permissions).each do |perm|
           should_not be_able_to(perm, item)
         end
       end
@@ -114,7 +114,7 @@ describe Ability do
       subject(:ability){ Ability.new(User.new, nil) }
 
       it 'not be allowed: anything' do
-        [:show, :update, :write].each do |perm|
+        %i(show update write).each do |perm|
           should_not be_able_to(perm, item)
         end
       end
@@ -124,7 +124,7 @@ describe Ability do
 
 
         it 'not be allowed: change' do
-          [:update, :write].each do |perm|
+          %i(update write).each do |perm|
             should_not be_able_to(perm, item)
           end
         end
@@ -139,7 +139,7 @@ describe Ability do
       subject(:ability){ Ability.new(reader, nil) }
 
       it 'not be allowed: to manage' do
-        [:update, :write].each do |perm|
+        %i(update write).each do |perm|
           should_not be_able_to(perm, item)
         end
       end
@@ -153,7 +153,7 @@ describe Ability do
       subject(:ability){ Ability.new(editor, nil) }
 
       it 'be allowed: to read and manage' do
-        [:show, :write].each do |perm|
+        %i(show write).each do |perm|
           should be_able_to(perm, item)
         end
       end
@@ -163,7 +163,7 @@ describe Ability do
       subject(:ability){ Ability.new(owner, nil) }
 
       it 'be allowed: everything' do
-        [:show, :update, :write].each do |perm|
+        %i(show update write).each do |perm|
           should be_able_to(perm, item)
         end
       end
@@ -184,7 +184,7 @@ describe Ability do
       subject(:ability){ Ability.new(User.new, nil) }
 
       it 'not be allowed: anything' do
-        [:show, :update, :write].each do |perm|
+        %i(show update write).each do |perm|
           should_not be_able_to(perm, item)
         end
       end
@@ -228,7 +228,7 @@ describe Ability do
 
     context 'admin' do
       it 'be allowed: edit, update, destroy' do
-        [:edit, :update, :destroy].each do |perm|
+        %i(edit update destroy).each do |perm|
           should be_able_to(perm, create(:team_user, user: user).team)
         end
       end
@@ -236,19 +236,19 @@ describe Ability do
 
     context 'member' do
       it 'be allowed: create, show, index' do
-        [:create, :show, :index].each do |perm|
+        %i(create show index).each do |perm|
           should be_able_to(perm, Team.new)
         end
       end
 
       it 'not be allowed: edit, update, destroy (without admin on team)' do
-        [:edit, :update, :destroy].each do |perm|
+        %i(edit update destroy).each do |perm|
           should_not be_able_to(perm, @memberteam)
         end
       end
 
       it 'not be allowed: edit, update, destroy (without being on team)' do
-        [:edit, :update, :destroy].each do |perm|
+        %i(edit update destroy).each do |perm|
           should_not be_able_to(perm, otherteam)
         end
       end
