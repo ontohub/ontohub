@@ -17,6 +17,7 @@ class AccessToken < ActiveRecord::Base
       access_token = build_for(ontology_version)
     end
     access_token.save!
+    AccessTokenDeletionWorker.perform_at(access_token.expiration)
     access_token
   end
 

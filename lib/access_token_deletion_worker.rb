@@ -1,11 +1,5 @@
-require 'sidekiq/worker'
-
-# This worker deletes expired access tokens
-class AccessTokenDeletionWorker
-  include Sidekiq::Worker
-  include Sidetiq::Schedulable
-
-  recurrence { daily }
+class AccessTokenDeletionWorker < BaseWorker
+  sidekiq_options queue: 'default'
 
   def perform
     AccessToken.destroy_expired
