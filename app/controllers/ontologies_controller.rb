@@ -18,6 +18,7 @@ class OntologiesController < InheritedResources::Base
     if in_repository?
       @search_response = paginate_for(parent.ontologies)
       @count = end_of_association_chain.total_count
+      @repository_id = parent.id
       render :index_repository
     else
       @search_response = paginate_for(Ontology.scoped)
