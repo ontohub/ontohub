@@ -13,7 +13,7 @@ class AccessToken < ActiveRecord::Base
     # Although unlikely, the token could clash with another one. Generate tokens
     # until there is no conflict. This should converge extremely fast.
     access_token = nil
-    while access_token.nil? || access_token.invalid? do
+    while access_token.nil? || access_token.invalid?
       access_token = build_for(ontology_version)
     end
     access_token.save!
