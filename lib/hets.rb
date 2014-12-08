@@ -142,10 +142,10 @@ we expected it to be matchable by this regular expression:
     "http://#{Settings.hostname}#{resource.versioned_locid}"
   end
 
-  def self.parse_via_api(resource, options = nil)
-    mode = (options && options.structure_only) ? :fast_run : :default
+  def self.parse_via_api(resource, hets_options = nil)
+    mode = (hets_options && hets_options.structure_only) ? :fast_run : :default
 
-    parse_caller = Hets::ParseCaller.new(HetsInstance.choose!, options)
+    parse_caller = Hets::ParseCaller.new(HetsInstance.choose!, hets_options)
 
     parse_caller.call(qualified_loc_id_for(resource), with_mode: mode)
   end
@@ -163,7 +163,7 @@ we expected it to be matchable by this regular expression:
   end
 
   # Runs hets with input_file and returns XML output file path.
-  def self.parse(input_file, output_path = nil, options = nil)
+  def self.parse(input_file, output_path = nil, hets_options = nil)
 
     # Arguments to run the subprocess
     args = [config.path, *%w( -o pp.xml -o xml --full-signatures -a none -v2 --full-theories )]
@@ -173,8 +173,8 @@ we expected it to be matchable by this regular expression:
       args += ['-O', output_path]
     end
 
-    # options is of class Hets::Options
-    args += options.args if options
+    # hets_options is of class Hets::Options
+    args += hets_options.args if hets_options
 
     # Configure stack size
     args += ['+RTS', "-K#{config.stack_size}", '-RTS']
