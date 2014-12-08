@@ -5,14 +5,6 @@ class AccessToken < ActiveRecord::Base
   scope :expired, ->() { where('expiration <= ?', Time.now) }
   scope :unexpired, ->() { where('expiration > ?', Time.now) }
 
-  def to_s
-    token
-  end
-
-  def expired?
-    expiration <= Time.now
-  end
-
   def self.destroy_expired
     expired.find_each(&:destroy)
   end
@@ -38,5 +30,13 @@ class AccessToken < ActiveRecord::Base
        expiration: fresh_expiration_date,
        token: Digest::SHA2.hexdigest(id)},
       {without_protection: true})
+  end
+
+  def to_s
+    token
+  end
+
+  def expired?
+    expiration <= Time.now
   end
 end
