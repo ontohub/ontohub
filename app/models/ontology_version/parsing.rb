@@ -52,12 +52,13 @@ module OntologyVersion::Parsing
   end
 
   def generate_access_token
-    return unless repository.is_private
-    access_token = AccessToken.create_for(self)
-    repository.access_tokens << access_token
-    repository.save!
+    if !repository.is_private
+      access_token = AccessToken.create_for(self)
+      repository.access_tokens << access_token
+      repository.save!
 
-    access_token
+      access_token
+    end
   end
 
   def parse_full
