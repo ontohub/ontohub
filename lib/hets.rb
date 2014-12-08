@@ -126,15 +126,15 @@ we expected it to be matchable by this regular expression:
     end
 
     def access_token_args
-      access_token ? ["--access-token=#{access_token}"] : []
+      access_token ? %W(--access-token=#{access_token}) : []
     end
 
     def structure_only_args
-      structure_only ? ['-s'] : []
+      structure_only ? %w(-s) : []
     end
 
     def url_catalog_args
-      url_catalog.empty? ? [] : ['-C', url_catalog.join(',')]
+      url_catalog.empty? ? [] : %W(-C #{url_catalog.join(',')})
     end
   end
 
