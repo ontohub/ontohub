@@ -96,17 +96,15 @@ module NavigationHelper
   end
 
   def active_navigation(controller)
+    alternatives = [controller.to_s, controller.to_s.gsub('_', '/')]
     if params[:repository_id]
       if params[:ontology_id]
         'active' if controller == :ontologies
       else
         'active' if controller == :repositories
       end
-    else
-      if [controller.to_s, controller.to_s.gsub('_', '/')].
-        include?(params[:controller])
-        'active'
-      end
+    elsif alternatives.include?(controller_name)
+      'active'
     end
   end
 
