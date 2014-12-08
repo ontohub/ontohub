@@ -25,7 +25,7 @@ module ApplicationHelper
   end
 
   def in_repository?
-    params[:repository_id] || params[:controller] == 'repositories'
+    params[:repository_id].present? || params[:controller] == 'repositories'
   end
 
   def resource_chain

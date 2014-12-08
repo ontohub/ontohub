@@ -2,7 +2,7 @@ class OntologySearchController < ApplicationController
 
   def search
     @search_response = paginate_for(search_response)
-    render 'ontologies/_ontology_search'
+    render 'shared/_ontology_search'
   end
 
   def search_response
