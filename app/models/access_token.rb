@@ -21,15 +21,19 @@ class AccessToken < ActiveRecord::Base
 
   def self.insecure_build_for(ontology_version)
     repository = ontology_version.repository
+    AccessToken.new(
+      {repository: repository,
+       expiration: fresh_expiration_date,
+       token: generate_token_string(ontology_version, repository)},
+      {without_protection: true})
+  end
+
+  def self.generate_token_string(ontology_version, repository)
     id = [
       repository.to_param, ontology_version.path,
       Time.now.strftime('%Y-%m-%d-%H-%M-%S-%6N')
     ].join('|')
-    AccessToken.new(
-      {repository: repository,
-       expiration: fresh_expiration_date,
-       token: Digest::SHA2.hexdigest(id)},
-      {without_protection: true})
+    Digest::SHA2.hexdigest(id)
   end
 
   def to_s
