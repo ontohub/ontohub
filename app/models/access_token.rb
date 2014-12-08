@@ -26,10 +26,10 @@ class AccessToken < ActiveRecord::Base
 
   def self.build_for(ontology_version)
     repository = ontology_version.repository
-    AccessToken.new(
-      {repository: repository,
-       expiration: fresh_expiration_date,
-       token: generate_token_string(ontology_version, repository)},
+    AccessToken.new({
+      repository: repository,
+      expiration: fresh_expiration_date,
+      token: generate_token_string(ontology_version, repository)},
       {without_protection: true})
   end
 
