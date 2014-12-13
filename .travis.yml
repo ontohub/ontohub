@@ -3,6 +3,9 @@ language: ruby
 rvm:
   - 2.1
 
+cache:
+  bundler: true
+
 branches:
   except:
     - ontohub.org
