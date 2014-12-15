@@ -41,15 +41,15 @@ module OntologyHelper
     if resource.state == 'failed' and resource.is_a? Ontology
       version = resource.versions.last
 
-      link = ' ('
-      link << link_to('error',
+      mapping = ' ('
+      mapping << link_to('error',
         [resource.repository, resource, :ontology_versions],
         :'data-original-title' => version.last_error,
         class: 'help'
       )
-      link << ')'
+      mapping << ')'
 
-      html << content_tag(:span, link.html_safe, class: 'error')
+      html << content_tag(:span, mapping.html_safe, class: 'error')
     end
 
     html

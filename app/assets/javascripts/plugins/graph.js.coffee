@@ -8,7 +8,7 @@ $('div#d3_context').height(height)
 distance = 60
 force_charge = -400
 colors = d3.scale.category10()
-edge_type = null # May be LogicMapping or Link
+edge_type = null # May be LogicMapping or Mapping
 mode = "normal"
 sentence_klasses = ["non_theorem", "proven", "unproven"]
 
@@ -34,8 +34,8 @@ resetSelections = ->
 templateName = (edge_type, template_type) ->
   if edge_type == 'LogicMapping'
     "graphs/logic_mappings_#{template_type}"
-  else if edge_type == 'Link'
-    "graphs/links_#{template_type}"
+  else if edge_type == 'Mapping'
+    "graphs/mappings_#{template_type}"
 
 addSVGMarker = (svg_element, payload) ->
   svg_element.append("svg:defs").selectAll("marker")
@@ -58,17 +58,17 @@ jQuery ->
 
 d3NodesEdges = (data) ->
   nodes = []
-  links = {}
+  mappings = {}
   center = data.center
   for node in data.nodes
     nodes.push
       info: node
       is_center: (node.id == center.id)
       aggregates: data.nodes_aggregate["#{node.id}"]
-    links[node.id] = nodes.length - 1
+    mappings[node.id] = nodes.length - 1
   edges = _.map data.edges, (edge) ->
-    source: links[edge.source_id]
-    target: links[edge.target_id]
+    source: mappings[edge.source_id]
+    target: mappings[edge.target_id]
     info: edge
   [nodes,edges,data.node_url,data.edge_url]
 
@@ -117,7 +117,7 @@ displayGraph = (data) ->
 
     force = d3.layout.force()
     force.nodes(nodes)
-    force.links(edges)
+    force.mappings(edges)
     force.size([width, height])
       .gravity(0.05)
       .linkDistance(distance)
@@ -128,13 +128,13 @@ displayGraph = (data) ->
     addSVGMarker svg_group, [klass] for klass in sentence_klasses
 
     path = svg_group.append("svg:g").selectAll("path")
-      .data(force.links())
+      .data(force.mappings())
       .enter()
       .append("svg:path")
     path.attr "class", (d) ->
-        proven = "link proven" if !! d.info.proven
-        unproven = "link unproven"
-        not_proveable = "link" unless !! d.info.theorem
+        proven = "mapping proven" if !! d.info.proven
+        unproven = "mapping unproven"
+        not_proveable = "mapping" unless !! d.info.theorem
         not_proveable || proven || unproven
     path.attr "marker-end", (d) ->
         proven = "url(#proven)" if !! d.info.proven

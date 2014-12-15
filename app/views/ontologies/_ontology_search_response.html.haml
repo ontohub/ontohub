@@ -2,9 +2,9 @@
   #search_response
     - @search_response.each do |response|
       %h2
-        = fancy_link(response)
+        = fancy_mapping(response)
         = response.file_extension
-      .repository= fancy_link(response.repository)
+      .repository= fancy_mapping(response.repository)
       .content= response.description if response.description.present?
       .categories
         - response.categories.each do |category|

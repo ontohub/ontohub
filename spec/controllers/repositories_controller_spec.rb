@@ -20,7 +20,7 @@ describe RepositoriesController do
         before do
           importing_repository = create :repository
           importing = create :ontology, repository: importing_repository
-          create :import_link, target: importing, source: ontology
+          create :import_mapping, target: importing, source: ontology
           delete :destroy, id: repository.to_param
         end
 

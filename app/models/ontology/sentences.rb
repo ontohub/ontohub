@@ -36,23 +36,23 @@ module Ontology::Sentences
       [translated + imported.first, self.sentences + imported.last]
     end
 
-    # Find import-links which describe the following mapping:
+    # Find import-mappings which describe the following mapping:
     # some ontology imports self.
     def incoming_imports_with_mappings
       # INNER JOINS always return an empty result set if the
       # ON clause does not match.
-      Link.joins(:entity_mappings).where(source_id: self, kind: 'import')
+      Mapping.joins(:symbol_mappings).where(source_id: self, kind: 'import')
     end
 
     def create_translated_sentences
-      query, args = links_by_kind_query(self, 'import')
+      query, args = mappings_by_kind_query(self, 'import')
       imported_ontology_ids = pluck_select([query, *args], :ontology_id).reverse
       imported_ontology_ids.each { |o_id| Ontology.find(o_id).create_translated_sentences }
-      import_links = incoming_imports_with_mappings
-      if import_links.any?
+      import_mappings = incoming_imports_with_mappings
+      if import_mappings.any?
         combined_sentences.each do |sentence|
-          import_links.each do |import_link|
-            import_link.entity_mappings.each do |mapping|
+          import_mappings.each do |import_mapping|
+            import_mapping.symbol_mappings.each do |mapping|
               translate_sentence(sentence, mapping)
             end
           end
@@ -64,9 +64,9 @@ module Ontology::Sentences
       applicable_sentence = TranslatedSentence.choose_applicable(sentence, mapping)
       if mapping.applicable?(applicable_sentence)
         translated_text = mapping.apply(applicable_sentence)
-        audience = mapping.link.target
+        audience = mapping.mapping.target
         translated_sentence = TranslatedSentence.where(
-          entity_mapping_id: mapping,
+          symbol_mapping_id: mapping,
           audience_id: audience,
           sentence_id: sentence,
           ontology_id: sentence.ontology).first_or_initialize
@@ -78,9 +78,9 @@ module Ontology::Sentences
 
     protected
     def translate_sentences_for(audience_ontology)
-      link = Link.where(source_id: audience_ontology, target_id: self, kind: 'import').first
-      if link && link.entity_mappings.any?
-        create_or_fetch_translations(audience_ontology, link, link.entity_mappings)
+      mapping = Mapping.where(source_id: audience_ontology, target_id: self, kind: 'import').first
+      if mapping && mapping.symbol_mappings.any?
+        create_or_fetch_translations(audience_ontology, mapping, mapping.symbol_mappings)
       else
         default_translated_sentences
       end
@@ -91,18 +91,18 @@ module Ontology::Sentences
       self.sentences
     end
 
-    def create_or_fetch_translations(audience_ontology, link, mappings, overwrite: false)
+    def create_or_fetch_translations(audience_ontology, mapping, mappings, overwrite: false)
       translations = TranslatedSentence.for(audience_ontology, sentences_from: self)
       if translations.any? && !overwrite
         translations
       else
         translations.delete_all
-        create_translations(audience_ontology, link, mappings)
+        create_translations(audience_ontology, mapping, mappings)
       end
     end
 
-    def create_translations(audience_ontology, link, mappings)
-      query, args = links_by_kind_query(self, 'import')
+    def create_translations(audience_ontology, mapping, mappings)
+      query, args = mappings_by_kind_query(self, 'import')
       imported_ontology_ids = pluck_select([query, *args], :id).reverse
       imported_ontology_ids.each { |o_id| Ontology.find(o_id).create_translated_sentences }
     end
@@ -120,9 +120,9 @@ module Ontology::Sentences
 
       sentence.save!
 
-      execute_sql "DELETE FROM entities_sentences WHERE sentence_id=#{sentence.id}"
-      execute_sql "INSERT INTO entities_sentences (sentence_id, entity_id, ontology_id)
-                  SELECT #{sentence.id}, id, ontology_id FROM entities WHERE
+      execute_sql "DELETE FROM symbols_sentences WHERE sentence_id=#{sentence.id}"
+      execute_sql "INSERT INTO symbols_sentences (sentence_id, symbol_id, ontology_id)
+                  SELECT #{sentence.id}, id, ontology_id FROM symbols WHERE
                   ontology_id=#{@association.owner.id} AND text IN (?)",
                   hash['symbols']
 

@@ -48,7 +48,7 @@ class PrivilegeList::Base < InheritedResources::Base
   end
 
   def power_error(exception)
-    render :text => exception.message, :status => :unprocessable_entity
+    render :text => exception.message, :status => :unprocessable_symbol
   end
 
 end

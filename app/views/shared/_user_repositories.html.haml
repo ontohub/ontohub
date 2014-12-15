@@ -5,4 +5,4 @@
   .panel-body
     %ul.no-bullet
       - current_user.accessible_repositories.each do |repository|
-        %li= fancy_link repository
+        %li= fancy_mapping repository

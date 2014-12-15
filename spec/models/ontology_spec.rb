@@ -9,7 +9,7 @@ describe Ontology do
       it { should belong_to(association) }
     end
 
-    %i(versions comments sentences entities).each do |association|
+    %i(versions comments sentences symbols).each do |association|
       it { should have_many(association) }
     end
 
@@ -166,7 +166,7 @@ describe Ontology do
 
       it 'should not be allowed' do
         importing = create :ontology
-        create :import_link, target: importing, source: ontology
+        create :import_mapping, target: importing, source: ontology
         expect { ontology.destroy_with_parent(user) }.to raise_error(Ontology::DeleteError)
       end
     end
@@ -186,7 +186,7 @@ describe Ontology do
     let!(:ontology) { create :ontology }
     let!(:imported_ontology) do
       imported = create :single_ontology
-      create :import_link, target: ontology, source: imported
+      create :import_mapping, target: ontology, source: imported
       imported
     end
 
@@ -198,7 +198,7 @@ describe Ontology do
     context 'which have imports themselves' do
       let!(:imported_imported_ontology) do
         imported = create :single_ontology
-        create :import_link, target: imported_ontology, source: imported
+        create :import_mapping, target: imported_ontology, source: imported
         imported
       end
 
@@ -320,13 +320,13 @@ describe Ontology do
       expect(ontology.logic.try(:name)).to eq('CASL')
     end
 
-    context 'entity count' do
+    context 'symbol count' do
       it 'should be correct' do
-        expect(ontology.entities.count).to eq(2)
+        expect(ontology.symbols.count).to eq(2)
       end
 
       it 'should be reflected in the corresponding field' do
-        expect(ontology.entities_count).to eq(ontology.entities.count)
+        expect(ontology.symbols_count).to eq(ontology.symbols.count)
       end
     end
 
@@ -357,16 +357,16 @@ describe Ontology do
       expect(ontology.children.count).to eq(4)
     end
 
-    it 'should have the correct link count' do
-      expect(ontology.links.count).to eq(3)
+    it 'should have the correct mapping count' do
+      expect(ontology.mappings.count).to eq(3)
     end
 
     it 'should have the DOL-logic assigned to the logic-field' do
       expect(ontology.logic.try(:name)).to eq('DOL')
     end
 
-    it 'should have no entities' do
-      expect(ontology.entities.count).to eq(0)
+    it 'should have no symbols' do
+      expect(ontology.symbols.count).to eq(0)
     end
 
     it 'should have no sentences' do
@@ -376,8 +376,8 @@ describe Ontology do
     context 'first child ontology' do
       let(:child) { ontology.children.where(name: 'sp__E1').first }
 
-      it 'should have entities' do
-        expect(child.entities.count).to eq(2)
+      it 'should have symbols' do
+        expect(child.symbols.count).to eq(2)
       end
 
       it 'should have one sentence' do
@@ -413,7 +413,7 @@ describe Ontology do
     end
 
     context 'kinds' do
-      let(:kinds) { combined.entities.map(&:kind) }
+      let(:kinds) { combined.symbols.map(&:kind) }
 
       it 'should be assigned to symbols of the combined ontology' do
         expect(kinds).to_not include('Undefined')

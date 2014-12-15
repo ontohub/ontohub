@@ -45,13 +45,13 @@ class TripleStore
       object = statement[2].to_s
 
       # Map subject
-      map_entity(@subjectMap, predicate, object, subject)
+      map_symbol(@subjectMap, predicate, object, subject)
 
       # Map predicate
-      map_entity(@predicateMap, subject, object, predicate)
+      map_symbol(@predicateMap, subject, object, predicate)
 
       # Map object
-      map_entity(@objectMap, subject, predicate, object)
+      map_symbol(@objectMap, subject, predicate, object)
     end
   end
 
@@ -63,7 +63,7 @@ class TripleStore
   # * *Returns* :
   # * - the list of subjects
   def subjects(predicate, object)
-    entities(@subjectMap, predicate, object)
+    symbols(@subjectMap, predicate, object)
   end
 
   # Returns a list with all predicates for a given subject-object pair
@@ -74,7 +74,7 @@ class TripleStore
   # * *Returns* :
   # * - the list of predicates
   def predicates(subject, object)
-    entities(@predicateMap, subject, object)
+    symbols(@predicateMap, subject, object)
   end
 
   # Returns a list with all objects for a given subject-predicate pair
@@ -85,21 +85,21 @@ class TripleStore
   # * *Returns* :
   # * - the list of objects
   def objects(subject, predicate)
-    entities(@objectMap, subject, predicate)
+    symbols(@objectMap, subject, predicate)
   end
 
   private
 
-  # Lists the entities identified by two keys
+  # Lists the symbols identified by two keys
   #
   # * *Args* :
   # * - +map+ -> a hash of hashes of arrays
   # * - +key1+ -> a key to a hash of arrays
   # * - +key2+ -> a key to an array
   # * *Returns* :
-  # * - the indicated array of entities if it exists
+  # * - the indicated array of symbols if it exists
   # * - an empty array otherwise
-  def entities(map, key1, key2)
+  def symbols(map, key1, key2)
     if !map[key1]
       Array.new
     elsif !map[key1][key2]
@@ -109,21 +109,21 @@ class TripleStore
     end
   end
 
-  # Maps an entity to two keys
+  # Maps an symbol to two keys
   #
   # * *Args* :
   # * - +map+ -> a hash of hashes of arrays
   # * - +key1+ -> a key to a hash of arrays
   # * - +key2+ -> a key to an array
-  # * - +entity+ -> an entity to be added to the array
-  def map_entity(map, key1, key2, entity)
+  # * - +symbol+ -> an symbol to be added to the array
+  def map_symbol(map, key1, key2, symbol)
     if !map[key1]
       map[key1] = Hash.new
     end
     if !map[key1][key2]
       map[key1][key2] = Array.new
     end
-    map[key1][key2].push entity
+    map[key1][key2].push symbol
   end
 
 end

@@ -17,5 +17,5 @@ window.activate_clone_url = (fragment) ->
 
 jQuery ->
   activate_clone_url location.hash.substring(1)
-  $('a.clone_method_link').on 'click', ->
+  $('a.clone_method_mapping').on 'click', ->
     activate_clone_url $(this).data('clone')

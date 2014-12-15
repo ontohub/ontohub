@@ -1,11 +1,11 @@
-# Class for using the Tarjan algorithm to remove cycles in the entity trees.
+# Class for using the Tarjan algorithm to remove cycles in the symbol trees.
 class TarjanTree
   include TSort
-  attr_accessor :hashed_entities, :subclasses, :ontology
+  attr_accessor :hashed_symbols, :subclasses, :ontology
 
   def initialize(ontology)
     self.ontology = ontology
-    self.hashed_entities = Hash.new
+    self.hashed_symbols = Hash.new
     self.subclasses = inheritance_sentences(ontology)
   end
 
@@ -13,27 +13,27 @@ class TarjanTree
     subclasses.each do |s|
       c1, c2 = s.hierarchical_class_names
 
-      child_id = ontology.entities.where('name = ? OR iri = ?', c1, c1).first!.id
-      parent_id = ontology.entities.where('name = ? OR iri = ?', c2, c2).first!.id
+      child_id = ontology.symbols.where('name = ? OR iri = ?', c1, c1).first!.id
+      parent_id = ontology.symbols.where('name = ? OR iri = ?', c2, c2).first!.id
 
-      hashed_entities[parent_id] ||= []
-      hashed_entities[parent_id] << child_id
+      hashed_symbols[parent_id] ||= []
+      hashed_symbols[parent_id] << child_id
     end
     create_tree(ontology)
   end
 
   def self.for(ontology)
     tarjan_tree = new(ontology)
-    ontology.entity_groups.destroy_all
+    ontology.symbol_groups.destroy_all
     tarjan_tree.calculate
   end
 
   def tsort_each_node(&block)
-    hashed_entities.each_key(&block)
+    hashed_symbols.each_key(&block)
   end
 
   def tsort_each_child(node, &block)
-    hashed_entities[node].try(:each, &block)
+    hashed_symbols[node].try(:each, &block)
   end
 
   # Get SubClassOf Strings without explicit Thing
@@ -52,18 +52,18 @@ class TarjanTree
   end
 
   def create_groups(ontology)
-    strongly_connected_components.each do |entity_ids|
-      entities = Entity.find(entity_ids)
-      name = group_name_for(entities)
-      EntityGroup.create!(ontology: ontology, entities: entities, name: name)
+    strongly_connected_components.each do |symbol_ids|
+      symbols = Symbol.find(symbol_ids)
+      name = group_name_for(symbols)
+      EntityGroup.create!(ontology: ontology, symbols: symbols, name: name)
     end
   end
 
   def create_edges
-    hashed_entities.each do |parent_id, children|
-      parent_group = Entity.find(parent_id).entity_group
+    hashed_symbols.each do |parent_id, children|
+      parent_group = Symbol.find(parent_id).symbol_group
       children.each do |child_id|
-        child_group = Entity.find(child_id).entity_group
+        child_group = Symbol.find(child_id).symbol_group
         if parent_group != child_group
           EEdge.where(parent_id: parent_group, child_id: child_group).first_or_create!
         end
@@ -71,7 +71,7 @@ class TarjanTree
     end
   end
 
-  def group_name_for(entities)
-    entities.join(" ☰ ")
+  def group_name_for(symbols)
+    symbols.join(" ☰ ")
   end
 end

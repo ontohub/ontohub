@@ -12,7 +12,7 @@ div#d3_context {
   overflow: scroll;
 }
 
-path.link {
+path.mapping {
   fill: white;
   /* stroke: #666; */
   stroke: black;
@@ -37,7 +37,7 @@ marker#unproven {
   fill: red;
 }
 
-path.link:hover {
+path.mapping:hover {
   stroke-width: 2.5px;
   opacity: 1;
 }

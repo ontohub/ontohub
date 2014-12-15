@@ -23,10 +23,10 @@ $ ->
         callback() if callback
       )
 
-    add_to_table = (link_el) ->
+    add_to_table = (mapping_el) ->
       table = $('#directory-listing')
-      table.prepend(link_el)
-      animateIn(link_el)
+      table.prepend(mapping_el)
+      animateIn(mapping_el)
 
     animateIn = (element) ->
       element.stop(true, true).fadeIn({queue: false}).
@@ -46,11 +46,11 @@ $ ->
           clone_el.append(message)
         )
 
-    directory_link = (link) ->
+    directory_mapping = (mapping) ->
       line_el = clone_element('#repository_directories_line_prototype')
       anchor_el = $('a', line_el)
-      anchor_el.attr('href', link.url)
-      anchor_el.html(link.text)
+      anchor_el.attr('href', mapping.url)
+      anchor_el.html(mapping.text)
       console.log(line_el)
       line_el
 
@@ -61,7 +61,7 @@ $ ->
       success_callback = (json, text_status, jqXHR) ->
         html = json.html
         form_tr = form.parent().parent()
-        remove_form_clone(form_tr, () -> add_to_table(directory_link(json.link)))
+        remove_form_clone(form_tr, () -> add_to_table(directory_mapping(json.mapping)))
         remove_empty_repository_hint()
         show_flash_message(json.text)
 

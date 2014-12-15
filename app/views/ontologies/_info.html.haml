@@ -1,7 +1,7 @@
 = render partial: '/ontologies/menu', locals: {resource: resource}
 
 %h1#ontology_title
-  = ontology_link_to resource
+  = ontology_mapping_to resource
   %small
     - if resource.logic
       = link_to resource.logic.to_s, resource.logic
@@ -11,22 +11,22 @@
   %small
     %p
       #{Settings.OMS} Type:
-      = fancy_link resource.ontology_type
+      = fancy_mapping resource.ontology_type
 
 %small
   #{Settings.OMS} defined
   - if resource.parent
     by
-    %span= fancy_link(resource.parent)
+    %span= fancy_mapping(resource.parent)
   in the file
-  = fancy_link repository_tree_path(resource.repository, resource.path)
+  = fancy_mapping repository_tree_path(resource.repository, resource.path)
   - if resource.documentation
     See for detailed documentation
     = link_to resource.documentation, resource.documentation
 
 
 %p
-  %span.iri-link= link_to resource.iri, resource.iri
+  %span.iri-mapping= link_to resource.iri, resource.iri
 %p= resource.description
 
 - if resource.oops_supported?
@@ -40,14 +40,14 @@
     - @top_level_pages.each do |(page_title, page)|
       %li{class: page==current_page || in_subcontroller?(page, current_page) ? 'active' : nil}
         = link_to page_title, [*resource_chain, page]
-  - if %w(entities sentences theorems children).include?(controller_name)
+  - if %w(symbols sentences theorems children).include?(controller_name)
     %nav.nav_tab_level2
       %ul.nav.nav-tabs
-        - @entities.each do |entity|
-          %li{:class => (entity.kind == @active_kind ? 'active' : nil)}
-            = link_to repository_ontology_entities_path(*resource_chain, kind: entity.kind) do
-              = entity.count == 1 ? entity.kind : entity.kind.pluralize
-              %span.badge{:style => entity.count == 0 && 'display:none'}= entity.count
+        - @symbols.each do |symbol|
+          %li{:class => (symbol.kind == @active_kind ? 'active' : nil)}
+            = link_to repository_ontology_symbols_path(*resource_chain, kind: symbol.kind) do
+              = symbol.count == 1 ? symbol.kind : symbol.kind.pluralize
+              %span.badge{:style => symbol.count == 0 && 'display:none'}= symbol.count
         - pages.each do |page, path, count|
           %li{:class => (page==current_page ? 'active' : nil)}
             = link_to path do

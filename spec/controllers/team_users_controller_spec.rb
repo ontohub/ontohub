@@ -52,7 +52,7 @@ describe TeamUsersController do
         expect(response.body).to match(/What the hell/)
       end
 
-      it { should respond_with :unprocessable_entity }
+      it { should respond_with :unprocessable_symbol }
     end
   end
 

@@ -35,7 +35,7 @@ module OntologyParser
       @current_ontology = nil
       @current_symbol   = nil
       @current_axiom    = nil
-      @current_link     = nil
+      @current_mapping     = nil
       @in_imp_axioms    = false
     end
 
@@ -52,8 +52,8 @@ module OntologyParser
       when SYMBOL
         @current_symbol = Hash[*[attributes]]
         @current_symbol['text'] = ''
-        if @current_link && @current_link['map']
-          @current_link['map'] << @current_symbol
+        if @current_mapping && @current_mapping['map']
+          @current_mapping['map'] << @current_symbol
         end
         @current_axiom['symbol_hashes'] << @current_symbol if @current_axiom
       when IMPAXIOMS
@@ -73,11 +73,11 @@ module OntologyParser
         @current_theorem['symbol_hashes'] = []
         @current_theorem['text'] = ''
       when LINK
-        @current_link = Hash[*[attributes]]
+        @current_mapping = Hash[*[attributes]]
       when MORPHISM
-        @current_link['morphism'] = Hash[*[attributes]]['name'] if @current_link
+        @current_mapping['morphism'] = Hash[*[attributes]]['name'] if @current_mapping
       when MAP
-        @current_link['map'] = []
+        @current_mapping['map'] = []
       end
     end
 
@@ -90,7 +90,7 @@ module OntologyParser
         @current_axiom['text'] << text if @current_axiom
         @current_theorem['text'] << text if @current_theorem
       when TYPE # there is no other use of TYPE in this code
-        @current_link['type'] = text if @current_link
+        @current_mapping['type'] = text if @current_mapping
       end
     end
 
@@ -113,8 +113,8 @@ module OntologyParser
           @current_theorem['symbols'] << @current_symbol['text']
         else
           # return the current symbol
-          in_mapping_link = @current_link && @current_link['map']
-          callback(:symbol, @current_symbol) unless in_mapping_link
+          in_mapping_mapping = @current_mapping && @current_mapping['map']
+          callback(:symbol, @current_symbol) unless in_mapping_mapping
         end
         @current_symbol = nil
       when IMPAXIOMS
@@ -140,9 +140,9 @@ module OntologyParser
         # return the current theorem
         @current_theorem = nil
       when LINK
-        # return the current link
-        callback(:link, @current_link)
-        @current_link = nil
+        # return the current mapping
+        callback(:mapping, @current_mapping)
+        @current_mapping = nil
       end
     end
 

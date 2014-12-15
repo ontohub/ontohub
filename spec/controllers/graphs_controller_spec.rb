@@ -18,7 +18,7 @@ describe GraphsController do
 
       it { should respond_with :success }
     end
-    context 'valid response when there are no mappings/links' do
+    context 'valid response when there are no mappings/mappings' do
       let(:unlinked_source) { create(:logic) }
       before { get :index, logic_id: unlinked_source, format: :json }
 

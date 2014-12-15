@@ -5,7 +5,7 @@
 
 - @repositories.each do |repository|
   %div
-    = fancy_link repository
+    = fancy_mapping repository
     = timestamp repository.updated_at
 
 %h2 Recently Updated #{Settings.OMS.pluralize.capitalize}
@@ -15,8 +15,8 @@
 
 - @versions.each do |version|
   %div
-    = fancy_link version.ontology
+    = fancy_mapping version.ontology
     - if version.user
       by
-      = fancy_link version.user
+      = fancy_mapping version.user
     = timestamp version

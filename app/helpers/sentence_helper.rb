@@ -8,9 +8,9 @@ module SentenceHelper
     end
   end
 
-  def link_to_sentence_origin(sentence, ontology)
+  def mapping_to_sentence_origin(sentence, ontology)
     if sentence.ontology != ontology
-      t('sentences.sentence.defined_in', link: link_to(sentence.ontology,
+      t('sentences.sentence.defined_in', mapping: link_to(sentence.ontology,
                 [sentence.ontology.repository, sentence.ontology]))
     end
   end
