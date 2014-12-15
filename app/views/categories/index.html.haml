@@ -7,7 +7,7 @@
     %p This #{Settings.OMS} is assigned to the following categories:
     %ul.no-bullet
       - parent.categories.each do |category|
-        %li= fancy_mapping category
+        %li= fancy_link category
   - else
     %p
       This #{Settings.OMS} is assigned to no categories.

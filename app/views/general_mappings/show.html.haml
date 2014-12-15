@@ -8,9 +8,9 @@
       %li= link_to 'Delete mapping', resource, :confirm => 'Are you sure?', :method => :delete
 
 %h5 Maps 
-= fancy_mapping resource.source 
+= fancy_link resource.source
 to
-= fancy_mapping resource.target
+= fancy_link resource.target
 
 %p.definedBy 
   %h5 Defined by: 

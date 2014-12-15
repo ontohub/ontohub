@@ -1,7 +1,7 @@
 = render partial: '/ontologies/menu', locals: {resource: resource}
 
 %h1#ontology_title
-  = ontology_mapping_to resource
+  = ontology_link_to resource
   %small
     - if resource.logic
       = link_to resource.logic.to_s, resource.logic
@@ -11,15 +11,15 @@
   %small
     %p
       #{Settings.OMS} Type:
-      = fancy_mapping resource.ontology_type
+      = fancy_link resource.ontology_type
 
 %small
   #{Settings.OMS} defined
   - if resource.parent
     by
-    %span= fancy_mapping(resource.parent)
+    %span= fancy_link(resource.parent)
   in the file
-  = fancy_mapping repository_tree_path(resource.repository, resource.path)
+  = fancy_link repository_tree_path(resource.repository, resource.path)
   - if resource.documentation
     See for detailed documentation
     = link_to resource.documentation, resource.documentation
