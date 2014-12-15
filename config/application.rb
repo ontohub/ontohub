@@ -73,7 +73,7 @@ module Ontohub
     config.assets.precompile += %w(jstree-themes/**/*)
 
     #Including the external mappings Yaml-file
-    config.external_url_mapping = APP_CONFIG = YAML.load(File.read(Rails.root + "config/external_mapping_mapping.yml"))
+    config.external_url_mapping = APP_CONFIG = YAML.load(File.read(Rails.root + "config/external_link_mapping.yml"))
 
     config.before_initialize do
       # Enable serving of images, stylesheets, and JavaScripts from an asset server
