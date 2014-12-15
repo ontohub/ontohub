@@ -18,12 +18,12 @@ module NavigationHelper
 
   def ontology_nav(ontology, current_page)
     @top_level_pages = [
-      ['Content', ontology.distributed? ? :children : :entities],
+      ['Content', ontology.distributed? ? :children : :symbols],
       ['Comments', :comments],
       ['Metadata', :metadata],
       ['Versions', :ontology_versions],
       ['Graphs', :graphs],
-      ['Mappings', :links]
+      ['Mappings', :mappings]
     ]
 
     @metadatas = []
@@ -32,9 +32,9 @@ module NavigationHelper
       @metadatas = ontology_nav_metadata
     end
 
-    @entities = ontology.distributed? ? [] : ontology.entities.groups_by_kind.sort_by(&:kind)
+    @symbols = ontology.distributed? ? [] : ontology.symbols.groups_by_kind.sort_by(&:kind)
 
-    @active_kind = choose_default_entity_kind(@entities) if current_page == :entities
+    @active_kind = choose_default_symbol_kind(@symbols) if current_page == :symbols
     @active_kind = params[:kind] if params[:kind]
 
     pages = []
@@ -118,7 +118,7 @@ module NavigationHelper
   # used for activating tabs in ontology view
   def in_subcontroller?(page, current_page)
     case page
-      when :entities
+      when :symbols
         %w(classes sentences theorems).include?(controller_name)
       when :metadata
         in_metadata?

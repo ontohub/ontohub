@@ -1,6 +1,6 @@
 = repository_nav parent.repository, :ontologies if parent.is_a?(Ontology)
 
-- @link_tab = :graphs
+- @mapping_tab = :graphs
 - if parent.is_a?(Ontology)
   = ontology_nav parent, :graphs if respond_to?(:parent)
 - elsif parent.is_a?(Logic)
@@ -8,7 +8,7 @@
 
 %h4
   Graphical Visualization of
-  = t(GraphDataFetcher.link_for(parent.class)).pluralize
+  = t(GraphDataFetcher.mapping_for(parent.class)).pluralize
 - unless parent.is_a?(DistributedOntology)
   Depth of
   .btn-group#graph_depth_setting
@@ -27,7 +27,7 @@
       = link_to 'only imports', '#ontology_selections', class: 'btn btn-default mode', id: 'import'
 
   from
-= fancy_link parent
+= fancy_mapping parent
 
 %div#graph_content.row.well.well-large
   .row

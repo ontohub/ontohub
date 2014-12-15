@@ -1,6 +1,6 @@
 class LogicViewhelper
 
-  attr_reader :available_tabs, :available_tab_links
+  attr_reader :available_tabs, :available_tab_mappings
 
   def initialize(resource)
     @resource = resource
@@ -20,13 +20,13 @@ class LogicViewhelper
          :heterogeneous_distributed,
          Ontology.also_distributed_in(@resource).size],
     ]
-    @available_tab_links = [
+    @available_tab_mappings = [
       ['Graph',
         :graphs]
     ]
     fetcher = GraphDataFetcher.new(center: @resource)
     if fetcher.query_cost > 500
-      @available_tab_links = []
+      @available_tab_mappings = []
     end
   end
 

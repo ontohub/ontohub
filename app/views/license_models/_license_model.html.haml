@@ -1,5 +1,5 @@
 %tr
-  %td= fancy_link license_model
+  %td= fancy_mapping license_model
   %td= truncate license_model.description, length: 20, separator: ' '
   %td= license_model.url
   = render partial: 'shared/metadata_index_manage', locals: { cls_sym: :license_model, subject: license_model }

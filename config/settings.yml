@@ -39,7 +39,7 @@ max_combined_diff_size: 1_048_576
 # Timeout for ontology parsing jobs in hours
 ontology_parse_timeout: 6
 
-# Footer links and texts
+# Footer mappings and texts
 footer:
   - text: Foo Institute
   - text: About
@@ -144,4 +144,4 @@ tasks:
   - name: IndexingTask
     description: in this scenario, the goal of the ontology is to provide a clearly defined classification and browsing structure for the information items in a repository. Again, the task can be performed manually by domain experts or as part of an application in an automatic or semi-automatic way.
   - name: MatchingTask
-    description: the goal of matching is to establish links between semantically similar data items in information repositories. In contrast to the previous task, matching does not include the production of a shared final schema/ontology as a result of aggregating the matched source elements to common elements. W.r.t. the automatization level the range varies from manual to fully-automatical execution.
+    description: the goal of matching is to establish mappings between semantically similar data items in information repositories. In contrast to the previous task, matching does not include the production of a shared final schema/ontology as a result of aggregating the matched source elements to common elements. W.r.t. the automatization level the range varies from manual to fully-automatical execution.

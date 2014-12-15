@@ -5,9 +5,9 @@ class GraphDataFetcher
 
   MAPPINGS = {
     Logic => LogicMapping,
-    Ontology => Link,
-    SingleOntology => Link,
-    DistributedOntology => Link,
+    Ontology => Mapping,
+    SingleOntology => Mapping,
+    DistributedOntology => Mapping,
   }
 
   TARGET_MAPPINGS = {
@@ -17,7 +17,7 @@ class GraphDataFetcher
     Logic => Logic,
   }
 
-  def self.link_for(klass)
+  def self.mapping_for(klass)
     mapping_klass = MAPPINGS[klass]
     raise UnknownMapping if mapping_klass.nil?
     mapping_klass.to_s.to_sym

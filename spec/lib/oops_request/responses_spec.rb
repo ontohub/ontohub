@@ -3,8 +3,8 @@ require 'spec_helper'
 describe 'OopsRequest::Responses' do
   context 'creating a oops request' do
     let!(:version) { create :ontology_version }
-    let!(:entity) do
-      create :entity,
+    let!(:symbol) do
+      create :symbol,
         ontology: version.ontology,
         name:     'Must be present',
         text:     '',
@@ -23,8 +23,8 @@ describe 'OopsRequest::Responses' do
       expect(request.responses).not_to be_empty
     end
 
-    it 'affected entity with should be connected with response' do
-      expect(entity.oops_responses).not_to be_empty
+    it 'affected symbol with should be connected with response' do
+      expect(symbol.oops_responses).not_to be_empty
     end
   end
 end

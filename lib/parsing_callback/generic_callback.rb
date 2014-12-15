@@ -25,7 +25,7 @@ module ParsingCallback
     def theorem(_hash, _theorem)
     end
 
-    def link(_hash, _link)
+    def mapping(_hash, _mapping)
     end
 
     # Callbacks to be executed only with the hash
@@ -44,7 +44,7 @@ module ParsingCallback
       true
     end
 
-    def pre_link(_hash)
+    def pre_mapping(_hash)
       true
     end
 

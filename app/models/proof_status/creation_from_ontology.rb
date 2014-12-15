@@ -38,13 +38,13 @@ class ProofStatus
         # The name of the proof status is in the owl-label of the class.
         # In owl, the label is for a natural language label. A name fits well
         # in there.
-        entity_by_name(status).label
+        symbol_by_name(status).label
       end
 
       def description(status)
         # The description is in the owl-comment of the class.
         # This way, the ontology is smaller than when using custom relations.
-        entity_by_name(status).comment
+        symbol_by_name(status).comment
       end
 
       def solved?(status)
@@ -58,10 +58,10 @@ class ProofStatus
           basepath: 'proof_statuses', file_extension: '.owl').first
       end
 
-      def entity_by_name(status)
-        @entities_by_name ||= {}
+      def symbol_by_name(status)
+        @symbols_by_name ||= {}
 
-        @entities_by_name[status] ||= szs_ontology.entities.find_by_name(status)
+        @symbols_by_name[status] ||= szs_ontology.symbols.find_by_name(status)
       end
     end
   end

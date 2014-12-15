@@ -3,7 +3,7 @@
   - @comments.each do |comment|
     %li
       commented
-      = fancy_link comment.commentable
+      = fancy_mapping comment.commentable
       = timestamp comment
       .text
         = truncate comment.text, :length => 100, :seperator => ' '

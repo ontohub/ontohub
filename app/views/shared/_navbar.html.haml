@@ -18,10 +18,10 @@
         = menu_entry 'Repositories', :repositories
         = menu_entry Settings.OMS.pluralize.capitalize,   :ontologies
         = menu_entry 'Categories',   :categories
-        = menu_entry 'Symbols',      :entities_search if !! Settings.display_symbols_tab
+        = menu_entry 'Symbols',      :symbols_search if !! Settings.display_symbols_tab
         = menu_entry 'Logics',       :logics
-        = menu_entry 'Mappings',     :links
+        = menu_entry 'Mappings',     :mappings
         = render partial: 'shared/navbar_more'
-        %li= wiki_link controller_name, action_name
+        %li= wiki_mapping controller_name, action_name
 
       = render partial: 'shared/session'

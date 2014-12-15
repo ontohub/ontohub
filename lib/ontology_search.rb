@@ -63,7 +63,7 @@ class OntologySearch
 
     ontology_names.map { |name| text_list << name }
 
-    Entity.collect_restrictions(prefix, repository).each do |symbol|
+    Symbol.collect_restrictions(prefix, repository).each do |symbol|
       %i[display_name name text].each do |method|
         value = symbol.call method
         text_list << value if value

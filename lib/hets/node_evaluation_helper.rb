@@ -1,9 +1,9 @@
 module Hets
   module NodeEvaluationHelper
     def clean_ontology(ontology)
-      ontology.entities.destroy_all
+      ontology.symbols.destroy_all
       ontology.all_sentences.destroy_all
-      ontology.entities_count  = 0
+      ontology.symbols_count  = 0
       ontology.sentences_count = 0
       ontology.save!
     end
@@ -68,7 +68,7 @@ module Hets
       hets_evaluator.version if parent_ontology
     end
 
-    def alias_iris_for_links!(current_element)
+    def alias_iris_for_mappings!(current_element)
       aliases = hets_evaluator.ontology_aliases
       current_element['source_iri'] = aliases[current_element['source']]
       current_element['target_iri'] = aliases[current_element['target']]

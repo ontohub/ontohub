@@ -15,7 +15,7 @@ ignore_unused:
   - '*.help*'
   - '*.placeholder*'
   - repository.access.*
-  - Link
+  - Mapping
   - LogicMapping
 
 ignore_missing:

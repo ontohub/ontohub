@@ -2,12 +2,12 @@
 %ol.latest
   - @versions.each do |version|
     %li
-      = fancy_link version.ontology
+      = fancy_mapping version.ontology
       = timestamp version
 %h3 Failed ontology versions
 %ol.latest
   - @failed_versions.each do |failed|
     %li
-      = fancy_link failed.ontology
+      = fancy_mapping failed.ontology
       = timestamp failed
       %p= failed.last_error
