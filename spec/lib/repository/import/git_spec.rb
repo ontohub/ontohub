@@ -13,7 +13,8 @@ describe "git import" do
       user,
       "file://#{remote_repo.path}",
       'local import',
-      description: 'just an imported repo')
+      description: 'just an imported repo',
+      remote_type: 'mirror')
   end
 
   before { Worker.drain }
