@@ -1,6 +1,6 @@
 require 'spec_helper'
 
-describe EntityMapping do
+describe SymbolMapping do
 
   context 'when importing an ontology', :needs_hets do
     let(:repository) { create :repository }
