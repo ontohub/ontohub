@@ -1,7 +1,7 @@
 #
 # Controller for Mappings
 #
-class LinksController < InheritedResources::Base
+class MappingsController < InheritedResources::Base
 
   respond_to :json, :xml
   has_pagination
