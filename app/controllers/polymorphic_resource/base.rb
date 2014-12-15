@@ -16,7 +16,7 @@ class PolymorphicResource::Base < InheritedResources::Base
         if resource.errors.empty?
           render :partial => resource
         else
-          render :partial => 'form', :status => :unprocessable_symbol
+          render :partial => 'form', :status => :unprocessable_entity
         end
       end
     end
