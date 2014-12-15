@@ -42,9 +42,7 @@ describe Sentence do
         }
       end
 
-      before do
-        ontology.sentences.update_or_create_from_hash sentence_hash
-      end
+      before { ontology.sentences.update_or_create_from_hash sentence_hash }
 
       context 'correct attribute' do
         let(:sentence) { ontology.sentences.first }

@@ -62,7 +62,7 @@ config/environments/*.local.yml
 # Ignore output of SimpleCov
 /coverage
 
-test/fixtures/ontologies/xml
+spec/fixtures/ontologies/xml
 
-test/fixtures/ontologies/hets-out/*
-!test/fixtures/ontologies/hets-out/.gitkeep
+spec/fixtures/ontologies/hets-out/*
+!spec/fixtures/ontologies/hets-out/.gitkeep

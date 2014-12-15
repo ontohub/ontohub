@@ -32,9 +32,7 @@ describe Entity do
     let(:ontology) { create :ontology }
     let(:user) { create :user }
 
-    before do
-      parse_this(user, ontology, hets_out_file('pizza'))
-    end
+    before { parse_this(user, ontology, hets_out_file('pizza')) }
 
     it 'should have the correct number of described entities' do
       labeled_entities = ontology.entities.
@@ -60,9 +58,7 @@ describe Entity do
         }
       end
 
-      before do
-        ontology.entities.update_or_create_from_hash(entity_hash)
-      end
+      before { ontology.entities.update_or_create_from_hash(entity_hash) }
 
       context 'attributes' do
         let(:entity) { ontology.entities.first }
@@ -106,9 +102,7 @@ describe Entity do
         end
         let(:entity) { ontology.entities.first }
 
-        before do
-          ontology.entities.update_or_create_from_hash(entity_hash)
-        end
+        before { ontology.entities.update_or_create_from_hash(entity_hash) }
 
         it 'should be the last path segment' do
           expect(entity.display_name).to eq('resource')
@@ -126,9 +120,7 @@ describe Entity do
         end
         let(:entity) { ontology.entities.first }
 
-        before do
-          ontology.entities.update_or_create_from_hash(entity_hash)
-        end
+        before { ontology.entities.update_or_create_from_hash(entity_hash) }
 
         it 'should have display_name not set to nil' do
           expect(entity.display_name).to_not be_nil

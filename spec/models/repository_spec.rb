@@ -1,16 +1,28 @@
 require 'spec_helper'
 
 describe Repository do
-  let(:user)       { FactoryGirl.create :user }
-  let(:repository) { FactoryGirl.create :repository, user: user }
+  context 'associations' do
+    %i(ontologies permissions).each do |association|
+      it { should have_many(association) }
+    end
+  end
+
+  let(:user)       { create :user }
+  let(:repository) { create :repository, user: user }
 
   context 'a repository with a reserved name should be invalid' do
-    let(:repository_invalid) { FactoryGirl.build :repository, user: user, name: 'repositories' }
-    it { expect(repository_invalid.invalid?).to be_true }
+    let(:repository_invalid) do
+      build :repository, user: user, name: 'repositories'
+    end
+    it 'be invalid' do
+      expect(repository_invalid.invalid?).to be(true)
+    end
 
     context 'error messages' do
       before { repository_invalid.invalid? }
-      it { expect(repository_invalid.errors[:name].any?).to be_true }
+      it 'have errors' do
+        expect(repository_invalid.errors[:name].any?).to be(true)
+      end
     end
   end
 
@@ -60,31 +72,37 @@ describe Repository do
     end
 
     context 'made private' do
-      let(:editor) { FactoryGirl.create :user }
-      let(:readers) { [FactoryGirl.create(:user), FactoryGirl.create(:user), FactoryGirl.create(:user)] }
+      let(:editor) { create :user }
+      let(:readers) { [create(:user), create(:user), create(:user)] }
 
       before do
         repository.access = 'private_rw'
         repository.save
 
-        FactoryGirl.create(:permission, subject: editor, role: 'editor', item: repository)
-        readers.each { |r| FactoryGirl.create(:permission, subject: r, role: 'reader', item: repository) }
+        create(:permission, subject: editor, role: 'editor', item: repository)
+        readers.each { |r| create(:permission, subject: r, role: 'reader', item: repository) }
       end
 
       context 'not clear reader premissions when saved, but not set public' do
-        it { expect(repository.permissions.where(role: 'reader').count).to eq(3) }
+        it 'have three readers' do
+          expect(repository.permissions.where(role: 'reader').count).to eq(3)
+        end
 
         context 'change name' do
           before do
             repository.name += "_foo"
             repository.save
           end
-          it { expect(repository.permissions.where(role: 'reader').count). to eq(3) }
+          it 'have three readers' do
+            expect(repository.permissions.where(role: 'reader').count). to eq(3)
+          end
         end
       end
 
       context 'clear reader premissions when set public' do
-        it { expect(repository.permissions.where(role: 'reader').count).to eq(3) }
+        it 'have three readers' do
+          expect(repository.permissions.where(role: 'reader').count).to eq(3)
+        end
 
         context 'change access' do
           before do
@@ -92,7 +110,9 @@ describe Repository do
             repository.save
           end
 
-          it { expect(repository.permissions.where(role: 'reader').count). to eq(0) }
+          it 'have no readers' do
+            expect(repository.permissions.where(role: 'reader').count). to eq(0)
+          end
         end
       end
     end

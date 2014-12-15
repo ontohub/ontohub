@@ -1,8 +1,8 @@
 require 'spec_helper'
 
 describe 'Repository browsing' do
-  let(:user)        { FactoryGirl.create :user }
-  let(:repository)  { FactoryGirl.create :repository, user: user }
+  let(:user)        { create :user }
+  let(:repository)  { create :repository, user: user }
 
   let(:files) do {
       'folder1/file1.clif' => "(In Folder)\n",

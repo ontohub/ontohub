@@ -15,7 +15,7 @@ namespace :test do
 
   def hets_out_file_for(ontology_file)
     basename = File.basename(ontology_file).sub(/\.[^.]+$/, '.xml')
-    File.join('test/fixtures/ontologies/hets-out/', basename)
+    File.join('spec/fixtures/ontologies/hets-out/', basename)
   end
 
   def on_outdated_files(files, &block)
@@ -31,12 +31,12 @@ namespace :test do
   end
 
   def perform_hets_on(file)
-    args = hets_args << '-O test/fixtures/ontologies/hets-out'
+    args = hets_args << '-O spec/fixtures/ontologies/hets-out'
     system("hets #{args.join(' ')} #{file}")
   end
 
   def ontology_files
-    globbed_files = Dir.glob('test/fixtures/ontologies/**/*')
+    globbed_files = Dir.glob('spec/fixtures/ontologies/**/*')
     globbed_files.select do |file|
       !file.end_with?('xml') && !File.directory?(file)
     end

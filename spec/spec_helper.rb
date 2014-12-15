@@ -1,7 +1,7 @@
 # This file is copied to spec/ when you run 'rails generate rspec:install'
 ENV["RAILS_ENV"] ||= 'test'
 
-require File.expand_path("../../test/shared_helper", __FILE__)
+require File.expand_path("../../spec/shared_helper", __FILE__)
 
 include SharedHelper
 use_simplecov
@@ -32,7 +32,7 @@ class ActionController::TestRequest
 end
 
 def fixture_file(path)
-  fixture_path = Rails.root.join('test/fixtures/')
+  fixture_path = Rails.root.join('spec/fixtures/')
   fixture_path.join(path)
 end
 
@@ -87,7 +87,7 @@ def add_fixture_file(repository, relative_file)
 end
 
 def version_for_file(repository, path)
-  dummy_user = FactoryGirl.create :user
+  dummy_user = create :user
   basename = File.basename(path)
   version = repository.save_file path, basename, "#{basename} added", dummy_user
 end
@@ -100,6 +100,18 @@ def parse_this(user, ontology, fixture_file)
   evaluator = Hets::Evaluator.new(user, ontology, io: file)
   evaluator.import
   file.close unless file.closed?
+end
+
+# Recording HTTP Requests
+VCR.configure do |c|
+  c.cassette_library_dir = 'spec/fixtures/vcr'
+  c.hook_into :webmock
+  c.ignore_localhost = true
+  c.ignore_hosts \
+    '127.0.0.1',
+    'localhost',
+    'colore.googlecode.com',
+    'trac.informatik.uni-bremen.de'
 end
 
 RSpec.configure do |config|

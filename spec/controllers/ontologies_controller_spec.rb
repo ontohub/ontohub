@@ -2,7 +2,7 @@ require 'spec_helper'
 
 describe OntologiesController do
 
-  describe 'failed ontology' do
+  context 'failed ontology' do
     let(:ontology_version){ create :ontology_version }
     let(:ontology){ ontology_version.ontology }
     let(:repository){ ontology.repository }
@@ -13,15 +13,13 @@ describe OntologiesController do
       sign_in user
     end
 
-    describe 'on collection' do
-      before do
-        post :retry_failed, repository_id: repository.to_param
-      end
+    context 'on collection' do
+      before { post :retry_failed, repository_id: repository.to_param }
 
       it{ response.should redirect_to [repository, :ontologies] }
     end
 
-    describe 'on member' do
+    context 'on member' do
       before do
         post :retry_failed, repository_id: repository.to_param, id: ontology.id
       end
@@ -31,7 +29,7 @@ describe OntologiesController do
 
   end
 
-  describe 'deleting an ontology' do
+  context 'deleting an ontology' do
     let(:ontology){ create :ontology }
     let(:repository){ ontology.repository }
     let(:user){ create(:permission, role: 'owner', item: repository).subject }
@@ -69,4 +67,104 @@ describe OntologiesController do
     end
   end
 
+  context 'Ontology Instance' do
+    let(:ontology) { create :single_ontology, state: 'done' }
+    let(:repository) { ontology.repository }
+    let(:user) { create :user }
+    before { 2.times { create :entity, ontology: ontology } }
+
+    context 'on GET to index' do
+      context 'for a repository' do
+        before { get :index, repository_id: repository.to_param }
+
+        it { should respond_with :success }
+        it { should render_template :index_repository }
+      end
+      context 'for the whole website' do
+        before { get :index }
+        it { should respond_with :success }
+        it { should render_template :index_global }
+      end
+    end
+
+    context 'on GET to show' do
+      before { Entity.delete_all }
+
+      context 'with format json' do
+        before do
+          get :show,
+            repository_id: repository.to_param,
+            format:        :json,
+            id:            ontology.to_param
+        end
+
+        it { should respond_with :success }
+
+        it 'respond with json content type' do
+          expect(response.content_type.to_s).to eq('application/json')
+        end
+
+      end
+
+      context 'without entities' do
+        before do
+          get :show,
+            repository_id: repository.to_param,
+            id:            ontology.to_param
+        end
+
+        it { should respond_with :redirect }
+        it do
+          should redirect_to(repository_ontology_entities_path(
+            repository, ontology, kind: 'Symbol'))
+        end
+      end
+
+      context 'with entity of kind Class' do
+        before do
+          entity = create :entity, ontology: ontology, kind: 'Class'
+          get :show,
+            repository_id: repository.to_param,
+            id:            ontology.to_param
+        end
+
+        it { should respond_with :redirect }
+        it do
+          should redirect_to(repository_ontology_entities_path(
+            repository, ontology, kind: 'Class' ))
+        end
+      end
+    end
+
+    context 'owned by signed in user' do
+      before do
+        sign_in user
+        repository.permissions.create! \
+          role: 'owner',
+          subject: user
+      end
+
+      context 'on GET to edit' do
+        before do
+          get :edit,
+            repository_id: repository.to_param,
+            id:            ontology.to_param
+        end
+
+        it { should respond_with :success }
+        it { should render_template :edit }
+      end
+
+      context 'on PUT to update' do
+        before do
+          put :update,
+            repository_id: repository.to_param,
+            id:            ontology.to_param,
+            name:          'foo bar'
+        end
+
+        it { should redirect_to([repository, ontology]) }
+      end
+    end
+  end
 end

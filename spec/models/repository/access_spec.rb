@@ -2,14 +2,14 @@ require 'spec_helper'
 
 describe 'Repository Access' do
   context 'fetching repositories' do
-    let(:user)                { FactoryGirl.create :user }
-    let!(:repository_pub_r)   { FactoryGirl.create :repository, user: user,
+    let(:user)                { create :user }
+    let!(:repository_pub_r)   { create :repository, user: user,
       access: 'public_r' }
-    let!(:repository_pub_rw)  { FactoryGirl.create :repository, user: user,
+    let!(:repository_pub_rw)  { create :repository, user: user,
       access: 'public_rw' }
-    let!(:repository_priv_r)  { FactoryGirl.create :repository, user: user,
+    let!(:repository_priv_r)  { create :repository, user: user,
       access: 'private_r' }
-    let!(:repository_priv_rw) { FactoryGirl.create :repository, user: user,
+    let!(:repository_priv_rw) { create :repository, user: user,
       access: 'private_rw' }
 
     %w(_r _rw).each do |access_modifier|

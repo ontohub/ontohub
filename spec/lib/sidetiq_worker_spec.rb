@@ -14,7 +14,9 @@ describe SidetiqWorker do
         )
         SidetiqWorker.new.perform
       end
-      it("should create #{created_jobs_count} jobs"){ assert_equal Worker.jobs.count, created_jobs_count }
+      it("should create #{created_jobs_count} jobs") do
+        expect(created_jobs_count).to eq(Worker.jobs.count)
+      end
     end
   end
 
