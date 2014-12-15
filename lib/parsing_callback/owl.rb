@@ -11,7 +11,7 @@ module ParsingCallback::OWL
     def pre_axiom(hash)
       if is_annotation_sentence?(hash)
         m = hash['text'].match(%r{
-          Class:\s+(?<symbol_name>.+?) # Symbol/Symbol Identifier
+          Class:\s+(?<symbol_name>.+?) # Symbol Identifier
           \s+
           Annotations:\s+(?<annotation_type>label|comment) # the type of annotation
           \s+
