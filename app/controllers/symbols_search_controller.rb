@@ -1,7 +1,7 @@
 #
 # Allow searching for symbols
 #
-class EntitiesSearchController < ApplicationController
+class SymbolsSearchController < ApplicationController
 
   def index
     @query      = params[:q]
