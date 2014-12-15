@@ -133,14 +133,6 @@ class Ontology < ActiveRecord::Base
     self.is?('OWL') || self.is?('OWL2')
   end
 
-  def symbols
-    symbols
-  end
-
-  def symbols_count
-    symbols_count
-  end
-
   def to_s
     name? ? name : iri
   end
