@@ -354,7 +354,7 @@ module RenameRefactor
   class FactoryFilesRenameProvider
     attr_accessor :verbose, :dry_run
 
-    DIR = Pathname.new(File.join('test', 'factories'))
+    DIR = Pathname.new(File.join('spec', 'factories'))
 
     def initialize(verbose: false, dry_run: true)
       self.verbose = verbose
