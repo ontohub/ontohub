@@ -6,9 +6,9 @@
       %input.form-control.clone-url{type: 'text', readonly: true, value: repository_clone_url(resource, clone_type: clone_type, port: nil)}
   %p
     You can clone the repository with
-    = clone_method_mapping 'git'
+    = clone_method_link 'git'
     (read-only) or
-    = clone_method_mapping 'ssh-git'
+    = clone_method_link 'ssh-git'
     (read-write).
     - if signed_in? and not current_user.keys.any?
       = link_to 'Upload a SSH key.', [:new, :key]
