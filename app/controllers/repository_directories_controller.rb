@@ -31,7 +31,7 @@ class RepositoryDirectoriesController < InheritedResources::Base
 
     {
       text: success_message,
-      mapping: {
+      link: {
         url: fancy_repository_path(repository, path: resource.path),
         text: resource.name,
       },
