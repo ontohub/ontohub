@@ -72,7 +72,7 @@ describe CommentsController do
             repository_id: repository.to_param,
             comment:     {text: 'foo'}
         end
-        it{ should respond_with :unprocessable_symbol }
+        it{ should respond_with :unprocessable_entity }
       end
 
       context 'with too enough text' do

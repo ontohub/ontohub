@@ -65,7 +65,7 @@ describe AutocompleteController do
           term:  'bar'
       end
 
-      it { should respond_with :unprocessable_symbol }
+      it { should respond_with :unprocessable_entity }
     end
 
     context 'without scope' do
