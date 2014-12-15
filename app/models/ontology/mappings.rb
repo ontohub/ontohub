@@ -40,9 +40,9 @@ module Ontology::Mappings
       target = Ontology.find_with_iri(target_iri) || (raise ArgumentError,
         "target #{Settings.OMS} not found: #{target_iri}")
 
-      # linktype
-      linktype = hash['type']
-      kind = determine_mapping_type(linktype)
+      # mapping_type
+      mapping_type = hash['type']
+      kind = determine_mapping_type(mapping_type)
 
       # morphism
       gmorphism = hash['morphism']
@@ -56,10 +56,10 @@ module Ontology::Mappings
         source_id:     source.id,
         target_id:     target.id,
         kind:          kind,
-        theorem:       linktype.include?("Thm"),
-        proven:        linktype.include?("Proven"),
-        local:         linktype.include?("Local"),
-        inclusion:     linktype.include?("Inc"),
+        theorem:       mapping_type.include?("Thm"),
+        proven:        mapping_type.include?("Proven"),
+        local:         mapping_type.include?("Local"),
+        inclusion:     mapping_type.include?("Inc"),
       }
       mapping.updated_at = timestamp
       mapping.save!
