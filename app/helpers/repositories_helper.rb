@@ -6,14 +6,14 @@ module RepositoriesHelper
     methods
   end
 
-# def clone_method_mappings
+# def clone_method_links
 #   clone_methods.map do |clone_method|
-#     clone_method_mapping clone_method
+#     clone_method_link clone_method
 #   end.join(', ')
 # end
 
-  def clone_method_mapping(method)
-    link_to method, "##{method}", class: 'clone_method_mapping', data: {clone: method}
+  def clone_method_link(method)
+    link_to method, "##{method}", class: 'clone_method_link', data: {clone: method}
   end
 
   def clone_type
