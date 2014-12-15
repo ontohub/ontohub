@@ -1,4 +1,4 @@
-class EntityMapping < ActiveRecord::Base
+class SymbolMapping < ActiveRecord::Base
   belongs_to :source, class_name: "Symbol"
   belongs_to :target, class_name: "Symbol"
   belongs_to :mapping
