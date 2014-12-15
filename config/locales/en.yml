@@ -46,9 +46,6 @@ en:
         public_r: Public readable
         public_rw: Public readable and writable
     remote_type:
-      label: Type
-      fork: Fork
-      mirror: Mirror
       text: A mirror will be synchronized periodically. A fork is just a one-time copy.
     un_mirror:
       label: Un-mirror
