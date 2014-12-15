@@ -1,8 +1,8 @@
 %div{class: resource.class.name.downcase}
   - if can? :edit, resource and not options[:disable_actions]
     .btn-group.pull-right
-      - additional_actions.each do |action_mapping|
-        = action_mapping
+      - additional_actions.each do |action_link|
+        = action_link
     .pull-right= modal_button(t("repository.delete"))
     = repository_modal_body
   %nav
