@@ -1,4 +1,4 @@
-class EntityGroup < ActiveRecord::Base
+class SymbolGroup < ActiveRecord::Base
   extend Dagnabit::Vertex::Activation
   belongs_to :ontology
   has_many :symbols
