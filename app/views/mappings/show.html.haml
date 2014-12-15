@@ -12,9 +12,9 @@
         = link_to 'Delete Mapping', :mapping, confirm: 'Are you sure?', method: :delete, class: 'btn btn-default'
 
 %h5 Mappings
-= fancy_mapping resource.source
+= fancy_link resource.source
 to
-= fancy_mapping resource.target
+= fancy_link resource.target
 
 - if !resource.symbol_mappings.empty?
   %h5 Symbols

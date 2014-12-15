@@ -22,6 +22,6 @@
         = menu_entry 'Logics',       :logics
         = menu_entry 'Mappings',     :mappings
         = render partial: 'shared/navbar_more'
-        %li= wiki_mapping controller_name, action_name
+        %li= wiki_link controller_name, action_name
 
       = render partial: 'shared/session'

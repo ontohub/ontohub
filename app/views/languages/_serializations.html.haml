@@ -1,7 +1,7 @@
 %h3 Serializations
 %ol.latest
   - @serializations.each do |serialization|
-    %li= fancy_mapping(serialization)
+    %li= fancy_link(serialization)
 
 - if can? :update, Language
   = link_to 'Add Serialization', new_serialization_path

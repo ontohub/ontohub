@@ -5,6 +5,6 @@
 %ul.no-bullet
   - @team_users.each do |team_user|
     %li
-      = fancy_mapping team_user.user
+      = fancy_link team_user.user
       - if team_user.admin?
         (admin)

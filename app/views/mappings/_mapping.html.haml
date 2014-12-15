@@ -1,9 +1,9 @@
 %tr.center-row
   %td= mapping.kind
   %td.col-md-1.right= link_to "#{mapping}:" , mapping,{:class =>"iri", :"data-toggle"=>"tooltip", :"data-original-title" => "#{mapping.iri}"}
-  %td.col-md-2.right=fancy_mapping mapping.source
+  %td.col-md-2.right=fancy_link mapping.source
   %td.col-md-1 
     %span.bold{:class => "#{mapping.display_connection}"}
       &#8594;
-  %td.col-md-2.left=fancy_mapping mapping.target
+  %td.col-md-2.left=fancy_link mapping.target
   %td= mapping.get_symbol

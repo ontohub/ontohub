@@ -1,7 +1,7 @@
 %h4 Adjoints
 %ol.latest
   - @adjoints.each do |adjoint|
-    %li= fancy_mapping(adjoint) {|e| e.to_s}
+    %li= fancy_link(adjoint) {|e| e.to_s}
 - if can? :update, resource
   %ul.actions
     %li= link_to 'Add Adjoint', resource.class.to_s == "LogicMapping" ? new_logic_adjoint_path : new_language_adjoint_path
