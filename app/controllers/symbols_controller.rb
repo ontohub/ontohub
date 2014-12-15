@@ -1,7 +1,7 @@
 #
 # Lists symbols of an ontology
 #
-class EntitiesController < InheritedResources::Base
+class SymbolsController < InheritedResources::Base
 
   belongs_to :ontology
   before_filter :check_read_permissions
