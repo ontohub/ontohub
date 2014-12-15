@@ -60,12 +60,25 @@ module RenameRefactor
         "c = gensub(/(_|\\<)#{camelize(old_word)}(\\>|_)/,\"\\\\1#{camelize(new_word)}\\\\2\",\"g\",b)",
         "d = gensub(/(_|\\<)#{camelize(pluralize(old_word))}(\\>|_)/,"\
           "\"\\\\1#{camelize(pluralize(new_word))}\\\\2\",\"g\",c)",
-        'print d',
       ]
+      commands += reverting_and_finalizing_commands(old_word, new_word)
+
       tmp_file = "> /tmp/awk_tmp_file && mv /tmp/awk_tmp_file #{file}"
       command = "#{awk} '{#{commands.join('; ')}}' #{file} #{tmp_file}"
       puts command if verbose
       system(command) unless dry_run
+    end
+
+    def reverting_and_finalizing_commands(old_word, new_word)
+      # special treatment: revert renaming of `link_to` to `mapping_to`
+      if old_word == 'link'
+        [
+          "e = gensub(/\\<#{new_word}_to\\>/, \"link_to\", \"g\", d)",
+          'print e',
+        ]
+      else
+        ['print d']
+      end
     end
 
     def rename_file(old_filename, old_word, new_word)
