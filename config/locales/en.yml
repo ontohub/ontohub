@@ -83,7 +83,7 @@ en:
         to display all related sentences (including translations/blendoids).
     sentence:
       defined_in:
-        defined in %{mapping}
+        defined in %{link}
   have:
     one: has
     other: have
@@ -93,7 +93,7 @@ en:
           For full qualified access to Ontohub you have to confirm your e-mail address.
           We have sent an mail with instructions for you.
     wiki: |
-        You can find more information about Ontohub in the %{mapping}.
+        You can find more information about Ontohub in the %{link}.
         Moreover, context specific information is available with the "Help" button, leading to a specfic wiki page.
     need_help: Need Help?
   delete_repository: Are you sure about deleting the Repository?
