@@ -1,4 +1,4 @@
-module EntityHelper
+module SymbolHelper
 
   def show_classes?(kind=params[:kind])
     kind == "Class"
