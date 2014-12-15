@@ -31,7 +31,7 @@ en:
   repositories:
     index:
       clone_list_prefix: There is also a complete list of
-      clone_list_mapping: repository clone-urls
+      clone_list_link: repository clone-urls
   repository:
     delete: Delete Repository
     errors: Errors
