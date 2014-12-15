@@ -1,6 +1,6 @@
 require 'spec_helper'
 
-describe EntityGroup do
+describe SymbolGroup do
 
   context 'the name should be displayed' do
     let(:symbol_group) {build :symbol_group}
