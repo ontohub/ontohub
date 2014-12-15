@@ -1,7 +1,7 @@
 #
-# Controller for Mappings
+# Controller for {Language,Logic}Mappings
 #
-class MappingsController < InheritedResources::Base
+class GeneralMappingsController < InheritedResources::Base
 
   def edit
     edit!
