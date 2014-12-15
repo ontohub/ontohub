@@ -55,14 +55,15 @@ module RenameRefactor
 
     def replace_in_file(file, old_word, new_word)
       commands = [
-        "gsub(/\\<#{old_word}\\>/,\"#{new_word}\")",
-        "gsub(/\\<#{pluralize(old_word)}\\>/,\"#{pluralize(new_word)}\")",
-        "gsub(/\\<#{camelize(old_word)}\\>/,\"#{camelize(new_word)}\")",
-        "gsub(/\\<#{camelize(pluralize(old_word))}\\>/,"\
-          "\"#{camelize(pluralize(new_word))}\")",
+        "a = gensub(/(_|\\<)#{old_word}(\\>|_)/,\"\\\\1#{new_word}\\\\2\",\"g\")",
+        "b = gensub(/(_|\\<)#{pluralize(old_word)}(\\>|_)/,\"\\\\1#{pluralize(new_word)}\\\\2\",\"g\",a)",
+        "c = gensub(/(_|\\<)#{camelize(old_word)}(\\>|_)/,\"\\\\1#{camelize(new_word)}\\\\2\",\"g\",b)",
+        "d = gensub(/(_|\\<)#{camelize(pluralize(old_word))}(\\>|_)/,"\
+          "\"\\\\1#{camelize(pluralize(new_word))}\\\\2\",\"g\",c)",
+        'print d',
       ]
       tmp_file = "> /tmp/awk_tmp_file && mv /tmp/awk_tmp_file #{file}"
-      command = "#{awk} '{#{commands.join(';')};print}' #{file} #{tmp_file}"
+      command = "#{awk} '{#{commands.join('; ')}}' #{file} #{tmp_file}"
       puts command if verbose
       system(command) unless dry_run
     end
