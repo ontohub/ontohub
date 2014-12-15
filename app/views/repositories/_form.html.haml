@@ -7,7 +7,7 @@
     = f.input :source_address, as: :url
 
     #remote_type.form-group
-      = f.input :remote_type, collection: Repository::REMOTE_TYPES, include_blank: false, as: :radio_buttons, hint: t('repository.remote_type.text')
+      = f.input :remote_type, collection: Repository::REMOTE_TYPES, as: :radio_buttons, hint: t('repository.remote_type.text')
 
   - if !resource.new_record? && resource.mirror?
     .form-group

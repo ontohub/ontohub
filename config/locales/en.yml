@@ -52,7 +52,7 @@ en:
       text: A mirror will be synchronized periodically. A fork is just a one-time copy.
     un_mirror:
       label: Un-mirror
-      text: If you un-mirror this repository, it won't get synchronized with the remote reposoitory any mor
+      text: If you un-mirror this repository, it won't get synchronized with the remote reposoitory any more. There is no possibility to synchronize it ever again.
   repository_directory:
     create: Successfully created directory "%{name}".
     create_additional: "That is, the following directories have been created: %{directories}"
@@ -61,7 +61,7 @@ en:
       placeholder:
         name: Directory name
       hint:
-        slashes: Use slashes to directly create subdirectories.e. There is no possibility to synchronize it ever again.
+        slashes: Use slashes to directly create subdirectories.
   permission:
     delete_header: Are you sure you want to delete the permission?
     delete_desc: If you remove this %{role} permission, %{subject} won't be able to access the %{class} %{item} according to it.
