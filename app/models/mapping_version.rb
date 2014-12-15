@@ -1,4 +1,4 @@
-class LinkVersion < ActiveRecord::Base
+class MappingVersion < ActiveRecord::Base
   belongs_to :mapping
   belongs_to :source, class_name: 'OntologyVersion'
   belongs_to :target, class_name: 'OntologyVersion'
