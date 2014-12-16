@@ -22,7 +22,7 @@ class Mapping < ActiveRecord::Base
   has_many :versions,
       :dependent  => :destroy,
       :order      => :version_number,
-      :class_name => 'LinkVersion' do
+      :class_name => 'MappingVersion' do
         def current
           reorder('version_number DESC').first
         end

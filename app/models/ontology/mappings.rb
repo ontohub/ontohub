@@ -63,7 +63,7 @@ module Ontology::Mappings
       }
       mapping.updated_at = timestamp
       mapping.save!
-      mapping_version = LinkVersion.create(mapping: mapping,
+      mapping_version = MappingVersion.create(mapping: mapping,
                                         source: source.current_version,
                                         target: target.current_version)
       mapping.versions << mapping_version
