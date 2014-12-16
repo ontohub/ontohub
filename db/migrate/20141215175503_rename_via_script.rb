@@ -46,7 +46,7 @@ class RenameViaScript < ActiveRecord::Migration
     rename_column 'entities', 'entity_group_id', 'symbol_group_id'
     rename_table 'entities', 'symbols'
     rename_column 'entities_oops_responses', 'entity_id', 'symbol_id'
-    rename_table 'entities_oops_responses', 'symbols_oops_responses'
+    rename_table 'entities_oops_responses', 'oops_responses_symbols'
     rename_column 'entities_sentences', 'entity_id', 'symbol_id'
     rename_table 'entities_sentences', 'sentences_symbols'
     rename_table 'entity_groups', 'symbol_groups'
@@ -77,8 +77,8 @@ class RenameViaScript < ActiveRecord::Migration
     add_index 'symbols', ['ontology_id', 'text'], unique: true, name: 'index_symbols_on_ontology_id_and_text'
     remove_index 'symbols', name: 'index_entities_on_text'
     add_index 'symbols', ['text'], unique: false, name: 'index_symbols_on_text'
-    remove_index 'symbols_oops_responses', name: 'index_entities_oops_responses_on_oops_response_id_and_entity_id'
-    add_index 'symbols_oops_responses', ['oops_response_id', 'symbol_id'], unique: true, name: 'index_symbols_oops_responses_on_oops_response_id_and_symbol_id'
+    remove_index 'oops_responses_symbols', name: 'index_entities_oops_responses_on_oops_response_id_and_entity_id'
+    add_index 'oops_responses_symbols', ['oops_response_id', 'symbol_id'], unique: true, name: 'index_oops_responses_symbols_on_oops_response_id_and_symbol_id'
     remove_index 'sentences_symbols', name: 'index_entities_sentences_on_entity_id_and_sentence_id'
     add_index 'sentences_symbols', ['symbol_id', 'sentence_id'], unique: false, name: 'index_sentences_symbols_on_symbol_id_and_sentence_id'
     remove_index 'sentences_symbols', name: 'index_entities_sentences_on_sentence_id_and_entity_id'
@@ -107,10 +107,10 @@ class RenameViaScript < ActiveRecord::Migration
     add_index 'structured_proof_parts', ['mapping_version_id'], unique: false, name: 'index_structured_proof_parts_on_mapping_version_id'
     execute "ALTER TABLE ONLY symbols DROP CONSTRAINT entities_ontology_id_fk;"
     execute "ALTER TABLE ONLY symbols ADD CONSTRAINT symbols_ontology_id_fk FOREIGN KEY (ontology_id) REFERENCES ontologies(id) ON DELETE CASCADE;"
-    execute "ALTER TABLE ONLY symbols_oops_responses DROP CONSTRAINT entities_oops_responses_entity_id_fk;"
-    execute "ALTER TABLE ONLY symbols_oops_responses ADD CONSTRAINT symbols_oops_responses_symbol_id_fk FOREIGN KEY (symbol_id) REFERENCES symbols(id);"
-    execute "ALTER TABLE ONLY symbols_oops_responses DROP CONSTRAINT entities_oops_responses_oops_response_id_fk;"
-    execute "ALTER TABLE ONLY symbols_oops_responses ADD CONSTRAINT symbols_oops_responses_oops_response_id_fk FOREIGN KEY (oops_response_id) REFERENCES oops_responses(id) ON DELETE CASCADE;"
+    execute "ALTER TABLE ONLY oops_responses_symbols DROP CONSTRAINT entities_oops_responses_entity_id_fk;"
+    execute "ALTER TABLE ONLY oops_responses_symbols ADD CONSTRAINT oops_responses_symbols_symbol_id_fk FOREIGN KEY (symbol_id) REFERENCES symbols(id);"
+    execute "ALTER TABLE ONLY oops_responses_symbols DROP CONSTRAINT entities_oops_responses_oops_response_id_fk;"
+    execute "ALTER TABLE ONLY oops_responses_symbols ADD CONSTRAINT oops_responses_symbols_oops_response_id_fk FOREIGN KEY (oops_response_id) REFERENCES oops_responses(id) ON DELETE CASCADE;"
     execute "ALTER TABLE ONLY sentences_symbols DROP CONSTRAINT entities_sentences_entity_id_fk;"
     execute "ALTER TABLE ONLY sentences_symbols ADD CONSTRAINT sentences_symbols_symbol_id_fk FOREIGN KEY (symbol_id) REFERENCES symbols(id) ON DELETE CASCADE;"
     execute "ALTER TABLE ONLY sentences_symbols DROP CONSTRAINT entities_sentences_ontology_id_fk;"
@@ -187,7 +187,7 @@ class RenameViaScript < ActiveRecord::Migration
     rename_column 'entities', 'symbol_group_id', 'entity_group_id'
     rename_table 'symbols', 'entities'
     rename_column 'entities_oops_responses', 'symbol_id', 'entity_id'
-    rename_table 'symbols_oops_responses', 'entities_oops_responses'
+    rename_table 'oops_responses_symbols', 'entities_oops_responses'
     rename_column 'entities_sentences', 'symbol_id', 'entity_id'
     rename_table 'sentences_symbols', 'entities_sentences'
     rename_table 'symbol_groups', 'entity_groups'
@@ -219,7 +219,7 @@ class RenameViaScript < ActiveRecord::Migration
     add_index 'entities', ['text'], unique: false, name: 'index_entities_on_text'
     remove_index 'entities', name: 'index_symbols_on_text'
     add_index 'entities_oops_responses', ['oops_response_id', 'entity_id'], unique: true, name: 'index_entities_oops_responses_on_oops_response_id_and_entity_id'
-    remove_index 'entities_oops_responses', name: 'index_symbols_oops_responses_on_oops_response_id_and_symbol_id'
+    remove_index 'entities_oops_responses', name: 'index_oops_responses_symbols_on_oops_response_id_and_symbol_id'
     add_index 'entities_sentences', ['entity_id', 'sentence_id'], unique: false, name: 'index_entities_sentences_on_entity_id_and_sentence_id'
     remove_index 'entities_sentences', name: 'index_sentences_symbols_on_symbol_id_and_sentence_id'
     add_index 'entities_sentences', ['sentence_id', 'entity_id'], unique: true, name: 'index_entities_sentences_on_sentence_id_and_entity_id'
@@ -248,10 +248,10 @@ class RenameViaScript < ActiveRecord::Migration
     remove_index 'structured_proof_parts', name: 'index_structured_proof_parts_on_mapping_version_id'
     execute "ALTER TABLE ONLY symbols DROP CONSTRAINT symbols_ontology_id_fk;"
     execute "ALTER TABLE ONLY symbols ADD CONSTRAINT entities_ontology_id_fk FOREIGN KEY (ontology_id) REFERENCES ontologies(id) ON DELETE CASCADE;"
-    execute "ALTER TABLE ONLY symbols_oops_responses DROP CONSTRAINT symbols_oops_responses_symbol_id_fk;"
-    execute "ALTER TABLE ONLY symbols_oops_responses ADD CONSTRAINT entities_oops_responses_entity_id_fk FOREIGN KEY (entity_id) REFERENCES entities(id);"
-    execute "ALTER TABLE ONLY symbols_oops_responses DROP CONSTRAINT symbols_oops_responses_oops_response_id_fk;"
-    execute "ALTER TABLE ONLY symbols_oops_responses ADD CONSTRAINT entities_oops_responses_oops_response_id_fk FOREIGN KEY (oops_response_id) REFERENCES oops_responses(id) ON DELETE CASCADE;"
+    execute "ALTER TABLE ONLY oops_responses_symbols DROP CONSTRAINT oops_responses_symbols_symbol_id_fk;"
+    execute "ALTER TABLE ONLY oops_responses_symbols ADD CONSTRAINT entities_oops_responses_entity_id_fk FOREIGN KEY (entity_id) REFERENCES entities(id);"
+    execute "ALTER TABLE ONLY oops_responses_symbols DROP CONSTRAINT oops_responses_symbols_oops_response_id_fk;"
+    execute "ALTER TABLE ONLY oops_responses_symbols ADD CONSTRAINT entities_oops_responses_oops_response_id_fk FOREIGN KEY (oops_response_id) REFERENCES oops_responses(id) ON DELETE CASCADE;"
     execute "ALTER TABLE ONLY sentences_symbols DROP CONSTRAINT sentences_symbols_symbol_id_fk;"
     execute "ALTER TABLE ONLY sentences_symbols ADD CONSTRAINT entities_sentences_entity_id_fk FOREIGN KEY (entity_id) REFERENCES entities(id) ON DELETE CASCADE;"
     execute "ALTER TABLE ONLY sentences_symbols DROP CONSTRAINT sentences_symbols_ontology_id_fk;"
