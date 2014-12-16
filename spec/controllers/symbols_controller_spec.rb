@@ -1,6 +1,6 @@
 require 'spec_helper'
 
-describe EntitiesController do
+describe SymbolsController do
   render_views
 
   context 'Ontology Instance' do
