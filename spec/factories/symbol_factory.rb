@@ -15,7 +15,7 @@ FactoryGirl.define do
     "<http://example.com/resource##{n}>"
   end
 
-  factory :symbol do
+  factory :symbol, class: OntologyMember::Symbol do
     association :ontology
     text { FactoryGirl.generate :symbol_text }
     kind { FactoryGirl.generate :symbol_kind }

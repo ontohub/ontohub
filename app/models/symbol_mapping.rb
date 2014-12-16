@@ -1,6 +1,6 @@
 class SymbolMapping < ActiveRecord::Base
-  belongs_to :source, class_name: "Symbol"
-  belongs_to :target, class_name: "Symbol"
+  belongs_to :source, class_name: "OntologyMember::Symbol"
+  belongs_to :target, class_name: "OntologyMember::Symbol"
   belongs_to :mapping
   attr_accessible :mapping, :source, :target
   KINDS = %w( subsumes is-subsumed equivalent incompatible has-instance instance-of default-relation )

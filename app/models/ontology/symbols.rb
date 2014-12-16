@@ -4,6 +4,7 @@ module Ontology::Symbols
   included do
     has_many :symbols,
       autosave: false,
+      class_name: "OntologyMember::Symbol",
       extend:   Methods
   end
 

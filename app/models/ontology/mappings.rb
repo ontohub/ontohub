@@ -71,8 +71,8 @@ module Ontology::Mappings
 
       # symbol mapping
       if hash["map"]
-        source = Symbol.where(text: hash["map"].first["text"],ontology_id: mapping.source.id).first
-        target = Symbol.where(text: hash["map"].second["text"], ontology_id: mapping.target.id).first
+        source = OntologyMember::Symbol.where(text: hash["map"].first["text"],ontology_id: mapping.source.id).first
+        target = OntologyMember::Symbol.where(text: hash["map"].second["text"], ontology_id: mapping.target.id).first
         symbol_mapping = EntityMapping.
           where(source_id: source, target_id: target, mapping_id: mapping).
           first_or_create!

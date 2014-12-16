@@ -88,7 +88,7 @@ describe OntologiesController do
     end
 
     context 'on GET to show' do
-      before { Symbol.delete_all }
+      before { OntologyMember::Symbol.delete_all }
 
       context 'with format json' do
         before do
