@@ -53,7 +53,7 @@ class TarjanTree
 
   def create_groups(ontology)
     strongly_connected_components.each do |symbol_ids|
-      symbols = Symbol.find(symbol_ids)
+      symbols = OntologyMember::Symbol.find(symbol_ids)
       name = group_name_for(symbols)
       EntityGroup.create!(ontology: ontology, symbols: symbols, name: name)
     end
@@ -61,9 +61,9 @@ class TarjanTree
 
   def create_edges
     hashed_symbols.each do |parent_id, children|
-      parent_group = Symbol.find(parent_id).symbol_group
+      parent_group = OntologyMember::Symbol.find(parent_id).symbol_group
       children.each do |child_id|
-        child_group = Symbol.find(child_id).symbol_group
+        child_group = OntologyMember::Symbol.find(child_id).symbol_group
         if parent_group != child_group
           EEdge.where(parent_id: parent_group, child_id: child_group).first_or_create!
         end

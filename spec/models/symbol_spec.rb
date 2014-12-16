@@ -1,6 +1,6 @@
 require 'spec_helper'
 
-describe Symbol do
+describe OntologyMember::Symbol do
 
   context 'Migrations and Associations' do
     columns = {

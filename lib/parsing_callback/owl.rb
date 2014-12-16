@@ -19,7 +19,7 @@ module ParsingCallback::OWL
           \s*
           (?<additionals>[^\s].*) # optional, e.g. a language tag like @pt}xm)
         if m
-          symbol = Symbol.where(name: m['symbol_name']).first
+          symbol = OntologyMember::Symbol.where(name: m['symbol_name']).first
           case m['annotation_type']
           when 'label'
             symbol.label = m['annotation']

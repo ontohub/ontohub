@@ -120,8 +120,8 @@ module Ontology::Sentences
 
       sentence.save!
 
-      execute_sql "DELETE FROM symbols_sentences WHERE sentence_id=#{sentence.id}"
-      execute_sql "INSERT INTO symbols_sentences (sentence_id, symbol_id, ontology_id)
+      execute_sql "DELETE FROM sentences_symbols WHERE sentence_id=#{sentence.id}"
+      execute_sql "INSERT INTO sentences_symbols (sentence_id, symbol_id, ontology_id)
                   SELECT #{sentence.id}, id, ontology_id FROM symbols WHERE
                   ontology_id=#{@association.owner.id} AND text IN (?)",
                   hash['symbols']
