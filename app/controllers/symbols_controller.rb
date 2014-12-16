@@ -17,7 +17,7 @@ class SymbolsController < InheritedResources::Base
     if ontology && (ontology.is?('OWL2') || ontology.is?('OWL'))
       begin
         symbols = ontology.symbol_groups
-        @nodes = EntityGroup.roots_of(*symbols)
+        @nodes = SymbolGroup.roots_of(*symbols)
       rescue
         @nodes = []
       end

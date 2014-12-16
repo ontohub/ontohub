@@ -55,7 +55,7 @@ class TarjanTree
     strongly_connected_components.each do |symbol_ids|
       symbols = OntologyMember::Symbol.find(symbol_ids)
       name = group_name_for(symbols)
-      EntityGroup.create!(ontology: ontology, symbols: symbols, name: name)
+      SymbolGroup.create!(ontology: ontology, symbols: symbols, name: name)
     end
   end
 

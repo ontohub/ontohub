@@ -50,7 +50,7 @@ namespace :generate do
   desc 'Generate entity trees for ALL OWL ontologies'
   task :owl_ontology_class_hierarchies => :environment do
     #cleaning up
-    EntityGroup.destroy_all
+    SymbolGroup.destroy_all
     #generating new
     logics = Logic.where(name: ["OWL2", "OWL"])
     ontologies = Ontology.where(logic_id: logics)
