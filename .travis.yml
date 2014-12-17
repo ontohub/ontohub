@@ -6,6 +6,9 @@ rvm:
 cache:
   bundler: true
 
+addons:
+  postgresql: '9.3'
+
 branches:
   except:
     - ontohub.org
