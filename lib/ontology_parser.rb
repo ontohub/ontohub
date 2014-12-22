@@ -22,7 +22,7 @@ module OntologyParser
     IMPAXIOMS = 'ImpAxioms'
     AXIOMS    = 'Axioms'
     THEOREMS  = 'Theorems'
-    LINK      = 'DGLink'
+    MAPPING   = 'DGLink'
     TEXT      = 'Text'
     TYPE      = 'Type'
     MORPHISM  = 'GMorphism'
@@ -72,7 +72,7 @@ module OntologyParser
         @current_theorem['symbols'] = []
         @current_theorem['symbol_hashes'] = []
         @current_theorem['text'] = ''
-      when LINK
+      when MAPPING
         @current_mapping = Hash[*[attributes]]
       when MORPHISM
         @current_mapping['morphism'] = Hash[*[attributes]]['name'] if @current_mapping
@@ -139,7 +139,7 @@ module OntologyParser
         callback(:theorem, @current_theorem) if @in_theorems
         # return the current theorem
         @current_theorem = nil
-      when LINK
+      when MAPPING
         # return the current mapping
         callback(:mapping, @current_mapping)
         @current_mapping = nil
