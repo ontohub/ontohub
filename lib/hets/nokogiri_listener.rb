@@ -10,7 +10,7 @@ module Hets
     IMPAXIOMS = 'ImpAxioms'
     AXIOMS = 'Axioms'
     THEOREMS = 'Theorems'
-    LINK = 'DGLink'
+    MAPPING = 'DGLink'
     TEXT = 'Text'
     TYPE = 'Type'
     MORPHISM = 'GMorphism'
@@ -21,7 +21,7 @@ module Hets
       SYMBOL => :symbol,
       AXIOM => :axiom,
       THEOREM => :theorem,
-      LINK => :mapping,
+      MAPPING => :mapping,
     }
 
     # callback#process method is called when an element is ready to be
@@ -79,7 +79,7 @@ module Hets
         @current_theorem['symbols'] = []
         @current_theorem['symbol_hashes'] = []
         @current_theorem['text'] = ''
-      when LINK
+      when MAPPING
         @current_mapping = Hash[*[attributes]]
       when MORPHISM
         @current_mapping['morphism'] = Hash[*[attributes]]['name'] if @current_mapping
@@ -150,7 +150,7 @@ module Hets
         call_back(:theorem, order, @current_theorem) if @in_theorems
         # return the current theorem
         @current_theorem = nil
-      when LINK
+      when MAPPING
         # return the current mapping
         call_back(:mapping, order, @current_mapping)
         @current_mapping = nil

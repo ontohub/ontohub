@@ -24,7 +24,7 @@ module Ontology::Mappings
       if kind.nil?
         kind = Mapping::KINDS.find {|k| typename.downcase.include?(k) }
       end
-      kind || Mapping::DEFAULT_LINK_KIND
+      kind || Mapping::DEFAULT_MAPPING_KIND
     end
 
     def update_or_create_from_hash(hash, user, timestamp = Time.now)

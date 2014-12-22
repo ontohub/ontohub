@@ -3,7 +3,7 @@ class Mapping < ActiveRecord::Base
   include Metadatable
 
   KINDS = %w( import alignment view hiding minimization cofree free )
-  DEFAULT_LINK_KIND = KINDS.first
+  DEFAULT_MAPPING_KIND = KINDS.first
   KINDS_MAPPING = {
     'GlobalDef' => 'import',
     'GlobalDefInc' => 'import',
