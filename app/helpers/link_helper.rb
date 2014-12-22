@@ -98,10 +98,10 @@ module LinkHelper
     hash = {}
 
     collection.each_with_index do |link, i|
-      if link.entity_mappings.empty?
+      if link.symbol_mappings.empty?
         hash["empty#{i}"] = [{link: link, target: ""}]
       else
-        link.entity_mappings.each do |mapping|
+        link.symbol_mappings.each do |mapping|
           sym =  mapping.source.to_s.to_sym
           if hash[sym]
             hash[sym] << {link: link, target: mapping.target}

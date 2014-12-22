@@ -13,5 +13,5 @@
     %ul#symbols_list
       = hb 'each node.aggregates.counts' do
         %li
-          %a{href: "#{hb('../url')}entities?kind=#{hb('name')}"}= hb('name') + ": "
+          %a{href: "#{hb('../url')}symbols?kind=#{hb('name')}"}= hb('name') + ": "
           %span= hb 'count'

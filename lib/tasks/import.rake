@@ -27,10 +27,10 @@ namespace :import do
 
   desc 'Import logic graph.'
   task :logicgraph => :environment do
-    def save(entity)
-      entity.user = @user if entity.has_attribute? "user_id"
+    def save(symbol)
+      symbol.user = @user if symbol.has_attribute? "user_id"
       begin
-        entity.save!
+        symbol.save!
       rescue ActiveRecord::RecordInvalid => e
         puts "Validation-Error: #{e.record} (#{e.message})"
       end
