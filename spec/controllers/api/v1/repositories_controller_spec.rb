@@ -5,9 +5,7 @@ describe Api::V1::RepositoriesController do
   let(:user){ create :user }
 
   context 'unauthenticated' do
-    before do
-      get :index, format: :json
-    end
+    before { get :index, format: :json }
 
     it{ should respond_with :unauthorized }
   end

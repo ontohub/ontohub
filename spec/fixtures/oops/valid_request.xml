@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<oops:OOPSResponse xmlns:oops="http://www.oeg-upm.net/oops">
+<oops:Pitfall>
+<oops:Code>P36</oops:Code><oops:Name>URI contains file extension</oops:Name>
+<oops:Description>Guidelines in [5] suggest avoiding file extension in persistent URIs, particularly those related to the technology used, as for example ".php" or ".py". In our case we have adapted it to the ontology web languages used to formalized ontologies and their serializations. In this regard, we consider as pitfall including file extensions as ".owl", ".rdf", ".ttl", ".n3" and ".rdfxml" in an ontology URI. An example of this pitfall (at 29th June, 2012) could be found in the "BioPAX Level 3 ontology (biopax)" ontologyÕs URI (http://www.biopax.org/release/biopax-level3.owl) that contains the extension ".owl" related to the technology used.</oops:Description>
+<oops:Importance>Minor</oops:Importance>
+<oops:Affects>
+<oops:AffectedElement>http://sweet.jpl.nasa.gov/1.1/sunrealm.owl</oops:AffectedElement>
+</oops:Affects>
+</oops:Pitfall>
+<oops:Pitfall>
+<oops:Code>P37</oops:Code><oops:Name>Ontology not available</oops:Name>
+<oops:Description>It is crucial you solve this if you want to contribute to the Semantic Web. You can follow the guidelines at LinkToDiegoRecipes to publish your ontology. If your ontology is correctly published and we have made an error detecting this pitfall please let us know and we will solve it a.s.a.p.</oops:Description>
+<oops:Importance>Critical</oops:Importance>
+</oops:Pitfall>
+</oops:OOPSResponse>

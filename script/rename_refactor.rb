@@ -5,7 +5,6 @@ require 'fileutils'
 require 'pathname'
 
 module RenameRefactor
-
   AFFECTED_FILETYPES = %w[
     rb
     js
@@ -56,19 +55,35 @@ module RenameRefactor
 
     def replace_in_file(file, old_word, new_word)
       commands = [
-        "gsub(\"#{old_word}\",\"#{new_word}\")",
-        "gsub(\"#{pluralize(old_word)}\",\"#{pluralize(new_word)}\")",
-        "gsub(\"#{camelize(old_word)}\",\"#{camelize(new_word)}\")",
-        "gsub(\"#{camelize(pluralize(old_word))}\",\"#{camelize(pluralize(new_word))}\")",
+        "a = gensub(/(_|\\<)#{old_word}(\\>|_)/,\"\\\\1#{new_word}\\\\2\",\"g\")",
+        "b = gensub(/(_|\\<)#{pluralize(old_word)}(\\>|_)/,\"\\\\1#{pluralize(new_word)}\\\\2\",\"g\",a)",
+        "c = gensub(/(_|\\<)#{camelize(old_word)}(\\>|_)/,\"\\\\1#{camelize(new_word)}\\\\2\",\"g\",b)",
+        "d = gensub(/(_|\\<)#{camelize(pluralize(old_word))}(\\>|_)/,"\
+          "\"\\\\1#{camelize(pluralize(new_word))}\\\\2\",\"g\",c)",
       ]
+      commands += reverting_and_finalizing_commands(old_word, new_word)
+
       tmp_file = "> /tmp/awk_tmp_file && mv /tmp/awk_tmp_file #{file}"
-      command = "#{awk} '{#{commands.join(';')};print}' #{file} #{tmp_file}"
+      command = "#{awk} '{#{commands.join('; ')}}' #{file} #{tmp_file}"
       puts command if verbose
       system(command) unless dry_run
     end
 
+    def reverting_and_finalizing_commands(old_word, new_word)
+      # special treatment: revert renaming of `link_to` to `mapping_to`
+      if old_word == 'link'
+        [
+          "e = gensub(/\\<#{new_word}_to\\>/, \"link_to\", \"g\", d)",
+          'print e',
+        ]
+      else
+        ['print d']
+      end
+    end
+
     def rename_file(old_filename, old_word, new_word)
-      new_filename = old_filename.gsub(/(?<=_|\b)(#{old_word}|#{pluralize(old_word)})/) do |match|
+      new_filename = old_filename.gsub(
+        /(?<=_|\b)(#{old_word}|#{pluralize(old_word)})/) do |match|
         match == old_word ? new_word : pluralize(new_word)
       end
       if new_filename != old_filename
@@ -82,8 +97,9 @@ module RenameRefactor
 
     def affected_files
       filetype = AFFECTED_FILETYPES.first
-      out = %x[find #{DIRECTORIES.join(' ')} -iname "*.#{filetype}" #{other_filetype_options}]
-      files = out.lines.map { |l| l.delete("\n") }
+      loc = DIRECTORIES.join(' ')
+      out = `find #{loc} -iname "*.#{filetype}" #{other_filetype_options}`
+      out.lines.map { |l| l.delete("\n") }
     end
 
     def other_filetype_options
@@ -93,9 +109,8 @@ module RenameRefactor
     end
 
     def awk
-      'awk'
+      'gawk'
     end
-
   end
 
   class MigrationProvider
@@ -126,11 +141,11 @@ module RenameRefactor
       end
 
       puts migration_commands.map(&:inspect).join("\n") if dry_run && verbose
-      write_migration
+      write_migration unless dry_run
     end
 
     def clean_slate
-      puts "Running rake db:migrate:clean" if verbose
+      puts 'Running rake db:migrate:clean' if verbose
       system('bundle exec rake db:migrate:clean')
     end
 
@@ -149,9 +164,14 @@ module RenameRefactor
     end
 
     def rename_in_function(sql_statement)
-      if m = sql_statement.match(/^\s*CREATE FUNCTION (?<signature>.+?\))(?<header>.+?)(\s*LANGUAGE (?<language>.+?))\s*AS\s+(?<name>.+?)\s*BEGIN\s+(?<body>.+?)\s*END;/m)
+      if m = sql_statement.match(/^\s*CREATE\ FUNCTION
+        \ (?<signature>.+?\))(?<header>.+?)
+        (\s*LANGUAGE\ (?<language>.+?))\s*AS\s+(?<name>.+?)\s*BEGIN
+        \s+(?<body>.+?)\s*END;/mx)
 
-        translated = [m[:signature],m[:header], m[:name], m[:body]].map { |t| translate t }
+        translated = [m[:signature], m[:header], m[:name], m[:body]].map do |t|
+          translate t
+        end
         if translated.any?
           new_signature = translate(m[:signature]) || m[:signature]
           new_header = translate(m[:header]) || m[:header]
@@ -210,8 +230,10 @@ module RenameRefactor
           if column_line =~ /^\s+(\S+)\s+/
             column_name = $1
             if new_column_name = translate(column_name)
-              push(:up, "rename_column '#{table_name}', '#{column_name}', '#{new_column_name}'")
-              push(:down, "rename_column '#{table_name}', '#{new_column_name}', '#{column_name}'")
+              push(:up, "rename_column '#{table_name}', "\
+                "'#{column_name}', '#{new_column_name}'")
+              push(:down, "rename_column '#{table_name}', "\
+                "'#{new_column_name}', '#{column_name}'")
             end
           end
         end
@@ -219,8 +241,11 @@ module RenameRefactor
     end
 
     def rebuild_index(sql_statement)
-      if m = sql_statement.match(/^\s*CREATE (?<unique>UNIQUE )?INDEX (?<index_name>\S+) ON (?<table_name>\S+) USING btree \((?<columns_list>([^,\s]+, )*(\S+))\)/)
-        unique = !! m['unique']
+      if m = sql_statement.match(/^\s*CREATE\ (?<unique>UNIQUE\ )?INDEX
+        \ (?<index_name>\S+)\ ON\ (?<table_name>\S+)
+        \ USING\ btree
+        \ \((?<columns_list>([^,\s]+,\ )*(\S+))\)/x)
+        unique = !!m['unique']
 
         old_index_name = m['index_name']
         new_index_name = translate(old_index_name)
@@ -231,37 +256,47 @@ module RenameRefactor
         table_name = new_table_name || old_table_name
 
         old_columns = m['columns_list'].split(', ')
-        new_columns = old_columns.map{ |c| translate(c) }
+        new_columns = old_columns.map { |c| translate(c) }
 
-        old_column_names = old_columns.map{ |c| "'#{c}'"}.join(', ')
-        column_names = old_columns.map{ |c| "'#{translate(c) || c}'" }.join(', ')
+        old_column_names = old_columns.map { |c| "'#{c}'" }.join(', ')
+        column_names = old_columns.map { |c| "'#{translate(c) || c}'" }.
+          join(', ')
 
         if [new_index_name, new_table_name, *new_columns].any?
-          # At this point, the index is already on the new table, but with the old name
+          # At this point, the index is already on the new table,
+          # but with the old name
           push(:up, "remove_index '#{table_name}', name: '#{old_index_name}'")
-          push(:down, "add_index '#{old_table_name}', [#{old_column_names}], unique: #{unique}, name: '#{old_index_name}'")
+          push(:down, "add_index '#{old_table_name}', [#{old_column_names}], "\
+            "unique: #{unique}, name: '#{old_index_name}'")
 
-          push(:up, "add_index '#{table_name}', [#{column_names}], unique: #{unique}, name: '#{index_name}'")
+          push(:up, "add_index '#{table_name}', [#{column_names}], "\
+            "unique: #{unique}, name: '#{index_name}'")
           push(:down, "remove_index '#{old_table_name}', name: '#{index_name}'")
         end
       end
     end
 
     def rename_primary_keys(sql_statement)
-      if m = sql_statement.match(/ALTER TABLE ONLY (?<table>\S+)\s*ADD CONSTRAINT (?<name>\S+)\s+PRIMARY KEY/)
+      if m = sql_statement.match(/ALTER\ TABLE\ ONLY\ (?<table>\S+)\s*
+        ADD\ CONSTRAINT\ (?<name>\S+)\s+PRIMARY\ KEY/x)
 
         table = translate(m[:table]) || m[:table]
         new_name = translate(m[:name])
 
         if new_name
-          push(:up,   "execute \"ALTER TABLE ONLY #{table} RENAME CONSTRAINT #{m[:name]} TO #{new_name};\"")
-          push(:down, "execute \"ALTER TABLE ONLY #{table} RENAME CONSTRAINT #{new_name} TO #{m[:name]};\"")
+          push(:up,   "execute \"ALTER TABLE ONLY #{table} "\
+            "RENAME CONSTRAINT #{m[:name]} TO #{new_name};\"")
+          push(:down, "execute \"ALTER TABLE ONLY #{table} "\
+            "RENAME CONSTRAINT #{new_name} TO #{m[:name]};\"")
         end
       end
     end
 
     def rebuild_foreign_keys(sql_statement)
-      if m = sql_statement.match(/ALTER TABLE ONLY (?<table>\S+)\s*ADD CONSTRAINT (?<name>\S+)\s+FOREIGN KEY \((?<key>\S+)\)\s+REFERENCES (?<ref>\S+\(\S+\))(?<ondelete>[^\n]*)/)
+      if m = sql_statement.match(/ALTER\ TABLE\ ONLY\ (?<table>\S+)\s*
+        ADD\ CONSTRAINT\ (?<name>\S+)\s+
+        FOREIGN\ KEY\ \((?<key>\S+)\)\s+
+        REFERENCES\ (?<ref>\S+\(\S+\))(?<ondelete>[^\n]*)/x)
 
         table = translate(m[:table]) || m[:table]
         new_name = translate(m[:name]) || m[:name]
@@ -271,11 +306,17 @@ module RenameRefactor
         translated = [m[:name], m[:key], m[:ref]].map { |t| translate(t) }
 
         if translated.any?
-          push(:up,   "execute \"ALTER TABLE ONLY #{table} DROP CONSTRAINT #{m[:name]};\"")
-          push(:up,   "execute \"ALTER TABLE ONLY #{table} ADD CONSTRAINT #{new_name} FOREIGN KEY (#{new_key}) REFERENCES #{new_ref}#{m[:ondelete]}\"")
+          push(:up,   "execute \"ALTER TABLE ONLY #{table} "\
+            "DROP CONSTRAINT #{m[:name]};\"")
+          push(:up,   "execute \"ALTER TABLE ONLY #{table} "\
+            "ADD CONSTRAINT #{new_name} FOREIGN KEY (#{new_key}) "\
+            "REFERENCES #{new_ref}#{m[:ondelete]}\"")
 
-          push(:down, "execute \"ALTER TABLE ONLY #{table} DROP CONSTRAINT #{new_name};\"")
-          push(:down, "execute \"ALTER TABLE ONLY #{table} ADD CONSTRAINT #{m[:name]} FOREIGN KEY (#{m[:key]}) REFERENCES #{m[:ref]}#{m[:ondelete]}\"")
+          push(:down, "execute \"ALTER TABLE ONLY #{table} "\
+            "DROP CONSTRAINT #{new_name};\"")
+          push(:down, "execute \"ALTER TABLE ONLY #{table} "\
+            "ADD CONSTRAINT #{m[:name]} FOREIGN KEY (#{m[:key]}) "\
+            "REFERENCES #{m[:ref]}#{m[:ondelete]}\"")
         end
       end
     end
@@ -283,8 +324,8 @@ module RenameRefactor
     def write_migration
       migration_filepath.open('w') do |f|
         f << "class RenameViaScript < ActiveRecord::Migration\n"
-        migration_commands.group_by{ |c| c.first }.each do |method_name, commands|
-          f << "  def #{method_name}\n"
+        migration_commands.group_by { |c| c.first }.each do |method, commands|
+          f << "  def #{method}\n"
           commands.each do |(_, command)|
             f << "    #{command}\n"
           end
@@ -319,14 +360,15 @@ module RenameRefactor
     end
 
     def migration_filepath
-      MIGRATION_DIRPATH.join("#{Time.now.utc.strftime("%Y%m%d%H%M%S")}_rename_via_script.rb")
+      MIGRATION_DIRPATH.join(
+        "#{Time.now.utc.strftime("%Y%m%d%H%M%S")}_rename_via_script.rb")
     end
   end
 
   class FactoryFilesRenameProvider
     attr_accessor :verbose, :dry_run
 
-    DIR = Pathname.new(File.join('test', 'factories'))
+    DIR = Pathname.new(File.join('spec', 'factories'))
 
     def initialize(verbose: false, dry_run: true)
       self.verbose = verbose
@@ -344,8 +386,12 @@ module RenameRefactor
     end
 
     def rename_file(filename)
-      puts "#{DIR.join(filename)} --> #{DIR.join(new_name(filename))}" if verbose
-      FileUtils.mv(DIR.join(filename), DIR.join(new_name(filename))) unless dry_run
+      if verbose
+        puts "#{DIR.join(filename)} --> #{DIR.join(new_name(filename))}"
+      end
+      unless dry_run
+        FileUtils.mv(DIR.join(filename), DIR.join(new_name(filename)))
+      end
     end
 
     def new_name(filename)

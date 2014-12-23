@@ -32,9 +32,7 @@ describe CommentsController do
 
   context 'signed in' do
 
-    before do
-      sign_in user
-    end
+    before { sign_in user }
 
     context 'on GET to index' do
       context 'without comment' do

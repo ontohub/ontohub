@@ -27,7 +27,7 @@ class GraphsController < InheritedResources::Base
       center: parent,
       node_url: nodes.any? ? url_for(graph_resource_chain) : nil,
       edge_url: edges.any? ? url_for(edges.first.class) : nil,
-      edge_type: GraphDataFetcher.link_for(parent.class),
+      edge_type: GraphDataFetcher.mapping_for(parent.class),
       nodes_aggregate: nodes_aggregate,
     }
   end

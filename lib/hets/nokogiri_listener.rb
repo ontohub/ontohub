@@ -10,7 +10,7 @@ module Hets
     IMPAXIOMS = 'ImpAxioms'
     AXIOMS = 'Axioms'
     THEOREMS = 'Theorems'
-    LINK = 'DGLink'
+    MAPPING = 'DGLink'
     TEXT = 'Text'
     TYPE = 'Type'
     MORPHISM = 'GMorphism'
@@ -21,7 +21,7 @@ module Hets
       SYMBOL => :symbol,
       AXIOM => :axiom,
       THEOREM => :theorem,
-      LINK => :link,
+      MAPPING => :mapping,
     }
 
     # callback#process method is called when an element is ready to be
@@ -33,7 +33,7 @@ module Hets
       @current_symbol   = nil
       @current_axiom    = nil
       @current_theorem  = nil
-      @current_link     = nil
+      @current_mapping     = nil
       @in_imp_axioms    = false
     end
 
@@ -57,8 +57,8 @@ module Hets
       when SYMBOL
         @current_symbol = Hash[*[attributes]]
         @current_symbol['text'] = ''
-        if @current_link && @current_link['map']
-          @current_link['map'] << @current_symbol
+        if @current_mapping && @current_mapping['map']
+          @current_mapping['map'] << @current_symbol
         end
         @current_axiom['symbol_hashes'] << @current_symbol if @current_axiom
       when SYMBOL_LIST
@@ -79,12 +79,12 @@ module Hets
         @current_theorem['symbols'] = []
         @current_theorem['symbol_hashes'] = []
         @current_theorem['text'] = ''
-      when LINK
-        @current_link = Hash[*[attributes]]
+      when MAPPING
+        @current_mapping = Hash[*[attributes]]
       when MORPHISM
-        @current_link['morphism'] = Hash[*[attributes]]['name'] if @current_link
+        @current_mapping['morphism'] = Hash[*[attributes]]['name'] if @current_mapping
       when MAP
-        @current_link['map'] = []
+        @current_mapping['map'] = []
       end
     end
 
@@ -97,7 +97,7 @@ module Hets
         @current_axiom['text'] << text if @current_axiom
         @current_theorem['text'] << text if @current_theorem
       when TYPE # there is no other use of TYPE in this code
-        @current_link['type'] = text if @current_link
+        @current_mapping['type'] = text if @current_mapping
       end
     end
 
@@ -121,8 +121,8 @@ module Hets
           @current_theorem['symbols'] << @current_symbol['text']
         else
           # return the current symcol
-          in_mapping_link = @current_link && @current_link['map']
-          perform_callback = @in_symbol_list && !in_mapping_link
+          in_mapping_mapping = @current_mapping && @current_mapping['map']
+          perform_callback = @in_symbol_list && !in_mapping_mapping
           call_back(:symbol, order, @current_symbol) if perform_callback
         end
         @current_symbol = nil
@@ -150,10 +150,10 @@ module Hets
         call_back(:theorem, order, @current_theorem) if @in_theorems
         # return the current theorem
         @current_theorem = nil
-      when LINK
-        # return the current link
-        call_back(:link, order, @current_link)
-        @current_link = nil
+      when MAPPING
+        # return the current mapping
+        call_back(:mapping, order, @current_mapping)
+        @current_mapping = nil
       end
     end
 

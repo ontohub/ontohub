@@ -70,7 +70,8 @@ describe FilesController do
               target_directory: 'my_dir',
               target_filename:  'my_file',
               message: 'commit message',
-              temp_file: Rack::Test::UploadedFile.new(Rails.root.join('test','fixtures','ontologies','owl','pizza.owl'),'image/jpg')
+              temp_file: Rack::Test::UploadedFile.new(
+                ontology_file('owl/pizza.owl'),'image/jpg')
             }
           }
           it { should respond_with :redirect }
@@ -205,7 +206,8 @@ describe FilesController do
               target_directory: 'my_dir',
               target_filename:  'my_file',
               message: 'commit message',
-              temp_file: Rack::Test::UploadedFile.new(Rails.root.join('test','fixtures','ontologies','owl','pizza.owl'),'image/jpg')
+              temp_file: Rack::Test::UploadedFile.new(
+                ontology_file('owl/pizza.owl'),'image/jpg')
             }
           }
           it { should respond_with :redirect }

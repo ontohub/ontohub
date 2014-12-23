@@ -3,6 +3,12 @@ language: ruby
 rvm:
   - 2.1
 
+cache:
+  bundler: true
+
+addons:
+  postgresql: '9.3'
+
 branches:
   except:
     - ontohub.org

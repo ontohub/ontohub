@@ -27,7 +27,7 @@ describe Sentence do
 
   context 'Associations' do
     it { belong_to :ontology }
-    it { have_and_belong_to_many :entities }
+    it { have_and_belong_to_many :symbols }
   end
 
   context 'OntologyInstance' do
@@ -42,9 +42,7 @@ describe Sentence do
         }
       end
 
-      before do
-        ontology.sentences.update_or_create_from_hash sentence_hash
-      end
+      before { ontology.sentences.update_or_create_from_hash sentence_hash }
 
       context 'correct attribute' do
         let(:sentence) { ontology.sentences.first }
@@ -73,9 +71,9 @@ describe Sentence do
         expect(sentence.display_text).to_not be_nil
       end
 
-      it "should not contain entities' iris" do
-        sentence.entities.each do |entity|
-          expect(sentence.display_text).to_not include(entity.iri)
+      it "should not contain symbols' iris" do
+        sentence.symbols.each do |symbol|
+          expect(sentence.display_text).to_not include(symbol.iri)
         end
       end
     end

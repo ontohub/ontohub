@@ -18,7 +18,7 @@ en:
       placeholder: 'Add a support'
       help: Enter at least three characters to search for a support
   search:
-    help: "Enter all words that must be included in the entities. You can search a special kind by adding a 'kind:<value>'"
+    help: "Enter all words that must be included in the symbols. You can search a special kind by adding a 'kind:<value>'"
   support:
     placeholder:
       language: Support an new logic
@@ -26,7 +26,7 @@ en:
     help:
       language: Enter characters to search for a logic
       logic: Enter characters to search for a language
-  Link: Ontology-Link
+  Mapping: Ontology-Mapping
   LogicMapping: Logic-Mapping
   repositories:
     index:

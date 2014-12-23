@@ -16,7 +16,7 @@ end
 def download_from_ontohub_meta(source_file, target_file)
   meta_repository
   user = User.where(admin: true).first
-  filepath = "#{Rails.root}/test/fixtures/ontologies/#{target_file}"
+  filepath = "#{Rails.root}/spec/fixtures/ontologies/#{target_file}"
   system("wget -O #{filepath} https://ontohub.org/repositories/meta/master/download/#{source_file}")
   basename = File.basename(filepath)
   version = meta_repository.
@@ -47,10 +47,10 @@ namespace :generate do
     ProofStatus.refresh_statuses
   end
 
-  desc 'Generate entity trees for ALL OWL ontologies'
+  desc 'Generate symbol trees for ALL OWL ontologies'
   task :owl_ontology_class_hierarchies => :environment do
     #cleaning up
-    EntityGroup.destroy_all
+    SymbolGroup.destroy_all
     #generating new
     logics = Logic.where(name: ["OWL2", "OWL"])
     ontologies = Ontology.where(logic_id: logics)
@@ -58,17 +58,17 @@ namespace :generate do
       begin
         TarjanTree.for(ontology)
       rescue ActiveRecord::RecordNotFound => e
-        puts "Could not create entity tree for: #{ontology.name} (#{ontology.id}) caused #{e}"
+        puts "Could not create symbol tree for: #{ontology.name} (#{ontology.id}) caused #{e}"
       end
     end
   end
   
-  desc 'Generate entity tree for one specific OWL ontologies'
+  desc 'Generate symbol tree for one specific OWL ontologies'
 
   task :class_hierachy_for_specific_ontology, [:ontology_id] => :environment do |t,args|
     ontology = Ontology.find!(args.ontology_id)
-    #cleaning up to prevent duplicated entity_groups
-    ontology.entity_groups.destroy_all
+    #cleaning up to prevent duplicated symbol_groups
+    ontology.symbol_groups.destroy_all
     #generating new
     begin
       TarjanTree.for(ontology)

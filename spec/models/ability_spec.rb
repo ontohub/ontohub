@@ -226,9 +226,7 @@ describe Ability do
 
     subject(:ability){ Ability.new(user, nil) }
 
-    before do
-      memberteam.users << user
-    end
+    before { memberteam.users << user }
 
     context 'admin' do
       it 'be allowed: edit, update, destroy' do

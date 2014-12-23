@@ -1,0 +1,58 @@
+- if parent
+  = repository_nav parent.repository, :ontologies
+
+- if @ontology
+  = ontology_nav @ontology, :mappings
+- else
+  %h2= @page_title = 'Mappings'
+
+%p
+  = pluralize(collection.count, "#{Settings.OMS} mapping")
+  currently available
+  
+= pagination do 
+  -if @ontology
+    .row.center-row
+      .col-md-2
+        %h4 Mapping
+      .col-md-2 
+        %h4 Source
+      .col-md-2
+        %h4 Source-Symbol
+      .col-md-2
+        %h4 Target
+      .col-md-2
+        %h4 Target-Symbol
+    - hash = sort_link_list(@mappings)
+    - hash.each do |key, array|
+      .row.center-row
+        .col-md-2
+          = link_to array.first[:mapping], array.first[:mapping]
+        .col-md-2
+          = fancy_link array.first[:mapping].source
+        .col-md-2
+          -if key.to_s.include? "empty"
+            
+          -else
+            =key 
+        .col-md-4
+          -array.each do |mapping|
+            .row.center-row
+              .col-md-6
+                =fancy_link mapping[:mapping].target
+              .col-md-6
+                =mapping[:target]
+                
+  -else
+    %table.table.col-md-8
+      %thead
+        %tr.center
+          %th
+          %th.col-md-1.right Name
+          %th.col-md-2.right Source
+          %th.col-md-1
+          %th.col-md-2 Target
+          %th Entites
+      %tbody
+        = render collection
+        

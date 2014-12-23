@@ -1,0 +1,13 @@
+= simple_form_for resource, html: { class: 'form-horizontal' } do |f|
+  = f.input :iri, as: :url
+  = f.input :standardization_status, :as => :select, :collection => LogicMapping::STAND_STATUS, :include_blank => false
+  = f.input :defined_by, :as => :select, :collection => LogicMapping::DEFINED_BY, :include_blank => false
+  = f.input :default if resource.has_attribute? :default
+  = f.input :projection if resource.has_attribute? :projection
+  = f.input :faithfulness, :as => :select, :collection => LogicMapping::FAITHFULNESSES, :include_blank => false if resource.has_attribute? :faithfulness
+  = f.input :theoroidalness, :as => :select, :collection => LogicMapping::THEOROIDALNESSES, :include_blank => false if resource.has_attribute? :theoroidalness
+  = f.input :exactness, :as => :select, :collection => LogicMapping::EXACTNESSES, :include_blank => false if resource.has_attribute? :exactness
+
+  = f.association :source, :include_blank => false
+  = f.association :target, :include_blank => false
+  = f.button :wrapped

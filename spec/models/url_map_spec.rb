@@ -2,8 +2,8 @@ require 'spec_helper'
 
 describe UrlMap do
 
-  let(:repository) { FactoryGirl.create :repository }
-  let(:url_map)    { FactoryGirl.create :url_map, repository: repository }
+  let(:repository) { create :repository }
+  let(:url_map)    { create :url_map, repository: repository }
 
   subject { url_map }
 

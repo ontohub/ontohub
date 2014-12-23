@@ -13,6 +13,6 @@ if version
     element_type: type
   end
 end
-ontology.entities.all.select do |entity|
-  entity.oops_responses = responses.sample(rand(responses.count))
+ontology.symbols.all.select do |symbol|
+  symbol.oops_responses = responses.sample(rand(responses.count))
 end

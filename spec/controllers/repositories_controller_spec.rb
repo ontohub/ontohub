@@ -1,21 +1,16 @@
 require 'spec_helper'
 
 describe RepositoriesController do
-
-  describe 'deleting a repository' do
+  context 'deleting a repository' do
     let(:ontology){ create :ontology }
     let(:repository){ ontology.repository }
     let(:user){ create(:permission, role: 'owner', item: repository).subject }
 
     context 'signed in' do
-      before do
-        sign_in user
-      end
+      before { sign_in user }
 
       context 'successful deletion' do
-        before do
-          delete :destroy, id: repository.to_param
-        end
+        before { delete :destroy, id: repository.to_param }
 
         it{ should respond_with :found }
         it{ response.should redirect_to Repository }
@@ -25,7 +20,7 @@ describe RepositoriesController do
         before do
           importing_repository = create :repository
           importing = create :ontology, repository: importing_repository
-          create :import_link, target: importing, source: ontology
+          create :import_mapping, target: importing, source: ontology
           delete :destroy, id: repository.to_param
         end
 
@@ -76,5 +71,27 @@ describe RepositoriesController do
         end
       end
     end
+  end
+
+  context 'Repository instance' do
+    render_views
+
+    let!(:repository) { create :repository }
+
+    context 'on GET to index' do
+      before { get :index }
+
+      it { should respond_with :success }
+      it { should render_template :index }
+      it { should render_template 'repositories/_repository' }
+    end
+
+    context 'on GET to show' do
+      before { get :show, id: repository.path }
+
+      it { should respond_with :success }
+      it { should render_template :show }
+    end
+
   end
 end

@@ -45,9 +45,9 @@ wiki:
       edit: "edit_serialization"
       show: "serialization_details"
       index: "list_serializations"
-    links:
-      show: "see_link_details"
-      index: "list_links"
+    mappings:
+      show: "see_mapping_details"
+      index: "list_mappings"
     teams:
       index: "list_teams"
       new: "create_team"
@@ -71,12 +71,12 @@ wiki:
       index: "list_errors"
     children:
       index: "list_defined_ontologies"
-    entities:
-      index: "list_entities"
+    symbols:
+      index: "list_symbols"
     sentences:
       index: "list_sentences"
-    link_versions:
-      index: "list_link_versions"
+    mapping_versions:
+      index: "list_mapping_versions"
     ontology_versions:
       index: "list_ontology_version"
     tasks:
