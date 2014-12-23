@@ -18,7 +18,12 @@ describe Link do
       let(:target_ontology) { dist_ontology.children.find_by_name('Features') }
 
       context 'and imports another ontology' do
-        let(:source_ontology) { external_repository.ontologies.find_by_name('path:features.owl') }
+        let(:source_ontology) do
+          o = external_repository.ontologies.find_by_name('path:features.owl')
+          # This is a workaround for a hets error.
+          # See https://github.com/spechub/Hets/issues/1433 for details.
+          o || external_repository.ontologies.find_by_name('path:')
+        end
 
         context 'which is not part of the distributed ontology' do
           let(:link) { dist_ontology.links.first }
