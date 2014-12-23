@@ -117,7 +117,7 @@ displayGraph = (data) ->
 
     force = d3.layout.force()
     force.nodes(nodes)
-    force.mappings(edges)
+    force.links(edges)
     force.size([width, height])
       .gravity(0.05)
       .linkDistance(distance)
@@ -128,7 +128,7 @@ displayGraph = (data) ->
     addSVGMarker svg_group, [klass] for klass in sentence_klasses
 
     path = svg_group.append("svg:g").selectAll("path")
-      .data(force.mappings())
+      .data(force.links())
       .enter()
       .append("svg:path")
     path.attr "class", (d) ->
