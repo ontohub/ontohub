@@ -65,11 +65,11 @@ class OntologiesController < InheritedResources::Base
         if resource.distributed?
           redirect_to repository_ontology_symbols_path(parent, resource,
             params_to_pass_on_redirect.merge(
-              kind: resource.entities.groups_by_kind.first.kind))
+              kind: resource.symbols.groups_by_kind.first.kind))
         else
-          redirect_to repository_ontology_entities_path(parent, resource,
+          redirect_to repository_ontology_symbols_path(parent, resource,
             params_to_pass_on_redirect.merge(
-              kind: resource.entities.groups_by_kind.first.kind))
+              kind: resource.symbols.groups_by_kind.first.kind))
         end
       end
       format.json do
