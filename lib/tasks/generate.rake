@@ -16,7 +16,7 @@ end
 def download_from_ontohub_meta(source_file, target_file)
   meta_repository
   user = User.where(admin: true).first
-  filepath = "#{Rails.root}/test/fixtures/ontologies/#{target_file}"
+  filepath = "#{Rails.root}/spec/fixtures/ontologies/#{target_file}"
   system("wget -O #{filepath} https://ontohub.org/repositories/meta/master/download/#{source_file}")
   basename = File.basename(filepath)
   version = meta_repository.
