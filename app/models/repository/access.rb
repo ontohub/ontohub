@@ -42,6 +42,9 @@ module Repository::Access
     access == 'public_r'
   end
 
+
+  alias_method :private?, :is_private
+
   private
 
   def clear_readers

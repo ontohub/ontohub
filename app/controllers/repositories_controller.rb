@@ -13,6 +13,7 @@ class RepositoriesController < InheritedResources::Base
       params[:repository].except!(:source_type, :remote_type)
     end
     super
+
   end
 
   def update

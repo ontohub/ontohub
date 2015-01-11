@@ -4,7 +4,7 @@ module Permissionable
   included do
     has_many :permissions, :as => :item
 
-    after_create :add_permission, if: :create_permission?
+    #after_save :add_permission, if: :create_permission?
   end
 
   def permissions_count
@@ -57,6 +57,11 @@ module Permissionable
     false
   end
 
+  def permission?(user,*roles)
+
+
+  end
+
   protected
 
   def create_permission?
@@ -65,7 +70,7 @@ module Permissionable
 
   def add_permission
     permissions.where(subject_id: user, subject_type: user.class).
-      first_or_create!(subject: user, role: 'owner')
+    first_or_create!(subject: user, role: 'owner')
   end
 
 end
