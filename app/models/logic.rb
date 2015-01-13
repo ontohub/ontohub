@@ -77,6 +77,12 @@ class Logic < ActiveRecord::Base
     slug
   end
 
+  def standardization_iri
+    if standardization_status
+      "http://purl.net/dol/1.0/standardization##{standardization_status}"
+    end
+  end
+
   private
   def set_slug
     self.slug = name.
