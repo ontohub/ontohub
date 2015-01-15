@@ -37,6 +37,9 @@ class LogicsController < InheritedResources::Base
       format.xml do
         render :show, content_type: 'application/rdf+xml'
       end
+      format.custom('application/rdf+xml') do
+        render 'show.xml', content_type: 'application/rdf+xml'
+      end
     end
   end
 
