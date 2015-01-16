@@ -155,3 +155,4 @@ group :documentation do
   gem 'yard', '~> 0.8.7.4'
   gem 'redcarpet', '~> 3.1.2'
 end
+
