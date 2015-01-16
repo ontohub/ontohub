@@ -65,7 +65,7 @@ module GitRepository::Cloning
 
   module ClassMethods
     def is_git_repository?(address)
-      !!(exec 'git', 'ls-remote', '-h', address)
+      !!(exec 'git', 'ls-remote', '-h', insert_credentials(address))
     rescue Subprocess::Error => e
       if e.status == 128
         false
@@ -83,6 +83,15 @@ module GitRepository::Cloning
       true
     rescue Subprocess::Error
       false
+    end
+
+    def insert_credentials(address)
+      if address.match(%r{\Ahttps?://github.com})
+        # Insert fake credentials to circumvent login prompt.
+        address.sub('github.com', 'nouser:nopass@github.com')
+      else
+        address
+      end
     end
 
     def exec(*args)
