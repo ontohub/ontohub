@@ -65,7 +65,7 @@ module GitRepository::Cloning
 
   module ClassMethods
     def is_git_repository?(address)
-      !!(exec 'git', 'ls-remote', address)
+      !!(exec 'git', 'ls-remote', '-h', address)
     rescue Subprocess::Error => e
       if e.status == 128
         false
