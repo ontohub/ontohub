@@ -141,7 +141,7 @@ module Repository::Importing
     def validate(record)
       if record.mirror? && !record.source_type.present?
         record.errors[:source_address] = 'not a valid remote repository '\
-          "(types supported: #{SOURCE_TYPES.join(', ')})"
+          "or not accessible (types supported: #{SOURCE_TYPES.join(', ')})"
         record.errors[:source_type] = "not present"
       end
     end
@@ -153,10 +153,12 @@ module Repository::Importing
   end
 
   def detect_source_type
-    if GitRepository.is_git_repository?(source_address)
-      self.source_type = 'git'
-    elsif GitRepository.is_svn_repository?(source_address)
-      self.source_type = 'svn'
+    if source_address?
+      if GitRepository.is_git_repository?(source_address)
+        self.source_type = 'git'
+      elsif GitRepository.is_svn_repository?(source_address)
+        self.source_type = 'svn'
+      end
     end
   end
 end
