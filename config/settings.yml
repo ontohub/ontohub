@@ -53,6 +53,10 @@ exception_notifier:
   exception_recipients:
     - exception-recipient@example.com
 
+# Worker count
+workers:
+  hets: 4
+
 git:
   verify_url: http://localhost/
   default_branch: 'master'
