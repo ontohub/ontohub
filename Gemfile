@@ -1,6 +1,6 @@
 source 'https://rubygems.org'
 
-gem 'rails', '~> 3.2.19'
+gem 'rails', '~> 3.2.21'
 gem 'rack-protection', '~> 1.5.3'
 gem 'secure_headers', '~> 1.2.0'
 
@@ -98,6 +98,9 @@ gem "faker", "~> 1.2"
 gem 'rugged', '0.21.0'
 gem 'codemirror-rails', github: 'llwt/codemirror-rails'
 gem 'js-routes', '~> 0.9.8'
+
+# API
+gem 'specroutes', github: '0robustus1/specroutes'
 
 # Ancestry enabling tree structure in category model
 # gem 'ancestry'
