@@ -1,7 +1,7 @@
 require 'sidekiq/web' if defined? Sidekiq
 require Rails.root.join('lib', 'router_constraints.rb')
 
-Ontohub::Application.routes.draw do
+Specroutes.define(Ontohub::Application.routes) do
 
   resources :filetypes, only: :create
 
