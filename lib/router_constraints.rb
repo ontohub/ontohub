@@ -42,7 +42,7 @@ end
 class IRIRouterConstraint < RouterConstraint
   def matches?(request, path = nil)
     path ||= request.original_fullpath
-    ontology = Ontology.find_with_iri(path)
+    ontology = Ontology.find_with_locid(path.split('?', 2).first)
     result = !ontology.nil?
 
     if result
@@ -57,7 +57,7 @@ end
 class RefIRIRouterConstraint < IRIRouterConstraint
   def matches?(request)
     # remove the ref/:version_number portion from path
-    path = request.original_fullpath.sub(%r{\A/ref/\d+/}, '')
+    path = request.original_fullpath.sub(%r{\A/ref/\d+}, '')
     super(request, path)
   end
 end
