@@ -8,14 +8,14 @@ Specroutes.define(Ontohub::Application.routes) do
   # IRI Routing #
   ###############
   #
+  # as per Loc/Id definition
 
-  get ':repository_id(/*path)/:file',
-    controller:  :ontologies,
-    action:      :show,
-    as:          :ontology_iri,
-    constraints: GroupedConstraint.new(
-      IRIRouterConstraint.new,
-      MIMERouterConstraint.new('text/plain', 'text/html'))
+  specified_get '/:repository_id/*locid' => 'ontologies#show',
+    as: :ontology_iri,
+    constraints: [
+      LocIdRouterConstraint.new,
+      MIMERouterConstraint.new('text/plain', 'text/html'),
+    ]
 
   get 'ref/:version_number/:repository_id(/*path)/:file',
     controller:  :ontologies,
