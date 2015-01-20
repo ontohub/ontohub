@@ -45,7 +45,8 @@ class Ontology < ActiveRecord::Base
 
   has_and_belongs_to_many :license_models
 
-  attr_accessible :iri, :name, :description, :acronym, :documentation,
+  attr_accessible :iri, :locid
+  attr_accessible :name, :description, :acronym, :documentation,
                   :logic_id,
                   :category_ids,
                   :acronym,
@@ -128,6 +129,11 @@ class Ontology < ActiveRecord::Base
   def iri_for_child(child_name)
     child_name = child_name[1..-2] if child_name[0] == '<'
     child_name.include?("://") ? child_name : "#{iri}?#{child_name}"
+  end
+
+  def locid_for_child(child_name)
+    child_name = child_name[1..-2] if child_name[0] == '<'
+    child_name.include?("://") ? child_name : "#{locid}//#{child_name}"
   end
 
   def is?(logic_name)
