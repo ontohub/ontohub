@@ -38,6 +38,20 @@ class FilesRouterConstraint < RouterConstraint
   end
 end
 
+class LocIdRouterConstraint < RouterConstraint
+  def matches?(request, path = nil)
+    path ||= request.original_fullpath
+    ontology = Ontology.find_with_locid(path.split('?', 2).first)
+    result = !ontology.nil?
+
+    if result
+      set_path_parameters(request,
+        repository_id: ontology.repository.to_param, id: ontology.id)
+    end
+
+    return result
+  end
+end
 
 class IRIRouterConstraint < RouterConstraint
   def matches?(request, path = nil)
