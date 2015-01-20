@@ -153,6 +153,17 @@ class Ontology < ActiveRecord::Base
     name? ? iri : nil
   end
 
+  def self.find_with_locid(locid, iri=nil)
+    ontology = where(locid: locid).first
+
+    if ontology.nil? && iri
+      ontology = AlternativeIri.where('iri LIKE ?', '%' << iri).
+        first.try(:ontology)
+    end
+
+    ontology
+  end
+
   def self.find_with_iri(iri)
     ontology = where('iri LIKE ?', '%' << iri).first
     if ontology.nil?
