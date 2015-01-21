@@ -63,6 +63,11 @@ class ApplicationController < ActionController::Base
     Kaminari.paginate_array(collection).page(params[:page])
   end
 
+  def locid_for(resource)
+    "#{request.base_url}#{resource.locid}"
+  end
+
   helper_method :display_all?
+  helper_method :locid_for
 
 end
