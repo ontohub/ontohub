@@ -18,12 +18,8 @@ module LinkHelper
 
     name = block_given? ? yield(resource) : resource
 
-    title =
-      if resource.is_a?(Array)
-        resource.last.respond_to?(:title) ? resource.last.title : nil
-      else
-        resource.respond_to?(:title) ? resource.title : nil
-      end
+    title_target = resource.respond_to?(:last) ? resource.last : resource
+    title = title_target.title if title_target.respond_to?(:title)
 
     linked_to =
       if resource.respond_to?(:locid)
