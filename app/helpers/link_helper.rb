@@ -24,7 +24,9 @@ module LinkHelper
       title = resource.respond_to?(:title) ? resource.title : nil
     end
 
-    if resource.is_a? Ontology
+    if resource.respond_to?(:locid)
+      linked_to = locid_for(resource)
+    elsif resource.is_a? Ontology
       linked_to = repository_ontology_path(resource.repository, resource)
     else
       linked_to = resource
