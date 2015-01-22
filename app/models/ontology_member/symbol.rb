@@ -11,6 +11,7 @@ module OntologyMember
     has_and_belongs_to_many :sentences
     has_and_belongs_to_many :oops_responses
 
+  attr_accessible :locid
     attr_accessible :label, :comment
 
     scope :kind, ->(kind) { where kind:  kind }
