@@ -10,6 +10,20 @@ Specroutes.define(Ontohub::Application.routes) do
   #
   # as per Loc/Id definition
 
+  specified_get '/:repository_id/*locid?symbols' => 'symbols#index',
+    as: :ontology_iri_symbols,
+    constraints: [
+      LocIdRouterConstraint.new(Ontology, ontology: :ontology_id),
+      MIMERouterConstraint.new('text/html'),
+    ]
+
+  specified_get '/:repository_id/*locid?children' => 'children#index',
+    as: :ontology_iri_children,
+    constraints: [
+      LocIdRouterConstraint.new(Ontology, ontology: :ontology_id),
+      MIMERouterConstraint.new('text/html'),
+    ]
+
   specified_get '/:repository_id/*locid' => 'ontologies#show',
     as: :ontology_iri,
     constraints: [
