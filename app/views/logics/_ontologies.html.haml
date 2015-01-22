@@ -1,4 +1,4 @@
 %h3 #{Settings.OMS.pluralize.capitalize} using this logic
-%ol.latest
+%ol.latest.ontology-list
   - @ontologies.each do |ontology|
-    %li= fancy_link(ontology)
+    %li.ontology-list-item= fancy_link(ontology)

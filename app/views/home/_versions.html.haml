@@ -14,9 +14,10 @@
   = link_to "Browse #{Settings.OMS.pluralize.capitalize}", ontologies_path, class: 'btn btn-primary', type: 'button'
 
 - @versions.each do |version|
-  %div
-    = fancy_link version.ontology
-    - if version.user
-      by
-      = fancy_link version.user
-    = timestamp version
+  %ol.ontology-list
+    %li.ontology-list-item
+      = fancy_link version.ontology
+      - if version.user
+        by
+        = fancy_link version.user
+      = timestamp version
