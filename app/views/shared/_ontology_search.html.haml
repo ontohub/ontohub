@@ -2,31 +2,11 @@
   = form_tag search_ontologies_path, method: :get, id: :search_form do
     %p
       .btn-group
-        .btn-group.btn-group-sm
-          = collection_select nil, :ontology_type, OntologyType.not_empty,
-                              :id, :name_with_ontology_count,
-                              {include_blank: "#{Settings.OMS.capitalize} Type", selected: params[:ontology_type]},
-                              class: "selectpicker"
-        .btn-group.btn-group-sm
-          = collection_select nil, :project, Project.not_empty,
-                              :id, :name_with_ontology_count,
-                              {include_blank: "Project", selected: params[:project]},
-                              class: "selectpicker"
-        .btn-group.btn-group-sm
-          = collection_select nil, :formality_level, FormalityLevel.not_empty,
-                              :id, :name_with_ontology_count,
-                              {include_blank: "Formality", selected: params[:formality]},
-                              class: "selectpicker"
-        .btn-group.btn-group-sm
-          = collection_select nil, :license, LicenseModel.not_empty,
-                              :id, :name_with_ontology_count,
-                              {include_blank: "License Model", selected: params[:license]},
-                              class: "selectpicker"
-        .btn-group.btn-group-sm
-          = collection_select nil, :task, Task.not_empty,
-                              :id, :name_with_ontology_count,
-                              {include_blank: "Task", selected: params[:task]},
-                              class: "selectpicker"
+        = render_filter(OntologyType, 'Ontology Type', selected_key: :ontology_type)
+        = render_filter(Project, 'Project', selected_key: :project)
+        = render_filter(FormalityLevel, 'Formality Level', selected_key: :formality)
+        = render_filter(LicenseModel, 'License Model', selected_key: :license)
+        = render_filter(Task, 'Task', selected_key: :task)
 
     .row
       .col-md-10
