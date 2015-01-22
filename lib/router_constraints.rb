@@ -39,14 +39,24 @@ class FilesRouterConstraint < RouterConstraint
 end
 
 class LocIdRouterConstraint < RouterConstraint
+  def initialize(find_in_klass, **map)
+    @find_in_klass = find_in_klass
+    @map = map
+    super()
+  end
+
   def matches?(request, path = nil)
     path ||= request.original_fullpath
-    ontology = Ontology.find_with_locid(path.split('?', 2).first)
+    element = @find_in_klass.find_with_locid(path.split('?', 2).first)
+    ontology = element.respond_to?(:ontology) ? element.ontology : element
     result = !ontology.nil?
 
     if result
-      set_path_parameters(request,
-        repository_id: ontology.repository.to_param, id: ontology.id)
+      path_params = {repository_id: ontology.repository.to_param}
+      path_params[@map[:ontology]] = ontology.id if @map[:ontology]
+      path_params[@map[:element]] = element.id if @map[:element]
+
+      set_path_parameters(request, path_params)
     end
 
     return result

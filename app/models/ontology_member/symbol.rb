@@ -11,11 +11,14 @@ module OntologyMember
     has_and_belongs_to_many :sentences
     has_and_belongs_to_many :oops_responses
 
-  attr_accessible :locid
+    attr_accessible :locid
     attr_accessible :label, :comment
 
     scope :kind, ->(kind) { where kind:  kind }
 
+    def self.find_with_locid(locid, _iri=nil)
+      where(locid: locid).first
+    end
 
     def self.groups_by_kind
       groups = select('kind, count(*) AS count').group(:kind).

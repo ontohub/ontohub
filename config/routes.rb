@@ -13,8 +13,15 @@ Specroutes.define(Ontohub::Application.routes) do
   specified_get '/:repository_id/*locid' => 'ontologies#show',
     as: :ontology_iri,
     constraints: [
-      LocIdRouterConstraint.new,
+      LocIdRouterConstraint.new(Ontology, ontology: :id),
       MIMERouterConstraint.new('text/plain', 'text/html'),
+    ]
+
+  specified_get '/:repository_id/*locid' => 'symbols#index',
+    as: :symbol_iri,
+    constraints: [
+      LocIdRouterConstraint.new(OntologyMember::Symbol, ontology: :ontology_id),
+      MIMERouterConstraint.new('text/html'),
     ]
 
   get 'ref/:version_number/:repository_id(/*path)/:file',
