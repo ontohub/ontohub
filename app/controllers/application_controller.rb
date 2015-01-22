@@ -63,8 +63,10 @@ class ApplicationController < ActionController::Base
     Kaminari.paginate_array(collection).page(params[:page])
   end
 
-  def locid_for(resource)
-    "#{request.base_url}#{resource.locid}"
+  def locid_for(resource, query_string=nil)
+    iri = "#{request.base_url}#{resource.locid}"
+    iri << "?#{query_string}" if query_string
+    iri
   end
 
   helper_method :display_all?
