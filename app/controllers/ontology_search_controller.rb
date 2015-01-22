@@ -63,6 +63,8 @@ class OntologySearchController < ApplicationController
       @search_query = @anded
     elsif params[:query].present? && !in_repository?
       @search_query = params[:query].split(' ').join(' OR ')
+    else
+      @search_query = @anded.join(' AND ')
     end
   end
 end
