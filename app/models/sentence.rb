@@ -9,6 +9,10 @@ class Sentence < ActiveRecord::Base
 
   attr_accessible :locid
 
+  def self.find_with_locid(locid, _iri=nil)
+    where(locid: locid).first
+  end
+
   def hierarchical_class_names
     match = self.text.match(%r{
       \s*

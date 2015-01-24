@@ -38,6 +38,13 @@ Specroutes.define(Ontohub::Application.routes) do
       MIMERouterConstraint.new('text/html'),
     ]
 
+  specified_get '/:repository_id/*locid' => 'sentences#index',
+    as: :ontology_iri,
+    constraints: [
+      LocIdRouterConstraint.new(Sentence, ontology: :ontology_id),
+      MIMERouterConstraint.new('text/plain', 'text/html'),
+    ]
+
   get 'ref/:version_number/:repository_id(/*path)/:file',
     controller:  :ontologies,
     action:      :show,
