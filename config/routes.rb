@@ -31,6 +31,13 @@ Specroutes.define(Ontohub::Application.routes) do
       MIMERouterConstraint.new('text/plain', 'text/html'),
     ]
 
+  specified_get '/:repository_id/*locid' => 'mappings#show',
+    as: :mapping_iri,
+    constraints: [
+      LocIdRouterConstraint.new(Mapping, ontology: :ontology_id, element: :id),
+      MIMERouterConstraint.new('text/plain', 'text/html'),
+    ]
+
   specified_get '/:repository_id/*locid' => 'symbols#index',
     as: :symbol_iri,
     constraints: [

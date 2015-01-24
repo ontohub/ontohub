@@ -34,6 +34,11 @@ class Mapping < ActiveRecord::Base
                   :target_id, :versions_attributes, :versions, :name
   accepts_nested_attributes_for :versions
 
+
+  def self.find_with_locid(locid, _iri=nil)
+    where(locid: locid).first
+  end
+
   def self.with_ontology_reference(ontology_id)
     Mapping.where('ontology_id = ? OR source_id = ? OR target_id = ?',
                           ontology_id, ontology_id, ontology_id)
