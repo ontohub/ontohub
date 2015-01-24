@@ -28,6 +28,7 @@ class Mapping < ActiveRecord::Base
         end
       end
 
+  attr_accessible :locid
   attr_accessible :iri, :source, :target, :kind, :theorem, :proven, :local,
                   :inclusion, :logic_mapping, :parent, :ontology_id, :source_id,
                   :target_id, :versions_attributes, :versions, :name
