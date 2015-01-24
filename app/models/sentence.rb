@@ -7,6 +7,8 @@ class Sentence < ActiveRecord::Base
   has_many :translated_sentences, dependent: :destroy
   default_scope where(imported: false, type: nil)
 
+  attr_accessible :locid
+
   def hierarchical_class_names
     match = self.text.match(%r{
       \s*

@@ -131,6 +131,9 @@ class Ontology
         sentence.range      = hash['range']
         sentence.updated_at = timestamp
 
+        sep = sentence.ontology.parent ? "/" : "//"
+        sentence.locid = "#{sentence.ontology.locid}#{sep}#{sentence.name}"
+
         sentence.save!
 
         execute_sql(
