@@ -16,13 +16,15 @@ module NavigationHelper
   end
 
   def ontology_nav(ontology, current_page)
+    resource = resource_chain.last
+
     @top_level_pages = [
-      ['Content', ontology.distributed? ? :children : :symbols],
-      ['Comments', :comments],
-      ['Metadata', :metadata],
-      ['Versions', :ontology_versions],
-      ['Graphs', :graphs],
-      ['Mappings', :mappings],
+      ['Content', locid_for(resource, ontology.distributed? ? :children : :symbols), :symbols],
+      ['Comments', locid_for(resource, :comments), :comments],
+      ['Metadata', locid_for(resource, :metadata), :metadata],
+      ['Versions', locid_for(resource, :ontology_versions), :ontology_versions],
+      ['Graphs', locid_for(resource, :graphs), :graphs],
+      ['Mappings', locid_for(resource, :mappings), :mappings]
     ]
 
     @metadatas = []
@@ -45,10 +47,10 @@ module NavigationHelper
     pages = []
 
     if ontology.distributed?
-      pages << [:children,  [*resource_chain, :children]]
+      pages << [:children,  locid_for(resource_chain.last, :children)]
     else
-      pages << [:sentences, [*resource_chain, :sentences]]
-      pages << [:theorems,  [*resource_chain, :theorems]]
+      pages << [:sentences, locid_for(resource_chain.last, :sentences)]
+      pages << [:theorems, locid_for(resource_chain.last, :theorems)]
     end
 
     actions = []
@@ -137,18 +139,20 @@ module NavigationHelper
 
   # used for activating tabs in ontology view
   def in_metadata?
-    ontology_nav_metadata.map { |m| m[1][-1].to_s }.include?(controller_name)
+    ontology_nav_metadata.map { |m| m.last.to_s }.
+      include?(controller_name)
   end
 
   protected
 
   def ontology_nav_metadata
+    resource = resource_chain.last
     [
-      ['Projects',         [*resource_chain, :projects]],
-      ['Categories',       [*resource_chain, :categories]],
-      ['Tasks',            [*resource_chain, :tasks]],
-      ['License Models',   [*resource_chain, :license_models]],
-      ['Formality Levels', [*resource_chain, :formality_levels]]
+      ['Projects',         locid_for(resource, :projects), :projects],
+      ['Categories',       locid_for(resource, :categories), :categories],
+      ['Tasks',            locid_for(resource, :tasks), :tasks],
+      ['License Models',   locid_for(resource, :license_models), :license_models],
+      ['Formality Levels', locid_for(resource, :formality_levels), :formality_levels]
     ]
   end
 

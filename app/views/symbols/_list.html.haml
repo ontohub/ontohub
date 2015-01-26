@@ -14,10 +14,10 @@
               = oops_icons symbol.oops_responses
         - if @show_name_column
           %td= symbol.text
-          %td= symbol.name
+          %td= link_to symbol.name, locid_for(symbol)
         - else
           - if symbol.display_name
-            %td= symbol.display_name
+            %td= link_to symbol.display_name, locid_for(symbol)
           - else 
             %td= name_highlighter(symbol)
       
