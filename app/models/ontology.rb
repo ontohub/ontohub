@@ -38,8 +38,10 @@ class Ontology < ActiveRecord::Base
 
   has_many :symbol_groups
   has_many :alternative_iris, dependent: :destroy
-  has_many :source_mappings, class_name: 'Mapping', foreign_key: 'source_id', dependent: :destroy
-  has_many :target_mappings, class_name: 'Mapping', foreign_key: 'target_id', dependent: :destroy
+  has_many :source_mappings,
+    class_name: 'Mapping', foreign_key: 'source_id', dependent: :destroy
+  has_many :target_mappings,
+    class_name: 'Mapping', foreign_key: 'target_id', dependent: :destroy
 
   has_and_belongs_to_many :license_models
 
@@ -70,7 +72,8 @@ class Ontology < ActiveRecord::Base
 
   strip_attributes :only => [:name, :iri]
 
-  scope :list, includes(:logic).order('ontologies.state asc, ontologies.symbols_count desc')
+  scope :list, includes(:logic).
+    order('ontologies.state asc, ontologies.symbols_count desc')
 
   scope :with_path, ->(path) do
     condition = <<-CONDITION
@@ -99,7 +102,9 @@ class Ontology < ActiveRecord::Base
     joins(join).where(condition, path: path).readonly(false)
   end
 
-  scope :parents_first, order('(CASE WHEN ontologies.parent_id IS NULL THEN 1 ELSE 0 END) DESC, ontologies.parent_id asc')
+  scope :parents_first,
+    order('(CASE WHEN ontologies.parent_id IS NULL THEN 1 ELSE 0 END) DESC,'\
+      ' ontologies.parent_id asc')
 
 
   def generate_name(name)
@@ -249,11 +254,10 @@ class Ontology < ActiveRecord::Base
   protected
 
   def import_mappings
-    Mapping.where(source_id: self.id, kind: "import")
+    Mapping.where(source_id: id, kind: 'import')
   end
 
   def import_mappings_from_other_repositories
-    import_mappings.select { |l| l.target.repository != self.repository }
+    import_mappings.select { |l| l.target.repository != repository }
   end
-
 end

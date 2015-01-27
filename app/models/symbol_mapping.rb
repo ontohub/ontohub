@@ -1,12 +1,13 @@
 class SymbolMapping < ActiveRecord::Base
-  belongs_to :source, class_name: "OntologyMember::Symbol"
-  belongs_to :target, class_name: "OntologyMember::Symbol"
+  belongs_to :source, class_name: 'OntologyMember::Symbol'
+  belongs_to :target, class_name: 'OntologyMember::Symbol'
   belongs_to :mapping
   attr_accessible :mapping, :source, :target
-  KINDS = %w( subsumes is-subsumed equivalent incompatible has-instance instance-of default-relation )
+  KINDS = %w( subsumes is-subsumed equivalent incompatible has-instance
+              instance-of default-relation )
 
   def to_s
-   "#{self.source} → #{self.target}"
+    "#{source} → #{target}"
   end
 
   def apply(sentence)
@@ -22,5 +23,4 @@ class SymbolMapping < ActiveRecord::Base
     end
     symbol_ids.include?(self.source_id)
   end
-
 end

@@ -9,13 +9,13 @@
 %p
   = pluralize(collection.count, "#{Settings.OMS} mapping")
   currently available
-  
-= pagination do 
+
+= pagination do
   -if @ontology
     .row.center-row
       .col-md-2
         %h4 Mapping
-      .col-md-2 
+      .col-md-2
         %h4 Source
       .col-md-2
         %h4 Source-Symbol
@@ -32,17 +32,17 @@
           = fancy_link array.first[:mapping].source
         .col-md-2
           -if key.to_s.include? "empty"
-            
+
           -else
-            =key 
+            =key
         .col-md-4
           -array.each do |mapping|
             .row.center-row
               .col-md-6
                 =fancy_link mapping[:mapping].target
               .col-md-6
-                =mapping[:target]
-                
+                = mapping[:target]
+
   -else
     %table.table.col-md-8
       %thead
@@ -55,4 +55,3 @@
           %th Entites
       %tbody
         = render collection
-        

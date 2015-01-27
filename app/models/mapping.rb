@@ -20,9 +20,9 @@ class Mapping < ActiveRecord::Base
   has_many :symbol_mappings
 
   has_many :versions,
-      :dependent  => :destroy,
-      :order      => :version_number,
-      :class_name => 'MappingVersion' do
+      dependent:   :destroy,
+      order:       :version_number,
+      class_name:  'MappingVersion' do
         def current
           reorder('version_number DESC').first
         end
@@ -39,10 +39,10 @@ class Mapping < ActiveRecord::Base
   end
 
   def current_version
-    if self.mapping_version
-      self.mapping_version
+    if mapping_version
+      mapping_version
     else
-      self.versions.current
+      versions.current
     end
   end
 
@@ -74,7 +74,7 @@ class Mapping < ActiveRecord::Base
     end
   end
 
-  def get_symbol
+  def symbol
     if symbol_mappings.size > 1
       "#{symbol_mappings.first}..."
     else

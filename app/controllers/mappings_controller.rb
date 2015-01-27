@@ -6,8 +6,8 @@ class MappingsController < InheritedResources::Base
   respond_to :json, :xml
   has_pagination
   has_scope :search
-  belongs_to :ontology, :optional => true
-  load_and_authorize_resource :except => [:index, :show]
+  belongs_to :ontology, optional: true
+  load_and_authorize_resource except: [:index, :show]
   before_filter :check_read_permissions
 
   def index
@@ -25,8 +25,10 @@ class MappingsController < InheritedResources::Base
 
   def create
     @version = build_resource.versions.first
-    @version.source = Ontology.find(params[:mapping][:source_id]).current_version
-    @version.target = Ontology.find(params[:mapping][:target_id]).current_version
+    @version.source =
+      Ontology.find(params[:mapping][:source_id]).current_version
+    @version.target =
+      Ontology.find(params[:mapping][:target_id]).current_version
     super
   end
 
@@ -38,21 +40,22 @@ class MappingsController < InheritedResources::Base
     redirect_to edit_mapping_link_version_path(resource, @version)
   end
 
-
   private
 
   def collection
-    restrict_by_permission = proc do |mapping|
-      can?(:show, mapping.source.repository) && can?(:show, mapping.target.repository)
-    end
     if params[:ontology_id]
       collection = Mapping.with_ontology_reference(params[:ontology_id])
     else
       collection = super
     end
     @mappings = collection = collection.
-        joins(:source => :logic).order('logics.name DESC')
+        joins(source: :logic).order('logics.name DESC')
     paginate_for(collection.select(&restrict_by_permission))
+  end
+
+  def restrict_by_permission(mapping)
+    can?(:show, mapping.source.repository) &&
+    can?(:show, mapping.target.repository)
   end
 
   def build_resource
@@ -61,12 +64,8 @@ class MappingsController < InheritedResources::Base
 
   def check_read_permissions
     unless params[:action] == 'index'
-      if resource.source
-        authorize! :show, resource.source.repository
-      end
-      if resource.target
-        authorize! :show, resource.target.repository
-      end
+      authorize! :show, resource.source.repository if resource.source
+      authorize! :show, resource.target.repository if resource.target
     end
   end
 end

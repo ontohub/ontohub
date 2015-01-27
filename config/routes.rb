@@ -47,7 +47,7 @@ Ontohub::Application.routes.draw do
   resources :language_mappings
   resources :logic_mappings
 
-  resources :mappings, :only => :index
+  resources :mappings, only: :index
 
   resources :categories, :only => [:index, :show]
   resources :projects
@@ -114,7 +114,7 @@ Ontohub::Application.routes.draw do
         post 'retry_failed' => 'ontologies#retry_failed'
       end
       resources :children, :only => :index
-      resources :symbols, :only => :index
+      resources :symbols, only: :index
       resources :sentences, :only => :index
       resources :theorems, only: :index
       resources :mappings do

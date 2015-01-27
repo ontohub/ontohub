@@ -30,7 +30,9 @@ class SymbolsController < InheritedResources::Base
       format.html do
         unless collection.blank?
           first_symbol = collection.first
-          @show_name_column = !(first_symbol.display_name or first_symbol.text.include? first_symbol.name)
+          @show_name_column =
+            !(first_symbol.display_name ||
+            first_symbol.text.include?(first_symbol.name))
         end
       end
     end
