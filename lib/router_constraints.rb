@@ -12,6 +12,10 @@ class RouterConstraint
       controller: controller,
       action:     action).merge!(new_params)
   end
+
+  def add_path_parameters(request, add_params)
+    set_path_parameters(request, params(request).merge(add_params))
+  end
 end
 
 
@@ -62,7 +66,7 @@ class LocIdRouterConstraint < RouterConstraint
       path_params[@map[:ontology]] = ontology.id if @map[:ontology]
       path_params[@map[:element]] = element.id if @map[:element]
 
-      set_path_parameters(request, path_params)
+      add_path_parameters(request, path_params)
     end
 
     return result
