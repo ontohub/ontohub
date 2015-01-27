@@ -64,7 +64,7 @@ class Ontology
         }
         mapping.updated_at = timestamp
 
-        sep = mapping.ontology.parent ? "/" : "//"
+        sep = '//'
         locid_portion = hash['name'] || hash['linkid']
         mapping.locid = "#{mapping.ontology.locid}#{sep}#{locid_portion}"
 

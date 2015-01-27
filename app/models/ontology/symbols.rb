@@ -38,7 +38,7 @@ class Ontology
         e.iri = hash['iri']
         e.label = hash['label']
 
-        sep = e.ontology.parent ? "/" : "//"
+        sep = '//'
         locid_portion =
           if e.name.include?('://')
             if e.label
