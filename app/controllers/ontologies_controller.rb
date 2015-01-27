@@ -153,9 +153,7 @@ class OntologiesController < InheritedResources::Base
   end
 
   def version
-    args = {number: params[:version_number], ontology: resource}
-    @version ||= OntologyVersion.where(args).first if params[:version_number]
+    finder = OntologyVersionFinder.new(params[:reference], resource)
+    @version ||= finder.find if params[:reference]
   end
-
-
 end

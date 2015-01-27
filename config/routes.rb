@@ -7,9 +7,17 @@ Specroutes.define(Ontohub::Application.routes) do
 
   # IRI Routing #
   ###############
-  #
   # as per Loc/Id definition
 
+  # Special (/ref-based) Loc/Id routes
+  specified_get '/ref/:reference/:repository_id/*locid' => 'ontologies#show',
+    as: :ontology_iri_versioned,
+    constraints: [
+      RefLocIdRouterConstraint.new(Ontology, ontology: :id),
+      MIMERouterConstraint.new('text/plain', 'text/html')
+    ]
+
+  # Subsites for ontologies
   ontology_subsites = %i(
     mappings symbols children
     sentences theorems comments
@@ -25,6 +33,8 @@ Specroutes.define(Ontohub::Application.routes) do
       ]
   end
 
+  # Loc/Id-Show(-equivalent) routes
+  ######
   specified_get '/:repository_id/*locid' => 'ontologies#show',
     as: :ontology_iri,
     constraints: [
@@ -53,13 +63,6 @@ Specroutes.define(Ontohub::Application.routes) do
       MIMERouterConstraint.new('text/plain', 'text/html'),
     ]
 
-  get 'ref/:version_number/:repository_id(/*path)/:file',
-    controller:  :ontologies,
-    action:      :show,
-    as:          :versioned_ontology_iri,
-    constraints: GroupedConstraint.new(
-      RefIRIRouterConstraint.new,
-      MIMERouterConstraint.new('text/plain', 'text/html'))
   #
   ###############
 

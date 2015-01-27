@@ -1,6 +1,10 @@
 class RouterConstraint
+  def params(request)
+    request.send(:env)["action_dispatch.request.path_parameters"]
+  end
+
   def set_path_parameters(request, new_params)
-    params     = request.send(:env)["action_dispatch.request.path_parameters"]
+    params = params(request)
     controller = params[:controller]
     action     = params[:action]
 
@@ -62,6 +66,16 @@ class LocIdRouterConstraint < RouterConstraint
     end
 
     return result
+  end
+end
+
+class RefLocIdRouterConstraint < LocIdRouterConstraint
+  def matches?(request)
+    params = params(request)
+    result = OntologyVersionFinder.
+      applicable_reference?(params[:reference])
+    path = request.original_fullpath.sub(%r{\A/ref/[^/]+}, '')
+    result && super(request, path)
   end
 end
 
