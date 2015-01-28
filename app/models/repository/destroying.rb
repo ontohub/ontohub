@@ -16,7 +16,9 @@ module Repository::Destroying
   rescue StandardError => e
     self.is_destroying = false
     save!
-    raise e.class, I18n.t('repository.delete_error', oms: Settings.OMS.with_indefinite_article)
+    raise e.class,
+          I18n.t('repository.delete_error', oms: Settings.OMS.with_indefinite_article),
+          cause: e
   end
 
   def destroy_asynchronously
