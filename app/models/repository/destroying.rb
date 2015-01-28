@@ -30,6 +30,6 @@ module Repository::Destroying
   end
 
   def can_be_deleted?
-    ontologies.map(&:can_be_deleted_with_whole_repository?).all?
+    ontologies.all?(&:can_be_deleted_with_whole_repository?)
   end
 end
