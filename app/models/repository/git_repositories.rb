@@ -34,7 +34,8 @@ module Repository::GitRepositories
   end
 
   def delete_file(filepath, user, message = nil, &block)
-    git.delete_file(user_info(user), filepath, &block)
+    commit_oid = git.delete_file(user_info(user), filepath, &block)
+    commit_for!(commit_oid).commit_oid
   end
 
   def save_file(tmp_file, filepath, message, user, do_not_parse: false)
@@ -57,6 +58,7 @@ module Repository::GitRepositories
     git.add_file(userdata, tmp_file, filepath, message) do |commit_oid|
       commit = commit_oid
     end
+    commit_for!(commit)
     touch
     commit
   end
@@ -124,8 +126,25 @@ module Repository::GitRepositories
     version.save!
     ontology.ontology_version = version
     ontology.save!
+    commit_for!(commit_oid)
 
     version
+  end
+
+  def commit_for!(commit_oid)
+    instance = Commit.where(repository_id: self, commit_oid: commit_oid).
+      first_or_initialize
+    if !instance.persisted?
+      commit = git.repo.lookup(commit_oid)
+      data = commit.committer
+      instance.committer = "#{data[:name]} <#{data[:email]}>"
+      instance.commit_date = data[:time]
+      data = commit.author
+      instance.author = "#{data[:name]} <#{data[:email]}>"
+      instance.author_date = data[:time]
+      instance.save!
+    end
+    instance
   end
 
   def commit_message(oid=nil)
