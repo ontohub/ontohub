@@ -11,7 +11,7 @@ module ApplicationHelper
       'shared/user_ontologies'
     elsif params[:action] != 'index'
       false
-    elsif %w[categories logics links ontologies].include? params[:controller]
+    elsif %w(categories logics mappings ontologies).include? params[:controller]
       'shared/user_ontologies' unless in_repository?
     elsif params[:controller] == 'repositories'
       'shared/user_repositories'

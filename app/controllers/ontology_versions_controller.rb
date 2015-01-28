@@ -41,7 +41,7 @@ class OntologyVersionsController < InheritedResources::Base
   def oops
     resource.build_request.save!
     flash[:notice] = "Your request is send to OOPS!"
-    redirect_to ontology_entities_path(resource.ontology)
+    redirect_to ontology_symbols_path(resource.ontology)
   end
 
 

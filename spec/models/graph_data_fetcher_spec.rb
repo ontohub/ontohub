@@ -17,16 +17,16 @@ describe GraphDataFetcher do
   end
 
   context 'query for mapping-type correctly' do
-    it 'produce the correct type on known mapping (Link)' do
-      expect(GraphDataFetcher.link_for(Ontology)).to eq(:Link)
+    it 'produce the correct type on known mapping (Mapping)' do
+      expect(GraphDataFetcher.mapping_for(Ontology)).to eq(:Mapping)
     end
 
     it 'produce the correct type on known mapping (LogicMapping)' do
-      expect(GraphDataFetcher.link_for(Logic)).to eq(:LogicMapping)
+      expect(GraphDataFetcher.mapping_for(Logic)).to eq(:LogicMapping)
     end
 
     it 'raise the correct error on unknown mapping' do
-      expect { GraphDataFetcher.link_for(LogicMapping) }.
+      expect { GraphDataFetcher.mapping_for(LogicMapping) }.
         to raise_error(GraphDataFetcher::UnknownMapping)
     end
   end
@@ -62,7 +62,7 @@ describe GraphDataFetcher do
     let!(:source) { create(:single_ontology, state: 'done') }
     let!(:target) { create(:single_ontology, state: 'done') }
     let!(:mapping) do
-      create(:link,
+      create(:mapping,
         source: source, target: target, ontology: source)
     end
     let!(:fetcher) { GraphDataFetcher.new(center: source) }
@@ -87,7 +87,7 @@ describe GraphDataFetcher do
   context 'distributed ontology specific tests with valid request' do
     let!(:distributed) { create(:linked_distributed_ontology) }
     let!(:children) { distributed.children.map{|o| Ontology.find(o.id)} }
-    let!(:links) { Link.where(ontology_id: distributed.id) }
+    let!(:mappings) { Mapping.where(ontology_id: distributed.id) }
     let!(:fetcher) { GraphDataFetcher.new(center: distributed) }
     let!(:nodes) { fetcher.fetch.first }
     let!(:edges) { fetcher.fetch[1] }
@@ -98,9 +98,9 @@ describe GraphDataFetcher do
       end
     end
 
-    it "include all links defined by the DO in the edge list" do
-      links.each do |link|
-        expect(edges).to include(link)
+    it "include all mappings defined by the DO in the edge list" do
+      mappings.each do |mapping|
+        expect(edges).to include(mapping)
       end
     end
   end

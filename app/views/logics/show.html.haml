@@ -22,7 +22,7 @@
           - if number
             %span.badge= number
     - lh.available_tab_links.each do |(tab_title, tab)|
-      %li{class: tab==@link_tab ? 'active' : nil}
+      %li{class: tab==@mapping_tab ? 'active' : nil}
         = link_to tab_title, [resource, tab]
 
 = render partial: @tab.to_s unless @tab.nil?

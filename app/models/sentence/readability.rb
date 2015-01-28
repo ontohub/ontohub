@@ -5,9 +5,9 @@ module Sentence::Readability
     if text
       self.display_text = text.dup
 
-      entities.each do |entity|
-        if entity.display_name && entity.iri
-          display_text.gsub!(entity.iri, entity.display_name)
+      symbols.each do |symbol|
+        if symbol.display_name && symbol.iri
+          display_text.gsub!(symbol.iri, symbol.display_name)
         end
       end
 

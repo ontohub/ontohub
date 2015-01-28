@@ -11,7 +11,7 @@ module ParsingCallback::OWL
     def pre_axiom(hash)
       if is_annotation_sentence?(hash)
         m = hash['text'].match(%r{
-          Class:\s+(?<entity_name>.+?) # Entity/Symbol Identifier
+          Class:\s+(?<symbol_name>.+?) # Symbol Identifier
           \s+
           Annotations:\s+(?<annotation_type>label|comment) # the type of annotation
           \s+
@@ -19,15 +19,15 @@ module ParsingCallback::OWL
           \s*
           (?<additionals>[^\s].*) # optional, e.g. a language tag like @pt}xm)
         if m
-          entity = Entity.where(name: m['entity_name']).first
+          symbol = OntologyMember::Symbol.where(name: m['symbol_name']).first
           case m['annotation_type']
           when 'label'
-            entity.label = m['annotation']
-            entity.save
+            symbol.label = m['annotation']
+            symbol.save
           when 'comment'
-            entity.comment = m['annotation']
-            entity.save
-          end if entity
+            symbol.comment = m['annotation']
+            symbol.save
+          end if symbol
         end
         false
       else
@@ -42,7 +42,7 @@ module ParsingCallback::OWL
       begin
         TarjanTree.for(ontology)
       rescue ActiveRecord::RecordNotFound => e
-        Rails.logger.warn "Could not create entity tree for: #{ontology.name} (#{ontology.id}) caused #{e}"
+        Rails.logger.warn "Could not create symbol tree for: #{ontology.name} (#{ontology.id}) caused #{e}"
       end
     end
 

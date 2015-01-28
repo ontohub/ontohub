@@ -1,7 +1,7 @@
 #
 # Controller for LanguageMappings
 #
-class LanguageMappingsController < MappingsController
+class LanguageMappingsController < GeneralMappingsController
 #  belongs_to :source, :class_name => "Language"
 #  belongs_to :target, :class_name => "Language"
 

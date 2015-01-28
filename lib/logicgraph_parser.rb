@@ -193,7 +193,7 @@ module LogicgraphParser
         when SOURCE_SUBLOGIC
           @current_axiom = nil
         when TARGET_SUBLOGIC
-          @current_link = nil
+          @current_mapping = nil
         when DESCRIPTION
         when SERIALIZATION
         when PROVER

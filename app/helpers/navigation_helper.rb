@@ -1,6 +1,5 @@
 # encoding: UTF-8
 module NavigationHelper
-
   def repository_nav(resource, current_page, options = {})
     pages = [
       [:overview,     resource]
@@ -18,12 +17,12 @@ module NavigationHelper
 
   def ontology_nav(ontology, current_page)
     @top_level_pages = [
-      ['Content', ontology.distributed? ? :children : :entities],
+      ['Content', ontology.distributed? ? :children : :symbols],
       ['Comments', :comments],
       ['Metadata', :metadata],
       ['Versions', :ontology_versions],
       ['Graphs', :graphs],
-      ['Mappings', :links]
+      ['Mappings', :mappings],
     ]
 
     @metadatas = []
@@ -32,9 +31,15 @@ module NavigationHelper
       @metadatas = ontology_nav_metadata
     end
 
-    @entities = ontology.distributed? ? [] : ontology.entities.groups_by_kind.sort_by(&:kind)
+    @symbols =
+      if ontology.distributed?
+        []
+      else
+        ontology.symbols.groups_by_kind.sort_by(&:kind)
+      end
 
-    @active_kind = choose_default_entity_kind(@entities) if current_page == :entities
+    @active_kind =
+      choose_default_symbol_kind(@symbols) if current_page == :symbols
     @active_kind = params[:kind] if params[:kind]
 
     pages = []
@@ -55,9 +60,11 @@ module NavigationHelper
     end
 
     @page_title = ontology.to_s
-    @page_title = "#{current_page.capitalize} · #{@page_title}" if current_page != pages[0][0]
+    if current_page != pages[0][0]
+      @page_title = "#{current_page.capitalize} · #{@page_title}"
+    end
 
-    render :partial => '/ontologies/info', :locals => {
+    render partial: '/ontologies/info', locals: {
       resource:           ontology,
       current_page:       current_page,
       pages:              pages,
@@ -65,7 +72,8 @@ module NavigationHelper
     }
   end
 
-  def subnavigation(resource, pages, current_page, options = {}, additional_actions = [], partial: '/shared/subnavigation')
+  def subnavigation(resource, pages, current_page, options = {},
+    additional_actions = [], partial: '/shared/subnavigation')
     # Add counters
     pages.each do |row|
       counter_key = "#{row[0]}_count"
@@ -73,9 +81,11 @@ module NavigationHelper
     end
 
     @page_title = current_page
-    @page_title = "#{current_page.capitalize} · #{@page_title}" if current_page != pages[0][0]
+    if current_page != pages[0][0]
+      @page_title = "#{current_page.capitalize} · #{@page_title}"
+    end
 
-    render :partial => partial, :locals => {
+    render partial: partial, locals: {
       resource:           resource,
       current_page:       current_page,
       pages:              pages,
@@ -118,10 +128,10 @@ module NavigationHelper
   # used for activating tabs in ontology view
   def in_subcontroller?(page, current_page)
     case page
-      when :entities
-        %w(classes sentences theorems).include?(controller_name)
-      when :metadata
-        in_metadata?
+    when :symbols
+      %w(classes sentences theorems).include?(controller_name)
+    when :metadata
+      in_metadata?
     end
   end
 
@@ -144,15 +154,23 @@ module NavigationHelper
 
   def repository_settings_nav(repository, current_page)
     pages = []
-    chain = resource_chain.last.is_a?(Ontology) ? resource_chain[0..-2] : resource_chain
+    chain =
+      if resource_chain.last.is_a?(Ontology)
+        resource_chain[0..-2]
+      else
+        resource_chain
+      end
     current_page = t("repository.#{current_page}")
-    pages << [t("repository.urlmaps"),  repository_url_maps_path(repository)]
-    pages << [t("repository.errors"),           repository_errors_path(repository)]
-    pages << [t("repository.permissions"),      [*chain, :permissions]] if can? :permissions, repository
-    pages << [t("repository.edit"), edit_repository_path(repository)]  if can? :edit, repository
+    pages << [t('repository.urlmaps'), repository_url_maps_path(repository)]
+    pages << [t('repository.errors'), repository_errors_path(repository)]
+    if can? :permissions, repository
+      pages << [t('repository.permissions'), [*chain, :permissions]]
+    end
+    if can? :edit, repository
+      pages << [t('repository.edit'), edit_repository_path(repository)]
+    end
 
-    subnavigation(repository, pages, current_page, partial: '/repository_settings/subnav')
+    subnavigation(repository, pages, current_page,
+      partial: '/repository_settings/subnav')
   end
-
-
 end

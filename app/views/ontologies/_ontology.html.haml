@@ -8,8 +8,8 @@
     - if ontology.language
       %li= ontology.language
     
-    - if ontology.entities_count
-      %li= link_to pluralize(ontology.entities_count, 'Symbol'), [ontology, :entities]
+    - if ontology.symbols_count
+      %li= link_to pluralize(ontology.symbols_count, 'Symbol'), [ontology, :symbols]
       %li= link_to pluralize(ontology.sentences_count, 'Sentence'), [ontology, :sentences]
     
     - else

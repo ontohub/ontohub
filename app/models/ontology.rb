@@ -9,9 +9,9 @@ class Ontology < ActiveRecord::Base
   include Ontology::Scopes
   include Ontology::States
   include Ontology::Versions
-  include Ontology::Entities
+  include Ontology::Symbols
   include Ontology::Sentences
-  include Ontology::Links
+  include Ontology::Mappings
   include Ontology::Distributed
   include Ontology::Categories
   include Ontology::Oops
@@ -23,7 +23,7 @@ class Ontology < ActiveRecord::Base
   include Ontology::Searching
   include Ontology::OwlClasses
   include IRIUrlBuilder::Includeable
-  include GraphStructures::SpecificFetchers::Links
+  include GraphStructures::SpecificFetchers::Mappings
 
   # Multiple Class Features
   include Aggregatable
@@ -36,10 +36,12 @@ class Ontology < ActiveRecord::Base
   belongs_to :repository
   belongs_to :formality_level
 
-  has_many :entity_groups
+  has_many :symbol_groups
   has_many :alternative_iris, dependent: :destroy
-  has_many :source_links, class_name: 'Link', foreign_key: 'source_id', dependent: :destroy
-  has_many :target_links, class_name: 'Link', foreign_key: 'target_id', dependent: :destroy
+  has_many :source_mappings,
+    class_name: 'Mapping', foreign_key: 'source_id', dependent: :destroy
+  has_many :target_mappings,
+    class_name: 'Mapping', foreign_key: 'target_id', dependent: :destroy
 
   has_and_belongs_to_many :license_models
 
@@ -70,7 +72,8 @@ class Ontology < ActiveRecord::Base
 
   strip_attributes :only => [:name, :iri]
 
-  scope :list, includes(:logic).order('ontologies.state asc, ontologies.entities_count desc')
+  scope :list, includes(:logic).
+    order('ontologies.state asc, ontologies.symbols_count desc')
 
   scope :with_path, ->(path) do
     condition = <<-CONDITION
@@ -99,7 +102,9 @@ class Ontology < ActiveRecord::Base
     joins(join).where(condition, path: path).readonly(false)
   end
 
-  scope :parents_first, order('(CASE WHEN ontologies.parent_id IS NULL THEN 1 ELSE 0 END) DESC, ontologies.parent_id asc')
+  scope :parents_first,
+    order('(CASE WHEN ontologies.parent_id IS NULL THEN 1 ELSE 0 END) DESC,'\
+      ' ontologies.parent_id asc')
 
 
   def generate_name(name)
@@ -133,19 +138,11 @@ class Ontology < ActiveRecord::Base
     self.is?('OWL') || self.is?('OWL2')
   end
 
-  def symbols
-    entities
-  end
-
-  def symbols_count
-    entities_count
-  end
-
   def to_s
     name? ? name : iri
   end
 
-  # Title for links
+  # Title for mappings
   def title
     name? ? iri : nil
   end
@@ -161,15 +158,15 @@ class Ontology < ActiveRecord::Base
   end
 
   def is_imported?
-    import_links.present?
+    import_mappings.present?
   end
 
   def is_imported_from_other_repository?
-    import_links_from_other_repositories.present?
+    import_mappings_from_other_repositories.present?
   end
 
   def imported_by
-    import_links.map(&:source)
+    import_mappings.map(&:source)
   end
 
   def destroy_with_parent(user)
@@ -196,7 +193,7 @@ class Ontology < ActiveRecord::Base
   end
 
   def imported_ontologies
-    fetch_links_by_kind(self, 'import')
+    fetch_mappings_by_kind(self, 'import')
   end
 
   def contains_logic_translations?
@@ -205,7 +202,7 @@ class Ontology < ActiveRecord::Base
   end
 
   def direct_imported_ontologies
-    ontology_ids = Link.where(target_id: self, kind: 'import').
+    ontology_ids = Mapping.where(target_id: self, kind: 'import').
       pluck(:source_id)
     Ontology.where(id: ontology_ids)
   end
@@ -256,12 +253,11 @@ class Ontology < ActiveRecord::Base
 
   protected
 
-  def import_links
-    Link.where(source_id: self.id, kind: "import")
+  def import_mappings
+    Mapping.where(source_id: id, kind: 'import')
   end
 
-  def import_links_from_other_repositories
-    import_links.select { |l| l.target.repository != self.repository }
+  def import_mappings_from_other_repositories
+    import_mappings.select { |l| l.target.repository != repository }
   end
-
 end

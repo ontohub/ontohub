@@ -56,7 +56,7 @@ describe OntologiesController do
       context 'unsuccessful deletion' do
         before do
           importing = create :ontology
-          create :import_link, target: importing, source: ontology
+          create :import_mapping, target: importing, source: ontology
           delete :destroy, repository_id: repository.to_param, id: ontology.id
         end
 
@@ -71,7 +71,7 @@ describe OntologiesController do
     let(:ontology) { create :single_ontology, state: 'done' }
     let(:repository) { ontology.repository }
     let(:user) { create :user }
-    before { 2.times { create :entity, ontology: ontology } }
+    before { 2.times { create :symbol, ontology: ontology } }
 
     context 'on GET to index' do
       context 'for a repository' do
@@ -88,7 +88,7 @@ describe OntologiesController do
     end
 
     context 'on GET to show' do
-      before { Entity.delete_all }
+      before { OntologyMember::Symbol.delete_all }
 
       context 'with format json' do
         before do
@@ -106,7 +106,7 @@ describe OntologiesController do
 
       end
 
-      context 'without entities' do
+      context 'without symbols' do
         before do
           get :show,
             repository_id: repository.to_param,
@@ -115,14 +115,14 @@ describe OntologiesController do
 
         it { should respond_with :redirect }
         it do
-          should redirect_to(repository_ontology_entities_path(
+          should redirect_to(repository_ontology_symbols_path(
             repository, ontology, kind: 'Symbol'))
         end
       end
 
-      context 'with entity of kind Class' do
+      context 'with symbol of kind Class' do
         before do
-          entity = create :entity, ontology: ontology, kind: 'Class'
+          symbol = create :symbol, ontology: ontology, kind: 'Class'
           get :show,
             repository_id: repository.to_param,
             id:            ontology.to_param
@@ -130,7 +130,7 @@ describe OntologiesController do
 
         it { should respond_with :redirect }
         it do
-          should redirect_to(repository_ontology_entities_path(
+          should redirect_to(repository_ontology_symbols_path(
             repository, ontology, kind: 'Class' ))
         end
       end
