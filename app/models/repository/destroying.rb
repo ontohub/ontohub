@@ -11,7 +11,7 @@ module Repository::Destroying
   # It prepares the deletion by setting a flag, which enables the deletion
   # of its ontologies.
   def destroy
-    Rails.logger.info "Destroy #{self.class} #{self} (id: #{id})"
+    Rails.logger.info("Destroy #{self.class} #{self} (id: #{id})")
     super
   rescue StandardError => e
     self.is_destroying = false
@@ -23,7 +23,7 @@ module Repository::Destroying
     unless can_be_deleted?
       raise Repository::DeleteError, I18n.t('repository.delete_error')
     end
-    Rails.logger.info "Mark #{self.class} #{self} (id: #{id}) as is_destroying"
+    Rails.logger.info("Mark #{self.class} #{self} (id: #{id}) as is_destroying")
     self.is_destroying = true
     save!
     async(:destroy)
