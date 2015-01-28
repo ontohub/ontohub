@@ -117,6 +117,7 @@ module Repository::GitRepositories
     version = ontology.versions.build(
       { commit_oid: commit_oid,
         user: ontology_version_options.user,
+        commit: commit_for!(commit_oid),
         # We can't use the ontology's filepath bacause it might have changed
         basepath: File.basepath(ontology_version_options.filepath),
         file_extension: File.extname(ontology_version_options.filepath),
@@ -126,7 +127,6 @@ module Repository::GitRepositories
     version.save!
     ontology.ontology_version = version
     ontology.save!
-    commit_for!(commit_oid)
 
     version
   end
