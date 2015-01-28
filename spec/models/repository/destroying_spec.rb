@@ -8,7 +8,7 @@ describe 'Repository destroying' do
   end
 
   it 'should create a job' do
-    expect(Worker.jobs.size).to eq(1)
+    expect(RepositoryDeletionWorker.jobs.size).to eq(1)
   end
 
   it 'should mark the repository as destroying' do

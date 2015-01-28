@@ -1,6 +1,8 @@
 module Repository::Destroying
   extend ActiveSupport::Concern
 
+  DELETION_WAIT_TIME = 30.days
+
   included do
     scope :destroying, ->() { unscoped.where(is_destroying: true) }
     scope :active, ->() { where(is_destroying: false) }
@@ -28,7 +30,7 @@ module Repository::Destroying
     Rails.logger.info("Mark #{self.class} #{self} (id: #{id}) as is_destroying")
     self.is_destroying = true
     save!
-    async(:destroy)
+    RepositoryDeletionWorker.perform_in(DELETION_WAIT_TIME, id)
   end
 
   def can_be_deleted?
