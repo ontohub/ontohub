@@ -17,6 +17,7 @@ FactoryGirl.define do
     description { Faker::Lorem.paragraph }
     logic { FactoryGirl.create :logic }
     state { 'pending' }
+    locid { name }
 
     ontology.after(:build) do |ontology|
       version = ontology.versions.build({

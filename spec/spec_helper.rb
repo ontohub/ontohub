@@ -31,6 +31,11 @@ class ActionController::TestRequest
 
 end
 
+def controllers_locid_for(resource, query_string=nil)
+  request.env["action_controller.instance"].
+    send(:locid_for, resource, query_string)
+end
+
 def fixture_file(path)
   fixture_path = Rails.root.join('spec/fixtures/')
   fixture_path.join(path)
