@@ -3,7 +3,8 @@ def create_commits!(repository)
 end
 
 def attach_commit!(ontology_version)
-  commit = Commit.find_by_commit_oid(ontology_version.commit_oid)
+  commit = ontology_version.repository.commits.
+    find_by_commit_oid(ontology_version.commit_oid)
   ontology_version.commit = commit
   ontology_version.save!
 end
