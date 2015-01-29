@@ -28,7 +28,7 @@ determine_filename = (callback) ->
 has_fileextension = (filename) ->
   filename.split('.').length > 1
 
-filename_eligible = ->
+eligible_for_filename_suggestion = ->
   $(filename_input).val().length == 0 or
     current_filename == $(filename_input).val()
 
@@ -43,7 +43,7 @@ form_hooks = ->
 remote_iri_hook = ->
   $(remote_file_input).on 'keyup', (e) ->
     determine_filename (filename, iri) ->
-      if not has_fileextension(filename) and filename_eligible()
+      if not has_fileextension(filename) and eligible_for_filename_suggestion()
         determine_filetype iri, (filetype) ->
           suggested_filename = "#{filename}#{filetype.extension}"
           $(filename_input).val(suggested_filename)
