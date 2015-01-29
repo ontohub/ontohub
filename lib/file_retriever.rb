@@ -3,7 +3,7 @@ class FileRetriever
 
   OPTION_PACK = {
     tempfile: {write_file: true, file_type: Tempfile},
-    string: {}
+    string: {},
   }
 
   def initialize(store_as: :tempfile)

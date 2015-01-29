@@ -3,7 +3,7 @@ class FiletypesController < ApplicationController
     render json: filetype_json
   rescue Hets::HetsError
     render json: {status: 415, message: 'Media Type not supported'},
-      status: 415
+           status: 415
   end
 
   protected
@@ -21,7 +21,7 @@ class FiletypesController < ApplicationController
       iri: iri,
       mime_type: mime_type,
       extension: FileExtensionMimeTypeMapping.
-        find_by_mime_type(mime_type).try(:file_extension)
+        find_by_mime_type(mime_type).try(:file_extension),
     }
   end
 end
