@@ -80,7 +80,7 @@ class RepositoryFile < FakeRecord
     when 'local'
       temp_file.original_filename
     when 'remote'
-      remote_file_iri.split('/').last
+      remote_file_iri.split('?', 2).first.split('/').last
     end
   end
 
