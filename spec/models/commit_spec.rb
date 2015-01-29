@@ -1,5 +1,11 @@
 require 'spec_helper'
 
 describe Commit do
-  pending "add some examples to (or delete) #{__FILE__}"
+  context 'associations' do
+    %i(ontology_versions ontologies).each do |association|
+      it { should have_many(association) }
+    end
+
+    it { should belong_to(:repository) }
+  end
 end
