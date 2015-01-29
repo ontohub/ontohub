@@ -138,16 +138,7 @@ module Repository::GitRepositories
   def commit_for!(commit_oid)
     instance = Commit.where(repository_id: self, commit_oid: commit_oid).
       first_or_initialize
-    if !instance.persisted?
-      commit = git.repo.lookup(commit_oid)
-      data = commit.committer
-      instance.committer = "#{data[:name]} <#{data[:email]}>"
-      instance.commit_date = data[:time]
-      data = commit.author
-      instance.author = "#{data[:name]} <#{data[:email]}>"
-      instance.author_date = data[:time]
-      instance.save!
-    end
+    instance.fill_commit_instance! unless instance.persisted?
     instance
   end
 

@@ -7,4 +7,15 @@ class Commit < ActiveRecord::Base
   has_many :ontologies, through: :ontology_versions
 
   belongs_to :repository
+
+  def fill_commit_instance!
+    commit = repository.git.repo.lookup(commit_oid)
+    data = commit.committer
+    self.committer = "#{data[:name]} <#{data[:email]}>"
+    self.commit_date = data[:time]
+    data = commit.author
+    self.author = "#{data[:name]} <#{data[:email]}>"
+    self.author_date = data[:time]
+    save!
+  end
 end
