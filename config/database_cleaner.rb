@@ -3,7 +3,13 @@ require 'database_cleaner'
 module DatabaseCleanerConfig
   CLEAN_MODE = :transaction
   INITIAL_CLEAN_MODE = :truncation
-  INITIAL_CLEAN_OPTIONS = {except: %w(ontology_file_extensions proof_statuses)}
+  INITIAL_CLEAN_OPTIONS = {
+    except: %w(
+      ontology_file_extensions
+      file_extension_mime_type_mappings
+      proof_statuses
+    ),
+  }
 
   if defined?(RSpec) && RSpec.respond_to?(:configure)
     RSpec.configure do |config|

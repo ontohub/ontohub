@@ -3,6 +3,8 @@ require Rails.root.join('lib', 'router_constraints.rb')
 
 Ontohub::Application.routes.draw do
 
+  resources :filetypes, only: :create
+
   # IRI Routing #
   ###############
   #

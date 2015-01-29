@@ -14,7 +14,7 @@ module Hets
     end
 
     def http_result_options
-      {}
+      STRING_RESPONSE
     end
   end
 end

@@ -14,8 +14,11 @@ class RepositoryFile < FakeRecord
     :oid, :file?, :dir?, :type, to: :file
 
   # only for new/edit
-  attr_reader :message, :temp_file, :target_directory, :target_filename
-  validates :message, :temp_file, presence: true
+  attr_reader :message, :target_directory, :target_filename
+  attr_reader :temp_file, :remote_file_iri
+  validates :message, presence: true
+  validates :temp_file, presence: true, unless: :remote_file_iri?
+  validates :remote_file_iri, presence: true, unless: :temp_file?
   validates_with PathValidator, :if => :temp_file_exists?
 
   def self.find_with_path(opts)
@@ -56,7 +59,29 @@ class RepositoryFile < FakeRecord
 
   def save!
     raise RecordNotSavedError unless valid?
-    repository.save_file(temp_file.path, target_path, message, user)
+    repository.save_file(source_file.path, target_path, message, user)
+  end
+
+  def file_upload_type
+    @file_upload_type || 'local'
+  end
+
+  def source_file
+    case file_upload_type
+    when 'local'
+      temp_file
+    when 'remote'
+      @remote_file ||= retrieve(remote_file_iri)
+    end
+  end
+
+  def source_filename
+    case file_upload_type
+    when 'local'
+      temp_file.original_filename
+    when 'remote'
+      remote_file_iri.split('?', 2).first.split('/').last
+    end
   end
 
   def ontologies(child_name=nil)
@@ -115,13 +140,25 @@ class RepositoryFile < FakeRecord
       if target_filename.present?
         target_filename
       else
-        temp_file.original_filename
+        source_filename
       end
     File.join(target_directory, filename).sub(/^\//, '')
   end
 
   def temp_file_exists?
     temp_file.present?
+  end
+
+  def temp_file?
+    !temp_file.nil?
+  end
+
+  def remote_file_iri?
+    !remote_file_iri.nil?
+  end
+
+  def retrieve(iri)
+    FileRetriever.new(store_as: :tempfile).call(iri)
   end
 
   protected
@@ -135,7 +172,10 @@ class RepositoryFile < FakeRecord
   end
 
   def self.editing_file?(opts)
-    opts[:path].present? && (opts[:content].present? || opts[:temp_file].present?)
+    opts[:path].present? &&
+      (opts[:content].present? ||
+       opts[:temp_file].present? ||
+       opts[:remote_file_iri].present?)
   end
 
   def initialize_for_read(opts)
@@ -162,6 +202,8 @@ class RepositoryFile < FakeRecord
       @target_filename  = opts[:target_filename]
     end
     @temp_file  = opts[:temp_file]
+    @file_upload_type = opts[:file_upload_type]
+    @remote_file_iri = opts[:remote_file_iri]
   end
 
   def initialize_for_already_loaded_file(opts)
