@@ -47,7 +47,7 @@ describe "svn import" do
   end
 
   it 'have all the commits' do
-    expect(repository.commits.size).to eq(commit_count)
+    expect(repository.walk_commits.size).to eq(commit_count)
   end
 
   context 'synchronizing without new commits' do
@@ -64,7 +64,7 @@ describe "svn import" do
     let!(:result) { repository.remote_send :pull }
 
     it 'get the new commits' do
-      expect(repository.commits.size).to eq(commit_count * 2)
+      expect(repository.walk_commits.size).to eq(commit_count * 2)
     end
 
     it 'changed HEAD' do

@@ -3,7 +3,7 @@ require 'git_repository'
 module Repository::GitRepositories
   extend ActiveSupport::Concern
 
-  delegate :commit_id, :commits, :dir?, :empty?, :get_file, :has_changed?,
+  delegate :commit_id, :dir?, :empty?, :get_file, :has_changed?,
     :is_head?, :path_exists?, :paths_starting_with, :points_through_file?,
     to: :git
 
@@ -18,6 +18,10 @@ module Repository::GitRepositories
 
   def local_path
     Ontohub::Application.config.git_root.join(id.to_s)
+  end
+
+  def walk_commits(*args, &block)
+    git.commits(*args, &block)
   end
 
   def create_and_init_git
@@ -161,14 +165,14 @@ module Repository::GitRepositories
   end
 
   def recent_changes
-    commits(limit: 3)
+    walk_commits(limit: 3)
   end
 
   def suspended_save_ontologies(options={})
     versions = []
     commits_count = 0
     highest_change_file_count = 0
-    commits(options) { |commit|
+    walk_commits(options) { |commit|
       commits_count += 1
       current_file_count = 0
       git.changed_files(commit.oid).each { |f|
