@@ -1,7 +1,7 @@
 class Commit < ActiveRecord::Base
   attr_accessible :commit_oid, :repository
   attr_accessible :author, :author_date
-  attr_accessible :commit_date, :committer
+  attr_accessible :committer, :commit_date
 
   has_many :ontology_versions
   has_many :ontologies, through: :ontology_versions
