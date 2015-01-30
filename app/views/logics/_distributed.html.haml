@@ -1,6 +1,6 @@
 %h3 homogeneous distributed #{Settings.OMS.pluralize}
 %h5 with children which use this logic
 
-%ol.latest
+%ol.latest.ontology-list
   - Ontology.distributed_in(resource).each do |ontology|
-    %li= fancy_link(ontology)
+    %li.ontology-list-item= fancy_link(ontology)

@@ -25,8 +25,8 @@
     id="image"
     >
     <!-- Border -->
-    <circle cx="32" cy="32" r="12" stroke="black" stroke-width="1" fill="none" />
+    <circle cx="32" cy="32" r="18" stroke="black" stroke-width="1" fill="none" />
     <!-- Ontology -->
-    <circle cx="32" cy="32" r="8" fill="black" stroke="black" />
+    <circle cx="32" cy="32" r="12" fill="black" stroke="black" />
     </g>
 </svg>
