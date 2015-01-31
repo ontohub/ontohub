@@ -4,6 +4,7 @@ class OntologyVersion < ActiveRecord::Base
   include OntologyVersion::Files
   include OntologyVersion::States
   include OntologyVersion::Parsing
+  include OntologyVersion::Proving
   include OntologyVersion::Numbers
   include OntologyVersion::OopsRequests
   include IRIUrlBuilder::Includeable
