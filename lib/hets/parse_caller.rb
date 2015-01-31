@@ -23,7 +23,7 @@ module Hets
       escaped_iri = Rack::Utils.escape_path(iri)
       arguments = [escaped_iri, *MODE_ARGUMENTS[with_mode]]
       api_uri = build_api_uri(CMD, arguments, build_query_string)
-      perform(api_uri, METHOD)
+      perform(api_uri, {}, METHOD)
     end
 
     def build_query_string
