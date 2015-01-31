@@ -26,25 +26,35 @@ module Hets
     end
 
     def perform(api_uri, method = :get)
-      raise NotImplementedError, 'No HTTP-Verb other than GET supported' unless method == :get
-      get_caller = performing_instance(api_uri)
-      get_caller.call(http_result_options)
+      caller = performing_instance(api_uri, method)
+      caller.call(http_result_options)
     end
 
     def http_result_options
       TEMPFILE_RESPONSE
     end
 
-    def performing_instance(api_uri)
-      get_caller = GetCaller.new(api_uri)
-      get_caller.has_actual_content_through do |response|
+    def performing_instance(api_uri, method)
+      caller = caller_class(method).new(api_uri)
+      caller.has_actual_content_through do |response|
         has_actual_content?(response)
       end
-      get_caller
+      caller
     end
 
     def has_actual_content?(response)
       response.is_a?(Net::HTTPSuccess)
+    end
+
+    def caller_class(method)
+      case method
+      when :get
+        GetCaller
+      when :post
+        PostCaller
+      else
+        raise NotImplementedError, 'No HTTP-Verb other than GET, POST supported'
+      end
     end
   end
 end
