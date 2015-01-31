@@ -25,8 +25,8 @@ module Hets
       URI.parse(api_uri)
     end
 
-    def perform(api_uri, method = :get)
-      caller = performing_instance(api_uri, method)
+    def perform(api_uri, data = {}, method = :get)
+      caller = performing_instance(api_uri, data, method)
       caller.call(http_result_options)
     end
 
@@ -34,8 +34,8 @@ module Hets
       TEMPFILE_RESPONSE
     end
 
-    def performing_instance(api_uri, method)
-      caller = caller_class(method).new(api_uri)
+    def performing_instance(api_uri, data, method)
+      caller = caller_class(method).new(api_uri, data: data)
       caller.has_actual_content_through do |response|
         has_actual_content?(response)
       end
