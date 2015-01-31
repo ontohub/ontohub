@@ -12,4 +12,7 @@ module Ontology::Import
     evaluator.import
   end
 
+  def import_proof(version, user, io)
+    raise NotImplementedError
+  end
 end
