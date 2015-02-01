@@ -156,13 +156,8 @@ describe FilesController do
     end
 
     context "signed in, on mirror repository" do
+      let(:repository) { create :repository_with_empty_remote }
       let(:user){ create(:permission, item: repository).subject }
-      before do
-        sign_in user
-        repository.source_address = 'http://some_source_address.example.com'
-        repository.source_type = 'git'
-        repository.save
-      end
 
       context "new" do
         before { get :new, repository_id: repository.to_param }

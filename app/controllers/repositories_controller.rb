@@ -8,11 +8,16 @@ class RepositoriesController < InheritedResources::Base
 
   def create
     resource.user = current_user
+    unless params[:source_address]
+      params[:repository].except!(:source_type, :remote_type)
+    end
     super
   end
 
   def update
-    params[:repository].except!(:source_address, :source_type, :name)
+    resource.convert_to_local! if params[:un_mirror]
+    params[:repository].
+      except!(:source_address, :source_type, :remote_type, :name)
     super
   end
 

@@ -29,7 +29,8 @@ describe "svn import" do
       user,
       bare_url,
       'local import',
-      description: 'just an imported repo')
+      description: 'just an imported repo',
+      remote_type: 'mirror')
   end
 
   before do

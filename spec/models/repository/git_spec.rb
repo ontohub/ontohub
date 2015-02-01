@@ -3,7 +3,7 @@ require 'spec_helper'
 describe Repository do
   setup_hets
 
-  let(:repository) { create :repository_with_remote }
+  let(:repository) { create :repository_with_remote, remote_type: 'mirror' }
 
   context 'when ontohub clones a remote repository' do
 
