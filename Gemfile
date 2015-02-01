@@ -41,6 +41,9 @@ gem 'haml-rails', '~> 0.4'
 # which is a problem in git-hooks
 gem 'rails_config', '~> 0.3.0'
 
+#provides  correct indefinite article 
+gem 'indefinite_article', '~> 0.2.0'
+
 # Fancy Forms
 gem 'simple_form', '~> 2.1.1'
 
