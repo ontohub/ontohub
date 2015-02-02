@@ -18,7 +18,7 @@ Specroutes.define(Ontohub::Application.routes) do
   )
 
   ontology_subsites.each do |category|
-    specified_get "/:repository_id/*locid?#{category}" => "#{category}#index",
+    specified_get "/:repository_id/*locid///#{category}" => "#{category}#index",
       as: :"ontology_iri_#{category}",
       constraints: [
         LocIdRouterConstraint.new(Ontology, ontology: :ontology_id),
