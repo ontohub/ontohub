@@ -63,9 +63,9 @@ class OntologiesController < InheritedResources::Base
       format.html do
         if !resource.distributed?
           default_kind = resource.symbols.groups_by_kind.first.kind
-          redirect_to locid_for(resource, "symbols;kind=#{default_kind}")
+          redirect_to locid_for(resource, :symbols, kind: default_kind)
         else
-          redirect_to locid_for(resource, 'children')
+          redirect_to locid_for(resource, :children)
         end
       end
       format.json do

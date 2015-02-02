@@ -45,7 +45,7 @@
       %ul.nav.nav-tabs
         - @symbols.each do |symbols|
           %li{:class => (symbols.kind == @active_kind ? 'active' : nil)}
-            = link_to locid_for(resource_chain.last, "symbols;kind=#{symbols.kind}") do
+            = link_to locid_for(resource_chain.last, :symbols, kind: symbols.kind) do
               = symbols.count == 1 ? symbols.kind : symbols.kind.pluralize
               %span.badge{:style => symbols.count == 0 && 'display:none'}= symbols.count
         - pages.each do |page, path, count|

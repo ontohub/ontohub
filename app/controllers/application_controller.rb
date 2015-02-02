@@ -63,9 +63,10 @@ class ApplicationController < ActionController::Base
     Kaminari.paginate_array(collection).page(params[:page])
   end
 
-  def locid_for(resource, query_string=nil)
+  def locid_for(resource, *commands, **query_components)
     iri = "#{request.base_url}#{resource.locid}"
-    iri << "?#{query_string}" if query_string
+    iri << "///#{commands.join('///')}" if commands.any?
+    iri << "?#{query_components.to_query}" if query_components.any?
     iri
   end
 

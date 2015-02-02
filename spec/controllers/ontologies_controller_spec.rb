@@ -115,7 +115,7 @@ describe OntologiesController do
 
         it { should respond_with :redirect }
         it do
-          should redirect_to(controllers_locid_for(ontology, 'symbols;kind=Symbol'))
+          should redirect_to(controllers_locid_for(ontology, :symbols, kind: 'Symbol'))
         end
       end
 
@@ -129,7 +129,7 @@ describe OntologiesController do
 
         it { should respond_with :redirect }
         it do
-          should redirect_to(controllers_locid_for(ontology, 'symbols;kind=Class'))
+          should redirect_to(controllers_locid_for(ontology, :symbols, kind: 'Class'))
         end
       end
     end

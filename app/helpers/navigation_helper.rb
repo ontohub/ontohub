@@ -18,8 +18,9 @@ module NavigationHelper
   def ontology_nav(ontology, current_page)
     resource = resource_chain.last
 
+    content_page = ontology.distributed? ? :children : :symbols
     @top_level_pages = [
-      ['Content', locid_for(resource, ontology.distributed? ? :children : :symbols), :symbols],
+      ['Content', locid_for(resource, content_page), :symbols],
       ['Comments', locid_for(resource, :comments), :comments],
       ['Metadata', locid_for(resource, :metadata), :metadata],
       ['Versions', locid_for(resource, :ontology_versions), :ontology_versions],

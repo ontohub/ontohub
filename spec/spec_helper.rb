@@ -31,9 +31,9 @@ class ActionController::TestRequest
 
 end
 
-def controllers_locid_for(resource, query_string=nil)
+def controllers_locid_for(resource, *args, &block)
   request.env["action_controller.instance"].
-    send(:locid_for, resource, query_string)
+    send(:locid_for, resource, *args, &block)
 end
 
 def fixture_file(path)
