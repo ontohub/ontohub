@@ -430,7 +430,7 @@ describe Ontology do
     before do
       # Stub ontology_end because this is always run after the iri
       # has been locked by the ConcurrencyBalancer.
-      allow_any_instance_of(Hets::NodeEvaluator).
+      allow_any_instance_of(Hets::DG::NodeEvaluator).
         to receive(:ontology_end).and_raise(error_text)
     end
 
@@ -443,7 +443,7 @@ describe Ontology do
       begin
         parse_this(user, ontology, hets_out_file('test1'))
       rescue Exception => e
-        allow_any_instance_of(Hets::NodeEvaluator).
+        allow_any_instance_of(Hets::DG::NodeEvaluator).
           to receive(:ontology_end).and_call_original
 
         expect { parse_this(user, ontology, hets_out_file('test1')) }.
