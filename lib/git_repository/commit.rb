@@ -22,10 +22,10 @@ module GitRepository::Commit
     end
 
     index = repo.index
+    index.read_tree(repo.head.target.tree) unless repo.empty?
     if file_contents.nil?
       index.remove(target_path)
     else
-      index.read_tree(repo.head.target.tree) unless repo.empty?
       blob_oid = repo.write(file_contents, :blob)
       index.add(path: target_path, oid: blob_oid, mode: 0100644)
     end
