@@ -7,7 +7,7 @@ module Ontology::Import
 
   def import_version(version, user, io)
     return if version.nil?
-    evaluator = Hets::Evaluator.new(user, version.ontology,
+    evaluator = Hets::DG::Evaluator.new(user, version.ontology,
                                     version: version, io: io)
     evaluator.import
   end

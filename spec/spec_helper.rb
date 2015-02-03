@@ -97,7 +97,7 @@ include OntologyUnited::Convenience
 
 def parse_this(user, ontology, fixture_file)
   file = File.open(fixture_file)
-  evaluator = Hets::Evaluator.new(user, ontology, io: file)
+  evaluator = Hets::DG::Evaluator.new(user, ontology, io: file)
   evaluator.import
   file.close unless file.closed?
 end
