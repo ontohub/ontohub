@@ -268,6 +268,12 @@ class Ontology < ActiveRecord::Base
     repository.get_file(path)
   end
 
+  # Uses where in order to force a Relation as a result
+  def formality_levels
+    FormalityLevel.joins(:ontologies).
+      where(ontologies: {id: self})
+  end
+
   protected
 
   def import_mappings
