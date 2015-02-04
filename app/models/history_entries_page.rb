@@ -27,7 +27,8 @@ class HistoryEntriesPage < FakeRecord
     @page         = opts[:page].nil? ? 1 : opts[:page].to_i
     @offset       = page > 0 ? (page - 1) * PER_PAGE : 0
 
-    @commits      = repository.commits(start_oid: oid, path: path, offset: offset, limit: PER_PAGE)
+    @commits      = repository.walk_commits(start_oid: oid, path: path,
+                                            offset: offset, limit: PER_PAGE)
   end
 
   def grouped_commits

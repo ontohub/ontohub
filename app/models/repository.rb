@@ -16,6 +16,7 @@ class Repository < ActiveRecord::Base
 
   has_many :ontologies, dependent: :destroy
   has_many :url_maps, dependent: :destroy
+  has_many :commits, dependent: :destroy
 
   attr_accessible :name,
                   :description,

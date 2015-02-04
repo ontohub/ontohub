@@ -23,7 +23,7 @@
               - unless entry.dir? || entry.ontologies.empty?
                 %ul.ontology-list
                   - entry.ontologies.each do |ontology|
-                    %li
+                    %li.ontology-list-item
                       = fancy_link ontology
                       - if ontology.state=='failed'
                         %i.icon-bolt{ title: "processing #{ontology.state}" }

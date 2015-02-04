@@ -11,12 +11,6 @@ describe OntologyVersion do
 
   let(:user) { create :user }
 
-  context 'Validating OntologyVersion' do
-    %w(http://example.com/ https://example.com/).each do |url|
-      it { should allow_value(url).for :source_url }
-    end
-  end
-
   context 'OntologyVersion' do
     let(:ontology_version) { create :ontology_version }
 
@@ -41,6 +35,8 @@ describe OntologyVersion do
     end
 
     context 'without exception' do
+      let(:commit) { ontology_version.commit }
+
       before do
         # Run Job
         # binding.pry
@@ -54,6 +50,14 @@ describe OntologyVersion do
 
       it 'should have state_updated_at' do
         expect(ontology_version.state_updated_at).to_not be_nil
+      end
+
+      it 'should contain a commit' do
+        expect(commit).to_not be_nil
+      end
+
+      it 'should contain a commit which refers to commit_oid' do
+        expect(commit.commit_oid).to eq(ontology_version.commit_oid)
       end
     end
 

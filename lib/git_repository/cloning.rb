@@ -65,7 +65,9 @@ module GitRepository::Cloning
 
   module ClassMethods
     def is_git_repository?(address)
-      !!(exec 'git', 'ls-remote', '-h', insert_credentials(address))
+      # GIT_ASKPASS is set to the 'true' executable. It simply returns
+      # successfully. This way, no credentials are supplied.
+      !!(exec 'git', 'ls-remote', '-h', address, 'GIT_ASKPASS' => 'true')
     rescue Subprocess::Error => e
       if e.status == 128
         false

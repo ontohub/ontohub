@@ -13,12 +13,11 @@ class OntologyVersion < ActiveRecord::Base
 
   belongs_to :user
   belongs_to :ontology, :counter_cache => :versions_count
+  belongs_to :commit
 
 # before_validation :set_checksum
 # validate :raw_file_size_maximum
 
-  validates_format_of :source_url,
-    :with => URI::regexp(Settings.allowed_iri_schemes), :if => :source_url?
 # validates_presence_of :basepath
 
   scope :latest, order('id DESC')

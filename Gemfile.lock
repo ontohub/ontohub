@@ -224,6 +224,8 @@ GEM
       term-ansicolor
       terminal-table
     ice_cube (0.12.1)
+    indefinite_article (0.2.0)
+      activesupport
     inherited_resources (1.4.1)
       has_scope (~> 0.6.0.rc)
       responders (~> 1.0.0.rc)
@@ -500,6 +502,7 @@ DEPENDENCIES
   handlebars_assets (~> 0.14.1)
   has_scope (~> 0.6.0.rc)
   i18n-tasks (~> 0.7.6)
+  indefinite_article (~> 0.2.0)
   inherited_resources (~> 1.4.0)
   invoker (~> 1.2.0)
   jquery-rails (~> 3.1.1)

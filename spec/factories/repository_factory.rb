@@ -38,5 +38,20 @@ FactoryGirl.define do
         repository.source_address = path
       end
     end
+
+    factory :repository_with_empty_remote do |repository|
+      repository.after(:build) do |repository|
+        path = File.join(Ontohub::Application.config.git_root, 'repository')
+        git_repository = GitRepository.new(path)
+        repository.remote_type ||= 'mirror'
+        repository.source_type = 'git'
+        repository.source_address = path
+      end
+    end
+
+    factory :repository_git_mirror do
+      remote_type { 'mirror' }
+      source_type { 'git' }
+    end
   end
 end

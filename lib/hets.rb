@@ -4,6 +4,7 @@ module Hets
   include Errors
 
   class Config
+    include Hets::Errors
 
     VERSION_RE = %r{v\d+\.\d+,\s*(\d+)$}
 
@@ -132,6 +133,18 @@ we expected it to be matchable by this regular expression:
     parse_caller = Hets::ParseCaller.new(HetsInstance.choose, options)
 
     parse_caller.call(iri, with_mode: mode)
+  end
+
+  def self.filetype(resource)
+    iri = resource.versioned_iri
+    filetype_caller = Hets::FiletypeCaller.new(HetsInstance.choose)
+
+    response_iri, filetype = filetype_caller.call(iri).split(': ')
+    if response_iri == iri
+      Mime::Type.lookup(filetype)
+    else
+      raise FiletypeNotDeterminedError.new("#{response_iri}: #{filetype}")
+    end
   end
 
   # Runs hets with input_file and returns XML output file path.

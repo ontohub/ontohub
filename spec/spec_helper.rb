@@ -121,6 +121,8 @@ RSpec.configure do |config|
   # config.mock_with :rr
   config.mock_with :rspec
 
+  config.tty ||= ENV["SPEC_OPTS"].include?('--color') if ENV["SPEC_OPTS"]
+
   config.before(:suite) do
     FactoryGirl.create :proof_statuses
   end

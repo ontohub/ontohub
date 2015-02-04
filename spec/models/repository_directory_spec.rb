@@ -26,30 +26,42 @@ describe RepositoryDirectory do
       let(:dirname) { "#{repository_directory.name}-other" }
       let(:filename) { 'file' }
       let(:filepath) { File.join(dirname, filename) }
-      before do
-        repository.save_file_only(Tempfile.new('tempfile').path, filepath, 'message', user)
+
+      let(:save_operation) do
+        file = Tempfile.new('tempfile').path
+        repository.save_file_only(file, filepath, 'message', user)
       end
 
-      it 'should fail when path is the directory' do
-        repository_directory.name = dirname
-        expect(repository_directory.valid?).to be_falsy
+      it 'should add a commit' do
+        expect { save_operation }.to change { Commit.all.length }.by(1)
       end
 
-      it 'should fail when path is the file (with target_directory)' do
-        repository_directory.target_directory = dirname
-        repository_directory.name = filename
-        expect(repository_directory.valid?).to be_falsy
-      end
+      context 'failures' do
+        before do
+          save_operation
+        end
 
-      it 'should fail when path is beneath the file' do
-        repository_directory.name = File.join(filepath, 'beneath')
-        expect(repository_directory.valid?).to be_falsy
-      end
+        it 'should fail when path is the directory' do
+          repository_directory.name = dirname
+          expect(repository_directory.valid?).to be_falsy
+        end
 
-      it 'should fail when path is beneath the file (with target_directory)' do
-        repository_directory.target_directory = filepath
-        repository_directory.name = 'beneath'
-        expect(repository_directory.valid?).to be_falsy
+        it 'should fail when path is the file (with target_directory)' do
+          repository_directory.target_directory = dirname
+          repository_directory.name = filename
+          expect(repository_directory.valid?).to be_falsy
+        end
+
+        it 'should fail when path is beneath the file' do
+          repository_directory.name = File.join(filepath, 'beneath')
+          expect(repository_directory.valid?).to be_falsy
+        end
+
+        it 'should fail when path is beneath the file (with target_directory)' do
+          repository_directory.target_directory = filepath
+          repository_directory.name = 'beneath'
+          expect(repository_directory.valid?).to be_falsy
+        end
       end
     end
   end

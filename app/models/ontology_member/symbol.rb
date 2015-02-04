@@ -1,4 +1,4 @@
-# This model is namespaces in the module OntologyMember because the class
+# This model is namespaced in the module OntologyMember because the class
 # Symbol is already taken by ruby.
 module OntologyMember
   class Symbol < ActiveRecord::Base
@@ -13,17 +13,18 @@ module OntologyMember
 
     attr_accessible :label, :comment
 
-    scope :kind, ->(kind) { where :kind => kind }
+    scope :kind, ->(kind) { where kind:  kind }
 
 
     def self.groups_by_kind
-      groups = select('kind, count(*) AS count').group(:kind).order('count DESC, kind').all
-      groups << Struct.new(:kind, :count).new("Symbol",0) if groups.empty?
+      groups = select('kind, count(*) AS count').group(:kind).
+        order('count DESC, kind').all
+      groups << Struct.new(:kind, :count).new('Symbol', 0) if groups.empty?
       groups
     end
 
     def to_s
-      self.display_name || self.name
+      display_name || name
     end
   end
 end

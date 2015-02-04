@@ -2,7 +2,6 @@
 # Controller for {Language,Logic}Mappings
 #
 class GeneralMappingsController < InheritedResources::Base
-
   def edit
     edit!
     @source = resource.source
@@ -13,5 +12,4 @@ class GeneralMappingsController < InheritedResources::Base
       format.html { redirect_to root_path }
     end
   end
-
 end

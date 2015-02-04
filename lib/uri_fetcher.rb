@@ -50,7 +50,10 @@ module UriFetcher
         recall
       else
         response.read_body
-        raise UnfollowableResponseError.new(last_response: response)
+        msg = <<-MSG
+Can't follow the response from #{uri} anymore.
+        MSG
+        raise UnfollowableResponseError.new(msg, last_response: response)
       end
     end
 

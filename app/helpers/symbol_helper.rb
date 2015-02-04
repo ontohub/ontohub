@@ -1,7 +1,6 @@
 module SymbolHelper
-
-  def show_classes?(kind=params[:kind])
-    kind == "Class"
+  def show_classes?(kind = params[:kind])
+    kind == 'Class'
   end
 
   def name_highlighter(symbol)
@@ -22,5 +21,4 @@ module SymbolHelper
       symbol_kinds.first.kind
     end
   end
-
 end

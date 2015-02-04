@@ -3,7 +3,7 @@ require 'git_repository'
 module Repository::GitRepositories
   extend ActiveSupport::Concern
 
-  delegate :commit_id, :commits, :dir?, :empty?, :get_file, :has_changed?,
+  delegate :commit_id, :dir?, :empty?, :get_file, :has_changed?,
     :is_head?, :path_exists?, :paths_starting_with, :points_through_file?,
     :deepest_existing_dir, to: :git
 
@@ -20,6 +20,10 @@ module Repository::GitRepositories
     Ontohub::Application.config.git_root.join(id.to_s)
   end
 
+  def walk_commits(*args, &block)
+    git.commits(*args, &block)
+  end
+
   def create_and_init_git
     git
     symlink_name = local_path.join("hooks")
@@ -34,8 +38,9 @@ module Repository::GitRepositories
   end
 
   def delete_file(filepath, user, message = nil, &block)
-    git.delete_file(user_info(user), filepath, &block)
+    commit_oid = git.delete_file(user_info(user), filepath, &block)
     mark_ontology_as_having_file(filepath, false)
+    commit_for!(commit_oid).commit_oid
   end
 
   def save_file(tmp_file, filepath, message, user, do_not_parse: false)
@@ -58,6 +63,7 @@ module Repository::GitRepositories
     git.add_file(userdata, tmp_file, filepath, message) do |commit_oid|
       commit = commit_oid
     end
+    commit_for!(commit)
     touch
     commit
   end
@@ -116,6 +122,7 @@ module Repository::GitRepositories
     version = ontology.versions.build(
       { commit_oid: commit_oid,
         user: ontology_version_options.user,
+        commit: commit_for!(commit_oid),
         # We can't use the ontology's filepath bacause it might have changed
         basepath: File.basepath(ontology_version_options.filepath),
         file_extension: File.extname(ontology_version_options.filepath),
@@ -127,6 +134,13 @@ module Repository::GitRepositories
     ontology.save!
 
     version
+  end
+
+  def commit_for!(commit_oid)
+    instance = Commit.where(repository_id: self, commit_oid: commit_oid).
+      first_or_initialize
+    instance.fill_commit_instance! unless instance.persisted?
+    instance
   end
 
   def commit_message(oid=nil)
@@ -143,14 +157,14 @@ module Repository::GitRepositories
   end
 
   def recent_changes
-    commits(limit: 3)
+    walk_commits(limit: 3)
   end
 
   def suspended_save_ontologies(options={})
     versions = []
     commits_count = 0
     highest_change_file_count = 0
-    commits(options) { |commit|
+    walk_commits(options) { |commit|
       commits_count += 1
       current_file_count = 0
       git.changed_files(commit.oid).each { |f|

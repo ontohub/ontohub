@@ -11,7 +11,7 @@ class OntologiesController < InheritedResources::Base
   has_scope :search, :state
   actions :index, :show, :edit, :update, :destroy
 
-  before_filter :check_write_permission, :except => [:index, :show, :oops_state]
+  before_filter :check_write_permission, except: [:index, :show, :oops_state]
   before_filter :check_read_permissions
 
   def index
@@ -62,14 +62,13 @@ class OntologiesController < InheritedResources::Base
 
     respond_to do |format|
       format.html do
-        if resource.distributed?
+        if !resource.distributed?
           redirect_to repository_ontology_symbols_path(parent, resource,
             params_to_pass_on_redirect.merge(
-              kind: resource.symbols.groups_by_kind.first.kind))
+                       kind: resource.symbols.groups_by_kind.first.kind))
         else
-          redirect_to repository_ontology_symbols_path(parent, resource,
-            params_to_pass_on_redirect.merge(
-              kind: resource.symbols.groups_by_kind.first.kind))
+          redirect_to repository_ontology_children_path(parent, resource,
+            params_to_pass_on_redirect)
         end
       end
       format.json do
@@ -81,7 +80,8 @@ class OntologiesController < InheritedResources::Base
 
   def destroy
     if resource.is_imported?
-      flash[:error] = "Can't delete an #{Settings.OMS} that is imported by another one."
+      flash[:error] = "Can't delete #{Settings.OMS.with_indefinite_article}
+      that is imported by another one."
       redirect_to resource_chain
     else
       resource.destroy_with_parent(current_user)

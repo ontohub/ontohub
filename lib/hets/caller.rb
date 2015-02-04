@@ -4,6 +4,9 @@ module Hets
   class Caller
     include UriFetcher
 
+    STRING_RESPONSE = {}
+    TEMPFILE_RESPONSE = {write_file: true, file_type: Tempfile}
+
     attr_accessor :hets_instance
 
     def initialize(hets_instance)
@@ -29,7 +32,7 @@ module Hets
     end
 
     def http_result_options
-      {write_file: true, file_type: Tempfile}
+      TEMPFILE_RESPONSE
     end
 
     def performing_instance(api_uri)
