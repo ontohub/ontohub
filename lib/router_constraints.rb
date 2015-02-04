@@ -47,7 +47,9 @@ class LocIdRouterConstraint < RouterConstraint
 
   def matches?(request, path = nil)
     path ||= request.original_fullpath
-    element = @find_in_klass.find_with_locid(path.split('?', 2).first)
+    # retrieves the hierarchy and member portions of loc/id's
+    hierarchy_member = path.split('?', 2).first.split('///', 2).first
+    element = @find_in_klass.find_with_locid(hierarchy_member)
     ontology = element.respond_to?(:ontology) ? element.ontology : element
     result = !ontology.nil?
 
