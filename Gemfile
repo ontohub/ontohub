@@ -54,6 +54,9 @@ gem 'has_scope', '~> 0.6.0.rc'
 # JSON views
 gem 'rabl', '~> 0.10.1'
 
+# JSON Parser
+gem 'json-stream', '~> 0.2.1'
+
 # XML Parser
 gem 'nokogiri', '~> 1.6.3.1'
 
