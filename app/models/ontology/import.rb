@@ -13,6 +13,8 @@ module Ontology::Import
   end
 
   def import_proof(version, user, io)
-    raise NotImplementedError
+    evaluator = Hets::Prove::Evaluator.new(user, version.ontology,
+                                           version: version, io: io)
+    evaluator.import
   end
 end
