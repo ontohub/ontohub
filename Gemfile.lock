@@ -260,6 +260,7 @@ GEM
       railties (>= 3.2)
       sprockets-rails
     json (1.8.2)
+    json-stream (0.2.1)
     kaminari (0.16.1)
       actionpack (>= 3.0.0)
       activesupport (>= 3.0.0)
@@ -517,6 +518,7 @@ DEPENDENCIES
   jquery-rails (~> 3.1.1)
   jquery-ui-rails (= 4.2.1)
   js-routes (~> 0.9.8)
+  json-stream (~> 0.2.1)
   jstree-rails!
   kaminari (~> 0.16.1)
   launchy (~> 2.4.2)
