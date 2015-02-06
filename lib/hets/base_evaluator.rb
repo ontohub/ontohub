@@ -68,7 +68,7 @@ module Hets
       raise e
     end
 
-    private
+    protected
     def registered?(node_type, order, method_name=nil)
       selected_registrations = registered_methods(node_type, order)
       if method_name
