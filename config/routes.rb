@@ -346,8 +346,10 @@ Will return a representation of the formality level.
       end
       resources :children, :only => :index
       resources :symbols, only: %i(index show)
-      resources :sentences, :only => %i(index show)
-      resources :theorems, only: :index
+      resources :sentences, only: %i(index show)
+      resources :theorems, only: %i(index show) do
+        resources :proof_attempts, only: :show
+      end
       post '/prove', controller: :prove, action: :create
 
       resources :mappings do
