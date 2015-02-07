@@ -1,0 +1,13 @@
+= repository_nav ontology.repository, :ontologies
+
+= ontology_nav ontology, :theorems
+
+%h3
+  = resource.name
+  = render partial: 'proof_status', locals: {proof_status: resource.proof_status}
+
+%h4 Proof Attempts
+- if resource.proof_attempts.empty?
+  = t('theorems.show.proof_attemps_empty')
+- else
+  = render partial: 'proof_attempts', locals: {proof_attempts: resource.proof_attempts}
