@@ -42,6 +42,7 @@ module Hets
           proof_attempt.prover_output = hash[:prover_output]
           proof_attempt.time_taken = hash[:used_time]
           proof_attempt.tactic_script = tactic_script_from_hash(hash)
+          proof_attempt.used_axioms = used_axioms_from_hash(hash, proof_attempt)
 
           proof_attempt.save!
         end
@@ -69,6 +70,19 @@ module Hets
           time_limit: hash[:tactic_script_time_limit],
           extra_options: hash[:tactic_script_extra_options],
         }.to_json
+      end
+
+      def used_axioms_from_hash(hash, proof_attempt)
+        if hash[:used_axioms] && proof_attempt.theorem
+          hash[:used_axioms].map do |axiom_name|
+            ontology = proof_attempt.theorem.ontology
+            # We need the `unscoped` call to include theorems.
+            Sentence.unscoped.
+              where(ontology_id: ontology.to_param, name: axiom_name).first
+          end
+        else
+          []
+        end
       end
 
       def all_start
