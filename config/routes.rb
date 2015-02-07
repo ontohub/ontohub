@@ -187,6 +187,8 @@ Specroutes.define(Ontohub::Application.routes) do
       resources :symbols, only: :index
       resources :sentences, :only => :index
       resources :theorems, only: :index
+      post '/prove', controller: :prove, action: :create
+
       resources :mappings do
         get 'update_version', :on => :member
       end

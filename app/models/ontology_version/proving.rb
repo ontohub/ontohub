@@ -23,6 +23,10 @@ module OntologyVersion::Proving
     end
   end
 
+  def unproven_theorems
+    ontology.theorems.where(proof_status_id: Theorem::DEFAULT_STATUS)
+  end
+
   # generate XML by passing the raw ontology to Hets
   def execute_proof
     input_io = Hets.prove_via_api(ontology, ontology.repository.url_maps)

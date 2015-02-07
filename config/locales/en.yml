@@ -89,6 +89,14 @@ en:
     sentence:
       defined_in:
         defined in %{link}
+  theorems:
+    index:
+      prove: Prove all theorems
+      all_proven: All theorems of this %{oms} have been proven.
+  prove:
+    create:
+      starting_jobs: Proving jobs have been scheduled. Please come back in a few moments.
+      nothing_to_do: All theorems have been proven.
   have:
     one: has
     other: have
