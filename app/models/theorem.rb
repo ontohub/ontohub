@@ -20,4 +20,8 @@ class Theorem < Sentence
       save!
     end
   end
+
+  def to_s
+    name
+  end
 end

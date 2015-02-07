@@ -1,0 +1,17 @@
+%table
+  %thead
+    %tr
+      %th Status
+      %th Date
+      %th Time taken
+      %th Prover
+  - proof_attempts.each_with_index do |proof_attempt|
+    %tr
+      %td= render partial: 'proof_status', locals: {proof_status: proof_attempt.proof_status}
+      %td
+        = link_to [*resource_chain, resource, proof_attempt] do
+          %span.timestamp= proof_attempt.created_at
+      %td
+        = proof_attempt.time_taken
+        seconds
+      %td= proof_attempt.prover
