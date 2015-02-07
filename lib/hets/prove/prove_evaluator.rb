@@ -40,7 +40,7 @@ module Hets
           proof_attempt.proof_status = proof_status_from_hash(hash)
           proof_attempt.prover = hash[:used_prover]
           proof_attempt.prover_output = hash[:prover_output]
-          proof_attempt.time_taken = hash[:used_time]
+          proof_attempt.time_taken = hash[:time_taken]
           proof_attempt.tactic_script = tactic_script_from_hash(hash)
           proof_attempt.used_axioms = used_axioms_from_hash(hash, proof_attempt)
 
