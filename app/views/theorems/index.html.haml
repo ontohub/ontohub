@@ -2,10 +2,11 @@
 
 = ontology_nav @ontology, :theorems
 
-- if ontology.unproven_theorems.present?
-  = link_to t('theorems.index.prove'), [*resource_chain, :prove], method: :post, class: 'btn btn-primary'
-- else
-  = t('theorems.index.all_proven', oms: Settings.OMS)
+- if can? :write, parent.repository
+  - if ontology.unproven_theorems.present?
+    = link_to t('theorems.index.prove'), [*resource_chain, :prove], method: :post, class: 'btn btn-primary'
+  - else
+    = t('theorems.index.all_proven', oms: Settings.OMS)
 
 = pagination do
   %table.sentences
