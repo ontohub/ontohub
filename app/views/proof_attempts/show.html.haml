@@ -1,0 +1,31 @@
+= repository_nav ontology.repository, :ontologies
+
+= ontology_nav ontology, :theorems
+
+%h3
+  = t('proof_attempts.show.head')
+  = link_to resource.theorem, [*resource_chain, resource.theorem]
+  = render partial: 'theorems/proof_status', locals: {proof_status: resource.proof_status}
+
+%h4= t('proof_attempts.show.created_at')
+= resource.created_at
+
+%h4= t('proof_attempts.show.time_taken')
+= resource.time_taken
+seconds
+
+%h4= t('proof_attempts.show.used_axioms')
+- if resource.used_axioms.empty?
+  = t('proof_attempts.show.no_used_axioms')
+- else
+  - resource.used_axioms.each do |axiom|
+    = axiom.name
+
+%h4= t('proof_attempts.show.prover')
+= resource.prover
+
+%h4= t('proof_attempts.show.tactic_script')
+%pre= resource.tactic_script
+
+%h4= t('proof_attempts.show.prover_output')
+%pre= resource.prover_output
