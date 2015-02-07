@@ -348,6 +348,8 @@ Will return a representation of the formality level.
       resources :symbols, only: %i(index show)
       resources :sentences, :only => %i(index show)
       resources :theorems, only: :index
+      post '/prove', controller: :prove, action: :create
+
       resources :mappings do
         get 'update_version', :on => :member
       end
