@@ -38,8 +38,34 @@ namespace :test do
   def ontology_files
     globbed_files = Dir.glob('spec/fixtures/ontologies/**/*')
     globbed_files.select do |file|
-      !file.end_with?('xml') && !File.directory?(file)
+      !file.end_with?('proof.json') &&
+      !file.end_with?('xml') &&
+      !File.directory?(file)
     end
+  end
+
+  def prove_files
+    globbed_files = Dir.glob('spec/fixtures/ontologies/prove/**/*')
+    globbed_files.select do |file|
+      !file.end_with?('.proof.json') && !File.directory?(file)
+    end
+  end
+
+  def prove_with_hets(file)
+    puts "Calling hets prover for #{file}"
+
+    absolute_filepath = Rails.root.join(file)
+    escaped_iri = Rack::Utils.escape_path("file://#{absolute_filepath}")
+    command = %w(curl -s -X POST)
+    command += ['-H', %('Content-Type: application/json')]
+    command += ['-d', %('{"format": "json"}')]
+    command << "http://localhost:8000/prove/#{escaped_iri}"
+    command = command.join(' ')
+
+    filename = File.basename(file).split('.')[0..-2].join('.')
+    target_path = Rails.root.join('spec/fixtures/ontologies/hets-out/prove', filename)
+
+    File.write("#{target_path}.proof.json", `#{command}`)
   end
 
   desc 'Update all ontology fixtures'
@@ -50,4 +76,19 @@ namespace :test do
     end
   end
 
+  desc 'Update all prove fixtures'
+  task :freshen_prove_fixtures do
+    hets_pid = fork { exec('hets -X') }
+    # hets server needs some startup time
+    sleep 1
+    on_outdated_files(prove_files) { |file| prove_with_hets(file) }
+    puts 'Stopping hets server.'
+    Process.kill('TERM', hets_pid)
+  end
+
+  desc 'Update all hets dependent fixtures'
+  task :freshen_fixtures do
+    Rake::Task['test:freshen_ontology_fixtures'].invoke
+    Rake::Task['test:freshen_prove_fixtures'].invoke
+  end
 end
