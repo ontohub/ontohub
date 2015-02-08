@@ -1,5 +1,5 @@
 class Theorem < Sentence
-  DEFAULT_STATUS = 'OPN'
+  DEFAULT_STATUS = ProofStatus::DEFAULT_OPEN_STATUS
 
   has_many :proof_attempts, foreign_key: 'sentence_id'
   belongs_to :proof_status
@@ -19,5 +19,9 @@ class Theorem < Sentence
       self.proof_status = proof_status
       save!
     end
+  end
+
+  def to_s
+    name
   end
 end

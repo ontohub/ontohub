@@ -71,6 +71,7 @@ class Ontology < ActiveRecord::Base
   validates_presence_of :basepath
 
   delegate :permission?, to: :repository
+  delegate :unproven_theorems, to: :current_version
 
   strip_attributes :only => [:name, :iri]
 

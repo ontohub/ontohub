@@ -118,7 +118,11 @@ Ontohub::Application.routes.draw do
       resources :children, :only => :index
       resources :symbols, only: :index
       resources :sentences, :only => :index
-      resources :theorems, only: :index
+      resources :theorems, only: [:index, :show] do
+        resources :proof_attempts, only: :show
+      end
+      post '/prove', controller: :prove, action: :create
+
       resources :mappings do
         get 'update_version', :on => :member
       end

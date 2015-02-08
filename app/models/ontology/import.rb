@@ -7,9 +7,14 @@ module Ontology::Import
 
   def import_version(version, user, io)
     return if version.nil?
-    evaluator = Hets::Evaluator.new(user, version.ontology,
+    evaluator = Hets::DG::Evaluator.new(user, version.ontology,
                                     version: version, io: io)
     evaluator.import
   end
 
+  def import_proof(version, user, io)
+    evaluator = Hets::Prove::Evaluator.new(user, version.ontology,
+                                           version: version, io: io)
+    evaluator.import
+  end
 end
