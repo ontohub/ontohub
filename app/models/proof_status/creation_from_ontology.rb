@@ -2,6 +2,8 @@ class ProofStatus
   module CreationFromOntology
     extend ActiveSupport::Concern
 
+    SOLVED_STATUS = 'SUC'
+
     module ClassMethods
       def statuses
         szs_ontology.subclasses('Problem_Status')
@@ -50,7 +52,8 @@ class ProofStatus
       end
 
       def solved?(status)
-        status == 'SOL' || szs_ontology.superclass_of?('SOL', status)
+        status == SOLVED_STATUS ||
+        szs_ontology.superclass_of?(SOLVED_STATUS, status)
       end
 
       protected
