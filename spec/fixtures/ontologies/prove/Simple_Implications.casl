@@ -1,0 +1,17 @@
+spec Group =
+  sort s
+  ops 0:s;
+      -__ :s->s;
+      __+__ :s*s->s, assoc
+  forall x,y:s
+  . x+(-x) = 0
+  . x+0=x %(leftunit)%
+  . 0+x=x %(rightunit)% %implied
+  . 0+0=0 %(zero_plus)% %implied
+end
+
+spec Empty =
+  sort t
+  forall x,y:t
+  . x = x %implied
+end
