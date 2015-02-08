@@ -6,12 +6,12 @@
   %p.display_all
     = t('.display_all_sentences')
     %br/
-    = link_to "Click here #{t('.to_display_only_self_defined_sentences')}", polymorphic_url([*resource_chain, :sentences])
+    = link_to "Click here #{t('.to_display_only_self_defined_sentences')}", locid_for(parent, :sentences)
 - else
   %p.display_subset
     = t('.display_only_self_defined_sentences')
     %br/
-    = link_to "Click here #{t('.to_display_all_sentences')}", polymorphic_url([*resource_chain, :sentences], all: true)
+    = link_to "Click here #{t('.to_display_all_sentences')}", locid_for(parent, :sentences, all: true)
 
 
 = pagination do
