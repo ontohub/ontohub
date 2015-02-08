@@ -20,12 +20,18 @@ module NavigationHelper
 
     content_page = ontology.distributed? ? :children : :symbols
     @top_level_pages = [
-      ['Content', locid_for(resource, content_page), :symbols],
-      ['Comments', locid_for(resource, :comments), :comments],
-      ['Metadata', locid_for(resource, :metadata), :metadata],
-      ['Versions', locid_for(resource, :ontology_versions), :ontology_versions],
-      ['Graphs', locid_for(resource, :graphs), :graphs],
-      ['Mappings', locid_for(resource, :mappings), :mappings]
+      ['Content', locid_for(resource, content_page),
+       :symbols],
+      ['Comments', locid_for(resource, :comments),
+       :comments],
+      ['Metadata', locid_for(resource, :metadata),
+       :metadata],
+      ['Versions', locid_for(resource, :ontology_versions),
+       :ontology_versions],
+      ['Graphs', locid_for(resource, :graphs),
+       :graphs],
+      ['Mappings', locid_for(resource, :mappings),
+       :mappings],
     ]
 
     @metadatas = []
@@ -149,11 +155,16 @@ module NavigationHelper
   def ontology_nav_metadata
     resource = resource_chain.last
     [
-      ['Projects',         locid_for(resource, :projects), :projects],
-      ['Categories',       locid_for(resource, :categories), :categories],
-      ['Tasks',            locid_for(resource, :tasks), :tasks],
-      ['License Models',   locid_for(resource, :license_models), :license_models],
-      ['Formality Levels', locid_for(resource, :formality_levels), :formality_levels]
+      ['Projects', locid_for(resource, :projects),
+       :projects],
+      ['Categories', locid_for(resource, :categories),
+       :categories],
+      ['Tasks', locid_for(resource, :tasks),
+       :tasks],
+      ['License Models', locid_for(resource, :license_models),
+       :license_models],
+      ['Formality Levels', locid_for(resource, :formality_levels),
+       :formality_levels],
     ]
   end
 

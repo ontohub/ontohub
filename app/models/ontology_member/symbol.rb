@@ -16,7 +16,7 @@ module OntologyMember
 
     scope :kind, ->(kind) { where kind:  kind }
 
-    def self.find_with_locid(locid, _iri=nil)
+    def self.find_with_locid(locid, _iri = nil)
       where(locid: locid).first
     end
 

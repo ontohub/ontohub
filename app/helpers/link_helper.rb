@@ -12,8 +12,6 @@ module LinkHelper
   def fancy_link(resource)
     return nil unless resource
 
-    klass = resource.class
-    klass = 'Ontology' if klass.to_s.include?('Ontology')
     data_type, value = determine_image_type(resource)
 
     name = block_given? ? yield(resource) : resource

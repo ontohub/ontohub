@@ -133,7 +133,7 @@ class Ontology < ActiveRecord::Base
 
   def locid_for_child(child_name)
     child_name = child_name[1..-2] if child_name[0] == '<'
-    child_name.include?("://") ? child_name : "#{locid}//#{child_name}"
+    child_name.include?('://') ? child_name : "#{locid}//#{child_name}"
   end
 
   def is?(logic_name)
@@ -153,7 +153,7 @@ class Ontology < ActiveRecord::Base
     name? ? iri : nil
   end
 
-  def self.find_with_locid(locid, iri=nil)
+  def self.find_with_locid(locid, iri = nil)
     ontology = where(locid: locid).first
 
     if ontology.nil? && iri

@@ -231,6 +231,6 @@ module Repository::GitRepositories
   end
 
   def generate_locid(basepath)
-    "/#{self.path}/#{basepath}"
+    "/#{path}/#{basepath}"
   end
 end

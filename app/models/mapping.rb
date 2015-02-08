@@ -34,8 +34,7 @@ class Mapping < ActiveRecord::Base
                   :target_id, :versions_attributes, :versions, :name
   accepts_nested_attributes_for :versions
 
-
-  def self.find_with_locid(locid, _iri=nil)
+  def self.find_with_locid(locid, _iri = nil)
     where(locid: locid).first
   end
 
