@@ -72,4 +72,71 @@ describe 'OntologyVersion - Proving' do
       expect(version.reload.last_error).to match(nested_error_regex)
     end
   end
+
+  context 'evaluation' do
+    before do
+      version.async_prove
+      Worker.drain
+    end
+
+    it 'all theorems solved' do
+      ontology.theorems.each do |theorem|
+        expect(theorem.proof_status.solved?).to be(true)
+      end
+    end
+
+    context 'first theorem' do
+      let(:theorem) { ontology.theorems.first }
+
+      it 'have a proof_attempt' do
+        expect(theorem.proof_attempts.length).to eq(1)
+      end
+
+      it 'have "proven" status' do
+        proven = create :proof_status_proven
+        expect(theorem.proof_status).to eq(proven)
+      end
+
+      context 'proof attempt' do
+        let(:proof_attempt) { theorem.proof_attempts.first }
+
+        it 'have "proven" status' do
+          proven = create :proof_status_proven
+          expect(proof_attempt.proof_status).to eq(proven)
+        end
+
+        it 'have "SPASS" prover' do
+          expect(proof_attempt.prover).to eq('SPASS')
+        end
+
+        it 'have prover output' do
+          expect(proof_attempt.prover_output).not_to be_nil
+        end
+
+        it 'have a tactic script' do
+          expect(proof_attempt.tactic_script).not_to be_nil
+        end
+
+        it 'have non-negative time-taken information' do
+          expect(proof_attempt.time_taken).to be >= 0
+        end
+
+        it 'have three used axioms' do
+          expect(proof_attempt.used_axioms.map(&:name)).
+            to include('leftunit', 'Ax2', 'ga_assoc___+__')
+        end
+      end
+
+      context 'prove a second time' do
+        before do
+          version.async_prove
+          Worker.drain
+        end
+
+        it 'create another proof_attempt' do
+          expect(theorem.proof_attempts.length).to eq(2)
+        end
+      end
+    end
+  end
 end
