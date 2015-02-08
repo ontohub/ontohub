@@ -52,23 +52,27 @@ def hets_out_file(name, ext='xml')
   ontology_file("hets-out/#{name}.#{ext}")
 end
 
-def hets_uri(portion = nil, version = nil)
+def prove_out_file(name, ext='proof.json')
+  fixture_file("ontologies/hets-out/prove/#{name}.#{ext}")
+end
+
+def hets_uri(command = 'dg', portion = nil, version = nil)
   hets_instance = HetsInstance.choose
   if hets_instance.nil?
-    FactoryGirl.create(:local_hets_instance)
+    create(:local_hets_instance)
     hets_instance = HetsInstance.choose
   end
   specific = ''
   # %2F is percent-encoding for forward slash /
   specific << "ref%2F#{version}.*" if version
   specific << "#{portion}.*" if portion
-  %r{#{hets_instance.uri}/dg/.*#{specific}}
+  %r{#{hets_instance.uri}/#{command}/.*#{specific}}
 end
 
-def stub_hets_for(fixture_file, with: nil, with_version: nil)
+def stub_hets_for(fixture_file, command: 'dg', with: nil, with_version: nil, method: :get)
   stub_request(:get, 'http://localhost:8000/version').
     to_return(body: Hets.minimal_version_string)
-  stub_request(:get, hets_uri(with, with_version)).
+  stub_request(method, hets_uri(command, with, with_version)).
     to_return(body: fixture_file.read)
 end
 
