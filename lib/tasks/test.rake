@@ -81,7 +81,7 @@ namespace :test do
     hets_pid = fork { exec('hets -X') }
     # hets server needs some startup time
     sleep 1
-    on_outdated_files(prove_files) { |file| prove_with_hets(file) }
+    prove_files.each { |file| prove_with_hets(file) }
     puts 'Stopping hets server.'
     Process.kill('TERM', hets_pid)
   end
