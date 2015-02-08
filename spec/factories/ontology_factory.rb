@@ -17,7 +17,15 @@ FactoryGirl.define do
     description { Faker::Lorem.paragraph }
     logic { FactoryGirl.create :logic }
     state { 'pending' }
-    locid { name }
+
+    ontology.after(:build) do |ontology|
+      ontology.locid =
+        if ontology.parent
+          "#{ontology.parent.locid}//#{ontology.name}"
+        else
+          "/#{ontology.repository.path}/#{ontology.name}"
+        end
+    end
 
     ontology.after(:build) do |ontology|
       version = ontology.versions.build({
@@ -63,6 +71,10 @@ FactoryGirl.define do
 
     factory :distributed_ontology, class: DistributedOntology do
       logic { nil }
+
+      after(:build) do |ontology|
+        ontology.locid = "/#{ontology.repository.path}/#{ontology.name}"
+      end
 
       # Should always be fully linked, so every child should
       # have a linked (defined by the DO) pointing or sourcing
@@ -122,11 +134,13 @@ FactoryGirl.define do
         ontology.after(:build) do |ontology|
           logic_one = FactoryGirl.create(:logic)
           logic_two = FactoryGirl.create(:logic)
-          ontology.children << FactoryGirl.create(:ontology,
+          ontology.children << FactoryGirl.build(:ontology,
             logic: logic_one,
+            parent: ontology,
             repository: ontology.repository)
-          ontology.children << FactoryGirl.create(:ontology,
+          ontology.children << FactoryGirl.build(:ontology,
             logic: logic_two,
+            parent: ontology,
             repository: ontology.repository)
         end
       end
