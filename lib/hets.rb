@@ -101,10 +101,11 @@ we expected it to be matchable by this regular expression:
   class Options
     attr_accessor :access_token, :structure_only, :url_catalog
 
-    def initialize(access_token: nil, structure_only: false, url_catalog: [])
+    def initialize(access_token: nil, structure_only: false, url_catalog: [], node: nil)
       @access_token = access_token
       @structure_only = structure_only
       @url_catalog = url_catalog
+      @node = node
     end
 
     def args
@@ -135,12 +136,12 @@ we expected it to be matchable by this regular expression:
     parse_caller.call(iri, with_mode: mode)
   end
 
-  def self.prove_via_api(resource, url_catalog = [])
+  def self.prove_via_api(resource, hets_options = nil)
     options = {}
     if resource.in_distributed?
       options[:node] = resource.name
     end
-    prove_caller = Hets::ProveCaller.new(HetsInstance.choose, url_catalog)
+    prove_caller = Hets::ProveCaller.new(HetsInstance.choose, hets_options)
     prove_caller.call(resource.versioned_iri, options)
   end
 
