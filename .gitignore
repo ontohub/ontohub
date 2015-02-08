@@ -66,3 +66,6 @@ spec/fixtures/ontologies/xml
 
 spec/fixtures/ontologies/hets-out/*
 !spec/fixtures/ontologies/hets-out/.gitkeep
+
+spec/fixtures/ontologies/hets-out/prove
+!spec/fixtures/ontologies/hets-out/prove/.gitkeep
