@@ -1,7 +1,7 @@
 class SetCountFieldsCorrectly < ActiveRecord::Migration
   def up
     Ontology.find_each do |ontology|
-      ontology.entities_count = ontology.entities.count
+      ontology.symbols_count = ontology.symbols.count
       ontology.sentences_count = ontology.sentences.count
       ontology.versions_count = ontology.versions.count
       ontology.metadata_count = ontology.metadata.count

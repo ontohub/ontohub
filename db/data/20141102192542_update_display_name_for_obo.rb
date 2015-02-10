@@ -3,15 +3,15 @@ class UpdateDisplayNameForObo < ActiveRecord::Migration
     obo_ontologies = Ontology.joins(:ontology_version).
       where(ontology_versions: {file_extension: '.obo'})
     obo_ontologies.each do |ontology|
-      ontology.entities.find_each do |entity|
-        entity.set_obo_display_name_if_applicable
-        entity.save!
+      ontology.symbols.find_each do |symbol|
+        symbol.set_obo_display_name_if_applicable
+        symbol.save!
       end
       begin
         TarjanTree.for(ontology)
       rescue ActiveRecord::RecordNotFound => e
         Rails.logger.warn <<-MSG
-Could not create entity tree for:
+Could not create symbol tree for:
   #{ontology.name} (#{ontology.id}) caused #{e}
         MSG
       end
@@ -22,15 +22,15 @@ Could not create entity tree for:
     obo_ontologies = Ontology.joins(:ontology_version).
       where(ontology_versions: {file_extension: '.obo'})
     obo_ontologies.each do |ontology|
-      ontology.entities.find_each do |entity|
-        entity.set_display_name_and_iri
-        entity.save!
+      ontology.symbols.find_each do |symbol|
+        symbol.set_display_name_and_iri
+        symbol.save!
       end
       begin
         TarjanTree.for(ontology)
       rescue ActiveRecord::RecordNotFound => e
         Rails.logger.warn <<-MSG
-Could not create entity tree for:
+Could not create symbol tree for:
   #{ontology.name} (#{ontology.id}) caused #{e}
         MSG
       end
