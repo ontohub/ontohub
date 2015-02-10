@@ -2,9 +2,11 @@ class OopsResponse < ActiveRecord::Base
   belongs_to :request, class_name: 'OopsRequest'
   has_and_belongs_to_many :symbols, class_name: 'OntologyMember::Symbol'
 
-  scope :global, joins('LEFT JOIN oops_responses_symbols ON '\
-    'oops_responses.id = oops_responses_symbols.oops_response_id').
-    where('oops_responses_symbols.symbol_id' => nil)
+  scope :global, ->() do
+    table = 'oops_responses_symbols'
+    joins("LEFT JOIN #{table} ON #{table}.id = #{table}.oops_response_id").
+      where("#{table}.symbol_id" => nil)
+  end
 
   attr_accessor :affects
 
