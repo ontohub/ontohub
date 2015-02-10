@@ -83,6 +83,17 @@ class RefLocIdRouterConstraint < LocIdRouterConstraint
   end
 end
 
+class MMTRouterConstraint < LocIdRouterConstraint
+  def matches?(request)
+    path = request.original_fullpath.
+      # Convert MMT to standard Loc/Id
+      gsub(/\?+/, '//').
+      # Prune ref-portion
+      sub('/ref/mmt', '')
+    super(request, path)
+  end
+end
+
 class IRIRouterConstraint < RouterConstraint
   def matches?(request, path = nil)
     path ||= request.original_fullpath
