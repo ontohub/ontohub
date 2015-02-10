@@ -105,6 +105,9 @@ gem 'js-routes', '~> 0.9.8'
 # Use dagnabit to model categories
 gem 'dagnabit', '~> 3.0.1'
 
+# Migrate data in separate tasks
+gem 'data_migrate', '~> 1.2.0'
+
 group :test do
   gem 'mocha', '~> 1.1.0', require: false
   gem 'shoulda', '~> 3.5.0'
