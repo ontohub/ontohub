@@ -35,21 +35,23 @@
  * On Linux with its coarse grained/ancient security models like apparmor
  * running scripts in a similar way is impossible, because when the related
  * interpreter gets execed, it doesn't inherit the capabilities/euid/... of the
- * script. However, if one has a lot of time and likes really complex setups,
+ * script. Anyway, if one has a lot of time and likes really complex setups,
  * he might be able to define appropriate SELinux contexts/policies/labels and
- * get script work in a similar way, however, we don't support that, i.e. we
- * leave such complex tasks to real security experts. Finally, ppl which do
- * not care a lot about  security might set the 'StrictModes no' in the related
- * sshd_config and than group writable authorized_keys files could be accepted.
- * But this is not recommended, since this setting applies to ALL users and NOT
- * ONLY to the authorized_keys files!
+ * get script work in a similar way. However, we don't support that, i.e. we
+ * leave such complex tasks to real security experts. The 3rd alternative is
+ * for people which do not care a lot about security: the 'StrictModes no'
+ * setting of the sshd_config instructs the ssh daemon to relax checks and thus
+ * accept group writable authorized_keys files. But this is not recommended,
+ * since this setting applies to ALL users and NOT ONLY to the authorized_keys
+ * files!
  *
  * Last but not least: The application expects the resulting binary in the
- * .ssh directory of the ${DATA_ROOT} - see app/models/key.rb as well as
- * lib/authorized_keys_manager.rb
+ * .ssh directory of the ${DATA_ROOT}, which should be equal to the
+ * Settings.git.data_dir value - see app/models/key.rb as well as
+ * lib/authorized_keys_manager.rb for more info.
  *
- * Steps to do (we assume the webservice is run by webservd:webservd and the
- * gitservice is run by the user git:webservd):
+ * Steps to do (we assume the web service is run by webservd:webservd and the
+ * git service is run by the user git:webservd):
  *	0) edit cp_keys.c  - adjust DATA_ROOT and GIT_HOME wrt. your environment
  * 	1) gcc -o ${DATA_DIR}/.ssh/cp_keys cp_keys.c
  *	2) strip ${DATA_DIR}/.ssh/cp_keys
