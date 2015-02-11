@@ -56,7 +56,21 @@ exception_notifier:
 workers:
   hets: 4
 
+# NOTE:
+# The user who's running the git service should have the same group as the user
+# who is running the web service and the related files/directories below
+# git:data_dir should be group writeable. This avoids headaches e.g. wrt. non-
+# cross platform ACLs (e.g. most Linux based FS impl. according to a withdrawn
+# ancient POSIX standard or NFSv4/ZFS/NTFS ACL impl.). However, this does not
+# work for ssh authorized_keys: this requires a different approach - see
+# script/cp_keys.c for more information.
 git:
+  # Where all git related data gets stored. If this directory contains a file
+  # 'maintenance.txt', the application assumes it is in maintenance mode. The
+  # web service frontend might hide this state by showing or redirecting to a
+  # different static page. The git service or to be more specific the
+  # git/bin/git-shell doesn't accept any command as long as this file exists.
+  data_dir: /data/git
   verify_url: http://localhost/
   default_branch: 'master'
   push_priority:

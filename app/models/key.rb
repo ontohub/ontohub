@@ -24,10 +24,12 @@ class Key < ActiveRecord::Base
 
   def add_to_authorized_keys
     AuthorizedKeysManager.add(self.id, self.key)
+    system(Ontohub::Application.config.data_root + '/.ssh/cp_keys')
   end
 
   def remove_from_authorized_keys
     AuthorizedKeysManager.remove(self.id)
+    system(Ontohub::Application.config.data_root + '/.ssh/cp_keys')
   end
 
 end
