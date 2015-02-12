@@ -4,7 +4,7 @@ module Hets
     # arguments: `hets +RTS -K1G -RTS -a none`
     MODE_ARGUMENTS = {
       fast_run: %w(just-structured),
-      default: %w(full-signatures full-theories)
+      default: %w(full-signatures full-theories auto),
     }
 
     CMD = 'dg'

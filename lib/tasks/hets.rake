@@ -2,7 +2,6 @@ namespace :hets do
 
   HETS_LOGFILE = Rails.root.join('log', 'hets.log')
   HETS_PIDFILE = Rails.root.join('tmp', 'pids', 'hets.pid')
-  HETS_CMD = "hets -X"
 
   desc "Create Hets Instance if neccessary"
   task :generate_first_instance => :environment do
@@ -15,7 +14,7 @@ namespace :hets do
     if already_running?
       puts 'Hets is already running...'
     else
-      pid = spawn(HETS_CMD, [:out, :err] => [HETS_LOGFILE, 'w'])
+      pid = spawn(hets_cmd, [:out, :err] => [HETS_LOGFILE, 'w'])
       write_pid(pid)
       Process.detach(pid)
     end
@@ -34,7 +33,7 @@ namespace :hets do
 
   desc 'Run a hets server synchronously'
   task :run do
-    exec(HETS_CMD)
+    exec(hets_cmd)
   end
 
   def already_running?
@@ -57,6 +56,26 @@ namespace :hets do
 
   def remove_pidfile
     FileUtils.rm HETS_PIDFILE
+  end
+
+  def hets_cmd
+    "#{hets_binary} -X #{hets_server_options.join(' ')}"
+  end
+
+  def hets_binary
+    hets_config['hets_path'].
+      map { |path| File.expand_path path }.
+      find { |path| File.exists?(path) }
+  end
+
+  def hets_server_options
+    hets_config['server_options'] || []
+  end
+
+  def hets_config
+    return @hets_config if @hets_config
+    hets_yml = File.expand_path('../../../config/hets.yml', __FILE__)
+    @hets_config = YAML.load_file(hets_yml)
   end
 
 end

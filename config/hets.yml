@@ -5,8 +5,8 @@ hets_path:
   - /opt/local/bin/hets
   - ~/code/hets/hets
   - ~/ontohub/Hets/hets
-  - /usr/local/opt/hets/bin/hets-bin
   - /usr/local/opt/hets/bin/hets
+  - /usr/local/opt/hets/bin/hets-bin
   - /usr/local/opt/hets-binary/Hets.app/Contents/Resources/hets
   - /Applications/Hets.app/Contents/Resources/hets
 hets_lib:
@@ -38,6 +38,10 @@ cmd_line_options:
   - '-v2'
   - '+RTS -K1G -RTS'
   - '--full-theories'
+  - '-A'
+
+server_options:
+  - '-a none'
 
 # Environment variables to set for running Hets
 env:
