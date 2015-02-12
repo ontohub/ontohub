@@ -1,0 +1,22 @@
+logic OWL
+
+ontology my_ont = 
+	Class: Fish
+    Class: Human
+		DisjointWith: Fish 
+    Class: Woman
+		SubClassOf: Human
+end
+
+ontology CQ1 = my_ont then %implies
+	Class: Woman
+		DisjointWith: Fish
+end
+
+ontology Scenario = my_ont then 
+	Individual: mary Types: Woman	
+end
+
+ontology CQ2 = Scenario then %implies 
+	Individual: mary Types: Human
+end
