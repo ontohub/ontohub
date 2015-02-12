@@ -34,14 +34,15 @@ stack_size: 1G
 cmd_line_options:
   - '-o xml'
   - '--full-signatures'
-  - '-a none'
+  - '-casl-amalg=none'
   - '-v2'
   - '+RTS -K1G -RTS'
   - '--full-theories'
-  - '-A'
+  - '--apply-automatic-rule'
 
 server_options:
-  - '-a none'
+  - '--casl-amalg=none'
+  - '--apply-automatic-rule'
 
 # Environment variables to set for running Hets
 env:
