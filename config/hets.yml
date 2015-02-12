@@ -5,8 +5,8 @@ hets_path:
   - /opt/local/bin/hets
   - ~/code/hets/hets
   - ~/ontohub/Hets/hets
-  - /usr/local/opt/hets/bin/hets-bin
   - /usr/local/opt/hets/bin/hets
+  - /usr/local/opt/hets/bin/hets-bin
   - /usr/local/opt/hets-binary/Hets.app/Contents/Resources/hets
   - /Applications/Hets.app/Contents/Resources/hets
 hets_lib:
@@ -34,10 +34,15 @@ stack_size: 1G
 cmd_line_options:
   - '-o xml'
   - '--full-signatures'
-  - '-a none'
+  - '-casl-amalg=none'
   - '-v2'
   - '+RTS -K1G -RTS'
   - '--full-theories'
+  - '--apply-automatic-rule'
+
+server_options:
+  - '--casl-amalg=none'
+  - '--apply-automatic-rule'
 
 # Environment variables to set for running Hets
 env:
