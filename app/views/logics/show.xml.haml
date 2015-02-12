@@ -30,11 +30,11 @@
   'xmlns:todo' => 'http://example.org/todo#', |
   'xmlns:trans' => 'http://purl.net/dol/translations/', |
   'xmlns:void' => 'http://rdfs.org/ns/void#', |
-  'xmlns:xsd' => 'http://www.w3.org/2001/XMLSchema-datatypes#"', |
+  'xmlns:xsd' => 'http://www.w3.org/2001/XMLSchema-datatypes#', |
   }
   %logic{'rdf:about' => resource.iri}
     %rdfs:label= resource.name
     %skos:prefLabel= resource.name
     %rdfs:comment= resource.description
-    %stand:standardizationStatus{'rdf:resource' => resource.standardization_iri}
+    %stand:standardizationStatus
       = resource.standardization_status
