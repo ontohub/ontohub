@@ -38,6 +38,7 @@ cmd_line_options:
   - '-v2'
   - '+RTS -K1G -RTS'
   - '--full-theories'
+  - '-A'
 
 # Environment variables to set for running Hets
 env:
