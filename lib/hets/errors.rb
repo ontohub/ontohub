@@ -6,7 +6,7 @@ module Hets
     class ExecutionError < HetsError
       attr_reader :abort_execution
 
-      def initialize(msg=nil, abort_execution: false)
+      def initialize(msg = nil, abort_execution: false)
         @abort_execution = abort_execution
         super(msg)
       end
