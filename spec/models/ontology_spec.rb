@@ -475,6 +475,27 @@ describe Ontology do
     end
   end
 
+  context 'Import Ontology with extension mappings' do
+    let(:user) { create :user }
+    let(:ontology) { create :distributed_ontology }
+    let(:children_with_theorems) do
+      [ontology.children.where(name: 'my_ont').first,
+        ontology.children.where(name: 'Scenario').first]
+    end
+
+    before do
+      parse_this(user, ontology, hets_out_file('CompetencyQuestion'))
+    end
+
+    context 'theorem count' do
+      it 'should be correct' do
+        children_with_theorems.each do |child|
+          expect(child.theorems.count).to eq(1)
+        end
+      end
+    end
+  end
+
   context 'checking ordering of Ontology list' do
     before do
       Ontology::States::STATES.each do |state|

@@ -41,7 +41,8 @@ end
 
 class IRIRouterConstraint < RouterConstraint
   def matches?(request, path = nil)
-    path ||= request.original_fullpath
+    path ||= Journey::Router::Utils.
+      unescape_uri(request.original_fullpath)
     ontology = Ontology.find_with_iri(path)
     result = !ontology.nil?
 
@@ -64,10 +65,9 @@ class RefIRIRouterConstraint < IRIRouterConstraint
       \?.*$ # drops a the whole standard query-string
     }x
     # remove the ref/:version_number portion from path
-    path = request.original_fullpath.
+    path = Journey::Router::Utils.unescape_uri(request.original_fullpath).
       sub(%r{\A/ref/\d+/}, '').
       sub(regex, '\1')
-
     super(request, path)
   end
 end
