@@ -11,7 +11,7 @@ module UriFetcher
     attr_writer :error_handler
     attr_accessor :content_test_block, :write_file, :file_type
 
-    def initialize(uri, redirect_limit: DEFAULT_REDIRECTS, error_handler: nil)
+    def initialize(uri, redirect_limit: DEFAULT_REDIRECTS)
       self.uri = uri
       self.redirect_limit = redirect_limit
     end
