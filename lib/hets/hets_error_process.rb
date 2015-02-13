@@ -11,7 +11,7 @@ module Hets
     end
 
     def handle
-      if is_hets_error?
+      if hets_error?
         process_error
       else
         raise Hets::NotAHetsError.new('Error was not produced due to hets.')
@@ -22,7 +22,7 @@ module Hets
       raise Hets::HetsFileError.new(message)
     end
 
-    def is_hets_error?
+    def hets_error?
       HETS_ERROR_CODES.include?(response.code) && error_header?
     end
 
