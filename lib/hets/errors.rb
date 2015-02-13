@@ -1,5 +1,6 @@
 module Hets
   module Errors
+    class NotAHetsError < ::StandardError; end
     class HetsError < ::StandardError; end
 
     class ExecutionError < HetsError
@@ -10,6 +11,8 @@ module Hets
         super(msg)
       end
     end
+
+    class HetsFileError < HetsError; end
 
     class DeploymentError < HetsError; end
 
