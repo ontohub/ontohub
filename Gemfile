@@ -79,6 +79,7 @@ gem "rest-client", '~> 1.7.2'
 gem 'sidekiq', '~> 3.2.1'
 gem 'sidetiq', '~> 0.6.1'
 gem 'sidekiq-failures', '~> 0.4.3'
+gem 'sidekiq-status', '~> 0.5.2'
 gem 'sinatra', '~> 1.4.5', require: false, group: [:development, :production]
 
 # Search engine

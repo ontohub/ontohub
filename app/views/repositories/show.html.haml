@@ -9,6 +9,12 @@
   %h2 Private
   %p This repository is private. Only users and teams with explicitly set permissions have access to this repository.
 
+- if resource.is_destroying
+  %h2 Deleted
+  %p
+    = t('repository.deleting_at')
+    %span.timestamp= resource.destroy_job_at
+
 %h2 Description
 %p
   - if resource.description?

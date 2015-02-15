@@ -24,6 +24,7 @@ class Repository < ActiveRecord::Base
                   :source_address,
                   :remote_type,
                   :access,
+                  :destroy_job_id,
                   :is_destroying
   attr_accessor :user
 
