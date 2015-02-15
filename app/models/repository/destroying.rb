@@ -9,9 +9,7 @@ module Repository::Destroying
 
     def self.find_deleted_repository_with_owner(path, user)
       repository = Repository.find_by_path(path)
-      if user.owned_ids('Repository').include?(repository.id)
-        repository
-      end
+      repository if user.owned_ids('Repository').include?(repository.id)
     end
   end
 
@@ -27,7 +25,8 @@ module Repository::Destroying
     self.destroy_job_at = nil
     save!
     raise e.class,
-          I18n.t('repository.delete_error', oms: Settings.OMS.with_indefinite_article),
+          I18n.t('repository.delete_error',
+            oms: Settings.OMS.with_indefinite_article),
           cause: e
   end
 
