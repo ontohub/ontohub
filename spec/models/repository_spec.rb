@@ -40,7 +40,10 @@ describe Repository do
       it 'should not raise an error' do
         importing = create :ontology, repository: repository
         create :mapping, target: importing, source: ontology, kind: 'import'
-        expect { repository.destroy_asynchronously }.not_to raise_error
+        Sidekiq::Testing.fake! do
+          repository.destroy_asynchronously
+          expect { RepositoryDeletionWorker.drain }.not_to raise_error
+        end
       end
     end
 
