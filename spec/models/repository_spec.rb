@@ -56,7 +56,15 @@ describe Repository do
           raise_error(Repository::DeleteError))
       end
     end
-  end
+
+    it 'should be removed' do
+      Sidekiq::Testing.fake! do
+        repository.destroy_asynchronously
+        RepositoryDeletionWorker.drain
+        expect { repository.reload }.
+          to raise_error(ActiveRecord::RecordNotFound)
+      end
+    end
 
   context 'permissions' do
     context 'creating a permission' do
