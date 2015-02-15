@@ -36,6 +36,12 @@ class RepositoriesController < InheritedResources::Base
 
   protected
 
+  def resource
+    @repository ||=
+      Repository.find_by_path(params[:id]) ||
+      Repository.find_deleted_repository_with_owner(params[:id], current_user)
+  end
+
   def collection
     super.order(:name)
   end
