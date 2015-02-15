@@ -111,7 +111,7 @@ class Ontology < ActiveRecord::Base
       ' ontologies.parent_id asc')
 
   def repository
-    Repository.unscoped.find(repository_id)
+    @repository ||= Repository.find(repository_id)
   end
 
   def generate_name(name)

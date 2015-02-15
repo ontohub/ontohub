@@ -65,4 +65,8 @@ class OntologySearchController < ApplicationController
       @search_query = params[:query].split(' ').join(' OR ')
     end
   end
+
+  def repository
+    Repository.find_by_path(params[:repository_id])
+  end
 end

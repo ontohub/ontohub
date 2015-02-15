@@ -34,10 +34,26 @@ class RepositoriesController < InheritedResources::Base
     redirect_to resource
   end
 
-  protected
-
-  def collection
-    super.order(:name)
+  def undestroy
+    resource.undestroy
+    begin
+      resource.reload
+      flash[:success] = t('repository.undestroy.success')
+      redirect_to resource
+    rescue ActiveRecord::RecordNotFound
+      flash[:alert] = t('repository.undestroy.failure')
+      redirect_to Repository
+    end
   end
 
+  protected
+
+  def resource
+    path = params[:repository_id] || params[:id]
+    @repository ||= Repository.find_by_path(path)
+  end
+
+  def collection
+    super.active.order(:name)
+  end
 end

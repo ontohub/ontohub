@@ -40,7 +40,10 @@ describe Repository do
       it 'should not raise an error' do
         importing = create :ontology, repository: repository
         create :mapping, target: importing, source: ontology, kind: 'import'
-        expect { repository.destroy_asynchronously }.not_to raise_error
+        Sidekiq::Testing.fake! do
+          repository.destroy_asynchronously
+          expect { RepositoryDeletionWorker.drain }.not_to raise_error
+        end
       end
     end
 
@@ -50,10 +53,18 @@ describe Repository do
         importing   = create :ontology, repository: repository2
         create :mapping, target: importing, source: ontology, kind: 'import'
         expect { repository.destroy_asynchronously }.
-          to raise_error(Ontology::DeleteError)
+          to(raise_error(Repository::DeleteError))
       end
     end
-  end
+
+    it 'should be removed' do
+      Sidekiq::Testing.fake! do
+        repository.destroy_asynchronously
+        RepositoryDeletionWorker.drain
+        expect { repository.reload }.
+          to raise_error(ActiveRecord::RecordNotFound)
+      end
+    end
 
   context 'permissions' do
     context 'creating a permission' do

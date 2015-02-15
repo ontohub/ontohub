@@ -4,13 +4,16 @@
       - additional_actions.each do |action_link|
         = action_link
     .pull-right
-      - if resource.can_be_deleted?
+      - if resource.is_destroying?
+        = modal_button(t('repository.undelete.button'), btn_class: 'btn-primary')
+        = repository_undelete_modal_body
+      - elsif resource.can_be_deleted?
         = modal_button(t('repository.delete'), btn_class: 'btn-danger')
         = repository_modal_body
       - else
         .btn.btn-danger.tooltip-btn{ disabled: true, data: { toggle: 'tooltip', :'original-title' => t('repository.delete_error'), container: 'body' } }
           %span.allow-tooltips
-            =t('repository.delete')
+            = t('repository.delete')
   %nav
     %ul.nav.nav-tabs
       - pages.each do |page, path, count|

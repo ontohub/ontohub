@@ -24,7 +24,9 @@ class Repository < ActiveRecord::Base
                   :source_address,
                   :is_destroying,
                   :remote_type,
-                  :access
+                  :access,
+                  :destroy_job_id,
+                  :is_destroying
   attr_accessor :user
 
   after_save :clear_readers
