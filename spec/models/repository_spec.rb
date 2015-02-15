@@ -65,6 +65,7 @@ describe Repository do
           to raise_error(ActiveRecord::RecordNotFound)
       end
     end
+  end
 
   context 'permissions' do
     context 'creating a permission' do
