@@ -12,7 +12,9 @@ class Ability
       # Repositories
       can [:create], Repository
       can :show, Repository do |subject|
-        if subject.is_private
+        if subject.is_destroying
+          subject.permission?(:owner, user)
+        elsif subject.is_private
           subject.permission?(:reader, user) ||
           subject.permission?(:editor, user) ||
           subject.permission?(:owner, user)
@@ -25,6 +27,8 @@ class Ability
           false
         elsif subject.private_r?
           false
+        elsif subject.is_destroying
+          subject.permission?(:owner, user)
         elsif subject.private_rw?
           subject.permission?(:editor, user)
         else
@@ -118,7 +122,7 @@ class Ability
       can :read, Category
     else
       can :show, Repository do |subject|
-        !subject.is_private
+        !subject.is_private && !subject.is_destroying
       end
 
       can :read, Project
