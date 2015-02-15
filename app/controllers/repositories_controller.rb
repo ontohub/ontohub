@@ -54,6 +54,6 @@ class RepositoriesController < InheritedResources::Base
   end
 
   def collection
-    super.order(:name)
+    super.active.order(:name)
   end
 end

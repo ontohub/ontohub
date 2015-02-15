@@ -14,10 +14,10 @@ module Repository::Access
   DEFAULT_OPTION = OPTIONS[0]
 
   included do
-    scope :pub, where("access NOT LIKE 'private%'")
+    scope :pub, ->() { active.where("access NOT LIKE 'private%'") }
     scope :accessible_by, ->(user) do
       if user
-        where("access NOT LIKE 'private%'
+        active.where("access NOT LIKE 'private%'
           OR id IN (SELECT item_id FROM permissions WHERE item_type = 'Repository' AND subject_type = 'User' AND subject_id = ?)
           OR id IN (SELECT item_id FROM permissions INNER JOIN team_users ON team_users.team_id = permissions.subject_id AND team_users.user_id = ?
             WHERE  item_type = 'Repository' AND subject_type = 'Team')", user, user)
