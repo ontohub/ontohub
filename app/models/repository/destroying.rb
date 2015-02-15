@@ -6,10 +6,9 @@ module Repository::Destroying
   included do
     scope :destroying, ->() { unscoped.where(is_destroying: true) }
     scope :active, ->() { where(is_destroying: false) }
-    default_scope ->() { active }
 
     def self.find_deleted_repository_with_owner(path, user)
-      repository = Repository.unscoped.find_by_path(path)
+      repository = Repository.find_by_path(path)
       if user.owned_ids('Repository').include?(repository.id)
         repository
       end
