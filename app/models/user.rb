@@ -70,7 +70,13 @@ class User < ActiveRecord::Base
   def accessible_ids(type)
     user_permissions = permissions.where(item_type: type)
     user_permissions += team_permissions.where(item_type: type)
-    user_permissions.map{|p| p.item_id}
+    user_permissions.map(&:item_id)
+  end
+
+  def owned_ids(type)
+    user_permissions = permissions.where(item_type: type, role: 'owner')
+    user_permissions += team_permissions.where(item_type: type, role: 'owner')
+    user_permissions.map(&:item_id)
   end
 
   def accessible_ontologies
@@ -79,6 +85,10 @@ class User < ActiveRecord::Base
 
   def accessible_repositories
     Repository.where(id: accessible_ids('Repository'))
+  end
+
+  def owned_deleted_repositories
+    Repository.destroying.where(id: owned_ids('Repository'))
   end
 
   protected
