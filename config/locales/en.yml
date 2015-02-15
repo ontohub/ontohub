@@ -35,6 +35,16 @@ en:
   repository:
     delete: Delete Repository
     delete_error: "Can't delete repository: It contains %{oms} that is imported by another repository."
+    deleted: Deleted
+    deleting_at: 'This repository will be deleted irreversibly '
+    undelete:
+      headline: Undelete Repository
+      description:
+        If you undelete this repository, it will be accessible again with the same permissions as before the deletion.
+      button: Undelete Repository
+    undestroy:
+      success: Successfully undeleted the Repository.
+      failure: Cannot undelete the Repository - It has already been completely removed.
     errors: Errors
     permissions: Permissions
     edit: Edit repository

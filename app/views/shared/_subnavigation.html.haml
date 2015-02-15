@@ -2,6 +2,7 @@
 
   %h1
     = fancy_link resource
+    = render partial: 'repositories/deleting_label', locals: {resource: resource}
 
   %nav
     %ul.nav.nav-tabs
