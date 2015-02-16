@@ -7,9 +7,46 @@ Specroutes.define(Ontohub::Application.routes) do
 
   # IRI Routing #
   ###############
-  #
   # as per Loc/Id definition
 
+  # Special (/ref-based) Loc/Id routes
+  specified_get '/ref/:reference/:repository_id/*locid' => 'ontologies#show',
+    as: :ontology_iri_versioned,
+    constraints: [
+      RefLocIdRouterConstraint.new(Ontology, ontology: :id),
+      MIMERouterConstraint.new('text/plain', 'text/html')
+    ]
+
+  # MMT-Support
+  specified_get '/ref/mmt/:repository_id/*path' => 'ontologies#show',
+    as: :ontology_iri_mmt,
+    constraints: [
+      MMTRouterConstraint.new(Ontology, ontology: :id),
+      MIMERouterConstraint.new('text/plain', 'text/html')
+    ]
+
+  specified_get '/ref/mmt/:repository_id/*path' => 'mappings#show',
+    as: :ontology_iri_mmt,
+    constraints: [
+      MMTRouterConstraint.new(Mapping, ontology: :ontology_id, element: :id),
+      MIMERouterConstraint.new('text/plain', 'text/html')
+    ]
+
+  specified_get '/ref/mmt/:repository_id/*path' => 'symbols#index',
+    as: :ontology_iri_mmt,
+    constraints: [
+      MMTRouterConstraint.new(OntologyMember::Symbol, ontology: :ontology_id),
+      MIMERouterConstraint.new('text/plain', 'text/html')
+    ]
+
+  specified_get '/ref/mmt/:repository_id/*path' => 'sentences#index',
+    as: :ontology_iri_mmt,
+    constraints: [
+      MMTRouterConstraint.new(Sentence, ontology: :ontology_id),
+      MIMERouterConstraint.new('text/plain', 'text/html')
+    ]
+
+  # Subsites for ontologies
   ontology_subsites = %i(
     mappings symbols children
     sentences theorems comments
@@ -25,6 +62,8 @@ Specroutes.define(Ontohub::Application.routes) do
       ]
   end
 
+  # Loc/Id-Show(-equivalent) routes
+  ######
   specified_get '/:repository_id/*locid' => 'ontologies#show',
     as: :ontology_iri,
     constraints: [
@@ -53,13 +92,6 @@ Specroutes.define(Ontohub::Application.routes) do
       MIMERouterConstraint.new('text/plain', 'text/html'),
     ]
 
-  get 'ref/:version_number/:repository_id(/*path)/:file',
-    controller:  :ontologies,
-    action:      :show,
-    as:          :versioned_ontology_iri,
-    constraints: GroupedConstraint.new(
-      RefIRIRouterConstraint.new,
-      MIMERouterConstraint.new('text/plain', 'text/html'))
   #
   ###############
 

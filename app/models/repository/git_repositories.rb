@@ -104,9 +104,7 @@ module Repository::GitRepositories
   end
 
   def create_ontology(filepath, iri, locid)
-    clazz = Ontology.file_extensions_distributed.include?(
-      File.extname(filepath)) ? DistributedOntology : SingleOntology
-    ontology = clazz.new
+    ontology = corresponding_ontology_klass(filepath).new
 
     ontology.basepath = File.basepath(filepath)
     ontology.file_extension = File.extname(filepath)
@@ -118,6 +116,12 @@ module Repository::GitRepositories
     ontology.save!
 
     ontology
+  end
+
+  def corresponding_ontology_klass(filepath)
+    is_distributed = Ontology.file_extensions_distributed.
+      include?(File.extname(filepath))
+    is_distributed ? DistributedOntology : SingleOntology
   end
 
   def create_version(ontology, commit_oid, ontology_version_options)

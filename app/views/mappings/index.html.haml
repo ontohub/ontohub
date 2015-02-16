@@ -23,11 +23,11 @@
         %h4 Target
       .col-md-2
         %h4 Target-Symbol
-    - hash = sort_link_list(@mappings)
+    - hash = sort_mapping_list(@mappings)
     - hash.each do |key, array|
       .row.center-row
         .col-md-2
-          = link_to array.first[:mapping], array.first[:mapping]
+          = fancy_link array.first[:mapping]
         .col-md-2
           = fancy_link array.first[:mapping].source
         .col-md-2

@@ -1,12 +1,20 @@
 class RouterConstraint
+  def params(request)
+    request.send(:env)["action_dispatch.request.path_parameters"]
+  end
+
   def set_path_parameters(request, new_params)
-    params     = request.send(:env)["action_dispatch.request.path_parameters"]
+    params = params(request)
     controller = params[:controller]
     action     = params[:action]
 
     params.except!(*params.keys).merge!(
       controller: controller,
       action:     action).merge!(new_params)
+  end
+
+  def add_path_parameters(request, add_params)
+    set_path_parameters(request, params(request).merge(add_params))
   end
 end
 
@@ -58,10 +66,31 @@ class LocIdRouterConstraint < RouterConstraint
       path_params[@map[:ontology]] = ontology.id if @map[:ontology]
       path_params[@map[:element]] = element.id if @map[:element]
 
-      set_path_parameters(request, path_params)
+      add_path_parameters(request, path_params)
     end
 
     return result
+  end
+end
+
+class RefLocIdRouterConstraint < LocIdRouterConstraint
+  def matches?(request)
+    params = params(request)
+    result = OntologyVersionFinder.
+      applicable_reference?(params[:reference])
+    path = request.original_fullpath.sub(%r{\A/ref/[^/]+}, '')
+    result && super(request, path)
+  end
+end
+
+class MMTRouterConstraint < LocIdRouterConstraint
+  def matches?(request)
+    path = request.original_fullpath.
+      # Convert MMT to standard Loc/Id
+      gsub(/\?+/, '//').
+      # Prune ref-portion
+      sub('/ref/mmt', '')
+    super(request, path)
   end
 end
 
