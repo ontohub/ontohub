@@ -2,7 +2,7 @@ class Repository < ActiveRecord::Base
   include Permissionable
   include Repository::Access
   include Repository::Destroying
-  include Repository::GitRepositories
+  include Repository::Git
   include Repository::Importing
   include Repository::Ontologies
   include Repository::Scopes
