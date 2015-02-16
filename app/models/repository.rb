@@ -28,6 +28,7 @@ class Repository < ActiveRecord::Base
                   :is_destroying
   attr_accessor :user
 
+  before_validation :set_path
   after_save :clear_readers
 
   scope :latest, order('updated_at DESC')
@@ -42,5 +43,9 @@ class Repository < ActiveRecord::Base
 
   def blank?
     !self
+  end
+
+  def set_path
+    self.path ||= name.parameterize if name
   end
 end

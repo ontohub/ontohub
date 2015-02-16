@@ -27,11 +27,6 @@ module Repository::Importing
       .where(state: 'done')
     }
 
-    validates_inclusion_of :state,       in: STATES
-    validates_with SourceTypeValidator, if: :source_address?
-    validates_presence_of :remote_type, if: :source_address?
-    validates_with RemoteTypeValidator
-
     before_validation :clean_and_initialize_record
     after_create ->() { async_remote :clone }, if: :source_address?
   end
@@ -123,29 +118,6 @@ module Repository::Importing
   end
 
   protected
-
-  class RemoteTypeValidator < ActiveModel::Validator
-    def validate(record)
-      if REMOTE_TYPES.include?(record.remote_type) &&
-        !record.source_address.present?
-        record.errors[:remote_type] =
-          "Source address not set for #{record.remote_type}"
-      elsif record.remote_type == 'mirror' && !record.source_type?
-        record.errors[:remote_type] =
-          "Source type not set for #{record.remote_type}"
-      end
-    end
-  end
-
-  class SourceTypeValidator < ActiveModel::Validator
-    def validate(record)
-      if record.mirror? && !record.source_type.present?
-        record.errors[:source_address] = 'not a valid remote repository '\
-          "(types supported: #{SOURCE_TYPES.join(', ')})"
-        record.errors[:source_type] = "not present"
-      end
-    end
-  end
 
   def clean_and_initialize_record
     self.remote_type = nil unless source_address?
