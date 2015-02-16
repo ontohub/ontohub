@@ -5,23 +5,23 @@ class Ontology < ActiveRecord::Base
   include Metadatable
 
   # Ontology Model Includes
-  include Ontology::Import
-  include Ontology::Associations
-  include Ontology::Scopes
-  include Ontology::Validations
-  include Ontology::States
-  include Ontology::Versions
-  include Ontology::Symbols
-  include Ontology::Sentences
-  include Ontology::Mappings
-  include Ontology::Distributed
-  include Ontology::Categories
-  include Ontology::Oops
-  include Ontology::FileExtensions
-  include Ontology::Searching
-  include Ontology::OwlClasses
-  include IRIUrlBuilder::Includeable
   include GraphStructures::SpecificFetchers::Mappings
+  include IRIUrlBuilder::Includeable
+  include Ontology::Associations
+  include Ontology::Categories
+  include Ontology::Distributed
+  include Ontology::FileExtensions
+  include Ontology::Import
+  include Ontology::Mappings
+  include Ontology::Oops
+  include Ontology::OwlClasses
+  include Ontology::Scopes
+  include Ontology::Searching
+  include Ontology::Sentences
+  include Ontology::States
+  include Ontology::Symbols
+  include Ontology::Validations
+  include Ontology::Versions
 
   # Multiple Class Features
   include Aggregatable
