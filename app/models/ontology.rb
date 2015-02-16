@@ -45,7 +45,8 @@ class Ontology < ActiveRecord::Base
 
   has_and_belongs_to_many :license_models
 
-  attr_accessible :iri, :name, :description, :acronym, :documentation,
+  attr_accessible :iri, :locid
+  attr_accessible :name, :description, :acronym, :documentation,
                   :logic_id,
                   :category_ids,
                   :acronym,
@@ -130,6 +131,11 @@ class Ontology < ActiveRecord::Base
     child_name.include?("://") ? child_name : "#{iri}?#{child_name}"
   end
 
+  def locid_for_child(child_name)
+    child_name = child_name[1..-2] if child_name[0] == '<'
+    child_name.include?('://') ? child_name : "#{locid}//#{child_name}"
+  end
+
   def is?(logic_name)
     self.logic ? (self.logic.name == logic_name) : false
   end
@@ -145,6 +151,17 @@ class Ontology < ActiveRecord::Base
   # Title for mappings
   def title
     name? ? iri : nil
+  end
+
+  def self.find_with_locid(locid, iri = nil)
+    ontology = where(locid: locid).first
+
+    if ontology.nil? && iri
+      ontology = AlternativeIri.where('iri LIKE ?', '%' << iri).
+        first.try(:ontology)
+    end
+
+    ontology
   end
 
   def self.find_with_iri(iri)
@@ -249,6 +266,12 @@ class Ontology < ActiveRecord::Base
 
   def file_in_repository
     repository.get_file(path)
+  end
+
+  # Uses where in order to force a Relation as a result
+  def formality_levels
+    FormalityLevel.joins(:ontologies).
+      where(ontologies: {id: self})
   end
 
   protected

@@ -1,6 +1,6 @@
 - if node
   %li{id: node.id}
     %a
-      = node
+      = link_to node, locid_for(node.symbols.first)
     %ul 
       = render partial: 'node', collection: node.children.to_a

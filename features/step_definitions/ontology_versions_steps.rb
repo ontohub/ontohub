@@ -1,5 +1,6 @@
 Given(/^there is a distributed ontology$/) do
   @distributed_ontology = FactoryGirl.create :distributed_ontology, :with_versioned_children
+  @ontology = @distributed_ontology
 end
 
 When(/^i visit the versions tab of a child ontology$/) do

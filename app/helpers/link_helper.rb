@@ -12,27 +12,25 @@ module LinkHelper
   def fancy_link(resource)
     return nil unless resource
 
-    clazz = resource.class
-    clazz = 'Ontology' if clazz.to_s.include?('Ontology')
     data_type, value = determine_image_type(resource)
 
     name = block_given? ? yield(resource) : resource
 
-    if resource.is_a? Array
-      title = resource.last.respond_to?(:title) ? resource.last.title : nil
-    else
-      title = resource.respond_to?(:title) ? resource.title : nil
-    end
+    title_target = resource.respond_to?(:last) ? resource.last : resource
+    title = title_target.title if title_target.respond_to?(:title)
 
-    if resource.is_a? Ontology
-      linked_to = repository_ontology_path(resource.repository, resource)
-    else
-      linked_to = resource
-    end
+    linked_to =
+      if resource.respond_to?(:locid)
+        locid_for(resource)
+      elsif resource.is_a?(Ontology)
+        repository_ontology_path(resource.repository, resource)
+      else
+        resource
+      end
 
     link_to name, linked_to,
       data_type => value,
-      :title    => title
+      title: title
   end
 
   def format_links(*args, &block)

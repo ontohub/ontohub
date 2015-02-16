@@ -38,11 +38,37 @@ class FilesRouterConstraint < RouterConstraint
   end
 end
 
+class LocIdRouterConstraint < RouterConstraint
+  def initialize(find_in_klass, **map)
+    @find_in_klass = find_in_klass
+    @map = map
+    super()
+  end
+
+  def matches?(request, path = nil)
+    path ||= request.original_fullpath
+    # retrieves the hierarchy and member portions of loc/id's
+    hierarchy_member = path.split('?', 2).first.split('///', 2).first
+    element = @find_in_klass.find_with_locid(hierarchy_member)
+    ontology = element.respond_to?(:ontology) ? element.ontology : element
+    result = !ontology.nil?
+
+    if result
+      path_params = {repository_id: ontology.repository.to_param}
+      path_params[@map[:ontology]] = ontology.id if @map[:ontology]
+      path_params[@map[:element]] = element.id if @map[:element]
+
+      set_path_parameters(request, path_params)
+    end
+
+    return result
+  end
+end
 
 class IRIRouterConstraint < RouterConstraint
   def matches?(request, path = nil)
     path ||= request.original_fullpath
-    ontology = Ontology.find_with_iri(path)
+    ontology = Ontology.find_with_locid(path.split('?', 2).first)
     result = !ontology.nil?
 
     if result
@@ -57,7 +83,7 @@ end
 class RefIRIRouterConstraint < IRIRouterConstraint
   def matches?(request)
     # remove the ref/:version_number portion from path
-    path = request.original_fullpath.sub(%r{\A/ref/\d+/}, '')
+    path = request.original_fullpath.sub(%r{\A/ref/\d+}, '')
     super(request, path)
   end
 end
@@ -70,8 +96,11 @@ class MIMERouterConstraint < RouterConstraint
     super()
   end
 
+  # In some cases request.accepts == [nil] (e.g. cucumber tests),
+  # in these cases we will default to true.
   def matches?(request)
-    mime_types.any? { |m| request.accepts.first == m }
+    highest_mime = request.accepts.first
+    highest_mime ? mime_types.any? { |m| highest_mime == m } : true
   end
 end
 
