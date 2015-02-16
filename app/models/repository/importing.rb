@@ -18,15 +18,6 @@ module Repository::Importing
   included do
     include StateUpdater
 
-    scope :with_source, where("source_type IS NOT null")
-
-    # Ready for pulling
-    scope :outdated, ->{
-      with_source
-      .where("imported_at IS NULL or imported_at < ?", IMPORT_INTERVAL.ago )
-      .where(state: 'done')
-    }
-
     before_validation :clean_and_initialize_record
     after_create ->() { async_remote :clone }, if: :source_address?
   end
