@@ -7,6 +7,7 @@ class Ontology < ActiveRecord::Base
   # Ontology Model Includes
   include Ontology::Import
   include Ontology::Scopes
+  include Ontology::Validations
   include Ontology::States
   include Ontology::Versions
   include Ontology::Symbols
@@ -59,15 +60,6 @@ class Ontology < ActiveRecord::Base
                   :formality_level_id,
                   :task_ids,
                   :project_ids
-
-  validates_uniqueness_of :iri, :if => :iri_changed?
-  validates_format_of :iri, :with => URI::regexp(Settings.allowed_iri_schemes)
-
-  validates :documentation,
-    allow_blank: true,
-    format: { with: URI::regexp(Settings.allowed_iri_schemes) }
-
-  validates_presence_of :basepath
 
   delegate :permission?, to: :repository
 
