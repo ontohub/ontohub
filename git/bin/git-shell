@@ -17,7 +17,7 @@ begin
 
   GitShell.new(key_id, command).exec
 rescue StandardError, ScriptError => error
-  Rails.logger.error do
+  Settings.git.logger.error do
     <<-ERROR
 Could not perform git push for
   Key-Id:<#{key_id}> and command:<#{command}>.

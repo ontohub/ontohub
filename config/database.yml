@@ -2,11 +2,14 @@
 # Other DBMS (for example MySQL) are NOT supported.
 #
 development: &config
+  # the directory containing the postgres DB socket
+  # see /etc/postgresql/${vers}/main/postgresql.conf:unix_socket_directories
+  host: /var/run/postgresql
   adapter: postgresql
   encoding: unicode
   template: template0
   database: ontohub_development
-  username: postgres
+  username: ontohub
   password:
   pool: 5
 

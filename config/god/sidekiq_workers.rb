@@ -17,6 +17,10 @@ class SidekiqWorkers < Watcher
   end
 
   def pid_file
-    File.join(RAILS_ROOT, "tmp/pids/sidekiq-#{count}.pid")
+    if ! defined?(AppConfig)
+      require File.expand_path('../../../lib/environment_light', __FILE__)
+    end
+    AppConfig::init
+    File.join(AppConfig.root, "tmp/pids/sidekiq-#{count}.pid")
   end
 end

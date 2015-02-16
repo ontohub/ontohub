@@ -1,23 +1,29 @@
+require File.expand_path('../../../lib/environment_light', __FILE__)
 require File.expand_path('../sidekiq_workers',  __FILE__)
 require File.expand_path('../hets_workers',  __FILE__)
 
-RAILS_ROOT = ENV['RAILS_ROOT'] || File.dirname(__FILE__) + '/../..'
+AppConfig::load
 
 # High load workers (except hets) are: sequential and priority_push.
 HIGH_LOAD_WORKERS_COUNT = 2
+DEFAULT_WORKERS_COUNT = 4
 
-God.pid_file_directory = File.join(RAILS_ROOT, 'tmp/pids/')
+God.pid_file_directory = File.join(AppConfig.root, 'tmp', 'pids')
 
+# Gets the number of hets processes to use. The value of the global Option
+# Settings.hets.workers (if available, otherwise 4) gets used as an upper
+# limit when the result gets calculated.
+# @return [Integer] the number of additional hets workers
 def hets_workers_count
-  yaml = YAML.load_file(File.join(RAILS_ROOT, 'config', 'settings.yml'))
-
   min_workers = 1
   max_workers = [`nproc`.to_i - HIGH_LOAD_WORKERS_COUNT, min_workers].max
-  [yaml['workers']['hets'], max_workers].min
+  hets = Object.const_defined?('Settings') ? Settings.hets : nil
+  default = (hets && hets.workers) ? hets.workers : DEFAULT_WORKERS_COUNT
+  [default, max_workers].min
 end
 
 SidekiqWorkers.configure do
-  if ENV['RAILS_ENV']=='production'
+  if AppConfig.env == 'production'
     # one worker per core
     hets_workers_count.times.each do
       watch 'hets', 1

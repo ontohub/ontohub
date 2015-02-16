@@ -29,7 +29,7 @@ class GitShell
         process_cmd
       else
         message = "git-shell: Access denied for git command <#{@command}> by #{log_username}."
-        Rails.logger.warn message
+        Settings.git.logger.warn message
         STDERR.puts <<-MSG
 Access denied.
 Please take a look at
@@ -39,7 +39,7 @@ for more information about permissions."
       end
     else
       message = "git-shell: Attempt to execute disallowed command <#{@command}> by #{log_username}."
-      Rails.logger.warn message
+      Settings.git.logger.warn message
       STDERR.puts 'Not allowed command'
     end
   end
@@ -53,7 +53,8 @@ for more information about permissions."
   def process_cmd
     repo_full_path = File.join(repos_path, repo_name)
     cmd = "#{@git_cmd} #{repo_full_path}"
-    Rails.logger.info "git-shell: executing git command <#{cmd}> for #{log_username}."
+    Settings.git.logger.info \
+      "git-shell: executing git command <#{cmd}> for #{log_username}."
     exec_cmd(cmd)
   end
 

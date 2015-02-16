@@ -8,25 +8,30 @@ module Hets
 
     VERSION_RE = %r{v\d+\.\d+,\s*(\d+)$}
 
-    attr_reader :path, :library_path, :stack_size, :env, :yaml
+    attr_reader :path, :library_path, :stack_size, :env
 
     def initialize
-      yaml = YAML.load_file(File.join(Rails.root, 'config', 'hets.yml'))
+      if ! defined?(AppConfig)
+        require File.expand_path('../environment_light', __FILE__)
+      end
+      old = AppConfig::setName('HetsSettings')
+      AppConfig::load(false, 'config/hets.yml')
+      AppConfig::setName(old)
 
-      @path         = first_which_exists yaml['hets_path']
-      @library_path = first_which_exists yaml['hets_lib']
-      @stack_size   = yaml['stack_size'] || '1G'
-      @env          = yaml['env'] || {}
-      @yaml         = yaml
+      @path         = HetsSettings.hets_path
+      @library_path = HetsSettings.hets_lib
+      @stack_size   = HetsSettings.stack_size || '1G'
+      @env          = HetsSettings.env || {}
 
+      # TBD: not very smart - assume reasonable defaults!
       raise Hets::DeploymentError, 'Could not find hets'     unless @path
       raise Hets::DeploymentError, 'Hets library not found.' unless @library_path
 
-      check_validity_of_version(yaml['version_minimum_revision'])
+      check_validity_of_version(HetsSettings.version_minimum_revision)
 
       # Set hets environment variables
       %w( hets_lib hets_owl_tools ).each do |key|
-        @env[key.upcase] = first_which_exists yaml[key]
+        @env[key.upcase] = first_which_exists HetsSettings[key]
       end
 
     end
@@ -36,11 +41,11 @@ module Hets
     end
 
     def minimum_version
-      yaml['version_minimum_version']
+      HetsSettings.version_minimum_version
     end
 
     def minimum_revision
-      yaml['version_minimum_revision']
+      HetsSettings.version_minimum_revision
     end
 
 
@@ -55,7 +60,7 @@ module Hets
     # * - false otherwise
     def is_compatible?(minimum_revision)
       # Read Hets version minimum revision
-      raise ConfigDateFormatError, 'Could not read hets version minimum revision in YAML' unless minimum_revision
+      raise ConfigDateFormatError, 'No "version_minimum_version:" found within settings' unless minimum_revision
 
       # Read Hets version date
       version = `#{@path} -V`

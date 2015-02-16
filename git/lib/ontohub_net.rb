@@ -42,13 +42,13 @@ class OntohubNet
   end
 
   def get(url)
-    Rails.logger.debug "Performing GET #{url}"
+    Settings.git.logger.debug "Performing GET #{url}"
 
     url  = URI.parse(url)
 
     response = fetch_uri_content(url, limit: NO_REDIRECT)
 
-    Rails.logger.debug do
+    Settings.git.logger.debug do
       <<-MSG
 Received response #{response.code} => <#{response.body}>.
       MSG
@@ -56,7 +56,7 @@ Received response #{response.code} => <#{response.body}>.
     response
   rescue UriFetcher::TooManyRedirectionsError => error
     response = error.last_response
-    Rails.logger.error do
+    Settings.git.logger.error do
       <<-ERROR
 API call <GET #{url}> failed:
   #{response.code} => <#{response.body}>.

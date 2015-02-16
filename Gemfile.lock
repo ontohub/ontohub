@@ -18,6 +18,14 @@ GIT
     jstree-rails (0.0.1)
       rails (>= 3.1)
 
+GIT
+  remote: https://github.com/railsconfig/rails_config.git
+  revision: 8754207cdd8d0e333ebc8192e5f0c4b435a966cc
+  tag: v0.5.0.beta1
+  specs:
+    rails_config (0.5.0.beta1)
+      activesupport (>= 3.0)
+
 GEM
   remote: https://rubygems.org/
   specs:
@@ -323,8 +331,6 @@ GEM
       activesupport (>= 3.0)
       choice (~> 0.1.6)
       ruby-graphviz (~> 1.0.4)
-    rails_config (0.3.4)
-      activesupport (>= 3.0)
     railties (3.2.19)
       actionpack (= 3.2.19)
       activesupport (= 3.2.19)
@@ -528,7 +534,7 @@ DEPENDENCIES
   rack-protection (~> 1.5.3)
   rails (~> 3.2.19)
   rails-erd (~> 1.1.0)
-  rails_config (~> 0.3.0)
+  rails_config!
   rdf (~> 1.1.4.3)
   rdf-n3 (~> 1.1.1)
   rdf-rdfxml (~> 1.1.0.1)
