@@ -94,25 +94,29 @@ module LinkHelper
     end
   end
 
-  def sort_link_list(collection)
+  def sort_mapping_list(collection)
     hash = {}
 
-    collection.each_with_index do |link, i|
-      if link.symbol_mappings.empty?
-        hash["empty#{i}"] = [{link: link, target: ""}]
+    collection.each_with_index do |mapping, i|
+      if mapping.symbol_mappings.empty?
+        hash["empty#{i}"] = [{mapping: mapping, target: ''}]
       else
-        link.symbol_mappings.each do |mapping|
-          sym =  mapping.source.to_s.to_sym
-          if hash[sym]
-            hash[sym] << {link: link, target: mapping.target}
-          else
-            hash[sym] = [{link: link, target: mapping.target}]
-          end
+        mapping.symbol_mappings.each do |symbol_mapping|
+          sort_mapping_list_for_symbol_mapping(hash, mapping, symbol_mapping)
         end
       end
     end
 
     hash
+  end
+
+  def sort_mapping_list_for_symbol_mapping(hash, mapping, symbol_mapping)
+    sym =  symbol_mapping.source.to_s.to_sym
+    if hash[sym]
+      hash[sym] << {mapping: mapping, target: symbol_mapping.target}
+    else
+      hash[sym] = [{mapping: mapping, target: symbol_mapping.target}]
+    end
   end
 
   def wiki_link(controller, action)
