@@ -11,8 +11,13 @@ class HetsWorkers < Watcher
   end
 
   def hets_server_options
-    yml_file = File.join(RAILS_ROOT, 'config', 'hets.yml')
-    YAML.load_file(yml_file)['server_options'] || []
+    if ! defined?(AppConfig)
+      require File.expand_path('../../../lib/environment_light', __FILE__)
+    end
+    old = AppConfig::setName('HetsSettings')
+    AppConfig::load(false, 'config/hets.yml')
+    AppConfig::setName(old)
+    HetsSettings.server_options || []
   end
 
   def pid_file

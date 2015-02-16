@@ -1,6 +1,4 @@
 class Watcher
-  RAILS_ROOT = ENV['RAILS_ROOT'] || File.dirname(__FILE__) + '/../..'
-
   attr_accessor :count
 
   def self.configure(&block)
@@ -23,8 +21,13 @@ class Watcher
   def watch(*args)
     self.count += 1
 
+    if ! defined?(AppConfig)
+      require File.expand_path('../../../lib/environment_light', __FILE__)
+    end
+    AppConfig::init
+
     God.watch do |w|
-      w.dir           = RAILS_ROOT
+      w.dir           = AppConfig.root
       w.group         = group
       w.name          = "#{group}-#{@count}"
       w.pid_file      = pid_file if pid_file

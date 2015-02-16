@@ -37,9 +37,9 @@ end
 gem 'haml-rails', '~> 0.4'
 
 # Project configuration
-# Version above and including 0.4 requires rails
-# which is a problem in git-hooks
-gem 'rails_config', '~> 0.3.0'
+# v0.4.x requires ::Rails to be defined, which is a problem wrt. git-hooks
+# (see lib/environment_light.rb). So we use 5.x, which is smarter anyway:
+gem 'rails_config', :git => 'https://github.com/railsconfig/rails_config.git', :tag => 'v0.5.0.beta1'
 
 #provides  correct indefinite article 
 gem 'indefinite_article', '~> 0.2.0'
