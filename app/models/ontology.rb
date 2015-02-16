@@ -16,10 +16,6 @@ class Ontology < ActiveRecord::Base
   include Ontology::Distributed
   include Ontology::Categories
   include Ontology::Oops
-  include Ontology::Projects
-  include Ontology::Tools
-  include Ontology::Tasks
-  include Ontology::LicenseModels
   include Ontology::FileExtensions
   include Ontology::Searching
   include Ontology::OwlClasses
@@ -43,8 +39,11 @@ class Ontology < ActiveRecord::Base
     class_name: 'Mapping', foreign_key: 'source_id', dependent: :destroy
   has_many :target_mappings,
     class_name: 'Mapping', foreign_key: 'target_id', dependent: :destroy
+  has_many :tools
 
   has_and_belongs_to_many :license_models
+  has_and_belongs_to_many :projects
+  has_and_belongs_to_many :tasks
 
   attr_accessible :iri, :locid
   attr_accessible :name, :description, :acronym, :documentation,
