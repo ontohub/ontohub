@@ -4,10 +4,6 @@ module Ontology::States
   STATES = State::STATES
 
   included do
-    scope :state, ->(*states){
-      where state: states.map(&:to_s)
-    }
-
     STATES.each do |state|
       eval "def #{state}?; state == '#{state}'; end"
     end

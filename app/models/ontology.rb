@@ -65,40 +65,6 @@ class Ontology < ActiveRecord::Base
 
   strip_attributes :only => [:name, :iri]
 
-  scope :list, includes(:logic).
-    order('ontologies.state asc, ontologies.symbols_count desc')
-
-  scope :with_path, ->(path) do
-    condition = <<-CONDITION
-      ("ontology_versions"."file_extension" = :extname)
-        OR (("ontology_versions"."file_extension" IS NULL)
-          AND ("ontologies"."file_extension" = :extname))
-    CONDITION
-
-    with_basepath(File.basepath(path)).
-      where(condition, extname: File.extname(path)).
-      readonly(false)
-  end
-
-  scope :with_basepath, ->(path) do
-    join = <<-JOIN
-      LEFT JOIN "ontology_versions"
-      ON "ontologies"."ontology_version_id" = "ontology_versions"."id"
-    JOIN
-
-    condition = <<-CONDITION
-      ("ontology_versions"."basepath" = :path)
-        OR (("ontology_versions"."basepath" IS NULL)
-          AND ("ontologies"."basepath" = :path))
-    CONDITION
-
-    joins(join).where(condition, path: path).readonly(false)
-  end
-
-  scope :parents_first,
-    order('(CASE WHEN ontologies.parent_id IS NULL THEN 1 ELSE 0 END) DESC,'\
-      ' ontologies.parent_id asc')
-
   def repository
     @repository ||= Repository.find(repository_id)
   end
