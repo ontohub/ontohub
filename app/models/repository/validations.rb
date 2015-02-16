@@ -19,36 +19,35 @@ module Repository::Validations
 
     validates_with UnreservedValidator, if: :path_changed?
 
-    validates_inclusion_of :state, in: Repository::Importing::STATES
+    validates :state, inclusion: {in: Repository::Importing::STATES}
     validates_with SourceTypeValidator, if: :source_address?
-    validates_presence_of :remote_type, if: :source_address?
+    validates :remote_type, presence: true, if: :source_address?
     validates_with RemoteTypeValidator
 
     validates_with RemoteAccessValidator
     validates :access,
       presence: true,
-      inclusion: { in: Repository::Access::OPTIONS }
+      inclusion: {in: Repository::Access::OPTIONS}
   end
 
   class RemoteAccessValidator < ActiveModel::Validator
     def validate(record)
       if record.mirror? && (record.private_rw? || record.public_rw?)
-        record.errors[:access] = "Error! Write access is not allowed for a mirrored repositry."
+        record.errors[:access] =
+          'Error! Write access is not allowed for a mirrored repositry.'
       end
     end
   end
 
   class UnreservedValidator < ActiveModel::Validator
     def validate(record)
-      if is_reserved_name?(record.path)
-        record.errors[:name] = "is a reserved name"
-      end
+      record.errors[:name] = 'is a reserved name' if reserved_name?(record.path)
     end
 
     protected
 
     # toplevel namespaces in routing are reserved words
-    def is_reserved_name?(name)
+    def reserved_name?(name)
       RESERVED_NAMES.include?(name)
     end
 
@@ -58,7 +57,8 @@ module Repository::Validations
     end
 
     def self.toplevel_route(route)
-      non_present_to_nil(remove_colon(remove_parens(first_hierarchy_part(route))))
+      non_present_to_nil(remove_colon(remove_parens(first_hierarchy_part(
+        route))))
     end
 
     def self.first_hierarchy_part(route)
@@ -85,7 +85,7 @@ module Repository::Validations
   class NameNotChangedAfterSetValidator < ActiveModel::Validator
     def validate(record)
       if name_was_changed_to_different_name?(record)
-        record.errors[:name] = "we do not allow renaming, right now"
+        record.errors[:name] = 'we do not allow renaming, right now'
       end
     end
 
@@ -121,7 +121,7 @@ module Repository::Validations
       if record.mirror? && !record.source_type.present?
         record.errors[:source_address] = 'not a valid remote repository '\
           "(types supported: #{Repository::Importing::SOURCE_TYPES.join(', ')})"
-        record.errors[:source_type] = "not present"
+        record.errors[:source_type] = 'not present'
       end
     end
   end

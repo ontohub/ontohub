@@ -2,9 +2,7 @@ module Ontology::Scopes
   extend ActiveSupport::Concern
 
   included do
-    equal_scope *%w(
-      repository_id
-    )
+    equal_scope 'repository_id'
 
     scope :without_parent, where('ontologies.parent_id' => nil)
 
@@ -12,8 +10,10 @@ module Ontology::Scopes
       joins(:ontology_version).where('ontology_versions.basepath' => path)
     end
 
-    scope :list, includes(:logic).
-      order('ontologies.state asc, ontologies.symbols_count desc')
+    scope :list, -> do
+      includes(:logic).
+        order('ontologies.state asc, ontologies.symbols_count desc')
+    end
 
     scope :with_path, ->(path) do
       condition = <<-CONDITION
@@ -42,12 +42,15 @@ module Ontology::Scopes
       joins(join).where(condition, path: path).readonly(false)
     end
 
-    scope :parents_first,
+    scope :parents_first, -> do
       order('(CASE WHEN ontologies.parent_id IS NULL THEN 1 ELSE 0 END) DESC,'\
         ' ontologies.parent_id asc')
+    end
 
     # searching scopes
-    scope :filter_by_ontology_type, ->(type_id) { where(ontology_type_id: type_id) }
+    scope :filter_by_ontology_type, ->(type_id) do
+      where(ontology_type_id: type_id)
+    end
 
     scope :filter_by_project, ->(project_id) do
       joins(:projects).where("projects.id = #{project_id}")
@@ -66,8 +69,8 @@ module Ontology::Scopes
     end
 
     # state scopes
-    scope :state, ->(*states){
+    scope :state, ->(*states) do
       where state: states.map(&:to_s)
-    }
+    end
   end
 end
