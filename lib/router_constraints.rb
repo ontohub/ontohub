@@ -1,12 +1,20 @@
 class RouterConstraint
+  def params(request)
+    request.send(:env)["action_dispatch.request.path_parameters"]
+  end
+
   def set_path_parameters(request, new_params)
-    params     = request.send(:env)["action_dispatch.request.path_parameters"]
+    params = params(request)
     controller = params[:controller]
     action     = params[:action]
 
     params.except!(*params.keys).merge!(
       controller: controller,
       action:     action).merge!(new_params)
+  end
+
+  def add_path_parameters(request, add_params)
+    set_path_parameters(request, params(request).merge(add_params))
   end
 end
 
@@ -38,6 +46,53 @@ class FilesRouterConstraint < RouterConstraint
   end
 end
 
+class LocIdRouterConstraint < RouterConstraint
+  def initialize(find_in_klass, **map)
+    @find_in_klass = find_in_klass
+    @map = map
+    super()
+  end
+
+  def matches?(request, path = nil)
+    path ||= request.original_fullpath
+    # retrieves the hierarchy and member portions of loc/id's
+    hierarchy_member = path.split('?', 2).first.split('///', 2).first
+    element = @find_in_klass.find_with_locid(hierarchy_member)
+    ontology = element.respond_to?(:ontology) ? element.ontology : element
+    result = !ontology.nil?
+
+    if result
+      path_params = {repository_id: ontology.repository.to_param}
+      path_params[@map[:ontology]] = ontology.id if @map[:ontology]
+      path_params[@map[:element]] = element.id if @map[:element]
+
+      add_path_parameters(request, path_params)
+    end
+
+    return result
+  end
+end
+
+class RefLocIdRouterConstraint < LocIdRouterConstraint
+  def matches?(request)
+    params = params(request)
+    result = OntologyVersionFinder.
+      applicable_reference?(params[:reference])
+    path = request.original_fullpath.sub(%r{\A/ref/[^/]+}, '')
+    result && super(request, path)
+  end
+end
+
+class MMTRouterConstraint < LocIdRouterConstraint
+  def matches?(request)
+    path = request.original_fullpath.
+      # Convert MMT to standard Loc/Id
+      gsub(/\?+/, '//').
+      # Prune ref-portion
+      sub('/ref/mmt', '')
+    super(request, path)
+  end
+end
 
 class IRIRouterConstraint < RouterConstraint
   def matches?(request, path = nil)
@@ -80,8 +135,11 @@ class MIMERouterConstraint < RouterConstraint
     super()
   end
 
+  # In some cases request.accepts == [nil] (e.g. cucumber tests),
+  # in these cases we will default to true.
   def matches?(request)
-    mime_types.any? { |m| request.accepts.first == m }
+    highest_mime = request.accepts.first
+    highest_mime ? mime_types.any? { |m| highest_mime == m } : true
   end
 end
 

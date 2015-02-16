@@ -51,8 +51,8 @@ class MappingsController < InheritedResources::Base
       collection = super
     end
     @mappings = collection = collection.
-        joins(:source => :logic).order('logics.name DESC')
-    paginate_for(collection.select(&restrict_by_permission))
+        joins(source: :logic).order('logics.name DESC')
+    paginate_for(collection.select { |m| restrict_by_permission(m) })
   end
 
   def build_resource

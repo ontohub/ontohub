@@ -89,8 +89,10 @@ module Repository::GitRepositories
     ontology = find_existing_ontology(ontology_version_options)
 
     if !ontology
-      iri = generate_iri(File.basepath(ontology_version_options.filepath))
-      ontology = create_ontology(ontology_version_options.filepath, iri)
+      basepath = File.basepath(ontology_version_options.filepath)
+      iri = generate_iri(basepath)
+      locid = generate_locid(basepath)
+      ontology = create_ontology(ontology_version_options.filepath, iri, locid)
     end
 
     ontology
@@ -102,20 +104,25 @@ module Repository::GitRepositories
       without_parent.first
   end
 
-  def create_ontology(filepath, iri)
-    clazz = Ontology.file_extensions_distributed.include?(
-      File.extname(filepath)) ? DistributedOntology : SingleOntology
-    ontology = clazz.new
+  def create_ontology(filepath, iri, locid)
+    ontology = corresponding_ontology_klass(filepath).new
 
     ontology.basepath = File.basepath(filepath)
     ontology.file_extension = File.extname(filepath)
     ontology.iri = iri
+    ontology.locid = locid
     ontology.name = filepath.split('/')[-1].split(".")[0].capitalize
     ontology.repository = self
     ontology.present = true
     ontology.save!
 
     ontology
+  end
+
+  def corresponding_ontology_klass(filepath)
+    is_distributed = Ontology.file_extensions_distributed.
+      include?(File.extname(filepath))
+    is_distributed ? DistributedOntology : SingleOntology
   end
 
   def create_version(ontology, commit_oid, ontology_version_options)
@@ -236,6 +243,10 @@ module Repository::GitRepositories
   end
 
   def generate_iri(basepath)
-    "http://#{Settings.hostname}/#{self.path}/#{basepath}"
+    "http://#{Settings.hostname}#{generate_locid(basepath)}"
+  end
+
+  def generate_locid(basepath)
+    "/#{path}/#{basepath}"
   end
 end

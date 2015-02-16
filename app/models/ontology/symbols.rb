@@ -34,6 +34,21 @@ module Ontology::Symbols
       end
 
       e.iri = hash['iri']
+      e.label = hash['label']
+
+      sep = '//'
+      locid_portion =
+        if e.name.include?('://')
+          if e.label
+            e.label
+          else
+            portion = e.name.split('#', 2).last
+            portion.end_with?('>') ? portion[0..-2] : portion
+          end
+        else
+          e.name
+        end
+      e.locid = "#{e.ontology.locid}#{sep}#{locid_portion}"
 
       if e.range.to_s.include?(':')
         # remove path from range

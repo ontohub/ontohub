@@ -28,10 +28,15 @@ class Mapping < ActiveRecord::Base
         end
       end
 
+  attr_accessible :locid
   attr_accessible :iri, :source, :target, :kind, :theorem, :proven, :local,
                   :inclusion, :logic_mapping, :parent, :ontology_id, :source_id,
                   :target_id, :versions_attributes, :versions, :name
   accepts_nested_attributes_for :versions
+
+  def self.find_with_locid(locid, _iri = nil)
+    where(locid: locid).first
+  end
 
   def self.with_ontology_reference(ontology_id)
     Mapping.where('ontology_id = ? OR source_id = ? OR target_id = ?',

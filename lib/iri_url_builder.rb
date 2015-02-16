@@ -13,11 +13,11 @@ module IRIUrlBuilder
     end
 
     def versioned_iri
-      paths.versioned_ontology_iri_url(
+      paths.ontology_iri_versioned_url(
         host: Settings.hostname,
         path: path,
-        file: file,
-        version_number: ontology_version.number,
+        locid: file,
+        reference: ontology_version.number,
         repository_id: repository)
     end
 

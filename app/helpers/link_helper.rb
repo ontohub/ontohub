@@ -12,27 +12,25 @@ module LinkHelper
   def fancy_link(resource)
     return nil unless resource
 
-    clazz = resource.class
-    clazz = 'Ontology' if clazz.to_s.include?('Ontology')
     data_type, value = determine_image_type(resource)
 
     name = block_given? ? yield(resource) : resource
 
-    if resource.is_a? Array
-      title = resource.last.respond_to?(:title) ? resource.last.title : nil
-    else
-      title = resource.respond_to?(:title) ? resource.title : nil
-    end
+    title_target = resource.respond_to?(:last) ? resource.last : resource
+    title = title_target.title if title_target.respond_to?(:title)
 
-    if resource.is_a? Ontology
-      linked_to = repository_ontology_path(resource.repository, resource)
-    else
-      linked_to = resource
-    end
+    linked_to =
+      if resource.respond_to?(:locid)
+        locid_for(resource)
+      elsif resource.is_a?(Ontology)
+        repository_ontology_path(resource.repository, resource)
+      else
+        resource
+      end
 
     link_to name, linked_to,
       data_type => value,
-      :title    => title
+      title: title
   end
 
   def format_links(*args, &block)
@@ -94,29 +92,7 @@ module LinkHelper
     end
   end
 
-  def sort_link_list(collection)
-    hash = {}
-
-    collection.each_with_index do |link, i|
-      if link.symbol_mappings.empty?
-        hash["empty#{i}"] = [{link: link, target: ""}]
-      else
-        link.symbol_mappings.each do |mapping|
-          sym =  mapping.source.to_s.to_sym
-          if hash[sym]
-            hash[sym] << {link: link, target: mapping.target}
-          else
-            hash[sym] = [{link: link, target: mapping.target}]
-          end
-        end
-      end
-    end
-
-    hash
-  end
-
   def wiki_link(controller, action)
     generate_external_link controller, action, 'controller', 'wiki'
   end
-
 end

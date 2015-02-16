@@ -34,7 +34,7 @@
 
 
 %p
-  %span.iri-link= link_to resource.iri, resource.iri
+  %span.iri-link= link_to locid_for(resource), locid_for(resource)
 %p= resource.description
 
 - if resource.oops_supported?
@@ -45,17 +45,17 @@
 
 %nav.nav_tab_level1
   %ul.nav.nav-tabs
-    - @top_level_pages.each do |(page_title, page)|
-      %li{class: page==current_page || in_subcontroller?(page, current_page) ? 'active' : nil}
-        = link_to page_title, [*resource_chain, page]
-  - if %w(symbols sentences theorems children proof_attempts).include?(controller_name)
+    - @top_level_pages.each do |(page_title, page, controller)|
+      %li{class: controller==current_page || in_subcontroller?(controller, current_page) ? 'active' : nil}
+        = link_to page_title, page
+  - if %w(symbols sentences theorems children).include?(controller_name)
     %nav.nav_tab_level2
       %ul.nav.nav-tabs
-        - @symbols.each do |symbol|
-          %li{:class => (symbol.kind == @active_kind ? 'active' : nil)}
-            = link_to repository_ontology_symbols_path(*resource_chain, kind: symbol.kind) do
-              = symbol.count == 1 ? symbol.kind : symbol.kind.pluralize
-              %span.badge{:style => symbol.count == 0 && 'display:none'}= symbol.count
+        - @symbols.each do |symbols|
+          %li{:class => (symbols.kind == @active_kind ? 'active' : nil)}
+            = link_to locid_for(resource_chain.last, :symbols, kind: symbols.kind) do
+              = symbols.count == 1 ? symbols.kind : symbols.kind.pluralize
+              %span.badge{:style => symbols.count == 0 && 'display:none'}= symbols.count
         - pages.each do |page, path, count|
           %li{:class => (page==current_page ? 'active' : nil)}
             = link_to path do
@@ -65,6 +65,6 @@
   - if in_metadata?
     %nav.nav_tab_level2
       %ul.nav.nav-tabs
-        - @metadatas.each do |(page_title, page)|
-          %li{class: page[-1]==current_page ? 'active' : nil}
+        - @metadatas.each do |(page_title, page, controller)|
+          %li{class: controller==current_page ? 'active' : nil}
             = link_to page_title, page

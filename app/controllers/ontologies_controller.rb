@@ -63,12 +63,11 @@ class OntologiesController < InheritedResources::Base
     respond_to do |format|
       format.html do
         if !resource.distributed?
-          redirect_to repository_ontology_symbols_path(parent, resource,
-            params_to_pass_on_redirect.merge(
-                       kind: resource.symbols.groups_by_kind.first.kind))
+          default_kind = resource.symbols.groups_by_kind.first.kind
+          redirect_to locid_for(resource, :symbols, params_to_pass_on_redirect.
+                                merge(kind: default_kind))
         else
-          redirect_to repository_ontology_children_path(parent, resource,
-            params_to_pass_on_redirect)
+          redirect_to locid_for(resource, :children, params_to_pass_on_redirect)
         end
       end
       format.json do
@@ -156,9 +155,7 @@ class OntologiesController < InheritedResources::Base
   end
 
   def version
-    args = {number: params[:version_number], ontology: resource}
-    @version ||= OntologyVersion.where(args).first if params[:version_number]
+    finder = OntologyVersionFinder.new(params[:reference], resource)
+    @version ||= finder.find if params[:reference]
   end
-
-
 end
