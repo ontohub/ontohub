@@ -63,7 +63,8 @@ namespace :hets do
   end
 
   def hets_binary
-    hets_config['hets_path'].
+    return @hets_binary if @hets_binary
+    @hets_binary = Array(hets_config['hets_path']).flatten.
       map { |path| File.expand_path path }.
       find { |path| File.exists?(path) }
   end
@@ -74,8 +75,11 @@ namespace :hets do
 
   def hets_config
     return @hets_config if @hets_config
-    hets_yml = File.expand_path('../../../config/hets.yml', __FILE__)
-    @hets_config = YAML.load_file(hets_yml)
+    require File.expand_path('../../../lib/environment_light', __FILE__)
+    old AppConfig.setName('HetsSettings')
+    AppConfig.load(true, 'config/hets.yml')
+    AppConfig.setName(old)
+    @hets_config = HetsSettings
   end
 
 end
