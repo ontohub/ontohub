@@ -9,8 +9,20 @@ namespace :test do
     Rake::Task['db:migrate:clean'].invoke
   end
 
+  def hets_config
+    return @hets_config if @hets_config
+    require File.expand_path('../../../lib/environment_light', __FILE__)
+    old = AppConfig.setName('HetsSettings')
+    AppConfig.load(false, 'config/hets.yml')
+    AppConfig.setName(old)
+    @hets_config = HetsSettings
+  end
+
   def hets_path
-    `which hets`.strip
+    return @hets_path if @hets_path
+    @hets_path = Array(hets_config['hets_path']).flatten
+      .map { |path| File.expand_path path }
+      .find { |path| File.exists?(path) }
   end
 
   def hets_out_file_for(ontology_file)
@@ -27,12 +39,12 @@ namespace :test do
   end
 
   def hets_args
-    YAML.load(File.open('config/hets.yml'))['cmd_line_options']
+    hets_config.cmd_line_options
   end
 
   def perform_hets_on(file)
     args = hets_args << '-O spec/fixtures/ontologies/hets-out'
-    system("hets #{args.join(' ')} #{file}")
+    system(hets_path << " #{args.join(' ')} #{file}")
   end
 
   def ontology_files

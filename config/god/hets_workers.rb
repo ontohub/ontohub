@@ -6,8 +6,14 @@ class HetsWorkers < Watcher
   end
 
   def start_cmd
-    hets_opts = ' ' << hets_server_options.join(' ')
-    'exec nice hets -X' << hets_opts
+    hets_opts = ' -X ' << hets_server_options.join(' ')
+    hets_server = Array(HetsSettings['hets_path']).flatten
+      .map { |path| File.expand_path path }.find { |path| File.exists?(path) }
+    if ! hets_server
+      raise ArgumentError, 'Unable to find a valid hets binary (put ' \
+        << '"hets_path: full_path_to_hets" into your config/settings.local.yml)'
+    end
+    'exec nice ' << hets_server << hets_opts
   end
 
   def hets_server_options
