@@ -58,6 +58,12 @@ class OntologyVersion < ActiveRecord::Base
     ontology.repository.get_file(path, commit_oid)
   end
 
+  def locid
+    "/ref/#{number}#{ontology.locid}"
+  end
+
+  alias_method :versioned_locid, :locid
+
   protected
 
   def raw_file_size_maximum
