@@ -98,17 +98,20 @@ we expected it to be matchable by this regular expression:
     Hets::Config.new.minimal_version_string
   end
 
+  def self.qualified_loc_id_for(resource)
+    "http://#{Settings.hostname}#{resource.versioned_locid}"
+  end
+
   def self.parse_via_api(resource, url_catalog = [], structure_only: false)
-    iri = resource.versioned_iri
     mode = structure_only ? :fast_run : :default
 
     parse_caller = Hets::ParseCaller.new(HetsInstance.choose, url_catalog)
 
-    parse_caller.call(iri, with_mode: mode)
+    parse_caller.call(qualified_loc_id_for(resource), with_mode: mode)
   end
 
   def self.filetype(resource)
-    iri = resource.versioned_iri
+    iri = qualified_loc_id_for(resource)
     filetype_caller = Hets::FiletypeCaller.new(HetsInstance.choose)
 
     response_iri, filetype = filetype_caller.call(iri).split(': ')
