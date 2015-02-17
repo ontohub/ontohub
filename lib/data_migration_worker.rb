@@ -1,4 +1,4 @@
-class DataMigrationWorker < Worker
+class DataMigrationWorker < BaseWorker
   sidekiq_options queue: 'default'
 
   def perform
