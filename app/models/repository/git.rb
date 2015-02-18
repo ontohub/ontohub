@@ -4,8 +4,8 @@ module Repository::Git
   extend ActiveSupport::Concern
 
   delegate :commit_id, :dir?, :empty?, :get_file, :has_changed?,
-    :is_head?, :path_exists?, :paths_starting_with, :points_through_file?,
-    :deepest_existing_dir, to: :git
+           :is_head?, :path_exists?, :paths_starting_with,
+           :points_through_file?, :deepest_existing_dir, to: :git
 
   included do
     after_create  :create_and_init_git
