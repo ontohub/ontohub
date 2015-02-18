@@ -814,7 +814,7 @@ Lint/Void:
 
 Rails/ActionFilter:
   Description: 'Enforces consistent use of action filter methods.'
-  Enabled: true
+  Enabled: false
 
 Rails/DefaultScope:
   Description: 'Checks if the argument passed to default_scope is a block.'
