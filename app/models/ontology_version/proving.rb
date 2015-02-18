@@ -1,5 +1,4 @@
 module OntologyVersion::Proving
-
   extend ActiveSupport::Concern
   include Hets::ErrorHandling
 
@@ -7,7 +6,7 @@ module OntologyVersion::Proving
     @queue = 'hets'
   end
 
-  def async_prove(*args)
+  def async_prove(*_args)
     async :prove
   end
 
@@ -18,7 +17,7 @@ module OntologyVersion::Proving
       cmd, input_io = execute_proof
       return if cmd == :abort
 
-      ontology.import_proof(self, self.user, input_io)
+      ontology.import_proof(self, user, input_io)
       update_state! :done
     end
   end
