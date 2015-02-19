@@ -138,9 +138,7 @@ we expected it to be matchable by this regular expression:
 
   def self.prove_via_api(resource, hets_options = nil)
     options = {}
-    if resource.in_distributed?
-      options[:node] = resource.name
-    end
+    options[:node] = resource.name if resource.in_distributed?
     prove_caller = Hets::ProveCaller.new(HetsInstance.choose, hets_options)
     prove_caller.call(resource.versioned_iri, options)
   end

@@ -1,16 +1,18 @@
 class OntologyVersion < ActiveRecord::Base
   include CodeReferencable
+  include Numbering
 
   include OntologyVersion::Files
   include OntologyVersion::States
   include OntologyVersion::Parsing
   include OntologyVersion::Proving
-  include OntologyVersion::Numbers
   include OntologyVersion::OopsRequests
   include IRIUrlBuilder::Includeable
 
   include Rails.application.routes.url_helpers
   include ActionDispatch::Routing::UrlFor
+
+  numbering_parent_column 'ontology_id'
 
   belongs_to :user
   belongs_to :ontology, :counter_cache => :versions_count

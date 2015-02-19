@@ -4,8 +4,10 @@ module Hets
       def clean_ontology(ontology)
         ontology.symbols.destroy_all
         ontology.all_sentences.destroy_all
+        ontology.theorems.destroy_all
         ontology.symbols_count  = 0
         ontology.sentences_count = 0
+        ontology.theorems_count = 0
         ontology.save!
       end
 
@@ -35,12 +37,14 @@ module Hets
       def procure_child_ontology(internal_iri)
         # generate IRI for child-ontology
         child_iri = parent_ontology.iri_for_child(internal_iri)
+        child_locid = parent_ontology.locid_for_child(internal_iri)
 
         # find or create child-ontology by IRI
-        ontology = parent_ontology.children.find_by_iri(child_iri)
+        ontology = parent_ontology.children.find_with_locid(child_locid, child_iri)
         if ontology.nil?
           options = {
             iri: child_iri,
+            locid: child_locid,
             name: internal_iri,
             basepath: parent_ontology.basepath,
             file_extension: parent_ontology.file_extension,

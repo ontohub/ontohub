@@ -48,7 +48,7 @@
     - @top_level_pages.each do |(page_title, page, controller)|
       %li{class: controller==current_page || in_subcontroller?(controller, current_page) ? 'active' : nil}
         = link_to page_title, page
-  - if %w(symbols sentences theorems children).include?(controller_name)
+  - if %w(symbols sentences theorems children proof_attempts).include?(controller_name)
     %nav.nav_tab_level2
       %ul.nav.nav-tabs
         - @symbols.each do |symbols|

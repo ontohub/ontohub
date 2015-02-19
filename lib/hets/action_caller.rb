@@ -1,6 +1,5 @@
 module Hets
   class ActionCaller < Caller
-
     attr_accessor :url_catalog, :access_token
 
     def initialize(hets_instance, options = nil)

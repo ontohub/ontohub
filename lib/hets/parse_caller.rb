@@ -14,15 +14,7 @@ module Hets
       escaped_iri = Rack::Utils.escape_path(iri)
       arguments = [escaped_iri, *MODE_ARGUMENTS[with_mode]]
       api_uri = build_api_uri(CMD, arguments, build_query_string)
-      perform(api_uri, METHOD)
-    rescue UnfollowableResponseError => error
-      handle_possible_hets_error(error)
-    end
-
-    def build_query_string
-      query_hash = {}
-      query_hash[:"url-catalog"] = url_catalog.join(',') if url_catalog.present?
-      query_hash
+      perform(api_uri, {}, METHOD)
     end
 
     def handle_possible_hets_error(error)
