@@ -44,7 +44,7 @@ module Repository::Destroying
     end
     Rails.logger.info("Mark #{self.class} #{self} (id: #{id}) as is_destroying")
     self.is_destroying = true
-    save
+    save!
     self.destroy_job_id =
       RepositoryDeletionWorker.perform_in(DELETION_WAIT_TIME, id)
     self.destroy_job_at = DELETION_WAIT_TIME.from_now
