@@ -104,8 +104,12 @@ en:
       head: Proof Attempt of
       created_at: Date
       time_taken: Time taken
-      used_axioms: Used axioms
-      no_used_axioms: None. This theorem is a tautology.
+      used_axioms: Axioms Used
+      no_used_axioms: None
+      used_theorems: Previously Proven Theorems Used
+      no_used_theorems: None
+      generated_axioms: Generated Axioms Used
+      no_generated_axioms: None
       prover: Prover
       tactic_script: Tactic script
       prover_output: Prover output
