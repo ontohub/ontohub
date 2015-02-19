@@ -84,7 +84,7 @@ end
 
 When(/^I select the license model I search for$/) do
   within '#search_form_div' do
-    select @license_model.name, from: '_license'
+    select @license_model.name, from: '_license_model'
   end
 end
 
@@ -125,7 +125,7 @@ When(/^I select the all filters I search for$/) do
     select @ontology_type.name, from: '_ontology_type'
     select @project.name, from: '_project'
     select @formality_level.name, from: '_formality_level'
-    select @license_model.name, from: '_license'
+    select @license_model.name, from: '_license_model'
     select @task.name, from: '_task'
   end
 end
