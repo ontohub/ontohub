@@ -12,7 +12,7 @@ class ProofAttempt < ActiveRecord::Base
 
   attr_accessible :prover, :prover_output, :tactic_script, :time_taken
 
-  validates_presence_of :theorem
+  validates :theorem, presence: true
 
   after_save :update_theorem_status
 
