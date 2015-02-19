@@ -18,8 +18,9 @@ seconds
 - if resource.used_axioms.empty?
   = t('proof_attempts.show.no_used_axioms')
 - else
-  - resource.used_axioms.each do |axiom|
-    = axiom.name
+  %ul.used-axioms
+    - resource.used_axioms.each do |axiom|
+      %li= axiom.name
 
 %h4= t('proof_attempts.show.prover')
 = resource.prover
