@@ -10,7 +10,10 @@ class CreateLocIdsForExistingOntologies < ActiveRecord::Migration
       ontology.update_column(:locid, ontology.locid)
 
       ontology.symbols.find_each do |symbol|
-        symbol.update_column(:locid, "#{ontology.locid}//#{symbol.name}")
+        portion = symbol.name
+        portion = portion[0..-2] if portion.end_with?('>')
+        portion = portion.split('#', 2).last
+        symbol.update_column(:locid, "#{ontology.locid}//#{portion}")
       end
 
       ontology.mappings.find_each do |mapping|
