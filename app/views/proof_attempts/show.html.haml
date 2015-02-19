@@ -20,7 +20,7 @@ seconds
 - else
   %ul.used-axioms
     - resource.used_axioms.each do |axiom|
-      %li= axiom
+      %li= link_to axiom, locid_for(axiom)
 
 %h4= t('proof_attempts.show.prover')
 = resource.prover
