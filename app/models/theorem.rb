@@ -1,7 +1,7 @@
 class Theorem < Sentence
   DEFAULT_STATUS = ProofStatus::DEFAULT_OPEN_STATUS
 
-  has_many :proof_attempts, foreign_key: 'sentence_id'
+  has_many :proof_attempts, foreign_key: 'sentence_id', dependent: :destroy
   belongs_to :proof_status
 
   # Override Sentence's type: nil scope.
