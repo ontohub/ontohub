@@ -42,7 +42,10 @@ module Hets
           proof_attempt.prover_output = hash[:prover_output]
           proof_attempt.time_taken = hash[:time_taken]
           proof_attempt.tactic_script = tactic_script_from_hash(hash)
-          proof_attempt.used_axioms = used_axioms_from_hash(hash, proof_attempt)
+          used_sentences, generated_axioms =
+            used_axioms_from_hash(hash, proof_attempt)
+          proof_attempt.used_axioms = used_sentences
+          proof_attempt.generated_axioms = generated_axioms
 
           proof_attempt.save!
         end
@@ -74,15 +77,40 @@ module Hets
 
       def used_axioms_from_hash(hash, proof_attempt)
         if hash[:used_axioms] && proof_attempt.theorem
-          hash[:used_axioms].map do |axiom_name|
-            ontology = proof_attempt.theorem.ontology
-            # We need the `unscoped` call to include theorems.
-            Sentence.unscoped.
-              where(ontology_id: ontology.to_param, name: axiom_name).first
-          end
+          process_used_axioms(hash, proof_attempt)
         else
-          []
+          [[], []]
         end
+      end
+
+      def process_used_axioms(hash, proof_attempt)
+        used_sentences = []
+        generated_axioms = []
+        hash[:used_axioms].each do |axiom_name|
+          axiom = find_sentence_or_generate_axiom(axiom_name, proof_attempt)
+          used_sentences << axiom if axiom.is_a?(Sentence)
+          generated_axioms << axiom if axiom.is_a?(GeneratedAxiom)
+        end
+        [used_sentences, generated_axioms]
+      end
+
+      # Logic translations applied before proving can introduce new axioms that
+      # are not stored as sentences in our database. They need to be
+      # distinguished from sentences.
+      def find_sentence_or_generate_axiom(axiom_name, proof_attempt)
+        # We need the `unscoped` call to include theorems.
+        sentence = Sentence.unscoped.
+          where(ontology_id: proof_attempt.theorem.ontology.to_param,
+                name: axiom_name).first
+        sentence || generate_axiom(axiom_name, proof_attempt)
+      end
+
+      def generate_axiom(axiom_name, proof_attempt)
+        generated_axiom = GeneratedAxiom.new
+        generated_axiom.name = axiom_name
+        generated_axiom.proof_attempt = proof_attempt
+        generated_axiom.save
+        generated_axiom
       end
 
       def all_start
