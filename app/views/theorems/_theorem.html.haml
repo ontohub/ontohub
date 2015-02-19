@@ -1,4 +1,4 @@
 %tr
-  %td= link_to theorem, [*resource_chain, theorem]
+  %td= link_to theorem, locid_for(theorem)
   %td= format_for_view(theorem)
   %td= render partial: 'proof_status', locals: {proof_status: theorem.proof_status}

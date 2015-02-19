@@ -46,6 +46,13 @@ Specroutes.define(Ontohub::Application.routes) do
       MIMERouterConstraint.new('text/plain', 'text/html')
     ]
 
+  specified_get '/ref/mmt/:repository_id/*path' => 'theorems#show',
+    as: :ontology_iri_mmt,
+    constraints: [
+      MMTRouterConstraint.new(Theorem, ontology: :ontology_id, element: :id),
+      MIMERouterConstraint.new('text/plain', 'text/html')
+    ]
+
   # Subsites for ontologies
   ontology_subsites = %i(
     mappings symbols children
@@ -89,6 +96,13 @@ Specroutes.define(Ontohub::Application.routes) do
     as: :ontology_iri,
     constraints: [
       LocIdRouterConstraint.new(Sentence, ontology: :ontology_id),
+      MIMERouterConstraint.new('text/plain', 'text/html'),
+    ]
+
+  specified_get '/:repository_id/*locid' => 'theorems#show',
+    as: :ontology_iri,
+    constraints: [
+      LocIdRouterConstraint.new(Theorem, ontology: :ontology_id, element: :id),
       MIMERouterConstraint.new('text/plain', 'text/html'),
     ]
 
