@@ -8,6 +8,18 @@ class CreateLocIdsForExistingOntologies < ActiveRecord::Migration
         ontology.locid << "#{ontology.basepath}"
       end
       ontology.update_column(:locid, ontology.locid)
+
+      ontology.symbols.find_each do |symbol|
+        symbol.update_column(:locid, "#{ontology.locid}//#{symbol.name}")
+      end
+
+      ontology.mappings.find_each do |mapping|
+        mapping.update_column(:locid, "#{ontology.locid}//#{mapping.name}")
+      end
+
+      ontology.sentences.find_each do |sentence|
+        sentence.update_column(:locid, "#{ontology.locid}//#{sentence.name}")
+      end
     end
   end
 
