@@ -44,8 +44,8 @@ class Ontology
             if e.label
               e.label
             else
-              portion = e.name.split('#', 2).last
-              portion.end_with?('>') ? portion[0..-2] : portion
+              portion = e.name.end_with?('>') ? e.name[0..-2] : e.name
+              portion = portion.split('#', 2).last
             end
           else
             e.name

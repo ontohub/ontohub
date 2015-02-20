@@ -34,6 +34,25 @@ describe OntologyVersion do
       stub_hets_for(hets_out_file('pizza'))
     end
 
+    context 'in subdirectory' do
+      let(:ontology) { create :ontology, basepath: 'subdir/pizza' }
+      let(:qualified_locid) do
+        "http://#{Settings.hostname}#{ontology_version.locid}"
+      end
+
+      before do
+        ontology_version
+        allow_any_instance_of(Hets::ParseCaller).to receive(:call) do |iri, *_args|
+          throw(:iri, iri)
+        end
+      end
+
+      it 'should use the locid-ref for calling the parse-caller' do
+        expect { Worker.drain }.
+          to throw_symbol(:iri, qualified_locid)
+      end
+    end
+
     context 'without exception' do
       let(:commit) { ontology_version.commit }
 
