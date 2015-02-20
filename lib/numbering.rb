@@ -13,11 +13,7 @@ module Numbering
 
   def generate_number
     column = self.class.instance_variable_get(:'@numbering_parent_column')
-    sql = <<-SQL
-      SELECT MAX(number)
-      FROM #{self.class.table_name}
-      WHERE #{column}=#{send(column).to_i}
-    SQL
-    self.number = connection.select_value(sql).to_i + 1
+    max = self.class.where(column => send(column).to_i).maximum('number').to_i
+    self.number = max + 1
   end
 end
