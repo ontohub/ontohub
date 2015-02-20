@@ -6,6 +6,15 @@
 require File.expand_path("../../../spec/shared_helper", __FILE__)
 
 require 'cucumber/rails'
+class Cucumber::Rails::World
+  def locid_for(resource, *commands, **query_components)
+    iri = "#{resource.locid}"
+    iri << "///#{commands.join('///')}" if commands.any?
+    iri << "?#{query_components.to_query}" if query_components.any?
+    iri
+  end
+end
+
 
 # Capybara defaults to CSS3 selectors rather than XPath.
 # If you'd prefer to use XPath, just uncomment this line and adjust any

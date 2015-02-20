@@ -104,7 +104,7 @@ Style/ClassAndModuleCamelCase:
 
 Style/ClassAndModuleChildren:
   Description: 'Checks style of children classes and modules.'
-  Enabled: true
+  Enabled: false
 
 Style/ClassCheck:
   Description: 'Enforces consistent use of `Object#is_a?` or `Object#kind_of?`.'
@@ -814,7 +814,7 @@ Lint/Void:
 
 Rails/ActionFilter:
   Description: 'Enforces consistent use of action filter methods.'
-  Enabled: true
+  Enabled: false
 
 Rails/DefaultScope:
   Description: 'Checks if the argument passed to default_scope is a block.'
@@ -826,7 +826,7 @@ Rails/Delegate:
 
 Rails/HasAndBelongsToMany:
   Description: 'Prefer has_many :through to has_and_belongs_to_many.'
-  Enabled: true
+  Enabled: false
 
 Rails/Output:
   Description: 'Checks for calls to puts, print, etc.'

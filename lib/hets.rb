@@ -127,13 +127,16 @@ we expected it to be matchable by this regular expression:
     end
   end
 
+  def self.qualified_loc_id_for(resource)
+    "http://#{Settings.hostname}#{resource.versioned_locid}"
+  end
+
   def self.parse_via_api(resource, options = nil)
-    iri = resource.versioned_iri
     mode = (options && options.structure_only) ? :fast_run : :default
 
     parse_caller = Hets::ParseCaller.new(HetsInstance.choose, options)
 
-    parse_caller.call(iri, with_mode: mode)
+    parse_caller.call(qualified_loc_id_for(resource), with_mode: mode)
   end
 
   def self.prove_via_api(resource, hets_options = nil)
@@ -144,7 +147,7 @@ we expected it to be matchable by this regular expression:
   end
 
   def self.filetype(resource)
-    iri = resource.versioned_iri
+    iri = qualified_loc_id_for(resource)
     filetype_caller = Hets::FiletypeCaller.new(HetsInstance.choose)
 
     response_iri, filetype = filetype_caller.call(iri).split(': ')

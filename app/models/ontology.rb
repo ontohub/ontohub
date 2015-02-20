@@ -263,10 +263,6 @@ class Ontology < ActiveRecord::Base
       where('imported = ?', true)
   end
 
-  def current_version
-    self.versions.current
-  end
-
   def basepath
     has_versions? ? current_version.basepath : read_attribute(:basepath)
   end
@@ -308,6 +304,10 @@ class Ontology < ActiveRecord::Base
   def formality_levels
     FormalityLevel.joins(:ontologies).
       where(ontologies: {id: self})
+  end
+
+  def versioned_locid
+    current_version.locid
   end
 
   protected
