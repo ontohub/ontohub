@@ -12,7 +12,7 @@ please consult your OS distro vendor's manual.
 Set the document root to ontohub's "public" directory (e.g.
 "DocumentRoot /local/home/ontohub/ontohub/public").
 
-Make sure, that the rewrite module is activated, enable the rewrite engine 
+Make sure, that the rewrite module is activated, enable the rewrite engine
 ("RewriteEngine On"), and put the follwing two blocks before any proxy
 directives:
 
@@ -47,7 +47,7 @@ Now make sure, that the proxy and proxy_http module is activated and
 enable the httpd proxy using directives like:
 
 	# per contract requests with these prefixes are served by the httpd itself
-	ProxyPassMatch ^/(cgi-bin|icons|apache|error|server|static) !
+	ProxyPassMatch ^/(cgi-bin|icons|apache|error|server-|assets|static) !
 
 	# Per default the ruby rack application server listen on port 3000 of all
 	# configured network interfaces
