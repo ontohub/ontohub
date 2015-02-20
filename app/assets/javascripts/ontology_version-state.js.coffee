@@ -17,9 +17,7 @@ update = (container) ->
         current_state = state
 
         # display the new state
-        container
-          .attr('class', state)
-          .find("span").text(state)
+        container.find("span").text(state)
 
         if state == "pending"
           $(".pending_message").show()
