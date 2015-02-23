@@ -3,26 +3,14 @@ module PathsInitializer
 
   class << self
     def perform_initialization(config)
-      if Rails.env == "test"
-        config.data_root = Rails.root.join('tmp','data')
-      else
-        config.data_root = Rails.root.join('data').sub(%r(/releases/\d+/), "/current/")
-      end
+      settings = Rails.env == "test" ? nil : Settings.git
+      config.data_root = (settings && settings.data_dir) \
+        ? Pathname.new(settings.data_dir)
+        : Rails.root.join('tmp','data')
 
       config.git_root     = config.data_root.join('repositories')
       config.symlink_path = config.data_root.join('git_daemon')
       config.commits_path = config.data_root.join('commits')
-
-      settings = Settings.git
-      if settings && settings.user
-        config.git_user  = settings.user
-        config.git_group = settings.group
-        config.git_home  = File.expand_path("~#{config.git_user}")
-      else
-        config.git_user  = nil
-        config.git_group = nil
-        config.git_home  = Rails.root.join('tmp','git')
-      end
     end
   end
 

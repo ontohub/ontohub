@@ -3,8 +3,4 @@ hostname: develop.ontohub.org
 exception_notifier:
   enabled: false
 
-git:
-  user: git
-  group: ontohub
-
 display_head_commit: true
