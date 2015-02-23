@@ -48,7 +48,19 @@ namespace :deploy do
     end
   end
 
+  desc "Migrate data asynchronously"
+  task :migrate_data_asynchronously do
+    on roles(:app) do
+      within current_path do
+        with rails_env: fetch(:rails_env) do
+          execute :rake, 'data:migrate:async'
+        end
+      end
+    end
+  end
+
   after :updated, :create_hets_instances
+  after :updated, :migrate_data_asynchronously
 
   after :updated, :symlink_secret
   after :updated, :set_revision
