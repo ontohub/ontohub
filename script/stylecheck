@@ -1,0 +1,19 @@
+#!/usr/bin/env ruby
+require 'tempfile'
+
+RAILS_ROOT = File.expand_path('../..', __FILE__)
+CONFIG_FILE_PATH = File.join(RAILS_ROOT, '.hound.yml')
+
+config = File.read(CONFIG_FILE_PATH)
+config = config.sub(/$\s+ShowCopNames:.*?\n/, '')
+
+customized_config_file = Tempfile.new('rubocop.yml')
+customized_config_file.write(config)
+customized_config_file.close
+
+command = %W(rubocop --rails --config #{customized_config_file.path})
+command += ARGV
+
+system(*command)
+
+customized_config_file.unlink
