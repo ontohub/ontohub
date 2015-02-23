@@ -20,7 +20,6 @@ class LogicsController < InheritedResources::Base
     end
   end
 
-
   def show
     @tab = params[:tab].try(:to_sym)
     super do |format|
@@ -34,6 +33,12 @@ class LogicsController < InheritedResources::Base
           :collection  => resource.supports,
           :association => :language,
           :scope       => [Language]
+      end
+      format.xml do
+        render :show, content_type: 'application/rdf+xml'
+      end
+      format.custom('application/rdf+xml') do
+        render 'show.xml', content_type: 'application/rdf+xml'
       end
     end
   end
@@ -57,6 +62,4 @@ class LogicsController < InheritedResources::Base
   def all_logics?
     params[:all].present?
   end
-
-
 end

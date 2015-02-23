@@ -32,4 +32,16 @@ describe LogicsController do
     it { should render_template :index }
     it { should_not set_the_flash }
   end
+
+  context 'when requesting xml' do
+
+    before do
+      @request.env['HTTP_ACCEPT'] = 'text/xml'
+      get :show, id: logic.slug
+    end
+
+    it 'should respond as a application/rdf+xml' do
+      expect(response.content_type).to eq('application/rdf+xml')
+    end
+  end
 end
