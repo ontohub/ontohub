@@ -395,7 +395,7 @@ Style/Proc:
 
 Style/RaiseArgs:
   Description: 'Checks the arguments passed to raise/fail.'
-  Enabled: true
+  Enabled: false
 
 Style/RedundantBegin:
   Description: "Don't use begin blocks when they are not needed."

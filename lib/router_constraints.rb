@@ -54,7 +54,8 @@ class LocIdRouterConstraint < RouterConstraint
   end
 
   def matches?(request, path = nil)
-    path ||= request.original_fullpath
+    path ||= Journey::Router::Utils.
+      unescape_uri(request.original_fullpath)
     # retrieves the hierarchy and member portions of loc/id's
     hierarchy_member = path.split('?', 2).first.split('///', 2).first
     element = @find_in_klass.find_with_locid(hierarchy_member)
@@ -78,7 +79,8 @@ class RefLocIdRouterConstraint < LocIdRouterConstraint
     params = params(request)
     result = OntologyVersionFinder.
       applicable_reference?(params[:reference])
-    path = request.original_fullpath.sub(%r{\A/ref/[^/]+}, '')
+    path = Journey::Router::Utils.unescape_uri(request.original_fullpath).
+      sub(%r{\A/ref/[^/]+}, '')
     result && super(request, path)
   end
 end
@@ -96,8 +98,9 @@ end
 
 class IRIRouterConstraint < RouterConstraint
   def matches?(request, path = nil)
-    path ||= request.original_fullpath
-    ontology = Ontology.find_with_locid(path.split('?', 2).first)
+    path ||= Journey::Router::Utils.
+      unescape_uri(request.original_fullpath)
+    ontology = Ontology.find_with_iri(path)
     result = !ontology.nil?
 
     if result
@@ -112,7 +115,8 @@ end
 class RefIRIRouterConstraint < IRIRouterConstraint
   def matches?(request)
     # remove the ref/:version_number portion from path
-    path = request.original_fullpath.sub(%r{\A/ref/\d+}, '')
+    path = Journey::Router::Utils.unescape_uri(request.original_fullpath).
+      sub(%r{\A/ref/\d+/}, '')
     super(request, path)
   end
 end

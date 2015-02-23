@@ -48,7 +48,7 @@ module OntologyVersion::Parsing
     [:all_is_well, input_io]
   rescue Hets::ExecutionError => e
     handle_hets_execution_error(e, self)
-    [:abort, nil]
+    e.abort_execution ? [:abort, nil] : raise(e)
   end
 
   def parse_full
