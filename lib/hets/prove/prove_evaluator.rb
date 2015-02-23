@@ -100,7 +100,7 @@ module Hets
       def find_sentence_or_generate_axiom(axiom_name, proof_attempt)
         # We need the `unscoped` call to include theorems.
         sentence = Sentence.unscoped.
-          where(ontology_id: proof_attempt.theorem.ontology.to_param,
+          where(ontology_id: proof_attempt.theorem.ontology.id,
                 name: axiom_name).first
         sentence || generate_axiom(axiom_name, proof_attempt)
       end
