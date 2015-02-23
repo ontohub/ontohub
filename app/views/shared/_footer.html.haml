@@ -12,9 +12,9 @@
           %li= link_to display_commit, "https://github.com/ontohub/ontohub/tree/#{display_commit}"
         - Settings.footer.each do |entry|
           %li
-            - if entry.href
+            - if entry.href && entry.text
               = link_to entry.text, entry.href, :target => "_blank"
-            - else
+            - elsif entry.text
               = link_to entry.text, '#'
 
       %ul.nav.navbar-nav.navbar-right

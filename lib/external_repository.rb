@@ -16,7 +16,7 @@ class ExternalRepository
     end
 
     def repository
-      Repository.where(name: Settings.external_repository_name).first_or_create
+      Repository.where(name: Settings.git.fallbacks.repo_name).first_or_create
     end
 
     def add_to_repository(iri, message, user, location: iri)

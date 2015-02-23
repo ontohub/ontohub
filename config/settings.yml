@@ -1,70 +1,166 @@
 #
 # Project configuration
 #
-# Environment specific settings can be overridden in:
-# /config/settings/<environment>.yml
-# 
+# One may use the following settings files to change or overwrite the defaults:
+#
+# config/settings.yml         (this one - common settings and its documentation)
+# config/settings/<env>.yml	  (some as above but specific for the named RB_ENV)
+# config/environments/<env>.yml   (analog above)
+# config/settings.local.yml       (common settings local to this machine)
+# config/settings/<env>.local.yml (some as above but specific for named RB_ENV)
+# config/environments/<env>.local.yml  (analog above)
+#
+# The files are read in the shown order above. A file read later takes
+# precendence. Missing files get silently ignored.
+# For now only merges occure. However, if two settings with the same name have
+# a different type, the latter replaces the previous one completely. For details
+# see https://github.com/railsconfig/rails_config/blob/master/lib/rails_config/vendor/deep_merge.rb
 
-# Name of the installation
-name: "MyOntohub"
+# Hostname of this machine.
+#hostname: your_FQDN
 
-# Hostname of the installation
-hostname: example.com
+# Logging level to use (fatal, error, warn, info, debug). Default:
+#log_level: info
 
-# Generalizing term "Ontology",ALternatives are M:Models and S:Specification
-OMS: ontology
-# In case of Model,this should be used.
-OMS_qualifier: modeling
+# Whether to consider all HTTP requests to be local and thus emit the details
+# if an error occures. Otherwise a "user friendly" page gets shown, which hides
+# the glorios and perhaps even security sensitive details. Default: false for
+# production, otherwise true.
+#consider_all_requests_local: false
 
-# Optional asset host for delivery of static files (css, images, javascripts)
-# asset_host: assets.example.com
+# Send exception via email to certain recipients. This has DoS attack potential
+# and thus is disabled by default. Example:
+#exception_notifier:
+#  enabled: false
+#  mail_prefix: "[ontohub staging exception]"
+#  sender_address: "exceptions@ontohub.do.main"
+#  exception_recipients:
+#    - exception-recipient@do.main
 
-# Sender address for outgoing mail
-email: noreply@example.com
+# A sequence of arbitrary characters to use as secret token or key, e.g. to
+# generate session keys, cookies or other secrets. Should have 30 or more
+# characters. One may generate such a key e.g. using the following command:
+#   openssl rand -hex -rand /var/log/messages:~/.history  64   2>/dev/null
+# Put the generated key in your config/settings.local.yml like this:
+#secret_token: a-random-character-string
 
-# Mail delivery
-# http://guides.rubyonrails.org/action_mailer_basics.html#action-mailer-configuration
-action_mailer:
-  delivery_method: sendmail
+# Default sender address for outgoing mail. Default:
+#email: noreply@your_FQDN
 
-# The number of days a user can access
-# the website without confirming his account.
-allow_unconfirmed_access_for_days: 3
+# Mail delivery settings.
+# Here the same settings but 'delivery_method' are taken by default as shown on
+# http://api.rubyonrails.org/classes/ActionMailer/Base.html#class-ActionMailer::Base-label-Configuration+options
+# If delivery_method is not explicitly set, it gets set to 'sendmail' if
+# /usr/{sbin|lib}/sendmail executable is available, otherwise 'smtp' gets set.
+# NOTE: The logger and default_options properties are ignored - ontohub defaults
+# are used instead. For convinience here the defaults in yaml notation (~ means
+# unset or nil):
+#
+#action_mailer:
+#  perform_deliveries: true     # for test false
+#  raise_delivery_errors: false # for production, otherwise true
+#  delivery_method: sendmail    # {sendmail|smtp|file|test}
+#  sendmail_settings:
+#    location: /usr/sbin/sendmail
+#    arguments: '-i -t'
+#  smtp_setting:
+#    # the name or IP address of the mail gateway to use
+#    address: mail
+#    port: 25
+#    # WARNING: This is a misnomer! It has nothing to do with a 'DNS domain' or
+#    # something like this. If you wanna/need to set it, set it to the fully
+#    # qualified domain name of your machine under which other mail gateways see
+#    # it by resolving its IP address (nslookup a.b.c.d). Otherwise don't wonder
+#    # if the mails aren't accepted for delivery by foreign mail servers!!!
+#    domain: ~
+#    user_name: ~
+#    password: ~
+#    authentication: ~      # {plain|login|cram_md5}
+#    enable_starttls_auto: true
+#    openssl_verify_mode: ~ # {none|peer|client_once|fail_if_no_peer_cert}
+#  file_settings:
+#    location: tmp/mail     # relative to the application base dir
 
-# Limits for displaying file contents and diffs
-max_read_filesize: 524_288
-max_combined_diff_size: 1_048_576
 
-# Timeout for ontology parsing jobs in hours
-ontology_parse_timeout: 6
+# The following settings have usually an influence on the generated web pages.
+# So if you change any settings or if in doubt, you should precompile all
+# assets again and restart the webserver, e.g.:
+# cd ontohub ; umask 002 ; ../bin/rake assets:precompile
+# ~ontohub/etc/puma-serv.sh restart
 
-# Footer links and texts
-footer:
-  - text: Foo Institute
-  - text: About
-    href: http://about.example.com
 
-# Delivery of exceptions, disabled by default
-exception_notifier:
-  enabled: false
-  email_prefix: "[ontohub exception]"
-  sender_address: "exceptions@example.com"
-  exception_recipients:
-    - exception-recipient@example.com
+# The name of this instance.
+#name: "MyOntohub"
 
-# Worker count
-workers:
-  hets: 4
+# Asset host to use for delivery of static files (css, images, javascripts).
+# Default:
+#asset_host: ~
 
-git:
-  verify_url: http://localhost/
-  default_branch: 'master'
-  push_priority:
-    commits: 1
-    changed_files_per_commit: 5
+# Whether to show the 'Symbols' navbar menu entry for symbol searches. Default:
+#display_symbols_tab: false
 
-access_token:
-  expiration_minutes: 360
+# Whether to show a file format selection (json|xml) menu where appropriate.
+# Default:
+#format_selection: false
+
+# Show the git revision of this ontohub instance in the web page footer.
+# Default: false for production, true otherwise.
+#display_head_commit: false
+
+# Footer links and texts. Default:
+#footer:
+#  - text: Imprint
+#    href: http://about.ontohub.org/
+#  - text: Source Code
+#    href: https://github.com/ontohub/ontohub
+
+# The number of days a user can access the website without confirming his
+# account after registration. 0 => no access without confirmation. Default:
+#allow_unconfirmed_access_for_days: 3
+
+# An undocumented feature - don't use.
+#access_token:
+#  expiration_minutes: 360
+
+# NOTE:
+# The user who's running the git service should have the same group as the user
+# who is running the web service and the related files/directories below
+# git:data_dir should be group writeable. This avoids headaches e.g. wrt. non-
+# cross platform ACLs (e.g. most Linux based FS impl. according to a withdrawn
+# ancient POSIX standard or NFSv4/ZFS/NTFS ACL impl.). However, this does not
+# work for ssh authorized_keys: this requires a different approach - see
+# script/cp_keys.c for more information. Default:
+#git:
+#  # Where all git related data gets stored. If this directory contains a file
+#  # 'maintenance.txt', the application assumes it is in maintenance mode. The
+#  # web service frontend might hide this state by showing or redirecting to a
+#  # different static page. The git service or to be more specific the
+#  # git/bin/git-shell doesn't accept any command as long as this file exists.
+#  data_dir: /data/git
+#  verify_url: http://localhost/
+#  default_branch: 'master'
+#  push_priority:
+#    commits: 1
+#    changed_files_per_commit: 5
+#  fallbacks:
+#    # When changes are made to an ontology via web, the web service needs to
+#    # commit these changes using git, which in turn expects a user and email
+#    # address. So if the related user is not logged in (public writable repo)
+#    # these settings will be used.
+#    user: 'ontohub_system'
+#    email: 'ontohub_system@ontohub.org'
+#    repo_name: 'External'
+
+# Number of hets workers aka processes to use. Default:
+#workers:
+#  hets: 4
+
+# Timeout for ontology parsing jobs in hours. Default:
+#ontology_parse_timeout: 6
+
+# Limits for displaying file contents and diffs. Defaults:
+#max_read_filesize: 524_288
+#max_combined_diff_size: 1_048_576
 
 allowed_iri_schemes:
   - http
@@ -73,14 +169,10 @@ allowed_iri_schemes:
   - gopher
   - urn
 
-display_head_commit: false
-display_symbols_tab: false
-
-external_repository_name: 'External'
-fallback_commit_user: 'ontohub_system'
-fallback_commit_email: 'ontohub_system@ontohub.org'
-
-format_selection: false
+# Generalizing term "Ontology",ALternatives are M:Models and S:Specification
+OMS: ontology
+# In case of Model,this should be used.
+OMS_qualifier: modeling
 
 # Possible values for metadata, adapted from OMV
 formality_levels:
