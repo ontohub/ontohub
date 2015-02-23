@@ -22,9 +22,6 @@ module Hets
         initialize_handling
       end
 
-      # Actually performs the import of the ontology file DGXML output.
-      # Also calls the start and end callbacks, which do not actually
-      # correspond to an element in the DGXML.
       def import
         callback = ProveEvaluator.new(self)
         ActiveRecord::Base.transaction requires_new: true do

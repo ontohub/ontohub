@@ -23,7 +23,7 @@ class ProofAttempt < ActiveRecord::Base
   scope :latest, order('number DESC')
 
   def to_param
-    self.number
+    number
   end
 
   def used_sentences

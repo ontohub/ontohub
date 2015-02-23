@@ -36,8 +36,8 @@ module Hets
         ontology = hets_evaluator.ontology
         if ontology.name == hash[:ontology_name]
           proof_attempt = ProofAttempt.new
-          proof_attempt.theorem = theorem_from_hash(hash, ontology)
-          proof_attempt.proof_status = proof_status_from_hash(hash)
+          proof_attempt.theorem = find_theorem_with_hash(hash, ontology)
+          proof_attempt.proof_status = find_proof_status_with_hash(hash)
           proof_attempt.prover = hash[:used_prover]
           proof_attempt.prover_output = hash[:prover_output]
           proof_attempt.time_taken = hash[:time_taken]
@@ -51,11 +51,11 @@ module Hets
         end
       end
 
-      def theorem_from_hash(hash, ontology)
+      def find_theorem_with_hash(hash, ontology)
         ontology.theorems.find_by_name(hash[:theorem_name])
       end
 
-      def proof_status_from_hash(hash)
+      def find_proof_status_with_hash(hash)
         identifier =
           case hash[:result]
           when 'Proved'
@@ -100,7 +100,7 @@ module Hets
       def find_sentence_or_generate_axiom(axiom_name, proof_attempt)
         # We need the `unscoped` call to include theorems.
         sentence = Sentence.unscoped.
-          where(ontology_id: proof_attempt.theorem.ontology.to_param,
+          where(ontology_id: proof_attempt.theorem.ontology.id,
                 name: axiom_name).first
         sentence || generate_axiom(axiom_name, proof_attempt)
       end

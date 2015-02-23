@@ -6,7 +6,7 @@ class Theorem < Sentence
 
   # Override Sentence's type: nil scope.
   # Results in duplicate condition in the sql statement.
-  default_scope where(type: ['Theorem'])
+  default_scope -> { where(type: ['Theorem']) }
 
   before_save :set_default_proof_status
 
