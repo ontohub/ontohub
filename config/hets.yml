@@ -1,5 +1,7 @@
-# Hets environment. The first matching item in the lists is used.
-hets_path:
+# Hets environment.
+# The first existing path in the hets_* lists is used. Setting a single value
+# instead of a list is allowed as well.
+hets_path:          # the path of the hets program to use
   - /usr/bin/hets
   - ~/dev/hets/hets
   - /opt/local/bin/hets
@@ -9,7 +11,8 @@ hets_path:
   - /usr/local/opt/hets/bin/hets-bin
   - /usr/local/opt/hets-binary/Hets.app/Contents/Resources/hets
   - /Applications/Hets.app/Contents/Resources/hets
-hets_lib:
+hets_lib:           # the path which contains the ontologies, which should be
+                    # automagically imported (watch out for file extension)
   - /usr/lib/hets/hets-lib
   - ~/dev/hets/lib
   - ~/ontohub/Hets
@@ -17,7 +20,7 @@ hets_lib:
   - /usr/local/opt/hets-binary/Hets.app/Contents/Resources/Hets-lib
   - /Applications/Hets.app/Contents/Resources/Hets-lib
   - /opt/hets-lib
-hets_owl_tools:
+hets_owl_tools:     # value to set for envvar HETS_OWL_TOOLS when invoking hets
   - /usr/lib/hets/hets-owl-tools
   - ~/dev/hets/OWL2
   - ~/code/hets/OWL2
