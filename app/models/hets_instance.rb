@@ -27,7 +27,7 @@ has a minimal Hets version of #{Hets.minimal_version_string}
     where(up: true).where('version >= ?', Hets.minimal_version_string)
   end
 
-  def self.choose
+  def self.choose!
     raise NoRegisteredHetsInstanceError.new unless any?
     instance = active_instances.first
     instance or raise NoSelectableHetsInstanceError.new

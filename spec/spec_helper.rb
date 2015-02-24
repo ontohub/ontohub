@@ -58,10 +58,10 @@ def hets_out_file(name, ext='xml')
 end
 
 def hets_uri(portion = nil, version = nil)
-  hets_instance = HetsInstance.choose
+  hets_instance = HetsInstance.choose!
   if hets_instance.nil?
     FactoryGirl.create(:local_hets_instance)
-    hets_instance = HetsInstance.choose
+    hets_instance = HetsInstance.choose!
   end
   specific = ''
   # %2F is percent-encoding for forward slash /

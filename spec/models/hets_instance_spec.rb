@@ -8,7 +8,7 @@ describe HetsInstance do
   context 'when choosing a hets instance' do
     context 'and there is no hets instance recorded' do
       it 'should raise the appropriate error' do
-        expect { HetsInstance.choose }.
+        expect { HetsInstance.choose! }.
           to raise_error(HetsInstance::NoRegisteredHetsInstanceError)
       end
     end
@@ -23,7 +23,7 @@ describe HetsInstance do
       end
 
       it 'should raise the appropriate error' do
-        expect { HetsInstance.choose }.
+        expect { HetsInstance.choose! }.
           to raise_error(HetsInstance::NoSelectableHetsInstanceError)
       end
     end
@@ -38,7 +38,7 @@ describe HetsInstance do
       end
 
       it 'should return that hets instance' do
-        expect(HetsInstance.choose).to eq(hets_instance)
+        expect(HetsInstance.choose!).to eq(hets_instance)
       end
     end
   end

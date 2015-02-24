@@ -9,7 +9,7 @@ class FiletypesController < ApplicationController
   protected
 
   def filetype
-    @filetype ||= Hets::FiletypeCaller.new(HetsInstance.choose).
+    @filetype ||= Hets::FiletypeCaller.new(HetsInstance.choose!).
       call(params[:iri])
   end
 
