@@ -59,15 +59,17 @@ end
 
 def hets_uri(portion = nil, version = nil)
   hets_instance = HetsInstance.choose!
+rescue HetsInstance::NoRegisteredHetsInstanceError => e
   if hets_instance.nil?
     FactoryGirl.create(:local_hets_instance)
     hets_instance = HetsInstance.choose!
   end
+ensure
   specific = ''
   # %2F is percent-encoding for forward slash /
   specific << "ref%2F#{version}.*" if version
   specific << "#{portion}.*" if portion
-  %r{#{hets_instance.uri}/dg/.*#{specific}}
+  return %r{#{hets_instance.uri}/dg/.*#{specific}}
 end
 
 def stub_hets_for(fixture_file, with: nil, with_version: nil)
