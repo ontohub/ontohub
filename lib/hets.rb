@@ -94,8 +94,20 @@ we expected it to be matchable by this regular expression:
 
   end
 
+  def self.config
+    @config ||= Hets::Config.new
+  end
+
   def self.minimal_version_string
-    Hets::Config.new.minimal_version_string
+    config.minimal_version_string
+  end
+
+  def self.minimum_revision
+    config.minimum_revision
+  end
+
+  def self.minimum_version
+    config.minimum_version
   end
 
   def self.qualified_loc_id_for(resource)
