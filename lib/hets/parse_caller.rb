@@ -15,7 +15,7 @@ module Hets
     def initialize(hets_instance, url_catalog = [])
       self.url_catalog = url_catalog
       msg = "<#{hets_instance}> not up."
-      raise Hets::InactiveInstanceError, msg unless hets_instance.up?
+      raise Hets::InactiveInstanceError, msg unless hets_instance.try(:up?)
       super(hets_instance)
     end
 
