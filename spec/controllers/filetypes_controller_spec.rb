@@ -1,6 +1,7 @@
 require 'spec_helper'
 
 describe FiletypesController do
+  setup_hets
 
   context 'should return valid json on correct request' do
     let(:iri) { 'http://ontohub.org/non-existence/foobar.clif' }

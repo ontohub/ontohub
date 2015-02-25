@@ -1,10 +1,36 @@
 class HetsInstance < ActiveRecord::Base
+  class Error < ::StandardError; end
+  class NoRegisteredHetsInstanceError < Error
+    DEFAULT_MSG = 'There is no registered HetsInstance for this application'
+
+    def initialize(msg = DEFAULT_MSG)
+      super
+    end
+  end
+
+  class NoSelectableHetsInstanceError < Error
+    DEFAULT_MSG = <<-MSG
+There is no HetsInstance which is reachable and
+has a minimal Hets version of #{Hets.minimal_version_string}
+    MSG
+
+    def initialize(msg = DEFAULT_MSG)
+      super
+    end
+  end
+
   attr_accessible :name, :uri
 
   before_save :set_up_state
 
-  def self.choose
-    where(up: true).where('version >= ?', Hets.minimal_version_string).first
+  scope :active_instances, -> do
+    where(up: true).where('version >= ?', Hets.minimal_version_string)
+  end
+
+  def self.choose!
+    raise NoRegisteredHetsInstanceError.new unless any?
+    instance = active_instances.first
+    instance or raise NoSelectableHetsInstanceError.new
   end
 
   # will result in 0.99 for <v0.99, something or other>

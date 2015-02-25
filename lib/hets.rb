@@ -94,8 +94,20 @@ we expected it to be matchable by this regular expression:
 
   end
 
+  def self.config
+    @config ||= Hets::Config.new
+  end
+
   def self.minimal_version_string
-    Hets::Config.new.minimal_version_string
+    config.minimal_version_string
+  end
+
+  def self.minimum_revision
+    config.minimum_revision
+  end
+
+  def self.minimum_version
+    config.minimum_version
   end
 
   def self.qualified_loc_id_for(resource)
@@ -105,14 +117,14 @@ we expected it to be matchable by this regular expression:
   def self.parse_via_api(resource, url_catalog = [], structure_only: false)
     mode = structure_only ? :fast_run : :default
 
-    parse_caller = Hets::ParseCaller.new(HetsInstance.choose, url_catalog)
+    parse_caller = Hets::ParseCaller.new(HetsInstance.choose!, url_catalog)
 
     parse_caller.call(qualified_loc_id_for(resource), with_mode: mode)
   end
 
   def self.filetype(resource)
     iri = qualified_loc_id_for(resource)
-    filetype_caller = Hets::FiletypeCaller.new(HetsInstance.choose)
+    filetype_caller = Hets::FiletypeCaller.new(HetsInstance.choose!)
 
     response_iri, filetype = filetype_caller.call(iri).split(': ')
     if response_iri == iri
