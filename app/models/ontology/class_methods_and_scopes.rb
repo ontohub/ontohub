@@ -4,7 +4,7 @@ module Ontology::ClassMethodsAndScopes
   included do
     equal_scope 'repository_id'
 
-    scope :without_parent, where('ontologies.parent_id' => nil)
+    scope :without_parent, -> { where('ontologies.parent_id' => nil) }
 
     scope :basepath, ->(path) do
       joins(:ontology_version).where('ontology_versions.basepath' => path)
