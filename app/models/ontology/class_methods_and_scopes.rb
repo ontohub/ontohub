@@ -1,4 +1,4 @@
-module Ontology::Scopes
+module Ontology::ClassMethodsAndScopes
   extend ActiveSupport::Concern
 
   included do
@@ -71,6 +71,29 @@ module Ontology::Scopes
     # state scopes
     scope :state, ->(*states) do
       where state: states.map(&:to_s)
+    end
+  end
+
+  module ClassMethods
+    def find_with_locid(locid, iri = nil)
+      ontology = where(locid: locid).first
+
+      if ontology.nil? && iri
+        ontology = AlternativeIri.where('iri LIKE ?', '%' << iri).
+          first.try(:ontology)
+      end
+
+      ontology
+    end
+
+    def find_with_iri(iri)
+      ontology = where('iri LIKE ?', '%' << iri).first
+      if ontology.nil?
+        ontology = AlternativeIri.where('iri LIKE ?', '%' << iri).
+          first.try(:ontology)
+      end
+
+      ontology
     end
   end
 end

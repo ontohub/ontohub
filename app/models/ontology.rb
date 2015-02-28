@@ -9,13 +9,13 @@ class Ontology < ActiveRecord::Base
   include IRIUrlBuilder::Includeable
   include Ontology::AssociationsAndAttributes
   include Ontology::Categories
+  include Ontology::ClassMethodsAndScopes
   include Ontology::Distributed
   include Ontology::FileExtensions
   include Ontology::Import
   include Ontology::Mappings
   include Ontology::Oops
   include Ontology::OwlClasses
-  include Ontology::Scopes
   include Ontology::Searching
   include Ontology::Sentences
   include Ontology::States
@@ -79,27 +79,6 @@ class Ontology < ActiveRecord::Base
   # Title for mappings
   def title
     name? ? iri : nil
-  end
-
-  def self.find_with_locid(locid, iri = nil)
-    ontology = where(locid: locid).first
-
-    if ontology.nil? && iri
-      ontology = AlternativeIri.where('iri LIKE ?', '%' << iri).
-        first.try(:ontology)
-    end
-
-    ontology
-  end
-
-  def self.find_with_iri(iri)
-    ontology = where('iri LIKE ?', '%' << iri).first
-    if ontology.nil?
-      ontology = AlternativeIri.where('iri LIKE ?', '%' << iri).
-        first.try(:ontology)
-    end
-
-    ontology
   end
 
   def is_imported?
