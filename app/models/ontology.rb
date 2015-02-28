@@ -7,7 +7,7 @@ class Ontology < ActiveRecord::Base
   # Ontology Model Includes
   include GraphStructures::SpecificFetchers::Mappings
   include IRIUrlBuilder::Includeable
-  include Ontology::Associations
+  include Ontology::AssociationsAndAttributes
   include Ontology::Categories
   include Ontology::Distributed
   include Ontology::FileExtensions
@@ -27,21 +27,6 @@ class Ontology < ActiveRecord::Base
   include Aggregatable
 
   class Ontology::DeleteError < StandardError; end
-
-  attr_accessible :iri, :locid
-  attr_accessible :name, :description, :acronym, :documentation,
-                  :logic_id,
-                  :category_ids,
-                  :acronym,
-                  :file_extension,
-                  :projects,
-                  :present,
-                  :alternative_iris,
-                  :ontology_type_id,
-                  :license_model_ids,
-                  :formality_level_id,
-                  :task_ids,
-                  :project_ids
 
   delegate :permission?, to: :repository
 

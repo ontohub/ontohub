@@ -1,4 +1,4 @@
-module Ontology::Associations
+module Ontology::AssociationsAndAttributes
   extend ActiveSupport::Concern
 
   included do
@@ -19,5 +19,20 @@ module Ontology::Associations
     has_and_belongs_to_many :license_models
     has_and_belongs_to_many :projects
     has_and_belongs_to_many :tasks
+
+    attr_accessible :iri, :locid
+    attr_accessible :name, :description, :acronym, :documentation,
+                    :logic_id,
+                    :category_ids,
+                    :acronym,
+                    :file_extension,
+                    :projects,
+                    :present,
+                    :alternative_iris,
+                    :ontology_type_id,
+                    :license_model_ids,
+                    :formality_level_id,
+                    :task_ids,
+                    :project_ids
   end
 end

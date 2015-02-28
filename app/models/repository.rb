@@ -1,6 +1,7 @@
 class Repository < ActiveRecord::Base
   include Permissionable
   include Repository::Access
+  include Repository::AssociationsAndAttributes
   include Repository::Destroying
   include Repository::Git
   include Repository::Importing
@@ -14,18 +15,6 @@ class Repository < ActiveRecord::Base
   class Error < ::StandardError; end
   class DeleteError < Error; end
 
-  has_many :ontologies, dependent: :destroy
-  has_many :url_maps, dependent: :destroy
-  has_many :commits, dependent: :destroy
-
-  attr_accessible :name,
-                  :description,
-                  :source_type,
-                  :source_address,
-                  :remote_type,
-                  :access,
-                  :destroy_job_id,
-                  :is_destroying
   attr_accessor :user
 
   before_validation :set_path
