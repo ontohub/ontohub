@@ -45,7 +45,9 @@ class ApplicationController < ActionController::Base
   end
 
   def params_to_pass_on_redirect
-    {:'access-token' => params[:'access-token']}
+    new_params = {}
+    %i(access-token).each { |key| new_params[key] = params[key] if params[key] }
+    new_params
   end
 
   def authenticate_admin!
