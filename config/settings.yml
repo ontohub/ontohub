@@ -54,7 +54,7 @@ exception_notifier:
 
 # Worker count
 workers:
-  hets: 4
+  hets: 1
 
 git:
   verify_url: http://localhost/
