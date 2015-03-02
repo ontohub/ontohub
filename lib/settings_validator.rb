@@ -135,6 +135,8 @@ class SettingsValidator
     %i(server_options) => [:validate_value_is_present],
   }
 
+  attr_reader :errors
+
   def validate
     @errors = []
 
