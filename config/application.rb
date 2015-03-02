@@ -92,7 +92,7 @@ module Ontohub
     end
 
     config.after_initialize do
-      SettingsValidator.new.validate
+      SettingsValidator.new(config).validate
     end
   end
 end
