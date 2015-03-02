@@ -1,5 +1,7 @@
 class SettingsValidator
-  class SettingsValidator::Error < StandardError
+  class SettingsValidator::ValidationError < ::StandardError; end
+
+  class SettingsValidator::Error < ::StandardError
     def initialize(key_chain, message)
       super(message)
       @message = message
@@ -144,7 +146,9 @@ class SettingsValidator
     validate_arrays
     validate_specials
 
-    @errors
+    if @errors.present?
+      raise ValidationError.new(@errors.map(&:message).join("\n"))
+    end
   end
 
   protected
