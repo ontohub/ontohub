@@ -243,17 +243,9 @@ class SettingsValidator
   end
 
   def validate_directory_exists(key_chain)
-    path = get_value(cfg_key_chain)
+    path = get_value(key_chain)
     unless File.directory?(path)
-      @errors << NotADirectory.new(cfg_key_chain,
-        "Path is not a directory: #{path}")
-    end
-  end
-
-  def validate_directory_exists(key_chain)
-    path = get_value(cfg_key_chain)
-    unless File.directory?(path)
-      @errors << NotADirectory.new(cfg_key_chain,
+      @errors << NotADirectory.new(key_chain,
         "Path is not a directory: #{path}")
     end
   end
