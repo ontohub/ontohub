@@ -37,9 +37,11 @@ end
 gem 'haml-rails', '~> 0.4'
 
 # Project configuration
-# Version above and including 0.4 requires rails
-# which is a problem in git-hooks
-gem 'rails_config', '~> 0.3.0'
+# Official version above and including 0.4 requires Rails
+# which is a problem in git-hooks.
+# The specified commit is from a fork and allows to overwrite arrays.
+# Also, it removes the Rails dependency.
+gem 'rails_config', github: 'eugenk/rails_config', ref: 'patched-for-ontohub'
 
 #provides  correct indefinite article 
 gem 'indefinite_article', '~> 0.2.0'
