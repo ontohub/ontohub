@@ -15,9 +15,9 @@ class SettingsValidator
   class SettingsValidator::FormatNotURL < Error; end
   class SettingsValidator::KeyNotPresent < Error; end
   class SettingsValidator::KeyNotSet < Error; end
-  class SettingsValidator::TypeError < Error; end
   class SettingsValidator::NotAnAbsoluteFilepath < Error; end
   class SettingsValidator::ResourceNotFound < Error; end
+  class SettingsValidator::TypeError < Error; end
 
   HAS_TO_BE_PRESENT = [
     # settings.yml
