@@ -117,21 +117,22 @@ class SettingsValidator
 
   ARRAY_VALIDATIONS = {
     # settings.yml
-    %i(footer) => [:validate_has_keys, :text],
-    %i(exception_notifier exception_recipients) => [:validate_has_format_email],
-    %i(allowed_iri_schemes) => [:validate_is_present],
-    %i(formality_levels) => [:validate_has_keys, :name, :description],
-    %i(license_models) => [:validate_has_keys, :name, :url],
+    %i(footer) => [:validate_value_has_keys, :text],
+    %i(exception_notifier exception_recipients) =>
+      [:validate_value_has_format_email],
+    %i(allowed_iri_schemes) => [:validate_value_is_present],
+    %i(formality_levels) => [:validate_value_has_keys, :name, :description],
+    %i(license_models) => [:validate_value_has_keys, :name, :url],
     %i(ontology_types) =>
-      [:validate_has_keys, :name, :description, :documentation],
-    %i(tasks) => [:validate_has_keys, :name, :description],
+      [:validate_value_has_keys, :name, :description, :documentation],
+    %i(tasks) => [:validate_value_has_keys, :name, :description],
 
     # hets.yml
-    %i(hets_path) => [:validate_is_absolute_filepath],
-    %i(hets_lib) => [:validate_is_absolute_filepath],
-    %i(hets_owl_tools) => [:validate_is_absolute_filepath],
-    %i(cmd_line_options) => [:validate_is_present],
-    %i(server_options) => [:validate_is_present],
+    %i(hets_path) => [:validate_value_is_absolute_filepath],
+    %i(hets_lib) => [:validate_value_is_absolute_filepath],
+    %i(hets_owl_tools) => [:validate_value_is_absolute_filepath],
+    %i(cmd_line_options) => [:validate_value_is_present],
+    %i(server_options) => [:validate_value_is_present],
   }
 
   def validate
@@ -206,7 +207,7 @@ class SettingsValidator
 
   def validate_presence(key_chain)
     validate_with(key_chain) do |value|
-      validate_is_present(key_chain, value)
+      validate_value_is_present(key_chain, value)
     end
   end
 
@@ -230,31 +231,31 @@ class SettingsValidator
 
   def validate_format_email(key_chain)
     validate_with(key_chain) do |value|
-      validate_has_format_email(key_chain, value)
+      validate_value_has_format_email(key_chain, value)
     end
   end
 
-  def validate_has_keys(key_chain, value, *keys)
+  def validate_value_has_keys(key_chain, value, *keys)
     unless value.present? && keys.all? { |key| value[key].present? }
       @errors << KeyNotSet.new(key_chain,
         "Value needs to have keys: #{keys.join(', ')}")
     end
   end
 
-  def validate_has_format_email(key_chain, value)
+  def validate_value_has_format_email(key_chain, value)
     unless value.present? && value.match(/@/)
       @errors << FormatNotEmail(key_chain,
         "Value is not an email address: #{value}")
     end
   end
 
-  def validate_is_present(key_chain, value)
+  def validate_value_is_present(key_chain, value)
     unless value.present?
       @errors << KeyNotPresent.new(key_chain, 'Value not present.')
     end
   end
 
-  def validate_is_absolute_filepath(key_chain, value)
+  def validate_value_is_absolute_filepath(key_chain, value)
     unless value.present? && %w(/ ~/).any? { |start| value.start_with?(start) }
       @errors << NotAnAbsoluteFilepath.new(key_chain,
         'Has to be an absolute filepath.')
