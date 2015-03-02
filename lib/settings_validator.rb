@@ -142,6 +142,7 @@ class SettingsValidator
       key_chains.each { |key_chain| validate_type(key_chain, types) }
     end
     validate_arrays
+    validate_specials
 
     @errors
   end
@@ -157,6 +158,19 @@ class SettingsValidator
           send(method, key_chain, value, *args)
         end
       end
+    end
+  end
+
+  def validate_specials
+    validate_hets_path
+  end
+
+  def validate_hets_path
+    key_chain = %i(hets_path)
+    hets_paths = get_value(key_chain)
+    unless hets_paths.any? { |path| File.executable?(path) }
+      @errors << ResourceNotFound.new(key_chain,
+        "Executable 'hets' not found in any of the given paths: #{hets_paths}")
     end
   end
 
