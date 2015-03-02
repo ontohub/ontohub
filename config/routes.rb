@@ -169,6 +169,11 @@ Specroutes.define(Ontohub::Application.routes) do
   get 'symbols_search' => 'symbols_search#index'
 
   resources :repositories do
+    post 'undestroy',
+      controller: :repositories,
+      action: :undestroy,
+      as: :undestroy
+
     resources :s_s_h_access, :only => :index, path: 'ssh_access'
     resources :permissions, :only => [:index, :create, :update, :destroy]
     resources :url_maps, except: :show
