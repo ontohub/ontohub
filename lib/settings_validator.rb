@@ -19,6 +19,7 @@ class SettingsValidator
   class SettingsValidator::KeyNotSet < Error; end
   class SettingsValidator::NotADirectory < Error; end
   class SettingsValidator::NotAnAbsoluteFilepath < Error; end
+  class SettingsValidator::ValueOutOfRange < Error; end
   class SettingsValidator::ResourceNotFound < Error; end
   class SettingsValidator::TypeError < Error; end
 
@@ -156,6 +157,14 @@ class SettingsValidator
     %i(yml server_options) => [:validate_value_is_present],
   }
 
+  RANGE_VALIDATIONS = {
+    # We assume that deployment is done on a linux machine that has 'nproc'.
+    # Counting processors is different on other machines.
+    %i(yml workers hets) =>
+      {minimum: 1,
+       maximum: `which nproc`.present? ? `nproc`.to_i : nil}
+  }
+
   attr_reader :errors
 
   def initialize(config)
@@ -170,6 +179,9 @@ class SettingsValidator
     HAS_TO_BE_EMAIL.each { |key_chain| validate_format_email(key_chain) }
     HAS_TO_HAVE_TYPE.each do |types, key_chains|
       key_chains.each { |key_chain| validate_type(key_chain, types) }
+    end
+    RANGE_VALIDATIONS.each do |key_chain, options|
+      validate_range(key_chain, options)
     end
 
     if Rails.env.production?
@@ -277,6 +289,21 @@ class SettingsValidator
   def validate_format_email(key_chain)
     validate_with(key_chain) do |value|
       validate_value_has_format_email(key_chain, value)
+    end
+  end
+
+  def validate_range(key_chain, minimum: nil, maximum: nil)
+    validate_with(key_chain) do |value|
+      if minimum && maximum && (value < minimum || maximum < value)
+        @errors << ValueOutOfRange.new(key_chain,
+          "#{value} is not in the allowed range of [#{minimum}, #{maximum}]")
+      elsif minimum && value < minimum
+        @errors << ValueOutOfRange.new(key_chain,
+          "#{value} is less than the allowed minimum of #{minimum}")
+      elsif maximum && value > maximum
+        @errors << ValueOutOfRange.new(key_chain,
+          "#{value} is greater than the allowed maximum of #{maximum}")
+      end
     end
   end
 
