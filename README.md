@@ -31,8 +31,9 @@ and [Christoph Lange][4].
 
 Initial developers are [Julian Kornberger][5] and [Henning Müller][6].
 
-Documentation generated with yard is to be found on
-[rubydoc.info](http://rubydoc.info/github/ontohub/ontohub/frames).
+Developer- and deployment-centric documentation can be found in the
+[doc/ directory](https://github.com/ontohub/ontohub/tree/staging/db) and in our
+[Wiki pages](https://github.com/ontohub/ontohub/wiki).
 
 Installation
 ------------
