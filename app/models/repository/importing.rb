@@ -117,11 +117,12 @@ module Repository::Importing
 
   def detect_source_type
     if source_address?
-      if GitRepository.is_git_repository?(source_address)
-        self.source_type = 'git'
-      elsif GitRepository.is_svn_repository?(source_address)
-        self.source_type = 'svn'
-      end
+      self.source_type =
+        if GitRepository.is_git_repository?(source_address)
+          'git'
+        elsif GitRepository.is_svn_repository?(source_address)
+          'svn'
+        end
     end
   end
 end
