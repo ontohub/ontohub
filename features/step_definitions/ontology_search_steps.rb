@@ -203,7 +203,7 @@ Then(/^I should not see ontologies from other repositories$/) do
   page.should_not have_content(@repository_two.name)
 end
 
-Given(/^there are at least two ontologies with ontology tpyes$/) do
+Given(/^there are at least two ontologies with ontology types$/) do
   @ontology_type = FactoryGirl.create :ontology_type
   @ontology_one = 'OntologyOne'
   @ontology_two = 'OntologyTwo'

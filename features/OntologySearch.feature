@@ -78,7 +78,7 @@ Scenario: I want to search for ontologies in a repository
 
 Scenario: I want to filter ontologies in a repository for ontology types
   Given there are at least two repositories
-  Given there are at least two ontologies with ontology tpyes
+  Given there are at least two ontologies with ontology types
   When I open the repositories overview page
   When I select a repository
   When I select the ontologies tab

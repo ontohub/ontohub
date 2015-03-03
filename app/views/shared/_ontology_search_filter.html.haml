@@ -1,5 +1,6 @@
 .btn-group.btn-group-sm
   = collection_select nil, name, filter,
-    :id , :name_with_ontology_count,
+    :id, :name_with_ontology_count,
     {include_blank: include_blank, selected: selected},
     class: "selectpicker"
+    
