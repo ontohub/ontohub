@@ -9,7 +9,9 @@ class SymbolsController < InheritedResources::Base
   actions :index
   has_scope :kind
   has_pagination
-  respond_to :json, :xml
+
+  respond_to :html
+  respond_to :json, only: %i(index show)
 
   def index
     ontology = Ontology.find params[:ontology_id]

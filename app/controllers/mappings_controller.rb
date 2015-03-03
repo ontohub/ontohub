@@ -3,10 +3,13 @@
 #
 class MappingsController < InheritedResources::Base
 
-  respond_to :json, :xml
   has_pagination
   has_scope :search
   belongs_to :ontology, optional: true
+
+  respond_to :html
+  respond_to :json, only: %i(index show)
+
   load_and_authorize_resource except: [:index, :show]
   before_filter :check_read_permissions
 

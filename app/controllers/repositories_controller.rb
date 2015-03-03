@@ -1,6 +1,8 @@
 class RepositoriesController < InheritedResources::Base
 
-  respond_to :html, :text
+  respond_to :html
+  respond_to :json, only: %i(index show)
+  respond_to :text, only: %i(index)
 
   defaults finder: :find_by_path!
 
