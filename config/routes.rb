@@ -14,7 +14,6 @@ Specroutes.define(Ontohub::Application.routes) do
     as: :ontology_iri_versioned,
     constraints: [
       RefLocIdRouterConstraint.new(Ontology, ontology: :id),
-      MIMERouterConstraint.new('text/plain', 'text/html')
     ]
 
   # MMT-Support
@@ -22,28 +21,24 @@ Specroutes.define(Ontohub::Application.routes) do
     as: :ontology_iri_mmt,
     constraints: [
       MMTRouterConstraint.new(Ontology, ontology: :id),
-      MIMERouterConstraint.new('text/plain', 'text/html')
     ]
 
   specified_get '/ref/mmt/:repository_id/*path' => 'mappings#show',
     as: :ontology_iri_mmt,
     constraints: [
       MMTRouterConstraint.new(Mapping, ontology: :ontology_id, element: :id),
-      MIMERouterConstraint.new('text/plain', 'text/html')
     ]
 
   specified_get '/ref/mmt/:repository_id/*path' => 'symbols#index',
     as: :ontology_iri_mmt,
     constraints: [
       MMTRouterConstraint.new(OntologyMember::Symbol, ontology: :ontology_id),
-      MIMERouterConstraint.new('text/plain', 'text/html')
     ]
 
   specified_get '/ref/mmt/:repository_id/*path' => 'sentences#index',
     as: :ontology_iri_mmt,
     constraints: [
       MMTRouterConstraint.new(Sentence, ontology: :ontology_id),
-      MIMERouterConstraint.new('text/plain', 'text/html')
     ]
 
   # Subsites for ontologies
@@ -68,28 +63,24 @@ Specroutes.define(Ontohub::Application.routes) do
     as: :ontology_iri,
     constraints: [
       LocIdRouterConstraint.new(Ontology, ontology: :id),
-      MIMERouterConstraint.new('text/plain', 'text/html'),
     ]
 
   specified_get '/:repository_id/*locid' => 'mappings#show',
     as: :mapping_iri,
     constraints: [
       LocIdRouterConstraint.new(Mapping, ontology: :ontology_id, element: :id),
-      MIMERouterConstraint.new('text/plain', 'text/html'),
     ]
 
   specified_get '/:repository_id/*locid' => 'symbols#index',
     as: :symbol_iri,
     constraints: [
       LocIdRouterConstraint.new(OntologyMember::Symbol, ontology: :ontology_id),
-      MIMERouterConstraint.new('text/html'),
     ]
 
   specified_get '/:repository_id/*locid' => 'sentences#index',
     as: :ontology_iri,
     constraints: [
       LocIdRouterConstraint.new(Sentence, ontology: :ontology_id),
-      MIMERouterConstraint.new('text/plain', 'text/html'),
     ]
 
   #
