@@ -54,9 +54,11 @@ exception_notifier:
 
 # Worker count
 workers:
-  hets: 4
+  hets: 1
 
 git:
+  user: # can be nil if git commands are to be executed with the current user
+  group: # can be nil if git commands are to be executed with the current group
   verify_url: http://localhost/
   default_branch: 'master'
   push_priority:
