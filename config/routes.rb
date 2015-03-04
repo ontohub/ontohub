@@ -14,32 +14,81 @@ Specroutes.define(Ontohub::Application.routes) do
     as: :ontology_iri_versioned,
     constraints: [
       RefLocIdRouterConstraint.new(Ontology, ontology: :id),
-    ]
+    ] do
+      accept 'text/html'
+      accept 'text/plain'
+      accept 'application/json'
+
+      doc title: 'Ontology IRI (loc/id) with version reference',
+          body: <<-BODY
+Will return a representation of the ontology at a
+ontology version referenced by the {reference}.
+      BODY
+    end
 
   # MMT-Support
   specified_get '/ref/mmt/:repository_id/*path' => 'ontologies#show',
     as: :ontology_iri_mmt,
     constraints: [
       MMTRouterConstraint.new(Ontology, ontology: :id),
-    ]
+    ] do
+      accept 'text/html'
+      accept 'text/plain'
+      accept 'application/json'
+
+      doc title: 'MMT reference to an ontology',
+          body: <<-BODY
+Will return a representation of the ontology. The ontology
+is determined according to the *path and to the MMT-query-string.
+      BODY
+    end
 
   specified_get '/ref/mmt/:repository_id/*path' => 'mappings#show',
     as: :ontology_iri_mmt,
     constraints: [
       MMTRouterConstraint.new(Mapping, ontology: :ontology_id, element: :id),
-    ]
+    ] do
+      accept 'text/html'
+      accept 'application/json'
+
+      doc title: 'MMT reference to a mapping',
+          body: <<-BODY
+Will return a representation of the mapping. The mapping
+is determined according to the *path and to the MMT-query-string.
+      BODY
+    end
 
   specified_get '/ref/mmt/:repository_id/*path' => 'symbols#index',
     as: :ontology_iri_mmt,
     constraints: [
       MMTRouterConstraint.new(OntologyMember::Symbol, ontology: :ontology_id),
-    ]
+    ] do
+      accept 'text/html'
+      accept 'application/json'
+
+      doc title: 'MMT reference to a symbol',
+          body: <<-BODY
+Will return a representation of the symbol. The symbol
+is determined according to the *path and to the MMT-query-string.
+Currently the representation ist a list of all symbols in the ontology.
+      BODY
+    end
 
   specified_get '/ref/mmt/:repository_id/*path' => 'sentences#index',
     as: :ontology_iri_mmt,
     constraints: [
       MMTRouterConstraint.new(Sentence, ontology: :ontology_id),
-    ]
+    ] do
+      accept 'text/html'
+      accept 'application/json'
+
+      doc title: 'MMT reference to a sentence',
+          body: <<-BODY
+Will return a representation of the sentence. The sentence
+is determined according to the *path and to the MMT-query-string.
+Currently the representation is a list of all sentences in the ontology.
+      BODY
+    end
 
   # Subsites for ontologies
   ontology_subsites = %i(
@@ -54,7 +103,15 @@ Specroutes.define(Ontohub::Application.routes) do
       as: :"ontology_iri_#{category}",
       constraints: [
         LocIdRouterConstraint.new(Ontology, ontology: :ontology_id),
-      ]
+      ] do
+        accept 'text/html'
+        accept 'application/json'
+
+        doc title: "Ontology subsite about #{category.to_s.gsub(/_/, ' ')}",
+            body: <<-BODY
+Will provide a subsite of a specific ontology.
+        BODY
+      end
   end
 
   # Loc/Id-Show(-equivalent) routes
@@ -63,25 +120,64 @@ Specroutes.define(Ontohub::Application.routes) do
     as: :ontology_iri,
     constraints: [
       LocIdRouterConstraint.new(Ontology, ontology: :id),
-    ]
+    ] do
+      accept 'text/html'
+      accept 'text/plain'
+      accept 'application/json'
+
+      doc title: 'loc/id reference to an ontology',
+          body: <<-BODY
+Will return a representation of the ontology. The ontology
+is determined according to the *locid.
+      BODY
+    end
 
   specified_get '/:repository_id/*locid' => 'mappings#show',
     as: :mapping_iri,
     constraints: [
       LocIdRouterConstraint.new(Mapping, ontology: :ontology_id, element: :id),
-    ]
+    ] do
+      accept 'text/html'
+      accept 'application/json'
+
+      doc title: 'loc/id reference to a mapping',
+          body: <<-BODY
+Will return a representation of the mapping. The mapping
+is determined according to the *locid.
+      BODY
+    end
 
   specified_get '/:repository_id/*locid' => 'symbols#index',
     as: :symbol_iri,
     constraints: [
       LocIdRouterConstraint.new(OntologyMember::Symbol, ontology: :ontology_id),
-    ]
+    ] do
+      accept 'text/html'
+      accept 'application/json'
+
+      doc title: 'loc/id reference to a symbol',
+          body: <<-BODY
+Will return a representation of the symbol. The symbol
+is determined according to the *locid.
+Currently this will return the list of all symbols of the ontology.
+      BODY
+    end
 
   specified_get '/:repository_id/*locid' => 'sentences#index',
     as: :ontology_iri,
     constraints: [
       LocIdRouterConstraint.new(Sentence, ontology: :ontology_id),
-    ]
+    ] do
+      accept 'text/html'
+      accept 'application/json'
+
+      doc title: 'loc/id reference to a sentence',
+          body: <<-BODY
+Will return a representation of the sentence. The sentence
+is determined according to the *locid.
+Currently this will return the list of all sentence of the ontology.
+      BODY
+    end
 
   #
   ###############
