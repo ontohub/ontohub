@@ -163,10 +163,8 @@ Then(/^I should see all ontologies with that name$/) do
 end
 
 Given(/^there are at least two repositories$/) do
-  @repository_one = 'RepoOne'
-  @repository_two = 'RepoTwo'
-  @repository_one = FactoryGirl.create :repository, name: @repository_one
-  @repository_two = FactoryGirl.create :repository, name: @repository_two
+  @repository_one = FactoryGirl.create :repository, name: 'RepoOne'
+  @repository_two = FactoryGirl.create :repository, name: 'RepoTwo'
 end
 
 Given(/^there are at least two ontologies$/) do
@@ -205,11 +203,9 @@ end
 
 Given(/^there are at least two ontologies with ontology types$/) do
   @ontology_type = FactoryGirl.create :ontology_type
-  @ontology_one = 'OntologyOne'
-  @ontology_two = 'OntologyTwo'
-  @ontology_one = FactoryGirl.create :ontology, name: @ontology_one,
+  @ontology_one = FactoryGirl.create :ontology, name: 'OntologyOne',
   repository: @repository_one, ontology_type: @ontology_type
-  @ontology_two = FactoryGirl.create :ontology, name: @ontology_two,
+  @ontology_two = FactoryGirl.create :ontology, name: 'OntologyTwo',
   repository: @repository_two, ontology_type: @ontology_type
 end
 
@@ -225,12 +221,10 @@ end
 Given(/^there are at least two ontologies with ontology tpyes and projects$/) do
   @ontology_type = FactoryGirl.create :ontology_type
   @project = FactoryGirl.create :project
-  @ontology_one = 'OntologyOne'
-  @ontology_two = 'OntologyTwo'
-  @ontology_one = FactoryGirl.create :ontology, name: @ontology_one,
+  @ontology_one = FactoryGirl.create :ontology, name: 'OntologyOne',
   repository: @repository_one, ontology_type: @ontology_type, projects:
   [@project]
-  @ontology_two = FactoryGirl.create :ontology, name: @ontology_two,
+  @ontology_two = FactoryGirl.create :ontology, name: 'OntologyTwo',
   repository: @repository_two, ontology_type: @ontology_type, projects:
   [@project]
 end
