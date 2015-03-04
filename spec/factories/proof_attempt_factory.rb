@@ -1,11 +1,11 @@
 FactoryGirl.define do
   factory :proof_attempt do
-    prover { 'spass' }
+    prover { 'SPASS' }
     prover_output { 'SPASS Output' }
     tactic_script { 'SPASS Tactic Script' }
-    time_taken { rand(10) + 1 }
+    time_taken { rand(5) }
 
-    association :proof_status
+    association :proof_status, factory: :proof_status_proven
     association :theorem
   end
 end

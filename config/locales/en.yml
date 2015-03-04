@@ -117,6 +117,30 @@ en:
     sentence:
       defined_in:
         defined in %{link}
+  theorems:
+    index:
+      prove: Prove all theorems
+      all_proven: All theorems of this %{oms} have been proven.
+    show:
+      proof_attemps_empty: There are no proof attempts.
+  prove:
+    create:
+      starting_jobs: Proving jobs have been scheduled. Please come back in a few moments.
+      nothing_to_do: All theorems have been proven.
+  proof_attempts:
+    show:
+      head: Proof Attempt of
+      created_at: Date
+      time_taken: Time taken
+      used_axioms: Axioms Used
+      no_used_axioms: None
+      used_theorems: Previously Proven Theorems Used
+      no_used_theorems: None
+      generated_axioms: Generated Axioms Used
+      no_generated_axioms: None
+      prover: Prover
+      tactic_script: Tactic script
+      prover_output: Prover output
   have:
     one: has
     other: have

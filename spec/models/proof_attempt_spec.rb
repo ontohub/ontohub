@@ -7,12 +7,13 @@ describe ProofAttempt do
   end
 
   context 'Updating Theorem Proof Status' do
+    let(:proven) { create :proof_status_proven }
     let(:proof_attempt) { create :proof_attempt }
     let(:theorem) { proof_attempt.theorem }
 
     before do
       allow(theorem).to receive(:update_proof_status)
-      proof_attempt.proof_status = ProofStatus.find('SOL')
+      proof_attempt.proof_status = proven
       proof_attempt.save!
     end
 
