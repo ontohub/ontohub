@@ -43,6 +43,8 @@ GEM
       rack-cache (~> 1.2)
       rack-test (~> 0.6.1)
       sprockets (~> 2.2.1)
+    active_model_serializers (0.9.3)
+      activemodel (>= 3.2)
     activemodel (3.2.21)
       activesupport (= 3.2.21)
       builder (~> 3.0.0)
@@ -307,8 +309,6 @@ GEM
       pry (>= 0.9.10)
     quiet_assets (1.0.3)
       railties (>= 3.1, < 5.0)
-    rabl (0.10.1)
-      activesupport (>= 2.3.14)
     rack (1.4.5)
     rack-cache (1.2)
       rack (>= 0.4)
@@ -479,6 +479,7 @@ PLATFORMS
   ruby
 
 DEPENDENCIES
+  active_model_serializers (~> 0.9.3)
   acts_as_tree (~> 2.0.0)
   better_errors (~> 1.1.0)
   binding_of_caller (~> 0.7.2)
@@ -532,7 +533,6 @@ DEPENDENCIES
   pry-byebug (~> 2.0.0)
   pry-rails (~> 0.3.2)
   quiet_assets (~> 1.0.3)
-  rabl (~> 0.10.1)
   rack-protection (~> 1.5.3)
   rails (~> 3.2.21)
   rails-erd (~> 1.1.0)

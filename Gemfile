@@ -52,7 +52,7 @@ gem 'inherited_resources', '~> 1.4.0'
 gem 'has_scope', '~> 0.6.0.rc'
 
 # JSON views
-gem 'rabl', '~> 0.10.1'
+gem 'active_model_serializers', '~> 0.9.3'
 
 # XML Parser
 gem 'nokogiri', '~> 1.6.3.1'
