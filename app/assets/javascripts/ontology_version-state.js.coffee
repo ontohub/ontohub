@@ -12,7 +12,7 @@ update = (container) ->
       state = data.state
 
       if state == current_state && !_.contains(final_states, state)
-        enqueue()
+        enqueue(container)
       else
         current_state = state
 
