@@ -115,8 +115,8 @@ Given(/^there is an ontology with all filters given$/) do
   @formality_level = FactoryGirl.create :formality_level
   @license_model = FactoryGirl.create :license_model
   @task = FactoryGirl.create :task
-  @ontology = FactoryGirl.create :ontology, ontology_type: @ontology_type, 
-  projects: [@project], formality_level: @formality_level, 
+  @ontology = FactoryGirl.create :ontology, ontology_type: @ontology_type,
+  projects: [@project], formality_level: @formality_level,
   license_models: [@license_model], tasks: [@task]
 end
 
@@ -188,7 +188,7 @@ end
 
 When(/^I select the ontologies tab$/) do
   within 'ul.nav.nav-tabs' do
-    click_link('Ontologies') 
+    click_link('Ontologies')
   end
 end
 

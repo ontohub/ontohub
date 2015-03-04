@@ -1,13 +1,11 @@
 module OntologySearchHelper
-
-  def render_filter(klass, include_blank='', selected_key: nil)
+  def render_filter(klass, include_blank = '', selected_key: nil)
     name = klass.name.underscore.to_sym
-    render 'shared/ontology_search_filter', {
+    render 'shared/ontology_search_filter',
       name: name,
       filter: filter_list_for(klass),
       include_blank: include_blank,
       selected: params[selected_key]
-    }
   end
 
   def filter_list_for(klass)
