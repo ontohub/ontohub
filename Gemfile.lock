@@ -6,7 +6,7 @@ GIT
 
 GIT
   remote: git://github.com/0robustus1/specroutes.git
-  revision: 47a37d952db633954ffcc918e19bbd721832b134
+  revision: 8ec7c293a3b8993e932fdf6789583278e33aa726
   specs:
     specroutes (0.0.1)
       libxml-ruby (~> 2.7.0)
@@ -282,7 +282,7 @@ GEM
       metaclass (~> 0.0.1)
     momentjs-rails (2.8.1)
       railties (>= 3.1)
-    multi_json (1.10.1)
+    multi_json (1.11.0)
     multi_test (0.1.1)
     multipart-post (2.0.0)
     net-scp (1.2.1)
@@ -460,7 +460,7 @@ GEM
     treetop (1.4.15)
       polyglot
       polyglot (>= 0.3.1)
-    tzinfo (0.3.42)
+    tzinfo (0.3.43)
     uglifier (2.5.3)
       execjs (>= 0.3.0)
       json (>= 1.8.0)
