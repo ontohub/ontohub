@@ -76,6 +76,10 @@ en:
       hint:
         slashes: Use slashes to directly create subdirectories.
   ontology:
+    deleted:
+      label: File deleted
+      info: The defining file %{path} of this %{oms} was deleted. However, you can check the
+      last_file_version: last version of that file
     delete: Delete
     delete_error: Can't delete an %{oms} that's imported by another one.
     delete_confirm:
@@ -104,11 +108,6 @@ en:
       If you discard the changes, the textarea on the left will be reset to the previous state.
 
       This action is irreversible!
-  ontology:
-    deleted:
-      label: File deleted
-      info: The defining file %{path} of this %{oms} was deleted. However, you can check the
-      last_file_version: last version of that file
   sentences:
     sentence:
       defined_in:
