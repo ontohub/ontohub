@@ -7,6 +7,7 @@ class OntologySearchController < ApplicationController
 
   def search_response
     in_repository = in_repository?
-    @search_response ||= OntologySearch.new(params, in_repository).search_response
+    @search_response ||= OntologySearch.new(params, in_repository).
+      search_response
   end
 end
