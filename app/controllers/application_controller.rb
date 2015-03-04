@@ -64,7 +64,8 @@ class ApplicationController < ActionController::Base
   end
 
   def locid_for(resource, *commands, **query_components)
-    iri = "#{request.base_url}#{resource.locid}"
+    locid = URI.escape(resource.locid)
+    iri = "#{request.base_url}#{locid}"
     iri << "///#{commands.join('///')}" if commands.any?
     iri << "?#{query_components.to_query}" if query_components.any?
     iri
