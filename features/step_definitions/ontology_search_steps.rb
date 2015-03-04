@@ -84,7 +84,7 @@ end
 
 When(/^I select the license model I search for$/) do
   within '#search_form_div' do
-    select @license_model.name, from: '_license'
+    select @license_model.name, from: '_license_model'
   end
 end
 
@@ -125,7 +125,7 @@ When(/^I select the all filters I search for$/) do
     select @ontology_type.name, from: '_ontology_type'
     select @project.name, from: '_project'
     select @formality_level.name, from: '_formality_level'
-    select @license_model.name, from: '_license'
+    select @license_model.name, from: '_license_model'
     select @task.name, from: '_task'
   end
 end
@@ -162,3 +162,97 @@ Then(/^I should see all ontologies with that name$/) do
   page.should have_content(@ontology.name)
 end
 
+Given(/^there are at least two repositories$/) do
+  @repository_one = FactoryGirl.create :repository, name: 'RepoOne'
+  @repository_two = FactoryGirl.create :repository, name: 'RepoTwo'
+end
+
+Given(/^there are at least two ontologies$/) do
+  @ontology_one = 'OntologyOne'
+  @ontology_two = 'OntologyTwo'
+  @ontology_one = FactoryGirl.create :ontology, name: @ontology_one,
+  repository: @repository_one
+  @ontology_two = FactoryGirl.create :ontology, name: @ontology_two,
+  repository: @repository_two
+end
+
+When(/^I open the repositories overview page$/) do
+  visit repositories_path
+end
+
+When(/^I select a repository$/) do
+  within 'ul.list-group' do
+    click_link(@repository_one.name)
+  end
+end
+
+When(/^I select the ontologies tab$/) do
+  within 'ul.nav.nav-tabs' do
+    click_link('Ontologies') 
+  end
+end
+
+Then(/^I should see all ontologies in that repository$/) do
+  page.should have_content(@ontology_one.name)
+end
+
+Then(/^I should not see ontologies from other repositories$/) do
+  page.should_not have_content(@ontology_two.name)
+  page.should_not have_content(@repository_two.name)
+end
+
+Given(/^there are at least two ontologies with ontology types$/) do
+  @ontology_type = FactoryGirl.create :ontology_type
+  @ontology_one = FactoryGirl.create :ontology, name: 'OntologyOne',
+  repository: @repository_one, ontology_type: @ontology_type
+  @ontology_two = FactoryGirl.create :ontology, name: 'OntologyTwo',
+  repository: @repository_two, ontology_type: @ontology_type
+end
+
+Then(/^I should see all ontologies in that repository with that type$/) do
+  page.should have_content(@ontology_one.name)
+  page.should have_content(@ontology_type.name)
+end
+
+Then(/^I should not see ontologies from other repositories with that type$/) do
+  page.should_not have_content(@ontology_two.name)
+end
+
+Given(/^there are at least two ontologies with ontology tpyes and projects$/) do
+  @ontology_type = FactoryGirl.create :ontology_type
+  @project = FactoryGirl.create :project
+  @ontology_one = FactoryGirl.create :ontology, name: 'OntologyOne',
+  repository: @repository_one, ontology_type: @ontology_type, projects:
+  [@project]
+  @ontology_two = FactoryGirl.create :ontology, name: 'OntologyTwo',
+  repository: @repository_two, ontology_type: @ontology_type, projects:
+  [@project]
+end
+
+Then(/^I should see all ontologies in that repository with that type, in that project$/) do
+  page.should have_content(@ontology_one.name)
+  page.should have_content(@ontology_type.name)
+  page.should have_content(@project.name)
+end
+
+Then(/^I should not see ontologies from other repositories with that type, in that project$/) do
+  page.should_not have_content(@ontology_two.name)
+end
+
+When(/^I type in a ontology name I'm searching for which is in the repository$/) do
+  within '#search_form_div' do
+    fill_in 'query', with: @ontology_one.name
+  end
+end
+
+When(/^I type in a ontology name I'm searching for which is not existing$/) do
+  within '#search_form_div' do
+    fill_in 'query', with: 'OntologyThree'
+  end
+end
+
+Then(/^I should not see the ontology$/) do
+  within '#search_response' do
+    page.should_not have_content('OntologyThree')
+  end
+end

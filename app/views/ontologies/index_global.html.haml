@@ -1,1 +1,7 @@
-= render 'ontology_search'
+%h2 #{Settings.OMS.pluralize.capitalize}
+
+%p
+  = pluralize @count, Settings.OMS
+  currently available
+
+= render 'shared/ontology_search'

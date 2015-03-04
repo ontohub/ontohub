@@ -67,3 +67,56 @@ Scenario: I want to filter the ontologies and for an specific ontology name
   Then I should see all ontologies with that two features 
   And I should see all ontologies with that name
 
+Scenario: I want to search for ontologies in a repository
+  Given there are at least two repositories
+  Given there are at least two ontologies
+  When I open the repositories overview page
+  When I select a repository
+  When I select the ontologies tab
+  Then I should see all ontologies in that repository
+  And I should not see ontologies from other repositories
+
+Scenario: I want to filter ontologies in a repository for ontology types
+  Given there are at least two repositories
+  Given there are at least two ontologies with ontology types
+  When I open the repositories overview page
+  When I select a repository
+  When I select the ontologies tab
+  Then I should see all ontologies in that repository
+  When I select the type I search for 
+  Then I should see all ontologies in that repository with that type
+  And I should not see ontologies from other repositories with that type
+
+Scenario: I want to filter ontologies in a repository with different filters
+  Given there are at least two repositories
+  Given there are at least two ontologies with ontology tpyes and projects
+  When I open the repositories overview page
+  When I select a repository
+  When I select the ontologies tab
+  Then I should see all ontologies in that repository
+  When I select the type I search for
+  When I select the project I search for
+  Then I should see all ontologies in that repository with that type, in that project
+  And I should not see ontologies from other repositories with that type, in that project
+
+Scenario: I want to search for a existing ontology in a repository
+  Given there are at least two repositories
+  Given there are at least two ontologies
+  When I open the repositories overview page
+  When I select a repository
+  When I select the ontologies tab
+  Then I should see all ontologies in that repository
+  And I should not see ontologies from other repositories
+  When I type in a ontology name I'm searching for which is in the repository
+  Then I should see the ontology
+
+Scenario: I want to search for a not existing ontology in a repository
+  Given there are at least two repositories
+  Given there are at least two ontologies
+  When I open the repositories overview page
+  When I select a repository
+  When I select the ontologies tab
+  Then I should see all ontologies in that repository
+  And I should not see ontologies from other repositories
+  When I type in a ontology name I'm searching for which is not existing
+  Then I should not see the ontology
