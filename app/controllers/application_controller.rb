@@ -40,6 +40,16 @@ class ApplicationController < ActionController::Base
 
   protected
 
+  def current_ability
+    @current_ability ||= Ability.new(current_user, params[:'access-token'])
+  end
+
+  def params_to_pass_on_redirect
+    new_params = {}
+    %i(access-token).each { |key| new_params[key] = params[key] if params[key] }
+    new_params
+  end
+
   def authenticate_admin!
     unless admin?
       flash[:error] = 'you need admin privileges for this action'

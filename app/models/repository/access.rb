@@ -4,6 +4,10 @@ module Repository::Access
   OPTIONS = %w[public_r public_rw private_r private_rw]
   DEFAULT_OPTION = OPTIONS[0]
 
+  def destroy_expired_access_tokens
+    access_tokens.select(&:expired?).map(&:destroy)
+  end
+
   def is_private
     access.start_with?('private')
   end

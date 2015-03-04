@@ -265,7 +265,7 @@ Style/IndentArray:
 
 Style/IndentHash:
   Description: 'Checks the indentation of the first key in a hash literal.'
-  Enabled: true
+  Enabled: false
 
 Style/Lambda:
   Description: 'Use the new lambda literal syntax for single-line blocks.'
