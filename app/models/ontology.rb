@@ -5,107 +5,32 @@ class Ontology < ActiveRecord::Base
   include Metadatable
 
   # Ontology Model Includes
-  include Ontology::Import
-  include Ontology::Scopes
-  include Ontology::States
-  include Ontology::Versions
-  include Ontology::Symbols
-  include Ontology::Sentences
-  include Ontology::Mappings
-  include Ontology::Distributed
-  include Ontology::Categories
-  include Ontology::Oops
-  include Ontology::Projects
-  include Ontology::Tools
-  include Ontology::Tasks
-  include Ontology::LicenseModels
-  include Ontology::FileExtensions
-  include Ontology::Searching
-  include Ontology::OwlClasses
-  include IRIUrlBuilder::Includeable
   include GraphStructures::SpecificFetchers::Mappings
+  include IRIUrlBuilder::Includeable
+  include Ontology::AssociationsAndAttributes
+  include Ontology::Categories
+  include Ontology::ClassMethodsAndScopes
+  include Ontology::Distributed
+  include Ontology::FileExtensions
+  include Ontology::Import
+  include Ontology::Mappings
+  include Ontology::Oops
+  include Ontology::OwlClasses
+  include Ontology::Searching
+  include Ontology::Sentences
+  include Ontology::States
+  include Ontology::Symbols
+  include Ontology::Validations
+  include Ontology::Versions
 
   # Multiple Class Features
   include Aggregatable
 
   class Ontology::DeleteError < StandardError; end
 
-  belongs_to :language
-  belongs_to :logic, counter_cache: true
-  belongs_to :ontology_type
-  belongs_to :repository
-  belongs_to :formality_level
-
-  has_many :symbol_groups
-  has_many :alternative_iris, dependent: :destroy
-  has_many :source_mappings,
-    class_name: 'Mapping', foreign_key: 'source_id', dependent: :destroy
-  has_many :target_mappings,
-    class_name: 'Mapping', foreign_key: 'target_id', dependent: :destroy
-
-  has_and_belongs_to_many :license_models
-
-  attr_accessible :iri, :locid
-  attr_accessible :name, :description, :acronym, :documentation,
-                  :logic_id,
-                  :category_ids,
-                  :acronym,
-                  :file_extension,
-                  :projects,
-                  :present,
-                  :alternative_iris,
-                  :ontology_type_id,
-                  :license_model_ids,
-                  :formality_level_id,
-                  :task_ids,
-                  :project_ids
-
-  validates_uniqueness_of :iri, :if => :iri_changed?
-  validates_format_of :iri, :with => URI::regexp(Settings.allowed_iri_schemes)
-
-  validates :documentation,
-    allow_blank: true,
-    format: { with: URI::regexp(Settings.allowed_iri_schemes) }
-
-  validates_presence_of :basepath
-
   delegate :permission?, to: :repository
 
   strip_attributes :only => [:name, :iri]
-
-  scope :list, includes(:logic).
-    order('ontologies.state asc, ontologies.symbols_count desc')
-
-  scope :with_path, ->(path) do
-    condition = <<-CONDITION
-      ("ontology_versions"."file_extension" = :extname)
-        OR (("ontology_versions"."file_extension" IS NULL)
-          AND ("ontologies"."file_extension" = :extname))
-    CONDITION
-
-    with_basepath(File.basepath(path)).
-      where(condition, extname: File.extname(path)).
-      readonly(false)
-  end
-
-  scope :with_basepath, ->(path) do
-    join = <<-JOIN
-      LEFT JOIN "ontology_versions"
-      ON "ontologies"."ontology_version_id" = "ontology_versions"."id"
-    JOIN
-
-    condition = <<-CONDITION
-      ("ontology_versions"."basepath" = :path)
-        OR (("ontology_versions"."basepath" IS NULL)
-          AND ("ontologies"."basepath" = :path))
-    CONDITION
-
-    joins(join).where(condition, path: path).readonly(false)
-  end
-
-  scope :parents_first,
-    order('(CASE WHEN ontologies.parent_id IS NULL THEN 1 ELSE 0 END) DESC,'\
-      ' ontologies.parent_id asc')
 
   def repository
     @repository ||= Repository.find(repository_id)
@@ -154,27 +79,6 @@ class Ontology < ActiveRecord::Base
   # Title for mappings
   def title
     name? ? iri : nil
-  end
-
-  def self.find_with_locid(locid, iri = nil)
-    ontology = where(locid: locid).first
-
-    if ontology.nil? && iri
-      ontology = AlternativeIri.where('iri LIKE ?', '%' << iri).
-        first.try(:ontology)
-    end
-
-    ontology
-  end
-
-  def self.find_with_iri(iri)
-    ontology = where('iri LIKE ?', '%' << iri).first
-    if ontology.nil?
-      ontology = AlternativeIri.where('iri LIKE ?', '%' << iri).
-        first.try(:ontology)
-    end
-
-    ontology
   end
 
   def is_imported?

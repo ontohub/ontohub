@@ -5,8 +5,6 @@ module Repository::Validations
   VALID_PATH_REGEX = /^[a-z0-9_\.\-]{3,32}$/
 
   included do
-    before_validation :set_path
-
     validates :name, presence: true,
                      uniqueness: { case_sensitive: false },
                      format: VALID_NAME_REGEX,
@@ -20,76 +18,111 @@ module Repository::Validations
                      if: :path_changed?
 
     validates_with UnreservedValidator, if: :path_changed?
+
+    validates :state, inclusion: {in: Repository::Importing::STATES}
+    validates_with SourceTypeValidator, if: :source_address?
+    validates :remote_type, presence: true, if: :source_address?
+    validates_with RemoteTypeValidator
+
+    validates_with RemoteAccessValidator
+    validates :access,
+      presence: true,
+      inclusion: {in: Repository::Access::OPTIONS}
   end
 
-  def set_path
-    self.path ||= name.parameterize if name
-  end
-end
-
-class UnreservedValidator < ActiveModel::Validator
-
-  def validate(record)
-    if is_reserved_name?(record.path)
-      record.errors[:name] = "is a reserved name"
+  class RemoteAccessValidator < ActiveModel::Validator
+    def validate(record)
+      if record.mirror? && (record.private_rw? || record.public_rw?)
+        record.errors[:access] =
+          'Error! Write access is not allowed for a mirrored repositry.'
+      end
     end
   end
 
-  protected
+  class UnreservedValidator < ActiveModel::Validator
+    def validate(record)
+      record.errors[:name] = 'is a reserved name' if reserved_name?(record.path)
+    end
 
-  # toplevel namespaces in routing are reserved words
-  def is_reserved_name?(name)
-    RESERVED_NAMES.include?(name)
+    protected
+
+    # toplevel namespaces in routing are reserved words
+    def reserved_name?(name)
+      RESERVED_NAMES.include?(name)
+    end
+
+    def self.toplevel_namespaces
+      Rails.application.routes.routes.
+        map { |r| toplevel_route(r.path.spec.to_s) }.uniq.compact
+    end
+
+    def self.toplevel_route(route)
+      non_present_to_nil(remove_colon(remove_parens(first_hierarchy_part(
+        route))))
+    end
+
+    def self.first_hierarchy_part(route)
+      route.split('/', 3)[1] || ''
+    end
+
+    def self.remove_parens(route_part)
+      route_part.split('(', 2).first || ''
+    end
+
+    def self.remove_colon(route_part)
+      route_part.split(':', 2).first || ''
+    end
+
+    def self.non_present_to_nil(route_part)
+      route_part.present? ? route_part : nil
+    end
+
+    # It is against our code style conventions to place a constant here,
+    # but it is necessary to have all the inherent methods defined above of it.
+    RESERVED_NAMES = toplevel_namespaces
   end
 
-  def self.toplevel_namespaces
-    Rails.application.routes.routes.
-      map { |r| toplevel_route(r.path.spec.to_s) }.uniq.compact
-  end
+  class NameNotChangedAfterSetValidator < ActiveModel::Validator
+    def validate(record)
+      if name_was_changed_to_different_name?(record)
+        record.errors[:name] = 'we do not allow renaming, right now'
+      end
+    end
 
-  def self.toplevel_route(route)
-    non_present_to_nil(remove_colon(remove_parens(first_hierarchy_part(route))))
-  end
+    def name_was_changed_to_different_name?(record)
+      !(was_name_nil?(record) && name_is_present_now?(record))
+    end
 
-  def self.first_hierarchy_part(route)
-    route.split('/', 3)[1] || ''
-  end
+    def was_name_nil?(record)
+      record.name_was.nil?
+    end
 
-  def self.remove_parens(route_part)
-    route_part.split('(', 2).first || ''
-  end
-
-  def self.remove_colon(route_part)
-    route_part.split(':', 2).first || ''
-  end
-
-  def self.non_present_to_nil(route_part)
-    route_part.present? ? route_part : nil
-  end
-
-  # It is against our code style conventions to place a constant here,
-  # but it is necessary to have all the inherent methods defined above of it.
-  RESERVED_NAMES = toplevel_namespaces
-end
-
-class NameNotChangedAfterSetValidator < ActiveModel::Validator
-
-  def validate(record)
-    if name_was_changed_to_different_name?(record)
-      record.errors[:name] = "we do not allow renaming, right now"
+    def name_is_present_now?(record)
+      record.name.present?
     end
   end
 
-  def name_was_changed_to_different_name?(record)
-    !(was_name_nil?(record) && name_is_present_now?(record))
+
+  class RemoteTypeValidator < ActiveModel::Validator
+    def validate(record)
+      if Repository::Importing::REMOTE_TYPES.include?(record.remote_type) &&
+        !record.source_address.present?
+        record.errors[:remote_type] =
+          "Source address not set for #{record.remote_type}"
+      elsif record.remote_type == 'mirror' && !record.source_type?
+        record.errors[:remote_type] =
+          "Source type not set for #{record.remote_type}"
+      end
+    end
   end
 
-  def was_name_nil?(record)
-    record.name_was.nil?
+  class SourceTypeValidator < ActiveModel::Validator
+    def validate(record)
+      if record.mirror? && !record.source_type.present?
+        record.errors[:source_address] = 'not a valid remote repository '\
+          "(types supported: #{Repository::Importing::SOURCE_TYPES.join(', ')})"
+        record.errors[:source_type] = 'not present'
+      end
+    end
   end
-
-  def name_is_present_now?(record)
-    record.name.present?
-  end
-
 end

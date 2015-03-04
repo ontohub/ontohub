@@ -1,6 +1,6 @@
 require 'git_repository'
 
-module Repository::GitRepositories
+module Repository::Git
   extend ActiveSupport::Concern
 
   delegate :commit_id, :dir?, :empty?, :get_file, :has_changed?,
