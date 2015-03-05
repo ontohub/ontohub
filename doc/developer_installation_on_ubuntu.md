@@ -149,3 +149,12 @@ In ontohub directory:
 - `rake resque:work`
 
 Now you should be ready...
+
+
+## Troubleshooting
+### Remote Access
+If you want to access the rails server (WEBrick) remotely, it gets very slow.
+To speed things up, you can change the WEBrick config:
+Find the `webrick/config.rb` of your ruby (rbenv) installation and change
+`:DoNotReverseLookup => nil` to `:DoNotReverseLookup => true`.
+[Source](https://www.ruby-forum.com/topic/218316)
