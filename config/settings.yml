@@ -64,6 +64,13 @@ git:
   push_priority:
     commits: 1
     changed_files_per_commit: 5
+  fallbacks:
+    committer_name: 'ontohub_system'
+    committer_email: 'ontohub_system@ontohub.org'
+
+# The name of the repository in which the externally imported ontology files are
+# saved.
+external_repository_name: 'External'
 
 allowed_iri_schemes:
   - http
@@ -74,10 +81,6 @@ allowed_iri_schemes:
 
 display_head_commit: false
 display_symbols_tab: false
-
-external_repository_name: 'External'
-fallback_commit_user: 'ontohub_system'
-fallback_commit_email: 'ontohub_system@ontohub.org'
 
 format_selection: false
 

@@ -56,8 +56,8 @@ module Repository::Git
 
   def save_file_only(tmp_file, filepath, message, user)
     commit = nil
-    name = user ? user.name : Settings.fallback_commit_user
-    email = user ? user.email : Settings.fallback_commit_email
+    name = user ? user.name : Settings.git.fallbacks.committer_name
+    email = user ? user.email : Settings.git.fallbacks.committer_email
     userdata = {email: email, name: name}
     git.add_file(userdata, tmp_file, filepath, message) do |commit_oid|
       commit = commit_oid
