@@ -25,7 +25,18 @@ email: noreply@example.com
 # Mail delivery
 # http://guides.rubyonrails.org/action_mailer_basics.html#action-mailer-configuration
 action_mailer:
-  delivery_method: sendmail
+  # possible values for delivery_method (see ActionMailer documentation):
+  # :smtp, :sendmail, :file, :test
+  delivery_method: :sendmail
+  perform_deliveries: true
+  raise_delivery_errors: true
+  smtp_settings:
+    address: 'mail'
+    port: 25
+    domain: # nil
+    enable_starttls_auto: true
+    password: # nil
+    authentication: # nil
 
 # The number of days a user can access
 # the website without confirming his account.
