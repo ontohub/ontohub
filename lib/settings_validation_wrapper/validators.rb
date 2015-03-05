@@ -1,12 +1,4 @@
 module SettingsValidationWrapper::Validators
-  class AbsoluteFilepathValidator < ActiveModel::EachValidator
-    def validate_each(record, attribute, value)
-      unless value.start_with('/')
-        record.errors.add attribute, 'is not an absolute path'
-      end
-    end
-  end
-
   class ClassValidator < ActiveModel::EachValidator
     def validate_each(record, attribute, value)
       unless options[:in].include?(value.class)
