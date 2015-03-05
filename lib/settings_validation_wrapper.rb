@@ -2,11 +2,18 @@ class SettingsValidationWrapper
   include ActiveModel::Validations
   include SettingsValidationWrapper::Validators
 
+  # We assume that deployment is done on a linux machine that has 'nproc'.
+  # Counting processors is different on other machines. For them, we would need
+  # to use a gem.
+  NPROC_PATH = `which nproc`
+  NPROC_AVAILABLE = NPROC_PATH.present? && File.executable?(NPROC_PATH)
+
   PRESENCE = %i(yml__name
                 yml__hostname
                 yml__OMS
                 yml__OMS_qualifier
                 yml__action_mailer__delivery_method
+                yml__action_mailer__smtp_settings__address
                 yml__allow_unconfirmed_access_for_days
                 yml__max_read_filesize
                 yml__max_combined_diff_size
@@ -16,14 +23,18 @@ class SettingsValidationWrapper
                 yml__exception_notifier__sender_address
                 yml__exception_notifier__exception_recipients
                 yml__workers__hets
+                yml__paths__data
+                yml__paths__git_repositories
+                yml__paths__symlinks
+                yml__paths__commits
                 yml__git__verify_url
                 yml__git__default_branch
                 yml__git__push_priority__commits
                 yml__git__push_priority__changed_files_per_commit
+                yml__git__fallbacks__committer_name
+                yml__git__fallbacks__committer_email
                 yml__allowed_iri_schemes
                 yml__external_repository_name
-                yml__fallback_commit_user
-                yml__fallback_commit_email
                 yml__formality_levels
                 yml__license_models
                 yml__ontology_types
@@ -39,6 +50,7 @@ class SettingsValidationWrapper
                 yml__server_options
                 yml__env__LANG
 
+                initializers__fqdn
                 initializers__data_root
                 initializers__git_home
                 initializers__git_root
@@ -48,14 +60,38 @@ class SettingsValidationWrapper
   BOOLEAN = %i(yml__exception_notifier__enabled
                yml__display_head_commit
                yml__display_symbols_tab
-               yml__format_selection)
+               yml__format_selection
+               yml__action_mailer__perform_deliveries
+               yml__action_mailer__raise_delivery_errors
+               yml__action_mailer__smtp_settings__enable_starttls_auto
+
+               initializers__consider_all_requests_local)
 
   FIXNUM = %i(yml__workers__hets
+              yml__action_mailer__smtp_settings__port
               yml__git__push_priority__commits
               yml__git__push_priority__changed_files_per_commit
               yml__version_minimum_revision)
 
   FLOAT = %i(yml__version_minimum_version)
+
+  STRING = %i(yml__name
+              yml__hostname
+              yml__OMS
+              yml__OMS_qualifier
+              yml__email
+              yml__action_mailer__smtp_settings__address
+              yml__exception_notifier__email_prefix
+              yml__exception_notifier__sender_address
+              yml__paths__data
+              yml__paths__git_repositories
+              yml__paths__symlinks
+              yml__paths__commits
+              yml__git__verify_url
+              yml__git__default_branch
+              yml__git__fallbacks__committer_name
+              yml__git__fallbacks__committer_email
+              yml__external_repository_name)
 
   ARRAY = %i(yml__footer
              yml__exception_notifier__exception_recipients
@@ -77,6 +113,7 @@ class SettingsValidationWrapper
                             initializers__symlink_path
                             initializers__commits_path)
 
+  # Elements of those arrays need to be absolute filepaths
   ABSOLUTE_FILEPATH = %i(yml__hets_path
                          yml__hets_lib
                          yml__hets_owl_tools)
@@ -87,20 +124,45 @@ class SettingsValidationWrapper
 
 
   validates_presence_of *PRESENCE
-  validates_presence_of :initializers__secret_token, if: :in_production?
 
-  validates :yml__git__verify_url, format: URI.regexp
-  validates :yml__email, email: true
-
-  # We assume that deployment is done on a linux machine that has 'nproc'.
-  # Counting processors is different on other machines.
-  if `which nproc`.present? && File.executable?(`which nproc`)
-    validates :yml__workers__hets,
-              numericality: {greater_than: 0,
-                             less_than_or_equal_to: `nproc`.to_i}
-  else
-    validates :yml__workers__hets, numericality: {greater_than: 0}
+  BOOLEAN.each do |field|
+    validates field, class: {in: [TrueClass, FalseClass]}
   end
+  FIXNUM.each { |field| validates field, class: {in: [Fixnum]} }
+  FLOAT.each { |field| validates field, class: {in: [Float]} }
+  STRING.each { |field| validates field, class: {in: [String]} }
+  ARRAY.each { |field| validates field, class: {in: [Array]} }
+  DIRECTORY_PRODUCTION.each do |field|
+    validates field, directory: true, if: :in_production?
+  end
+  ABSOLUTE_FILEPATH.each do |field|
+    validates field, elements_are_absolute_filepaths: true
+  end
+  ELEMENT_PRESENT.each { |field| validates field, elements_are_present: true }
+
+  validates :initializers__secret_token,
+            presence: true,
+            length: {minimum: 64},
+            if: :in_production?
+
+  validates :yml__email,
+            email_from_host: {hostname: ->(record) { record.initializers__fqdn }},
+            if: :in_production?
+
+  validates :yml__exception_notifier__exception_recipients,
+            elements_are_email: true
+
+  validates :yml__action_mailer__delivery_method,
+            inclusion: {in: %i(sendmail smtp file test)}
+
+  validates :yml__max_read_filesize, numericality: {greater_than: 1024}
+  validates :yml__max_combined_diff_size, numericality: {greater_than: 2048}
+  validates :yml__ontology_parse_timeout, numericality: {greater_than: 0}
+  validates :yml__git__verify_url, format: URI.regexp
+  validates :yml__git__push_priority__commits,
+            numericality: {greater_than_or_equal_to: 1}
+  validates :yml__git__push_priority__changed_files_per_commit,
+            numericality: {greater_than_or_equal_to: 1}
 
   validates :yml__footer, elements_have_keys: {keys: %i(text)}
   validates :yml__formality_levels,
@@ -111,27 +173,18 @@ class SettingsValidationWrapper
   validates :yml__tasks,
             elements_have_keys: {keys: %i(name description)}
 
-  validates :yml__hets_path, elements_one_executable: true
+  validates :yml__hets_path, elements_with_one_executable: true
 
   validates :initializers__log_level,
-            inclusion: {in: %i(fatal error warn inf o d ebug)}
+            inclusion: {in: %i(fatal error warn info debug)}
 
-  BOOLEAN.each do |field|
-    validates field, class: {in: [TrueClass, FalseClass]}
+  if NPROC_AVAILABLE
+    validates :yml__workers__hets,
+              numericality: {greater_than: 0,
+                             less_than_or_equal_to: `nproc`.to_i}
+  else
+    validates :yml__workers__hets, numericality: {greater_than: 0}
   end
-  FIXNUM.each { |field| validates field, class: {in: [Fixnum]} }
-  FLOAT.each { |field| validates field, class: {in: [Float]} }
-  DIRECTORY_PRODUCTION.each do |field|
-    validates field, directory: true, if: :in_production?
-  end
-
-  ARRAY.each { |field| validates field, class: {in: [Array]} }
-  ABSOLUTE_FILEPATH.each do |field|
-    validates field, elements_are_absolute_filepaths: true
-  end
-  ELEMENT_PRESENT.each { |field| validates field, elements_are_present: true }
-  validates :yml__exception_notifier__exception_recipients,
-            elements_are_email: true
 
   protected
 

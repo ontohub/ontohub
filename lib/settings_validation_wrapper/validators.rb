@@ -58,7 +58,7 @@ module SettingsValidationWrapper::Validators
     end
   end
 
-  class ElementsOneExecutableValidator < ActiveModel::EachValidator
+  class ElementsWithOneExecutableValidator < ActiveModel::EachValidator
     def validate_each(record, attribute, value)
       unless value.any? { |filepath| File.executable?(filepath) }
         record.errors.add attribute, 'must contain at least one executable file'
@@ -66,10 +66,17 @@ module SettingsValidationWrapper::Validators
     end
   end
 
-  class EmailValidator < ActiveModel::EachValidator
+  class EmailFromHostValidator < ActiveModel::EachValidator
     def validate_each(record, attribute, value)
-      unless value.match(/@/)
-        record.errors.add attribute, 'must be an email address'
+      fqdn =
+        if options[:hostname].respond_to?(:call)
+          options[:hostname].call(record)
+        else
+          options[:hostname]
+        end
+      unless value.match(/@#{fqdn}\z/)
+        record.errors.add attribute,
+          "email adress must belong to the fully qualified domain name '#{fqdn}'."
       end
     end
   end
