@@ -113,6 +113,9 @@ class SettingsValidationWrapper
 
   validates :yml__hets_path, elements_one_executable: true
 
+  validates :initializers__log_level,
+            inclusion: {in: %i(fatal error warn inf o d ebug)}
+
   BOOLEAN.each do |field|
     validates field, class: {in: [TrueClass, FalseClass]}
   end
