@@ -76,7 +76,7 @@ module Ontohub
     config.external_url_mapping = APP_CONFIG = YAML.load(File.read(Rails.root + "config/external_link_mapping.yml"))
 
     config.before_initialize do
-      Settings.add_source!(Rails.root.join('config', 'hets.yml').to_s)
+      Settings.prepend_source!(Rails.root.join('config', 'hets.yml').to_s)
       Settings.reload!
 
       # Enable serving of images, stylesheets, and JavaScripts from an asset server
