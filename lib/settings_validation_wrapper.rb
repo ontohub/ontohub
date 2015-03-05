@@ -68,6 +68,14 @@ class SettingsValidationWrapper
     end
   end
 
+  class ElementsOneExecutableValidator < ActiveModel::EachValidator
+    def validate_each(record, attribute, value)
+      unless value.any? { |filepath| File.executable?(filepath) }
+        record.errors.add attribute, 'must contain at least one executable file'
+      end
+    end
+  end
+
   class EmailValidator < ActiveModel::EachValidator
     def validate_each(record, attribute, value)
       unless value.match(/@/)
@@ -184,6 +192,8 @@ class SettingsValidationWrapper
             elements_have_keys: {keys: %i(name description documentation)}
   validates :yml__tasks,
             elements_have_keys: {keys: %i(name description)}
+
+  validates :yml__hets_path, elements_one_executable: true
 
   BOOLEAN.each do |field|
     validates field, class: {in: [TrueClass, FalseClass]}
