@@ -155,7 +155,7 @@ group :production do
   gem 'exception_notification', '~> 4.0.1'
   # a light-weight alternative for the heavy-weight, buggy Phusion apache httpd
   # plugin. See https://github.com/puma/puma , config/puma.rb
-  gem 'puma', '>= 2.10.0'
+  gem 'puma', '~> 2.10.0'
 end
 
 group :deployment do
