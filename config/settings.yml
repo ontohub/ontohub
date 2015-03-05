@@ -67,6 +67,18 @@ exception_notifier:
 workers:
   hets: 1
 
+# The following paths can be absolute paths
+# or relative paths to the project root
+paths:
+  # General data.
+  data: data
+  # git repositories (names are numbers/ids)
+  git_repositories: data/git
+  # named symlinks to the git repositories
+  symlinks: data/git_daemon
+  # cache for files that needed to be checked out from the git repositories
+  commits: data/commits
+
 git:
   user: # can be nil if git commands are to be executed with the current user
   group: # can be nil if git commands are to be executed with the current group
