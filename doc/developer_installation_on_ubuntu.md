@@ -107,6 +107,18 @@ apt-get update
 apt-get install -y redis-server
 ```
 
+## elasticsearch
+
+```
+wget -qO - https://packages.elasticsearch.org/GPG-KEY-elasticsearch | sudo apt-key add -
+sudo add-apt-repository "deb http://packages.elasticsearch.org/elasticsearch/1.4/debian stable main”
+sudo apt-get update
+sudo apt-get install -y elasticsearch
+sudo update-rc.d elasticsearch defaults 95 10
+```
+
+And then after a reboot the elasticsearch service should be running.
+
 ## hets
 
 The Heterogenous Toolset is needed to perform Operations during Ontology import.
