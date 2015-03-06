@@ -21,17 +21,17 @@ http_interactions:
       Server:
       - nginx/1.6.2
       Date:
-      - Fri, 06 Mar 2015 11:25:44 GMT
+      - Fri, 06 Mar 2015 15:18:21 GMT
       Content-Type:
       - application/json
       Content-Length:
-      - '2563'
+      - '2711'
       Last-Modified:
-      - Fri, 06 Mar 2015 11:20:46 GMT
+      - Fri, 06 Mar 2015 15:17:51 GMT
       Connection:
       - keep-alive
       Etag:
-      - '"54f98d8e-a03"'
+      - '"54f9c51f-a97"'
       Strict-Transport-Security:
       - max-age=31536000
       X-Frame-Options:
@@ -88,6 +88,12 @@ http_interactions:
                 { "type": "null" }
               ]
             },
+            "ontology_type": {
+              "oneOf": [
+                { "$ref": "references.json#/definitions/ontology_type" },
+                { "type": "null" }
+              ]
+            },
             "current_ontology_version": { "$ref": "references.json#/definitions/ontology_version" },
             "license_models": {
               "type": "array",
@@ -130,7 +136,7 @@ http_interactions:
           ]
         }
     http_version: 
-  recorded_at: Fri, 06 Mar 2015 11:25:44 GMT
+  recorded_at: Fri, 06 Mar 2015 15:18:21 GMT
 - request:
     method: get
     uri: https://masterthesis.rightsrestricted.com/ontohub/references.json
@@ -152,17 +158,17 @@ http_interactions:
       Server:
       - nginx/1.6.2
       Date:
-      - Fri, 06 Mar 2015 11:25:44 GMT
+      - Fri, 06 Mar 2015 15:18:22 GMT
       Content-Type:
       - application/json
       Content-Length:
-      - '2751'
+      - '3128'
       Last-Modified:
-      - Fri, 06 Mar 2015 11:20:31 GMT
+      - Fri, 06 Mar 2015 15:05:08 GMT
       Connection:
       - keep-alive
       Etag:
-      - '"54f98d7f-abf"'
+      - '"54f9c224-c38"'
       Strict-Transport-Security:
       - max-age=31536000
       X-Frame-Options:
@@ -260,6 +266,20 @@ http_interactions:
                 }
               }
             },
+            "ontology_type": {
+              "description": "Reference to an ontology type",
+              "type": "object",
+              "properties": {
+                "name": {
+                  "description": "The name of the ontology type",
+                  "type": "string"
+                },
+                "iri": {
+                  "description": "The unique identifier of the ontology type",
+                  "type": "string"
+                }
+              }
+            },
             "ontology_version": {
               "description": "Reference to an ontology-version",
               "type": "object",
@@ -277,5 +297,5 @@ http_interactions:
           }
         }
     http_version: 
-  recorded_at: Fri, 06 Mar 2015 11:25:44 GMT
+  recorded_at: Fri, 06 Mar 2015 15:18:22 GMT
 recorded_with: VCR 2.9.2

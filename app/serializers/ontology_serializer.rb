@@ -21,6 +21,8 @@ class OntologySerializer < ApplicationSerializer
   has_many :license_models, each_serializer: LicenseModelSerializer::Reference
   has_one :formality_level,
     serializer: FormalityLevelSerializer::Reference
+  has_one :ontology_type,
+    serializer: OntologyTypeSerializer::Reference
 
   attributes :ontology_versions, :symbols, :sentences, :mappings
 
