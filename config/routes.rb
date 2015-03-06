@@ -277,7 +277,7 @@ Currently this will return the list of all sentence of the ontology.
       end
       resources :children, :only => :index
       resources :symbols, only: :index
-      resources :sentences, :only => :index
+      resources :sentences, :only => %i(index show)
       resources :theorems, only: :index
       resources :mappings do
         get 'update_version', :on => :member
