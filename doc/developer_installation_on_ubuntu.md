@@ -140,6 +140,13 @@ If you need the latest nightly build, just update hets (assure you have a workin
 hets -update
 ```
 
+## phantomjs
+We use `phantomjs` as a headless javascript-enabled browser for our integration
+tests. You only need to install the package:
+```
+sudo apt-get install -y phantomjs
+```
+
 ## setup
 
 In ontohub directory:

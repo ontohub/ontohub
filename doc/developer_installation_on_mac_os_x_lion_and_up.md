@@ -80,6 +80,13 @@ You'll also (probably) need to create the two databases:
 - `createdb ontohub_development`
 - `createdb ontohub_test`
 
+## phantomjs
+We use `phantomjs` as a headless javascript-enabled browser for our integration
+tests. You only need to install the package:
+```
+brew install phantomjs
+```
+
 ## gems
 
 Switch to the directory where you clone ontohub.

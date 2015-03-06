@@ -13,7 +13,7 @@ if [[ "$answer" == "y" ]]; then
   sudo apt-get update
 
   # Apt Intall
-  sudo apt-get install -y build-essential openssl libreadline6 libreadline6-dev curl git-core zlib1g zlib1g-dev libssl-dev libyaml-dev libsqlite3-0 libsqlite3-dev sqlite3 libxml2-dev libxslt-dev autoconf libc6-dev ncurses-dev automake libtool bison subversion postgresql libpq-dev redis-server hets libqtwebkit-dev
+  sudo apt-get install -y build-essential openssl libreadline6 libreadline6-dev curl git-core zlib1g zlib1g-dev libssl-dev libyaml-dev libsqlite3-0 libsqlite3-dev sqlite3 libxml2-dev libxslt-dev autoconf libc6-dev ncurses-dev automake libtool bison subversion postgresql libpq-dev redis-server hets phantomjs
 
   # Hets Update
   sudo hets -update
