@@ -1,0 +1,71 @@
+---
+http_interactions:
+- request:
+    method: get
+    uri: https://masterthesis.rightsrestricted.com/ontohub/license_model.json
+    body:
+      encoding: US-ASCII
+      string: ''
+    headers:
+      Accept-Encoding:
+      - gzip;q=1.0,deflate;q=0.6,identity;q=0.3
+      Accept:
+      - "*/*"
+      User-Agent:
+      - Ruby
+  response:
+    status:
+      code: 200
+      message: OK
+    headers:
+      Server:
+      - nginx/1.6.2
+      Date:
+      - Fri, 06 Mar 2015 11:38:17 GMT
+      Content-Type:
+      - application/json
+      Content-Length:
+      - '716'
+      Last-Modified:
+      - Fri, 27 Feb 2015 14:53:26 GMT
+      Connection:
+      - keep-alive
+      Etag:
+      - '"54f084e6-2cc"'
+      Strict-Transport-Security:
+      - max-age=31536000
+      X-Frame-Options:
+      - DENY
+      Accept-Ranges:
+      - bytes
+    body:
+      encoding: UTF-8
+      string: |
+        {
+          "id": "https://masterthesis.rightsrestricted.com/ontohub/license_model.json#",
+          "$schema": "http://json-schema.org/draft-04/schema#",
+          "title": "License Model",
+          "description": "A license model",
+          "type": "object",
+          "properties": {
+            "iri": {
+              "description": "The unique identifier for a license model",
+              "type": "string"
+            },
+            "name": {
+              "description": "The name of the license model",
+              "type": "string"
+            },
+            "description": {
+              "description": "A description of the license model",
+              "type": "string"
+            },
+            "url": {
+              "description": "A URL which should contain documentation of the license model. Is not part of Ontohub",
+              "type": "string"
+            }
+          }
+        }
+    http_version: 
+  recorded_at: Fri, 06 Mar 2015 11:38:17 GMT
+recorded_with: VCR 2.9.2
