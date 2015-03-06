@@ -14,7 +14,13 @@ class OntologySerializer < ApplicationSerializer
   attributes :basepath, :file_extension
 
   has_one :logic, serializer: LogicSerializer::Reference
+  has_one :repository, serializer: RepositorySerializer::Reference
   has_one :parent, serializer: OntologySerializer::Reference
+  has_one :current_ontology_version,
+    serializer: OntologyVersionSerializer::Reference
+  has_many :license_models, each_serializer: LicenseModelSerializer::Reference
+  has_one :formality_level,
+    serializer: FormalityLevelSerializer::Reference
 
   attributes :ontology_versions, :symbols, :sentences, :mappings
 
