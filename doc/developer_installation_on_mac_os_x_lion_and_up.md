@@ -96,7 +96,7 @@ Now we can actually start installing the necessary gems:
   - If it fails because of a **mysql** dependency, remove that dependency from the *Gemfile*.
   - and try again...
 
-## solr
+## elasticsearch
 
 On Lion and up Java isn't installed automatically anymore.
 To force a java installation issue the following command:
@@ -104,6 +104,12 @@ To force a java installation issue the following command:
 - `java –version`
 
 After this a window will appear which will prompt the java installation.
+
+Then, install elasticsearch and put it into autostart with
+```
+brew install elasticsearch
+launchctl load ~/Library/LaunchAgents/homebrew.mxcl.elasticsearch.plist
+```
 
 ## redis
 
@@ -143,34 +149,16 @@ If there is a new version released you can update hets through the homebrew proc
 
 ## setup
 
-In ontohub directory:
-
-- `rake db:migrate:reset`
-- `rake sunspot:solr:start`
-- `rake resque:work`
+You can start everything needed with (in the ontohub directory):
+```
+invoker start invoker.ini
+```
+And you can (re)build the database with:
+```
+script/rebuild-ontohub
+```
 
 Now you should be ready...
-
-## Optional: pow
-
-Managing multiple rails applications in development can be quite
-of a hassle. So for that, just use [**pow**](http://pow.cx/).
-
-You can either install it via `curl get.pow.cx | sh` or
-you can just use homebrew again: `brew install pow`.
-
-Now we have to do the same thing to pow, which we did to the shell:
-adjust the PATH. This command will take care of that:
-
-- `echo 'export PATH=$(rbenv root)/shims:$(rbenv root)/bin:$PATH' >> ~/.powconfig`
-
-A simple `gem install powder` actually makes it even easier,
-because when in an application directory you can perform
-`powder link` once and you can access your application
-by http://application_folder-name.dev in your browser
-
-Usually pow restarts applications when needed, but you can
-force it with `powder restart`.
 
 [hets_link]: http://www.informatik.uni-bremen.de/agbkb/forschung/formal_methods/CoFI/hets/intel-mac/dmgs/
 [hets_current_dmg]: http://www.informatik.uni-bremen.de/agbkb/forschung/formal_methods/CoFI/hets/intel-mac/dmgs/Hets-2013-06-28.dmg
