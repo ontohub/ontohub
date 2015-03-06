@@ -131,6 +131,9 @@ group :test do
   # Code Coverage Analysis
   gem 'simplecov', '~> 0.9.0', require: false
 
+  # So we can validate against json-schemas
+  gem 'json-schema', '~> 2.5.0'
+
   # Writing test ontologies
   gem 'ontology-united', github: '0robustus1/ontology-united'
 end
