@@ -119,9 +119,9 @@ group :test do
   gem "factory_girl_rails", '~> 4.4.1'
 
   # Required for integration tests
-  gem "capybara", '~> 2.4.1'
-  gem "capybara-webkit", '~> 1.1.0'
-  gem "launchy", '~> 2.4.2'
+  gem 'capybara', '~> 2.4.1'
+  gem 'poltergeist', '~> 1.6.0'
+  gem 'launchy', '~> 2.4.2'
 
   # Recording of HTTP Requests
   gem "vcr", '~> 2.9.2'
