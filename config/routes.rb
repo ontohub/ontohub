@@ -276,7 +276,7 @@ Currently this will return the list of all sentence of the ontology.
         post 'retry_failed' => 'ontologies#retry_failed'
       end
       resources :children, :only => :index
-      resources :symbols, only: :index
+      resources :symbols, only: %i(index show)
       resources :sentences, :only => %i(index show)
       resources :theorems, only: :index
       resources :mappings do
