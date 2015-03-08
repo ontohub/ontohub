@@ -1,4 +1,4 @@
 class OntologyTypesController < InheritedResources::Base
+  actions :show
   respond_to :html
-  respond_to :json, only: %i(show)
 end
