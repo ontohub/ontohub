@@ -6,7 +6,7 @@ GIT
 
 GIT
   remote: git://github.com/0robustus1/specroutes.git
-  revision: 8ec7c293a3b8993e932fdf6789583278e33aa726
+  revision: 9cb219f9ec74640a122a1b439da2605e475ada5c
   specs:
     specroutes (0.0.1)
       libxml-ruby (~> 2.7.0)
