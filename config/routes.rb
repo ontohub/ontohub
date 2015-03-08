@@ -10,6 +10,21 @@ Specroutes.define(Ontohub::Application.routes) do
   # as per Loc/Id definition
 
   # Special (/ref-based) Loc/Id routes
+  specified_get '/ref/:reference/:repository_id/*locid' => 'api/v1/ontology_versions#show',
+    as: :ontology_iri_versioned,
+    constraints: [
+      RefLocIdRouterConstraint.new(Ontology, ontology: :ontology_id),
+    ] do
+      accept 'application/json'
+      # reroute_on_mime 'application/json', to: 'api/v1/ontology_versions#show'
+
+      doc title: 'Ontology IRI (loc/id) with version reference',
+          body: <<-BODY
+Will return a representation of the ontology at a
+ontology version referenced by the {reference}.
+      BODY
+    end
+
   specified_get '/ref/:reference/:repository_id/*locid' => 'ontologies#show',
     as: :ontology_iri_versioned,
     constraints: [
