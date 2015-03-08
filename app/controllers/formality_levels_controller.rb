@@ -3,7 +3,6 @@ class FormalityLevelsController < InheritedResources::Base
   before_filter :check_read_permissions
 
   respond_to :html
-  respond_to :json, only: %i(show)
 
   load_and_authorize_resource
 
