@@ -5,11 +5,10 @@ class SentencesController < InheritedResources::Base
 
   belongs_to :ontology
 
-  actions :index, :show
+  actions :index
   has_pagination
 
   respond_to :html, only: %i(index)
-  respond_to :json, only: %i(index show)
 
   before_filter :check_read_permissions
 
