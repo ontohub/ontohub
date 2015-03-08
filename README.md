@@ -32,7 +32,7 @@ and [Christoph Lange][4].
 Initial developers are [Julian Kornberger][5] and [Henning Müller][6].
 
 Developer- and deployment-centric documentation can be found in the
-[doc/ directory](https://github.com/ontohub/ontohub/tree/staging/db) and in our
+[doc/ directory](https://github.com/ontohub/ontohub/tree/staging/doc) and in our
 [Wiki pages](https://github.com/ontohub/ontohub/wiki).
 
 Installation
