@@ -111,7 +111,8 @@ we expected it to be matchable by this regular expression:
   end
 
   def self.qualified_loc_id_for(resource)
-    "http://#{Settings.hostname}#{resource.versioned_locid}"
+    locid = URI.escape(resource.versioned_locid)
+    "http://#{Settings.hostname}#{locid}"
   end
 
   def self.parse_via_api(resource, url_catalog = [], structure_only: false)

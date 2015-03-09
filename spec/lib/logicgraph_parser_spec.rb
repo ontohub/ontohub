@@ -20,7 +20,7 @@ describe LogicgraphParser do
 
     context 'parsing invalid XML' do
       it 'not throw an exception' do
-        expect(OntologyParser.parse open_fixture('broken.xml'), {}).
+        expect { OntologyParser.parse(open_fixture('broken.xml'), {}) }.
           not_to raise_error
       end
     end

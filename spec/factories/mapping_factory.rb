@@ -1,6 +1,16 @@
 FactoryGirl.define do
+  sequence :mapping_name do |n|
+    "Map#{n}"
+  end
+
   factory :mapping do
     iri { FactoryGirl.generate :iri }
+    name { FactoryGirl.generate :mapping_name }
+    association :ontology
+
+    after(:build) do |mapping|
+      mapping.locid = "#{mapping.ontology.locid}//#{mapping.name}"
+    end
 
     factory :import_mapping do
       kind 'import'

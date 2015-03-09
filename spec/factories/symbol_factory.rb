@@ -21,6 +21,10 @@ FactoryGirl.define do
     kind { FactoryGirl.generate :symbol_kind }
     name { FactoryGirl.generate :name }
 
+    after(:build) do |symbol|
+      symbol.locid = "#{symbol.ontology.locid}//#{symbol.name}"
+    end
+
     factory :symbol_owl2 do
       text { FactoryGirl.generate :symbol_owl2_text }
       name { FactoryGirl.generate :symbol_owl2_name }
