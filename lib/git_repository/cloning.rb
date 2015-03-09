@@ -7,7 +7,7 @@ module GitRepository::Cloning
   Ref = Struct.new(:previous, :current)
 
   def clone(url)
-    set_section %w( remote origin ),
+    set_section %w(remote origin),
       url:    url,
       fetch:  '+refs/*:refs/*',
       mirror: 'true'
@@ -16,7 +16,7 @@ module GitRepository::Cloning
   end
 
   def clone_svn(url)
-    options = { url: url }
+    options = {url: url}
 
     # Do we have a standard layout?
     if self.class.svn_ls(url).split("\n") == %w( branches/ tags/ trunk/ )
@@ -29,25 +29,25 @@ module GitRepository::Cloning
         fetch:    ':refs/remotes/git-svn'
     end
 
-    set_section %w( svn-remote svn ), options
+    set_section %w(svn-remote svn), options
     pull_svn
   end
 
   def pull
     with_head_change head_oid do
-      git_exec 'remote', 'update'
+      git_exec('remote', 'update')
     end
   end
 
   # Fetches the latest commits and resets the local master
   def pull_svn
     old_head_oid = head_oid
-    git_exec 'svn', 'fetch'
+    git_exec('svn', 'fetch')
 
     if svn_has_trunk?
-      reset_branch old_head_oid, 'master', "remotes/trunk"
+      reset_branch(old_head_oid, 'master', "remotes/trunk")
     else
-      reset_branch old_head_oid, 'master', "remotes/git-svn"
+      reset_branch(old_head_oid, 'master', "remotes/git-svn")
     end
 
   end
@@ -58,14 +58,16 @@ module GitRepository::Cloning
 
   # Sets the reference of a local branch
   def reset_branch(old_head_oid, branch, ref)
-    with_head_change old_head_oid do
-      git_exec 'branch', '-f', branch, ref
+    with_head_change(old_head_oid) do
+      git_exec('branch', '-f', branch, ref)
     end
   end
 
   module ClassMethods
     def is_git_repository?(address)
-      !!(exec 'git', 'ls-remote', address)
+      # GIT_ASKPASS is set to the 'true' executable. It simply returns
+      # successfully. This way, no credentials are supplied.
+      !! exec('git', 'ls-remote', '-h', address, 'GIT_ASKPASS' => 'true')
     rescue Subprocess::Error => e
       if e.status == 128
         false
@@ -75,7 +77,7 @@ module GitRepository::Cloning
     end
 
     def svn_ls(address)
-      exec 'svn', 'ls', address
+      exec('svn', 'ls', address)
     end
 
     def is_svn_repository?(address)
