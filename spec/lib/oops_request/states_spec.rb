@@ -2,7 +2,6 @@ require 'spec_helper'
 
 describe 'OopsRequest::States' do
   let(:request) { create :oops_request }
-  before { allow(request).to receive(:execute_and_save) }
 
   it 'have state pending' do
     expect(request.state).to eq('pending')
@@ -29,7 +28,11 @@ describe 'OopsRequest::States' do
   end
 
   context 'without an error' do
-    before { request.run }
+    before do
+      allow(request).to receive(:execute_and_save).
+        and_return([])
+      request.run
+    end
 
     it 'have state done' do
       expect(request.state).to eq('done')
