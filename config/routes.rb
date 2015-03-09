@@ -15,7 +15,8 @@ Specroutes.define(Ontohub::Application.routes) do
     constraints: [
       RefLocIdRouterConstraint.new(Ontology, ontology: :ontology_id),
     ] do
-      accept 'application/json'
+      accept 'application/json', constraint: true
+      accept 'text/plain', constraint: true
       # reroute_on_mime 'application/json', to: 'api/v1/ontology_versions#show'
 
       doc title: 'Ontology IRI (loc/id) with version reference',
@@ -31,8 +32,6 @@ ontology version referenced by the {reference}.
       RefLocIdRouterConstraint.new(Ontology, ontology: :id),
     ] do
       accept 'text/html'
-      reroute_on_mime 'text/plain', to: 'api/v1/ontologies#show'
-      reroute_on_mime 'application/json', to: 'api/v1/ontology_versions#show'
 
       doc title: 'Ontology IRI (loc/id) with version reference',
           body: <<-BODY
