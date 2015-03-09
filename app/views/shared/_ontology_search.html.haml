@@ -1,0 +1,18 @@
+#search_form_div
+  = form_tag search_ontologies_path, method: :get, id: :search_form do
+    %p
+      .btn-group
+        = render_filter(OntologyType, 'Ontology Type', selected_key: :ontology_type)
+        = render_filter(Project, 'Project', selected_key: :project)
+        = render_filter(FormalityLevel, 'Formality Level', selected_key: :formality)
+        = render_filter(LicenseModel, 'License Model', selected_key: :license)
+        = render_filter(Task, 'Task', selected_key: :task)
+
+    .row
+      .col-md-10
+        = text_field_tag :query, params[:query], class: "form-control", id: :query
+        = hidden_field_tag :repository_id, @repository_id
+      .col-md-2
+        = submit_tag "Search", name: nil, class: "form-control"
+
+= render partial: 'shared/ontology_search_response'
