@@ -6,10 +6,13 @@ class OntologiesController < InheritedResources::Base
   include FilesHelper
 
   belongs_to :repository, finder: :find_by_path!
-  respond_to :json, :xml
   has_pagination
   has_scope :search, :state
+
   actions :index, :show, :edit, :update, :destroy
+
+  respond_to :html, except: %i(show)
+  respond_to :json, :text, only: %i(show)
 
   before_filter :check_write_permission, except: [:index, :show, :oops_state]
   before_filter :check_read_permissions
