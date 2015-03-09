@@ -27,7 +27,8 @@ ontologies.each do |path|
   path = File.join(Rails.root, 'spec', 'fixtures', 'ontologies', path)
   basename = File.basename(path)
 
-  version = repository.save_file path, basename, "#{basename} added", @user
+  version = repository.save_file path, basename, "#{basename} added", @user, do_not_parse: true
+  version.parse
   if version
     version.ontology.update_attribute :description, Faker::Lorem.paragraph
   end
