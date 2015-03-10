@@ -2,7 +2,7 @@
 http_interactions:
 - request:
     method: get
-    uri: https://masterthesis.rightsrestricted.com/ontohub/symbol.json
+    uri: https://masterthesis.rightsrestricted.com/ontohub/ontology/commands/ontology_versions.json
     body:
       encoding: US-ASCII
       string: ''
@@ -21,17 +21,17 @@ http_interactions:
       Server:
       - nginx/1.6.2
       Date:
-      - Mon, 09 Mar 2015 14:37:46 GMT
+      - Mon, 09 Mar 2015 14:44:11 GMT
       Content-Type:
       - application/json
       Content-Length:
-      - '1158'
+      - '370'
       Last-Modified:
-      - Sat, 07 Mar 2015 11:30:32 GMT
+      - Sun, 08 Mar 2015 20:26:58 GMT
       Connection:
       - keep-alive
       Etag:
-      - '"54fae158-486"'
+      - '"54fcb092-172"'
       Strict-Transport-Security:
       - max-age=31536000
       X-Frame-Options:
@@ -42,53 +42,15 @@ http_interactions:
       encoding: UTF-8
       string: |
         {
-          "id": "https://masterthesis.rightsrestricted.com/ontohub/symbol.json#",
+          "id": "https://masterthesis.rightsrestricted.com/ontohub/ontology/commands/ontology_versions.json#",
           "$schema": "http://json-schema.org/draft-04/schema#",
-          "title": "Symbol",
-          "description": "A symbol defined by an ontology",
-          "type": "object",
-          "properties": {
-            "iri": {
-              "description": "The unique identifier for the symbol",
-              "type": "string"
-            },
-            "name": {
-              "description": "The name of the symbol",
-              "type": "string"
-            },
-            "kind": {
-              "description": "The kind of symbol",
-              "type": "string"
-            },
-            "text": {
-              "description": "The definition of the symbol",
-              "type": "string"
-            },
-            "label": {
-              "description": "The label that is attached to the symbol",
-              "type": ["string", "null"]
-            },
-            "comment": {
-              "description": "A comment on the symbol",
-              "type": ["string", "null"]
-            },
-            "ontology": { "$ref": "references.json#/definitions/ontology" },
-            "sentences": {
-              "description": "Reference to all sentences that use the symbol in this ontology",
-              "type": "string"
-            }
-          },
-          "required": [
-            "iri",
-            "name",
-            "kind",
-            "text",
-            "ontology",
-            "sentences"
-          ]
+          "title": "///ontology_versions",
+          "description": "A list of ontology version references for that ontology",
+          "type": "array",
+          "items": { "$ref": "../../references.json#/definitions/ontology_version" }
         }
     http_version: 
-  recorded_at: Mon, 09 Mar 2015 14:37:46 GMT
+  recorded_at: Mon, 09 Mar 2015 14:44:11 GMT
 - request:
     method: get
     uri: https://masterthesis.rightsrestricted.com/ontohub/references.json
@@ -110,7 +72,7 @@ http_interactions:
       Server:
       - nginx/1.6.2
       Date:
-      - Mon, 09 Mar 2015 14:37:47 GMT
+      - Mon, 09 Mar 2015 14:44:11 GMT
       Content-Type:
       - application/json
       Content-Length:
@@ -291,5 +253,5 @@ http_interactions:
           }
         }
     http_version: 
-  recorded_at: Mon, 09 Mar 2015 14:37:47 GMT
+  recorded_at: Mon, 09 Mar 2015 14:44:11 GMT
 recorded_with: VCR 2.9.2

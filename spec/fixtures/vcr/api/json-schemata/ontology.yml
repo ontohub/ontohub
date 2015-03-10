@@ -21,7 +21,7 @@ http_interactions:
       Server:
       - nginx/1.6.2
       Date:
-      - Fri, 06 Mar 2015 15:18:21 GMT
+      - Mon, 09 Mar 2015 14:37:37 GMT
       Content-Type:
       - application/json
       Content-Length:
@@ -136,7 +136,7 @@ http_interactions:
           ]
         }
     http_version: 
-  recorded_at: Fri, 06 Mar 2015 15:18:21 GMT
+  recorded_at: Mon, 09 Mar 2015 14:37:37 GMT
 - request:
     method: get
     uri: https://masterthesis.rightsrestricted.com/ontohub/references.json
@@ -158,17 +158,17 @@ http_interactions:
       Server:
       - nginx/1.6.2
       Date:
-      - Fri, 06 Mar 2015 15:18:22 GMT
+      - Mon, 09 Mar 2015 14:37:37 GMT
       Content-Type:
       - application/json
       Content-Length:
-      - '3128'
+      - '4184'
       Last-Modified:
-      - Fri, 06 Mar 2015 15:05:08 GMT
+      - Sun, 08 Mar 2015 20:38:01 GMT
       Connection:
       - keep-alive
       Etag:
-      - '"54f9c224-c38"'
+      - '"54fcb329-1058"'
       Strict-Transport-Security:
       - max-age=31536000
       X-Frame-Options:
@@ -293,9 +293,51 @@ http_interactions:
                   "type": "string"
                 }
               }
+            },
+            "mapping": {
+              "description": "Reference to a mapping",
+              "type": "object",
+              "properties": {
+                "name": {
+                  "description": "The name of the mapping",
+                  "type": "string"
+                },
+                "iri": {
+                  "description": "The unique identifier of the mapping",
+                  "type": "string"
+                }
+              }
+            },
+            "sentence": {
+              "description": "Reference to a sentence",
+              "type": "object",
+              "properties": {
+                "name": {
+                  "description": "The name of the sentence",
+                  "type": "string"
+                },
+                "iri": {
+                  "description": "The unique identifier of the sentence",
+                  "type": "string"
+                }
+              }
+            },
+            "symbol": {
+              "description": "Reference to a symbol",
+              "type": "object",
+              "properties": {
+                "name": {
+                  "description": "The name of the symbol",
+                  "type": "string"
+                },
+                "iri": {
+                  "description": "The unique identifier of the symbol",
+                  "type": "string"
+                }
+              }
             }
           }
         }
     http_version: 
-  recorded_at: Fri, 06 Mar 2015 15:18:22 GMT
+  recorded_at: Mon, 09 Mar 2015 14:37:37 GMT
 recorded_with: VCR 2.9.2
