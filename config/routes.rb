@@ -164,7 +164,7 @@ is determined according to the *locid.
   specified_get '/:repository_id/*locid' => 'symbols#index',
     as: :symbol_iri,
     constraints: [
-      LocIdRouterConstraint.new(OntologyMember::Symbol, ontology: :ontology_id),
+      LocIdRouterConstraint.new(OntologyMember::Symbol, ontology: :ontology_id, element: :id),
     ] do
       accept 'text/html'
       reroute_on_mime 'application/json', to: 'api/v1/symbols#show'
@@ -180,7 +180,7 @@ Currently this will return the list of all symbols of the ontology.
   specified_get '/:repository_id/*locid' => 'sentences#index',
     as: :sentence_iri,
     constraints: [
-      LocIdRouterConstraint.new(Sentence, ontology: :ontology_id),
+      LocIdRouterConstraint.new(Sentence, ontology: :ontology_id, element: :id),
     ] do
       accept 'text/html'
       reroute_on_mime 'application/json', to: 'api/v1/sentences#show'
