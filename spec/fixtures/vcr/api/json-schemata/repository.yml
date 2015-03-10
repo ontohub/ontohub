@@ -1,0 +1,102 @@
+---
+http_interactions:
+- request:
+    method: get
+    uri: https://masterthesis.rightsrestricted.com/ontohub/repository.json
+    body:
+      encoding: US-ASCII
+      string: ''
+    headers:
+      Accept-Encoding:
+      - gzip;q=1.0,deflate;q=0.6,identity;q=0.3
+      Accept:
+      - "*/*"
+      User-Agent:
+      - Ruby
+  response:
+    status:
+      code: 200
+      message: OK
+    headers:
+      Server:
+      - nginx/1.6.2
+      Date:
+      - Fri, 06 Mar 2015 11:35:09 GMT
+      Content-Type:
+      - application/json
+      Content-Length:
+      - '1620'
+      Last-Modified:
+      - Fri, 06 Mar 2015 11:34:35 GMT
+      Connection:
+      - keep-alive
+      Etag:
+      - '"54f990cb-654"'
+      Strict-Transport-Security:
+      - max-age=31536000
+      X-Frame-Options:
+      - DENY
+      Accept-Ranges:
+      - bytes
+    body:
+      encoding: UTF-8
+      string: |
+        {
+          "id": "https://masterthesis.rightsrestricted.com/ontohub/repository.json#",
+          "$schema": "http://json-schema.org/draft-04/schema#",
+          "title": "Repository",
+          "description": "A repository inside of Ontohub",
+          "type": "object",
+          "properties": {
+            "iri": {
+              "description": "The unique identifier for a repository",
+              "type": "string"
+            },
+            "name": {
+              "description": "The name of the repository",
+              "type": "string"
+            },
+            "path": {
+              "description": "The name of the directory that represents the repository",
+              "type": "string"
+            },
+            "description": {
+              "description": "A description of the repository",
+              "type": "string"
+            },
+            "remote_origin": {
+              "description": "True if the repository was created from a remote origin.",
+              "type": "boolean"
+            },
+            "source": {
+              "oneOf": [
+                {
+                  "description": "Source of the repository, only present if remote_origin is true",
+                  "type": "object",
+                  "properties": {
+                    "type": {
+                      "description": "Currently either mirror or fork",
+                      "type": "string"
+                    },
+                    "source_type": {
+                      "description": "The type of the source. Currently either git or svn",
+                      "type": "string"
+                    },
+                    "state": {
+                      "description": "State of the mirroring",
+                      "type": "string"
+                    },
+                    "address": {
+                      "description": "URI/URL/IRI of the source",
+                      "type": "string"
+                    }
+                  }
+                },
+                { "type": "null" }
+              ]
+            }
+          }
+        }
+    http_version: 
+  recorded_at: Fri, 06 Mar 2015 11:35:09 GMT
+recorded_with: VCR 2.9.2

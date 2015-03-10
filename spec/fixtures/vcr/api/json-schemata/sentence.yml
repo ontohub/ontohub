@@ -1,0 +1,229 @@
+---
+http_interactions:
+- request:
+    method: get
+    uri: https://masterthesis.rightsrestricted.com/ontohub/sentence.json
+    body:
+      encoding: US-ASCII
+      string: ''
+    headers:
+      Accept-Encoding:
+      - gzip;q=1.0,deflate;q=0.6,identity;q=0.3
+      Accept:
+      - "*/*"
+      User-Agent:
+      - Ruby
+  response:
+    status:
+      code: 200
+      message: OK
+    headers:
+      Server:
+      - nginx/1.6.2
+      Date:
+      - Fri, 06 Mar 2015 20:14:20 GMT
+      Content-Type:
+      - application/json
+      Content-Length:
+      - '978'
+      Last-Modified:
+      - Fri, 06 Mar 2015 20:14:02 GMT
+      Connection:
+      - keep-alive
+      Etag:
+      - '"54fa0a8a-3d2"'
+      Strict-Transport-Security:
+      - max-age=31536000
+      X-Frame-Options:
+      - DENY
+      Accept-Ranges:
+      - bytes
+    body:
+      encoding: ASCII-8BIT
+      string: !binary |-
+        ewogICJpZCI6ICJodHRwczovL21hc3RlcnRoZXNpcy5yaWdodHNyZXN0cmlj
+        dGVkLmNvbS9vbnRvaHViL3NlbnRlbmNlLmpzb24jIiwKICAiJHNjaGVtYSI6
+        ICJodHRwOi8vanNvbi1zY2hlbWEub3JnL2RyYWZ0LTA0L3NjaGVtYSMiLAog
+        ICJ0aXRsZSI6ICJTZW50ZW5jZSIsCiAgImRlc2NyaXB0aW9uIjogIkEgc2Vu
+        dGVuY2UgaW5zaWRlIG9mIGFuIG9udG9sb2d5IiwKICAidHlwZSI6ICJvYmpl
+        Y3QiLAogICJwcm9wZXJ0aWVzIjogewogICAgImlyaSI6IHsKICAgICAgImRl
+        c2NyaXB0aW9uIjogIlRoZSB1bmlxdWUgaWRlbnRpZmllciBmb3IgdGhlIHNl
+        bnRlbmNlIiwKICAgICAgInR5cGUiOiAic3RyaW5nIgogICAgfSwKICAgICJu
+        YW1lIjogewogICAgICAiZGVzY3JpcHRpb24iOiAiVGhlIG5hbWUgb2YgdGhl
+        IHNlbnRlbmNlIOKAlCB1c3VhbGx5IGF1dG8tZ2VuZXJhdGVkLiIsCiAgICAg
+        ICJ0eXBlIjogInN0cmluZyIKICAgIH0sCiAgICAidGV4dCI6IHsKICAgICAg
+        ImRlc2NyaXB0aW9uIjogIlRoZSBkZWZpbml0aW9uIG9mIHRoZSBzZW50ZW5j
+        ZSIsCiAgICAgICJ0eXBlIjogInN0cmluZyIKICAgIH0sCiAgICAiaW1wb3J0
+        ZWQiOiB7CiAgICAgICJkZXNjcmlwdGlvbiI6ICJEZW5vdGVzIHdoZXRoZXIg
+        dGhpcyBzZW50ZW5jZSB3YXMgaW1wb3J0ZWQgZnJvbSBhbm90aGVyIG9udG9s
+        b2d5IiwKICAgICAgInR5cGUiOiAiYm9vbGVhbiIKICAgIH0sCiAgICAib250
+        b2xvZ3kiOiB7ICIkcmVmIjogInJlZmVyZW5jZXMuanNvbiMvZGVmaW5pdGlv
+        bnMvb250b2xvZ3kiIH0sCiAgICAic3ltYm9scyI6IHsKICAgICAgImRlc2Ny
+        aXB0aW9uIjogIlJlZmVyZW5jZSB0byBhbGwgc3ltYm9scyB1c2VkIGluIHRo
+        aXMgc2VudGVuY2UiLAogICAgICAidHlwZSI6ICJzdHJpbmciCiAgICB9CiAg
+        fSwKICAicmVxdWlyZWQiOiBbCiAgICAiaXJpIiwKICAgICJuYW1lIiwKICAg
+        ICJvbnRvbG9neSIsCiAgICAic3ltYm9scyIKICBdCn0K
+    http_version: 
+  recorded_at: Fri, 06 Mar 2015 20:14:20 GMT
+- request:
+    method: get
+    uri: https://masterthesis.rightsrestricted.com/ontohub/references.json
+    body:
+      encoding: US-ASCII
+      string: ''
+    headers:
+      Accept-Encoding:
+      - gzip;q=1.0,deflate;q=0.6,identity;q=0.3
+      Accept:
+      - "*/*"
+      User-Agent:
+      - Ruby
+  response:
+    status:
+      code: 200
+      message: OK
+    headers:
+      Server:
+      - nginx/1.6.2
+      Date:
+      - Fri, 06 Mar 2015 20:14:21 GMT
+      Content-Type:
+      - application/json
+      Content-Length:
+      - '3128'
+      Last-Modified:
+      - Fri, 06 Mar 2015 15:05:08 GMT
+      Connection:
+      - keep-alive
+      Etag:
+      - '"54f9c224-c38"'
+      Strict-Transport-Security:
+      - max-age=31536000
+      X-Frame-Options:
+      - DENY
+      Accept-Ranges:
+      - bytes
+    body:
+      encoding: UTF-8
+      string: |
+        {
+          "id": "https://masterthesis.rightsrestricted.com/ontohub/references.json#",
+          "$schema": "http://json-schema.org/draft-04/schema#",
+          "definitions": {
+            "repository": {
+              "description": "Reference to a repository",
+              "type": "object",
+              "properties": {
+                "name": {
+                  "description": "The name of the repository",
+                  "type": "string"
+                },
+                "iri": {
+                  "description": "The unique identifier of the repository",
+                  "type": "string"
+                }
+              }
+            },
+            "logic": {
+              "description": "Reference to a logic",
+              "type": "object",
+              "properties": {
+                "name": {
+                  "description": "The name of the logic",
+                  "type": "string"
+                },
+                "iri": {
+                  "description": "The unique identifier of the logic",
+                  "type": "string"
+                }
+              }
+            },
+            "ontology": {
+              "description": "Reference to an ontology",
+              "type": "object",
+              "properties": {
+                "name": {
+                  "description": "The name of the ontology",
+                  "type": "string"
+                },
+                "iri": {
+                  "description": "The unique identifier of the ontology",
+                  "type": "string"
+                }
+              }
+            },
+            "license_model": {
+              "description": "Reference to a license model",
+              "type": "object",
+              "properties": {
+                "name": {
+                  "description": "The name of the license model",
+                  "type": "string"
+                },
+                "iri": {
+                  "description": "The unique identifier of the license model",
+                  "type": "string"
+                }
+              }
+            },
+            "formality_level": {
+              "description": "Reference to a formality level",
+              "type": "object",
+              "properties": {
+                "name": {
+                  "description": "The name of the formality level",
+                  "type": "string"
+                },
+                "iri": {
+                  "description": "The unique identifier of the formality level",
+                  "type": "string"
+                }
+              }
+            },
+            "ontology": {
+              "description": "Reference to an ontology",
+              "type": "object",
+              "properties": {
+                "name": {
+                  "description": "The name of the ontology",
+                  "type": "string"
+                },
+                "iri": {
+                  "description": "The unique identifier of the ontology",
+                  "type": "string"
+                }
+              }
+            },
+            "ontology_type": {
+              "description": "Reference to an ontology type",
+              "type": "object",
+              "properties": {
+                "name": {
+                  "description": "The name of the ontology type",
+                  "type": "string"
+                },
+                "iri": {
+                  "description": "The unique identifier of the ontology type",
+                  "type": "string"
+                }
+              }
+            },
+            "ontology_version": {
+              "description": "Reference to an ontology-version",
+              "type": "object",
+              "properties": {
+                "number": {
+                  "description": "The version number of the version of the ontology",
+                  "type": "integer"
+                },
+                "iri": {
+                  "description": "The unique identifier of the ontology-version",
+                  "type": "string"
+                }
+              }
+            }
+          }
+        }
+    http_version: 
+  recorded_at: Fri, 06 Mar 2015 20:14:21 GMT
+recorded_with: VCR 2.9.2

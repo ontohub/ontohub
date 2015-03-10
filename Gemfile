@@ -52,7 +52,7 @@ gem 'inherited_resources', '~> 1.4.0'
 gem 'has_scope', '~> 0.6.0.rc'
 
 # JSON views
-gem 'rabl', '~> 0.10.1'
+gem 'active_model_serializers', '~> 0.9.3'
 
 # XML Parser
 gem 'nokogiri', '~> 1.6.3.1'
@@ -130,6 +130,9 @@ group :test do
   gem 'cucumber-rails', '~> 1.4', require: false
   # Code Coverage Analysis
   gem 'simplecov', '~> 0.9.0', require: false
+
+  # So we can validate against json-schemas
+  gem 'json-schema', '~> 2.5.0'
 
   # Writing test ontologies
   gem 'ontology-united', github: '0robustus1/ontology-united'

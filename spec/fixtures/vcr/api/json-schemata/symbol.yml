@@ -1,0 +1,253 @@
+---
+http_interactions:
+- request:
+    method: get
+    uri: https://masterthesis.rightsrestricted.com/ontohub/symbol.json
+    body:
+      encoding: US-ASCII
+      string: ''
+    headers:
+      Accept-Encoding:
+      - gzip;q=1.0,deflate;q=0.6,identity;q=0.3
+      Accept:
+      - "*/*"
+      User-Agent:
+      - Ruby
+  response:
+    status:
+      code: 200
+      message: OK
+    headers:
+      Server:
+      - nginx/1.6.2
+      Date:
+      - Sat, 07 Mar 2015 11:31:18 GMT
+      Content-Type:
+      - application/json
+      Content-Length:
+      - '1158'
+      Last-Modified:
+      - Sat, 07 Mar 2015 11:30:32 GMT
+      Connection:
+      - keep-alive
+      Etag:
+      - '"54fae158-486"'
+      Strict-Transport-Security:
+      - max-age=31536000
+      X-Frame-Options:
+      - DENY
+      Accept-Ranges:
+      - bytes
+    body:
+      encoding: UTF-8
+      string: |
+        {
+          "id": "https://masterthesis.rightsrestricted.com/ontohub/symbol.json#",
+          "$schema": "http://json-schema.org/draft-04/schema#",
+          "title": "Symbol",
+          "description": "A symbol defined by an ontology",
+          "type": "object",
+          "properties": {
+            "iri": {
+              "description": "The unique identifier for the symbol",
+              "type": "string"
+            },
+            "name": {
+              "description": "The name of the symbol",
+              "type": "string"
+            },
+            "kind": {
+              "description": "The kind of symbol",
+              "type": "string"
+            },
+            "text": {
+              "description": "The definition of the symbol",
+              "type": "string"
+            },
+            "label": {
+              "description": "The label that is attached to the symbol",
+              "type": ["string", "null"]
+            },
+            "comment": {
+              "description": "A comment on the symbol",
+              "type": ["string", "null"]
+            },
+            "ontology": { "$ref": "references.json#/definitions/ontology" },
+            "sentences": {
+              "description": "Reference to all sentences that use the symbol in this ontology",
+              "type": "string"
+            }
+          },
+          "required": [
+            "iri",
+            "name",
+            "kind",
+            "text",
+            "ontology",
+            "sentences"
+          ]
+        }
+    http_version: 
+  recorded_at: Sat, 07 Mar 2015 11:31:18 GMT
+- request:
+    method: get
+    uri: https://masterthesis.rightsrestricted.com/ontohub/references.json
+    body:
+      encoding: US-ASCII
+      string: ''
+    headers:
+      Accept-Encoding:
+      - gzip;q=1.0,deflate;q=0.6,identity;q=0.3
+      Accept:
+      - "*/*"
+      User-Agent:
+      - Ruby
+  response:
+    status:
+      code: 200
+      message: OK
+    headers:
+      Server:
+      - nginx/1.6.2
+      Date:
+      - Sat, 07 Mar 2015 11:31:19 GMT
+      Content-Type:
+      - application/json
+      Content-Length:
+      - '3128'
+      Last-Modified:
+      - Fri, 06 Mar 2015 15:05:08 GMT
+      Connection:
+      - keep-alive
+      Etag:
+      - '"54f9c224-c38"'
+      Strict-Transport-Security:
+      - max-age=31536000
+      X-Frame-Options:
+      - DENY
+      Accept-Ranges:
+      - bytes
+    body:
+      encoding: UTF-8
+      string: |
+        {
+          "id": "https://masterthesis.rightsrestricted.com/ontohub/references.json#",
+          "$schema": "http://json-schema.org/draft-04/schema#",
+          "definitions": {
+            "repository": {
+              "description": "Reference to a repository",
+              "type": "object",
+              "properties": {
+                "name": {
+                  "description": "The name of the repository",
+                  "type": "string"
+                },
+                "iri": {
+                  "description": "The unique identifier of the repository",
+                  "type": "string"
+                }
+              }
+            },
+            "logic": {
+              "description": "Reference to a logic",
+              "type": "object",
+              "properties": {
+                "name": {
+                  "description": "The name of the logic",
+                  "type": "string"
+                },
+                "iri": {
+                  "description": "The unique identifier of the logic",
+                  "type": "string"
+                }
+              }
+            },
+            "ontology": {
+              "description": "Reference to an ontology",
+              "type": "object",
+              "properties": {
+                "name": {
+                  "description": "The name of the ontology",
+                  "type": "string"
+                },
+                "iri": {
+                  "description": "The unique identifier of the ontology",
+                  "type": "string"
+                }
+              }
+            },
+            "license_model": {
+              "description": "Reference to a license model",
+              "type": "object",
+              "properties": {
+                "name": {
+                  "description": "The name of the license model",
+                  "type": "string"
+                },
+                "iri": {
+                  "description": "The unique identifier of the license model",
+                  "type": "string"
+                }
+              }
+            },
+            "formality_level": {
+              "description": "Reference to a formality level",
+              "type": "object",
+              "properties": {
+                "name": {
+                  "description": "The name of the formality level",
+                  "type": "string"
+                },
+                "iri": {
+                  "description": "The unique identifier of the formality level",
+                  "type": "string"
+                }
+              }
+            },
+            "ontology": {
+              "description": "Reference to an ontology",
+              "type": "object",
+              "properties": {
+                "name": {
+                  "description": "The name of the ontology",
+                  "type": "string"
+                },
+                "iri": {
+                  "description": "The unique identifier of the ontology",
+                  "type": "string"
+                }
+              }
+            },
+            "ontology_type": {
+              "description": "Reference to an ontology type",
+              "type": "object",
+              "properties": {
+                "name": {
+                  "description": "The name of the ontology type",
+                  "type": "string"
+                },
+                "iri": {
+                  "description": "The unique identifier of the ontology type",
+                  "type": "string"
+                }
+              }
+            },
+            "ontology_version": {
+              "description": "Reference to an ontology-version",
+              "type": "object",
+              "properties": {
+                "number": {
+                  "description": "The version number of the version of the ontology",
+                  "type": "integer"
+                },
+                "iri": {
+                  "description": "The unique identifier of the ontology-version",
+                  "type": "string"
+                }
+              }
+            }
+          }
+        }
+    http_version: 
+  recorded_at: Sat, 07 Mar 2015 11:31:19 GMT
+recorded_with: VCR 2.9.2

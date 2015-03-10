@@ -73,7 +73,7 @@ class OntologiesController < InheritedResources::Base
         end
       end
       format.json do
-        respond_with resource
+        render json: resource, serializer: OntologySerializer
       end
       format.text { send_download }
     end

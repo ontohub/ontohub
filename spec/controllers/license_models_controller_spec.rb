@@ -14,8 +14,34 @@ describe LicenseModelsController do
     end
 
     context "show" do
-      before { get :show, id: license_model.id }
-      it { should respond_with :success }
+      context 'requesting standard representation' do
+        before { get :show, id: license_model.to_param }
+
+        it { should respond_with :success }
+        it { should render_template :show }
+      end
+
+      context 'requesting json representation', api_specification: true do
+        let(:license_model_schema) { schema_for('license_model') }
+
+        before do
+          get :show,
+            id: license_model.to_param,
+            format: :json
+        end
+
+        it { should respond_with :success }
+
+        it 'respond with json content type' do
+          expect(response.content_type.to_s).to eq('application/json')
+        end
+
+        it 'should return a representation that validates against the schema' do
+          VCR.use_cassette 'api/json-schemata/license_model' do
+            expect(response.body).to match_json_schema(license_model_schema)
+          end
+        end
+      end
     end
 
     context "new" do

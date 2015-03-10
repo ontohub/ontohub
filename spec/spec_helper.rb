@@ -99,6 +99,10 @@ def version_for_file(repository, path)
   version = repository.save_file path, basename, "#{basename} added", dummy_user
 end
 
+def schema_for(name)
+  "https://masterthesis.rightsrestricted.com/ontohub/#{name}.json"
+end
+
 # includes the convenience-method `define_ontology('name')`
 include OntologyUnited::Convenience
 

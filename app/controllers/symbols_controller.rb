@@ -6,7 +6,7 @@ class SymbolsController < InheritedResources::Base
   belongs_to :ontology
   before_filter :check_read_permissions
 
-  actions :index
+  actions :index, :show
   has_scope :kind
   has_pagination
 

@@ -5,23 +5,47 @@ describe LogicsController do
   let!(:logic) { create :logic, user: user }
 
   context 'on GET to show' do
-    context 'not signed in' do
-      before { get :show, id: logic.to_param }
+    context 'requesting standard representation' do
+      context 'not signed in' do
+        before { get :show, id: logic.to_param }
 
-      it { should respond_with :success }
-      it { should render_template :show }
-      it { should_not set_the_flash }
+        it { should respond_with :success }
+        it { should render_template :show }
+        it { should_not set_the_flash }
+      end
+
+      context 'signed in as Logic-Owner' do
+        before do
+          sign_in user
+          get :show, id: logic.to_param
+        end
+
+        it { should respond_with :success }
+        it { should render_template :show }
+        it { should_not set_the_flash }
+      end
     end
 
-    context 'signed in as Logic-Owner' do
+    context 'requesting json representation', api_specification: true do
+      let(:logic_schema) { schema_for('logic') }
+
       before do
-        sign_in user
-        get :show, id: logic.to_param
+        get :show,
+          id: logic.to_param,
+          format: :json
       end
 
       it { should respond_with :success }
-      it { should render_template :show }
-      it { should_not set_the_flash }
+
+      it 'respond with json content type' do
+        expect(response.content_type.to_s).to eq('application/json')
+      end
+
+      it 'should return a representation that validates against the schema' do
+        VCR.use_cassette 'api/json-schemata/logic' do
+          expect(response.body).to match_json_schema(logic_schema)
+        end
+      end
     end
   end
 

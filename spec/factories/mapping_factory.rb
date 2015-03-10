@@ -6,6 +6,7 @@ FactoryGirl.define do
   factory :mapping do
     iri { FactoryGirl.generate :iri }
     name { FactoryGirl.generate :mapping_name }
+    kind { 'view' }
     association :ontology
 
     after(:build) do |mapping|
