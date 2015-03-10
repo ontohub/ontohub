@@ -6,7 +6,8 @@ class OntologyVersionsController < InheritedResources::Base
   defaults :collection_name => :versions, :finder => :find_by_number!
   actions :index, :show, :new, :create
   belongs_to :ontology
-  respond_to :json, :xml
+
+  respond_to :html
 
   before_filter :check_changeable, only: [:new, :create]
   before_filter :check_read_permissions
@@ -18,9 +19,6 @@ class OntologyVersionsController < InheritedResources::Base
         resource.checkout_raw!
 
         send_file resource.raw_path, filename: File.basename(resource.ontology.path)
-      end
-      format.json do
-        render json: resource
       end
     end
   rescue Errno::ENOENT, NoMethodError => e

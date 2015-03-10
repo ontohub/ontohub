@@ -79,9 +79,16 @@ class RefLocIdRouterConstraint < LocIdRouterConstraint
     params = params(request)
     result = OntologyVersionFinder.
       applicable_reference?(params[:reference])
-    path = Journey::Router::Utils.unescape_uri(request.original_fullpath).
-      sub(%r{\A/ref/[^/]+}, '')
-    result && super(request, path)
+    path = Journey::Router::Utils.unescape_uri(request.original_fullpath)
+    result && update_version_id!(request, path.dup)
+  end
+
+  def update_version_id!(request, path)
+    version = OntologyVersionFinder.find(path)
+    version_id = version.try(:to_param)
+    ontology_id = version.try(:ontology).try(:to_param)
+    add_path_parameters(request, id: version_id, ontology_id: ontology_id)
+    !! version_id
   end
 end
 

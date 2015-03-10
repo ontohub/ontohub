@@ -1,10 +1,16 @@
 class OntologyVersionFinder
   SUPPORTED_BRANCHES = %w(master)
+  REF_RE = %r{\A/?ref/([^/]+)(/.+)\Z}
 
-  attr_accessor :reference, :ontology
+  attr_accessor :ontology, :reference
 
   def self.applicable_reference?(reference)
     new(reference, nil).applicable?
+  end
+
+  def self.find(path)
+    res = path.match(REF_RE)
+    new(res[1], Ontology.find_with_locid(res[2])).find if res
   end
 
   def initialize(reference, ontology)
@@ -35,9 +41,11 @@ class OntologyVersionFinder
   end
 
   def with_branch_reference
-    branch_commit = ontology.repository.commit_id(branch_reference)[:oid]
-    OntologyVersion.where(ontology_id: ontology,
-                          commit_oid: branch_commit).first
+    if ontology
+      branch_commit = ontology.repository.commit_id(branch_reference)[:oid]
+      OntologyVersion.where(ontology_id: ontology,
+                            commit_oid: branch_commit).first
+    end
   end
 
   def applicable?

@@ -10,14 +10,28 @@ Specroutes.define(Ontohub::Application.routes) do
   # as per Loc/Id definition
 
   # Special (/ref-based) Loc/Id routes
+  specified_get '/ref/:reference/:repository_id/*locid' => 'api/v1/ontology_versions#show',
+    as: :ontology_iri_versioned,
+    constraints: [
+      RefLocIdRouterConstraint.new(Ontology, ontology: :ontology_id),
+    ] do
+      accept 'application/json', constraint: true
+      accept 'text/plain', constraint: true
+      # reroute_on_mime 'application/json', to: 'api/v1/ontology_versions#show'
+
+      doc title: 'Ontology IRI (loc/id) with version reference',
+          body: <<-BODY
+Will return a representation of the ontology at a
+ontology version referenced by the {reference}.
+      BODY
+    end
+
   specified_get '/ref/:reference/:repository_id/*locid' => 'ontologies#show',
     as: :ontology_iri_versioned,
     constraints: [
       RefLocIdRouterConstraint.new(Ontology, ontology: :id),
     ] do
       accept 'text/html'
-      accept 'text/plain'
-      accept 'application/json'
 
       doc title: 'Ontology IRI (loc/id) with version reference',
           body: <<-BODY
@@ -33,8 +47,8 @@ ontology version referenced by the {reference}.
       MMTRouterConstraint.new(Ontology, ontology: :id),
     ] do
       accept 'text/html'
-      accept 'text/plain'
-      accept 'application/json'
+      reroute_on_mime 'text/plain', to: 'api/v1/ontologies#show'
+      reroute_on_mime 'application/json', to: 'api/v1/ontologies#show'
 
       doc title: 'MMT reference to an ontology',
           body: <<-BODY
@@ -44,12 +58,12 @@ is determined according to the *path and to the MMT-query-string.
     end
 
   specified_get '/ref/mmt/:repository_id/*path' => 'mappings#show',
-    as: :ontology_iri_mmt,
+    as: :mapping_iri_mmt,
     constraints: [
       MMTRouterConstraint.new(Mapping, ontology: :ontology_id, element: :id),
     ] do
       accept 'text/html'
-      accept 'application/json'
+      reroute_on_mime 'application/json', to: 'api/v1/mappings#show'
 
       doc title: 'MMT reference to a mapping',
           body: <<-BODY
@@ -59,12 +73,12 @@ is determined according to the *path and to the MMT-query-string.
     end
 
   specified_get '/ref/mmt/:repository_id/*path' => 'symbols#index',
-    as: :ontology_iri_mmt,
+    as: :symbol_iri_mmt,
     constraints: [
       MMTRouterConstraint.new(OntologyMember::Symbol, ontology: :ontology_id),
     ] do
       accept 'text/html'
-      accept 'application/json'
+      reroute_on_mime 'application/json', to: 'api/v1/symbols#show'
 
       doc title: 'MMT reference to a symbol',
           body: <<-BODY
@@ -75,12 +89,12 @@ Currently the representation ist a list of all symbols in the ontology.
     end
 
   specified_get '/ref/mmt/:repository_id/*path' => 'sentences#index',
-    as: :ontology_iri_mmt,
+    as: :sentence_iri_mmt,
     constraints: [
       MMTRouterConstraint.new(Sentence, ontology: :ontology_id),
     ] do
       accept 'text/html'
-      accept 'application/json'
+      reroute_on_mime 'application/json', to: 'api/v1/sentences#show'
 
       doc title: 'MMT reference to a sentence',
           body: <<-BODY
@@ -105,7 +119,7 @@ Currently the representation is a list of all sentences in the ontology.
         LocIdRouterConstraint.new(Ontology, ontology: :ontology_id),
       ] do
         accept 'text/html'
-        accept 'application/json'
+        reroute_on_mime 'application/json', to: "api/v1/#{category}#index"
 
         doc title: "Ontology subsite about #{category.to_s.gsub(/_/, ' ')}",
             body: <<-BODY
@@ -122,8 +136,8 @@ Will provide a subsite of a specific ontology.
       LocIdRouterConstraint.new(Ontology, ontology: :id),
     ] do
       accept 'text/html'
-      accept 'text/plain'
-      accept 'application/json'
+      reroute_on_mime 'text/plain', to: 'api/v1/ontologies#show'
+      reroute_on_mime 'application/json', to: 'api/v1/ontologies#show'
 
       doc title: 'loc/id reference to an ontology',
           body: <<-BODY
@@ -138,7 +152,7 @@ is determined according to the *locid.
       LocIdRouterConstraint.new(Mapping, ontology: :ontology_id, element: :id),
     ] do
       accept 'text/html'
-      accept 'application/json'
+      reroute_on_mime 'application/json', to: 'api/v1/mappings#show'
 
       doc title: 'loc/id reference to a mapping',
           body: <<-BODY
@@ -150,10 +164,10 @@ is determined according to the *locid.
   specified_get '/:repository_id/*locid' => 'symbols#index',
     as: :symbol_iri,
     constraints: [
-      LocIdRouterConstraint.new(OntologyMember::Symbol, ontology: :ontology_id),
+      LocIdRouterConstraint.new(OntologyMember::Symbol, ontology: :ontology_id, element: :id),
     ] do
       accept 'text/html'
-      accept 'application/json'
+      reroute_on_mime 'application/json', to: 'api/v1/symbols#show'
 
       doc title: 'loc/id reference to a symbol',
           body: <<-BODY
@@ -164,12 +178,12 @@ Currently this will return the list of all symbols of the ontology.
     end
 
   specified_get '/:repository_id/*locid' => 'sentences#index',
-    as: :ontology_iri,
+    as: :sentence_iri,
     constraints: [
-      LocIdRouterConstraint.new(Sentence, ontology: :ontology_id),
+      LocIdRouterConstraint.new(Sentence, ontology: :ontology_id, element: :id),
     ] do
       accept 'text/html'
-      accept 'application/json'
+      reroute_on_mime 'application/json', to: 'api/v1/sentences#show'
 
       doc title: 'loc/id reference to a sentence',
           body: <<-BODY
@@ -179,10 +193,55 @@ Currently this will return the list of all sentence of the ontology.
       BODY
     end
 
+  specified_get '/ontology_types/:id' => 'ontology_types#show',
+    as: :ontology_type do
+    accept 'text/html'
+    reroute_on_mime 'application/json', to: 'api/v1/ontology_types#show'
+
+    doc title: 'IRI of an ontology type',
+        body: <<-BODY
+Will return a representation of the ontology type.
+    BODY
+  end
+
+  specified_get '/logics/:id' => 'logics#show',
+    as: :logic do
+    accept 'text/html'
+    reroute_on_mime 'text/xml', to: 'api/v1/logics#show'
+    reroute_on_mime 'application/xml', to: 'api/v1/logics#show'
+    reroute_on_mime 'application/rdf+xml', to: 'api/v1/logics#show'
+    reroute_on_mime 'application/json', to: 'api/v1/logics#show'
+
+    doc title: 'IRI of a logic',
+        body: <<-BODY
+Will return a representation of the logic.
+    BODY
+  end
+
+  specified_get '/license_models/:id' => 'license_models#show',
+    as: :license_model do
+    accept 'text/html'
+    reroute_on_mime 'application/json', to: 'api/v1/license_models#show'
+
+    doc title: 'IRI of a license model',
+        body: <<-BODY
+Will return a representation of the license model.
+    BODY
+  end
+
+  specified_get '/formality_levels/:id' => 'formality_levels#show',
+    as: :formality_level do
+    accept 'text/html'
+    reroute_on_mime 'application/json', to: 'api/v1/formality_levels#show'
+
+    doc title: 'IRI of a formality level',
+        body: <<-BODY
+Will return a representation of the formality level.
+    BODY
+  end
   #
   ###############
 
-  resources :ontology_types, only: :show
   get '/after_signup', to: 'home#show' , as: 'after_sign_up'
 
   devise_for :users, controllers: {
@@ -227,14 +286,6 @@ Currently this will return the list of all sentence of the ontology.
 
   authenticate :user, lambda { |u| u.admin? } do
     mount Sidekiq::Web => 'admin/sidekiq'
-  end
-
-  namespace :api, defaults: { format: 'json' } do
-    namespace :v1 do
-      resources :categories,   only: [:index]
-      resources :repositories, only: [:index, :update]
-      resources :ontologies,   only: [:index, :update]
-    end
   end
 
   resources :ontologies, only: [:index] do
@@ -324,6 +375,18 @@ Currently this will return the list of all sentence of the ontology.
       as:          :ref,
       constraints: { path: /.*/ }
   end
+
+  specified_get '/:id' => 'api/v1/repositories#show',
+    as: :repository_iri do
+      accept 'application/json', constraint: true
+
+      doc title: 'loc/id reference to a repository',
+          body: <<-BODY
+Will return a representation of the repository. The repository
+is determined according to its path, which is considered as
+{id}.
+      BODY
+    end
 
   post ':repository_id/:path',
     controller:  :files,

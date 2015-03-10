@@ -12,7 +12,6 @@ class OntologiesController < InheritedResources::Base
   actions :index, :show, :edit, :update, :destroy
 
   respond_to :html, except: %i(show)
-  respond_to :json, :text, only: %i(show)
 
   before_filter :check_write_permission, except: [:index, :show, :oops_state]
   before_filter :check_read_permissions
@@ -72,10 +71,6 @@ class OntologiesController < InheritedResources::Base
           redirect_to locid_for(resource, :children)
         end
       end
-      format.json do
-        render json: resource, serializer: OntologySerializer
-      end
-      format.text { send_download }
     end
   end
 
@@ -147,17 +142,5 @@ class OntologiesController < InheritedResources::Base
   helper_method :repository
   def repository
     parent
-  end
-
-  private
-  def send_download
-    asset = version || resource
-    render text: asset.file_in_repository.content,
-           content_type: Mime::Type.lookup('application/force-download')
-  end
-
-  def version
-    finder = OntologyVersionFinder.new(params[:reference], resource)
-    @version ||= finder.find if params[:reference]
   end
 end
