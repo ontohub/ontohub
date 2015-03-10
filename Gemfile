@@ -104,7 +104,6 @@ gem "faker", "~> 1.2"
 # Git
 gem 'rugged', '~> 0.21.4'
 gem 'codemirror-rails', github: 'llwt/codemirror-rails'
-gem 'js-routes', '~> 0.9.8'
 
 # API
 gem 'specroutes', github: '0robustus1/specroutes'
