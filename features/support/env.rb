@@ -6,6 +6,8 @@
 require File.expand_path("../../../spec/shared_helper", __FILE__)
 
 require 'cucumber/rails'
+require 'capybara/poltergeist'
+
 class Cucumber::Rails::World
   def locid_for(resource, *commands, **query_components)
     iri = "#{resource.locid}"
@@ -66,8 +68,8 @@ end
 # See https://github.com/cucumber/cucumber-rails/blob/master/features/choose_javascript_database_strategy.feature
 Cucumber::Rails::Database.javascript_strategy = :transaction
 
-Capybara.current_driver = :webkit
-Capybara.javascript_driver = :webkit
+Capybara.current_driver = :poltergeist
+Capybara.javascript_driver = :poltergeist
 
 WebMock.allow_net_connect!(:net_http_connect_on_start => true)
 
