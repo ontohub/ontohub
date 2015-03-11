@@ -9,7 +9,11 @@ class Ontology
         split_translated_sentences.flatten
       end
 
-      def split_translated_sentences
+      def translated_axioms
+        split_translated_sentences(:axioms).flatten
+      end
+
+      def split_translated_sentences(method = :sentences)
         translated = TranslatedSentence.where(audience_id: self)
         sentence_ids = translated.pluck(:sentence_id)
         imported =
@@ -27,7 +31,7 @@ class Ontology
             other_sentences.each { |os| arr.last << os }
             arr
           end
-        [translated + imported.first, sentences + imported.last]
+        [translated + imported.first, send(method) + imported.last]
       end
 
       # Find import-mappings which describe the following mapping:
