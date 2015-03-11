@@ -146,7 +146,7 @@ group :test do
 end
 
 group :development do
-  gem "rails-erd", '~> 1.1.0'
+  gem "rails-erd", '~> 1.3.1'
   gem 'quiet_assets', '~> 1.0.3'
   gem 'invoker', '~> 1.3.2'
 end
