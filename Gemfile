@@ -22,7 +22,7 @@ group :assets do
   gem 'coffee-rails',   '~> 3.2.1'
   gem 'compass',        '~> 1.0.3'
   gem 'font-awesome-sass', '~> 4.3.1'
-  gem 'jquery-rails', '~> 3.1.1'
+  gem 'jquery-rails', '~> 3.1.2'
   gem 'jquery-ui-rails', '4.2.1'
   gem 'momentjs-rails', '~> 2.8.1'
   gem 'd3_rails', '~> 3.5.5'
