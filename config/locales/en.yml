@@ -107,6 +107,17 @@ en:
     sentence:
       defined_in:
         defined in %{link}
+  axioms:
+    index:
+      display_only_self_defined_axioms:
+        Currently we display only self-defined axioms.
+      to_display_only_self_defined_axioms:
+        to display only the self-defined axioms.
+      display_all_axioms:
+        Currently we display all axioms, self-defined and imported
+        ones.
+      to_display_all_axioms:
+        to display all related axioms (including translations/blendoids).
   theorems:
     index:
       prove: Prove all theorems
