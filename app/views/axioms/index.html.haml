@@ -1,0 +1,25 @@
+= repository_nav parent.repository, :ontologies
+
+= ontology_nav @ontology, :axioms
+
+- if display_all?
+  %p.display_all
+    = t('.display_all_axioms')
+    %br/
+    = link_to "Click here #{t('.to_display_only_self_defined_axioms')}", locid_for(parent, :axioms)
+- else
+  %p.display_subset
+    = t('.display_only_self_defined_axioms')
+    %br/
+    = link_to "Click here #{t('.to_display_all_axioms')}", locid_for(parent, :axioms, all: true)
+
+
+= pagination do
+  %table.axioms
+    %thead
+      %tr
+        %th Name
+        %th Text
+        %th
+    %tbody
+      = render partial: 'axiom', collection: collection
