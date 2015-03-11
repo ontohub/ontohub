@@ -134,7 +134,7 @@ group :test do
   gem 'launchy', '~> 2.4.3'
 
   # Recording of HTTP Requests
-  gem "vcr", '~> 2.9.2'
+  gem "vcr", '~> 2.9.3'
   gem "webmock", '~> 1.9.0'
 
   gem 'cucumber-rails', '~> 1.4', require: false

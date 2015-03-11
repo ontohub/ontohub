@@ -610,6 +610,6 @@ DEPENDENCIES
   therubyracer (~> 0.12.1)
   uglifier (>= 1.0.3)
   underscore-rails (~> 1.8.2)
-  vcr (~> 2.9.2)
+  vcr (~> 2.9.3)
   webmock (~> 1.9.0)
   yard (~> 0.8.7.4)
