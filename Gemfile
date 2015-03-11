@@ -28,7 +28,7 @@ group :assets do
   gem 'd3_rails', '~> 3.5.5'
   gem 'therubyracer', '~> 0.12.1'
   gem 'uglifier', '>= 1.0.3'
-  gem 'handlebars_assets', '~> 0.14.1'
+  gem 'handlebars_assets', '~> 0.20.1'
   gem 'hamlbars', '~> 2.1.1'
   gem 'underscore-rails', '~> 1.6.0'
   gem 'bootstrap-select-rails', '~> 1.6.3'
