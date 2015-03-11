@@ -106,13 +106,32 @@ Currently the representation is a list of all sentences in the ontology.
 
   # Subsites for ontologies
   ontology_subsites = %i(
+    comments metadata graphs
+    projects categories tasks
+  )
+
+  ontology_api_subsites = %i(
     mappings symbols children
-    sentences theorems comments
-    metadata ontology_versions graphs
-    projects categories tasks license_models formality_levels
+    sentences ontology_versions
+    license_models formality_levels
   )
 
   ontology_subsites.each do |category|
+    specified_get "/:repository_id/*locid///#{category}" => "#{category}#index",
+      as: :"ontology_iri_#{category}",
+      constraints: [
+        LocIdRouterConstraint.new(Ontology, ontology: :ontology_id),
+      ] do
+        accept 'text/html'
+
+        doc title: "Ontology subsite about #{category.to_s.gsub(/_/, ' ')}",
+            body: <<-BODY
+Will provide a subsite of a specific ontology.
+        BODY
+      end
+  end
+
+  ontology_api_subsites.each do |category|
     specified_get "/:repository_id/*locid///#{category}" => "#{category}#index",
       as: :"ontology_iri_#{category}",
       constraints: [
@@ -127,7 +146,6 @@ Will provide a subsite of a specific ontology.
         BODY
       end
   end
-
   # Loc/Id-Show(-equivalent) routes
   ######
   specified_get '/:repository_id/*locid' => 'ontologies#show',
