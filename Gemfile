@@ -7,7 +7,7 @@ gem 'secure_headers', '~> 1.2.0'
 gem 'pry-rails', '~> 0.3.2'
 
 gem 'pg', '~> 0.17.1'
-gem 'foreigner', '~> 1.6.1'
+gem 'foreigner', '~> 1.7.2'
 
 gem 'rdf', '~> 1.1.4.3'
 gem 'rdf-rdfxml', '~> 1.1.0.1'
