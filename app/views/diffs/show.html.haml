@@ -9,15 +9,15 @@
     %li
       = link_to "#file-#{file.path}" do
         - if file.added?
-          %i.icon-plus
+          %i.fa.fa-plus
         - elsif file.deleted?
-          %i.icon-minus
+          %i.fa.fa-minus
         - elsif file.modified?
-          %i.icon-edit
+          %i.fa.fa-edit
         - elsif file.renamed?
-          %i.icon-edit
+          %i.fa.fa-edit
           = file.old_path
-          %i.glyphicon.glyphicon-arrow-right
+          %i.fa.fa-long-arrow-right
         = file.path
 
 %h3 Changes

@@ -5,8 +5,8 @@
   - if can? :write, repository
     %td.edit
       = link_to [:edit, url_map.repository, url_map] do
-        %i.glyphicon.glyphicon-edit
+        %i.fa.fa-pencil-square-o
   - if can? :write, repository
     %td.delete
       = link_to [url_map.repository, url_map], method: :delete, confirm: 'Really delete this URL Map?' do
-        %i.glyphicon.glyphicon-trash
+        %i.fa.fa-trash

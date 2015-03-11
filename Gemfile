@@ -21,7 +21,7 @@ group :assets do
   gem 'bootstrap-sass', '~> 3.3.3'
   gem 'coffee-rails',   '~> 3.2.1'
   gem 'compass',        '~> 0.12.1'
-  gem 'font_awesome', '~> 3.101.0'
+  gem 'font-awesome-sass', '~> 4.3.1'
   gem 'jquery-rails', '~> 3.1.1'
   gem 'jquery-ui-rails', '4.2.1'
   gem 'momentjs-rails', '~> 2.8.1'
