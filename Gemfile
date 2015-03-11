@@ -18,7 +18,7 @@ gem 'rdf-n3', '~> 1.1.2'
 group :assets do
   gem 'jstree-rails', :git => 'git://github.com/tristanm/jstree-rails.git'
   gem 'sass-rails',     '~> 3.2.3'
-  gem 'bootstrap-sass', '~> 3.0.0'
+  gem 'bootstrap-sass', '~> 3.3.3'
   gem 'coffee-rails',   '~> 3.2.1'
   gem 'compass',        '~> 0.12.1'
   gem 'font_awesome', '~> 3.101.0'
@@ -31,7 +31,7 @@ group :assets do
   gem 'handlebars_assets', '~> 0.14.1'
   gem 'hamlbars', '~> 2.1.1'
   gem 'underscore-rails', '~> 1.6.0'
-  gem 'bootstrap-select-rails', '~> 1.6.2'
+  gem 'bootstrap-select-rails', '~> 1.6.3'
 end
 
 # Newer versions than 0.4 are not compatible with rails 3.2
