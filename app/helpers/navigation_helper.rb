@@ -56,7 +56,7 @@ module NavigationHelper
     if ontology.distributed?
       pages << [:children,  locid_for(resource_chain.last, :children)]
     else
-      pages << [:sentences, locid_for(resource_chain.last, :sentences)]
+      pages << [:axioms, locid_for(resource_chain.last, :axioms)]
       pages << [:theorems, locid_for(resource_chain.last, :theorems)]
     end
 
