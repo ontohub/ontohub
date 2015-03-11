@@ -104,6 +104,22 @@ Currently the representation is a list of all sentences in the ontology.
       BODY
     end
 
+  specified_get '/ref/mmt/:repository_id/*path' => 'axioms#index',
+    as: :axiom_iri_mmt,
+    constraints: [
+      MMTRouterConstraint.new(Axiom, ontology: :ontology_id),
+    ] do
+      accept 'text/html'
+      reroute_on_mime 'application/json', to: 'api/v1/axioms#show'
+
+      doc title: 'MMT reference to a axiom',
+          body: <<-BODY
+Will return a representation of the axiom. The axiom
+is determined according to the *path and to the MMT-query-string.
+Currently the representation is a list of all axioms in the ontology.
+      BODY
+    end
+
   specified_get '/ref/mmt/:repository_id/*path' => 'theorems#show',
     as: :theorem_iri_mmt,
     constraints: [
@@ -127,7 +143,8 @@ Currently the representation is a list of all theorems in the ontology.
 
   ontology_api_subsites = %i(
     mappings symbols children
-    sentences ontology_versions
+    sentences axioms theorems
+    ontology_versions
     license_models formality_levels
   )
 
@@ -223,6 +240,22 @@ Currently this will return the list of all symbols of the ontology.
 Will return a representation of the sentence. The sentence
 is determined according to the *locid.
 Currently this will return the list of all sentence of the ontology.
+      BODY
+    end
+
+  specified_get '/:repository_id/*locid' => 'axioms#index',
+    as: :axiom_iri,
+    constraints: [
+      LocIdRouterConstraint.new(Axiom, ontology: :ontology_id, element: :id),
+    ] do
+      accept 'text/html'
+      reroute_on_mime 'application/json', to: 'api/v1/axioms#show'
+
+      doc title: 'loc/id reference to an axiom',
+          body: <<-BODY
+Will return a representation of the axiom. The axiom
+is determined according to the *locid.
+Currently this will return the list of all axiom of the ontology.
       BODY
     end
 
@@ -376,7 +409,7 @@ is determined according to the *locid.
       end
       resources :children, :only => :index
       resources :symbols, only: %i(index show)
-      resources :sentences, only: %i(index show)
+      resources :axioms, only: %i(index show)
       resources :theorems, only: %i(index show) do
         resources :proof_attempts, only: :show
       end
