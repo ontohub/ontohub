@@ -158,6 +158,12 @@ class Ontology < ActiveRecord::Base
       where('imported = ? OR imported = ?', true, false)
   end
 
+  def all_axioms
+    Axiom.unscoped.
+      where(ontology_id: self).
+      where('imported = ? OR imported = ?', true, false)
+  end
+
   def imported_sentences
     Sentence.unscoped.
       where(ontology_id: self).

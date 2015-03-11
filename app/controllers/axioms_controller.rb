@@ -23,7 +23,7 @@ class AxiomsController < InheritedResources::Base
       if display_all?
         axioms =
           if logically_translated?
-            parent.all_sentences
+            parent.all_axioms
           else
             parent.translated_sentences
           end
