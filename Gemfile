@@ -34,6 +34,7 @@ group :assets do
   gem 'bootstrap-select-rails', '~> 1.6.2'
 end
 
+# Newer versions than 0.4 are not compatible with rails 3.2
 gem 'haml-rails', '~> 0.4'
 
 # Project configuration
@@ -96,6 +97,7 @@ gem 'elasticsearch', '~> 1.0.4'
 gem 'elasticsearch-extensions', '~> 0.0.15'
 
 # Graph visualization
+# Newer versions than 1.0.x are not compatible with rails-erd
 gem 'ruby-graphviz', "~> 1.0.8"
 
 # Fake-inputs for tests and seeds
@@ -112,6 +114,7 @@ gem 'specroutes', github: '0robustus1/specroutes'
 # gem 'ancestry'
 
 # Use dagnabit to model categories
+# Newer versions than 3.0.x are not compatible with rails 3.2
 gem 'dagnabit', '~> 3.0.1'
 
 # Migrate data in separate tasks
