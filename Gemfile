@@ -30,7 +30,7 @@ group :assets do
   gem 'uglifier', '>= 1.0.3'
   gem 'handlebars_assets', '~> 0.20.1'
   gem 'hamlbars', '~> 2.1.1'
-  gem 'underscore-rails', '~> 1.6.0'
+  gem 'underscore-rails', '~> 1.8.2'
   gem 'bootstrap-select-rails', '~> 1.6.3'
 end
 
