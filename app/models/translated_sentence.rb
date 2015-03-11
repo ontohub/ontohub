@@ -7,7 +7,7 @@ class TranslatedSentence < ActiveRecord::Base
   attr_accessible :audience, :ontology, :sentence, :symbol_mapping
   attr_accessible :translated_text
 
-  delegate :name, to: :sentence
+  delegate :name, :locid, to: :sentence
 
   def text
     translated_text
