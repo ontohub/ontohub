@@ -131,7 +131,7 @@ group :test do
   # Required for integration tests
   gem 'capybara', '~> 2.4.4'
   gem 'poltergeist', '~> 1.6.0'
-  gem 'launchy', '~> 2.4.2'
+  gem 'launchy', '~> 2.4.3'
 
   # Recording of HTTP Requests
   gem "vcr", '~> 2.9.2'
