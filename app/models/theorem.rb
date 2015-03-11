@@ -4,10 +4,6 @@ class Theorem < Sentence
   has_many :proof_attempts, foreign_key: 'sentence_id', dependent: :destroy
   belongs_to :proof_status
 
-  # Override Sentence's type: nil scope.
-  # Results in duplicate condition in the sql statement.
-  default_scope -> { where(type: ['Theorem']) }
-
   before_save :set_default_proof_status
 
   def set_default_proof_status
