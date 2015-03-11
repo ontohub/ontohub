@@ -523,7 +523,7 @@ DEPENDENCIES
   capistrano (~> 3.1.0)
   capistrano-rails (~> 1.1.1)
   capistrano-rvm (~> 0.1.1)
-  capybara (~> 2.4.1)
+  capybara (~> 2.4.4)
   codemirror-rails!
   coffee-rails (~> 3.2.1)
   compass (~> 0.12.1)

@@ -129,7 +129,7 @@ group :test do
   gem 'rspec-its', '~> 1.0.1'
 
   # Required for integration tests
-  gem 'capybara', '~> 2.4.1'
+  gem 'capybara', '~> 2.4.4'
   gem 'poltergeist', '~> 1.6.0'
   gem 'launchy', '~> 2.4.2'
 
