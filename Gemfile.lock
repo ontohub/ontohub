@@ -559,7 +559,7 @@ DEPENDENCIES
   hamlbars (~> 2.1.1)
   handlebars_assets (~> 0.20.1)
   has_scope (~> 0.6.0.rc)
-  i18n-tasks (~> 0.7.6)
+  i18n-tasks (~> 0.7.13)
   indefinite_article (~> 0.2.0)
   inherited_resources (~> 1.6.0)
   invoker (~> 1.3.2)
