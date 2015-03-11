@@ -64,7 +64,7 @@ gem 'json-stream', '~> 0.2.1'
 gem 'nokogiri', '~> 1.6.3.1'
 
 # Authentication
-gem 'devise', '~> 3.2.4'
+gem 'devise', '~> 3.4.1'
 
 # Authorization
 gem 'cancan', '~> 1.6.7'
