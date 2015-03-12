@@ -134,14 +134,34 @@ namespace :test do
     end
   end
 
+  def port_open?(ip, port, seconds=1)
+    require 'socket'
+    require 'timeout'
+    Timeout::timeout(seconds) do
+      begin
+        TCPSocket.new(ip, port).close
+        true
+      rescue Errno::ECONNREFUSED, Errno::EHOSTUNREACH
+        false
+      end
+    end
+  rescue Timeout::Error
+    false
+  end
+
   def with_running_hets(&block)
-    hets_pid = fork { exec("hets --server #{HETS_SERVER_ARGS.join(' ')}") }
-    # hets server needs some startup time
-    sleep 1
+    hets_was_already_running = !port_open?('127.0.0.1', 8000)
+    if hets_was_already_running
+      hets_pid = fork { exec("hets --server #{HETS_SERVER_ARGS.join(' ')}") }
+      # hets server needs some startup time
+      sleep 1
+    end
     block.call
   ensure
-    puts 'Stopping hets server.'
-    Process.kill('TERM', hets_pid)
+    if hets_was_already_running
+      puts 'Stopping hets server.'
+      Process.kill('TERM', hets_pid)
+    end
   end
 
   desc 'Update all fixtures'
