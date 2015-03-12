@@ -54,14 +54,6 @@ def ontology_file(path, ext=nil)
   fixture_file("ontologies/#{portion}")
 end
 
-def hets_out_file(name, ext='xml')
-  ontology_file("hets-out/#{name}.#{ext}")
-end
-
-def prove_out_file(name, ext='proof.json')
-  fixture_file("ontologies/hets-out/prove/#{name}.#{ext}")
-end
-
 def add_fixture_file(repository, relative_file)
   path = ontology_file(relative_file)
   version_for_file(repository, path)
