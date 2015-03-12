@@ -51,3 +51,35 @@ def parse_ontology(user, ontology, ontology_fixture)
   io = StringIO.new(hets_out_body_ontology(ontology_fixture))
   parse_ontology_hets_out(user, ontology, io)
 end
+
+
+def setup_hets
+  let(:hets_instance) { create(:local_hets_instance) }
+  before do
+    stub_request(:get, 'http://localhost:8000/version').
+      to_return(body: Hets.minimal_version_string)
+    hets_instance
+  end
+end
+
+def stub_hets_for(fixture_file, command: 'dg', with: nil, with_version: nil, method: :get)
+  stub_request(:get, 'http://localhost:8000/version').
+    to_return(body: Hets.minimal_version_string)
+  stub_request(method, hets_uri(command, with, with_version)).
+    to_return(body: fixture_file.read)
+end
+
+def hets_uri(command = 'dg', portion = nil, version = nil)
+  hets_instance = HetsInstance.choose!
+rescue HetsInstance::NoRegisteredHetsInstanceError => e
+  if hets_instance.nil?
+    FactoryGirl.create(:local_hets_instance)
+    hets_instance = HetsInstance.choose!
+  end
+ensure
+  specific = ''
+  # %2F is percent-encoding for forward slash /
+  specific << "ref%2F#{version}.*" if version
+  specific << "#{portion}.*" if portion
+  return %r{#{hets_instance.uri}/#{command}/.*#{specific}}
+end

@@ -62,37 +62,6 @@ def prove_out_file(name, ext='proof.json')
   fixture_file("ontologies/hets-out/prove/#{name}.#{ext}")
 end
 
-def hets_uri(command = 'dg', portion = nil, version = nil)
-  hets_instance = HetsInstance.choose!
-rescue HetsInstance::NoRegisteredHetsInstanceError => e
-  if hets_instance.nil?
-    FactoryGirl.create(:local_hets_instance)
-    hets_instance = HetsInstance.choose!
-  end
-ensure
-  specific = ''
-  # %2F is percent-encoding for forward slash /
-  specific << "ref%2F#{version}.*" if version
-  specific << "#{portion}.*" if portion
-  return %r{#{hets_instance.uri}/#{command}/.*#{specific}}
-end
-
-def stub_hets_for(fixture_file, command: 'dg', with: nil, with_version: nil, method: :get)
-  stub_request(:get, 'http://localhost:8000/version').
-    to_return(body: Hets.minimal_version_string)
-  stub_request(method, hets_uri(command, with, with_version)).
-    to_return(body: fixture_file.read)
-end
-
-def setup_hets
-  let(:hets_instance) { create(:local_hets_instance) }
-  before do
-    stub_request(:get, 'http://localhost:8000/version').
-      to_return(body: Hets.minimal_version_string)
-    hets_instance
-  end
-end
-
 def add_fixture_file(repository, relative_file)
   path = ontology_file(relative_file)
   version_for_file(repository, path)
