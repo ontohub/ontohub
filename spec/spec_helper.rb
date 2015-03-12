@@ -111,13 +111,6 @@ end
 # includes the convenience-method `define_ontology('name')`
 include OntologyUnited::Convenience
 
-def parse_this(user, ontology, fixture_file)
-  file = File.open(fixture_file)
-  evaluator = Hets::DG::Evaluator.new(user, ontology, io: file)
-  evaluator.import
-  file.close unless file.closed?
-end
-
 # Recording HTTP Requests
 VCR.configure do |c|
   c.cassette_library_dir = 'spec/fixtures/vcr'
