@@ -251,7 +251,7 @@ Currently this will return the list of all symbols of the ontology.
           body: <<-BODY
 Will return a representation of the sentence. The sentence
 is determined according to the *locid.
-Currently this will return the list of all sentence of the ontology.
+Currently this will return the list of all sentences of the ontology.
       BODY
     end
 
