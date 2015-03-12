@@ -17,6 +17,7 @@ class OntologyVersion < ActiveRecord::Base
   belongs_to :user
   belongs_to :ontology, :counter_cache => :versions_count
   belongs_to :commit
+  has_and_belongs_to_many :provers
 
 # before_validation :set_checksum
 # validate :raw_file_size_maximum
