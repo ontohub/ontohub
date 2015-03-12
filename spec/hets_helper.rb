@@ -62,11 +62,12 @@ def setup_hets
   end
 end
 
-def stub_hets_for(fixture_file, command: 'dg', with: nil, with_version: nil, method: :get)
+def stub_hets_for(ontology_fixture,
+                  command: 'dg', with: nil, with_version: nil, method: :get)
   stub_request(:get, 'http://localhost:8000/version').
     to_return(body: Hets.minimal_version_string)
   stub_request(method, hets_uri(command, with, with_version)).
-    to_return(body: fixture_file.read)
+    to_return(body: hets_out_body(command, ontology_fixture))
 end
 
 def hets_uri(command = 'dg', portion = nil, version = nil)
