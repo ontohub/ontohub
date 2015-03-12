@@ -6,6 +6,7 @@ module Hets
         ontology.all_sentences.destroy_all
         ontology.symbols_count  = 0
         ontology.sentences_count = 0
+        ontology.axioms_count = 0
         ontology.theorems_count = 0
         ontology.save!
       end

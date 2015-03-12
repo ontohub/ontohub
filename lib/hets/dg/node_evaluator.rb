@@ -81,22 +81,24 @@ module Hets
 
       def axiom(current_element)
         if logic_callback.pre_axiom(current_element)
-          sentence = ontology.sentences.update_or_create_from_hash(
+          axiom = ontology.axioms.update_or_create_from_hash(
             current_element, hets_evaluator.now)
+          ontology.axioms_count += 1
           ontology.sentences_count += 1
 
-          logic_callback.axiom(current_element, sentence)
+          logic_callback.axiom(current_element, axiom)
         end
       end
 
       def imported_axiom(current_element)
         if logic_callback.pre_axiom(current_element)
           current_element['imported'] = true
-          sentence = ontology.sentences.update_or_create_from_hash(
+          axiom = ontology.axioms.update_or_create_from_hash(
             current_element, hets_evaluator.now)
+          ontology.axioms_count += 1
           ontology.sentences_count += 1
 
-          logic_callback.axiom(current_element, sentence)
+          logic_callback.axiom(current_element, axiom)
         end
       end
 
@@ -105,6 +107,7 @@ module Hets
           theorem = ontology.theorems.update_or_create_from_hash(
             current_element, hets_evaluator.now)
           ontology.theorems_count += 1
+          ontology.sentences_count += 1
 
           logic_callback.theorem(current_element, theorem)
         end
