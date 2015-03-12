@@ -24,7 +24,7 @@ describe Mapping do
           let(:mapping) { dist_ontology.mappings.first }
 
           before do
-            parse_this(user, dist_ontology, hets_out_file('reference'))
+            parse_ontology(user, dist_ontology, 'dol/reference.dol')
           end
 
           it 'should have the mapping-source set correctly' do

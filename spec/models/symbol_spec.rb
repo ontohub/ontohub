@@ -32,7 +32,7 @@ describe OntologyMember::Symbol do
     let(:ontology) { create :ontology }
     let(:user) { create :user }
 
-    before { parse_this(user, ontology, hets_out_file('pizza')) }
+    before { parse_ontology(user, ontology, 'owl/pizza.owl') }
 
     it 'should have the correct number of described symbols' do
       labeled_symbols = ontology.symbols.

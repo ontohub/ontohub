@@ -6,7 +6,7 @@ describe 'OntologyVersion - Proving' do
   let(:parent_ontology) { create :distributed_ontology }
 
   before do
-    parse_this(user, parent_ontology, hets_out_file('Simple_Implications'))
+    parse_ontology(user, parent_ontology, 'prove/Simple_Implications.casl')
     stub_hets_for(prove_out_file('Simple_Implications'), command: 'prove', method: :post)
   end
 

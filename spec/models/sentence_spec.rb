@@ -63,9 +63,7 @@ describe Sentence do
       let(:sentence) { ontology.sentences.first }
 
 
-      before do
-        parse_this(user, ontology, hets_out_file('generations'))
-      end
+      before { parse_ontology(user, ontology, 'owl/generations.owl') }
 
       it 'should have display_text set' do
         expect(sentence.display_text).to_not be_nil

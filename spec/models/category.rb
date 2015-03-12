@@ -36,7 +36,7 @@ describe Category do
     before do
       @user = create :user
       @ontology = create :single_ontology
-      parse_this(@user, @ontology, fixture_file('Domain_Fields_Core.xml'), fixture_file('Domain_Fields_Core.pp.xml'))
+      parse_ontology(@user, @ontology, 'owl/Domain_Fields_Core.owl')
       @ontology.create_categories
     end
 

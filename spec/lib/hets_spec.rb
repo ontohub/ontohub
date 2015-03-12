@@ -33,7 +33,8 @@ describe Hets, :needs_hets do
       end
 
       it 'have generated importable output' do
-        expect { parse_this(user, ontology, @xml_path) }.not_to raise_error
+        expect { parse_ontology_hets_out(user, ontology, File.open(@xml_path)) }.
+          not_to raise_error
       end
     end
   end
