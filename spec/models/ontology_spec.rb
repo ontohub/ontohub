@@ -218,7 +218,7 @@ describe Ontology do
       let(:repository) { create :repository, user: user }
 
       before do
-        stub_hets_for(hets_out_file('partial_order'))
+        stub_hets_for('casl/partial_order.casl')
       end
 
       it 'should have logic DOL' do
@@ -242,7 +242,7 @@ describe Ontology do
     context 'the logically translated ontology' do
 
       before do
-        stub_hets_for(hets_out_file('double_mapped_logic_translated_blendoid'))
+        stub_hets_for('dol/double_mapped_logic_translated_blendoid.dol')
       end
       it 'should contain imported sentences' do
         expect(ontology.imported_sentences).to_not be_empty

@@ -8,7 +8,7 @@ describe SymbolMapping do
     let(:dist_ontology) { version.ontology }
 
     before do
-      stub_hets_for(hets_out_file('simple_mapping'))
+      stub_hets_for('dol/simple_mapping.dol')
     end
 
     context 'which has mapped symbols' do

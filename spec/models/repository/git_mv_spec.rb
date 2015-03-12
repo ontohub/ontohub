@@ -17,9 +17,9 @@ describe 'git mv', :process_jobs_synchronously do
   end
 
   before do
-    stub_hets_for(hets_out_file('Px'), with: 'Px')
-    stub_hets_for(hets_out_file('Qy'), with: 'Qy')
-    stub_hets_for(hets_out_file('Rz'), with: 'Rz')
+    stub_hets_for('clif/Px.clif', with: 'Px')
+    stub_hets_for('clif/Qy.clif', with: 'Qy')
+    stub_hets_for('clif/Rz.clif', with: 'Rz')
   end
 
   after do

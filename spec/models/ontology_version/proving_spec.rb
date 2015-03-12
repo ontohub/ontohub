@@ -7,7 +7,8 @@ describe 'OntologyVersion - Proving' do
 
   before do
     parse_ontology(user, parent_ontology, 'prove/Simple_Implications.casl')
-    stub_hets_for(prove_out_file('Simple_Implications'), command: 'prove', method: :post)
+    stub_hets_for('prove/Simple_Implications.casl',
+                  command: 'prove', method: :post)
   end
 
   let(:ontology) { parent_ontology.children.find_by_name('Group') }
