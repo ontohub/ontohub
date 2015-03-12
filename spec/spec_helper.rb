@@ -7,6 +7,7 @@ include SharedHelper
 use_simplecov
 
 require File.expand_path("../../config/environment", __FILE__)
+require File.expand_path("../hets_helper", __FILE__)
 require 'rspec/rails'
 require 'rspec/autorun'
 require Rails.root.join('config', 'database_cleaner.rb')
