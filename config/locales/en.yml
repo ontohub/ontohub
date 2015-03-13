@@ -112,11 +112,15 @@ en:
     index:
       prove: Prove all theorems
     show:
+      prove: Prove this theorem
       proof_attemps_empty: There are no proof attempts.
   proofs:
     new:
-      title: 'Attempt to prove %{resource}'
+      title: 'Attempt to prove  %{klass} %{resource}'
       send: 'Prove'
+      klass:
+        theorem: 'theorem'
+        ontology_version: 'ontology'
       provers:
         none_is_default: Selecting none will result in using the default prover.
     create:

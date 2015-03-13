@@ -440,7 +440,10 @@ Will return a representation of the formality level.
       resources :axioms, only: %i(index show)
       resources :theorems, only: %i(index show) do
         resources :proof_attempts, only: :show
+        get '/proofs/new', controller: :proofs, action: :new
+        post '/proofs', controller: :proofs, action: :create
       end
+      get '/proofs/new', controller: :proofs, action: :new
       post '/proofs', controller: :proofs, action: :create
 
       resources :mappings do

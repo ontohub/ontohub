@@ -41,6 +41,10 @@ class OntologyVersion < ActiveRecord::Base
     self.number
   end
 
+  def to_s
+    "#{ontology.name} (version #{number})"
+  end
+
   # Public URL to this version
   #
   # TODO: This returns a path without the commit id and filename for now,

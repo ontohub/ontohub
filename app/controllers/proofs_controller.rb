@@ -8,6 +8,10 @@ class ProofsController < InheritedResources::Base
     render template: 'proofs/new'
   end
 
+  def new
+    render template: 'proofs/new'
+  end
+
   def create
     if resource.valid?
       resource.save!
