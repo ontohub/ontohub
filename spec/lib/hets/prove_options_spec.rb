@@ -1,6 +1,7 @@
 require 'spec_helper'
 
 describe Hets::ProveOptions do
+  let(:prover) { create :prover }
   let(:theorem) { create :theorem }
   let(:ontology) { theorem.ontology }
   let(:axiom) { create :axiom, ontology: ontology }
@@ -8,6 +9,7 @@ describe Hets::ProveOptions do
 
   context 'with strings' do
     let(:options) { {node: ontology.name,
+                     prover: prover.name,
                      axioms: [axiom.name],
                      theorems: [theorem.name]} }
     let(:prove_options) { Hets::ProveOptions.new(options) }
@@ -19,6 +21,7 @@ describe Hets::ProveOptions do
 
   context 'with general objects' do
     let(:options) { {ontology: ontology,
+                     prover: prover,
                      axioms: [axiom],
                      theorems: [theorem]} }
     let!(:axiom_names) { options[:axioms].map(&:name) }
@@ -31,6 +34,10 @@ describe Hets::ProveOptions do
 
     it 'sets :node to the ontology name' do
       expect(prove_options.options[:node]).to eq(ontology.name)
+    end
+
+    it 'sets :prover to the prover name' do
+      expect(prove_options.options[:prover]).to eq(prover.name)
     end
 
     it 'sets :axioms to the axioms names' do
