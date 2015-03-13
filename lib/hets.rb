@@ -126,6 +126,11 @@ we expected it to be matchable by this regular expression:
     prove_caller.call(qualified_loc_id_for(resource))
   end
 
+  def self.provers_via_api(resource, provers_options)
+    provers_caller = Hets::ProversCaller.new(HetsInstance.choose!, provers_options)
+    provers_caller.call(qualified_loc_id_for(resource))
+  end
+
   def self.filetype(resource)
     iri = qualified_loc_id_for(resource)
     filetype_caller = Hets::FiletypeCaller.new(HetsInstance.choose!)
