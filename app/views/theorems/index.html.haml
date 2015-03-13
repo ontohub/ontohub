@@ -4,7 +4,7 @@
 
 - if can? :write, parent.repository
   - if ontology.unproven_theorems.present?
-    = link_to t('theorems.index.prove'), [*resource_chain, :prove], method: :post, class: 'btn btn-primary'
+    = link_to t('theorems.index.prove'), [*resource_chain, :proofs], method: :post, class: 'btn btn-primary'
   - else
     = t('theorems.index.all_proven', oms: Settings.OMS)
 

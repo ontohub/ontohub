@@ -1,6 +1,6 @@
 require 'spec_helper'
 
-describe ProveController do
+describe ProofsController do
   before { allow_any_instance_of(OntologyVersion).to receive(:async_prove) }
   let(:theorem) { create :theorem }
   let(:ontology) { theorem.ontology }

@@ -1,4 +1,4 @@
-class ProveController < ApplicationController
+class ProofsController < ApplicationController
   before_filter :check_write_permissions
 
   def create

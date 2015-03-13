@@ -114,7 +114,12 @@ en:
       all_proven: All theorems of this %{oms} have been proven.
     show:
       proof_attemps_empty: There are no proof attempts.
-  prove:
+  proofs:
+    new:
+      title: 'Attempt to prove %{resource}'
+      send: 'Prove'
+      provers:
+        none_is_default: Selecting none will result in using the default prover.
     create:
       starting_jobs: Proving jobs have been scheduled. Please come back in a few moments.
       nothing_to_do: All theorems have been proven.

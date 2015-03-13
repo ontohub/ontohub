@@ -441,7 +441,7 @@ Will return a representation of the formality level.
       resources :theorems, only: %i(index show) do
         resources :proof_attempts, only: :show
       end
-      post '/prove', controller: :prove, action: :create
+      post '/proofs', controller: :proofs, action: :create
 
       resources :mappings do
         get 'update_version', :on => :member
