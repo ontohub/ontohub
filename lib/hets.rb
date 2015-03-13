@@ -115,11 +115,9 @@ we expected it to be matchable by this regular expression:
     "http://#{Settings.hostname}#{locid}"
   end
 
-  def self.parse_via_api(resource, url_catalog = [], structure_only: false)
+  def self.parse_via_api(resource, hets_options, structure_only: false)
     mode = structure_only ? :fast_run : :default
-
-    parse_caller = Hets::ParseCaller.new(HetsInstance.choose!, url_catalog)
-
+    parse_caller = Hets::ParseCaller.new(HetsInstance.choose!, hets_options)
     parse_caller.call(qualified_loc_id_for(resource), with_mode: mode)
   end
 
