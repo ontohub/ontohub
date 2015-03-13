@@ -17,16 +17,16 @@ class Theorem < Sentence
     end
   end
 
-  def async_prove(*_args)
-    async :prove
+  def async_prove(prove_options = nil)
+    async :prove, prove_options
   end
 
-  def prove
+  def prove(prove_options = nil)
     ontology_version = ontology.current_version
     ontology_version.update_state! :processing
 
     ontology_version.do_or_set_failed do
-      cmd, input_io = execute_proof
+      cmd, input_io = execute_proof(prepared_prove_options(prove_options))
       return if cmd == :abort
 
       ontology.import_proof(ontology_version, ontology_version.user, input_io)
@@ -34,12 +34,21 @@ class Theorem < Sentence
     end
   end
 
-  def execute_proof
-    hets_options =
-      Hets::ProveOptions.new(:'url-catalog' => ontology.repository.url_maps,
-                             ontology: ontology,
-                             theorems: [self])
-    input_io = Hets.prove_via_api(ontology, hets_options)
+  def prepared_prove_options(prove_options = nil)
+    prove_options ||= Hets::ProveOptions.new
+    # If the prove_options have gone through the async_prove call, they are now
+    # a Hash and need to be restored as a ProveOptions object.
+    if prove_options.is_a?(Hash)
+      prove_options = Hets::ProveOptions.from_hash(prove_options)
+    end
+    prove_options.add(:'url-catalog' => ontology.repository.url_maps,
+                      ontology: ontology,
+                      theorems: [self])
+    prove_options
+  end
+
+  def execute_proof(prove_options)
+    input_io = Hets.prove_via_api(ontology, prove_options)
     [:all_is_well, input_io]
   rescue Hets::ExecutionError => e
     handle_hets_execution_error(e, self)
