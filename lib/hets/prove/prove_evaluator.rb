@@ -38,7 +38,7 @@ module Hets
           proof_attempt = ProofAttempt.new
           proof_attempt.theorem = find_theorem_with_hash(proof_info, ontology)
           proof_attempt.proof_status = find_proof_status_with_hash(proof_info)
-          proof_attempt.prover = proof_info[:used_prover]
+          proof_attempt.prover = find_or_create_prover_with_hash(proof_info)
           proof_attempt.prover_output = proof_info[:prover_output]
           proof_attempt.time_taken = proof_info[:time_taken]
           proof_attempt.tactic_script = tactic_script_from_hash(proof_info)
@@ -47,6 +47,8 @@ module Hets
           proof_attempt.used_axioms = used_axioms
           proof_attempt.used_theorems = used_theorems
           proof_attempt.generated_axioms = generated_axioms
+
+          proof_attempt.associate_prover_with_ontology_version
 
           proof_attempt.save!
         end
@@ -67,6 +69,10 @@ module Hets
             ProofStatus::DEFAULT_UNKNOWN_STATUS
           end
         ProofStatus.find(identifier)
+      end
+
+      def find_or_create_prover_with_hash(proof_info)
+        Prover.where(name: proof_info[:used_prover]).first_or_create!
       end
 
       def tactic_script_from_hash(proof_info)
