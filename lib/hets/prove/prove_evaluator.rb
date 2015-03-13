@@ -38,7 +38,7 @@ module Hets
           proof_attempt = ProofAttempt.new
           proof_attempt.theorem = find_theorem_with_hash(proof_info, ontology)
           proof_attempt.proof_status = find_proof_status_with_hash(proof_info)
-          proof_attempt.prover = find_or_create_prover_with_hash(proof_info)
+          proof_attempt.prover = proof_info[:used_prover]
           proof_attempt.prover_output = proof_info[:prover_output]
           proof_attempt.time_taken = proof_info[:time_taken]
           proof_attempt.tactic_script = tactic_script_from_hash(proof_info)
