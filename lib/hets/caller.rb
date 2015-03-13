@@ -18,7 +18,11 @@ module Hets
       query_part =
         if query_string && !query_string.empty?
           query_string.reduce('?') do |str, (key, val)|
-            str << "#{key}=#{val};"
+            if val.is_a?(Array)
+              str << "#{key}=#{val.join(',')};"
+            else
+              str << "#{key}=#{val};"
+            end
           end
         end
       api_uri = hierarchy + query_part.to_s
