@@ -73,7 +73,7 @@ paths:
   # General data.
   data: data
   # git repositories (names are numbers/ids)
-  git_repositories: data/git
+  git_repositories: data/repositories
   # named symlinks to the git repositories
   symlinks: data/git_daemon
   # cache for files that needed to be checked out from the git repositories
