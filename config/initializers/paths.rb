@@ -1,14 +1,21 @@
 
 module PathsInitializer
-
   class << self
-    def perform_initialization(config)
-      config.data_root = Rails.root.join(Settings.paths.data).
-        sub(%r(/releases/\d+/), "/current/")
+    def cleanup_release(path)
+      path.sub(%r(/releases/\d+/), "/current/")
+    end
 
-      config.git_root = Rails.root.join(Settings.paths.git_repositories)
-      config.symlink_path = Rails.root.join(Settings.paths.symlinks)
-      config.commits_path = Rails.root.join(Settings.paths.commits)
+    def perform_initialization(config)
+      config.data_root = cleanup_release(Rails.root.join(Settings.paths.data))
+
+      config.git_root =
+        cleanup_release(Rails.root.join(Settings.paths.git_repositories))
+
+      config.symlink_path =
+        cleanup_release(Rails.root.join(Settings.paths.symlinks))
+
+      config.commits_path =
+        cleanup_release(Rails.root.join(Settings.paths.commits))
 
       settings = Settings.git
       if settings && settings.user
@@ -22,7 +29,6 @@ module PathsInitializer
       end
     end
   end
-
 end
 
 if defined?(Ontohub::Application)
