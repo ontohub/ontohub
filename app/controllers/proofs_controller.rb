@@ -1,20 +1,41 @@
-class ProofsController < ApplicationController
+class ProofsController < InheritedResources::Base
+  defaults resource_class: Proof
   before_filter :check_write_permissions
+  helper_method :ontology
+
+  def new
+    resource
+    render template: 'proofs/new'
+  end
 
   def create
-    if ontology.unproven_theorems.present?
-      ontology.current_version.async_prove
-      flash[:success] = t('prove.create.starting_jobs')
+    if resource.valid?
+      resource.save!
+      flash[:success] = t('proofs.create.starting_jobs')
+      redirect_to(redirect_chain)
     else
-      flash[:notice] = t('prove.create.nothing_to_do')
+      flash[:alert] = t('proofs.create.invalid_resource')
+      redirect_to(action: :new)
     end
-    redirect_to([ontology.repository, ontology, :theorems])
   end
 
   protected
 
+  def resource
+    @resource ||= resource_class.new(params)
+  end
+
   def ontology
-    @ontology ||= Ontology.find(params[:ontology_id])
+    resource.ontology
+  end
+
+  def redirect_chain
+    @redirect_chain = resource_chain
+    if resource.theorem?
+      @redirect_chain << resource.proof_obligation
+    else
+      @redirect_chain << :theorems
+    end
   end
 
   def check_write_permissions

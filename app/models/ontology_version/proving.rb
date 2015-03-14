@@ -22,10 +22,6 @@ module OntologyVersion::Proving
     end
   end
 
-  def unproven_theorems
-    ontology.theorems.where(proof_status_id: Theorem::DEFAULT_STATUS)
-  end
-
   def prepared_prove_options(prove_options = nil)
     prove_options ||= Hets::ProveOptions.new
     # If the prove_options have gone through the async_prove call, they are now

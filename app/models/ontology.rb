@@ -29,7 +29,6 @@ class Ontology < ActiveRecord::Base
   class Ontology::DeleteError < StandardError; end
 
   delegate :permission?, to: :repository
-  delegate :unproven_theorems, to: :current_version
 
   strip_attributes :only => [:name, :iri]
 
