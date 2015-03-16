@@ -76,6 +76,10 @@ module Ontohub
     config.external_url_mapping = APP_CONFIG = YAML.load(File.read(Rails.root + "config/external_link_mapping.yml"))
 
     config.before_initialize do
+      local_environment_config = config.root.join('config', 'environments',
+                                                  "#{Rails.env}.local.rb")
+      require local_environment_config if File.exists?(local_environment_config)
+
       Settings.prepend_source!(Rails.root.join('config', 'hets.yml').to_s)
       Settings.reload!
 
