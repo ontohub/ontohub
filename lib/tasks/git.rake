@@ -51,4 +51,17 @@ namespace :git do
                     'the git user and the webserver-running group.')
     reconfigured_source_tempfile.unlink
   end
+
+  desc 'Create authorized_keys file and set its permissions'
+  task :prepare_authorized_keys => :environment do
+    SSH_DIR = Ontohub::Application.config.data_root.join('.ssh')
+    AUTHORIZED_KEYS = SSH_DIR.join('authorized_keys')
+    SSH_DIR.mkpath
+    if !File.exists?(AUTHORIZED_KEYS)
+      puts "Creating the file #{AUTHORIZED_KEYS}."
+      FileUtils.touch(AUTHORIZED_KEYS)
+      set_permissions('0640', AUTHORIZED_KEYS.to_s,
+                      'the webserver-running user.')
+    end
+  end
 end
