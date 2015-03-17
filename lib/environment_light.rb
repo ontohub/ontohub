@@ -2,7 +2,7 @@ require 'pathname'
 
 # Set up Rails configuration
 rails_env = ENV['RAILS_ENV'] || 'production'
-rails_root = Pathname.new(File.dirname(__FILE__) << "/..")
+rails_root = Pathname.new(File.dirname(__FILE__) << '/..')
 
 # Load Bundler
 ENV['BUNDLE_GEMFILE'] = rails_root.join('Gemfile').to_s
