@@ -37,4 +37,5 @@ initialize_new_invoker_instance
 execute_or_die "bundle exec rake elasticsearch:wipe"
 execute_or_die "bundle exec rake db:migrate:clean"
 execute_or_die "redis-cli flushdb"
+execute_or_die "bundle exec rake git:compile_cp_keys"
 execute_or_die "bundle exec rake db:seed"
