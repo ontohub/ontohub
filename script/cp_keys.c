@@ -1,3 +1,6 @@
+#ifdef __APPLE__
+#include <libc.h>
+#endif
 #include <unistd.h>
 #include <stdlib.h>
 
