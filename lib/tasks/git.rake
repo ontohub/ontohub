@@ -24,6 +24,21 @@ namespace :git do
     system(*command)
   end
 
+  def remove_symbols(target_path)
+    command = ['strip', target_path]
+    puts 'Removing symbols with'
+    puts command.map { |c| c.match(/\s/) ? "'#{c}'" : c }.join(' ')
+    system(*command)
+  end
+
+  def set_permissions(mode, path, owner_group)
+    command_chmod = ['chmod', mode, path]
+    puts 'Changing owner with'
+    puts command_chmod.map { |c| c.match(/\s/) ? "'#{c}'" : c }.join(' ')
+    system(*command_chmod)
+    puts "You need to manually set the owner/group of '#{path}' to #{owner_group}"
+  end
+
   desc 'Compile cp_keys binary'
   task :compile_cp_keys => :environment do
     source_file = Rails.root.join('script', 'cp_keys.c')
@@ -31,6 +46,9 @@ namespace :git do
 
     reconfigured_source_tempfile = reconfigure_cp_keys(source_file)
     compile_gcc(reconfigured_source_tempfile.path, target_path)
+    remove_symbols(target_path)
+    set_permissions('4500', target_path,
+                    'the git user and the webserver-running group.')
     reconfigured_source_tempfile.unlink
   end
 end
