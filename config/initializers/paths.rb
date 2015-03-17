@@ -11,6 +11,9 @@ module PathsInitializer
       config.git_root =
         cleanup_release(Rails.root.join(Settings.paths.git_repositories))
 
+      config.git_home =
+        cleanup_release(Rails.root.join(Settings.paths.git_home))
+
       config.symlink_path =
         cleanup_release(Rails.root.join(Settings.paths.symlinks))
 

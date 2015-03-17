@@ -5,3 +5,6 @@ git:
   verify_url: http://localhost:3000/
 
 display_head_commit: true
+
+paths:
+  git_home: tmp/git

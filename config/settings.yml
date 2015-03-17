@@ -79,6 +79,9 @@ paths:
   symlinks: data/git_daemon
   # cache for files that needed to be checked out from the git repositories
   commits: data/commits
+  # home directory of the git user
+  #   needed for handling of ssh keys in ~git/.ssh/authorized_keys
+  git_home: /home/git
 
 git:
   user: # can be nil if git commands are to be executed with the current user
