@@ -84,8 +84,6 @@ paths:
   git_home: /home/git
 
 git:
-  user: # can be nil if git commands are to be executed with the current user
-  group: # can be nil if git commands are to be executed with the current group
   verify_url: http://localhost/
   default_branch: 'master'
   push_priority:
