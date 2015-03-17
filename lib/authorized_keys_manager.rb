@@ -54,8 +54,11 @@ class AuthorizedKeysManager
         file.flock(File::LOCK_EX)
         yield file
       end
+      copy_authorized_keys_to_git_home
     end
 
+    def copy_authorized_keys_to_git_home
+      system(Rails.root.join('bin', 'cp_keys').to_s)
+    end
   end
-
 end
