@@ -5,6 +5,8 @@ describe SSHAccessController do
   let(:repository) { create :repository }
   let(:user) { create :user }
 
+  before { stub_cp_keys }
+
   context 'should return valid response when encountering error' do
     before do
       get :index, repository_id: repository.to_param, key_id: nil, permission: 'write'

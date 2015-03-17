@@ -34,6 +34,10 @@ end
 
 require Rails.root.join('spec', 'support', 'common_helper_methods.rb')
 
+def stub_cp_keys
+  allow(AuthorizedKeysManager).to receive(:copy_authorized_keys_to_git_home)
+end
+
 # Recording HTTP Requests
 VCR.configure do |c|
   c.cassette_library_dir = 'spec/fixtures/vcr'
