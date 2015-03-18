@@ -8,7 +8,7 @@ update = (container) ->
   updateContainer = (container) ->
     current_state = container.data('state')
 
-    $.getJSON container.data('uri') + ".json", (data) ->
+    $.getJSON container.data('uri'), (data) ->
       state = data.state
 
       if state == current_state && !_.contains(final_states, state)
