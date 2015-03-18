@@ -16,18 +16,6 @@ module SettingsValidationWrapper::Validators
     end
   end
 
-  class ElementsAreAbsoluteFilepathsValidator < ActiveModel::EachValidator
-    def validate_each(record, attribute, value)
-      valid = value.is_a?(Array) && value.all? do |elem|
-        %w(/ ~/).any? { |start| elem.start_with?(start) }
-      end
-      unless valid
-        record.errors.add attribute,
-          'all elements must be absolute filepaths'
-      end
-    end
-  end
-
   class ElementsArePresentValidator < ActiveModel::EachValidator
     def validate_each(record, attribute, value)
       unless value.is_a?(Array) && value.all? { |elem| elem.present? }
@@ -58,14 +46,6 @@ module SettingsValidationWrapper::Validators
     end
   end
 
-  class ElementsWithOneExecutableValidator < ActiveModel::EachValidator
-    def validate_each(record, attribute, value)
-      unless value.any? { |filepath| File.executable?(filepath) }
-        record.errors.add attribute, 'must contain at least one executable file'
-      end
-    end
-  end
-
   class EmailFromHostValidator < ActiveModel::EachValidator
     def validate_each(record, attribute, value)
       fqdn =
@@ -77,6 +57,14 @@ module SettingsValidationWrapper::Validators
       unless value.match(/@#{fqdn}\z/)
         record.errors.add attribute,
           "email adress must belong to the fully qualified domain name '#{fqdn}'."
+      end
+    end
+  end
+
+  class ExecutableValidator < ActiveModel::EachValidator
+    def validate_each(record, attribute, value)
+      unless File.executable?(value)
+        record.errors.add attribute, "must be an executable file: #{value}"
       end
     end
   end
