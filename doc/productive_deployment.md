@@ -353,8 +353,8 @@ Create an upstart script (i.e. `/etc/init/git-daemon.conf`):
 
     start on startup
     stop on shutdown
-    setuid nobody
-    setgid nogroup
+    setuid ontohub
+    setgid ontohub
     exec /usr/bin/git daemon \
         --reuseaddr \
         --export-all \
