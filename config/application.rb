@@ -80,7 +80,7 @@ module Ontohub
                                                   "#{Rails.env}.local.rb")
       require local_environment_config if File.exists?(local_environment_config)
 
-      Settings.prepend_source!(Rails.root.join('config', 'hets.yml').to_s)
+      Settings.add_source!(Rails.root.join('config', 'hets.yml').to_s)
       Settings.reload!
 
       # Enable serving of images, stylesheets, and JavaScripts from an asset server
