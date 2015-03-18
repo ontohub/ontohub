@@ -325,23 +325,23 @@ after that you have to set up the git Deamon which will be explained next.
 
     cd /srv/http/ontohub/shared/data
 
-  mkdir -p git_daemon
-  chown ontohub:ontohub git_daemon
-  setfacl -m u:ontohub:rwx,d:u:ontohub:rwx git_daemon
-  setfacl -m g:ontohub:rwx,d:g:ontohub:rwx git_daemon
+    mkdir -p git_daemon
+    chown ontohub:ontohub git_daemon
+    setfacl -m u:ontohub:rwx,d:u:ontohub:rwx git_daemon
+    setfacl -m g:ontohub:rwx,d:g:ontohub:rwx git_daemon
 
     mkdir -p git_user/.ssh
-  chmod 770 git_user/.ssh
-  touch git_user/.ssh/authorized_keys
-  chmod 660 git_user/.ssh/authorized_keys
-  chown -R git:ontohub git_user
-  setfacl -Rm u:ontohub:rwx,d:u:ontohub:rwx git_user
-  setfacl -Rm g:ontohub:rwx,d:g:ontohub:rwx git_user
+    chmod 770 git_user/.ssh
+    touch git_user/.ssh/authorized_keys
+    chmod 660 git_user/.ssh/authorized_keys
+    chown -R git:ontohub git_user
+    setfacl -Rm u:ontohub:rwx,d:u:ontohub:rwx git_user
+    setfacl -Rm g:ontohub:rwx,d:g:ontohub:rwx git_user
 
-  mkdir -p repositories
-  chown ontohub:ontohub repositories
-  setfacl -m u:ontohub:rwx,d:u:ontohub:rwx repositories
-  setfacl -m g:ontohub:rwx,d:g:ontohub:rwx repositories
+    mkdir -p repositories
+    chown ontohub:ontohub repositories
+    setfacl -m u:ontohub:rwx,d:u:ontohub:rwx repositories
+    setfacl -m g:ontohub:rwx,d:g:ontohub:rwx repositories
 
 #### SSH access
 
