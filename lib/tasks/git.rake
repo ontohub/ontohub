@@ -48,7 +48,9 @@ namespace :git do
     compile_gcc(reconfigured_source_tempfile.path, target_path)
     remove_symbols(target_path)
     set_permissions('4500', target_path,
-                    'the git user and the webserver-running group.')
+                    'the git user and the webserver-running group. Also, add '\
+                    'execute-permissions for the webserver-running user with '\
+                    "ACLs, e.g.: setfacl -m u:ontohub:--x,m::rwx #{target_path}")
     reconfigured_source_tempfile.unlink
   end
 
