@@ -40,9 +40,9 @@ gem 'haml-rails', '~> 0.4'
 # Official version above and including 0.4 requires Rails
 # which is a problem in git-hooks.
 # The specified commit is from a fork and allows to overwrite arrays.
-# Further, it adds the method prepend_source! to the Settings.
-# Also, it removes the Rails dependency.
-gem 'rails_config', github: 'eugenk/rails_config', ref: 'patched-for-ontohub'
+# It has been pull-requested:
+# https://github.com/railsconfig/rails_config/pull/99
+gem 'rails_config', github: 'hnakamur/rails_config', ref: 'overwrite_arrays'
 
 #provides  correct indefinite article 
 gem 'indefinite_article', '~> 0.2.0'

@@ -13,9 +13,9 @@ GIT
       rails (~> 3.2.21)
 
 GIT
-  remote: git://github.com/eugenk/rails_config.git
-  revision: 62a8a6e20054d4531fb45cb2902ba342723cef4c
-  ref: patched-for-ontohub
+  remote: git://github.com/hnakamur/rails_config.git
+  revision: d513a5204003a7af26d747b260f2bde238158dce
+  ref: overwrite_arrays
   specs:
     rails_config (0.5.0.beta1)
       activesupport (>= 3.0)
