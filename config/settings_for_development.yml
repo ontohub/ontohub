@@ -1,0 +1,33 @@
+# This file configures what is only needed for development of the ontohub app.
+# It only concerns developers and is not needed/not loaded in any environment
+# other than 'development'.
+
+paths:
+  # Hets environment. The first matching item in the lists is used.
+  hets:
+    executable:
+      - /usr/bin/hets
+      - ~/dev/hets/hets
+      - /opt/local/bin/hets
+      - ~/code/hets/hets
+      - ~/ontohub/Hets/hets
+      - /usr/local/opt/hets/bin/hets
+      - /usr/local/opt/hets/bin/hets-bin
+      - /usr/local/opt/hets-binary/Hets.app/Contents/Resources/hets
+      - /Applications/Hets.app/Contents/Resources/hets
+    hets_lib:
+      - /usr/lib/hets/hets-lib
+      - ~/dev/hets/lib
+      - ~/ontohub/Hets
+      - /usr/local/opt/hets-lib
+      - /usr/local/opt/hets-binary/Hets.app/Contents/Resources/Hets-lib
+      - /Applications/Hets.app/Contents/Resources/Hets-lib
+      - /opt/hets-lib
+    hets_owl_tools:
+      - /usr/lib/hets/hets-owl-tools
+      - ~/dev/hets/OWL2
+      - ~/code/hets/OWL2
+      - ~/ontohub/Hets/OWL2
+      - /usr/local/opt/hets/lib/hets-owl-tools/
+      - /usr/local/opt/hets-binary/Hets.app/Contents/Resources/hets-owl-tools
+      - /Applications/Hets.app/Contents/Resources/hets-owl-tools
