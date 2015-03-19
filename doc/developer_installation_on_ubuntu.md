@@ -99,7 +99,7 @@ Now we can actually start installing the necessary gems:
 
 ## redis
 
-In order for resque to work, we need to install redis.
+In order for sidekiq to work, we need to install redis.
 
 ```
 add-apt-repository ppa:chris-lea/redis-server
@@ -151,9 +151,14 @@ sudo apt-get install -y phantomjs
 
 In ontohub directory:
 
-- `rake db:migrate:reset`
-- `rake sunspot:solr:start`
-- `rake resque:work`
+You can start everything needed with (in the ontohub directory):
+```
+invoker start invoker.ini
+```
+And you can (re)build the database with:
+```
+script/rebuild-ontohub
+```
 
 Now you should be ready...
 
