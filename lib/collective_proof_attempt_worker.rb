@@ -8,8 +8,9 @@ class CollectiveProofAttemptWorker < BaseWorker
   # The resource is fetched from the database with klass and id, where
   # klass can be 'Theorem' or 'OntologyVersion'.
   # The provers can be either IDs or names.
-  def perform(klass, id, provers)
+  def perform(klass, id, proof_attempts_ids, provers)
     resource = klass.constantize.find(id)
-    CollectiveProofAttempt.new(resource, provers).run
+    proof_attempts = proof_attempts_ids.map { |id| ProofAttempt.find(id) }
+    CollectiveProofAttempt.new(resource, proof_attempts, provers).run
   end
 end

@@ -37,6 +37,7 @@ class Proof < FakeRecord
     ontology_version.update_state! :pending
     CollectiveProofAttemptWorker.perform_async(proof_obligation.class.to_s,
                                                proof_obligation.id,
+                                               proof_attempts.map(&:id),
                                                provers)
   end
 

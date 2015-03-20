@@ -1,11 +1,12 @@
 class CollectiveProofAttempt
-  attr_accessor :resource, :provers, :prove_options_list
+  attr_accessor :resource, :proof_attempts, :provers, :prove_options_list
 
   # Resource can be a Theorem or an OntologyVersion.
   # We call prove for every possible options combination on the resource.
   # The provers can be either Prover objects, IDs or names.
-  def initialize(resource, provers)
+  def initialize(resource, proof_attempts, provers)
     self.resource = resource
+    self.proof_attempts = proof_attempts
     initialize_provers(provers)
 
     self.prove_options_list = self.provers.map do |prover|
