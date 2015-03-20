@@ -6,7 +6,7 @@ describe Theorem do
     it { should belong_to(:proof_status) }
   end
 
-  context 'Proving' do
+  context 'Theorem of an ontology' do
     let(:user) { create :user }
     let(:parent_ontology) { create :distributed_ontology }
 
@@ -21,10 +21,18 @@ describe Theorem do
     let(:theorem) { ontology.theorems.find_by_name('rightunit') }
     let(:other_theorem) { ontology.theorems.find_by_name('zero_plus') }
 
-    before { theorem.prove }
+    context 'Proving' do
+      before { theorem.prove }
 
-    it 'the theorem is solved' do
-      expect(theorem.proof_attempts.count).to eq(1)
+      it 'the theorem is solved' do
+        expect(theorem.proof_attempts.count).to eq(1)
+      end
+    end
+
+    context 'state' do
+      it "is 'pending'" do
+        expect(theorem.state).to eq('pending')
+      end
     end
   end
 
