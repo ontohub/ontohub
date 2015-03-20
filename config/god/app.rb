@@ -1,5 +1,6 @@
 require File.expand_path('../sidekiq_workers',  __FILE__)
 require File.expand_path('../hets_workers',  __FILE__)
+require File.expand_path('../../../lib/environment_light_with_hets.rb')
 
 RAILS_ROOT = ENV['RAILS_ROOT'] || File.dirname(__FILE__) + '/../..'
 
@@ -8,18 +9,10 @@ HIGH_LOAD_WORKERS_COUNT = 2
 
 God.pid_file_directory = File.join(RAILS_ROOT, 'tmp/pids/')
 
-def hets_workers_count
-  yaml = YAML.load_file(File.join(RAILS_ROOT, 'config', 'settings.yml'))
-
-  min_workers = 1
-  max_workers = [`nproc`.to_i - HIGH_LOAD_WORKERS_COUNT, min_workers].max
-  [yaml['workers']['hets'], max_workers].min
-end
-
 SidekiqWorkers.configure do
   if ENV['RAILS_ENV']=='production'
     # one worker per core
-    hets_workers_count.times.each do
+    Settings.hets.instances_count.times.each do
       watch 'hets', 1
     end
 
