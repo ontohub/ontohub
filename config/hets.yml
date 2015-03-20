@@ -1,22 +1,24 @@
-# Hets environment. The first matching item in the lists is used.
-version_minimum_version: 0.99
-version_minimum_revision: 1430921534
+# This file is not supposed to be edited by an admin. The values here can not be
+# overridden in other settings files.
+hets:
+  version_minimum_version: 0.99
+  version_minimum_revision: 1430921534
 
-stack_size: 1G
+  stack_size: 1G
 
-cmd_line_options:
-  - '-o xml'
-  - '--full-signatures'
-  - '-casl-amalg=none'
-  - '-v2'
-  - '+RTS -K1G -RTS'
-  - '--full-theories'
-  - '--apply-automatic-rule'
+  cmd_line_options:
+    - '-o xml'
+    - '--full-signatures'
+    - '-casl-amalg=none'
+    - '-v2'
+    - '+RTS -K1G -RTS'
+    - '--full-theories'
+    - '--apply-automatic-rule'
 
-server_options:
-  - '--casl-amalg=none'
-  - '--apply-automatic-rule'
+  server_options:
+    - '--casl-amalg=none'
+    - '--apply-automatic-rule'
 
-# Environment variables to set for running Hets
-env:
-  LANG: en_US.UTF-8
+  # Environment variables to set for running Hets
+  env:
+    LANG: en_US.UTF-8
