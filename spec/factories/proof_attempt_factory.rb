@@ -7,5 +7,6 @@ FactoryGirl.define do
     association :proof_status, factory: :proof_status_proven
     association :theorem
     association :prover
+    association :proof_attempt_configuration
   end
 end
