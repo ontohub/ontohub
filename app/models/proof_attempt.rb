@@ -1,5 +1,6 @@
 class ProofAttempt < ActiveRecord::Base
   include Numbering
+  include StateUpdater
 
   numbering_parent_column 'sentence_id'
 
@@ -19,8 +20,12 @@ class ProofAttempt < ActiveRecord::Base
   attr_accessible :prover_output,
                   :tactic_script,
                   :time_taken,
-                  :number
+                  :number,
+                  :state,
+                  :state_updated_at,
+                  :last_error
 
+  validates :state, inclusion: {in: State::STATES}
   validates :theorem, presence: true
 
   after_save :update_theorem_status
