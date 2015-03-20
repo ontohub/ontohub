@@ -4,6 +4,7 @@ describe ProofAttempt do
   context 'Associations' do
     it { should belong_to(:theorem) }
     it { should belong_to(:proof_status) }
+    it { should belong_to(:proof_attempt_configuration) }
   end
 
   let(:proof_attempt) { create :proof_attempt }

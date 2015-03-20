@@ -7,6 +7,7 @@ class ProofAttempt < ActiveRecord::Base
   belongs_to :theorem, foreign_key: 'sentence_id'
   belongs_to :proof_status
   belongs_to :prover
+  belongs_to :proof_attempt_configuration
   has_many :generated_axioms, dependent: :destroy
   has_and_belongs_to_many :used_axioms,
                           class_name: 'Axiom',
