@@ -37,6 +37,8 @@ module Hets
         @options[field].map! do |sentence|
           if sentence.is_a?(Sentence)
             sentence.name
+          else
+            sentence
           end
         end
       end
