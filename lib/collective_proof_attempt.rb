@@ -36,7 +36,10 @@ class CollectiveProofAttempt
       cmd, input_io = execute_proof(prove_options)
       return if cmd == :abort
 
-      ontology.import_proof(ontology_version, ontology_version.user, input_io)
+      ontology.import_proof(ontology_version,
+                            ontology_version.user,
+                            proof_attempts,
+                            input_io)
       ontology_version.update_state! :done
     end
   end

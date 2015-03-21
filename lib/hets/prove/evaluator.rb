@@ -2,7 +2,7 @@ module Hets
   module Prove
     class Evaluator
       attr_accessor :version, :path
-      attr_accessor :ontology, :user
+      attr_accessor :ontology, :user, :proof_attempts
       attr_accessor :parser, :callback
       attr_accessor :now
       attr_accessor :io
@@ -13,17 +13,19 @@ module Hets
       # and
       # new(user, ontology, path: some_path, io: some_io)
       # where some_io needs to be an instance of IO or a Tempfile.
-      def initialize(user, ontology, version: nil, path: nil, io: nil)
+      def initialize(user, ontology, proof_attempts,
+                     version: nil, path: nil, io: nil)
         self.version = version
         self.path = path
         self.ontology = ontology
+        self.proof_attempts = proof_attempts
         self.user = user
         self.io = io
         initialize_handling
       end
 
       def import
-        callback = ProveEvaluator.new(self)
+        callback = ProveEvaluator.new(self, proof_attempts)
         ActiveRecord::Base.transaction requires_new: true do
           callback.process(:all, :start)
           parser.parse(callback: callback)
