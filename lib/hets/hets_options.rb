@@ -16,6 +16,10 @@ module Hets
       prepare
     end
 
+    def merge!(hets_options)
+      add(hets_options.options)
+    end
+
     protected
 
     def prepare
