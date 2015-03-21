@@ -14,6 +14,7 @@ module Hets
     def add(**opts)
       @options.merge!(opts.dup)
       prepare
+      self
     end
 
     def merge!(hets_options)
