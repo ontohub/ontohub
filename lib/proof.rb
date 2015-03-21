@@ -21,12 +21,12 @@ class Proof < FakeRecord
 
   def initialize(opts)
     opts[:proof] ||= {}
-    opts[:proof][:provers] ||= []
+    opts[:proof][:prover_ids] ||= []
 
     @ontology = Ontology.find(opts[:ontology_id])
     # HACK: remove the empty string from params
     # Rails 4.2 introduces the html form option :include_hidden
-    @prover_ids = opts[:proof][:provers].select(&:present?).map(&:to_i)
+    @prover_ids = opts[:proof][:prover_ids].select(&:present?).map(&:to_i)
     @proof_obligation = initialize_proof_obligation(opts)
 
     initialize_provers
