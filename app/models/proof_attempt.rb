@@ -29,6 +29,7 @@ class ProofAttempt < ActiveRecord::Base
   validates :state, inclusion: {in: State::STATES}
   validates :theorem, presence: true
 
+  before_save :set_default_proof_status
   after_save :update_theorem_status
 
   scope :latest, order('number DESC')
@@ -39,6 +40,10 @@ class ProofAttempt < ActiveRecord::Base
 
   def used_sentences
     @used_sentences ||= used_axioms + used_theorems
+  end
+
+  def set_default_proof_status
+    self.proof_status ||= ProofStatus.find(ProofStatus::DEFAULT_OPEN_STATUS)
   end
 
   def update_theorem_status
