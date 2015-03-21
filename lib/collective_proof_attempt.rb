@@ -10,7 +10,7 @@ class CollectiveProofAttempt
   def run
     ontology_version.update_state! :processing
     options_to_attempts_hash.each do |prove_options, proof_attempts|
-      prove_options.merge!(resource.prepared_prove_options)
+      prove_options.merge!(resource.prove_options)
       prove(prove_options, proof_attempts)
     end
   end

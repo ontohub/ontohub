@@ -28,7 +28,7 @@ class Theorem < Sentence
     end
   end
 
-  def prepared_prove_options(prove_options = nil)
+  def prove_options(prove_options = nil)
     prove_options ||= Hets::ProveOptions.new
     # If the prove_options have gone through the async_prove call, they are now
     # a Hash and need to be restored as a ProveOptions object.
