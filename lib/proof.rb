@@ -102,7 +102,7 @@ class Proof < FakeRecord
     if theorem?
       [build_proof_attempt(proof_obligation, proof_attempt_configuration)]
     else
-      proof_obligation.ontology.theorems.map do |theorem|
+      proof_obligation.theorems.map do |theorem|
         build_proof_attempt(theorem, proof_attempt_configuration)
       end
     end
