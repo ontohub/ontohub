@@ -302,6 +302,22 @@ Currently this will return the list of all sentences of the ontology.
       BODY
     end
 
+  specified_get '/:repository_id/*locid' => 'proof_attempts#show',
+    as: :proof_attempt_iri,
+    constraints: [
+      LocIdRouterConstraint.new(ProofAttempt, ontology: :ontology_id, theorem: :theorem_id, element: :id),
+    ] do
+      accept 'text/html'
+      # TODO: add api controller
+      #reroute_on_mime 'application/json', to: 'api/v1/proof_attempts#show'
+
+      doc title: 'loc/id reference to a proof attempt',
+          body: <<-BODY
+Will return a representation of the proof attempt. The proof attempt
+is determined according to the *locid.
+      BODY
+    end
+
   specified_get '/ontology_types/:id' => 'ontology_types#show',
     as: :ontology_type do
     accept 'text/html'

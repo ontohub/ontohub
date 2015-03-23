@@ -36,6 +36,12 @@ class ProofAttempt < ActiveRecord::Base
 
   scope :latest, order('number DESC')
 
+  delegate :ontology, to: :theorem
+
+  def self.find_with_locid(locid, _iri = nil)
+    where(locid: locid).first
+  end
+
   def to_param
     number
   end
