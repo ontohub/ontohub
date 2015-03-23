@@ -42,10 +42,6 @@ class ProofAttempt < ActiveRecord::Base
     where(locid: locid).first
   end
 
-  def to_param
-    number
-  end
-
   def used_sentences
     @used_sentences ||= used_axioms + used_theorems
   end

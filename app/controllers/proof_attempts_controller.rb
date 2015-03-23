@@ -1,6 +1,5 @@
 class ProofAttemptsController < InheritedResources::Base
   actions :show
-  defaults finder: :find_by_number!
   helper_method :ontology
   before_filter :check_read_permissions
 
