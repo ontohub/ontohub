@@ -18,6 +18,7 @@ class ProofAttempt < ActiveRecord::Base
                           association_foreign_key: 'sentence_id',
                           join_table: 'used_axioms_proof_attempts'
 
+  attr_accessible :locid
   attr_accessible :prover_output,
                   :tactic_script,
                   :time_taken,
@@ -29,6 +30,7 @@ class ProofAttempt < ActiveRecord::Base
   validates :state, inclusion: {in: State::STATES}
   validates :theorem, presence: true
 
+  before_create :generate_locid
   before_save :set_default_proof_status
   after_save :update_theorem_status
 
@@ -44,6 +46,10 @@ class ProofAttempt < ActiveRecord::Base
 
   def set_default_proof_status
     self.proof_status ||= ProofStatus.find(ProofStatus::DEFAULT_OPEN_STATUS)
+  end
+
+  def generate_locid
+    self.locid = "#{theorem.locid}//ProofAttempt-#{number}"
   end
 
   def update_theorem_status
