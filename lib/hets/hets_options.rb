@@ -29,6 +29,10 @@ module Hets
       {'options' => options}.to_json
     end
 
+    def ==(other)
+      options == other.options
+    end
+
     protected
 
     def prepare

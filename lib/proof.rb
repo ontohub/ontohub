@@ -84,10 +84,10 @@ class Proof < FakeRecord
 
     prove_options_list.each do |prove_options|
       pa_configuration = build_proof_attempt_configuration(prove_options)
-      current_pas = build_proof_attempts(pa_configuration)
+      current_proof_attempts = build_proof_attempts(pa_configuration)
 
-      @options_to_attempts_hash[prove_options] = current_pas
-      @proof_attempts += current_pas
+      @options_to_attempts_hash[prove_options] = current_proof_attempts
+      @proof_attempts += current_proof_attempts
     end
   end
 
