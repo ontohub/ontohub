@@ -8,10 +8,10 @@
       %th Prover
   - proof_attempts.latest.each_with_index do |proof_attempt|
     %tr
-      %td= link_to proof_attempt.number, [*resource_chain, resource, proof_attempt]
+      %td= link_to proof_attempt.number, proof_attempt.locid
       %td= render partial: 'proof_status', locals: {proof_status: proof_attempt.proof_status}
       %td
-        = link_to [*resource_chain, resource, proof_attempt] do
+        = link_to proof_attempt.locid do
           %span.timestamp= proof_attempt.created_at
       %td
         = proof_attempt.time_taken
