@@ -5,7 +5,7 @@ describe ProofsController do
   let(:theorem) { create :theorem }
   let(:ontology) { theorem.ontology }
   let(:repository) { ontology.repository }
-  let(:proof_params) { {'provers' => [prover.id.to_s, '']} }
+  let(:proof_params) { {'prover_ids' => [prover.id.to_s, '']} }
 
   context 'on ontology' do
     context 'signed in with write access' do
@@ -49,7 +49,7 @@ describe ProofsController do
       end
 
       context 'create with wrong prover' do
-        let(:bad_proof_params) { {'provers' => ['-1', '']} }
+        let(:bad_proof_params) { {'prover_ids' => ['-1', '']} }
         before do
           allow(Proof).to receive(:new).and_call_original
           expect_any_instance_of(Proof).not_to receive(:save!)
@@ -156,7 +156,7 @@ describe ProofsController do
       end
 
       context 'create with wrong prover' do
-        let(:bad_proof_params) { {'provers' => ['-1', '']} }
+        let(:bad_proof_params) { {'prover_ids' => ['-1', '']} }
         before do
           allow(Proof).to receive(:new).and_call_original
           expect_any_instance_of(Proof).not_to receive(:save!)
