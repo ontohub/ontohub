@@ -54,6 +54,9 @@ gem 'has_scope', '~> 0.6.0.rc'
 # JSON views
 gem 'active_model_serializers', '~> 0.9.3'
 
+# JSON Parser
+gem 'json-stream', '~> 0.2.1'
+
 # XML Parser
 gem 'nokogiri', '~> 1.6.3.1'
 

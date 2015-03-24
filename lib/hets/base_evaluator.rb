@@ -5,7 +5,7 @@ module Hets
   # directly but instead be subclassed. This is necessary since we usually
   # want to register specific callbacks.  See Hets::NodeEvaluator for the
   # actual evaluator.
-  class BaseNodeEvaluator
+  class BaseEvaluator
     attr_accessor :hets_evaluator
     attr_accessor :ontology
     attr_accessor :logic_callback
@@ -68,7 +68,7 @@ module Hets
       raise e
     end
 
-    private
+    protected
     def registered?(node_type, order, method_name=nil)
       selected_registrations = registered_methods(node_type, order)
       if method_name

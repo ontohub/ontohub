@@ -104,6 +104,21 @@ Currently the representation is a list of all sentences in the ontology.
       BODY
     end
 
+  specified_get '/ref/mmt/:repository_id/*path' => 'theorems#show',
+    as: :theorem_iri_mmt,
+    constraints: [
+      MMTRouterConstraint.new(Theorem, ontology: :ontology_id, element: :id),
+    ] do
+      accept 'text/html'
+
+      doc title: 'MMT reference to a theorem',
+          body: <<-BODY
+Will return a representation of the theorem. The theorem
+is determined according to the *path and to the MMT-query-string.
+Currently the representation is a list of all theorems in the ontology.
+      BODY
+    end
+
   # Subsites for ontologies
   ontology_subsites = %i(
     comments metadata graphs
@@ -257,6 +272,21 @@ Will return a representation of the license model.
 Will return a representation of the formality level.
     BODY
   end
+
+  specified_get '/:repository_id/*locid' => 'theorems#show',
+    as: :mapping_iri,
+    constraints: [
+      LocIdRouterConstraint.new(Theorem, ontology: :ontology_id, element: :id),
+    ] do
+      accept 'text/html'
+      reroute_on_mime 'application/json', to: 'api/v1/theorems#show'
+
+      doc title: 'loc/id reference to a theorem',
+          body: <<-BODY
+Will return a representation of the theorem. The theorem
+is determined according to the *locid.
+      BODY
+    end
   #
   ###############
 
@@ -346,8 +376,12 @@ Will return a representation of the formality level.
       end
       resources :children, :only => :index
       resources :symbols, only: %i(index show)
-      resources :sentences, :only => %i(index show)
-      resources :theorems, only: :index
+      resources :sentences, only: %i(index show)
+      resources :theorems, only: %i(index show) do
+        resources :proof_attempts, only: :show
+      end
+      post '/prove', controller: :prove, action: :create
+
       resources :mappings do
         get 'update_version', :on => :member
       end

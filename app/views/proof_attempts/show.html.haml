@@ -1,0 +1,48 @@
+= repository_nav ontology.repository, :ontologies
+
+= ontology_nav ontology, :theorems
+
+%h3
+  = t('proof_attempts.show.head')
+  = link_to resource.theorem, [*resource_chain, resource.theorem]
+  = render partial: 'theorems/proof_status', locals: {proof_status: resource.proof_status}
+
+%h4= t('proof_attempts.show.created_at')
+= resource.created_at
+
+%h4= t('proof_attempts.show.time_taken')
+= resource.time_taken
+= t('proof_attempts.show.seconds')
+
+%h4= t('proof_attempts.show.used_axioms')
+- if resource.used_axioms.empty?
+  = t('proof_attempts.show.no_used_axioms')
+- else
+  %ul.used-axioms
+    - resource.used_axioms.each do |axiom|
+      %li= link_to axiom, locid_for(axiom)
+
+%h4= t('proof_attempts.show.used_theorems')
+- if resource.used_theorems.empty?
+  = t('proof_attempts.show.no_used_theorems')
+- else
+  %ul.used-axioms
+    - resource.used_theorems.each do |theorem|
+      %li= link_to theorem, locid_for(theorem)
+
+%h4= t('proof_attempts.show.generated_axioms')
+- if resource.generated_axioms.empty?
+  = t('proof_attempts.show.no_generated_axioms')
+- else
+  %ul.used-axioms
+    - resource.generated_axioms.each do |axiom|
+      %li= axiom
+
+%h4= t('proof_attempts.show.prover')
+= resource.prover
+
+%h4= t('proof_attempts.show.tactic_script')
+%pre= resource.tactic_script
+
+%h4= t('proof_attempts.show.prover_output')
+%pre= resource.prover_output

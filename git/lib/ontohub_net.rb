@@ -2,6 +2,7 @@ require 'net/http'
 require 'openssl'
 require 'json'
 require File.expand_path('../../../lib/uri_fetcher/errors', File.realdirpath(__FILE__))
+require File.expand_path('../../../lib/uri_fetcher/http_caller', File.realdirpath(__FILE__))
 require File.expand_path('../../../lib/uri_fetcher', File.realdirpath(__FILE__))
 
 class OntohubNet
