@@ -81,7 +81,7 @@ paths:
   commits: data/commits
   # home directory of the git user
   #   needed for handling of ssh keys in ~git/.ssh/authorized_keys
-  git_home: /home/git
+  git_home: ~git
 
 git:
   verify_url: http://localhost/
