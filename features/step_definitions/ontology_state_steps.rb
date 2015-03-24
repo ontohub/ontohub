@@ -19,6 +19,7 @@ end
 Then(/^the page should change the state on its own$/) do
   el_css = 'small.ontology-version-state'
   field = 'data-ontology-version-id'
+  wait_for_ajax
   within %{#{el_css}[#{field}="#{@ontology_version.id}"]} do
     expect(find('span')).to have_content(@state)
   end
