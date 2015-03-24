@@ -69,6 +69,7 @@ class SettingsValidationWrapper
 
   FIXNUM = %i(yml__workers__hets
               yml__action_mailer__smtp_settings__port
+              yml__allow_unconfirmed_access_for_days
               yml__git__push_priority__commits
               yml__git__push_priority__changed_files_per_commit
               yml__version_minimum_revision)
@@ -154,6 +155,9 @@ class SettingsValidationWrapper
 
   validates :yml__action_mailer__delivery_method,
             inclusion: {in: %i(sendmail smtp file test)}
+
+  validates :yml__allow_unconfirmed_access_for_days,
+            numericality: {greater_than_or_equal_to: 0}
 
   validates :yml__max_read_filesize, numericality: {greater_than: 1024}
   validates :yml__max_combined_diff_size, numericality: {greater_than: 2048}
