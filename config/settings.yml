@@ -33,6 +33,7 @@ action_mailer:
   smtp_settings:
     address: 'mail'
     port: 25
+    # Supply the fully qualified domain name in the settings.local.yml at:
     domain: # nil
     enable_starttls_auto: true
     password: # nil
