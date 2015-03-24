@@ -131,6 +131,7 @@ en:
       prover: Prover
       tactic_script: Tactic script
       prover_output: Prover output
+      seconds: seconds
   have:
     one: has
     other: have
