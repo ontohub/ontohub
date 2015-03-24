@@ -88,13 +88,12 @@ Currently the representation ist a list of all symbols in the ontology.
       BODY
     end
 
-  specified_get '/ref/mmt/:repository_id/*path' => 'sentences#index',
+  specified_get '/ref/mmt/:repository_id/*path' => 'api/v1/sentences#show',
     as: :sentence_iri_mmt,
     constraints: [
       MMTRouterConstraint.new(Sentence, ontology: :ontology_id),
     ] do
-      accept 'text/html'
-      reroute_on_mime 'application/json', to: 'api/v1/sentences#show'
+      accept 'application/json'
 
       doc title: 'MMT reference to a sentence',
           body: <<-BODY
@@ -143,7 +142,7 @@ Currently the representation is a list of all theorems in the ontology.
 
   ontology_api_subsites = %i(
     mappings symbols children
-    sentences axioms theorems
+    axioms theorems
     ontology_versions
     license_models formality_levels
   )
@@ -178,6 +177,20 @@ Will provide a subsite of a specific ontology.
         BODY
       end
   end
+
+  specified_get "/:repository_id/*locid///sentences" => "api/v1/sentences#index",
+    as: :"ontology_iri_sentences",
+    constraints: [
+      LocIdRouterConstraint.new(Ontology, ontology: :ontology_id),
+    ] do
+      accept 'application/json'
+
+      doc title: "Ontology subsite about sentences",
+          body: <<-BODY
+Will provide a subsite of a specific ontology.
+      BODY
+    end
+
   # Loc/Id-Show(-equivalent) routes
   ######
   specified_get '/:repository_id/*locid' => 'ontologies#show',
@@ -227,13 +240,12 @@ Currently this will return the list of all symbols of the ontology.
       BODY
     end
 
-  specified_get '/:repository_id/*locid' => 'sentences#index',
+  specified_get '/:repository_id/*locid' => 'api/v1/sentences#show',
     as: :sentence_iri,
     constraints: [
       LocIdRouterConstraint.new(Sentence, ontology: :ontology_id, element: :id),
     ] do
-      accept 'text/html'
-      reroute_on_mime 'application/json', to: 'api/v1/sentences#show'
+      accept 'application/json'
 
       doc title: 'loc/id reference to a sentence',
           body: <<-BODY
