@@ -32,18 +32,18 @@ module Hets
       register :used_axioms, :start, to: :used_axioms_start
       register :used_axioms, :end, to: :used_axioms_end
 
-      def create_proof_attempt_from_hash(hash)
+      def create_proof_attempt_from_hash(proof_info)
         ontology = hets_evaluator.ontology
-        if ontology.name == hash[:ontology_name]
+        if ontology.name == proof_info[:ontology_name]
           proof_attempt = ProofAttempt.new
-          proof_attempt.theorem = find_theorem_with_hash(hash, ontology)
-          proof_attempt.proof_status = find_proof_status_with_hash(hash)
-          proof_attempt.prover = hash[:used_prover]
-          proof_attempt.prover_output = hash[:prover_output]
-          proof_attempt.time_taken = hash[:time_taken]
-          proof_attempt.tactic_script = tactic_script_from_hash(hash)
+          proof_attempt.theorem = find_theorem_with_hash(proof_info, ontology)
+          proof_attempt.proof_status = find_proof_status_with_hash(proof_info)
+          proof_attempt.prover = proof_info[:used_prover]
+          proof_attempt.prover_output = proof_info[:prover_output]
+          proof_attempt.time_taken = proof_info[:time_taken]
+          proof_attempt.tactic_script = tactic_script_from_hash(proof_info)
           used_sentences, generated_axioms =
-            used_axioms_from_hash(hash, proof_attempt)
+            used_axioms_from_hash(proof_info, proof_attempt)
           proof_attempt.used_axioms = used_sentences
           proof_attempt.generated_axioms = generated_axioms
 
@@ -51,13 +51,13 @@ module Hets
         end
       end
 
-      def find_theorem_with_hash(hash, ontology)
-        ontology.theorems.find_by_name(hash[:theorem_name])
+      def find_theorem_with_hash(proof_info, ontology)
+        ontology.theorems.find_by_name(proof_info[:theorem_name])
       end
 
-      def find_proof_status_with_hash(hash)
+      def find_proof_status_with_hash(proof_info)
         identifier =
-          case hash[:result]
+          case proof_info[:result]
           when 'Proved'
             ProofStatus::DEFAULT_PROVEN_STATUS
           when 'Disproved'
@@ -68,25 +68,25 @@ module Hets
         ProofStatus.find(identifier)
       end
 
-      def tactic_script_from_hash(hash)
+      def tactic_script_from_hash(proof_info)
         {
-          time_limit: hash[:tactic_script_time_limit],
-          extra_options: hash[:tactic_script_extra_options],
+          time_limit: proof_info[:tactic_script_time_limit],
+          extra_options: proof_info[:tactic_script_extra_options],
         }.to_json
       end
 
-      def used_axioms_from_hash(hash, proof_attempt)
-        if hash[:used_axioms] && proof_attempt.theorem
-          process_used_axioms(hash, proof_attempt)
+      def used_axioms_from_hash(proof_info, proof_attempt)
+        if proof_info[:used_axioms] && proof_attempt.theorem
+          process_used_axioms(proof_info, proof_attempt)
         else
           [[], []]
         end
       end
 
-      def process_used_axioms(hash, proof_attempt)
+      def process_used_axioms(proof_info, proof_attempt)
         used_sentences = []
         generated_axioms = []
-        hash[:used_axioms].each do |axiom_name|
+        proof_info[:used_axioms].each do |axiom_name|
           axiom = find_sentence_or_generate_axiom(axiom_name, proof_attempt)
           used_sentences << axiom if axiom.is_a?(Sentence)
           generated_axioms << axiom if axiom.is_a?(GeneratedAxiom)
