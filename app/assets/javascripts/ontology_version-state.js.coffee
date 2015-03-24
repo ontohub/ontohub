@@ -9,7 +9,7 @@ update = (container) ->
     current_state = container.data('state')
 
     $.getJSON container.data('uri'), (data) ->
-      state = data.state
+      state = data.evaluation_state
 
       if state == current_state && !_.contains(final_states, state)
         enqueue(container)
