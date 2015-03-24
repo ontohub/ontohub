@@ -4,7 +4,7 @@ FactoryGirl.define do
     tactic_script { 'SPASS Tactic Script' }
     time_taken { rand(5) }
 
-    association :proof_status, factory: :proof_status_proven
+    association :proof_status, factory: :proof_status_open
     association :theorem
     association :prover
     association :proof_attempt_configuration

@@ -39,17 +39,19 @@ module Hets
         self.proof_attempt_ids = proof_attempts.map(&:id)
       end
 
-      def create_proof_attempt_from_hash(proof_info)
+      def fill_proof_attempt_from_hash(proof_info)
         ontology = hets_evaluator.ontology
         if ontology.name == proof_info[:ontology_name]
           theorem = find_theorem_with_hash(proof_info, ontology)
           proof_attempt = theorem.proof_attempts.
             where(id: proof_attempt_ids).first
-          proof_attempt.do_or_set_failed do
-            fill_proof_attempt_instance(proof_attempt, proof_info)
-            proof_attempt.associate_prover_with_ontology_version
-            proof_attempt.save!
-            proof_attempt.update_state!(:done)
+          if proof_attempt
+            proof_attempt.do_or_set_failed do
+              fill_proof_attempt_instance(proof_attempt, proof_info)
+              proof_attempt.associate_prover_with_ontology_version
+              proof_attempt.save!
+              proof_attempt.update_state!(:done)
+            end
           end
         end
       end
@@ -169,7 +171,7 @@ module Hets
 
       def goal_end
         hierarchy.pop
-        create_proof_attempt_from_hash(object_hash)
+        fill_proof_attempt_from_hash(object_hash)
       end
 
       %i(tactic_script
