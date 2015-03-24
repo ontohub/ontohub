@@ -37,6 +37,8 @@ module Hets
         self.now = Time.now
       end
 
+      # The caller needs those methods to exists, but we don't need the
+      # functionality here. This will be restructured in a later branch.
       %i(concurrency
         dgnode_stack
         dgnode_stack_id
