@@ -78,6 +78,9 @@ module UriFetcher
       call(write_file: write_file, file_type: file_type)
     end
 
+    # Redirection is only checked with the location header and not with the
+    # HTTP status code because it occurs sometimes that the status code is for
+    # redirection but there is no location header set, which fails the redirect.
     def is_redirection?(response)
       response['location'] && !response['location'].empty?
     end
