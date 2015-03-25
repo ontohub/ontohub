@@ -150,15 +150,15 @@ namespace :test do
   end
 
   def with_running_hets(&block)
-    hets_was_already_running = !port_open?('127.0.0.1', 8000)
-    if hets_was_already_running
+    need_to_start_hets = !port_open?('127.0.0.1', 8000)
+    if need_to_start_hets
       hets_pid = fork { exec("hets --server #{HETS_SERVER_ARGS.join(' ')}") }
       # hets server needs some startup time
       sleep 1
     end
     block.call
   ensure
-    if hets_was_already_running
+    if need_to_start_hets
       puts 'Stopping hets server.'
       Process.kill('TERM', hets_pid)
     end
