@@ -279,6 +279,26 @@ Currently this will return the list of all symbols of the ontology.
       end
   end
 
+  sentence_types = %i(axiom theorem)
+  sentence_api_subsites = %i(symbols)
+  sentence_types.each do |type|
+    sentence_api_subsites.each do |subsite|
+      specified_get "/:repository_id/*locid///#{subsite}" => "api/v1/#{subsite}#index",
+        as: :"#{type}_iri_#{subsite}",
+        constraints: [
+          LocIdRouterConstraint.new(type.to_s.camelize.constantize, ontology: :ontology_id, element: :"sentence_id"),
+        ] do
+          accept 'application/json'
+
+          doc title: "loc/id reference to a #{type} subsite",
+              body: <<-BODY
+    Will return a representation of the #{type} subsite. The #{type}
+    is determined according to the *locid.
+          BODY
+        end
+    end
+  end
+
   specified_get '/:repository_id/*locid' => 'axioms#index',
     as: :axiom_iri,
     constraints: [
