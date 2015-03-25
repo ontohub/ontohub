@@ -218,7 +218,7 @@ describe Ontology do
       let(:repository) { create :repository, user: user }
 
       before do
-        stub_hets_for(hets_out_file('partial_order'))
+        stub_hets_for('casl/partial_order.casl')
       end
 
       it 'should have logic DOL' do
@@ -242,7 +242,7 @@ describe Ontology do
     context 'the logically translated ontology' do
 
       before do
-        stub_hets_for(hets_out_file('double_mapped_logic_translated_blendoid'))
+        stub_hets_for('dol/double_mapped_logic_translated_blendoid.dol')
       end
       it 'should contain imported sentences' do
         expect(ontology.imported_sentences).to_not be_empty
@@ -313,7 +313,7 @@ describe Ontology do
     let(:ontology) { create :single_ontology }
 
     before do
-      parse_this(user, ontology, hets_out_file('test1'))
+      parse_ontology(user, ontology, 'casl/test1.casl')
     end
 
     it 'should save the logic' do
@@ -366,7 +366,7 @@ describe Ontology do
     let(:ontology) { create :distributed_ontology }
 
     before do
-      parse_this(user, ontology, hets_out_file('test2'))
+      parse_ontology(user, ontology, 'casl/test2.casl')
     end
 
     it 'should create all single ontologies' do
@@ -421,7 +421,7 @@ describe Ontology do
     let(:combined) { ontology.children.where(name: 'VAlignedOntology').first }
 
     before do
-      parse_this(user, ontology, hets_out_file('align'))
+      parse_ontology(user, ontology, 'dol/align.dol')
     end
 
     it 'should create single ontologies' do
@@ -455,18 +455,18 @@ describe Ontology do
     end
 
     it 'should propagate the error' do
-      expect { parse_this(user, ontology, hets_out_file('test1')) }.
+      expect { parse_ontology(user, ontology, 'casl/test1.casl') }.
         to raise_error(Exception, error_text)
     end
 
     it 'should be possible to parse it again (no AlreadyProcessingError)' do
       begin
-        parse_this(user, ontology, hets_out_file('test1'))
+        parse_ontology(user, ontology, 'casl/test1.casl')
       rescue Exception => e
         allow_any_instance_of(Hets::DG::NodeEvaluator).
           to receive(:ontology_end).and_call_original
 
-        expect { parse_this(user, ontology, hets_out_file('test1')) }.
+        expect { parse_ontology(user, ontology, 'casl/test1.casl') }.
           not_to raise_error
       end
     end
@@ -480,7 +480,7 @@ describe Ontology do
     end
 
     before do
-      parse_this(user, ontology, hets_out_file('partial_order'))
+      parse_ontology(user, ontology, 'casl/partial_order.casl')
     end
 
     context 'theorem count' do
@@ -504,7 +504,7 @@ describe Ontology do
     end
 
     before do
-      parse_this(user, ontology, hets_out_file('CompetencyQuestion'))
+      parse_ontology(user, ontology, 'dol/CompetencyQuestion.dol')
     end
 
     context 'theorems count' do

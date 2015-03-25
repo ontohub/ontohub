@@ -31,7 +31,7 @@ describe OntologyVersion do
     before do
       # Clear Jobs
       Worker.jobs.clear
-      stub_hets_for(hets_out_file('pizza'))
+      stub_hets_for('owl/pizza.owl')
     end
 
     context 'in subdirectory' do

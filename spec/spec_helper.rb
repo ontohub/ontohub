@@ -7,6 +7,7 @@ include SharedHelper
 use_simplecov
 
 require File.expand_path("../../config/environment", __FILE__)
+require File.expand_path("../hets_helper", __FILE__)
 require 'rspec/rails'
 require 'rspec/autorun'
 require Rails.root.join('config', 'database_cleaner.rb')
@@ -53,45 +54,6 @@ def ontology_file(path, ext=nil)
   fixture_file("ontologies/#{portion}")
 end
 
-def hets_out_file(name, ext='xml')
-  ontology_file("hets-out/#{name}.#{ext}")
-end
-
-def prove_out_file(name, ext='proof.json')
-  fixture_file("ontologies/hets-out/prove/#{name}.#{ext}")
-end
-
-def hets_uri(command = 'dg', portion = nil, version = nil)
-  hets_instance = HetsInstance.choose!
-rescue HetsInstance::NoRegisteredHetsInstanceError => e
-  if hets_instance.nil?
-    FactoryGirl.create(:local_hets_instance)
-    hets_instance = HetsInstance.choose!
-  end
-ensure
-  specific = ''
-  # %2F is percent-encoding for forward slash /
-  specific << "ref%2F#{version}.*" if version
-  specific << "#{portion}.*" if portion
-  return %r{#{hets_instance.uri}/#{command}/.*#{specific}}
-end
-
-def stub_hets_for(fixture_file, command: 'dg', with: nil, with_version: nil, method: :get)
-  stub_request(:get, 'http://localhost:8000/version').
-    to_return(body: Hets.minimal_version_string)
-  stub_request(method, hets_uri(command, with, with_version)).
-    to_return(body: fixture_file.read)
-end
-
-def setup_hets
-  let(:hets_instance) { create(:local_hets_instance) }
-  before do
-    stub_request(:get, 'http://localhost:8000/version').
-      to_return(body: Hets.minimal_version_string)
-    hets_instance
-  end
-end
-
 def add_fixture_file(repository, relative_file)
   path = ontology_file(relative_file)
   version_for_file(repository, path)
@@ -109,13 +71,6 @@ end
 
 # includes the convenience-method `define_ontology('name')`
 include OntologyUnited::Convenience
-
-def parse_this(user, ontology, fixture_file)
-  file = File.open(fixture_file)
-  evaluator = Hets::DG::Evaluator.new(user, ontology, io: file)
-  evaluator.import
-  file.close unless file.closed?
-end
 
 # Recording HTTP Requests
 VCR.configure do |c|

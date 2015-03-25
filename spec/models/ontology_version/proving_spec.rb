@@ -6,8 +6,9 @@ describe 'OntologyVersion - Proving' do
   let(:parent_ontology) { create :distributed_ontology }
 
   before do
-    parse_this(user, parent_ontology, hets_out_file('Simple_Implications'))
-    stub_hets_for(prove_out_file('Simple_Implications'), command: 'prove', method: :post)
+    parse_ontology(user, parent_ontology, 'prove/Simple_Implications.casl')
+    stub_hets_for('prove/Simple_Implications.casl',
+                  command: 'prove', method: :post)
   end
 
   let(:ontology) { parent_ontology.children.find_by_name('Group') }
