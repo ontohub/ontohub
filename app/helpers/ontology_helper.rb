@@ -16,13 +16,12 @@ module OntologyHelper
 
   def status_tag(resource)
     version = resource.is_a?(Ontology) ? resource.current_version : resource
-    uri = repository_ontology_ontology_version_url(
-      version.ontology.repository, version.ontology, version)
+
     html_opts = {
       class: 'ontology-version-state',
       data: {
         ontology_version_id: version.id,
-        uri: uri,
+        uri: locid_for(version),
         state: version.state,
       }
     }

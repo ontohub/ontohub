@@ -8,12 +8,31 @@ require File.expand_path("../../../spec/shared_helper", __FILE__)
 require 'cucumber/rails'
 require 'capybara/poltergeist'
 
+Capybara.current_driver = :poltergeist
+Capybara.javascript_driver = :poltergeist
+Capybara.default_wait_time = 5
+
 class Cucumber::Rails::World
   def locid_for(resource, *commands, **query_components)
     iri = "#{resource.locid}"
     iri << "///#{commands.join('///')}" if commands.any?
     iri << "?#{query_components.to_query}" if query_components.any?
     iri
+  end
+
+  # Capybara is smart enough to wait for ajax when not finding elements.
+  # In some situations the element is already existent, but has not been updated
+  # yet. This is where you need to manually use wait_for_ajax.
+  def wait_for_ajax
+    counter = 0
+    # The condition only works with poltergeist/phantomjs.
+    while page.evaluate_script("jQuery.active").to_i > 0
+      counter += 1
+      sleep(0.1)
+      if counter >= 10 * Capybara.default_wait_time
+        raise "AJAX request took longer than 5 seconds."
+      end
+    end
   end
 end
 
@@ -67,9 +86,6 @@ end
 # The :transaction strategy is faster, but might give you threading problems.
 # See https://github.com/cucumber/cucumber-rails/blob/master/features/choose_javascript_database_strategy.feature
 Cucumber::Rails::Database.javascript_strategy = :transaction
-
-Capybara.current_driver = :poltergeist
-Capybara.javascript_driver = :poltergeist
 
 WebMock.allow_net_connect!(:net_http_connect_on_start => true)
 

@@ -1,6 +1,6 @@
 class OntologyVersionFinder
   SUPPORTED_BRANCHES = %w(master)
-  REF_RE = %r{\A/?ref/([^/]+)(/.+)\Z}
+  REF_RE = %r{\A/?ref/([^/]+)(/[^?]+).*\Z}
 
   attr_accessor :ontology, :reference
 
