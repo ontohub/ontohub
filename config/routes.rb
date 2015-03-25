@@ -134,6 +134,21 @@ Currently the representation is a list of all sentences in the ontology.
       BODY
     end
 
+  specified_get '/ref/mmt/:repository_id/*path' => 'api/v1/proof_attempt_configurations#show',
+    as: :proof_attempt_configuration_iri_mmt,
+    constraints: [
+      MMTRouterConstraint.new(ProofAttemptConfiguration, ontology: :ontology_id),
+    ] do
+      accept 'application/json'
+
+      doc title: 'MMT reference to a proof attempt configuration',
+          body: <<-BODY
+Will return a representation of the proof attempt configuration. The proof
+attempt configuration is determined according to the *path and to the
+MMT-query-string.
+      BODY
+    end
+
   # Subsites for ontologies
   ontology_subsites = %i(
     comments metadata graphs
@@ -145,6 +160,7 @@ Currently the representation is a list of all sentences in the ontology.
     axioms theorems
     ontology_versions
     license_models formality_levels
+    proof_attempt_configurations
   )
 
   ontology_subsites.each do |category|
@@ -243,15 +259,15 @@ Currently this will return the list of all symbols of the ontology.
   specified_get '/:repository_id/*locid' => 'api/v1/sentences#show',
     as: :sentence_iri,
     constraints: [
-      LocIdRouterConstraint.new(Axiom, ontology: :ontology_id, element: :id),
+      LocIdRouterConstraint.new(Sentence, ontology: :ontology_id, element: :id),
     ] do
       accept 'application/json'
 
-      doc title: 'loc/id reference to an axiom',
+      doc title: 'loc/id reference to a sentence',
           body: <<-BODY
-Will return a representation of the axiom. The axiom
+Will return a representation of the sentence. The sentence
 is determined according to the *locid.
-Currently this will return the list of all axioms of the ontology.
+Currently this will return the list of all sentences of the ontology.
       BODY
     end
 
@@ -282,6 +298,38 @@ Currently this will return the list of all axioms of the ontology.
       doc title: 'loc/id reference to a theorem',
           body: <<-BODY
 Will return a representation of the theorem. The theorem
+is determined according to the *locid.
+      BODY
+    end
+
+  proof_attempt_configuration_api_subsites =
+    %i(selected_axioms selected_theorems)
+  proof_attempt_configuration_api_subsites.each do |subsite|
+    specified_get "/:repository_id/*locid///#{subsite}" => "api/v1/proof_attempt_configurations##{subsite}",
+      as: :"proof_attempt_configuration_iri_#{subsite}",
+      constraints: [
+        LocIdRouterConstraint.new(ProofAttemptConfiguration, ontology: :ontology_id, element: :id),
+      ] do
+        accept 'application/json'
+
+        doc title: 'loc/id reference to a proof attempt configuration subsite',
+            body: <<-BODY
+  Will return a subsite of the proof attempt configuration. The proof attempt
+  configuration is determined according to the *locid.
+        BODY
+      end
+  end
+
+  specified_get '/:repository_id/*locid' => 'api/v1/proof_attempt_configurations#show',
+    as: :proof_attempt_configuration_iri,
+    constraints: [
+      LocIdRouterConstraint.new(ProofAttemptConfiguration, ontology: :ontology_id, element: :id),
+    ] do
+      accept 'application/json'
+
+      doc title: 'loc/id reference to a proof attempt configuration',
+          body: <<-BODY
+Will return a representation of the proof attempt configuration. The proof attempt configuration
 is determined according to the *locid.
       BODY
     end
