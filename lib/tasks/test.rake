@@ -67,45 +67,48 @@ namespace :test do
     end
   end
 
-  def call_hets_dg(file, subdir)
-    puts "Calling hets/dg on #{file.inspect}"
-    hets_api_options = "#{HETS_API_OPTIONS}/full-signatures/full-theories"
+  def http_request_with_get(uri, _header, _data)
+    Net::HTTP.get_response(uri)
+  end
+
+  def http_request_with_post(uri, header, data)
+    Net::HTTP.start(uri.hostname, uri.port) do |http|
+      http.request_post(uri, data.to_json, header)
+    end
+  end
+
+  def call_hets(file, subdir, command,
+                method: :get,
+                hets_api_options: HETS_API_OPTIONS,
+                query_string: '',
+                header: {},
+                data: {})
+    puts "Calling hets/#{command} on #{file.inspect}"
     escaped_iri = Rack::Utils.escape_path("file://#{absolute_filepath(file)}")
-    hets_iri = "#{HETS_BASE_IRI}/dg/#{escaped_iri}#{hets_api_options}"
+    hets_iri = "#{HETS_BASE_IRI}/#{command}/#{escaped_iri}"
+    hets_iri << hets_api_options
+    hets_iri << query_string
 
     FileUtils.rm_f(recorded_file(subdir, file))
     VCR.use_cassette(cassette_path_in_fixtures(subdir, file)) do
-      Net::HTTP.get_response(URI(hets_iri))
+      send("http_request_with_#{method}", URI(hets_iri), header, data)
     end
+  end
+
+  def call_hets_dg(file, subdir)
+    hets_api_options = "#{HETS_API_OPTIONS}/full-signatures/full-theories"
+    call_hets(file, subdir, 'dg', hets_api_options: hets_api_options)
   end
 
   def call_hets_provers(file, subdir)
-    puts "Calling hets/provers on #{file.inspect}"
-    options = 'format=json'
-    escaped_iri = Rack::Utils.escape_path("file://#{absolute_filepath(file)}")
-    hets_iri = "#{HETS_BASE_IRI}/provers/#{escaped_iri}#{HETS_API_OPTIONS}"
-    hets_iri << "?#{options}"
-
-    FileUtils.rm_f(recorded_file(subdir, file))
-    VCR.use_cassette(cassette_path_in_fixtures(subdir, file)) do
-      Net::HTTP.get_response(URI(hets_iri))
-    end
+    query_string = '?format=json'
+    call_hets(file, subdir, 'provers', query_string: query_string)
   end
 
   def call_hets_prove(file, subdir)
-    puts "Calling hets/prove on #{file.inspect}"
-    escaped_iri = Rack::Utils.escape_path("file://#{absolute_filepath(file)}")
-    hets_iri = "#{HETS_BASE_IRI}/prove/#{escaped_iri}#{HETS_API_OPTIONS}"
     header = {'Content-Type' => 'application/json'}
     data = {format: 'json', include: 'true'}
-
-    FileUtils.rm_f(recorded_file(subdir, file))
-    VCR.use_cassette(cassette_path_in_fixtures(subdir, file)) do
-      uri = URI(hets_iri)
-      Net::HTTP.start(uri.hostname, uri.port) do |http|
-        http.request_post(uri, data.to_json, header)
-      end
-    end
+    call_hets(file, subdir, 'prove', method: :post, header: header, data: data)
   end
 
   def freshen_ontology_fixtures
