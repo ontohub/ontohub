@@ -1,7 +1,10 @@
 class Api::V1::SymbolsController < Api::V1::Base
   inherit_resources
   defaults resource_class: OntologyMember::Symbol
-  belongs_to :ontology
+
+  belongs_to :ontology do
+    belongs_to :sentence, optional: true
+  end
 
   actions :index, :show
 
