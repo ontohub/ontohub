@@ -241,6 +241,24 @@ Currently this will return the list of all symbols of the ontology.
       BODY
     end
 
+  theorems_subsites = %i(proof_attempts)
+  theorems_subsites.each do |subsite|
+    specified_get "/:repository_id/*locid///#{subsite}" => "#{subsite}#index",
+      as: :"theorem_iri_#{subsite}",
+      constraints: [
+        LocIdRouterConstraint.new(Theorem, ontology: :ontology_id, element: :theorem_id),
+      ] do
+        accept 'text/html'
+        reroute_on_mime 'application/json', to: "api/v1/#{subsite}#index"
+
+        doc title: 'loc/id reference to a theorem subsite',
+            body: <<-BODY
+  Will return a representation of the theorem subsite. The theorem
+  is determined according to the *locid.
+        BODY
+      end
+  end
+
   specified_get '/:repository_id/*locid' => 'axioms#index',
     as: :axiom_iri,
     constraints: [
