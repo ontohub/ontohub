@@ -110,6 +110,7 @@ class Proof < FakeRecord
   end
 
   def build_proof_attempts(proof_attempt_configuration)
+    proof_attempt_configuration.ontology = proof_obligation.ontology
     if theorem?
       [build_proof_attempt(proof_obligation, proof_attempt_configuration)]
     else
