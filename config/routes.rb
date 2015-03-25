@@ -259,6 +259,26 @@ Currently this will return the list of all symbols of the ontology.
       end
   end
 
+  proof_attempt_api_subsites = %i(
+    used_axioms generated_axioms
+    used_theorems prover_output
+  )
+  proof_attempt_api_subsites.each do |subsite|
+    specified_get "/:repository_id/*locid///#{subsite}" => "api/v1/proof_attempts##{subsite}",
+      as: :"proof_attempt_iri_#{subsite}",
+      constraints: [
+        LocIdRouterConstraint.new(ProofAttempt, ontology: :ontology_id, theorem: :theorem_id, element: :id),
+      ] do
+        accept 'application/json'
+
+        doc title: 'loc/id reference to a proof attempt subsite',
+            body: <<-BODY
+  Will return a subsite of the proof attempt. The proof attempt is determined
+  according to the *locid.
+        BODY
+      end
+  end
+
   specified_get '/:repository_id/*locid' => 'axioms#index',
     as: :axiom_iri,
     constraints: [
