@@ -339,6 +339,26 @@ describe Ontology do
         expect(ontology.sentences_count).to eq(ontology.sentences.count)
       end
     end
+
+    context 'axioms count' do
+      it 'should be correct' do
+        expect(ontology.axioms.count).to eq(1)
+      end
+
+      it 'should be reflected in the corresponding field' do
+        expect(ontology.axioms_count).to eq(ontology.axioms.count)
+      end
+    end
+
+    context 'theorems count' do
+      it 'should be correct' do
+        expect(ontology.theorems.count).to eq(0)
+      end
+
+      it 'should be reflected in the corresponding field' do
+        expect(ontology.theorems_count).to eq(ontology.theorems.count)
+      end
+    end
   end
 
   context 'Import distributed Ontology' do
@@ -487,10 +507,16 @@ describe Ontology do
       parse_this(user, ontology, hets_out_file('CompetencyQuestion'))
     end
 
-    context 'theorem count' do
+    context 'theorems count' do
       it 'should be correct' do
         children_with_theorems.each do |child|
           expect(child.theorems.count).to eq(1)
+        end
+      end
+
+      it 'should be reflected in the corresponding field' do
+        children_with_theorems.each do |child|
+          expect(child.theorems_count).to eq(child.theorems.count)
         end
       end
     end

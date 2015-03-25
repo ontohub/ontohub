@@ -1,7 +1,7 @@
 #
-# Lists sentences of an ontology
+# Lists axioms of an ontology
 #
-class SentencesController < InheritedResources::Base
+class AxiomsController < InheritedResources::Base
 
   belongs_to :ontology
 
@@ -19,15 +19,18 @@ class SentencesController < InheritedResources::Base
   end
 
   def collection
-    if display_all?
-      if logically_translated?
-        Kaminari.paginate_array(parent.all_sentences).page(params[:page])
+    @collection ||=
+      if display_all?
+        axioms =
+          if logically_translated?
+            parent.all_axioms
+          else
+            parent.translated_axioms
+          end
+        Kaminari.paginate_array(axioms).page(params[:page])
       else
-        Kaminari.paginate_array(parent.translated_sentences).page(params[:page])
+        super
       end
-    else
-      super
-    end
   end
 
   def logically_translated?

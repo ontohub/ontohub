@@ -16,6 +16,19 @@ module Ontology::AssociationsAndAttributes
       class_name: 'Mapping', foreign_key: 'target_id', dependent: :destroy
     has_many :tools
 
+    has_many :sentences,
+      autosave: false,
+      extend: Ontology::Sentences::Methods
+
+    has_many :axioms,
+      autosave: false,
+      extend: Ontology::Sentences::Methods
+
+    has_many :theorems,
+      autosave: false,
+      extend: Ontology::Sentences::Methods
+
+
     has_and_belongs_to_many :license_models
     has_and_belongs_to_many :projects
     has_and_belongs_to_many :tasks

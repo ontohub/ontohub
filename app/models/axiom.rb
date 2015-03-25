@@ -1,0 +1,2 @@
+class Axiom < Sentence
+end

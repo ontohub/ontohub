@@ -153,9 +153,11 @@ class Ontology < ActiveRecord::Base
   # those who are self defined and those which
   # are imported (ImpAxioms)
   def all_sentences
-    Sentence.unscoped.
-      where(ontology_id: self).
-      where('imported = ? OR imported = ?', true, false)
+    Sentence.unscoped.where(ontology_id: self)
+  end
+
+  def all_axioms
+    Axiom.unscoped.where(ontology_id: self)
   end
 
   def imported_sentences

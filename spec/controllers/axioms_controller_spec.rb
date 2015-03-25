@@ -1,8 +1,8 @@
 require 'spec_helper'
 
-describe SentencesController do
-  let!(:sentence) { create :sentence }
-  let!(:ontology) { sentence.ontology }
+describe AxiomsController do
+  let!(:axiom) { create :axiom }
+  let!(:ontology) { axiom.ontology }
 
   context 'on GET to index' do
     render_views
@@ -15,6 +15,6 @@ describe SentencesController do
 
     it { should respond_with :success }
     it { should render_template :index }
-    it { should render_template 'sentences/_sentence' }
+    it { should render_template 'axioms/_axiom' }
   end
 end
