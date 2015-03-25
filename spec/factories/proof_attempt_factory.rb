@@ -10,6 +10,8 @@ FactoryGirl.define do
     association :proof_attempt_configuration
 
     after(:build) do |proof_attempt|
+      proof_attempt.proof_attempt_configuration.ontology =
+        proof_attempt.ontology
       build :prover_output, proof_attempt: proof_attempt
     end
 
