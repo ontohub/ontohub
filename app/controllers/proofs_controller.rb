@@ -32,6 +32,7 @@ class ProofsController < InheritedResources::Base
     @redirect_chain = resource_chain
     if resource.theorem?
       @redirect_chain << resource.proof_obligation
+      @redirect_chain << :proof_attempts
     else
       @redirect_chain << :theorems
     end

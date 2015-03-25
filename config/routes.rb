@@ -104,7 +104,7 @@ Currently the representation is a list of all axioms in the ontology.
       BODY
     end
 
-  specified_get '/ref/mmt/:repository_id/*path' => 'theorems#show',
+  specified_get '/ref/mmt/:repository_id/*path' => 'theorems#index',
     as: :theorem_iri_mmt,
     constraints: [
       MMTRouterConstraint.new(Theorem, ontology: :ontology_id, element: :id),
@@ -257,7 +257,7 @@ Currently this will return the list of all axioms of the ontology.
       BODY
     end
 
-  specified_get '/:repository_id/*locid' => 'theorems#show',
+  specified_get '/:repository_id/*locid' => 'theorems#index',
     as: :theorem_iri,
     constraints: [
       LocIdRouterConstraint.new(Theorem, ontology: :ontology_id, element: :id),
@@ -473,9 +473,9 @@ Will return a representation of the formality level.
       end
       resources :children, :only => :index
       resources :symbols, only: %i(index show)
-      resources :axioms, only: %i(index show)
-      resources :theorems, only: %i(index show) do
-        resources :proof_attempts, only: :show
+      resources :axioms, only: :index
+      resources :theorems, only: :index do
+        resources :proof_attempts, only: %i(index show)
         get '/proofs/new', controller: :proofs, action: :new
         post '/proofs', controller: :proofs, action: :create
       end
