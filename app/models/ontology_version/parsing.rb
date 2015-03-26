@@ -43,7 +43,9 @@ module OntologyVersion::Parsing
 
   # generate XML by passing the raw ontology to Hets
   def generate_xml(structure_only: false)
-    input_io = Hets.parse_via_api(ontology, ontology.repository.url_maps,
+    hets_options =
+      Hets::HetsOptions.new(:'url-catalog' => ontology.repository.url_maps)
+    input_io = Hets.parse_via_api(ontology, hets_options,
                                   structure_only: structure_only)
     [:all_is_well, input_io]
   rescue Hets::ExecutionError => e

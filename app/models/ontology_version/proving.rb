@@ -28,7 +28,10 @@ module OntologyVersion::Proving
 
   # generate XML by passing the raw ontology to Hets
   def execute_proof
-    input_io = Hets.prove_via_api(ontology, ontology.repository.url_maps)
+    hets_options =
+      Hets::ProveOptions.new(:'url-catalog' => ontology.repository.url_maps,
+                             ontology: ontology)
+    input_io = Hets.prove_via_api(ontology, hets_options)
     [:all_is_well, input_io]
   rescue Hets::ExecutionError => e
     handle_hets_execution_error(e, self)
