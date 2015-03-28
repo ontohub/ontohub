@@ -156,6 +156,12 @@ en:
       tactic_script: Tactic script
       prover_output: Prover output
       seconds: seconds
+  prover_outputs:
+    show:
+      head_html: "Prover Output for %{theorem}'s %{proof_attempt_text}"
+      head_attempt_html: "proof attempt #%{number}"
+      prover: Prover
+      prover_output: Prover Output
   have:
     one: has
     other: have

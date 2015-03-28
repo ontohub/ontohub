@@ -4,7 +4,7 @@
 
 %h3
   = t('proof_attempts.show.head')
-  = link_to resource.theorem, [*resource_chain, resource.theorem]
+  = link_to resource.theorem, locid_for(resource.theorem, :proof_attempts)
   = render partial: 'theorems/proof_status', locals: {proof_status: resource.proof_status}
 
 %h4= t('proof_attempts.show.created_at')
@@ -45,4 +45,4 @@
 %pre= resource.tactic_script
 
 %h4= t('proof_attempts.show.prover_output')
-%pre= resource.prover_output
+= link_to t('proof_attempts.show.prover_output'), locid_for(resource.prover_output)
