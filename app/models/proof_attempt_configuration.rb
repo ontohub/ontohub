@@ -18,6 +18,7 @@ class ProofAttemptConfiguration < ActiveRecord::Base
   attr_accessible :timeout
   attr_accessible :locid
 
+  validates :ontology, presence: true
   before_create :generate_locid
 
   protected
