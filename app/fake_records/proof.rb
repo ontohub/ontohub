@@ -21,13 +21,15 @@ class Proof < FakeRecord
 
   attr_reader :proof_obligation, :prover_ids, :ontology, :timeout
   attr_reader :proof_attempts, :prove_options_list, :options_to_attempts_hash
+  attr_reader :prove_asynchronously
 
   validates :prover_ids, provers: true
   validates :timeout,
             inclusion: {in: (TIMEOUT_RANGE.first..TIMEOUT_RANGE.last)},
             if: :timeout_present?
 
-  def initialize(opts)
+  def initialize(opts, prove_asynchronously: true)
+    @prove_asynchronously = prove_asynchronously
     opts[:proof] ||= {}
     opts[:proof][:prover_ids] ||= []
 
@@ -45,11 +47,8 @@ class Proof < FakeRecord
 
   def save!
     proof_attempts.each(&:save!)
-    options_and_pa_ids = normalize_for_async_call(options_to_attempts_hash)
     ontology_version.update_state!(:pending)
-    CollectiveProofAttemptWorker.perform_async(proof_obligation.class.to_s,
-                                               proof_obligation.id,
-                                               options_and_pa_ids)
+    prove(normalize_for_async_call(options_to_attempts_hash))
   end
 
   def theorem?
@@ -133,6 +132,20 @@ class Proof < FakeRecord
       result[prove_options.to_json] = proof_attempts.map(&:id)
     end
     result
+  end
+
+  def prove(options_and_pa_ids)
+    if prove_asynchronously
+      proving_object = CollectiveProofAttemptWorker
+      proving_method = :perform_async
+    else
+      proving_object = CollectiveProofAttemptWorker.new
+      proving_method = :perform
+    end
+    proving_object.send(proving_method,
+                        proof_obligation.class.to_s,
+                        proof_obligation.id,
+                        options_and_pa_ids)
   end
 
   def timeout_present?
