@@ -259,6 +259,22 @@ Currently this will return the list of all symbols of the ontology.
       end
   end
 
+
+  specified_get "/:repository_id/*locid" => "prover_outputs#show",
+    as: :"prover_output_iri",
+    constraints: [
+      LocIdRouterConstraint.new(ProverOutput, ontology: :ontology_id, theorem: :theorem_id, proof_attempt: :proof_attempt_id, element: :id),
+    ] do
+      accept 'application/json'
+      reroute_on_mime 'application/json', to: "api/v1/prover_outputs#show"
+
+      doc title: 'loc/id reference to a prover output',
+          body: <<-BODY
+  Will return a prover output.
+  The prover output is determined according to the *locid.
+      BODY
+    end
+
   proof_attempt_api_subsites = %i(
     used_axioms generated_axioms
     used_theorems prover_output
@@ -533,7 +549,9 @@ Will return a representation of the formality level.
       resources :symbols, only: %i(index show)
       resources :axioms, only: :index
       resources :theorems, only: :index do
-        resources :proof_attempts, only: %i(index show)
+        resources :proof_attempts, only: %i(index show) do
+          resource :prover_output, only: :show
+        end
         get '/proofs/new', controller: :proofs, action: :new
         post '/proofs', controller: :proofs, action: :create
       end
