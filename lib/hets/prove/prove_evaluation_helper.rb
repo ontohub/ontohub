@@ -11,6 +11,7 @@ module Hets
             proof_attempt.do_or_set_failed do
               fill_proof_attempt_instance(proof_attempt, proof_info)
               proof_attempt.associate_prover_with_ontology_version
+              create_prover_output(proof_attempt, proof_info)
               proof_attempt.save!
               proof_attempt.update_state!(:done)
             end
@@ -21,7 +22,6 @@ module Hets
       def fill_proof_attempt_instance(proof_attempt, proof_info)
         proof_attempt.proof_status = find_proof_status_from_hash(proof_info)
         proof_attempt.prover = find_or_create_prover_from_hash(proof_info)
-        proof_attempt.prover_output = proof_info[:prover_output]
         proof_attempt.time_taken = time_taken_from_hash(proof_info)
         proof_attempt.tactic_script = tactic_script_from_hash(proof_info)
         used_axioms, used_theorems, generated_axioms =
@@ -104,6 +104,13 @@ module Hets
         generated_axiom.proof_attempt = proof_attempt
         generated_axiom.save
         generated_axiom
+      end
+
+      def create_prover_output(proof_attempt, proof_info)
+        prover_output = ProverOutput.new
+        prover_output.proof_attempt = proof_attempt
+        prover_output.content = proof_info[:prover_output]
+        prover_output.save!
       end
     end
   end
