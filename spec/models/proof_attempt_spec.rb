@@ -5,6 +5,7 @@ describe ProofAttempt do
     it { should belong_to(:theorem) }
     it { should belong_to(:proof_status) }
     it { should belong_to(:proof_attempt_configuration) }
+    it { should have_one(:prover_output) }
   end
 
   let(:proof_attempt) { create :proof_attempt }

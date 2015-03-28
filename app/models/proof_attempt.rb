@@ -8,6 +8,7 @@ class ProofAttempt < ActiveRecord::Base
   belongs_to :proof_status
   belongs_to :prover
   belongs_to :proof_attempt_configuration
+  has_one :prover_output
   has_many :generated_axioms, dependent: :destroy
   has_and_belongs_to_many :used_axioms,
                           class_name: 'Axiom',
@@ -19,8 +20,7 @@ class ProofAttempt < ActiveRecord::Base
                           join_table: 'used_axioms_proof_attempts'
 
   attr_accessible :locid
-  attr_accessible :prover_output,
-                  :tactic_script,
+  attr_accessible :tactic_script,
                   :time_taken,
                   :number,
                   :state,
