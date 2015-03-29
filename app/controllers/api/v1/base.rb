@@ -11,7 +11,7 @@ class Api::V1::Base < ApplicationController
   end
 
   def current_user
-    ApiKey.valid.where(key: api_key).first if api_key
+    ApiKey.valid.where(key: api_key).first.try(:user) if api_key
   end
 
   def api_key
