@@ -1,4 +1,4 @@
-class ApiKeysController < InheritedResources::Base
+class Users::ApiKeysController < InheritedResources::Base
   before_filter :authenticate_user!
 
   actions :create
