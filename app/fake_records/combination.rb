@@ -21,11 +21,37 @@ class Combination < FakeRecord
     "combination"
   end
 
+  def ontology
+    @ontology ||= create_ontology!
+  end
+
   private
   def from_combination_hash(hash)
     @nodes = hash.fetch(:nodes, [])
     @file_name = hash[:file_name]
     @commit_message = hash[:commit_message]
+  end
+
+  def create_ontology!
+    repository_file = build_repository_file
+    repository_file.save!
+    target_repository.ontologies.
+      with_path(repository_file.target_path).
+      without_parent
+  end
+
+  def build_repository_file
+    target_directory = File.dirname(file_name)
+    target_directory = nil if target_directory == '.'
+    target_filename = File.basename(file_name)
+    file = RepositoryFile.new \
+      temp_file: dol_tempfile,
+      target_directory: target_directory,
+      target_filename: target_filename,
+      repository_id: target_repository.path,
+      repository_file: {repository_id: target_repository.path},
+      user: User.first,
+      message: commit_message
   end
 
   def named_nodes
