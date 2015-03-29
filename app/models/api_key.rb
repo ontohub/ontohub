@@ -12,6 +12,8 @@ class ApiKey < ActiveRecord::Base
   validates :key, presence: true, uniqueness: true
   validates :status, inclusion: {in: STATES}
 
+  scope :valid, -> { where(status: 'valid') }
+
   def self.create_new_key!(user)
     transaction do
       where(user_id: user, status: 'valid').

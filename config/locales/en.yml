@@ -2,6 +2,10 @@
 # See https://github.com/svenfuchs/rails-i18n/tree/master/rails%2Flocale for starting points.
 
 en:
+  successful_api_key_generation: API-Key was successfully generated
+  api_key_headline: API-Key
+  generate_initial_api_key: Generate initial API-Key
+  generate_api_key: Generate new API-Key
   admin_deletion_error_message: |
     You probably shouldn't remove this account, as deleting
     it would leave the system with too few admins.
