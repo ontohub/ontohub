@@ -2,11 +2,18 @@ class Combination < FakeRecord
   DEFAULT_NAME = 'combinations.dol'
 
   attr_reader :nodes
-  attr_reader :target_repository
+  attr_reader :target_repository, :error
 
   def initialize(target_repository, combination_hash)
     @target_repository = target_repository
     from_combination_hash(combination_hash)
+  end
+
+  def save!
+    ontology
+  rescue StandardError => error
+    @error = error
+    raise RecordNotSavedError, "Couldn't create combination!"
   end
 
   def file_name
@@ -37,7 +44,7 @@ class Combination < FakeRecord
     repository_file.save!
     target_repository.ontologies.
       with_path(repository_file.target_path).
-      without_parent
+      without_parent.first
   end
 
   def build_repository_file
