@@ -21,12 +21,7 @@ class Api::V1::CombinationsController < Api::V1::Base
 
   private
   def combination
-    @combination ||= Combination.build(repository, json_body)
-  end
-
-  def json_body
-    ActiveSupport::JSON.decode(request.raw_post)
-  rescue ActiveSupport::JSON.parse_error
+    @combination ||= Combination.build(repository, params["combination"])
   end
 
   def repository
