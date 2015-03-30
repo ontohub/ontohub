@@ -39,11 +39,16 @@ namespace :import do
     @user = User.find_all_by_admin(true).first
     @user = User.find_by_email! ENV['EMAIL'] unless ENV['EMAIL'].nil?
 
-    LogicgraphParser.parse File.open("#{Rails.root}/registry/LogicGraph.xml"),
-      logic:          Proc.new{ |h| save(h) },
-      language:       Proc.new{ |h| save(h) },
-      logic_mapping:  Proc.new{ |h| save(h) },
-      support:        Proc.new{ |h| save(h) }
+    Dir.mktmpdir do |dir|
+      Dir.chdir(dir) do
+        system('hets', '-G')
+        LogicgraphParser.parse(File.open(File.join(dir, 'LogicGraph.xml')),
+          logic:          Proc.new{ |h| save(h) },
+          language:       Proc.new{ |h| save(h) },
+          logic_mapping:  Proc.new{ |h| save(h) },
+          support:        Proc.new{ |h| save(h) })
+        end
+    end
   end
 
   desc 'Import keywords starting with P.'
