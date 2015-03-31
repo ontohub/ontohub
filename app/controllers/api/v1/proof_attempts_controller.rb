@@ -40,14 +40,6 @@ class Api::V1::ProofAttemptsController < Api::V1::Base
     end
   end
 
-  def prover_output
-    respond_to do |format|
-      format.json do
-        render json: {prover_output: resource.prover_output}
-      end
-    end
-  end
-
   protected
 
   def collection
