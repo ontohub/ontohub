@@ -78,7 +78,9 @@ class Proof < FakeRecord
 
   def initialize_prove_options_list
     @prove_options_list = @provers.map do |prover|
-      Hets::ProveOptions.new(prover: prover)
+      options = {prover: prover}
+      options[:timeout] = timeout if timeout.present?
+      Hets::ProveOptions.new(options)
     end
   end
 
