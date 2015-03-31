@@ -76,6 +76,6 @@ module OntologyVersion::Parsing
       Hets::ProversOptions.new(:'url-catalog' => ontology.repository.url_maps,
                                ontology: ontology)
     provers_io = Hets.provers_via_api(ontology, hets_options)
-    Hets::Provers::Evaluator.new(self, provers_io).import
+    Hets::Provers::Importer.new(self, provers_io).import
   end
 end

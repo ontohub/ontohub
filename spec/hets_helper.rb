@@ -42,7 +42,7 @@ end
 
 
 def parse_ontology_hets_out(user, ontology, io)
-  evaluator = Hets::DG::Evaluator.new(user, ontology, io: io)
+  evaluator = Hets::DG::Importer.new(user, ontology, io: io)
   evaluator.import
   io.close unless io.closed?
 end

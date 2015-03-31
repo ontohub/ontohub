@@ -1,6 +1,6 @@
 module Hets
   module DG
-    class Evaluator
+    class Importer
       attr_accessor :version, :path
       attr_accessor :ontology, :user, :ontologies_count
       attr_accessor :parser, :callback
