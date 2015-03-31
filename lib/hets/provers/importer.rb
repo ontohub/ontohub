@@ -1,6 +1,6 @@
 module Hets
   module Provers
-    class Evaluator
+    class Importer
       attr_accessor :ontology_version, :io
 
       # io needs to be an instance of IO or a Tempfile.

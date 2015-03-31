@@ -1,6 +1,6 @@
 module Hets
   module Prove
-    class Evaluator
+    class Importer
       attr_accessor :version, :path
       attr_accessor :ontology, :user, :proof_attempts
       attr_accessor :parser, :callback
@@ -37,15 +37,6 @@ module Hets
       def initialize_handling
         self.parser = Parser.new(io || path)
         self.now = Time.now
-      end
-
-      # The caller needs those methods to exists, but we don't need the
-      # functionality here. This will be restructured in a later branch.
-      %i(concurrency
-        dgnode_stack
-        dgnode_stack_id
-        next_dgnode_stack_id).each do |method_name|
-        define_method(method_name) {}
       end
     end
   end
