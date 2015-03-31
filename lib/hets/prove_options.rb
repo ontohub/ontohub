@@ -6,6 +6,7 @@ module Hets
       super
       prepare_node
       prepare_prover
+      prepare_timeout
       prepare_axioms
       prepare_theorems
     end
@@ -21,6 +22,12 @@ module Hets
     def prepare_prover
       if @options[:prover].is_a?(Prover)
         @options[:prover] = @options[:prover].name
+      end
+    end
+
+    def prepare_timeout
+      if @options[:timeout].is_a?(Fixnum)
+        @options[:timeout] = @options[:timeout].to_s
       end
     end
 
