@@ -30,7 +30,7 @@ class OntologyVersion < ActiveRecord::Base
   scope :done, state('done')
   scope :failed, state('failed')
 
-  delegate :repository, to: :ontology
+  delegate :repository, :theorems, to: :ontology
 
   acts_as_tree
 

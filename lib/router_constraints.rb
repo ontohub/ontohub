@@ -63,7 +63,9 @@ class LocIdRouterConstraint < RouterConstraint
     result = !ontology.nil?
 
     if result
+      theorem = element.theorem if @map[:theorem]
       path_params = {repository_id: ontology.repository.to_param}
+      path_params[@map[:theorem]] = theorem.id if @map[:theorem]
       path_params[@map[:ontology]] = ontology.id if @map[:ontology]
       path_params[@map[:element]] = element.id if @map[:element]
 

@@ -1,6 +1,7 @@
 module Hets
   module Prove
     class ProveEvaluator < BaseEvaluator
+      attr_accessor :proof_attempts, :proof_attempt_ids
       attr_accessor :object_hash, :hierarchy
 
       register :all, :start, to: :all_start
@@ -32,26 +33,40 @@ module Hets
       register :used_axioms, :start, to: :used_axioms_start
       register :used_axioms, :end, to: :used_axioms_end
 
-      def create_proof_attempt_from_hash(proof_info)
+      def initialize(*args, proof_attempts)
+        super(*args)
+        self.proof_attempts = proof_attempts
+        self.proof_attempt_ids = proof_attempts.map(&:id)
+      end
+
+      def fill_proof_attempt_from_hash(proof_info)
         ontology = hets_evaluator.ontology
         if ontology.name == proof_info[:ontology_name]
-          proof_attempt = ProofAttempt.new
-          proof_attempt.theorem = find_theorem_with_hash(proof_info, ontology)
-          proof_attempt.proof_status = find_proof_status_with_hash(proof_info)
-          proof_attempt.prover = find_or_create_prover_with_hash(proof_info)
-          proof_attempt.prover_output = proof_info[:prover_output]
-          proof_attempt.time_taken = proof_info[:time_taken]
-          proof_attempt.tactic_script = tactic_script_from_hash(proof_info)
-          used_axioms, used_theorems, generated_axioms =
-            used_axioms_from_hash(proof_info, proof_attempt)
-          proof_attempt.used_axioms = used_axioms
-          proof_attempt.used_theorems = used_theorems
-          proof_attempt.generated_axioms = generated_axioms
-
-          proof_attempt.associate_prover_with_ontology_version
-
-          proof_attempt.save!
+          theorem = find_theorem_with_hash(proof_info, ontology)
+          proof_attempt = theorem.proof_attempts.
+            where(id: proof_attempt_ids).first
+          if proof_attempt
+            proof_attempt.do_or_set_failed do
+              fill_proof_attempt_instance(proof_attempt, proof_info)
+              proof_attempt.associate_prover_with_ontology_version
+              proof_attempt.save!
+              proof_attempt.update_state!(:done)
+            end
+          end
         end
+      end
+
+      def fill_proof_attempt_instance(proof_attempt, proof_info)
+        proof_attempt.proof_status = find_proof_status_with_hash(proof_info)
+        proof_attempt.prover = find_or_create_prover_with_hash(proof_info)
+        proof_attempt.prover_output = proof_info[:prover_output]
+        proof_attempt.time_taken = proof_info[:time_taken]
+        proof_attempt.tactic_script = tactic_script_from_hash(proof_info)
+        used_axioms, used_theorems, generated_axioms =
+          used_axioms_from_hash(proof_info, proof_attempt)
+        proof_attempt.used_axioms = used_axioms
+        proof_attempt.used_theorems = used_theorems
+        proof_attempt.generated_axioms = generated_axioms
       end
 
       def find_theorem_with_hash(proof_info, ontology)
@@ -156,7 +171,7 @@ module Hets
 
       def goal_end
         hierarchy.pop
-        create_proof_attempt_from_hash(object_hash)
+        fill_proof_attempt_from_hash(object_hash)
       end
 
       %i(tactic_script

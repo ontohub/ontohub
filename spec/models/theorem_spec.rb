@@ -6,25 +6,40 @@ describe Theorem do
     it { should belong_to(:proof_status) }
   end
 
-  context 'Proving' do
-    let(:user) { create :user }
-    let(:parent_ontology) { create :distributed_ontology }
+  context 'Theorem of an ontology' do
+    let(:theorem) { create :theorem }
 
-    before do
-      parse_ontology(user, parent_ontology, 'prove/Simple_Implications.casl')
-      stub_hets_for('prove/Simple_Implications.casl',
-                    command: 'prove', method: :post)
+    context 'prove_options' do
+      let(:ontology) { theorem.ontology }
+      let(:repository) { ontology.repository }
+      let(:prove_options) { theorem.prove_options }
+
+      it 'have the ontology name as node parameter' do
+        expect(prove_options.options[:node]).to eq(ontology.name)
+      end
+
+      it 'have the theorem name as theorems parameter' do
+        expect(prove_options.options[:theorems]).to eq([theorem.name])
+      end
+
+      context 'with url-maps' do
+        let!(:url_maps) { [create(:url_map, repository: repository)] }
+        it 'have the url-maps as url-catalog parameter' do
+          expect(prove_options.options[:'url-catalog']).to eq(url_maps)
+        end
+      end
+
+      context 'without url-maps' do
+        it 'have no url-catalog parameter' do
+          expect(prove_options.options[:'url-catalog']).to be(nil)
+        end
+      end
     end
 
-    let(:ontology) { parent_ontology.children.find_by_name('Group') }
-    let(:version) { ontology.current_version }
-    let(:theorem) { ontology.theorems.find_by_name('rightunit') }
-    let(:other_theorem) { ontology.theorems.find_by_name('zero_plus') }
-
-    before { theorem.prove }
-
-    it 'the theorem is solved' do
-      expect(theorem.proof_attempts.count).to eq(1)
+    context 'state' do
+      it "is 'pending'" do
+        expect(theorem.state).to eq('pending')
+      end
     end
   end
 

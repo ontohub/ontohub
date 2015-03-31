@@ -24,41 +24,72 @@ describe CollectiveProofAttemptWorker do
       allow(cpa).to receive(:run)
     end
 
-    let(:provers) { [] }
-    let(:theorem) { create :theorem }
+    let(:proof_attempt) { create :proof_attempt }
+    let(:theorem) { proof_attempt.theorem }
     let(:ontology_version) { theorem.ontology.current_version }
-
-    context 'on the theorem' do
-      before do
-        cpa_worker.perform(theorem.class.to_s, theorem.id, provers)
-      end
-
-      it 'create a CollectiveProofAttempt' do
-        expect(CollectiveProofAttempt).
-          to have_received(:new).
-          with(theorem, provers)
-      end
-
-      it 'call run' do
-        expect(cpa).to have_received(:run)
-      end
+    let(:prove_options) do
+      Hets::ProveOptions.new('prover' => proof_attempt.prover)
+    end
+    let(:normalized_options_to_attempts_hash) do
+      {prove_options.to_json => [proof_attempt.id]}
     end
 
-    context 'on the ontology_version' do
+    it 'retrieve_options_and_attempts fetches/builds the correct objects' do
+      options_and_attempts =
+        cpa_worker.send(:retrieve_options_and_attempts,
+                        normalized_options_to_attempts_hash)
+      keys = options_and_attempts.keys
+      values = options_and_attempts.values
+
+      # We can't compare equality of the hashes here, because the keys are
+      # equal, but not the same object in the memory. This makes ruby say that
+      # the hashes are inequal.
+      expect([keys, values]).
+        to eq([[Hets::ProveOptions.from_json(prove_options.to_json)],
+               [[proof_attempt]]])
+    end
+
+    context 'with stubbed retrieve_options_and_attempts' do
       before do
-        cpa_worker.perform(ontology_version.class.to_s,
-                           ontology_version.id,
-                           provers)
+        allow(cpa_worker).
+          to receive(:retrieve_options_and_attempts).
+          with(normalized_options_to_attempts_hash).
+          and_return(:options_to_attempts_hash)
       end
 
-      it 'create a CollectiveProofAttempt' do
-        expect(CollectiveProofAttempt).
-          to have_received(:new).
-          with(ontology_version, provers)
+      context 'on the theorem' do
+        before do
+          cpa_worker.perform(theorem.class.to_s, theorem.id,
+                             normalized_options_to_attempts_hash)
+        end
+
+        it 'create a CollectiveProofAttempt' do
+          expect(CollectiveProofAttempt).
+            to have_received(:new).
+            with(theorem, :options_to_attempts_hash)
+        end
+
+        it 'call run' do
+          expect(cpa).to have_received(:run)
+        end
       end
 
-      it 'call run' do
-        expect(cpa).to have_received(:run)
+      context 'on the ontology_version' do
+        before do
+          cpa_worker.perform(ontology_version.class.to_s,
+                             ontology_version.id,
+                             normalized_options_to_attempts_hash)
+        end
+
+        it 'create a CollectiveProofAttempt' do
+          expect(CollectiveProofAttempt).
+            to have_received(:new).
+            with(ontology_version, :options_to_attempts_hash)
+        end
+
+        it 'call run' do
+          expect(cpa).to have_received(:run)
+        end
       end
     end
   end

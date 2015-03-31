@@ -34,9 +34,12 @@ module Hets
 
     def prepare_sentences(field)
       if @options[field].is_a?(Array)
-        @options[field].map! do |sentence|
-          if sentence.is_a?(Sentence)
-            sentence.name
+        @options[field].map! do |sentence_or_name|
+          if sentence_or_name.is_a?(Sentence)
+            sentence_or_name.name
+          else
+            # This is already a prepared string (sentence name).
+            sentence_or_name
           end
         end
       end

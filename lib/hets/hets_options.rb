@@ -6,6 +6,10 @@ module Hets
       new(hash['options'])
     end
 
+    def self.from_json(json)
+      from_hash(JSON.parse(json))
+    end
+
     def initialize(opts = {})
       @options = opts.dup
       prepare
@@ -14,6 +18,19 @@ module Hets
     def add(**opts)
       @options.merge!(opts.dup)
       prepare
+      self
+    end
+
+    def merge!(hets_options)
+      add(hets_options.options)
+    end
+
+    def to_json
+      {'options' => options}.to_json
+    end
+
+    def ==(other)
+      options == other.options
     end
 
     protected
