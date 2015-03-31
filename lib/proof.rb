@@ -1,3 +1,7 @@
+# The Proof class is not supposed to be stored in the database. Its purpose is
+# to allow for an easy way to create proving commands in the RESTful manner.
+# It is called Proof to comply with the ProofsController which in turn gets
+# called on */proofs routes.
 class Proof < FakeRecord
   class ProversValidator < ActiveModel::EachValidator
     def validate_each(record, attribute, value)
