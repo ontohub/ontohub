@@ -3,34 +3,34 @@ class ApiKey < ActiveRecord::Base
   STATES = %w(valid invalid)
 
   belongs_to :user
-  attr_accessible :key, :status
+  attr_accessible :key, :state
   attr_accessible :user
 
   before_validation :initialize_key
 
   validates :user, presence: true
   validates :key, presence: true, uniqueness: true
-  validates :status, inclusion: {in: STATES}
+  validates :state, inclusion: {in: STATES}
 
-  scope :valid, -> { where(status: 'valid') }
+  scope :valid, -> { where(state: 'valid') }
 
   def self.create_new_key!(user)
     transaction do
-      where(user_id: user, status: 'valid').
+      valid.where(user_id: user).
         find_each { |key| key.invalidate! }
       create!(user: user)
     end
   end
 
   def invalidate!
-    self.status = 'invalid'
+    self.state = 'invalid'
     save!
   end
 
   private
   def initialize_key
     generate_key! unless key
-    set_status! unless status
+    set_valid! unless state
     true
   end
 
@@ -38,7 +38,7 @@ class ApiKey < ActiveRecord::Base
     self.key = SecureRandom.hex(KEY_LENGTH)
   end
 
-  def set_status!
-    self.status = 'valid'
+  def set_valid!
+    self.state = 'valid'
   end
 end
