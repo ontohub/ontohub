@@ -40,7 +40,7 @@ module Hets
       end
 
       def fill_proof_attempt_from_hash(proof_info)
-        ontology = hets_evaluator.ontology
+        ontology = importer.ontology
         if ontology.name == proof_info[:ontology_name]
           theorem = find_theorem_with_hash(proof_info, ontology)
           proof_attempt = theorem.proof_attempts.

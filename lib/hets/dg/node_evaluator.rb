@@ -18,17 +18,17 @@ module Hets
       register :mapping, :end, to: :mapping
 
       def dgraph(current_element)
-        hets_evaluator.dgnode_count = current_element['dgnodes'].to_i
+        importer.dgnode_count = current_element['dgnodes'].to_i
       end
 
       def all_end
-        hets_evaluator.versions.compact.each do |version|
+        importer.versions.compact.each do |version|
           version.save!
           version.ontology.update_version!(to: version)
         end
-        hets_evaluator.ontologies.each(&:create_translated_sentences)
-        update_ontologies_per_logic_count!(hets_evaluator.ontologies)
-        hets_evaluator.ontologies.each do |ontology|
+        importer.ontologies.each(&:create_translated_sentences)
+        update_ontologies_per_logic_count!(importer.ontologies)
+        importer.ontologies.each do |ontology|
           ontology.__elasticsearch__.index_document
           ontology.__elasticsearch__.update_document
         end
@@ -72,7 +72,7 @@ module Hets
       def symbol(current_element)
         if logic_callback.pre_symbol(current_element)
           symbol = ontology.symbols.update_or_create_from_hash(
-            current_element, hets_evaluator.now)
+            current_element, importer.now)
           ontology.symbols_count += 1
 
           logic_callback.symbol(current_element, symbol)
@@ -82,7 +82,7 @@ module Hets
       def axiom(current_element)
         if logic_callback.pre_axiom(current_element)
           axiom = ontology.axioms.update_or_create_from_hash(
-            current_element, hets_evaluator.now)
+            current_element, importer.now)
           ontology.axioms_count += 1
           ontology.sentences_count += 1
 
@@ -94,7 +94,7 @@ module Hets
         if logic_callback.pre_axiom(current_element)
           current_element['imported'] = true
           axiom = ontology.axioms.update_or_create_from_hash(
-            current_element, hets_evaluator.now)
+            current_element, importer.now)
           ontology.axioms_count += 1
           ontology.sentences_count += 1
 
@@ -105,7 +105,7 @@ module Hets
       def theorem(current_element)
         if logic_callback.pre_theorem(current_element)
           theorem = ontology.theorems.update_or_create_from_hash(
-            current_element, hets_evaluator.now)
+            current_element, importer.now)
           ontology.theorems_count += 1
           ontology.sentences_count += 1
 
@@ -117,7 +117,7 @@ module Hets
         if logic_callback.pre_mapping(current_element)
           alias_iris_for_mappings!(current_element)
           mapping = parent_ontology.mappings.update_or_create_from_hash(
-            current_element, user, hets_evaluator.now)
+            current_element, user, importer.now)
           logic_callback.mapping(current_element, mapping)
         end
       end
@@ -137,7 +137,7 @@ module Hets
           version.state = 'done'
           version.basepath = ontology.basepath
           version.file_extension = ontology.file_extension
-          hets_evaluator.versions << version
+          importer.versions << version
         rescue
           ontology.present = false
         end

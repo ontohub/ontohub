@@ -6,11 +6,11 @@ module Hets
   # want to register specific callbacks. See Hets::*::*Evaluator for the
   # actual evaluators.
   class BaseEvaluator
-    attr_accessor :hets_evaluator
+    attr_accessor :importer
     attr_accessor :ontology
     attr_accessor :logic_callback
 
-    delegate :user, to: :hets_evaluator
+    delegate :user, to: :importer
 
     # - Meta method
     # registers a callback-method for a specific node (with node meaning a
@@ -29,12 +29,12 @@ module Hets
       @registrations ||= {}
     end
 
-    def initialize(hets_evaluator)
-      self.hets_evaluator = hets_evaluator
+    def initialize(importer)
+      self.importer = importer
     end
 
     def parent_ontology
-      hets_evaluator.ontology
+      importer.ontology
     end
 
     # - Meta method

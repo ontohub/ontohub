@@ -65,17 +65,17 @@ module Hets
         # This version will not exist if the parsing fails
         version.do_not_parse!
 
-        hets_evaluator.versions << version
+        importer.versions << version
 
         ontology
       end
 
       def parent_version
-        hets_evaluator.version if parent_ontology
+        importer.version if parent_ontology
       end
 
       def alias_iris_for_mappings!(current_element)
-        aliases = hets_evaluator.ontology_aliases
+        aliases = importer.ontology_aliases
         current_element['source_iri'] = aliases[current_element['source']]
         current_element['target_iri'] = aliases[current_element['target']]
       end
@@ -98,7 +98,7 @@ module Hets
             # this message, because otherwise we would
             # fail here with a lock issue instead of the
             # 'more than one ontology' issue.
-            if hets_evaluator.ontologies_count > 0
+            if importer.ontologies_count > 0
               raise "more than one #{Settings.OMS} found"
             else
               ontohub_iri = parent_ontology.iri
@@ -113,9 +113,9 @@ module Hets
           if ontology.nil?
             ontology = ExternalRepository.create_ontology(iri)
           end
-          hets_evaluator.ontology_aliases[element['name']] = ontology.iri
+          importer.ontology_aliases[element['name']] = ontology.iri
         else
-          hets_evaluator.ontologies_count += 1
+          importer.ontologies_count += 1
           if parent_ontology.distributed?
             assign_distributed_ontology_logic(parent_ontology)
 

@@ -9,8 +9,8 @@ module Hets
       :concurrency, :dgnode_stack,
       :dgnode_stack_id, :next_dgnode_stack_id,
     ]
-    delegate *concurrency_delegates, to: :hets_evaluator
-    delegate :ontologies_count, to: :hets_evaluator
+    delegate *concurrency_delegates, to: :importer
+    delegate :ontologies_count, to: :importer
 
     protected
     # As concurrency handling is usually performed across
@@ -25,7 +25,7 @@ module Hets
     end
 
     def finish_concurrency_handling
-      all_dgnodes_parsed = next_dgnode_stack_id == hets_evaluator.dgnode_count
+      all_dgnodes_parsed = next_dgnode_stack_id == importer.dgnode_count
       concurrency.mark_as_finished_processing(dgnode_stack.last) if all_dgnodes_parsed
     end
 
