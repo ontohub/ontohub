@@ -14,16 +14,20 @@ class Proof < FakeRecord
     end
   end
 
-  attr_reader :proof_obligation, :prover_ids, :ontology
+  TIMEOUT_RANGE = (1..20)
+
+  attr_reader :proof_obligation, :prover_ids, :ontology, :timeout
   attr_reader :proof_attempts, :prove_options_list, :options_to_attempts_hash
 
   validates :prover_ids, provers: true
+  validates :timeout, inclusion: {in: TIMEOUT_RANGE}, if: :timeout_present?
 
   def initialize(opts)
     opts[:proof] ||= {}
     opts[:proof][:prover_ids] ||= []
 
     @ontology = Ontology.find(opts[:ontology_id])
+    @timeout = opts[:proof][:timeout].to_i if opts[:proof][:timeout].present?
     # HACK: remove the empty string from params
     # Rails 4.2 introduces the html form option :include_hidden
     @prover_ids = opts[:proof][:prover_ids].select(&:present?).map(&:to_i)
@@ -121,5 +125,9 @@ class Proof < FakeRecord
       result[prove_options.to_json] = proof_attempts.map(&:id)
     end
     result
+  end
+
+  def timeout_present?
+    timeout.present?
   end
 end

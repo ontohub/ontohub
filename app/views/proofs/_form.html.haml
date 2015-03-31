@@ -1,3 +1,4 @@
 = simple_form_for resource, url: form_url_chain do |f|
   = f.input :prover_ids, label: t('proofs.new.provers.label'), collection: ontology.current_version.provers, as: :check_boxes, hint: t('proofs.new.provers.none_is_default')
+  = f.input :timeout, label: t('proofs.new.timeout.label'), collection: Proof::TIMEOUT_RANGE, hint: t('proofs.new.timeout.none_is_default')
   = f.button :submit, t('proofs.new.send'), class: 'btn btn-primary'
