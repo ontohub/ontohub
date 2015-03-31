@@ -111,13 +111,21 @@ en:
   theorems:
     index:
       prove: Prove all theorems
-      all_proven: All theorems of this %{oms} have been proven.
     show:
+      prove: Prove this theorem
       proof_attemps_empty: There are no proof attempts.
-  prove:
+  proofs:
+    new:
+      title: 'Attempt to prove  %{klass} %{resource}'
+      send: 'Prove'
+      klass:
+        theorem: 'theorem'
+        ontology_version: 'ontology'
+      provers:
+        none_is_default: Selecting none will result in using the default prover.
     create:
       starting_jobs: Proving jobs have been scheduled. Please come back in a few moments.
-      nothing_to_do: All theorems have been proven.
+      invalid_resource: Invalid proving request.
   proof_attempts:
     show:
       head: Proof Attempt of

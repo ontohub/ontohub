@@ -38,14 +38,17 @@ module Hets
           proof_attempt = ProofAttempt.new
           proof_attempt.theorem = find_theorem_with_hash(proof_info, ontology)
           proof_attempt.proof_status = find_proof_status_with_hash(proof_info)
-          proof_attempt.prover = proof_info[:used_prover]
+          proof_attempt.prover = find_or_create_prover_with_hash(proof_info)
           proof_attempt.prover_output = proof_info[:prover_output]
           proof_attempt.time_taken = proof_info[:time_taken]
           proof_attempt.tactic_script = tactic_script_from_hash(proof_info)
-          used_sentences, generated_axioms =
+          used_axioms, used_theorems, generated_axioms =
             used_axioms_from_hash(proof_info, proof_attempt)
-          proof_attempt.used_axioms = used_sentences
+          proof_attempt.used_axioms = used_axioms
+          proof_attempt.used_theorems = used_theorems
           proof_attempt.generated_axioms = generated_axioms
+
+          proof_attempt.associate_prover_with_ontology_version
 
           proof_attempt.save!
         end
@@ -68,6 +71,10 @@ module Hets
         ProofStatus.find(identifier)
       end
 
+      def find_or_create_prover_with_hash(proof_info)
+        Prover.where(name: proof_info[:used_prover]).first_or_create!
+      end
+
       def tactic_script_from_hash(proof_info)
         {
           time_limit: proof_info[:tactic_script_time_limit],
@@ -79,27 +86,28 @@ module Hets
         if proof_info[:used_axioms] && proof_attempt.theorem
           process_used_axioms(proof_info, proof_attempt)
         else
-          [[], []]
+          [[], [], []]
         end
       end
 
       def process_used_axioms(proof_info, proof_attempt)
-        used_sentences = []
+        used_axioms = []
+        used_theorems = []
         generated_axioms = []
         proof_info[:used_axioms].each do |axiom_name|
           axiom = find_sentence_or_generate_axiom(axiom_name, proof_attempt)
-          used_sentences << axiom if axiom.is_a?(Sentence)
+          used_axioms << axiom if axiom.is_a?(Axiom)
+          used_theorems << axiom if axiom.is_a?(Theorem)
           generated_axioms << axiom if axiom.is_a?(GeneratedAxiom)
         end
-        [used_sentences, generated_axioms]
+        [used_axioms, used_theorems, generated_axioms]
       end
 
       # Logic translations applied before proving can introduce new axioms that
       # are not stored as sentences in our database. They need to be
       # distinguished from sentences.
       def find_sentence_or_generate_axiom(axiom_name, proof_attempt)
-        # We need the `unscoped` call to include theorems.
-        sentence = Sentence.unscoped.
+        sentence = Sentence.
           where(ontology_id: proof_attempt.theorem.ontology.id,
                 name: axiom_name).first
         sentence || generate_axiom(axiom_name, proof_attempt)

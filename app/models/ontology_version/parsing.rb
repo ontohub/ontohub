@@ -36,6 +36,7 @@ module OntologyVersion::Parsing
 
       # Import version
       ontology.import_version(self, self.user, input_io)
+      retrieve_available_provers_for_self_and_children
 
       update_state! :done
     end
@@ -59,5 +60,22 @@ module OntologyVersion::Parsing
 
   def parse_fast
     parse(structure_only: true)
+  end
+
+  def retrieve_available_provers_for_self_and_children
+    retrieve_available_provers
+    if ontology.distributed?
+      ontology.children.each do |child|
+        child.versions.find_by_commit_oid(commit_oid).retrieve_available_provers
+      end
+    end
+  end
+
+  def retrieve_available_provers
+    hets_options =
+      Hets::ProversOptions.new(:'url-catalog' => ontology.repository.url_maps,
+                               ontology: ontology)
+    provers_io = Hets.provers_via_api(ontology, hets_options)
+    Hets::Provers::Evaluator.new(self, provers_io).import
   end
 end

@@ -107,7 +107,7 @@ describe 'OntologyVersion - Proving' do
         end
 
         it 'have "SPASS" prover' do
-          expect(proof_attempt.prover).to eq('SPASS')
+          expect(proof_attempt.prover.name).to eq('SPASS')
         end
 
         it 'have prover output' do

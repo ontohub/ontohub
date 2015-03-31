@@ -7,6 +7,7 @@
   = render partial: 'proof_status', locals: {proof_status: resource.proof_status}
 
 %h4 Proof Attempts
+= link_to t('theorems.show.prove'), [*resource_chain, resource, :proofs, :new], class: 'btn btn-primary'
 - if resource.proof_attempts.empty?
   = t('theorems.show.proof_attemps_empty')
 - else

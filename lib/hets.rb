@@ -123,7 +123,12 @@ we expected it to be matchable by this regular expression:
 
   def self.prove_via_api(resource, prove_options)
     prove_caller = Hets::ProveCaller.new(HetsInstance.choose!, prove_options)
-    prove_caller.call(resource.versioned_iri)
+    prove_caller.call(qualified_loc_id_for(resource))
+  end
+
+  def self.provers_via_api(resource, provers_options)
+    provers_caller = Hets::ProversCaller.new(HetsInstance.choose!, provers_options)
+    provers_caller.call(qualified_loc_id_for(resource))
   end
 
   def self.filetype(resource)

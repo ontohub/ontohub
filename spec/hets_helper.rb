@@ -68,6 +68,10 @@ def stub_hets_for(ontology_fixture,
     to_return(body: Hets.minimal_version_string)
   stub_request(method, hets_uri(command, with, with_version)).
     to_return(body: hets_out_body(command, ontology_fixture))
+  if command == 'dg'
+    stub_request(method, hets_uri('provers', with, with_version)).
+      to_return(body: hets_out_body('provers', ontology_fixture))
+  end
 end
 
 def hets_uri(command = 'dg', portion = nil, version = nil)

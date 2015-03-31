@@ -18,6 +18,9 @@ class OntologyVersion < ActiveRecord::Base
   belongs_to :ontology, :counter_cache => :versions_count
   belongs_to :commit
 
+  # Provers that can be used for proving goals in this ontology.
+  has_and_belongs_to_many :provers
+
 # before_validation :set_checksum
 # validate :raw_file_size_maximum
 
@@ -38,6 +41,10 @@ class OntologyVersion < ActiveRecord::Base
 
   def to_param
     self.number
+  end
+
+  def to_s
+    "#{ontology.name} (version #{number})"
   end
 
   # Public URL to this version

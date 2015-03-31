@@ -88,21 +88,6 @@ Currently the representation ist a list of all symbols in the ontology.
       BODY
     end
 
-  specified_get '/ref/mmt/:repository_id/*path' => 'api/v1/sentences#show',
-    as: :sentence_iri_mmt,
-    constraints: [
-      MMTRouterConstraint.new(Sentence, ontology: :ontology_id),
-    ] do
-      accept 'application/json'
-
-      doc title: 'MMT reference to a sentence',
-          body: <<-BODY
-Will return a representation of the sentence. The sentence
-is determined according to the *path and to the MMT-query-string.
-Currently the representation is a list of all sentences in the ontology.
-      BODY
-    end
-
   specified_get '/ref/mmt/:repository_id/*path' => 'axioms#index',
     as: :axiom_iri_mmt,
     constraints: [
@@ -131,6 +116,21 @@ Currently the representation is a list of all axioms in the ontology.
 Will return a representation of the theorem. The theorem
 is determined according to the *path and to the MMT-query-string.
 Currently the representation is a list of all theorems in the ontology.
+      BODY
+    end
+
+  specified_get '/ref/mmt/:repository_id/*path' => 'api/v1/sentences#show',
+    as: :sentence_iri_mmt,
+    constraints: [
+      MMTRouterConstraint.new(Sentence, ontology: :ontology_id),
+    ] do
+      accept 'application/json'
+
+      doc title: 'MMT reference to a sentence',
+          body: <<-BODY
+Will return a representation of the sentence. The sentence
+is determined according to the *path and to the MMT-query-string.
+Currently the representation is a list of all sentences in the ontology.
       BODY
     end
 
@@ -243,15 +243,15 @@ Currently this will return the list of all symbols of the ontology.
   specified_get '/:repository_id/*locid' => 'api/v1/sentences#show',
     as: :sentence_iri,
     constraints: [
-      LocIdRouterConstraint.new(Sentence, ontology: :ontology_id, element: :id),
+      LocIdRouterConstraint.new(Axiom, ontology: :ontology_id, element: :id),
     ] do
       accept 'application/json'
 
-      doc title: 'loc/id reference to a sentence',
+      doc title: 'loc/id reference to an axiom',
           body: <<-BODY
-Will return a representation of the sentence. The sentence
+Will return a representation of the axiom. The axiom
 is determined according to the *locid.
-Currently this will return the list of all sentence of the ontology.
+Currently this will return the list of all axioms of the ontology.
       BODY
     end
 
@@ -267,7 +267,38 @@ Currently this will return the list of all sentence of the ontology.
           body: <<-BODY
 Will return a representation of the axiom. The axiom
 is determined according to the *locid.
-Currently this will return the list of all axiom of the ontology.
+Currently this will return the list of all axioms of the ontology.
+      BODY
+    end
+
+  specified_get '/:repository_id/*locid' => 'theorems#show',
+    as: :theorem_iri,
+    constraints: [
+      LocIdRouterConstraint.new(Theorem, ontology: :ontology_id, element: :id),
+    ] do
+      accept 'text/html'
+      reroute_on_mime 'application/json', to: 'api/v1/theorems#show'
+
+      doc title: 'loc/id reference to a theorem',
+          body: <<-BODY
+Will return a representation of the theorem. The theorem
+is determined according to the *locid.
+      BODY
+    end
+
+  specified_get '/:repository_id/*locid' => 'sentences#index',
+    as: :sentence_iri,
+    constraints: [
+      LocIdRouterConstraint.new(Sentence, ontology: :ontology_id, element: :id),
+    ] do
+      accept 'text/html'
+      reroute_on_mime 'application/json', to: 'api/v1/sentences#show'
+
+      doc title: 'loc/id reference to a sentence',
+          body: <<-BODY
+Will return a representation of the sentence. The sentence
+is determined according to the *locid.
+Currently this will return the list of all sentences of the ontology.
       BODY
     end
 
@@ -317,21 +348,6 @@ Will return a representation of the license model.
 Will return a representation of the formality level.
     BODY
   end
-
-  specified_get '/:repository_id/*locid' => 'theorems#show',
-    as: :mapping_iri,
-    constraints: [
-      LocIdRouterConstraint.new(Theorem, ontology: :ontology_id, element: :id),
-    ] do
-      accept 'text/html'
-      reroute_on_mime 'application/json', to: 'api/v1/theorems#show'
-
-      doc title: 'loc/id reference to a theorem',
-          body: <<-BODY
-Will return a representation of the theorem. The theorem
-is determined according to the *locid.
-      BODY
-    end
   #
   ###############
 
@@ -424,8 +440,11 @@ is determined according to the *locid.
       resources :axioms, only: %i(index show)
       resources :theorems, only: %i(index show) do
         resources :proof_attempts, only: :show
+        get '/proofs/new', controller: :proofs, action: :new
+        post '/proofs', controller: :proofs, action: :create
       end
-      post '/prove', controller: :prove, action: :create
+      get '/proofs/new', controller: :proofs, action: :new
+      post '/proofs', controller: :proofs, action: :create
 
       resources :mappings do
         get 'update_version', :on => :member

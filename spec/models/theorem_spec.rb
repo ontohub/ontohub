@@ -6,6 +6,28 @@ describe Theorem do
     it { should belong_to(:proof_status) }
   end
 
+  context 'Proving' do
+    let(:user) { create :user }
+    let(:parent_ontology) { create :distributed_ontology }
+
+    before do
+      parse_ontology(user, parent_ontology, 'prove/Simple_Implications.casl')
+      stub_hets_for('prove/Simple_Implications.casl',
+                    command: 'prove', method: :post)
+    end
+
+    let(:ontology) { parent_ontology.children.find_by_name('Group') }
+    let(:version) { ontology.current_version }
+    let(:theorem) { ontology.theorems.find_by_name('rightunit') }
+    let(:other_theorem) { ontology.theorems.find_by_name('zero_plus') }
+
+    before { theorem.prove }
+
+    it 'the theorem is solved' do
+      expect(theorem.proof_attempts.count).to eq(1)
+    end
+  end
+
   context 'update_proof_status' do
     let(:success) { create :proof_status_success }
     let(:proven) { create :proof_status_proven }
