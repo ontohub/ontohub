@@ -216,18 +216,6 @@ module Hets
           {key.underscore.to_sym => value}
         end
       end
-
-      def initiate_concurrency_handling
-        # overwrite this method - concurrency is not an issue here
-      end
-
-      def finish_concurrency_handling
-        # overwrite this method - concurrency is not an issue here
-      end
-
-      def cancel_concurrency_handling_on_error
-        # overwrite this method - concurrency is not an issue here
-      end
     end
   end
 end

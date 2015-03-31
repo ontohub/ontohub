@@ -1,6 +1,6 @@
 module Hets
   module DG
-    class NodeEvaluator < BaseEvaluator
+    class NodeEvaluator < ConcurrentEvaluator
       include NodeEvaluationHelper
 
       attr_accessor :current_element
