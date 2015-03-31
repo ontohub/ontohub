@@ -122,6 +122,7 @@ en:
         theorem: 'theorem'
         ontology_version: 'ontology'
       provers:
+        label: Provers
         none_is_default: Selecting none will result in using the default prover.
     create:
       starting_jobs: Proving jobs have been scheduled. Please come back in a few moments.
