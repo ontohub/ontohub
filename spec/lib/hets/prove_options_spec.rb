@@ -11,7 +11,8 @@ describe Hets::ProveOptions do
     let(:options) { {node: ontology.name,
                      prover: prover.name,
                      axioms: [axiom.name],
-                     theorems: [theorem.name]} }
+                     theorems: [theorem.name],
+                     timeout: '10'} }
     let(:prove_options) { Hets::ProveOptions.new(options) }
 
     it 'does not change the options' do
@@ -23,7 +24,8 @@ describe Hets::ProveOptions do
     let(:options) { {ontology: ontology,
                      prover: prover,
                      axioms: [axiom],
-                     theorems: [theorem]} }
+                     theorems: [theorem],
+                     timeout: 10} }
     let!(:axiom_names) { options[:axioms].map(&:name) }
     let!(:theorem_names) { options[:theorems].map(&:name) }
     let(:prove_options) { Hets::ProveOptions.new(options) }
@@ -46,6 +48,10 @@ describe Hets::ProveOptions do
 
     it 'sets :theorems to the theorems names' do
       expect(prove_options.options[:theorems]).to eq(theorem_names)
+    end
+
+    it 'sets the timeout as a string' do
+      expect(prove_options.options[:timeout]).to eq('10')
     end
   end
 
