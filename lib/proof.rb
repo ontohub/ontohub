@@ -99,6 +99,7 @@ class Proof < FakeRecord
     proof_attempt_configuration = ProofAttemptConfiguration.new
     proof_attempt_configuration.prover =
       Prover.find_by_name(prove_options.options[:prover])
+    proof_attempt_configuration.timeout = timeout
     proof_attempt_configuration
   end
 
