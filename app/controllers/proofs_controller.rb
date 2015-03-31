@@ -4,11 +4,6 @@ class ProofsController < InheritedResources::Base
   helper_method :ontology
 
   def new
-    resource
-    render template: 'proofs/new'
-  end
-
-  def new
     render template: 'proofs/new'
   end
 
