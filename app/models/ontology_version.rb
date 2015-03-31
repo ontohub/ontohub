@@ -17,6 +17,8 @@ class OntologyVersion < ActiveRecord::Base
   belongs_to :user
   belongs_to :ontology, :counter_cache => :versions_count
   belongs_to :commit
+
+  # Provers that can be used for proving goals in this ontology.
   has_and_belongs_to_many :provers
 
 # before_validation :set_checksum
