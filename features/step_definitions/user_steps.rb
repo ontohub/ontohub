@@ -78,11 +78,11 @@ Given(/^there is no existing API\-Key$/) do
     to raise_error(Capybara::ElementNotFound)
 end
 
-When(/^i click on the generate button$/) do
+When(/^I click on the generate button$/) do
   find('form#new_api_key input[name=commit]').click
 end
 
-Then(/^i should see an API\-Key$/) do
+Then(/^I should see an API\-Key$/) do
   expect(find('form#new_api_key input#api_key_key').value).
     to eq(@user.api_keys.valid.first.key)
 end
@@ -91,12 +91,12 @@ Given(/^I have an API-Key$/) do
   @api_key = ApiKey.create_new_key!(@user)
 end
 
-Then(/^i should see the existing API\-Key$/) do
+Then(/^I should see the existing API\-Key$/) do
   expect(find('form#new_api_key input#api_key_key').value).
     to eq(@api_key.key)
 end
 
-Then(/^i should see the new API\-Key$/) do
+Then(/^I should see the new API\-Key$/) do
   key = find('form#new_api_key input#api_key_key').value
   expect(key).to eq(@user.api_keys.valid.first.key)
   expect(key).to_not eq(@api_key.key)
