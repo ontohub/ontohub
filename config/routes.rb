@@ -251,7 +251,7 @@ Currently this will return the list of all symbols of the ontology.
           body: <<-BODY
 Will return a representation of the axiom. The axiom
 is determined according to the *locid.
-Currently this will return the list of all axiom of the ontology.
+Currently this will return the list of all axioms of the ontology.
       BODY
     end
 
@@ -267,7 +267,7 @@ Currently this will return the list of all axiom of the ontology.
           body: <<-BODY
 Will return a representation of the axiom. The axiom
 is determined according to the *locid.
-Currently this will return the list of all axiom of the ontology.
+Currently this will return the list of all axioms of the ontology.
       BODY
     end
 
