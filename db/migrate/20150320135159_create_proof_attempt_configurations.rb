@@ -8,8 +8,7 @@ class CreateProofAttemptConfigurations < ActiveRecord::Migration
       t.timestamps
     end
 
-    add_column :proof_attempts, :proof_attempt_configuration_id, :integer,
-               null: false
+    add_column :proof_attempts, :proof_attempt_configuration_id, :integer
 
     create_table :axioms_proof_attempt_configurations, id: false do |t|
       t.integer :sentence_id
