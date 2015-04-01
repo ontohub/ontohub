@@ -16,6 +16,8 @@ describe Proof do
               timeout: timeout}
     }
   end
+
+  let(:options) { { timeout: timeout} }
   before do
     ontology.theorems << theorem2
     ontology.save!
@@ -72,7 +74,10 @@ describe Proof do
 
     it 'prove_options_list contains the provers' do
       expect(proof.prove_options_list).
-        to eq(provers.map { |prover| Hets::ProveOptions.new(prover: prover) })
+        to eq(provers.map do |prover|
+          options[:prover] = prover
+          Hets::ProveOptions.new(options)
+        end)
     end
 
     it 'map ProveOptions to a list of "theorems count" many ProofAttempt ids' do
@@ -219,7 +224,10 @@ describe Proof do
 
     it 'prove_options_list contains the provers' do
       expect(proof.prove_options_list).
-        to eq(provers.map { |prover| Hets::ProveOptions.new(prover: prover) })
+        to eq(provers.map do |prover|
+          options[:prover] = prover
+          Hets::ProveOptions.new(options)
+        end)
     end
 
     it 'map ProveOptions to a list of "theorems count" many ProofAttempt ids' do
