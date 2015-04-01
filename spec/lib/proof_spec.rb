@@ -146,6 +146,28 @@ describe Proof do
           end
         end
 
+        context 'have the provers set' do
+          # On OntologyVersion, there are created "the same" ProofAttempts for
+          # each contained Theorem. We cannot check for equality of the array,
+          # because there are duplicate entries (wtr. to provers).
+          it 'inclusion of pa-conf provers in defined provers' do
+            proof.proof_attempts.each do |proof_attempt|
+              expect(provers).
+                to include(proof_attempt.reload.
+                  proof_attempt_configuration.prover)
+            end
+          end
+
+          it 'inclusion of defined provers in pa-conf provers' do
+            pa_configuration_provers = proof.proof_attempts.map(&:reload).
+              map(&:proof_attempt_configuration).
+              map(&:prover)
+            provers.each do |prover|
+              expect(pa_configuration_provers).to include(prover)
+            end
+          end
+        end
+
         it 'have the timeout set' do
           proof.proof_attempts.each do |proof_attempt|
             expect(proof_attempt.reload.proof_attempt_configuration.timeout).
@@ -277,6 +299,15 @@ describe Proof do
             expect(proof_attempt.reload.proof_attempt_configuration).
               not_to be_nil
           end
+        end
+
+        it 'have the provers set' do
+          # For a single theorem we can check for equality because there are no
+          # more proof attempts with the same provers.
+          pa_configuration_provers = proof.proof_attempts.map(&:reload).
+            map(&:proof_attempt_configuration).
+            map(&:prover)
+          expect(pa_configuration_provers).to eq(provers)
         end
 
         it 'have the timeout set' do
