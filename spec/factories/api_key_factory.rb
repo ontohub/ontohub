@@ -3,7 +3,7 @@ FactoryGirl.define do
     association :user
 
     factory :invalid_api_key do
-      status { 'invalid' }
+      state { 'invalid' }
     end
   end
 end

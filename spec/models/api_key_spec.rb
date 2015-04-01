@@ -12,13 +12,13 @@ describe ApiKey do
     let!(:key) { described_class.create_new_key!(old_key.user) }
 
     it 'should only have the new key as valid' do
-      expect(described_class.where(status: 'valid').to_a).
+      expect(described_class.where(state: 'valid').to_a).
         to eq([key])
     end
 
     it 'should have invalidated the old key' do
       old_key.reload
-      expect(old_key.status).to eq('invalid')
+      expect(old_key.state).to eq('invalid')
     end
   end
 
@@ -33,8 +33,8 @@ describe ApiKey do
       expect(invalid_key).to_not be_valid
     end
 
-    it 'unacceptable status' do
-      invalid_key = build(:api_key, status: 'nice status')
+    it 'unacceptable state' do
+      invalid_key = build(:api_key, state: 'nice state')
       expect(invalid_key).to_not be_valid
     end
   end
