@@ -1,6 +1,7 @@
 module Hets
   class HetsErrorProcess
     HETS_ERROR_CODES = %w(400, 422)
+    HETS_ERROR_MESSAGE_REGEXP = /\A[*]{3}\s*Error:\s*/
 
     attr_reader :error, :response
     delegate :body, to: :response
@@ -27,7 +28,12 @@ module Hets
     end
 
     def message
-      body_lines.slice(1..-1).join
+      match = error_header.match(HETS_ERROR_MESSAGE_REGEXP)
+      if match
+        body[match[0].length..-1]
+      else
+        body_lines[1..-1].join("\n")
+      end
     end
 
     def body_lines
@@ -39,7 +45,7 @@ module Hets
     end
 
     def error_header?
-      !!(error_header =~ /\A[*]{3}\s*Error:\s*\Z/)
+      !!(error_header =~ HETS_ERROR_MESSAGE_REGEXP)
     end
   end
 end
