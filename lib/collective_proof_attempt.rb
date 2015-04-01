@@ -18,8 +18,13 @@ class CollectiveProofAttempt
         end
       else
         resource.theorems.each { |theorem| theorem.update_state!(:processing) }
-        run_body
-        resource.theorems.each { |theorem| theorem.update_state!(:done) }
+        begin
+          run_body
+          resource.theorems.each { |theorem| theorem.update_state!(:done) }
+        rescue => e
+          set_failed_on_many(resource.theorems, e)
+          raise
+        end
       end
       ontology_version.update_state!(:done)
     end
