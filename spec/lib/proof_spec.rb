@@ -37,8 +37,8 @@ describe Proof do
     end
 
     it 'is not valid with bad provers' do
-      bad_params = params.merge({proof: {prover_ids: ['-1', '']}})
-      expect(Proof.new(bad_params).valid?).to be(false)
+      params[:proof][:prover_ids] = ['-1', '']
+      expect(Proof.new(params).valid?).to be(false)
     end
 
     it 'is not valid with a too little timeout' do
