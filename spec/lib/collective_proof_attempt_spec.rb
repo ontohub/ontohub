@@ -54,53 +54,56 @@ describe CollectiveProofAttempt do
         [cpa.send(:ontology_version), *theorems, *proof_attempts].each do |obj|
           allow(obj).to receive(:update_state!).and_call_original
         end
-        cpa.run
       end
 
-      it 'set state of theorem to processing' do
-        expect(theorem).to have_received(:update_state!).with(:processing)
-      end
+      context 'without exception' do
+        before { cpa.run }
 
-      it 'set state of cpa.ontology_version to processing' do
-        expect(cpa.send(:ontology_version)).
-          to have_received(:update_state!).with(:processing)
-      end
+        it 'set state of theorem to processing' do
+          expect(theorem).to have_received(:update_state!).with(:processing)
+        end
 
-      it 'cpa.ontology_version equals ontology_version' do
-        expect(cpa.send(:ontology_version)).to eq(ontology_version)
-      end
+        it 'set state of cpa.ontology_version to processing' do
+          expect(cpa.send(:ontology_version)).
+            to have_received(:update_state!).with(:processing)
+        end
 
-      it 'set state of proof_attempt to processing' do
-        expect(proof_attempt).
-          to have_received(:update_state!).with(:processing)
-      end
+        it 'cpa.ontology_version equals ontology_version' do
+          expect(cpa.send(:ontology_version)).to eq(ontology_version)
+        end
 
-      it "proof_attempt's proof_status is THM" do
-        expect(proof_attempt.reload.proof_status).to eq(status_proven)
-      end
+        it 'set state of proof_attempt to processing' do
+          expect(proof_attempt).
+            to have_received(:update_state!).with(:processing)
+        end
 
-      it "theorem's proof_status is THM" do
-        expect(theorem.reload.proof_status).to eq(status_proven)
-      end
+        it "proof_attempt's proof_status is THM" do
+          expect(proof_attempt.reload.proof_status).to eq(status_proven)
+        end
 
-      it "proof_attempt2's proof_status is OPN" do
-        expect(proof_attempt2.reload.proof_status).to eq(status_open)
-      end
+        it "theorem's proof_status is THM" do
+          expect(theorem.reload.proof_status).to eq(status_proven)
+        end
 
-      it "theorem2's proof_status is OPN" do
-        expect(theorem2.reload.proof_status).to eq(status_open)
-      end
+        it "proof_attempt2's proof_status is OPN" do
+          expect(proof_attempt2.reload.proof_status).to eq(status_open)
+        end
 
-      it 'state of proof_attempt is done in the end' do
-        expect(proof_attempt.reload.state).to eq('done')
-      end
+        it "theorem2's proof_status is OPN" do
+          expect(theorem2.reload.proof_status).to eq(status_open)
+        end
 
-      it 'state of theorem is done in the end' do
-        expect(theorem.reload.state).to eq('done')
-      end
+        it 'state of proof_attempt is done in the end' do
+          expect(proof_attempt.reload.state).to eq('done')
+        end
 
-      it "ontology_version's state is done in the end" do
-        expect(ontology_version.reload.state).to eq('done')
+        it 'state of theorem is done in the end' do
+          expect(theorem.reload.state).to eq('done')
+        end
+
+        it "ontology_version's state is done in the end" do
+          expect(ontology_version.reload.state).to eq('done')
+        end
       end
     end
   end
@@ -131,51 +134,54 @@ describe CollectiveProofAttempt do
         [cpa.send(:ontology_version), *proof_attempts].each do |obj|
           allow(obj).to receive(:update_state!).and_call_original
         end
-        cpa.run
       end
 
-      it 'set state of cpa.ontology_version to processing' do
-        expect(cpa.send(:ontology_version)).
-          to have_received(:update_state!).with(:processing)
-      end
+      context 'without exception' do
+        before { cpa.run }
 
-      it 'cpa.ontology_version equals ontology_version' do
-        expect(cpa.send(:ontology_version)).to eq(ontology_version)
-      end
-
-      it 'set state of each proof_attempt to processing' do
-        proof_attempts.each do |proof_attempt|
-          expect(proof_attempt).
+        it 'set state of cpa.ontology_version to processing' do
+          expect(cpa.send(:ontology_version)).
             to have_received(:update_state!).with(:processing)
         end
-      end
 
-      it "each proof_attempt's proof_status is THM" do
-        proof_attempts.each do |proof_attempt|
-          expect(proof_attempt.reload.proof_status).to eq(status_proven)
+        it 'cpa.ontology_version equals ontology_version' do
+          expect(cpa.send(:ontology_version)).to eq(ontology_version)
         end
-      end
 
-      it "each theorem's proof_status is THM" do
-        theorems.each do |theorem|
-          expect(theorem.reload.proof_status).to eq(status_proven)
+        it 'set state of each proof_attempt to processing' do
+          proof_attempts.each do |proof_attempt|
+            expect(proof_attempt).
+              to have_received(:update_state!).with(:processing)
+          end
         end
-      end
 
-      it "each proof_attempt's is done in the end" do
-        proof_attempts.each do |proof_attempt|
-          expect(proof_attempt.reload.state).to eq('done')
+        it "each proof_attempt's proof_status is THM" do
+          proof_attempts.each do |proof_attempt|
+            expect(proof_attempt.reload.proof_status).to eq(status_proven)
+          end
         end
-      end
 
-      it "each theorem's state is done in the end" do
-        theorems.each do |theorem|
-          expect(theorem.reload.state).to eq('done')
+        it "each theorem's proof_status is THM" do
+          theorems.each do |theorem|
+            expect(theorem.reload.proof_status).to eq(status_proven)
+          end
         end
-      end
 
-      it "ontology_version's state is done in the end" do
-        expect(ontology_version.reload.state).to eq('done')
+        it "each proof_attempt's is done in the end" do
+          proof_attempts.each do |proof_attempt|
+            expect(proof_attempt.reload.state).to eq('done')
+          end
+        end
+
+        it "each theorem's state is done in the end" do
+          theorems.each do |theorem|
+            expect(theorem.reload.state).to eq('done')
+          end
+        end
+
+        it "ontology_version's state is done in the end" do
+          expect(ontology_version.reload.state).to eq('done')
+        end
       end
     end
   end
