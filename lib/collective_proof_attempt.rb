@@ -60,6 +60,9 @@ class CollectiveProofAttempt
                           ontology_version.user,
                           proof_attempts,
                           input_io)
+  rescue => e
+    set_failed_on_many(proof_attempts, e)
+    raise
   end
 
   def execute_proof(prove_options)
@@ -68,5 +71,14 @@ class CollectiveProofAttempt
   rescue Hets::ExecutionError => e
     handle_hets_execution_error(e, self)
     [:abort, nil]
+  end
+
+  def set_failed_on_many(objects, error)
+    objects.each do |object|
+      begin
+        object.do_or_set_failed { raise error }
+      rescue error.class
+      end
+    end
   end
 end
