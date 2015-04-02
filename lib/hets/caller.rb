@@ -39,7 +39,7 @@ module Hets
     end
 
     def performing_instance(api_uri, data, method)
-      caller = caller_class(method).new(api_uri, data: data)
+      caller = caller_class(method).new(api_uri, data: data, timeout: timeout)
       caller.has_actual_content_through do |response|
         has_actual_content?(response)
       end
@@ -48,6 +48,10 @@ module Hets
 
     def has_actual_content?(response)
       response.is_a?(Net::HTTPSuccess)
+    end
+
+    def timeout
+      nil
     end
 
     def caller_class(method)
