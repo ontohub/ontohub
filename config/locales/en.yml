@@ -126,7 +126,11 @@ en:
         none_is_default: Selecting none will result in using the default prover.
       timeout:
         label: Timeout
-        none_is_default: Value is in seconds. Selecting none will result in using the default timeout.
+        none_is_default: Selecting none will result in using the default timeout.
+        day: day
+        hour: hour
+        minute: minute
+        second: second
     create:
       starting_jobs: Proving jobs have been scheduled. Please come back in a few moments.
       invalid_resource: Invalid proving request.

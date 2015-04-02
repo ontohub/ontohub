@@ -14,13 +14,18 @@ class Proof < FakeRecord
     end
   end
 
-  TIMEOUT_RANGE = (1..20)
+  TIMEOUT_RANGE = [5.seconds, 10.seconds, 30.seconds,
+                   1.minutes, 5.minutes, 10.minutes, 30.minutes,
+                   1.hours, 6.hours,
+                   1.days, 2.days, 7.days]
 
   attr_reader :proof_obligation, :prover_ids, :ontology, :timeout
   attr_reader :proof_attempts, :prove_options_list, :options_to_attempts_hash
 
   validates :prover_ids, provers: true
-  validates :timeout, inclusion: {in: TIMEOUT_RANGE}, if: :timeout_present?
+  validates :timeout,
+            inclusion: {in: (TIMEOUT_RANGE.first..TIMEOUT_RANGE.last)},
+            if: :timeout_present?
 
   def initialize(opts)
     opts[:proof] ||= {}
