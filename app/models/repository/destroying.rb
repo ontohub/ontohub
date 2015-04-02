@@ -24,10 +24,8 @@ module Repository::Destroying
     self.destroy_job_id = nil
     self.destroy_job_at = nil
     save!
-    raise e.class,
-          I18n.t('repository.delete_error',
-            oms: Settings.OMS.with_indefinite_article),
-          cause: e
+    raise e.class, I18n.t('repository.delete_error',
+                          oms: Settings.OMS.with_indefinite_article)
   end
 
   def undestroy

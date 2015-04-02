@@ -31,6 +31,16 @@ module Hets
           parser.parse(callback: callback)
           callback.process(:all, :end)
         end
+      rescue Hets::JSONParser::ParserError => e
+        io.rewind
+        if io.read(16) == 'nothing to prove'
+          pa_configuration = proof_attempts.first.proof_attempt_configuration
+          msg_lines = ['Hets found no theorems to prove']
+          msg_lines << "Configuration: #{pa_configuration.inspect}"
+          raise Hets::Errors::HetsFileError, msg_lines.join("\n")
+        else
+          raise
+        end
       end
 
       private

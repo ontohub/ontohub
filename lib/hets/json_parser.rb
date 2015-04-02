@@ -1,5 +1,7 @@
 module Hets
   class JSONParser
+    class ParserError < ::StandardError; end
+
     attr_accessor :resource, :callback, :parser
     attr_accessor :hierarchy, :keys_hierarchy
 
@@ -14,6 +16,8 @@ module Hets
       input = resource.respond_to?(:close) ? resource : File.open(resource)
       parser << input.read
       input.close
+    rescue JSON::Stream::ParserError => e
+      raise ParserError, e.message
     end
 
     protected
