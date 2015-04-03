@@ -10,6 +10,7 @@ class User < ActiveRecord::Base
   has_many :metadata
   has_many :permissions, :as => :subject
   has_many :keys
+  has_many :api_keys
 
   attr_accessible :email, :name, :first_name, :admin, :password, :as => :admin
 

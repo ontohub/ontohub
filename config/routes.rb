@@ -374,6 +374,9 @@ Will return a representation of the formality level.
     registrations: 'users/registrations'
   }
   resources :users, only: :show
+  namespace 'users' do
+    resource :api_keys, only: %w(create)
+  end
   resources :keys, except: [:show, :edit, :update]
 
   resources :logics, only: [:index, :show] do

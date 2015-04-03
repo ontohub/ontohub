@@ -19,3 +19,20 @@ Scenario: User Login
   When I fill in the login form.
   And click on the sign in button.
   Then I should be logged in.
+
+Scenario: Generating API-Key
+  I want to generate a personal API-Key
+  Given that I am really logged in
+  And I visit the Account page
+  And there is no existing API-Key
+  When I click on the generate button
+  Then I should see an API-Key
+
+Scenario: Regenerating API-Key
+  I want to generate a new personal API-Key
+  Given that I am really logged in
+  And I have an API-Key
+  When I visit the Account page
+  Then I should see the existing API-Key
+  When I click on the generate button
+  Then I should see the new API-Key
