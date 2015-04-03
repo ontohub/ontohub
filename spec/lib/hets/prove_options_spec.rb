@@ -1,11 +1,13 @@
 require 'spec_helper'
 
 describe Hets::ProveOptions do
-  let(:prover) { create :prover }
-  let(:theorem) { create :theorem }
-  let(:ontology) { theorem.ontology }
-  let(:axiom) { create :axiom, ontology: ontology }
-  let(:parent_ontology) { ontology.parent }
+  let!(:prover) { create :prover }
+  let!(:theorem) { create :theorem }
+  let!(:ontology) { theorem.ontology }
+  let!(:theorem2) { create :theorem, ontology: ontology }
+  let!(:theorem3) { create :theorem, ontology: ontology }
+  let!(:axiom) { create :axiom, ontology: ontology }
+  let!(:parent_ontology) { ontology.parent }
 
   context 'with strings' do
     let(:options) { {node: ontology.name,
@@ -50,13 +52,38 @@ describe Hets::ProveOptions do
       expect(prove_options.options[:theorems]).to eq(theorem_names)
     end
 
-    it 'sets the timeout as a string' do
+    it 'sets the normalized timeout as a string' do
       expect(prove_options.options[:timeout]).to eq('10')
     end
   end
 
+  context 'timeout' do
+    let(:timeout) { 10 }
+
+    context 'with three theorems' do
+      let(:options) { {ontology: ontology,
+                       theorems: [theorem, theorem2],
+                       timeout: timeout} }
+      let(:prove_options) { Hets::ProveOptions.new(options) }
+
+      it 'sets the normalized timeout as a string' do
+        expect(prove_options.options[:timeout]).to eq((timeout/2).to_s)
+      end
+    end
+
+    context 'without theorems' do
+      let(:options) { {ontology: ontology,
+                       timeout: timeout} }
+      let(:prove_options) { Hets::ProveOptions.new(options) }
+
+      it 'sets the normalized timeout as a string' do
+        expect(prove_options.options[:timeout]).to eq((timeout/3).to_s)
+      end
+    end
+  end
+
   context 'using the parent ontology' do
-    let(:options) { {ontology: parent_ontology} }
+    let(:options) { {ontology: parent_ontology, timeout: 10} }
     let(:prove_options) { Hets::ProveOptions.new(options) }
 
     it 'it does not set :node' do
