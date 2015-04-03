@@ -9,7 +9,7 @@ class AxiomSerializer < ApplicationSerializer
   end
 
   attributes :iri, :symbols
-  attributes :name, :text, :imported
+  attributes :name, :definition, :imported
 
   has_one :ontology, serializer: OntologySerializer::Reference
 
@@ -19,5 +19,9 @@ class AxiomSerializer < ApplicationSerializer
 
   def symbols
     qualified_locid_for(object, :symbols)
+  end
+
+  def definition
+    object.text
   end
 end
