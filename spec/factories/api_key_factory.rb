@@ -1,8 +1,9 @@
 FactoryGirl.define do
-  factory :api_key do
+  factory :api_key, aliases: %i(valid_api_key) do
     association :user
+    state { 'valid' }
 
-    factory :invalid_api_key do
+    trait :invalid do
       state { 'invalid' }
     end
   end

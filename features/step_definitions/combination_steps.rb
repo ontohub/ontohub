@@ -4,7 +4,7 @@ Given(/^that I have a valid API\-Key$/) do
 end
 
 Given(/^that I have an invalid API\-Key$/) do
-  @api_key = FactoryGirl.create :invalid_api_key
+  @api_key = FactoryGirl.create :api_key, :invalid
   @user = @api_key.user
 end
 
