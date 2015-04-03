@@ -18,5 +18,10 @@ module Hets
     def build_query_string
       {}
     end
+
+    def timeout
+      timeout = hets_options.options['timeout']
+      30.seconds + 2 * timeout.to_i if timeout
+    end
   end
 end

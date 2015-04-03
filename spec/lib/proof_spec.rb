@@ -2,6 +2,7 @@ require 'spec_helper'
 
 describe Proof do
   let(:provers) { [1,2].map { create(:prover, :with_sequenced_name) } }
+  let(:timeout) { 10 }
   let(:theorem) { create :theorem }
   let(:ontology) { theorem.ontology }
   let(:theorem2) { create :theorem, ontology: ontology }
@@ -11,9 +12,12 @@ describe Proof do
     {
       repository_id: repository.to_param,
       ontology_id: ontology.to_param,
-      proof: {prover_ids: [*provers.map(&:id).map(&:to_s), '']},
+      proof: {prover_ids: [*provers.map(&:id).map(&:to_s), ''],
+              timeout: timeout}
     }
   end
+
+  let(:options) { { timeout: timeout} }
   before do
     ontology.theorems << theorem2
     ontology.save!
@@ -24,9 +28,29 @@ describe Proof do
       expect(Proof.new(params).valid?).to be(true)
     end
 
+    it 'is valid without provers' do
+      params[:proof][:prover_ids] = ['']
+      expect(Proof.new(params).valid?).to be(true)
+    end
+
+    it 'is valid without a timeout' do
+      params[:proof][:timeout] = nil
+      expect(Proof.new(params).valid?).to be(true)
+    end
+
     it 'is not valid with bad provers' do
-      bad_params = params.merge({proof: {prover_ids: ['-1', '']}})
-      expect(Proof.new(bad_params).valid?).to be(false)
+      params[:proof][:prover_ids] = ['-1', '']
+      expect(Proof.new(params).valid?).to be(false)
+    end
+
+    it 'is not valid with a too little timeout' do
+      params[:proof][:timeout] = Proof::TIMEOUT_RANGE.first - 1
+      expect(Proof.new(params).valid?).to be(false)
+    end
+
+    it 'is not valid with a too high timeout' do
+      params[:proof][:timeout] = Proof::TIMEOUT_RANGE.last + 1
+      expect(Proof.new(params).valid?).to be(false)
     end
   end
 
@@ -50,7 +74,10 @@ describe Proof do
 
     it 'prove_options_list contains the provers' do
       expect(proof.prove_options_list).
-        to eq(provers.map { |prover| Hets::ProveOptions.new(prover: prover) })
+        to eq(provers.map do |prover|
+          options[:prover] = prover
+          Hets::ProveOptions.new(options)
+        end)
     end
 
     it 'map ProveOptions to a list of "theorems count" many ProofAttempt ids' do
@@ -114,6 +141,46 @@ describe Proof do
         end
       end
 
+      context 'ProofAttemptConfigurations' do
+        before { proof.save! }
+
+        it 'are created' do
+          proof.proof_attempts.each do |proof_attempt|
+            expect(proof_attempt.reload.proof_attempt_configuration).
+              not_to be_nil
+          end
+        end
+
+        context 'have the provers set' do
+          # On OntologyVersion, there are created "the same" ProofAttempts for
+          # each contained Theorem. We cannot check for equality of the array,
+          # because there are duplicate entries (wtr. to provers).
+          it 'inclusion of pa-conf provers in defined provers' do
+            proof.proof_attempts.each do |proof_attempt|
+              expect(provers).
+                to include(proof_attempt.reload.
+                  proof_attempt_configuration.prover)
+            end
+          end
+
+          it 'inclusion of defined provers in pa-conf provers' do
+            pa_configuration_provers = proof.proof_attempts.map(&:reload).
+              map(&:proof_attempt_configuration).
+              map(&:prover)
+            provers.each do |prover|
+              expect(pa_configuration_provers).to include(prover)
+            end
+          end
+        end
+
+        it 'have the timeout set' do
+          proof.proof_attempts.each do |proof_attempt|
+            expect(proof_attempt.reload.proof_attempt_configuration.timeout).
+              to eq(timeout)
+          end
+        end
+      end
+
       it 'with the proof attempts saved' do
         proof.proof_attempts.each do |proof_attempt|
           allow(proof_attempt).to receive(:save!).and_call_original
@@ -157,7 +224,10 @@ describe Proof do
 
     it 'prove_options_list contains the provers' do
       expect(proof.prove_options_list).
-        to eq(provers.map { |prover| Hets::ProveOptions.new(prover: prover) })
+        to eq(provers.map do |prover|
+          options[:prover] = prover
+          Hets::ProveOptions.new(options)
+        end)
     end
 
     it 'map ProveOptions to a list of "theorems count" many ProofAttempt ids' do
@@ -226,6 +296,33 @@ describe Proof do
         proof.save!
         proof.proof_attempts.each do |proof_attempt|
           expect(proof_attempt).to have_received(:save!)
+        end
+      end
+
+      context 'ProofAttemptConfigurations' do
+        before { proof.save! }
+
+        it 'are created' do
+          proof.proof_attempts.each do |proof_attempt|
+            expect(proof_attempt.reload.proof_attempt_configuration).
+              not_to be_nil
+          end
+        end
+
+        it 'have the provers set' do
+          # For a single theorem we can check for equality because there are no
+          # more proof attempts with the same provers.
+          pa_configuration_provers = proof.proof_attempts.map(&:reload).
+            map(&:proof_attempt_configuration).
+            map(&:prover)
+          expect(pa_configuration_provers).to eq(provers)
+        end
+
+        it 'have the timeout set' do
+          proof.proof_attempts.each do |proof_attempt|
+            expect(proof_attempt.reload.proof_attempt_configuration.timeout).
+              to eq(timeout)
+          end
         end
       end
 

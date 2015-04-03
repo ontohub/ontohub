@@ -5,15 +5,16 @@ module UriFetcher
   class HTTPCaller
     include UriFetcher::Errors
 
-    attr_accessor :uri, :data, :redirect_limit
+    attr_accessor :uri, :data, :redirect_limit, :timeout
     attr_accessor :previous_response, :current_response
     attr_accessor :content_test_block, :write_file, :file_type
     attr_writer :error_handler
 
-    def initialize(uri, data: {}, redirect_limit: DEFAULT_REDIRECTS)
+    def initialize(uri, data: {}, redirect_limit: DEFAULT_REDIRECTS, timeout: nil)
       self.uri = uri
       self.data = data
       self.redirect_limit = redirect_limit
+      self.timeout = timeout
     end
 
     def error_handler

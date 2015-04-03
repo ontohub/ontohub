@@ -76,6 +76,13 @@ class CollectiveProofAttempt
   rescue Hets::ExecutionError => e
     handle_hets_execution_error(e, self)
     [:abort, nil]
+  rescue => e
+    # Avoid stack level too deep in sidekiq.
+    # See https://github.com/mperham/sidekiq/issues/2284
+    if e.cause.is_a?(Hets::NotAHetsError)
+      e.define_singleton_method(:cause, -> { nil })
+    end
+    raise e
   end
 
   def set_failed_on_many(objects, error)

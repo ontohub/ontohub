@@ -122,7 +122,16 @@ en:
         theorem: 'theorem'
         ontology_version: 'ontology'
       provers:
+        label: Provers
         none_is_default: Selecting none will result in using the default prover.
+      timeout:
+        label: Timeout
+        hint: The timeout will be split evenly across the proof obligations.
+        default: Default (10 seconds)
+        day: day
+        hour: hour
+        minute: minute
+        second: second
     create:
       starting_jobs: Proving jobs have been scheduled. Please come back in a few moments.
       invalid_resource: Invalid proving request.

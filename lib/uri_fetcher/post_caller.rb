@@ -5,6 +5,7 @@ module UriFetcher
     def make_http_request(uri, &block)
       Net::HTTP.start(uri.hostname, uri.port,
         use_ssl: uri.scheme == 'https') do |http|
+        http.read_timeout = timeout if timeout
         return http.request_post(uri, data_json, HEADER, &block)
       end
     end
