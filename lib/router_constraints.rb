@@ -65,7 +65,12 @@ class LocIdRouterConstraint < RouterConstraint
     if result
       proof_attempt = element.proof_attempt if @map[:proof_attempt]
       theorem = element.theorem if @map[:theorem]
-      path_params = {repository_id: ontology.repository.to_param}
+      path_params =
+        if ontology.respond_to?(:repository)
+          {repository_id: ontology.repository.to_param}
+        else
+          {}
+        end
       path_params[@map[:proof_attempt]] = proof_attempt.id if @map[:proof_attempt]
       path_params[@map[:theorem]] = theorem.id if @map[:theorem]
       path_params[@map[:ontology]] = ontology.id if @map[:ontology]

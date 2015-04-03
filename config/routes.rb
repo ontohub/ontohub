@@ -479,6 +479,30 @@ Will return a representation of the logic mapping. The logic mapping
 is determined according to the *locid.
       BODY
     end
+
+  specified_get '/proof-statuses' => 'api/v1/proof_statuses#index',
+    as: :proof_statuses do
+      accept 'application/json'
+
+      doc title: 'index of proof statuses',
+          body: <<-BODY
+Will return a representation of the proof statuses index.
+      BODY
+    end
+
+  specified_get '*locid' => 'api/v1/proof_statuses#show',
+    as: :proof_status_iri,
+    constraints: [
+      LocIdRouterConstraint.new(ProofStatus, element: :id),
+    ] do
+      accept 'application/json'
+
+      doc title: 'loc/id reference to a proof status',
+          body: <<-BODY
+Will return a representation of the proof status. The proof status
+is determined according to the *locid.
+      BODY
+    end
   #
   ###############
 
