@@ -126,7 +126,8 @@ en:
         none_is_default: Selecting none will result in using the default prover.
       timeout:
         label: Timeout
-        none_is_default: Selecting none will result in using the default timeout.
+        hint: The timeout will be split evenly across the proof obligations.
+        default: Default (10 seconds)
         day: day
         hour: hour
         minute: minute
