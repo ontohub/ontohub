@@ -51,7 +51,8 @@ class ProofAttempt < ActiveRecord::Base
   end
 
   def generate_locid
-    self.locid = "#{theorem.locid}//ProofAttempt-#{number}"
+    self.locid =
+      "#{theorem.locid}//#{self.class.to_s.underscore.dasherize}-#{number}"
   end
 
   def update_theorem_status
