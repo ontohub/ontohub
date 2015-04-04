@@ -12,13 +12,19 @@ class FakeRecord
   class Error < ::StandardError; end
   class RecordNotSavedError < Error; end
 
-  def self.create(attributes = nil, options = {}, &block)
+  def self.create(*args, &block)
+    create!(*args, &block)
+  rescue RecordNotSavedError
+    nil
+  end
+
+  def self.create!(attributes = nil, options = {}, &block)
     if attributes.is_a?(Array)
-      attributes.collect { |attr| create(attr, options, &block) }
+      attributes.collect { |attr| create!(attr, options, &block) }
     else
       object = new(attributes, options)
       yield(object) if block_given?
-      object.save
+      object.save!
       object
     end
   end
