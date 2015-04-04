@@ -2,7 +2,7 @@
 http_interactions:
 - request:
     method: get
-    uri: https://masterthesis.rightsrestricted.com/ontohub/symbol.json
+    uri: https://masterthesis.rightsrestricted.com/ontohub/prover_output.json
     body:
       encoding: US-ASCII
       string: ''
@@ -21,17 +21,17 @@ http_interactions:
       Server:
       - nginx/1.6.2
       Date:
-      - Sat, 04 Apr 2015 19:38:35 GMT
+      - Sat, 04 Apr 2015 19:37:03 GMT
       Content-Type:
       - application/json
       Content-Length:
-      - '1216'
+      - '760'
       Last-Modified:
-      - Sat, 04 Apr 2015 09:49:11 GMT
+      - Wed, 01 Apr 2015 09:31:10 GMT
       Connection:
       - keep-alive
       Etag:
-      - '"551fb397-4c0"'
+      - '"551bbade-2f8"'
       Strict-Transport-Security:
       - max-age=31536000
       X-Frame-Options:
@@ -42,55 +42,36 @@ http_interactions:
       encoding: UTF-8
       string: |
         {
-          "id": "https://masterthesis.rightsrestricted.com/ontohub/symbol.json#",
+          "id": "https://masterthesis.rightsrestricted.com/ontohub/prover_output.json#",
           "$schema": "http://json-schema.org/draft-04/schema#",
-          "title": "Symbol",
-          "description": "A symbol defined by an ontology",
+          "title": "Prover Output",
+          "description": "The prover output for a specific proof attempt",
           "type": "object",
           "properties": {
             "iri": {
-              "description": "The unique identifier for the symbol",
+              "description": "The unique identifier for the prover output",
               "type": "string",
               "format": "uri"
             },
-            "name": {
-              "description": "The name of the symbol",
+            "prover": {
+              "description": "The name of the prover",
               "type": "string"
             },
-            "kind": {
-              "description": "The kind of symbol",
+            "content": {
+              "description": "The actual prover output",
               "type": "string"
             },
-            "definition": {
-              "description": "The definition of the symbol",
-              "type": "string"
-            },
-            "label": {
-              "description": "The label that is attached to the symbol",
-              "type": ["string", "null"]
-            },
-            "comment": {
-              "description": "A comment on the symbol",
-              "type": ["string", "null"]
-            },
-            "ontology": { "$ref": "references.json#/definitions/ontology" },
-            "sentences": {
-              "description": "Reference to all sentences that use the symbol in this ontology",
-              "type": "string",
-              "format": "uri"
-            }
+            "proof_attempt": { "$ref": "references.json#/definitions/proof_attempt" }
           },
           "required": [
             "iri",
-            "name",
-            "kind",
-            "definition",
-            "ontology",
-            "sentences"
+            "prover",
+            "content",
+            "proof_attempt"
           ]
         }
     http_version: 
-  recorded_at: Sat, 04 Apr 2015 19:38:35 GMT
+  recorded_at: Sat, 04 Apr 2015 19:37:03 GMT
 - request:
     method: get
     uri: https://masterthesis.rightsrestricted.com/ontohub/references.json
@@ -112,7 +93,7 @@ http_interactions:
       Server:
       - nginx/1.6.2
       Date:
-      - Sat, 04 Apr 2015 19:38:35 GMT
+      - Sat, 04 Apr 2015 19:37:03 GMT
       Content-Type:
       - application/json
       Content-Length:
@@ -371,5 +352,5 @@ http_interactions:
           }
         }
     http_version: 
-  recorded_at: Sat, 04 Apr 2015 19:38:35 GMT
+  recorded_at: Sat, 04 Apr 2015 19:37:03 GMT
 recorded_with: VCR 2.9.3

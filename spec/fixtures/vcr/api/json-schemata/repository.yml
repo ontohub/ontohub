@@ -21,17 +21,17 @@ http_interactions:
       Server:
       - nginx/1.6.2
       Date:
-      - Mon, 09 Mar 2015 14:37:50 GMT
+      - Sat, 04 Apr 2015 19:37:20 GMT
       Content-Type:
       - application/json
       Content-Length:
-      - '1620'
+      - '1840'
       Last-Modified:
-      - Fri, 06 Mar 2015 11:34:35 GMT
+      - Wed, 01 Apr 2015 09:38:39 GMT
       Connection:
       - keep-alive
       Etag:
-      - '"54f990cb-654"'
+      - '"551bbc9f-730"'
       Strict-Transport-Security:
       - max-age=31536000
       X-Frame-Options:
@@ -50,7 +50,8 @@ http_interactions:
           "properties": {
             "iri": {
               "description": "The unique identifier for a repository",
-              "type": "string"
+              "type": "string",
+              "format": "uri"
             },
             "name": {
               "description": "The name of the repository",
@@ -76,19 +77,23 @@ http_interactions:
                   "properties": {
                     "type": {
                       "description": "Currently either mirror or fork",
-                      "type": "string"
+                      "type": "string",
+                      "enum": [ "mirror", "fork" ]
                     },
                     "source_type": {
                       "description": "The type of the source. Currently either git or svn",
-                      "type": "string"
+                      "type": "string",
+                      "enum": [ "git", "svn" ]
                     },
                     "state": {
                       "description": "State of the mirroring",
-                      "type": "string"
+                      "type": "string",
+                      "enum": [ "pending", "fetching", "processing",  "done", "failed" ]
                     },
                     "address": {
                       "description": "URI/URL/IRI of the source",
-                      "type": "string"
+                      "type": "string",
+                      "format": "uri"
                     }
                   }
                 },
@@ -98,5 +103,5 @@ http_interactions:
           }
         }
     http_version: 
-  recorded_at: Mon, 09 Mar 2015 14:37:50 GMT
-recorded_with: VCR 2.9.2
+  recorded_at: Sat, 04 Apr 2015 19:37:20 GMT
+recorded_with: VCR 2.9.3

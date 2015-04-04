@@ -2,7 +2,7 @@
 http_interactions:
 - request:
     method: get
-    uri: https://masterthesis.rightsrestricted.com/ontohub/symbol.json
+    uri: https://masterthesis.rightsrestricted.com/ontohub/theorem.json
     body:
       encoding: US-ASCII
       string: ''
@@ -21,17 +21,17 @@ http_interactions:
       Server:
       - nginx/1.6.2
       Date:
-      - Sat, 04 Apr 2015 19:38:35 GMT
+      - Sat, 04 Apr 2015 19:35:18 GMT
       Content-Type:
       - application/json
       Content-Length:
-      - '1216'
+      - '1379'
       Last-Modified:
-      - Sat, 04 Apr 2015 09:49:11 GMT
+      - Thu, 02 Apr 2015 10:03:34 GMT
       Connection:
       - keep-alive
       Etag:
-      - '"551fb397-4c0"'
+      - '"551d13f6-563"'
       Strict-Transport-Security:
       - max-age=31536000
       X-Frame-Options:
@@ -39,58 +39,41 @@ http_interactions:
       Accept-Ranges:
       - bytes
     body:
-      encoding: UTF-8
-      string: |
-        {
-          "id": "https://masterthesis.rightsrestricted.com/ontohub/symbol.json#",
-          "$schema": "http://json-schema.org/draft-04/schema#",
-          "title": "Symbol",
-          "description": "A symbol defined by an ontology",
-          "type": "object",
-          "properties": {
-            "iri": {
-              "description": "The unique identifier for the symbol",
-              "type": "string",
-              "format": "uri"
-            },
-            "name": {
-              "description": "The name of the symbol",
-              "type": "string"
-            },
-            "kind": {
-              "description": "The kind of symbol",
-              "type": "string"
-            },
-            "definition": {
-              "description": "The definition of the symbol",
-              "type": "string"
-            },
-            "label": {
-              "description": "The label that is attached to the symbol",
-              "type": ["string", "null"]
-            },
-            "comment": {
-              "description": "A comment on the symbol",
-              "type": ["string", "null"]
-            },
-            "ontology": { "$ref": "references.json#/definitions/ontology" },
-            "sentences": {
-              "description": "Reference to all sentences that use the symbol in this ontology",
-              "type": "string",
-              "format": "uri"
-            }
-          },
-          "required": [
-            "iri",
-            "name",
-            "kind",
-            "definition",
-            "ontology",
-            "sentences"
-          ]
-        }
+      encoding: ASCII-8BIT
+      string: !binary |-
+        ewogICJpZCI6ICJodHRwczovL21hc3RlcnRoZXNpcy5yaWdodHNyZXN0cmlj
+        dGVkLmNvbS9vbnRvaHViL3RoZW9yZW0uanNvbiMiLAogICIkc2NoZW1hIjog
+        Imh0dHA6Ly9qc29uLXNjaGVtYS5vcmcvZHJhZnQtMDQvc2NoZW1hIyIsCiAg
+        InRpdGxlIjogIlRoZW9yZW0iLAogICJkZXNjcmlwdGlvbiI6ICJBIHRoZW9y
+        ZW0gaW5zaWRlIG9mIGFuIG9udG9sb2d5IiwKICAidHlwZSI6ICJvYmplY3Qi
+        LAogICJwcm9wZXJ0aWVzIjogewogICAgImlyaSI6IHsKICAgICAgImRlc2Ny
+        aXB0aW9uIjogIlRoZSB1bmlxdWUgaWRlbnRpZmllciBmb3IgdGhlIHRoZW9y
+        ZW0iLAogICAgICAidHlwZSI6ICJzdHJpbmciLAogICAgICAiZm9ybWF0Ijog
+        InVyaSIKICAgIH0sCiAgICAibmFtZSI6IHsKICAgICAgImRlc2NyaXB0aW9u
+        IjogIlRoZSBuYW1lIG9mIHRoZSB0aGVvcmVtIOKAlCB1c3VhbGx5IGF1dG8t
+        Z2VuZXJhdGVkLiIsCiAgICAgICJ0eXBlIjogInN0cmluZyIKICAgIH0sCiAg
+        ICAiZGVmaW5pdGlvbiI6IHsKICAgICAgImRlc2NyaXB0aW9uIjogIlRoZSBk
+        ZWZpbml0aW9uIG9mIHRoZSB0aGVvcmVtIiwKICAgICAgInR5cGUiOiAic3Ry
+        aW5nIgogICAgfSwKICAgICJldmFsdWF0aW9uX3N0YXRlIjogewogICAgICAi
+        ZGVzY3JpcHRpb24iOiAiVGhlIGN1cnJlbnQgc3RhdGUgb2YgdGhlIHByb29m
+        IGV2YWx1YXRpb24iLAogICAgICAidHlwZSI6ICJzdHJpbmciLAogICAgICAi
+        ZW51bSI6IFsgImRvbmUiLCAiZmFpbGVkIiwgInBlbmRpbmciLCAicHJvY2Vz
+        c2luZyIgXQogICAgfSwKICAgICJwcm9vZl9zdGF0dXMiOiB7ICIkcmVmIjog
+        InJlZmVyZW5jZXMuanNvbiMvZGVmaW5pdGlvbnMvcHJvb2Zfc3RhdHVzIiB9
+        LAogICAgIm9udG9sb2d5IjogeyAiJHJlZiI6ICJyZWZlcmVuY2VzLmpzb24j
+        L2RlZmluaXRpb25zL29udG9sb2d5IiB9LAogICAgInN5bWJvbHMiOiB7CiAg
+        ICAgICJkZXNjcmlwdGlvbiI6ICJSZWZlcmVuY2UgdG8gYWxsIHN5bWJvbHMg
+        dXNlZCBpbiB0aGlzIHRoZW9yZW0iLAogICAgICAidHlwZSI6ICJzdHJpbmci
+        LAogICAgICAiZm9ybWF0IjogInVyaSIKICAgIH0sCiAgICAicHJvb2ZfYXR0
+        ZW1wdHMiOiB7CiAgICAgICJkZXNjcmlwdGlvbiI6ICJSZWZlcmVuY2UgdG8g
+        YWxsIHByb29mIGF0dGVtcHRzIGZvciB0aGlzIHRoZW9yZW0iLAogICAgICAi
+        dHlwZSI6ICJzdHJpbmciLAogICAgICAiZm9ybWF0IjogInVyaSIKICAgIH0K
+        ICB9LAogICJyZXF1aXJlZCI6IFsKICAgICJpcmkiLAogICAgIm5hbWUiLAog
+        ICAgImRlZmluaXRpb24iLAogICAgImV2YWx1YXRpb25fc3RhdGUiLAogICAg
+        InByb29mX3N0YXR1cyIsCiAgICAib250b2xvZ3kiLAogICAgInN5bWJvbHMi
+        LAogICAgInByb29mX2F0dGVtcHRzIgogIF0KfQo=
     http_version: 
-  recorded_at: Sat, 04 Apr 2015 19:38:35 GMT
+  recorded_at: Sat, 04 Apr 2015 19:35:18 GMT
 - request:
     method: get
     uri: https://masterthesis.rightsrestricted.com/ontohub/references.json
@@ -112,7 +95,7 @@ http_interactions:
       Server:
       - nginx/1.6.2
       Date:
-      - Sat, 04 Apr 2015 19:38:35 GMT
+      - Sat, 04 Apr 2015 19:35:18 GMT
       Content-Type:
       - application/json
       Content-Length:
@@ -371,5 +354,5 @@ http_interactions:
           }
         }
     http_version: 
-  recorded_at: Sat, 04 Apr 2015 19:38:35 GMT
+  recorded_at: Sat, 04 Apr 2015 19:35:18 GMT
 recorded_with: VCR 2.9.3

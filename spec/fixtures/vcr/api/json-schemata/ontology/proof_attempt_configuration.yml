@@ -2,7 +2,7 @@
 http_interactions:
 - request:
     method: get
-    uri: https://masterthesis.rightsrestricted.com/ontohub/symbol.json
+    uri: https://masterthesis.rightsrestricted.com/ontohub/proof_attempt_configuration.json
     body:
       encoding: US-ASCII
       string: ''
@@ -21,17 +21,17 @@ http_interactions:
       Server:
       - nginx/1.6.2
       Date:
-      - Sat, 04 Apr 2015 19:38:35 GMT
+      - Sat, 04 Apr 2015 19:36:26 GMT
       Content-Type:
       - application/json
       Content-Length:
-      - '1216'
+      - '1376'
       Last-Modified:
-      - Sat, 04 Apr 2015 09:49:11 GMT
+      - Wed, 01 Apr 2015 09:28:42 GMT
       Connection:
       - keep-alive
       Etag:
-      - '"551fb397-4c0"'
+      - '"551bba4a-560"'
       Strict-Transport-Security:
       - max-age=31536000
       X-Frame-Options:
@@ -42,55 +42,54 @@ http_interactions:
       encoding: UTF-8
       string: |
         {
-          "id": "https://masterthesis.rightsrestricted.com/ontohub/symbol.json#",
+          "id": "https://masterthesis.rightsrestricted.com/ontohub/proof_attempt_configuration.json#",
           "$schema": "http://json-schema.org/draft-04/schema#",
-          "title": "Symbol",
-          "description": "A symbol defined by an ontology",
+          "title": "Proof Attempt Configuration",
+          "description": "A configuration of a proof attempt",
           "type": "object",
           "properties": {
             "iri": {
-              "description": "The unique identifier for the symbol",
+              "description": "The unique identifier for the proof attempt",
               "type": "string",
               "format": "uri"
             },
-            "name": {
-              "description": "The name of the symbol",
-              "type": "string"
+            "number": {
+              "description": "The identifying number of the configuration. The number is relative to the ontology",
+              "type": "integer"
             },
-            "kind": {
-              "description": "The kind of symbol",
-              "type": "string"
-            },
-            "definition": {
-              "description": "The definition of the symbol",
-              "type": "string"
-            },
-            "label": {
-              "description": "The label that is attached to the symbol",
+            "selected_prover": {
+              "description": "The name of the prover",
               "type": ["string", "null"]
             },
-            "comment": {
-              "description": "A comment on the symbol",
-              "type": ["string", "null"]
+            "selected_timeout": {
+              "description": "The timeout for the proof attempt (in seconds)",
+              "type": ["integer", "null"]
             },
-            "ontology": { "$ref": "references.json#/definitions/ontology" },
-            "sentences": {
-              "description": "Reference to all sentences that use the symbol in this ontology",
+            "selected_logic_mapping": {
+              "oneOf": [
+                { "$ref": "references.json#/definitions/logic_mapping" },
+                { "type": "null" }
+              ]
+            },
+            "selected_axioms": {
+              "description": "Reference to all axioms selected for this attempt",
+              "type": "string",
+              "format": "uri"
+            },
+            "selected_theorems": {
+              "description": "Reference to all theorems selected for this attempt",
               "type": "string",
               "format": "uri"
             }
           },
           "required": [
             "iri",
-            "name",
-            "kind",
-            "definition",
-            "ontology",
-            "sentences"
+            "selected_axioms",
+            "selected_theorems"
           ]
         }
     http_version: 
-  recorded_at: Sat, 04 Apr 2015 19:38:35 GMT
+  recorded_at: Sat, 04 Apr 2015 19:36:26 GMT
 - request:
     method: get
     uri: https://masterthesis.rightsrestricted.com/ontohub/references.json
@@ -112,7 +111,7 @@ http_interactions:
       Server:
       - nginx/1.6.2
       Date:
-      - Sat, 04 Apr 2015 19:38:35 GMT
+      - Sat, 04 Apr 2015 19:36:26 GMT
       Content-Type:
       - application/json
       Content-Length:
@@ -371,5 +370,5 @@ http_interactions:
           }
         }
     http_version: 
-  recorded_at: Sat, 04 Apr 2015 19:38:35 GMT
+  recorded_at: Sat, 04 Apr 2015 19:36:26 GMT
 recorded_with: VCR 2.9.3

@@ -2,7 +2,7 @@
 http_interactions:
 - request:
     method: get
-    uri: https://masterthesis.rightsrestricted.com/ontohub/symbol.json
+    uri: https://masterthesis.rightsrestricted.com/ontohub/logic_mapping.json
     body:
       encoding: US-ASCII
       string: ''
@@ -21,17 +21,17 @@ http_interactions:
       Server:
       - nginx/1.6.2
       Date:
-      - Sat, 04 Apr 2015 19:38:35 GMT
+      - Sat, 04 Apr 2015 19:37:52 GMT
       Content-Type:
       - application/json
       Content-Length:
-      - '1216'
+      - '1441'
       Last-Modified:
-      - Sat, 04 Apr 2015 09:49:11 GMT
+      - Sat, 04 Apr 2015 16:37:22 GMT
       Connection:
       - keep-alive
       Etag:
-      - '"551fb397-4c0"'
+      - '"55201342-5a1"'
       Strict-Transport-Security:
       - max-age=31536000
       X-Frame-Options:
@@ -42,55 +42,58 @@ http_interactions:
       encoding: UTF-8
       string: |
         {
-          "id": "https://masterthesis.rightsrestricted.com/ontohub/symbol.json#",
+          "id": "https://masterthesis.rightsrestricted.com/ontohub/logic_mapping.json#",
           "$schema": "http://json-schema.org/draft-04/schema#",
-          "title": "Symbol",
-          "description": "A symbol defined by an ontology",
+          "title": "Logic Mapping",
+          "description": "A mapping between two logics",
           "type": "object",
           "properties": {
             "iri": {
-              "description": "The unique identifier for the symbol",
+              "description": "The unique identifier for the logic-mapping",
               "type": "string",
               "format": "uri"
             },
-            "name": {
-              "description": "The name of the symbol",
+            "standardization_status": {
+              "description": "The standardization status of the mapping",
               "type": "string"
             },
-            "kind": {
-              "description": "The kind of symbol",
-              "type": "string"
-            },
-            "definition": {
-              "description": "The definition of the symbol",
-              "type": "string"
-            },
-            "label": {
-              "description": "The label that is attached to the symbol",
+            "defined_by": {
+              "description": "The authority that defined the mapping",
               "type": ["string", "null"]
             },
-            "comment": {
-              "description": "A comment on the symbol",
-              "type": ["string", "null"]
+            "faithfulness": {
+              "description": "Degree of faithfulness of the mapping",
+              "type": "string"
             },
-            "ontology": { "$ref": "references.json#/definitions/ontology" },
-            "sentences": {
-              "description": "Reference to all sentences that use the symbol in this ontology",
-              "type": "string",
-              "format": "uri"
-            }
+            "exactness": {
+              "description": "Degree of exactness of the mapping",
+              "type": "string"
+            },
+            "theoroidalness": {
+              "description": "Degree of theoroidalness of the mapping",
+              "type": "string"
+            },
+            "projection": {
+              "description": "Describes whether the mapping is a projection",
+              "type": "boolean"
+            },
+            "source_logic": { "$ref": "references.json#/definitions/logic" },
+            "target_logic": { "$ref": "references.json#/definitions/logic" }
           },
           "required": [
             "iri",
-            "name",
-            "kind",
-            "definition",
-            "ontology",
-            "sentences"
+            "standardization_status",
+            "defined_by",
+            "faithfulness",
+            "theoroidalness",
+            "exactness",
+            "projection",
+            "source_logic",
+            "target_logic"
           ]
         }
     http_version: 
-  recorded_at: Sat, 04 Apr 2015 19:38:35 GMT
+  recorded_at: Sat, 04 Apr 2015 19:37:52 GMT
 - request:
     method: get
     uri: https://masterthesis.rightsrestricted.com/ontohub/references.json
@@ -112,7 +115,7 @@ http_interactions:
       Server:
       - nginx/1.6.2
       Date:
-      - Sat, 04 Apr 2015 19:38:35 GMT
+      - Sat, 04 Apr 2015 19:37:52 GMT
       Content-Type:
       - application/json
       Content-Length:
@@ -371,5 +374,5 @@ http_interactions:
           }
         }
     http_version: 
-  recorded_at: Sat, 04 Apr 2015 19:38:35 GMT
+  recorded_at: Sat, 04 Apr 2015 19:37:52 GMT
 recorded_with: VCR 2.9.3
