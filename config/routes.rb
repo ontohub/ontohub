@@ -356,8 +356,7 @@ Currently this will return the list of all sentences of the ontology.
       LocIdRouterConstraint.new(ProofAttempt, ontology: :ontology_id, theorem: :theorem_id, element: :id),
     ] do
       accept 'text/html'
-      # TODO: add api controller
-      #reroute_on_mime 'application/json', to: 'api/v1/proof_attempts#show'
+      reroute_on_mime 'application/json', to: 'api/v1/proof_attempts#show'
 
       doc title: 'loc/id reference to a proof attempt',
           body: <<-BODY
