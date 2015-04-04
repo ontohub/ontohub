@@ -5,17 +5,21 @@ class Combination < FakeRecord
   attr_reader :nodes
   attr_reader :target_repository, :error, :user
 
+  validate :nodes_is_collection, :nodes_is_not_empty
+
+  def self.combined_ontology!(*args)
+    create!(*args).ontology
+  end
+
   def initialize(user, target_repository, combination_hash)
     @user = user
-    @target_repository = target_repository
-    from_combination_hash(combination_hash)
+    @target_repository = Repository.find(target_repository)
+    from_combination_hash(combination_hash.with_indifferent_access)
   end
 
   def save!
+    raise RecordNotSavedError unless valid?
     ontology
-  rescue StandardError => error
-    @error = error
-    raise RecordNotSavedError, "Couldn't create combination!"
   end
 
   def file_name
@@ -85,5 +89,17 @@ class Combination < FakeRecord
   def commit_message_erb
     template_file = Rails.root.join('lib/combinations/commit_message.erb')
     ERB.new(template_file.read, nil, '>')
+  end
+
+  def nodes_is_collection
+    unless nodes.is_a?(Enumerable)
+      errors.add(:nodes, 'is not an array/collection')
+    end
+  end
+
+  def nodes_is_not_empty
+    unless nodes.present?
+      errors.add(:nodes, 'should be set and contain URIs')
+    end
   end
 end
