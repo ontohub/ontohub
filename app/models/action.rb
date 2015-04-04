@@ -3,6 +3,12 @@ class Action < ActiveRecord::Base
 
   attr_accessible :initial_eta, :resource
 
+  def self.enclose!(initial_eta, klass, method, *args)
+    action = create!(initial_eta: initial_eta)
+    ActionWorker.perform_async(action.id, klass.to_s, method, *args)
+    action
+  end
+
   def eta(time = Time.now)
     diff = (created_at + initial_eta) - time
     [diff, 0].max
