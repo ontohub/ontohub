@@ -1,5 +1,6 @@
 class Combination < FakeRecord
   DEFAULT_NAME = 'combinations.dol'
+  DEFAULT_COMBINATION_NAME = 'combination'
 
   attr_reader :nodes
   attr_reader :target_repository, :error
@@ -25,7 +26,7 @@ class Combination < FakeRecord
   end
 
   def combination_name
-    "combination"
+    @combination_name ||= DEFAULT_COMBINATION_NAME
   end
 
   def ontology
@@ -37,6 +38,7 @@ class Combination < FakeRecord
     @nodes = hash.fetch(:nodes, [])
     @file_name = hash[:file_name]
     @commit_message = hash[:commit_message]
+    @combination_name = hash[:combination_name]
   end
 
   def create_ontology!
