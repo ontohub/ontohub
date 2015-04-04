@@ -120,6 +120,7 @@ group :test do
   gem 'shoulda', '~> 3.5.0'
   gem "shoulda_routing_macros", "~> 0.1.2"
   gem "factory_girl_rails", '~> 4.4.1'
+  gem 'rspec-activemodel-mocks', '~> 1.0.1'
 
   # Required for integration tests
   gem 'capybara', '~> 2.4.1'
