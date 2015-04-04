@@ -119,21 +119,6 @@ Currently the representation is a list of all theorems in the ontology.
       BODY
     end
 
-  specified_get '/ref/mmt/:repository_id/*path' => 'api/v1/sentences#show',
-    as: :sentence_iri_mmt,
-    constraints: [
-      MMTRouterConstraint.new(Sentence, ontology: :ontology_id),
-    ] do
-      accept 'application/json'
-
-      doc title: 'MMT reference to a sentence',
-          body: <<-BODY
-Will return a representation of the sentence. The sentence
-is determined according to the *path and to the MMT-query-string.
-Currently the representation is a list of all sentences in the ontology.
-      BODY
-    end
-
   specified_get '/ref/mmt/:repository_id/*path' => 'api/v1/proof_attempt_configurations#show',
     as: :proof_attempt_configuration_iri_mmt,
     constraints: [
@@ -253,21 +238,6 @@ is determined according to the *locid.
 Will return a representation of the symbol. The symbol
 is determined according to the *locid.
 Currently this will return the list of all symbols of the ontology.
-      BODY
-    end
-
-  specified_get '/:repository_id/*locid' => 'api/v1/sentences#show',
-    as: :sentence_iri,
-    constraints: [
-      LocIdRouterConstraint.new(Sentence, ontology: :ontology_id, element: :id),
-    ] do
-      accept 'application/json'
-
-      doc title: 'loc/id reference to a sentence',
-          body: <<-BODY
-Will return a representation of the sentence. The sentence
-is determined according to the *locid.
-Currently this will return the list of all sentences of the ontology.
       BODY
     end
 
