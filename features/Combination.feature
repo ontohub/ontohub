@@ -29,3 +29,13 @@ Scenario: Creating a Combination
   When I create a combination via the API of these ontologies
   Then I should get a 201 response
   And a location-header to the combination-ontology
+  And the body should be valid for a 201 combination-response
+
+Scenario: Creating a Combination with invalid request
+  Given that I have a valid API-Key
+  And I have a repository with path: "default"
+  When I create a combination via the API with these:
+    | nodes |
+    | "foobar" |
+  Then I should get a 400 response
+  And the body should be valid for a 400 combination-response
