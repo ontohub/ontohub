@@ -4,7 +4,7 @@ class FormalityLevelSerializer < ApplicationSerializer
     attributes :name
 
     def iri
-      urls.license_model_url(object, host: Settings.hostname)
+      urls.formality_level_url(object, host: Settings.hostname)
     end
   end
 
