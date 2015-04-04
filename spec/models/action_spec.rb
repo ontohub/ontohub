@@ -46,5 +46,14 @@ describe Action do
         expect { action.status }.to raise_error(NoMethodError)
       end
     end
+
+    context 'without a resource' do
+      let(:resource) { nil }
+      let(:status) { 'waiting' }
+
+      it 'should return the correct status' do
+        expect(action.status).to eq(status)
+      end
+    end
   end
 end

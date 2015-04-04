@@ -9,7 +9,9 @@ class Action < ActiveRecord::Base
   end
 
   def status
-    if resource.respond_to?(:state)
+    if resource.nil?
+      'waiting'
+    elsif resource.respond_to?(:state)
       resource.state
     elsif resource.respond_to?(:status)
       resource.status
