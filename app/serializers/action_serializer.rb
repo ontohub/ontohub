@@ -12,4 +12,8 @@ class ActionSerializer < ApplicationSerializer
   def iri
     Reference.new(object).iri
   end
+
+  def eta
+    object.eta.to_i
+  end
 end
