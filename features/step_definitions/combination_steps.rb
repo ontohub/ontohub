@@ -57,6 +57,11 @@ Then(/^a location\-header to the combination\-ontology$/) do
   expect(last_response.headers["Location"]).to eq(Ontology.last.locid)
 end
 
+Then(/^a location\-header to an action$/) do
+  expect(last_response.headers["Location"]).
+    to eq(action_iri_path(Action.last))
+end
+
 Then(/^the body should be valid for a (\d+) combination-response/) do |status|
   schema = schema_for("repository/combinations/POST/response/#{status}")
   VCR.use_cassette "api/json-schemata/repository/combinations/#{status}" do

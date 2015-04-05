@@ -27,9 +27,9 @@ Scenario: Creating a Combination
   And I have a repository with path: "default"
   And I have 2 ontologies
   When I create a combination via the API of these ontologies
-  Then I should get a 201 response
-  And a location-header to the combination-ontology
-  And the body should be valid for a 201 combination-response
+  Then I should get a 202 response
+  And a location-header to an action
+  And the body should be valid for a 202 combination-response
 
 Scenario: Creating a Combination with invalid request
   Given that I have a valid API-Key
