@@ -1,4 +1,6 @@
 class Action < ActiveRecord::Base
+  TERMINAL_STATUSES = %w(done failed)
+
   belongs_to :resource, polymorphic: true
 
   attr_accessible :initial_eta, :resource
@@ -23,6 +25,14 @@ class Action < ActiveRecord::Base
       resource.status
     else
       raise NoMethodError, "resource does know neither state nor status."
+    end
+  end
+
+  def ready?
+    if resource.respond_to?(:ready?)
+      resource.ready?
+    else
+      TERMINAL_STATUSES.include?(status.to_s)
     end
   end
 end
