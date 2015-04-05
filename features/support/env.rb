@@ -5,6 +5,7 @@
 # files.
 require File.expand_path("../../../spec/shared_helper", __FILE__)
 
+require 'sidekiq/testing'
 require 'cucumber/rails'
 require 'capybara/poltergeist'
 
