@@ -3,9 +3,10 @@ class Combination < FakeRecord
   DEFAULT_COMBINATION_NAME = 'combination'
 
   attr_reader :nodes
-  attr_reader :target_repository, :error
+  attr_reader :target_repository, :error, :user
 
-  def initialize(target_repository, combination_hash)
+  def initialize(user, target_repository, combination_hash)
+    @user = user
     @target_repository = target_repository
     from_combination_hash(combination_hash)
   end
@@ -59,7 +60,7 @@ class Combination < FakeRecord
       target_filename: target_filename,
       repository_id: target_repository.path,
       repository_file: {repository_id: target_repository.path},
-      user: User.first,
+      user: user,
       message: commit_message
   end
 

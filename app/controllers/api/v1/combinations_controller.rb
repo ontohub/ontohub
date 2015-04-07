@@ -21,7 +21,8 @@ class Api::V1::CombinationsController < Api::V1::Base
 
   private
   def combination
-    @combination ||= Combination.build(repository, params["combination"])
+    @combination ||= Combination.
+      build(current_user, repository, params["combination"])
   end
 
   def repository
