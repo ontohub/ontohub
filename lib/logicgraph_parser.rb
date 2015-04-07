@@ -52,9 +52,13 @@ module LogicgraphParser
     # Makes a logic mapping singleton for a given key
     def make_mapping(key)
       @mappings[key] ||= begin
-        mapping = LogicMapping.new
-        mapping.iri = "http://purl.net/dol/logic-mapping/" + key
-        mapping.standardization_status = "Unofficial"
+        iri = "http://purl.net/dol/logic-mapping/" + key
+        mapping = LogicMapping.find_by_iri(iri)
+        if mapping.nil?
+          mapping = LogicMapping.new
+          mapping.iri = iri
+          mapping.standardization_status = "Unofficial"
+        end
         mapping
       end
     end

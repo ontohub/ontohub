@@ -1,7 +1,6 @@
 require 'spec_helper'
 
 describe 'LogicgraphParser Stub' do
-
   def save_language(language)
     language.user_id = user.id
     language.save!
@@ -35,7 +34,6 @@ describe 'LogicgraphParser Stub' do
   end
 
   def open_fixture(name)
-    File.open("#{Rails.root}/registry/#{name}")
+    File.open(fixture_file(name))
   end
-
 end

@@ -137,14 +137,6 @@ Examples:
   PCoClTyConsHOL -&gt; the Haskell type system fragment
 </Description>
   </logic>
-  <logic name="Haskell" Stability="Experimental" has_basic_parser="True" has_basic_analysis="True" has_symbol_list_parser="False" has_symbol_map_parser="False" is_a_process_logic="False">
-    <Description>Haskell - a purely functional programming language
-featuring static typing, higher-order functions, polymorphism,
-type classes and monadic effects.
-See http://www.haskell.org. This version is based on Programatica,
-see http://www.cse.ogi.edu/PacSoft/projects/programatica/
-</Description>
-  </logic>
   <logic name="HolLight" Stability="Experimental" has_basic_parser="False" has_basic_analysis="False" has_symbol_list_parser="False" has_symbol_map_parser="False" is_a_process_logic="False">
     <Description>Hol Light
 for more information please refer to
@@ -190,9 +182,14 @@ sublanguages.
     <Description>OMDoc-PUN (possible utter nonsense). Logic to deal with OMDoc.</Description>
   </logic>
   <logic name="OWL" Stability="Experimental" has_basic_parser="True" has_basic_analysis="True" has_symbol_list_parser="True" has_symbol_map_parser="True" is_a_process_logic="False">
-    <Description>OWL2 DL -- Web Ontology Language Description Logic http://wwww.w3c.org/</Description>
+    <Description>OWL -- Web Ontology Language http://www.w3.org/TR/owl2-overview/</Description>
     <Serialization name="Manchester" />
     <Serialization name="Ship" />
+    <Prover name="Fact" />
+    <ConsistencyChecker name="Fact" />
+    <ConservativityChecker name="Locality_BOTTOM_BOTTOM" />
+    <ConservativityChecker name="Locality_TOP_BOTTOM" />
+    <ConservativityChecker name="Locality_TOP_TOP" />
   </logic>
   <logic name="Propositional" Stability="Experimental" has_basic_parser="True" has_basic_analysis="True" has_symbol_list_parser="True" has_symbol_map_parser="True" is_a_process_logic="False">
     <Description>Propositional Logic
@@ -217,7 +214,7 @@ http://en.wikipedia.org/wiki/Propositional_logichttp://www.voronkov.com/lics.cgi
   <logic name="RelScheme" Stability="Experimental" has_basic_parser="True" has_basic_analysis="True" has_symbol_list_parser="False" has_symbol_map_parser="False" is_a_process_logic="False">
     <Description>Simple logic for Relational Schemes</Description>
   </logic>
-  <logic name="SoftFOL" Stability="Testing" has_basic_parser="False" has_basic_analysis="False" has_symbol_list_parser="False" has_symbol_map_parser="False" is_a_process_logic="False">
+  <logic name="SoftFOL" Stability="Testing" has_basic_parser="False" has_basic_analysis="True" has_symbol_list_parser="False" has_symbol_map_parser="False" is_a_process_logic="False">
     <Description>SoftFOL - Softly typed First Order Logic for Automated Theorem Proving Systems
 
 This logic corresponds to the logic of SPASS, 
@@ -227,6 +224,12 @@ and http://www.cs.miami.edu/~tptp/TPTP/SyntaxBNF.html</Description>
     <Prover name="SPASS" />
     <Prover name="MathServe Broker" />
     <Prover name="Vampire" />
+    <Prover name="darwin-non-fd" />
+    <Prover name="darwin" />
+    <Prover name="eprover" />
+    <ConsistencyChecker name="darwin-non-fd" />
+    <ConsistencyChecker name="darwin" />
+    <ConsistencyChecker name="eprover" />
   </logic>
   <logic name="THF" Stability="Testing" has_basic_parser="True" has_basic_analysis="True" has_symbol_list_parser="False" has_symbol_map_parser="False" is_a_process_logic="False">
     <Description>THF is a language for Higher Order Logic from the TPTP standard.
@@ -234,6 +237,10 @@ For further information please refer tohttp://www.cs.miami.edu/~tptp/TPTP/Syntax
   </logic>
   <logic name="Temporal" Stability="Experimental" has_basic_parser="False" has_basic_analysis="False" has_symbol_list_parser="False" has_symbol_map_parser="False" is_a_process_logic="False">
     <Description>Temporal logic</Description>
+  </logic>
+  <logic name="UML" Stability="Experimental" has_basic_parser="True" has_basic_analysis="True" has_symbol_list_parser="False" has_symbol_map_parser="False" is_a_process_logic="False">
+    <Description>UML Language</Description>
+    <Serialization name="UML" />
   </logic>
   <logic name="VSE" Stability="Unstable" has_basic_parser="True" has_basic_analysis="True" has_symbol_list_parser="True" has_symbol_map_parser="True" is_a_process_logic="False">
     <Description>VSE extends CASL by modal operators and programs.</Description>
@@ -339,15 +346,10 @@ For further information please refer tohttp://www.cs.miami.edu/~tptp/TPTP/Syntax
     <comorphism name="NormalisingTranslation" />
     <comorphism name="MonadicTranslation" />
     <comorphism name="HasCASL2IsabelleOption" />
-    <comorphism name="HasCASL2Haskell" />
   </sourceSublogic>
   <sourceSublogic name="HasCASL.SubPCoClTyConsProdsHOL=">
     <comorphism name="HasCASL2HasCASLPrograms" />
     <comorphism name="HasCASL2HasCASLNoSubtypes" />
-  </sourceSublogic>
-  <sourceSublogic name="Haskell">
-    <comorphism name="Haskell2IsabelleHOLCF" />
-    <comorphism name="Haskell2Isabelle" />
   </sourceSublogic>
   <sourceSublogic name="HolLight.Top">
     <comorphism name="HolLight2Isabelle" />
@@ -389,6 +391,9 @@ For further information please refer tohttp://www.cs.miami.edu/~tptp/TPTP/Syntax
   <sourceSublogic name="THF.THFP_P">
     <comorphism name="THFP_P2THFP" />
     <comorphism name="THFP_P2HasCASL" />
+  </sourceSublogic>
+  <sourceSublogic name="UML">
+    <comorphism name="UML2CommonLogic" />
   </sourceSublogic>
   <targetSublogic name="CASL.FOL">
     <comorphism name="Propositional2CASL" />
@@ -453,6 +458,7 @@ For further information please refer tohttp://www.cs.miami.edu/~tptp/TPTP/Syntax
     <comorphism name="Propositional2CommonLogic" />
   </targetSublogic>
   <targetSublogic name="CommonLogic.ImpredicativeSeq">
+    <comorphism name="UML2CommonLogic" />
     <comorphism name="OWL22CommonLogic" />
     <comorphism name="CommonLogicModuleElimination" />
   </targetSublogic>
@@ -487,9 +493,6 @@ For further information please refer tohttp://www.cs.miami.edu/~tptp/TPTP/Syntax
   <targetSublogic name="HasCASL.SubPCoClTyConsProdsHOL=">
     <comorphism name="HasCASL2HasCASLPrograms" />
   </targetSublogic>
-  <targetSublogic name="Haskell">
-    <comorphism name="HasCASL2Haskell" />
-  </targetSublogic>
   <targetSublogic name="Hybrid">
     <comorphism name="CASL2Hybrid" />
   </targetSublogic>
@@ -497,8 +500,6 @@ For further information please refer tohttp://www.cs.miami.edu/~tptp/TPTP/Syntax
     <comorphism name="NormalisingTranslation" />
     <comorphism name="MonadicTranslation" />
     <comorphism name="HolLight2Isabelle" />
-    <comorphism name="Haskell2IsabelleHOLCF" />
-    <comorphism name="Haskell2Isabelle" />
     <comorphism name="HasCASL2IsabelleOption" />
     <comorphism name="HasCASL2IsabelleDeprecated" />
     <comorphism name="CommonLogic2Isabelle" />
@@ -585,12 +586,9 @@ For further information please refer tohttp://www.cs.miami.edu/~tptp/TPTP/Syntax
   <comorphism name="ExtModal2OWL" source="ExtModal" target="OWL" sourceSublogic="ManyDynHybrTimeFixFrames*SubPCSOL=E" targetSublogic="NP-sROIQ-D|-|" is_inclusion="False" has_model_expansion="False" is_weakly_amalgamable="False" />
   <comorphism name="HasCASL2HasCASLNoSubtypes" source="HasCASL" target="HasCASL" sourceSublogic="SubPCoClTyConsProdsHOL=" targetSublogic="PCoClTyConsProdsHOL=" is_inclusion="False" has_model_expansion="True" is_weakly_amalgamable="True" />
   <comorphism name="HasCASL2HasCASLPrograms" source="HasCASL" target="HasCASL" sourceSublogic="SubPCoClTyConsProdsHOL=" targetSublogic="SubPCoClTyConsProdsHOL=" is_inclusion="False" has_model_expansion="False" is_weakly_amalgamable="False" />
-  <comorphism name="HasCASL2Haskell" source="HasCASL" target="Haskell" sourceSublogic="PCoClTyConsProdsHOL=" targetSublogic="" is_inclusion="True" has_model_expansion="False" is_weakly_amalgamable="False" />
   <comorphism name="HasCASL2IsabelleDeprecated" source="HasCASL" target="Isabelle" sourceSublogic="PPolyTyConsProdsHOL=" targetSublogic="" is_inclusion="True" has_model_expansion="False" is_weakly_amalgamable="False" />
   <comorphism name="HasCASL2IsabelleOption" source="HasCASL" target="Isabelle" sourceSublogic="PCoClTyConsProdsHOL=" targetSublogic="" is_inclusion="True" has_model_expansion="True" is_weakly_amalgamable="False" />
   <comorphism name="HasCASL2THFP_P" source="HasCASL" target="THF" sourceSublogic="ProdsHOL=" targetSublogic="THFP_P" is_inclusion="False" has_model_expansion="True" is_weakly_amalgamable="False" />
-  <comorphism name="Haskell2Isabelle" source="Haskell" target="Isabelle" sourceSublogic="" targetSublogic="" is_inclusion="False" has_model_expansion="False" is_weakly_amalgamable="False" />
-  <comorphism name="Haskell2IsabelleHOLCF" source="Haskell" target="Isabelle" sourceSublogic="" targetSublogic="" is_inclusion="False" has_model_expansion="True" is_weakly_amalgamable="False" />
   <comorphism name="HolLight2Isabelle" source="HolLight" target="Isabelle" sourceSublogic="Top" targetSublogic="" is_inclusion="False" has_model_expansion="False" is_weakly_amalgamable="False" />
   <comorphism name="Hybrid2CASL" source="Hybrid" target="CASL" sourceSublogic="" targetSublogic="PeCFOL=" is_inclusion="True" has_model_expansion="True" is_weakly_amalgamable="True" />
   <comorphism name="Maude2CASL" source="Maude" target="CASL" sourceSublogic="" targetSublogic="PeCFOL=" is_inclusion="True" has_model_expansion="True" is_weakly_amalgamable="True" />
@@ -610,4 +608,5 @@ For further information please refer tohttp://www.cs.miami.edu/~tptp/TPTP/Syntax
   <comorphism name="THFP2THF0" source="THF" target="THF" sourceSublogic="THFP" targetSublogic="THF0" is_inclusion="False" has_model_expansion="True" is_weakly_amalgamable="False" />
   <comorphism name="THFP_P2HasCASL" source="THF" target="HasCASL" sourceSublogic="THFP_P" targetSublogic="ProdsHOL=" is_inclusion="False" has_model_expansion="True" is_weakly_amalgamable="False" />
   <comorphism name="THFP_P2THFP" source="THF" target="THF" sourceSublogic="THFP_P" targetSublogic="THFP" is_inclusion="False" has_model_expansion="True" is_weakly_amalgamable="False" />
+  <comorphism name="UML2CommonLogic" source="UML" target="CommonLogic" sourceSublogic="" targetSublogic="ImpredicativeSeq" is_inclusion="False" has_model_expansion="False" is_weakly_amalgamable="False" />
 </LogicGraph>
