@@ -18,4 +18,5 @@ Rake::Task['db:test:clone_structure'].prerequisites << 'db:test:purge'
 # Run all test suites per default
 Rake::Task['default'].prerequisites.delete('spec')
 Rake::Task['default'].prerequisites.delete('cucumber')
-task :default => [:"test:freshen_fixtures", :spec, :cucumber]
+task :default => [:'test:abort_if_elasticsearch_is_not_running',
+                  :'test:freshen_fixtures', :spec, :cucumber]
