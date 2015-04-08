@@ -1,16 +1,17 @@
-# Compute hostname and port from the hostname in the Settings
+# Compute hostname and port from the hostname in the Settings.
+# If no hostname is specified, read the hostname from the OS.
 module Hostname
   def self.fqdn
-    hostname = Settings.hostname.split(':').first
-    if hostname == 'localhost' || hostname.include?('.')
+    hostname = Settings.hostname.split(':').first if Settings.hostname
+    if hostname == 'localhost' || (hostname && hostname.include?('.'))
       hostname
     else
-      Addrinfo.tcp(tmp, 0).getnameinfo.first
+      Addrinfo.tcp(Socket.gethostname, 0).getnameinfo.first
     end
   end
 
   def self.port
-    Settings.hostname.split(':').last
+    Settings.hostname.split(':').last if Settings.hostname
   end
 end
 
