@@ -17,7 +17,7 @@ module Hets
 
   def self.qualified_loc_id_for(resource)
     locid = URI.escape(resource.versioned_locid)
-    "http://#{Settings.hostname}#{locid}"
+    "http://#{Ontohub::Application.config.fqdn}#{locid}"
   end
 
   def self.parse_via_api(resource, hets_options, structure_only: false)

@@ -4,7 +4,7 @@ class LicenseModelSerializer < ApplicationSerializer
     attributes :name
 
     def iri
-      urls.license_model_url(object, host: Settings.hostname)
+      urls.license_model_url(object, host: Ontohub::Application.config.fqdn)
     end
   end
 

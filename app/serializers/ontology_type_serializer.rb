@@ -4,7 +4,7 @@ class OntologyTypeSerializer < ApplicationSerializer
     attributes :name
 
     def iri
-      urls.ontology_type_url(object, host: Settings.hostname)
+      urls.ontology_type_url(object, host: Ontohub::Application.config.fqdn)
     end
   end
 

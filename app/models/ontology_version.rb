@@ -52,12 +52,12 @@ class OntologyVersion < ActiveRecord::Base
   # TODO: This returns a path without the commit id and filename for now,
   # because the FilesController or the routes were not supporting it.
   def url(params={})
-    #Rails.application.routes.url_helpers.repository_ref_path(repository, commit_oid, ontology.path, params.reverse_merge(host: Settings.hostname, only_path: false))
+    #Rails.application.routes.url_helpers.repository_ref_path(repository, commit_oid, ontology.path, params.reverse_merge(host: Ontohub::Application.config.fqdn, only_path: false))
     url_for [repository, ontology, self]
   end
 
   def default_url_options
-    {host: Settings.hostname}
+    {host: Ontohub::Application.config.fqdn}
   end
 
   def path

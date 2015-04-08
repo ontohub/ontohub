@@ -4,7 +4,7 @@ class ApplicationSerializer < ActiveModel::Serializer
   end
 
   def qualified_locid_for(resource, *commands, **query_components)
-    iri = "#{Settings.hostname}#{resource.locid}"
+    iri = "#{Ontohub::Application.config.fqdn}#{resource.locid}"
     iri << "///#{commands.join('///')}" if commands.any?
     iri << "?#{query_components.to_query}" if query_components.any?
     iri
