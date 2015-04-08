@@ -169,7 +169,7 @@ namespace :test do
 
   desc 'abort execution if elasticsearch is not running'
   task :abort_if_elasticsearch_is_not_running do
-    elasticsearch_port = ENV['ELASTIC_TEST_PORT'].present?
+    elasticsearch_port = ENV['ELASTIC_TEST_PORT']
     elasticsearch_port = '9250' unless elasticsearch_port.present?
     unless port_open?('127.0.0.1', elasticsearch_port)
       message =
