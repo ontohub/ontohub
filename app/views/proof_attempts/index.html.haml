@@ -34,4 +34,4 @@
           = t('proof_attempts.show.seconds')
         %td= proof_attempt.prover
         %td= render partial: 'theorems/proof_status', locals: {proof_status: proof_attempt.proof_status}
-        %td= state_tag(proof_attempt)
+        %td= render partial: 'shared/state_tag', locals: {resource: proof_attempt}
