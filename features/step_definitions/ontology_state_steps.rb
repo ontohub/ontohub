@@ -17,10 +17,11 @@ When(/^we change the state of the ontology to: (\w+)$/) do |state|
 end
 
 Then(/^the page should change the state on its own$/) do
-  el_css = 'small.ontology-version-state'
-  field = 'data-ontology-version-id'
+  el_css = 'small.evaluation-state'
+  field = 'data-id'
+  field_klass = 'data-klass'
   wait_for_ajax
-  within %{#{el_css}[#{field}="#{@ontology_version.id}"]} do
+  within %{#{el_css}[#{field}="#{@ontology_version.id}"][#{field_klass}="OntologyVersion"]} do
     expect(find('span')).to have_content(@state)
   end
 end
