@@ -15,15 +15,14 @@
     %thead
       %tr
         %th Number
-        %th Status
         %th Date
         %th Time taken
         %th Prover
+        %th Status
         %th State
     - collection.latest.each do |proof_attempt|
       %tr
         %td= link_to proof_attempt.number, proof_attempt.locid
-        %td= render partial: 'theorems/proof_status', locals: {proof_status: proof_attempt.proof_status}
         %td
           = link_to proof_attempt.locid do
             %span.timestamp= proof_attempt.created_at
@@ -31,4 +30,5 @@
           = proof_attempt.time_taken
           = t('proof_attempts.show.seconds')
         %td= proof_attempt.prover
+        %td= render partial: 'theorems/proof_status', locals: {proof_status: proof_attempt.proof_status}
         %td= state_tag(proof_attempt)
