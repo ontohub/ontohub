@@ -13,45 +13,4 @@ module OntologyHelper
   def show_evaluate?
     show_oops? #|| show_foo?
   end
-
-  def status_tag(resource)
-    version = resource.is_a?(Ontology) ? resource.current_version : resource
-
-    html_opts = {
-      class: 'ontology-version-state',
-      data: {
-        ontology_version_id: version.id,
-        uri: locid_for(version),
-        state: version.state,
-      }
-    }
-    content_tag(:small, html_opts) do
-      status(version)
-    end
-  end
-
-  def status(resource)
-    html = content_tag :span, resource.state
-
-    if %w(pending fetching processing).include? resource.state
-      html << " " << image_tag('spinner-16x16.gif', class: 'spinner')
-    end
-
-    if resource.state == 'failed' and resource.is_a? Ontology
-      version = resource.versions.last
-
-      link = ' ('
-      link << link_to('error',
-        [resource.repository, resource, :ontology_versions],
-        :'data-original-title' => version.last_error,
-        class: 'help'
-      )
-      link << ')'
-
-      html << content_tag(:span, link.html_safe, class: 'error')
-    end
-
-    html
-  end
-
 end
