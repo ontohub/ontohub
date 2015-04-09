@@ -88,7 +88,7 @@ module LinkHelper
   def ontology_link_to(resource)
     data_type, value = determine_image_type(resource)
     content_tag(:span, class: 'ontology_title') do
-      link_to resource, {}, data_type => value
+      link_to resource, locid_for(resource), data_type => value
     end
   end
 
