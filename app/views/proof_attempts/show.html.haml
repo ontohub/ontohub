@@ -48,4 +48,7 @@
 %pre= resource.tactic_script
 
 %h4= t('proof_attempts.show.prover_output')
-= link_to t('proof_attempts.show.prover_output'), locid_for(resource.prover_output)
+- if resource.prover_output
+  = link_to t('proof_attempts.show.prover_output'), locid_for(resource.prover_output)
+- else
+  = t('proof_attempts.show.no_prover_output')
