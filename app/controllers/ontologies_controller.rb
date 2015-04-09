@@ -87,7 +87,6 @@ class OntologiesController < InheritedResources::Base
 
   def retry_failed
     scope = end_of_association_chain
-
     if id = params[:id]
       # retry a specific ontology
       scope = scope.where(id: id)

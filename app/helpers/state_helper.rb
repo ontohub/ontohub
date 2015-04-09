@@ -1,4 +1,16 @@
 module StateHelper
+  def retry_resource_chain
+    if resource.is_a?(Ontology)
+      [:retry_failed, *resource_chain]
+    elsif resource.is_a?(Theorem)
+      [:retry_failed, *resource_chain, resource]
+    elsif resource.is_a?(ProofAttempt)
+      [:retry_failed, *resource_chain, resource.theorem, resource]
+    else
+      [:retry_failed, *resource_chain]
+    end
+  end
+
   def state_tag(resource)
     resource = resource.is_a?(Ontology) ? resource.current_version : resource
 
