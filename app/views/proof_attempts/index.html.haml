@@ -6,6 +6,9 @@
   = link_to theorem, locid_for(theorem)
   = render partial: 'theorems/proof_status', locals: {proof_status: theorem.proof_status}
 
+- unless State::TERMINAL_STATES.include?(theorem.state)
+  = render partial: '/shared/state', locals: {resource: theorem}
+
 %h4 Proof Attempts
 = link_to t('theorems.show.prove'), [*resource_chain, theorem, :proofs, :new], class: 'btn btn-primary'
 - if collection.empty?
