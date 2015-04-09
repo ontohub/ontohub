@@ -12,6 +12,13 @@ module Hets
     delegate *concurrency_delegates, to: :importer
     delegate :ontologies_count, to: :importer
 
+    def process(node_type, order, *args)
+      super(node_type, order, *args)
+    rescue Exception => e
+      cancel_concurrency_handling_on_error
+      raise e
+    end
+
     protected
     # As concurrency handling is usually performed across
     # multiple method calls during the parsing-chain,
