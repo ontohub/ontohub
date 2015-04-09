@@ -31,4 +31,23 @@ describe ProofAttempt do
       expect(proof_attempt.state).to eq('pending')
     end
   end
+
+  context 'retry_failed' do
+    let(:theorem) { proof_attempt.theorem }
+    let(:pac) { proof_attempt.proof_attempt_configuration }
+    before do
+      proof_attempt.update_state!(:failed)
+      allow(CollectiveProofAttemptWorker).to receive(:perform_async)
+      proof_attempt.retry_failed
+    end
+
+    it 'calls perform_async' do
+      expect(CollectiveProofAttemptWorker).
+        to have_received(:perform_async).
+        with('Theorem', theorem.id,
+             {Hets::ProveOptions.new({prover: pac.prover,
+                                      timeout: pac.timeout}).to_json =>
+              [proof_attempt.id]})
+    end
+  end
 end
