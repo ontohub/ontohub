@@ -128,11 +128,8 @@ class Proof < FakeRecord
   end
 
   def normalize_for_async_call(options_to_attempts_hash)
-    result = {}
-    options_to_attempts_hash.each do |prove_options, proof_attempts|
-      result[prove_options.to_json] = proof_attempts.map(&:id)
-    end
-    result
+    CollectiveProofAttemptWorker.
+      normalize_for_async_call(options_to_attempts_hash)
   end
 
   def prove(options_and_pa_ids)
