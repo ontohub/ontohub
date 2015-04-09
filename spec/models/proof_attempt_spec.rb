@@ -6,6 +6,7 @@ describe ProofAttempt do
     it { should belong_to(:proof_status) }
     it { should belong_to(:proof_attempt_configuration) }
     it { should have_one(:prover_output) }
+    it { should have_one(:tactic_script) }
   end
 
   let(:proof_attempt) { create :proof_attempt }
