@@ -1,0 +1,4 @@
+= state_tag(resource)
+- if updated_at = resource.state_updated_at
+  (#{timestamp updated_at})
+= format_error_message resource.last_error
