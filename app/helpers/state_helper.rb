@@ -11,6 +11,11 @@ module StateHelper
     end
   end
 
+  def retriable?(resource)
+    resource.respond_to?(:retry_failed) ||
+      resource.class.respond_to?(:retry_failed)
+  end
+
   def state_tag(resource)
     resource = resource.is_a?(Ontology) ? resource.current_version : resource
 

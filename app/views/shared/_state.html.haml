@@ -2,7 +2,7 @@
   .ontology-state
     = state_tag(resource)
 
-    - if resource.state == 'failed' && resource.class.respond_to?(:retry_failed)
+    - if resource.state == 'failed' && retriable?(resource)
       = link_to 'Retry', retry_resource_chain, method: :post, class: 'btn btn-xs btn-primary', data: {disable_with: t(:wait)}
     - elsif resource.state == 'pending'
       .pending_message
