@@ -11,6 +11,6 @@ end
 
 Then(/^i should see the corresponding versions$/) do
   id = @ontology.versions.first.id
-  selector = %(small.evaluation-state[data-id="#{id}"][data-klass="OntologyVersion"])
+  selector = %(.evaluation-state[data-id="#{id}"][data-klass="OntologyVersion"])
   expect(page).to have_css(selector)
 end

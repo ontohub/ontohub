@@ -17,7 +17,7 @@ When(/^we change the state of the ontology to: (\w+)$/) do |state|
 end
 
 Then(/^the page should change the state on its own$/) do
-  el_css = 'small.evaluation-state'
+  el_css = '.evaluation-state'
   field = 'data-id'
   field_klass = 'data-klass'
   wait_for_ajax
