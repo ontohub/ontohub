@@ -138,7 +138,7 @@ module NavigationHelper
   def in_subcontroller?(page, current_page)
     case page
     when :symbols
-      %w(classes sentences theorems).include?(controller_name)
+      %w(classes axioms theorems proof_attempts prover_outputs).include?(controller_name)
     when :metadata
       in_metadata?
     end
