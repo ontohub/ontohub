@@ -10,42 +10,43 @@
 %div.timestamp= resource.updated_at
 = render partial: '/shared/state', locals: {resource: resource}
 
-%h4= t('proof_attempts.show.time_taken')
-= resource.time_taken
-= t('proof_attempts.show.seconds')
+- if resource.state == 'done'
+  %h4= t('proof_attempts.show.time_taken')
+  = resource.time_taken
+  = t('proof_attempts.show.seconds')
 
-%h4= t('proof_attempts.show.used_axioms')
-- if resource.used_axioms.empty?
-  = t('proof_attempts.show.no_used_axioms')
-- else
-  %ul.used-axioms
-    - resource.used_axioms.each do |axiom|
-      %li= link_to axiom, locid_for(axiom)
+  %h4= t('proof_attempts.show.used_axioms')
+  - if resource.used_axioms.empty?
+    = t('proof_attempts.show.no_used_axioms')
+  - else
+    %ul.used-axioms
+      - resource.used_axioms.each do |axiom|
+        %li= link_to axiom, locid_for(axiom)
 
-%h4= t('proof_attempts.show.used_theorems')
-- if resource.used_theorems.empty?
-  = t('proof_attempts.show.no_used_theorems')
-- else
-  %ul.used-axioms
-    - resource.used_theorems.each do |theorem|
-      %li= link_to theorem, locid_for(theorem)
+  %h4= t('proof_attempts.show.used_theorems')
+  - if resource.used_theorems.empty?
+    = t('proof_attempts.show.no_used_theorems')
+  - else
+    %ul.used-axioms
+      - resource.used_theorems.each do |theorem|
+        %li= link_to theorem, locid_for(theorem)
 
-%h4= t('proof_attempts.show.generated_axioms')
-- if resource.generated_axioms.empty?
-  = t('proof_attempts.show.no_generated_axioms')
-- else
-  %ul.used-axioms
-    - resource.generated_axioms.each do |axiom|
-      %li= axiom
+  %h4= t('proof_attempts.show.generated_axioms')
+  - if resource.generated_axioms.empty?
+    = t('proof_attempts.show.no_generated_axioms')
+  - else
+    %ul.used-axioms
+      - resource.generated_axioms.each do |axiom|
+        %li= axiom
 
-%h4= t('proof_attempts.show.prover')
-= resource.prover
+  %h4= t('proof_attempts.show.prover')
+  = resource.prover
 
-%h4= t('proof_attempts.show.tactic_script')
-%pre= resource.tactic_script
+  %h4= t('proof_attempts.show.tactic_script')
+  %pre= resource.tactic_script
 
-%h4= t('proof_attempts.show.prover_output')
-- if resource.prover_output
-  = link_to t('proof_attempts.show.prover_output'), locid_for(resource.prover_output)
-- else
-  = t('proof_attempts.show.no_prover_output')
+  %h4= t('proof_attempts.show.prover_output')
+  - if resource.prover_output
+    = link_to t('proof_attempts.show.prover_output'), locid_for(resource.prover_output)
+  - else
+    = t('proof_attempts.show.no_prover_output')
