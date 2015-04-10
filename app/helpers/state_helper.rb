@@ -28,7 +28,7 @@ module StateHelper
         state: resource.state,
       }
     }
-    content_tag(:small, html_opts) do
+    content_tag(:span, html_opts) do
       state(resource)
     end
   end
