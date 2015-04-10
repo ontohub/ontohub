@@ -31,6 +31,6 @@
             = link_to proof_attempt.locid do
               %span.timestamp= proof_attempt.created_at
           %td= t('proof_attempts.result.time_taken.text', time_taken: proof_attempt.time_taken)
-          %td= proof_attempt.prover
+          %td= used_or_configured_prover(proof_attempt)
           %td= render partial: 'theorems/proof_status', locals: {proof_status: proof_attempt.proof_status}
           %td= render partial: 'shared/state_tag', locals: {resource: proof_attempt}
