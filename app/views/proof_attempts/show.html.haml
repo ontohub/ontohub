@@ -7,11 +7,8 @@
   = link_to resource.theorem, locid_for(resource.theorem, :proof_attempts)
   = render partial: 'theorems/proof_status', locals: {proof_status: resource.proof_status}
 
-%h4= t('state')
+%div.timestamp= resource.updated_at
 = render partial: '/shared/state', locals: {resource: resource}
-
-%h4= t('proof_attempts.show.created_at')
-= resource.created_at
 
 %h4= t('proof_attempts.show.time_taken')
 = resource.time_taken

@@ -164,7 +164,6 @@ en:
       status: Proof Status
     show:
       head: Proof Attempt of
-      created_at: Date
       time_taken: Time taken
       used_axioms: Axioms Used
       no_used_axioms: None
