@@ -128,6 +128,8 @@ en:
       provers:
         label: Provers
         none_is_default: Selecting none will result in using the default prover.
+      select_all_provers: Select all
+      select_no_provers: Select none
       timeout:
         label: Timeout
         hint: The timeout will be split evenly across the proof obligations.
