@@ -176,6 +176,19 @@ en:
       prover_output: Prover output
       no_prover_output: There is no prover output.
       seconds: seconds
+    configuration:
+      headline: Configuration
+      timeout:
+        headline: Timeout
+        text: "%{timeout} seconds"
+      prover:
+        headline: Prover
+      axioms:
+        headline: Selected axioms
+      goals:
+        headline: Selected theorems to prove
+      logic_mapping:
+        headline: Selected logic mapping
   prover_outputs:
     show:
       head_html: "Prover Output for %{theorem}'s %{proof_attempt_text}"

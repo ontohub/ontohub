@@ -1,0 +1,3 @@
+%ul.sentences-list
+  - sentences.each do |sentence|
+    %li= link_to sentence, locid_for(sentence)

@@ -10,6 +10,8 @@
 %div.timestamp= resource.updated_at
 = render partial: '/shared/state', locals: {resource: resource}
 
+= render partial: 'configuration', locals: {configuration: resource.proof_attempt_configuration}
+
 - if resource.state == 'done'
   %h4= t('proof_attempts.show.time_taken')
   = resource.time_taken
@@ -19,23 +21,19 @@
   - if resource.used_axioms.empty?
     = t('proof_attempts.show.no_used_axioms')
   - else
-    %ul.used-axioms
-      - resource.used_axioms.each do |axiom|
-        %li= link_to axiom, locid_for(axiom)
+    = render partial: 'sentences_list', locals: {sentences: resource.used_axioms}
 
   %h4= t('proof_attempts.show.used_theorems')
   - if resource.used_theorems.empty?
     = t('proof_attempts.show.no_used_theorems')
   - else
-    %ul.used-axioms
-      - resource.used_theorems.each do |theorem|
-        %li= link_to theorem, locid_for(theorem)
+    = render partial: 'sentences_list', locals: {sentences: resource.used_theorems}
 
   %h4= t('proof_attempts.show.generated_axioms')
   - if resource.generated_axioms.empty?
     = t('proof_attempts.show.no_generated_axioms')
   - else
-    %ul.used-axioms
+    %ul.sentences-list
       - resource.generated_axioms.each do |axiom|
         %li= axiom
 
