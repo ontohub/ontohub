@@ -1,36 +1,24 @@
 - if resource.state == 'done'
-  %h4= t('proof_attempts.show.time_taken')
-  = resource.time_taken
-  = t('proof_attempts.show.seconds')
+  %h4= t('proof_attempts.result.headline')
 
-  %h4= t('proof_attempts.show.used_axioms')
-  - if resource.used_axioms.empty?
-    = t('proof_attempts.show.no_used_axioms')
-  - else
-    = render partial: 'sentences_list', locals: {sentences: resource.used_axioms}
+  .row.proof-attempt-result
+    .time-taken
+      = render partial: 'item', locals: {title: t('proof_attempts.result.time_taken.headline'), body: t('proof_attempts.result.time_taken.text', time_taken: resource.time_taken)}
+    .used-prover
+      = render partial: 'item', locals: {title: t('proof_attempts.result.used_prover.headline'), body: resource.prover}
 
-  %h4= t('proof_attempts.show.used_theorems')
-  - if resource.used_theorems.empty?
-    = t('proof_attempts.show.no_used_theorems')
-  - else
-    = render partial: 'sentences_list', locals: {sentences: resource.used_theorems}
+    .prover-output
+      = render partial: 'item', locals: {title: t('proof_attempts.result.prover_output.headline'), body: link_to(t('proof_attempts.result.prover_output.link_text'), locid_for(resource.prover_output))}
 
-  %h4= t('proof_attempts.show.generated_axioms')
-  - if resource.generated_axioms.empty?
-    = t('proof_attempts.show.no_generated_axioms')
-  - else
-    %ul.sentences-list
-      - resource.generated_axioms.each do |axiom|
-        %li= axiom
+    - if resource.tactic_script
+      .tactic-script
+        = render partial: 'item', locals: {title: t('proof_attempts.result.tactic_script.headline'), body: resource.tactic_script}
 
-  %h4= t('proof_attempts.show.prover')
-  = resource.prover
+    .used-axioms
+      = render partial: 'item', locals: {title: t('proof_attempts.result.used_axioms.headline'), body: render(partial: 'sentences_list', locals: {sentences: resource.used_axioms})}
 
-  %h4= t('proof_attempts.show.tactic_script')
-  %pre= resource.tactic_script
+    .used-theorems
+      = render partial: 'item', locals: {title: t('proof_attempts.result.used_theorems.headline'), body: render(partial: 'sentences_list', locals: {sentences: resource.used_theorems})}
 
-  %h4= t('proof_attempts.show.prover_output')
-  - if resource.prover_output
-    = link_to t('proof_attempts.show.prover_output'), locid_for(resource.prover_output)
-  - else
-    = t('proof_attempts.show.no_prover_output')
+    .generated-axioms
+      = render partial: 'item', locals: {title: t('proof_attempts.result.generated_axioms.headline'), body: render(partial: 'sentences_list', locals: {sentences: resource.generated_axioms})}

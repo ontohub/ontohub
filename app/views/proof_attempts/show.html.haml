@@ -3,7 +3,7 @@
 = ontology_nav ontology, :theorems
 
 %h3
-  = t('proof_attempts.show.head')
+  = t('proof_attempts.show.headline')
   = link_to resource.theorem, locid_for(resource.theorem, :proof_attempts)
   = render partial: 'theorems/proof_status', locals: {proof_status: resource.proof_status}
 
