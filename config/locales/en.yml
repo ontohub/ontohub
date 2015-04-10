@@ -196,6 +196,11 @@ en:
       prover_output:
         headline: Prover output
         link_text: Show prover output
+    tactic_script:
+      time_limit:
+        text: "Time limit: %{time_limit}"
+      extra_options:
+        headline: "Extra options:"
   prover_outputs:
     show:
       head_html: "Prover Output for %{theorem}'s %{proof_attempt_text}"

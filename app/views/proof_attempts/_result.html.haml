@@ -12,7 +12,7 @@
 
     - if resource.tactic_script
       .tactic-script
-        = render partial: 'item', locals: {title: t('proof_attempts.result.tactic_script.headline'), body: resource.tactic_script}
+        = render partial: 'item', locals: {title: t('proof_attempts.result.tactic_script.headline'), body: render(partial: 'tactic_script', locals: {tactic_script: resource.tactic_script})}
 
     .used-axioms
       = render partial: 'item', locals: {title: t('proof_attempts.result.used_axioms.headline'), body: render(partial: 'sentences_list', locals: {sentences: resource.used_axioms})}
