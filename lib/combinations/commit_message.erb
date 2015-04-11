@@ -1,0 +1,10 @@
+Create a new combination
+
+This creates a new combination with the following members:
+<% if nodes.any? %>
+  -  nodes (ontologies, models, specifications):
+  <% nodes.each do |node| %>
+  - <%= node %>
+
+  <% end %>
+<% end %>

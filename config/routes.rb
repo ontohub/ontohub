@@ -523,6 +523,18 @@ is determined according to its path, which is considered as
       BODY
     end
 
+  specified_post '/:repository_id///combinations' => 'api/v1/combinations#create',
+    as: :repository_combinations_iri do
+      accept 'application/json', constraint: true
+
+      doc title: 'loc/id reference to a repository',
+          body: <<-BODY
+Will return a representation of the repository. The repository
+is determined according to its path, which is considered as
+{id}.
+      BODY
+    end
+
   post ':repository_id/:path',
     controller:  :files,
     action:      :update,
