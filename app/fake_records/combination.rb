@@ -11,6 +11,12 @@ class Combination < FakeRecord
     create!(*args).ontology
   end
 
+  def self.create!(*args)
+    combination = new(*args)
+    combination.save!
+    combination
+  end
+
   def initialize(user, target_repository, combination_hash)
     @user = user
     @target_repository = Repository.find(target_repository)
