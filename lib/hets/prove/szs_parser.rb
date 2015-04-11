@@ -9,7 +9,8 @@ module Hets
       end
 
       def call
-        prover_specific_parser = :"parse_status_#{prover.downcase}"
+        prover_specific_parser =
+          :"parse_status_#{prover.parameterize.gsub('-', '_')}"
         send(prover_specific_parser)
       rescue NameError
         generic_parse_status
@@ -23,6 +24,10 @@ module Hets
 
       def parse_status_darwin
         regex_parse_status(/\n\nSZS status (\w+) for/)
+      end
+
+      def parse_status_darwin_non_fd
+        parse_status_darwin
       end
 
       def parse_status_eprover
