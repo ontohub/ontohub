@@ -1,0 +1,7 @@
+# Parsed axioms                        : 2
+# SZS output end Saturation.
+fof(c_0_1, axiom, (![X1]:X1=zero), c_0_0).
+fof(c_0_0, axiom, (![X1]:X1=zero), file('/tmp/parallels/_ax212062.tptp', ax1)).
+# SZS output start Saturation.
+# SZS status CounterSatisfiable
+# Scanning for AC axioms

@@ -1,0 +1,29 @@
+Calculus      : VampireResCalc
+Spent time    : CPU time        = 00:00:00.295999999999
+                Wall clock time = 00:00:00.294999999999
+Prover output :
+Satisfiability detected
+=========== Statistics ==========
+version: 7.45 Civatateo (v7.44 + more ASSERT's in LPO + several bug
+fixes in LPO)
+=== General:
+time: 0s
+memory: 18.4Mb
+termination reason: satisfiability detected
+=== Generating inferences:
+superposition: 5
+=== Simplifying inferences:
+equational_tautology: 2
+forward_subsumption: 2
+backward_subsumption: 1
+=== Generated clauses:
+total: 9
+discarded_as_redundant: 4
+=== Retained clauses:
+total: 3
+selected: 3
+currently_active: 2
+currently_passive: 0
+======= End of statistics =======
+FINAL WATCH: 0.0 CPU 0.0 WC
+---------------------------------------------------------------------------
