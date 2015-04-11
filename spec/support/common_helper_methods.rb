@@ -1,7 +1,7 @@
 require Rails.root.join('spec', 'support', 'json_schema_matcher.rb')
 
 def controllers_locid_for(resource, *args, &block)
-  request.env["action_controller.instance"].
+  request.env['action_controller.instance'].
     send(:locid_for, resource, *args, &block)
 end
 
