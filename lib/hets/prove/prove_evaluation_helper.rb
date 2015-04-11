@@ -36,16 +36,25 @@ module Hets
       end
 
       def find_proof_status_from_hash(proof_info)
-        identifier =
-          case proof_info[:result]
-          when 'Proved'
-            ProofStatus::DEFAULT_PROVEN_STATUS
-          when 'Disproved'
-            ProofStatus::DEFAULT_DISPROVEN_STATUS
-          else
-            ProofStatus::DEFAULT_UNKNOWN_STATUS
-          end
-        ProofStatus.find(identifier)
+        parser = Hets::Prove::SZSParser.
+          new(proof_info[:prover], proof_info[:prover_output])
+        szs_name = parser.call
+        proof_status = ProofStatus.find_by_name(szs_name)
+
+        if proof_status
+          proof_status
+        else
+          identifier =
+            case proof_info[:result]
+            when 'Proved'
+              ProofStatus::DEFAULT_PROVEN_STATUS
+            when 'Disproved'
+              ProofStatus::DEFAULT_DISPROVEN_STATUS
+            else
+              ProofStatus::DEFAULT_UNKNOWN_STATUS
+            end
+          ProofStatus.find(identifier)
+        end
       end
 
       def find_or_create_prover_from_hash(proof_info)
