@@ -18,7 +18,7 @@ class Combination < FakeRecord
   end
 
   def initialize(user, target_repository, combination_hash)
-    @user = user
+    @user = User.find(user)
     @target_repository = Repository.find(target_repository)
     from_combination_hash(combination_hash.with_indifferent_access)
   end
