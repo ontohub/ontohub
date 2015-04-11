@@ -21,6 +21,10 @@ module Hets
         regex_parse_status(/SZS status (\w+)/)
       end
 
+      def parse_status_darwin
+        regex_parse_status(/\n\nSZS status (\w+) for/)
+      end
+
       def parse_status_eprover
         regex_parse_status(/\n# SZS status (\w+)/)
       end
