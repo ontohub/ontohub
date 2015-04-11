@@ -35,7 +35,9 @@ When(/^I create a combination via the API of these ontologies$/) do
   header Api::V1::Base::API_KEY_HEADER, @api_key.try(:key)
   request "/#{@repository.path}///combinations",\
     method: :post,
-    input: {nodes: @ontologies.map { |o| o.locid }}.to_json
+    input: {
+      nodes: @ontologies.map { |o| locid_for(o) }
+    }.to_json
 end
 
 When(/^I create a combination via the API with these:$/) do |table|
