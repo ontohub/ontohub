@@ -73,6 +73,11 @@ FactoryGirl.define do
            '- Possible dataforms are Models of Ax | ~C.'].join("\n"),
         'solved' => true}]
 
-    initialize_with { statuses.map { |s| ProofStatus.create(s) } }
+    initialize_with do
+      statuses.map do |status|
+        ProofStatus.where(identifier: status['identifier']).any? ||
+          ProofStatus.create(status)
+      end
+    end
   end
 end
