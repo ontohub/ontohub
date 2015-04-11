@@ -3,6 +3,10 @@ FactoryGirl.define do
     initialize_with { ProofStatus.find('SUC') }
   end
 
+  factory :proof_status_csa, class: ProofStatus do
+    initialize_with { ProofStatus.find('CSA') }
+  end
+
   factory :proof_status_open, class: ProofStatus do
     initialize_with { ProofStatus.find(ProofStatus::DEFAULT_OPEN_STATUS) }
   end
@@ -58,7 +62,16 @@ FactoryGirl.define do
         'label' => 'primary',
         'description' =>
           'Success value unknown, and no assumption has been made.',
-        'solved' => false}]
+        'solved' => false},
+      { 'identifier' => 'CSA',
+        'name' => 'CounterSatisfiable',
+        'label' => 'danger',
+        'description' =>
+          ['Some interpretations are models of Ax, and',
+           'some models of Ax are models of ~C.',
+           '- F is not valid, ~F is satisfiable, and C is not a theorem of Ax.',
+           '- Possible dataforms are Models of Ax | ~C.'].join("\n"),
+        'solved' => true}]
 
     initialize_with { statuses.map { |s| ProofStatus.create(s) } }
   end
