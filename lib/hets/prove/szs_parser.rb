@@ -21,6 +21,10 @@ module Hets
         regex_parse_status(/SZS status (\w+)/)
       end
 
+      def parse_status_eprover
+        regex_parse_status(/\n# SZS status (\w+)/)
+      end
+
       def regex_parse_status(regex)
         match = output.match(regex)
         match[1] if match
