@@ -10,8 +10,16 @@ spec Group =
   . 0+0=0 %(zero_plus)% %implied
 end
 
-spec Empty =
-  sort t
-  forall x,y:t
-  . x = x %implied
+spec Theorem =
+  sort s
+  ops 0:s
+  forall x,y:s . x = x %implied
+end
+
+spec CounterSatisfiable =
+  sort s
+  ops 0:s;
+      1:s
+  forall x:s . x = 0
+  . not( 1 = 0 ) %implied
 end
