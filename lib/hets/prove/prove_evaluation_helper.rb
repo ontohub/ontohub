@@ -4,7 +4,7 @@ module Hets
       def fill_proof_attempt_from_hash(proof_info)
         ontology = importer.ontology
         if ontology.name == proof_info[:ontology_name]
-          theorem = find_theorem_with_hash(proof_info, ontology)
+          theorem = find_theorem_from_hash(proof_info, ontology)
           proof_attempt = theorem.proof_attempts.
             where(id: proof_attempt_ids).first
           if proof_attempt
@@ -19,8 +19,8 @@ module Hets
       end
 
       def fill_proof_attempt_instance(proof_attempt, proof_info)
-        proof_attempt.proof_status = find_proof_status_with_hash(proof_info)
-        proof_attempt.prover = find_or_create_prover_with_hash(proof_info)
+        proof_attempt.proof_status = find_proof_status_from_hash(proof_info)
+        proof_attempt.prover = find_or_create_prover_from_hash(proof_info)
         proof_attempt.prover_output = proof_info[:prover_output]
         proof_attempt.time_taken = time_taken_from_hash(proof_info)
         proof_attempt.tactic_script = tactic_script_from_hash(proof_info)
@@ -31,11 +31,11 @@ module Hets
         proof_attempt.generated_axioms = generated_axioms
       end
 
-      def find_theorem_with_hash(proof_info, ontology)
+      def find_theorem_from_hash(proof_info, ontology)
         ontology.theorems.find_by_name(proof_info[:theorem_name])
       end
 
-      def find_proof_status_with_hash(proof_info)
+      def find_proof_status_from_hash(proof_info)
         identifier =
           case proof_info[:result]
           when 'Proved'
@@ -48,7 +48,7 @@ module Hets
         ProofStatus.find(identifier)
       end
 
-      def find_or_create_prover_with_hash(proof_info)
+      def find_or_create_prover_from_hash(proof_info)
         Prover.where(name: proof_info[:used_prover]).first_or_create!
       end
 
