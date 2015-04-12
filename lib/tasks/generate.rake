@@ -16,13 +16,19 @@ end
 def download_from_ontohub_meta(source_file, target_file)
   meta_repository
   user = User.where(admin: true).first
-  filepath = "#{Rails.root}/spec/fixtures/ontologies/#{target_file}"
-  system("wget -O #{filepath} https://ontohub.org/repositories/meta/master/download/#{source_file}")
+  filepath = "#{Rails.root}/spec/fixtures/seeds/#{target_file}"
   basename = File.basename(filepath)
+  source_url =
+    "https://ontohub.org/repositories/meta/master/download/#{source_file}"
+  temp_file = Tempfile.new([target_file, File.extname(target_file)]).path
+  if system("wget -O #{temp_file} #{source_url}")
+    filepath = temp_file 
+  else
+    puts 'No connection to ontohub.org. Using fixture for the current task.'
+  end
   version = meta_repository.
     save_file(filepath, basename, "Add #{basename}.", user, do_not_parse: true)
   version.parse
-  system("rm #{filepath}")
   version.ontology
 end
 
