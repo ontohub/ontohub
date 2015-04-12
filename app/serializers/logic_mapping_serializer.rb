@@ -3,7 +3,7 @@ class LogicMappingSerializer < ApplicationSerializer
     attributes :iri
 
     def iri
-      qualified_locid_for(object)
+      urls.logic_mapping_url(object, host: Settings.hostname)
     end
   end
 

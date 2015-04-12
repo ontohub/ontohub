@@ -12,9 +12,28 @@ class LogicMapping < ActiveRecord::Base
   belongs_to :target, class_name: 'Logic'
   belongs_to :user
   has_many :logic_adjoints, :foreign_key => :translation_id
-  attr_accessible :source_id, :target_id, :source, :target, :iri, :standardization_status, :defined_by, :default, :projection, :faithfulness, :theoroidalness, :exactness, :user
+  attr_accessible :source_id,
+                  :target_id,
+                  :source,
+                  :target,
+                  :iri,
+                  :standardization_status,
+                  :defined_by,
+                  :default,
+                  :projection,
+                  :faithfulness,
+                  :theoroidalness,
+                  :exactness,
+                  :user,
+                  :slug
 
   validates_presence_of :target, :source, :iri
+
+  before_save :set_slug, if: :iri_changed?
+
+  def to_param
+    slug
+  end
 
   def to_s
     "#{iri}: #{source} => #{target}"
@@ -24,4 +43,16 @@ class LogicMapping < ActiveRecord::Base
     LogicAdjoint.where("projection_id = ? OR translation_id = ?", self.id, self.id)
   end
 
+  private
+  def name
+    iri.split('/').last
+  end
+
+  def set_slug
+    self.slug = name.
+      gsub(/\s/, '_').
+      gsub(/[*.=]/,
+           '*' => 'Star',
+           '=' => 'Eq')
+  end
 end

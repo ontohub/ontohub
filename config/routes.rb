@@ -479,6 +479,19 @@ Will return a representation of the proof status. The proof status
 is determined according to the *locid.
       BODY
     end
+
+  specified_get '/logic_mappings/:id' => 'logic_mappings#show',
+    as: :logic_mapping do
+      accept 'text/html'
+      reroute_on_mime 'application/json', to: 'api/v1/logic_mappings#show'
+
+      doc title: 'id reference to a logic mapping',
+          body: <<-BODY
+Will return a representation of the logic mapping. The logic mapping
+is determined according to the id.
+      BODY
+    end
+
   #
   ###############
 
