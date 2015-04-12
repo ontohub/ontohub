@@ -456,30 +456,6 @@ Will return a representation of the formality level.
     BODY
   end
 
-  specified_get '/proof-statuses' => 'api/v1/logic_mappings#index',
-    as: :logic_mappings do
-      accept 'application/json'
-
-      doc title: 'index of logic mappings',
-          body: <<-BODY
-Will return a representation of the logic mappings index.
-      BODY
-    end
-
-  specified_get '*locid' => 'api/v1/logic_mappings#show',
-    as: :logic_mapping_iri,
-    constraints: [
-      LocIdRouterConstraint.new(LogicMapping, element: :id),
-    ] do
-      accept 'application/json'
-
-      doc title: 'loc/id reference to a logic mapping',
-          body: <<-BODY
-Will return a representation of the logic mapping. The logic mapping
-is determined according to the *locid.
-      BODY
-    end
-
   specified_get '/proof-statuses' => 'api/v1/proof_statuses#index',
     as: :proof_statuses do
       accept 'application/json'
