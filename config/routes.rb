@@ -5,7 +5,7 @@ Specroutes.define(Ontohub::Application.routes) do
 
   resources :filetypes, only: :create
 
-  schema_iri = 'https://masterthesis.rightsrestricted.com/ontohub'
+  schema_iri = 'https://masterthesis.rightsrestricted.com/api'
 
   # IRI Routing #
   ###############
