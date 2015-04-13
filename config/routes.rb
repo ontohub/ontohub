@@ -70,6 +70,10 @@ ontology version referenced by the {reference}.
         response status: 200, json: "#{schema_iri}/ontology.json"
         response status: 404, json: "#{schema_iri}/generic/404.json"
       end
+      reroute_on_mime 'application/hets+xml', to: 'api/v1/ontologies#show' do
+        response status: 200
+        response status: 404
+      end
 
       doc title: 'MMT reference to an ontology',
           body: <<-BODY
@@ -240,6 +244,10 @@ Will provide a subsite of a specific ontology.
         response status: 200, json: "#{schema_iri}/ontology.json"
         response status: 404, json: "#{schema_iri}/generic/404.json"
       end
+      reroute_on_mime 'application/hets+xml', to: 'api/v1/ontologies#show' do
+        response status: 200
+        response status: 404
+      end
 
       doc title: 'loc/id reference to an ontology',
           body: <<-BODY
@@ -388,28 +396,11 @@ is determined according to the *locid.
       BODY
     end
 
-  # specified_get '/:repository_id/*locid' => 'sentences#index',
-  #   as: :sentence_iri,
-  #   constraints: [
-  #     LocIdRouterConstraint.new(Sentence, ontology: :ontology_id, element: :id),
-  #   ] do
-  #     accept 'text/html'
-  #     reroute_on_mime 'application/json', to: 'api/v1/sentences#show'
-
-  #     doc title: 'loc/id reference to a sentence',
-  #         body: <<-BODY
-# Will return a representation of the sentence. The sentence
-# is determined according to the *locid.
-# Currently this will return the list of all sentences of the ontology.
-  #     BODY
-  #   end
-
   specified_get '/:repository_id/*locid' => 'proof_attempts#show',
     as: :proof_attempt_iri,
     constraints: [
       LocIdRouterConstraint.new(ProofAttempt, ontology: :ontology_id, theorem: :theorem_id, element: :id),
     ] do
-      accept 'text/html'
       reroute_on_mime 'application/json', to: 'api/v1/proof_attempts#show' do
         response status: 200, json: "#{schema_iri}/proof_attempt.json"
         response status: 404, json: "#{schema_iri}/generic/404.json"
@@ -642,6 +633,51 @@ Update the task.
       end
 
       doc title: 'Deleting a task'
+    end
+
+  specified_get '/federation' => 'api/v1/federation#show' do
+    accept 'application/json', constraint: true do
+      response status: 200, json: "#{schema_iri}/federation.json"
+      response status: 404, json: "#{schema_iri}/generic/404.json"
+    end
+
+    doc title: 'Representation of the federation'
+  end
+
+  specified_post '/federation/registration' => 'api/v1/federation#create' do
+      accept 'application/json', constraint: true do
+        request json: "#{schema_iri}/federation/registration/POST/request.json"
+        response status: 202, json: "#{schema_iri}/generic/202.json"
+        response status: 400, json: "#{schema_iri}/generic/400.json"
+        response status: 401, json: "#{schema_iri}/generic/401.json"
+        response status: 403, json: "#{schema_iri}/generic/403.json"
+      end
+
+      doc title: 'Trying to register for the federation'
+    end
+
+  specified_put '/federation/registration' => 'api/v1/federation#update' do
+      accept 'application/json', constraint: true do
+        request json: "#{schema_iri}/federation/registration/PUT/request.json"
+        response status: 204
+        response status: 400, json: "#{schema_iri}/generic/400.json"
+        response status: 401, json: "#{schema_iri}/generic/401.json"
+        response status: 403, json: "#{schema_iri}/generic/403.json"
+        response status: 404, json: "#{schema_iri}/generic/404.json"
+      end
+
+      doc title: 'Updating a registration for the federation'
+    end
+
+  specified_delete '/federation/registration' => 'api/v1/federation#delete' do
+      accept 'application/json', constraint: true do
+        response status: 204
+        response status: 401, json: "#{schema_iri}/generic/401.json"
+        response status: 403, json: "#{schema_iri}/generic/403.json"
+        response status: 404, json: "#{schema_iri}/generic/404.json"
+      end
+
+      doc title: 'Deleting a registration for the federation'
     end
   #
   ###############
