@@ -13,7 +13,7 @@ describe LogicMappingsController do
     before { sign_in user }
 
     context 'on get to show' do
-      before { get :show, id: mapping.id, logic_id: source_logic.id }
+      before { get :show, id: mapping.to_param, logic_id: source_logic.id }
       it { should respond_with :success }
       it { should render_template :show }
       it { should_not set_the_flash }
@@ -55,7 +55,7 @@ describe LogicMappingsController do
 
     context 'on PUT to Update' do
       before do
-        put :update, logic_id: source_logic.id, id: mapping.id,
+        put :update, logic_id: source_logic.id, id: mapping.to_param,
           logic_mapping: {
             source_id: source_logic.id,
             target_id: target_logic.id,
@@ -81,7 +81,7 @@ describe LogicMappingsController do
     end
 
     context 'on POST to DELETE' do
-      before { delete :destroy, id: mapping.id, logic_id: source_logic.id }
+      before { delete :destroy, id: mapping.to_param, logic_id: source_logic.id }
 
       it 'remove the record' do
         expect(LogicMapping.find_by_id(mapping.id)).to be_nil
@@ -89,7 +89,7 @@ describe LogicMappingsController do
     end
 
     context 'on GET to EDIT' do
-      before { get :edit, id: mapping.id, logic_id: source_logic.id }
+      before { get :edit, id: mapping.to_param, logic_id: source_logic.id }
       it { should respond_with :success }
       it { should render_template :edit }
       it { should_not set_the_flash }
@@ -101,7 +101,7 @@ describe LogicMappingsController do
     before { sign_in user2 }
 
     context 'on get to show' do
-      before { get :show, id: mapping.id, logic_id: source_logic.id }
+      before { get :show, id: mapping.to_param, logic_id: source_logic.id }
       it { should respond_with :success }
       it { should render_template :show }
       it { should_not set_the_flash }
@@ -143,7 +143,7 @@ describe LogicMappingsController do
 
     context 'on PUT to Update' do
       before do
-        put :update, logic_id: source_logic.id, id: mapping.id,
+        put :update, logic_id: source_logic.id, id: mapping.to_param,
           logic_mapping: {
             source_id: source_logic.id,
             target_id: target_logic.id,
@@ -157,7 +157,7 @@ describe LogicMappingsController do
     end
 
     context 'on POST to DELETE' do
-      before { delete :destroy, id: mapping.id, logic_id: source_logic.id }
+      before { delete :destroy, id: mapping.to_param, logic_id: source_logic.id }
 
       it 'not remove the record' do
         expect(LogicMapping.find_by_id(mapping.id)).to eq(mapping)
@@ -165,7 +165,7 @@ describe LogicMappingsController do
     end
 
     context 'on GET to EDIT' do
-      before { get :edit, id: mapping.id, logic_id: source_logic.id }
+      before { get :edit, id: mapping.to_param, logic_id: source_logic.id }
       it { should respond_with :redirect }
       it { should set_the_flash.to(/not authorized/i) }
     end
@@ -173,7 +173,7 @@ describe LogicMappingsController do
 
   context 'not signed in' do
     context 'on get to show' do
-      before { get :show, id: mapping.id, logic_id: source_logic.id }
+      before { get :show, id: mapping.to_param, logic_id: source_logic.id }
       it { should respond_with :success }
       it { should render_template :show }
       it { should_not set_the_flash }
@@ -204,7 +204,7 @@ describe LogicMappingsController do
 
   context 'on PUT to Update' do
     before do
-      put :update, logic_id: source_logic.id, id: mapping.id,
+      put :update, logic_id: source_logic.id, id: mapping.to_param,
         logic_mapping: {
           source_id: source_logic.id,
           target_id: target_logic.id,
@@ -218,7 +218,7 @@ describe LogicMappingsController do
   end
 
   context 'on POST to DELETE' do
-    before { delete :destroy, id: mapping.id, logic_id: source_logic.id }
+    before { delete :destroy, id: mapping.to_param, logic_id: source_logic.id }
 
     it 'not remove the record' do
       expect(LogicMapping.find_by_id(mapping.id)).to eq(mapping)

@@ -24,7 +24,6 @@ describe Api::V1::LogicMappingsController do
       before do
         get :show,
           id: logic_mapping.to_param,
-          locid: logic_mapping.locid,
           format: :json
       end
 
