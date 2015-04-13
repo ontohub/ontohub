@@ -24,7 +24,7 @@ describe Action do
     let(:status) { 'some status' }
 
     context 'on resource with state' do
-      let(:resource) { mock_model("Resource", state: status) }
+      let(:resource) { mock_model('Resource', state: status) }
 
       it 'should return the correct status' do
         expect(action.status).to eq(status)
@@ -32,7 +32,7 @@ describe Action do
     end
 
     context 'on resource with status' do
-      let(:resource) { mock_model("Resource", status: status) }
+      let(:resource) { mock_model('Resource', status: status) }
 
       it 'should return the correct status' do
         expect(action.status).to eq(status)
@@ -40,7 +40,7 @@ describe Action do
     end
 
     context 'on resource w/o anything' do
-      let(:resource) { mock_model("Resource") }
+      let(:resource) { mock_model('Resource') }
 
       it 'should complain with an error' do
         expect { action.status }.to raise_error(NoMethodError)

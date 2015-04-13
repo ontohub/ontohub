@@ -11,7 +11,7 @@ Given(/^that I have requested the creation of a combination$/) do
 end
 
 And(/^that I have a corresponding action$/) do
-  action_id = last_response.headers["Location"].split('/').last.to_i
+  action_id = last_response.headers['Location'].split('/').last.to_i
   @action = Action.find(action_id)
 end
 
@@ -42,7 +42,7 @@ end
 
 And(/^it should redirect to the combination-ontology$/) do
   locid = @combination_ontology.locid
-  expect(last_response.headers["Location"]).
+  expect(last_response.headers['Location']).
     to eq(locid)
   steps %Q{
     And it should contain a field "location" of "#{locid}"
