@@ -479,19 +479,6 @@ Will return a representation of the proof status. The proof status
 is determined according to the *locid.
       BODY
     end
-
-  specified_get '/logic_mappings/:id' => 'logic_mappings#show',
-    as: :logic_mapping do
-      accept 'text/html'
-      reroute_on_mime 'application/json', to: 'api/v1/logic_mappings#show'
-
-      doc title: 'id reference to a logic mapping',
-          body: <<-BODY
-Will return a representation of the logic mapping. The logic mapping
-is determined according to the id.
-      BODY
-    end
-
   #
   ###############
 
@@ -517,7 +504,30 @@ is determined according to the id.
   end
 
   resources :language_mappings
-  resources :logic_mappings
+  resources :logic_mappings, except: %i(index show)
+  specified_get '/logic_mappings' => 'logic_mappings#index',
+    as: :logic_mapping do
+      accept 'text/html'
+      reroute_on_mime 'application/json', to: 'api/v1/logic_mappings#index'
+
+      doc title: 'index of logic mappings',
+          body: <<-BODY
+Will return a representation of the logic mappings index.
+      BODY
+    end
+
+  specified_get '/logic_mappings/:id' => 'logic_mappings#show',
+    as: :logic_mapping do
+      accept 'text/html'
+      reroute_on_mime 'application/json', to: 'api/v1/logic_mappings#show'
+
+      doc title: 'id reference to a logic mapping',
+          body: <<-BODY
+Will return a representation of the logic mapping. The logic mapping
+is determined according to the id.
+      BODY
+    end
+
 
   resources :mappings, only: :index
 
