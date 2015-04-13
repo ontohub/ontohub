@@ -644,6 +644,19 @@ Update the task.
     doc title: 'Representation of the federation'
   end
 
+  specified_put '/federation/state' => 'api/v1/federation_state#update' do
+      accept 'application/json', constraint: true do
+        request json: "#{schema_iri}/federation/state/PUT/request.json"
+        response status: 204
+        response status: 400, json: "#{schema_iri}/generic/400.json"
+        response status: 401, json: "#{schema_iri}/generic/401.json"
+        response status: 403, json: "#{schema_iri}/generic/403.json"
+        response status: 404, json: "#{schema_iri}/generic/404.json"
+      end
+
+      doc title: 'Inform another instance of your own federation-state'
+    end
+
   specified_post '/federation/registration' => 'api/v1/federation#create' do
       accept 'application/json', constraint: true do
         request json: "#{schema_iri}/federation/registration/POST/request.json"
