@@ -5,13 +5,19 @@ Specroutes.define(Ontohub::Application.routes) do
 
   resources :filetypes, only: :create
 
+  schema_iri = 'https://masterthesis.rightsrestricted.com/ontohub'
+
   # IRI Routing #
   ###############
   # as per Loc/Id definition
   specified_get '/actions/:id' => 'api/v1/actions#show',
     as: :action_iri,
     format: :json do
-      accept 'application/json', constraint: true
+      accept 'application/json', constraint: true do
+        response status: 200, json: "#{schema_iri}/action.json"
+        response status: 303, json: "#{schema_iri}/generic/303.json"
+        response status: 404, json: "#{schema_iri}/generic/404.json"
+      end
       doc title: 'An action that represents a long-running operation'
     end
 
@@ -21,8 +27,14 @@ Specroutes.define(Ontohub::Application.routes) do
     constraints: [
       RefLocIdRouterConstraint.new(Ontology, ontology: :ontology_id),
     ] do
-      accept 'application/json', constraint: true
-      accept 'text/plain', constraint: true
+      accept 'application/json', constraint: true do
+        response status: 200, json: "#{schema_iri}/ontology_version.json"
+        response status: 404, json: "#{schema_iri}/generic/404.json"
+      end
+      accept 'text/plain', constraint: true do
+        response status: 200
+        response status: 404
+      end
       # reroute_on_mime 'application/json', to: 'api/v1/ontology_versions#show'
 
       doc title: 'Ontology IRI (loc/id) with version reference',
@@ -37,8 +49,6 @@ ontology version referenced by the {reference}.
     constraints: [
       RefLocIdRouterConstraint.new(Ontology, ontology: :id),
     ] do
-      accept 'text/html'
-
       doc title: 'Ontology IRI (loc/id) with version reference',
           body: <<-BODY
 Will return a representation of the ontology at a
@@ -52,9 +62,14 @@ ontology version referenced by the {reference}.
     constraints: [
       MMTRouterConstraint.new(Ontology, ontology: :id),
     ] do
-      accept 'text/html'
-      reroute_on_mime 'text/plain', to: 'api/v1/ontologies#show'
-      reroute_on_mime 'application/json', to: 'api/v1/ontologies#show'
+      reroute_on_mime 'text/plain', to: 'api/v1/ontologies#show' do
+        response status: 200
+        response status: 404
+      end
+      reroute_on_mime 'application/json', to: 'api/v1/ontologies#show' do
+        response status: 200, json: "#{schema_iri}/ontology.json"
+        response status: 404, json: "#{schema_iri}/generic/404.json"
+      end
 
       doc title: 'MMT reference to an ontology',
           body: <<-BODY
@@ -68,8 +83,10 @@ is determined according to the *path and to the MMT-query-string.
     constraints: [
       MMTRouterConstraint.new(Mapping, ontology: :ontology_id, element: :id),
     ] do
-      accept 'text/html'
-      reroute_on_mime 'application/json', to: 'api/v1/mappings#show'
+      reroute_on_mime 'application/json', to: 'api/v1/mappings#show' do
+        response status: 200, json: "#{schema_iri}/mapping.json"
+        response status: 404, json: "#{schema_iri}/generic/404.json"
+      end
 
       doc title: 'MMT reference to a mapping',
           body: <<-BODY
@@ -83,8 +100,10 @@ is determined according to the *path and to the MMT-query-string.
     constraints: [
       MMTRouterConstraint.new(OntologyMember::Symbol, ontology: :ontology_id),
     ] do
-      accept 'text/html'
-      reroute_on_mime 'application/json', to: 'api/v1/symbols#show'
+      reroute_on_mime 'application/json', to: 'api/v1/symbols#show' do
+        response status: 200, json: "#{schema_iri}/symbol.json"
+        response status: 404, json: "#{schema_iri}/generic/404.json"
+      end
 
       doc title: 'MMT reference to a symbol',
           body: <<-BODY
@@ -99,8 +118,10 @@ Currently the representation ist a list of all symbols in the ontology.
     constraints: [
       MMTRouterConstraint.new(Axiom, ontology: :ontology_id),
     ] do
-      accept 'text/html'
-      reroute_on_mime 'application/json', to: 'api/v1/axioms#show'
+      reroute_on_mime 'application/json', to: 'api/v1/axioms#show' do
+        response status: 200, json: "#{schema_iri}/axiom.json"
+        response status: 404, json: "#{schema_iri}/generic/404.json"
+      end
 
       doc title: 'MMT reference to a axiom',
           body: <<-BODY
@@ -115,7 +136,10 @@ Currently the representation is a list of all axioms in the ontology.
     constraints: [
       MMTRouterConstraint.new(Theorem, ontology: :ontology_id, element: :id),
     ] do
-      accept 'text/html'
+      reroute_on_mime 'application/json', to: 'api/v1/theorems#show' do
+        response status: 200, json: "#{schema_iri}/theorem.json"
+        response status: 404, json: "#{schema_iri}/generic/404.json"
+      end
 
       doc title: 'MMT reference to a theorem',
           body: <<-BODY
@@ -130,7 +154,10 @@ Currently the representation is a list of all theorems in the ontology.
     constraints: [
       MMTRouterConstraint.new(Sentence, ontology: :ontology_id),
     ] do
-      accept 'application/json'
+      accept 'application/json' do
+        response status: 200, json: "#{schema_iri}/sentence.json"
+        response status: 404, json: "#{schema_iri}/generic/404.json"
+      end
 
       doc title: 'MMT reference to a sentence',
           body: <<-BODY
@@ -142,8 +169,7 @@ Currently the representation is a list of all sentences in the ontology.
 
   # Subsites for ontologies
   ontology_subsites = %i(
-    comments metadata graphs
-    projects categories tasks
+    metadata graphs
   )
 
   ontology_api_subsites = %i(
@@ -151,6 +177,8 @@ Currently the representation is a list of all sentences in the ontology.
     axioms theorems
     ontology_versions
     license_models formality_levels
+    sentences
+    reviews comments categories projects tasks
   )
 
   ontology_subsites.each do |category|
@@ -159,8 +187,6 @@ Currently the representation is a list of all sentences in the ontology.
       constraints: [
         LocIdRouterConstraint.new(Ontology, ontology: :ontology_id),
       ] do
-        accept 'text/html'
-
         doc title: "Ontology subsite about #{category.to_s.gsub(/_/, ' ')}",
             body: <<-BODY
 Will provide a subsite of a specific ontology.
@@ -174,8 +200,10 @@ Will provide a subsite of a specific ontology.
       constraints: [
         LocIdRouterConstraint.new(Ontology, ontology: :ontology_id),
       ] do
-        accept 'text/html'
-        reroute_on_mime 'application/json', to: "api/v1/#{category}#index"
+        reroute_on_mime 'application/json', to: "api/v1/#{category}#index" do
+          response status: 200, json: "#{schema_iri}/ontology/#{category}/GET/200.json"
+          response status: 404, json: "#{schema_iri}/generic/404.json"
+        end
 
         doc title: "Ontology subsite about #{category.to_s.gsub(/_/, ' ')}",
             body: <<-BODY
@@ -184,18 +212,18 @@ Will provide a subsite of a specific ontology.
       end
   end
 
-  specified_get "/:repository_id/*locid///sentences" => "api/v1/sentences#index",
-    as: :"ontology_iri_sentences",
-    constraints: [
-      LocIdRouterConstraint.new(Ontology, ontology: :ontology_id),
-    ] do
-      accept 'application/json'
+  # specified_get "/:repository_id/*locid///sentences" => "api/v1/sentences#index",
+  #   as: :"ontology_iri_sentences",
+  #   constraints: [
+  #     LocIdRouterConstraint.new(Ontology, ontology: :ontology_id),
+  #   ] do
+  #     accept 'application/json'
 
-      doc title: "Ontology subsite about sentences",
-          body: <<-BODY
-Will provide a subsite of a specific ontology.
-      BODY
-    end
+  #     doc title: "Ontology subsite about sentences",
+  #         body: <<-BODY
+# Will provide a subsite of a specific ontology.
+  #     BODY
+  #   end
 
   # Loc/Id-Show(-equivalent) routes
   ######
@@ -204,9 +232,14 @@ Will provide a subsite of a specific ontology.
     constraints: [
       LocIdRouterConstraint.new(Ontology, ontology: :id),
     ] do
-      accept 'text/html'
-      reroute_on_mime 'text/plain', to: 'api/v1/ontologies#show'
-      reroute_on_mime 'application/json', to: 'api/v1/ontologies#show'
+      reroute_on_mime 'text/plain', to: 'api/v1/ontologies#show' do
+        response status: 200
+        response status: 404
+      end
+      reroute_on_mime 'application/json', to: 'api/v1/ontologies#show' do
+        response status: 200, json: "#{schema_iri}/ontology.json"
+        response status: 404, json: "#{schema_iri}/generic/404.json"
+      end
 
       doc title: 'loc/id reference to an ontology',
           body: <<-BODY
@@ -215,13 +248,68 @@ is determined according to the *locid.
       BODY
     end
 
+  specified_put '/:repository_id/*locid' => 'api/v1/ontologies#update',
+    constraints: [
+      LocIdRouterConstraint.new(Ontology, ontology: :id),
+    ] do
+      accept 'application/json', constraint: true do
+        request json: "#{schema_iri}/ontology/PUT/request.json"
+        response status: 204
+        response status: 400, json: "#{schema_iri}/generic/400.json"
+        response status: 401, json: "#{schema_iri}/generic/401.json"
+        response status: 403, json: "#{schema_iri}/generic/403.json"
+        response status: 404, json: "#{schema_iri}/generic/404.json"
+      end
+
+      doc title: 'Updating an ontology',
+          body: <<-BODY
+Update the meta-data of the ontology. This needs to supply a full representation of
+the resulting ontology.
+      BODY
+    end
+
+  specified_patch '/:repository_id/*locid' => 'api/v1/ontologies#update',
+    constraints: [
+      LocIdRouterConstraint.new(Ontology, ontology: :id),
+    ] do
+      accept 'application/json', constraint: true do
+        request json: "#{schema_iri}/ontology/PATCH/request.json"
+        response status: 204
+        response status: 400, json: "#{schema_iri}/generic/400.json"
+        response status: 401, json: "#{schema_iri}/generic/401.json"
+        response status: 403, json: "#{schema_iri}/generic/403.json"
+        response status: 404, json: "#{schema_iri}/generic/404.json"
+      end
+
+      doc title: 'Updating an ontology',
+          body: <<-BODY
+Update the meta-data of the ontology.
+      BODY
+    end
+
+  specified_delete '/:repository_id/*locid' => 'api/v1/ontologies#delete',
+    constraints: [
+      LocIdRouterConstraint.new(Ontology, ontology: :id),
+    ] do
+      accept 'application/json', constraint: true do
+        response status: 204
+        response status: 401, json: "#{schema_iri}/generic/401.json"
+        response status: 403, json: "#{schema_iri}/generic/403.json"
+        response status: 404, json: "#{schema_iri}/generic/404.json"
+      end
+
+      doc title: 'Deleting an ontology'
+    end
+
   specified_get '/:repository_id/*locid' => 'mappings#show',
     as: :mapping_iri,
     constraints: [
       LocIdRouterConstraint.new(Mapping, ontology: :ontology_id, element: :id),
     ] do
-      accept 'text/html'
-      reroute_on_mime 'application/json', to: 'api/v1/mappings#show'
+      reroute_on_mime 'application/json', to: 'api/v1/mappings#show' do
+        response status: 200, json: "#{schema_iri}/mapping.json"
+        response status: 404, json: "#{schema_iri}/generic/404.json"
+      end
 
       doc title: 'loc/id reference to a mapping',
           body: <<-BODY
@@ -235,8 +323,10 @@ is determined according to the *locid.
     constraints: [
       LocIdRouterConstraint.new(OntologyMember::Symbol, ontology: :ontology_id, element: :id),
     ] do
-      accept 'text/html'
-      reroute_on_mime 'application/json', to: 'api/v1/symbols#show'
+      reroute_on_mime 'application/json', to: 'api/v1/symbols#show' do
+        response status: 200, json: "#{schema_iri}/symbol.json"
+        response status: 404, json: "#{schema_iri}/generic/404.json"
+      end
 
       doc title: 'loc/id reference to a symbol',
           body: <<-BODY
@@ -251,13 +341,15 @@ Currently this will return the list of all symbols of the ontology.
     constraints: [
       LocIdRouterConstraint.new(Axiom, ontology: :ontology_id, element: :id),
     ] do
-      accept 'application/json'
+      accept 'application/json' do
+        response status: 200, json: "#{schema_iri}/sentence.json"
+        response status: 404, json: "#{schema_iri}/generic/404.json"
+      end
 
       doc title: 'loc/id reference to an axiom',
           body: <<-BODY
 Will return a representation of the axiom. The axiom
 is determined according to the *locid.
-Currently this will return the list of all axioms of the ontology.
       BODY
     end
 
@@ -266,8 +358,10 @@ Currently this will return the list of all axioms of the ontology.
     constraints: [
       LocIdRouterConstraint.new(Axiom, ontology: :ontology_id, element: :id),
     ] do
-      accept 'text/html'
-      reroute_on_mime 'application/json', to: 'api/v1/axioms#show'
+      reroute_on_mime 'application/json', to: 'api/v1/axioms#show' do
+        response status: 200, json: "#{schema_iri}/axiom.json"
+        response status: 404, json: "#{schema_iri}/generic/404.json"
+      end
 
       doc title: 'loc/id reference to an axiom',
           body: <<-BODY
@@ -282,8 +376,10 @@ Currently this will return the list of all axioms of the ontology.
     constraints: [
       LocIdRouterConstraint.new(Theorem, ontology: :ontology_id, element: :id),
     ] do
-      accept 'text/html'
-      reroute_on_mime 'application/json', to: 'api/v1/theorems#show'
+      reroute_on_mime 'application/json', to: 'api/v1/theorems#show' do
+        response status: 200, json: "#{schema_iri}/theorem.json"
+        response status: 404, json: "#{schema_iri}/generic/404.json"
+      end
 
       doc title: 'loc/id reference to a theorem',
           body: <<-BODY
@@ -292,21 +388,21 @@ is determined according to the *locid.
       BODY
     end
 
-  specified_get '/:repository_id/*locid' => 'sentences#index',
-    as: :sentence_iri,
-    constraints: [
-      LocIdRouterConstraint.new(Sentence, ontology: :ontology_id, element: :id),
-    ] do
-      accept 'text/html'
-      reroute_on_mime 'application/json', to: 'api/v1/sentences#show'
+  # specified_get '/:repository_id/*locid' => 'sentences#index',
+  #   as: :sentence_iri,
+  #   constraints: [
+  #     LocIdRouterConstraint.new(Sentence, ontology: :ontology_id, element: :id),
+  #   ] do
+  #     accept 'text/html'
+  #     reroute_on_mime 'application/json', to: 'api/v1/sentences#show'
 
-      doc title: 'loc/id reference to a sentence',
-          body: <<-BODY
-Will return a representation of the sentence. The sentence
-is determined according to the *locid.
-Currently this will return the list of all sentences of the ontology.
-      BODY
-    end
+  #     doc title: 'loc/id reference to a sentence',
+  #         body: <<-BODY
+# Will return a representation of the sentence. The sentence
+# is determined according to the *locid.
+# Currently this will return the list of all sentences of the ontology.
+  #     BODY
+  #   end
 
   specified_get '/:repository_id/*locid' => 'proof_attempts#show',
     as: :proof_attempt_iri,
@@ -314,8 +410,10 @@ Currently this will return the list of all sentences of the ontology.
       LocIdRouterConstraint.new(ProofAttempt, ontology: :ontology_id, theorem: :theorem_id, element: :id),
     ] do
       accept 'text/html'
-      # TODO: add api controller
-      #reroute_on_mime 'application/json', to: 'api/v1/proof_attempts#show'
+      reroute_on_mime 'application/json', to: 'api/v1/proof_attempts#show' do
+        response status: 200, json: "#{schema_iri}/proof_attempt.json"
+        response status: 404, json: "#{schema_iri}/generic/404.json"
+      end
 
       doc title: 'loc/id reference to a proof attempt',
           body: <<-BODY
@@ -327,7 +425,10 @@ is determined according to the *locid.
   specified_get '/ontology_types/:id' => 'ontology_types#show',
     as: :ontology_type do
     accept 'text/html'
-    reroute_on_mime 'application/json', to: 'api/v1/ontology_types#show'
+    reroute_on_mime 'application/json', to: 'api/v1/ontology_types#show' do
+        response status: 200, json: "#{schema_iri}/ontology_type.json"
+        response status: 404, json: "#{schema_iri}/generic/404.json"
+    end
 
     doc title: 'IRI of an ontology type',
         body: <<-BODY
@@ -337,11 +438,22 @@ Will return a representation of the ontology type.
 
   specified_get '/logics/:id' => 'logics#show',
     as: :logic do
-    accept 'text/html'
-    reroute_on_mime 'text/xml', to: 'api/v1/logics#show'
-    reroute_on_mime 'application/xml', to: 'api/v1/logics#show'
-    reroute_on_mime 'application/rdf+xml', to: 'api/v1/logics#show'
-    reroute_on_mime 'application/json', to: 'api/v1/logics#show'
+    reroute_on_mime 'text/xml', to: 'api/v1/logics#show' do
+      response status: 200
+      response status: 404
+    end
+    reroute_on_mime 'application/xml', to: 'api/v1/logics#show' do
+      response status: 200
+      response status: 404
+    end
+    reroute_on_mime 'application/rdf+xml', to: 'api/v1/logics#show' do
+      response status: 200
+      response status: 404
+    end
+    reroute_on_mime 'application/json', to: 'api/v1/logics#show' do
+      response status: 200, json: "#{schema_iri}/logic.json"
+      response status: 404, json: "#{schema_iri}/generic/404.json"
+    end
 
     doc title: 'IRI of a logic',
         body: <<-BODY
@@ -351,8 +463,10 @@ Will return a representation of the logic.
 
   specified_get '/license_models/:id' => 'license_models#show',
     as: :license_model do
-    accept 'text/html'
-    reroute_on_mime 'application/json', to: 'api/v1/license_models#show'
+    reroute_on_mime 'application/json', to: 'api/v1/license_models#show' do
+      response status: 200, json: "#{schema_iri}/license_model.json"
+      response status: 404, json: "#{schema_iri}/generic/404.json"
+    end
 
     doc title: 'IRI of a license model',
         body: <<-BODY
@@ -362,14 +476,173 @@ Will return a representation of the license model.
 
   specified_get '/formality_levels/:id' => 'formality_levels#show',
     as: :formality_level do
-    accept 'text/html'
-    reroute_on_mime 'application/json', to: 'api/v1/formality_levels#show'
+    reroute_on_mime 'application/json', to: 'api/v1/formality_levels#show' do
+      response status: 200, json: "#{schema_iri}/formality_level.json"
+      response status: 404, json: "#{schema_iri}/generic/404.json"
+    end
 
     doc title: 'IRI of a formality level',
         body: <<-BODY
 Will return a representation of the formality level.
     BODY
   end
+
+  specified_post '/projects' => 'api/v1/projects#create' do
+      accept 'application/json', constraint: true do
+        request json: "#{schema_iri}/projects/POST/request.json"
+        response status: 201, json: "#{schema_iri}/generic/201.json"
+        response status: 400, json: "#{schema_iri}/generic/400.json"
+        response status: 401, json: "#{schema_iri}/generic/401.json"
+        response status: 403, json: "#{schema_iri}/generic/403.json"
+      end
+
+      doc title: 'Creating a project'
+    end
+
+  specified_get '/projects/:id' => 'api/v1/projects#show' do
+    accept 'application/json', constraint: true do
+      response status: 200, json: "#{schema_iri}/project.json"
+      response status: 404, json: "#{schema_iri}/generic/404.json"
+    end
+
+    doc title: 'IRI of a project',
+        body: <<-BODY
+Will return a representation of the project.
+    BODY
+  end
+
+  specified_put '/projects/:id' => 'api/v1/projects#update' do
+      accept 'application/json', constraint: true do
+        request json: "#{schema_iri}/project/PUT/request.json"
+        response status: 204
+        response status: 400, json: "#{schema_iri}/generic/400.json"
+        response status: 401, json: "#{schema_iri}/generic/401.json"
+        response status: 403, json: "#{schema_iri}/generic/403.json"
+        response status: 404, json: "#{schema_iri}/generic/404.json"
+      end
+
+      doc title: 'Updating a project',
+          body: <<-BODY
+Update the project. This needs to supply a full representation of
+the resulting project.
+      BODY
+    end
+
+  specified_patch '/projects/:id' => 'api/v1/projects#update' do
+      accept 'application/json', constraint: true do
+        request json: "#{schema_iri}/project/PATCH/request.json"
+        response status: 204
+        response status: 400, json: "#{schema_iri}/generic/400.json"
+        response status: 401, json: "#{schema_iri}/generic/401.json"
+        response status: 403, json: "#{schema_iri}/generic/403.json"
+        response status: 404, json: "#{schema_iri}/generic/404.json"
+      end
+
+      doc title: 'Updating a project',
+          body: <<-BODY
+Update the project.
+      BODY
+    end
+
+  specified_delete '/projects/:id' => 'api/v1/projects#delete' do
+      accept 'application/json', constraint: true do
+        response status: 204
+        response status: 401, json: "#{schema_iri}/generic/401.json"
+        response status: 403, json: "#{schema_iri}/generic/403.json"
+        response status: 404, json: "#{schema_iri}/generic/404.json"
+      end
+
+      doc title: 'Deleting a project'
+    end
+
+  specified_get '/reviews/:id' => 'api/v1/reviews#show' do
+    accept 'application/json', constraint: true do
+      response status: 200, json: "#{schema_iri}/review.json"
+      response status: 404, json: "#{schema_iri}/generic/404.json"
+    end
+
+    doc title: 'IRI of a review',
+        body: <<-BODY
+Will return a representation of the review.
+    BODY
+  end
+
+  specified_post '/tasks' => 'api/v1/tasks#create' do
+      accept 'application/json', constraint: true do
+        request json: "#{schema_iri}/tasks/POST/request.json"
+        response status: 201, json: "#{schema_iri}/generic/201.json"
+        response status: 400, json: "#{schema_iri}/generic/400.json"
+        response status: 401, json: "#{schema_iri}/generic/401.json"
+        response status: 403, json: "#{schema_iri}/generic/403.json"
+      end
+
+      doc title: 'Creating a task'
+    end
+
+  specified_get '/tasks/:id' => 'api/v1/tasks#show' do
+    accept 'application/json', constraint: true do
+      response status: 200, json: "#{schema_iri}/task.json"
+      response status: 404, json: "#{schema_iri}/generic/404.json"
+    end
+
+    doc title: 'IRI of a task',
+        body: <<-BODY
+Will return a representation of the task.
+    BODY
+  end
+
+  specified_get '/tasks/:id/ontologies' => 'api/v1/ontologies#index' do
+    accept 'application/json', constraint: true do
+      response status: 200, json: "#{schema_iri}/tasks/ontologies/GET/200.json"
+      response status: 404, json: "#{schema_iri}/generic/404.json"
+    end
+
+    doc title: 'collection of ontologies of this task'
+  end
+
+  specified_put '/tasks/:id' => 'api/v1/tasks#update' do
+      accept 'application/json', constraint: true do
+        request json: "#{schema_iri}/task/PUT/request.json"
+        response status: 204
+        response status: 400, json: "#{schema_iri}/generic/400.json"
+        response status: 401, json: "#{schema_iri}/generic/401.json"
+        response status: 403, json: "#{schema_iri}/generic/403.json"
+        response status: 404, json: "#{schema_iri}/generic/404.json"
+      end
+
+      doc title: 'Updating a task',
+          body: <<-BODY
+Update the task. This needs to supply a full representation of
+the resulting task.
+      BODY
+    end
+
+  specified_patch '/tasks/:id' => 'api/v1/tasks#update' do
+      accept 'application/json', constraint: true do
+        request json: "#{schema_iri}/task/PATCH/request.json"
+        response status: 204
+        response status: 400, json: "#{schema_iri}/generic/400.json"
+        response status: 401, json: "#{schema_iri}/generic/401.json"
+        response status: 403, json: "#{schema_iri}/generic/403.json"
+        response status: 404, json: "#{schema_iri}/generic/404.json"
+      end
+
+      doc title: 'Updating a task',
+          body: <<-BODY
+Update the task.
+      BODY
+    end
+
+  specified_delete '/tasks/:id' => 'api/v1/tasks#delete' do
+      accept 'application/json', constraint: true do
+        response status: 204
+        response status: 401, json: "#{schema_iri}/generic/401.json"
+        response status: 403, json: "#{schema_iri}/generic/403.json"
+        response status: 404, json: "#{schema_iri}/generic/404.json"
+      end
+
+      doc title: 'Deleting a task'
+    end
   #
   ###############
 
@@ -517,9 +790,30 @@ Will return a representation of the formality level.
       constraints: { path: /.*/ }
   end
 
+  specified_post '/repositories' => 'api/v1/repositories#create' do
+      accept 'application/json', constraint: true do
+        request json: "#{schema_iri}/repositories/POST/request.json"
+        response status: 201, json: "#{schema_iri}/generic/201.json"
+        response status: 202, json: "#{schema_iri}/generic/202.json"
+        response status: 400, json: "#{schema_iri}/generic/400.json"
+        response status: 401, json: "#{schema_iri}/generic/401.json"
+        response status: 403, json: "#{schema_iri}/generic/403.json"
+      end
+
+      doc title: 'Creating a repository',
+          body: <<-MSG
+Returns a 201 if just a normal repository is created. Shall return
+202 if a fork or mirror should be created. In both cases
+a validity check for the repository path shall occur.
+      MSG
+    end
+
   specified_get '/:id' => 'api/v1/repositories#show',
     as: :repository_iri do
-      accept 'application/json', constraint: true
+      accept 'application/json', constraint: true do
+        response status: 200, json: "#{schema_iri}/repository.json"
+        response status: 404, json: "#{schema_iri}/generic/404.json"
+      end
 
       doc title: 'loc/id reference to a repository',
           body: <<-BODY
@@ -529,9 +823,39 @@ is determined according to its path, which is considered as
       BODY
     end
 
+  specified_patch '/:id' => 'api/v1/repositories#update' do
+      accept 'application/json', constraint: true do
+        request json: "#{schema_iri}/repository/PATCH/request.json"
+        response status: 204
+        response status: 400, json: "#{schema_iri}/generic/400.json"
+        response status: 401, json: "#{schema_iri}/generic/401.json"
+        response status: 403, json: "#{schema_iri}/generic/403.json"
+        response status: 404, json: "#{schema_iri}/generic/404.json"
+      end
+
+      doc title: 'Updating a repository'
+    end
+
+  specified_delete '/:id' => 'api/v1/repositories#delete' do
+      accept 'application/json', constraint: true do
+        response status: 204
+        response status: 401, json: "#{schema_iri}/generic/401.json"
+        response status: 403, json: "#{schema_iri}/generic/403.json"
+        response status: 404, json: "#{schema_iri}/generic/404.json"
+      end
+
+      doc title: 'Deleting a repository'
+    end
+
   specified_post '/:repository_id///combinations' => 'api/v1/combinations#create',
     as: :repository_combinations_iri do
-      accept 'application/json', constraint: true
+      accept 'application/json', constraint: true do
+        response status: 202, json: "#{schema_iri}/repository/combinations/POST/202.json"
+        response status: 400, json: "#{schema_iri}/generic/400.json"
+        response status: 401, json: "#{schema_iri}/generic/401.json"
+        response status: 403, json: "#{schema_iri}/generic/403.json"
+        response status: 404, json: "#{schema_iri}/generic/404.json"
+      end
 
       doc title: 'loc/id reference to a repository',
           body: <<-BODY
