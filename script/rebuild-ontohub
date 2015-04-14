@@ -40,6 +40,9 @@ case $i in
     -d|--download-fixtures)
     export DOWNLOAD_FIXTURES=true
     ;;
+    -i|--invoker-only)
+    INVOKER_ONLY=true
+    ;;
     *)
     # unknown option
     ;;
@@ -47,8 +50,11 @@ case $i in
   shift
 done
 
-execute_or_die "bundle exec rake elasticsearch:wipe"
-execute_or_die "bundle exec rake db:migrate:clean"
-execute_or_die "redis-cli flushdb"
-execute_or_die "bundle exec rake git:compile_cp_keys"
-execute_or_die "bundle exec rake db:seed"
+if [[ !($INVOKER_ONLY) ]]
+then
+  execute_or_die "bundle exec rake elasticsearch:wipe"
+  execute_or_die "bundle exec rake db:migrate:clean"
+  execute_or_die "redis-cli flushdb"
+  execute_or_die "bundle exec rake git:compile_cp_keys"
+  execute_or_die "bundle exec rake db:seed"
+fi
