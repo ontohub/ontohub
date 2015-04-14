@@ -41,7 +41,7 @@ namespace :import do
 
     Dir.mktmpdir do |dir|
       Dir.chdir(dir) do
-        `hets -G`
+        system('hets -G')
         LogicgraphParser.parse(File.open(File.join(dir, 'LogicGraph.xml')),
           logic:          Proc.new{ |h| save(h) },
           language:       Proc.new{ |h| save(h) },
