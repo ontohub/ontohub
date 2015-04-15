@@ -1,0 +1,4 @@
+require_relative 'fixtures_generation/ontology_generator.rb'
+require_relative 'fixtures_generation/proof_generator.rb'
+require_relative 'fixtures_generation/provers_generator.rb'
+require_relative 'fixtures_generation/prover_output_generator.rb'

@@ -1,4 +1,5 @@
 namespace :test do
+  require_relative '../../spec/support/fixtures_generation.rb'
 
   # We want to purge our database our own way, without deleting everything
   Rake::Task['db:test:purge'].overwrite do
@@ -9,167 +10,41 @@ namespace :test do
     Rake::Task['db:migrate:clean'].invoke
   end
 
-
-  HETS_API_OPTIONS = '/auto'
-  HETS_BASE_IRI = 'http://localhost:8000'
-  HETS_PATH = `which hets`.strip
-  HETS_SERVER_ARGS =
-    YAML.load(File.open('config/hets.yml'))['hets']['server_options']
-
-  def all_files_beneath(dir)
-    globbed_files = Dir.glob(File.join(dir, '**/*'))
-    globbed_files.select { |file| !File.directory?(file) }
+  desc 'Update all fixtures'
+  task :freshen_fixtures => :environment do
+    [
+      FixturesGeneration::OntologyGenerator,
+      FixturesGeneration::ProversGenerator,
+      FixturesGeneration::ProofGenerator,
+      FixturesGeneration::ProverOutputGenerator
+    ].map(&:new).
+      select { |g| g.outdated_cassettes.any? }.
+      each { |g| g.call }
   end
 
-  def ontology_files
-    all_files_beneath('spec/fixtures/ontologies').select do |file|
-      !file.end_with?('.xml')
-    end
+  desc 'Update all ontology fixtures'
+  task :freshen_ontology_fixtures do
+    FixturesGeneration::OntologyGenerator.new.call
   end
 
-  def prove_files
-    all_files_beneath('spec/fixtures/ontologies/prove')
+  desc 'Update all provers fixtures'
+  task :freshen_provers_fixtures do
+    FixturesGeneration::ProversGenerator.new.call
   end
 
-  def absolute_filepath(file)
-    Rails.root.join(file)
+  desc 'Update all proof fixtures'
+  task :freshen_proof_fixtures do
+    FixturesGeneration::ProofGenerator.new.call
   end
 
-  def cassette_file(file)
-    # remove spec/fixtures/ontologies/ for cassette name
-    cassette_filepath = file.split('/')[3..-1].join('/')
+  desc 'Update all prover output fixtures'
+  task :freshen_prover_output_fixtures do
+    FixturesGeneration::ProverOutputGenerator.new.call
   end
 
-  def hets_cassette_dir(subdir)
-    File.join('hets-out', subdir)
-  end
-
-  def cassette_path_in_fixtures(subdir, file)
-    File.join(hets_cassette_dir(subdir), cassette_file(file))
-  end
-
-  def recorded_file(subdir, file)
-    base = file.split('.')[0..-2].join('.')
-    old_extension = File.extname(file)[1..-1]
-    file = "#{base}_#{old_extension}.yml"
-    File.join('spec', 'fixtures', 'vcr', cassette_path_in_fixtures(subdir, file))
-  end
-
-  def outdated_cassettes(files, subdir)
-    files.select do |file|
-      cassette = recorded_file(subdir, file)
-      !FileUtils.uptodate?(cassette, Array(HETS_PATH))
-    end
-  end
-
-  def on_outdated_cassettes(files, subdir, &block)
-    outdated_cassettes(files, subdir).each do |file|
-      block.call(file, subdir)
-    end
-  end
-
-  def prover_output_target_file(node, prover)
-    filepath = "spec/fixtures/prover_output/generated/#{node}/#{prover}"
-    FileUtils.mkdir_p(File.dirname(filepath))
-    File.open(filepath, 'w')
-  end
-
-  def write_prover_output_fixture(node, prover, response_hash)
-    file = prover_output_target_file(node, prover)
-    file.write(response_hash.first['goals'].first['prover_output'])
-    file.close
-  end
-
-  def http_request_with_get(uri, _header, _data)
-    Net::HTTP.get_response(uri)
-  end
-
-  def http_request_with_post(uri, header, data)
-    Net::HTTP.start(uri.hostname, uri.port) do |http|
-      http.request_post(uri, data.to_json, header)
-    end
-  end
-
-  def call_hets(file, subdir, command,
-                method: :get,
-                hets_api_options: HETS_API_OPTIONS,
-                query_string: '',
-                header: {},
-                data: {})
-    puts "Calling hets/#{command} on #{file.inspect}"
-    escaped_iri = Rack::Utils.escape_path("file://#{absolute_filepath(file)}")
-    hets_iri = "#{HETS_BASE_IRI}/#{command}/#{escaped_iri}"
-    hets_iri << hets_api_options
-    hets_iri << query_string
-
-    FileUtils.rm_f(recorded_file(subdir, file))
-    VCR.use_cassette(cassette_path_in_fixtures(subdir, file)) do
-      send("http_request_with_#{method}", URI(hets_iri), header, data)
-    end
-  end
-
-  def call_hets_dg(file, subdir)
-    hets_api_options = "#{HETS_API_OPTIONS}/full-signatures/full-theories"
-    call_hets(file, subdir, 'dg', hets_api_options: hets_api_options)
-  end
-
-  def call_hets_provers(file, subdir)
-    query_string = '?format=json'
-    call_hets(file, subdir, 'provers', query_string: query_string)
-  end
-
-  def call_hets_prove(file, subdir)
-    header = {'Content-Type' => 'application/json'}
-    data = {format: 'json', include: 'true'}
-    call_hets(file, subdir, 'prove', method: :post, header: header, data: data)
-  end
-
-  def call_hets_prover_output(file, subdir, nodes)
-    header = {'Content-Type' => 'application/json'}
-    data_template = {format: 'json', include: 'true'}
-    provers = %w(SPASS darwin darwin-non-fd eprover)
-    nodes.each do |node|
-      provers.each do |prover|
-        data = data_template.merge({prover: prover, node: node})
-        response = call_hets(file, subdir, 'prove',
-                        method: :post, header: header, data: data)
-        json = JSON.parse(response.read_body)
-        write_prover_output_fixture(node, prover, json)
-        response
-      end
-    end
-  end
-
-  def freshen_ontology_fixtures
-    on_outdated_cassettes(ontology_files, 'dg') do |file, subdir|
-      call_hets_dg(file, subdir)
-    end
-  end
-
-  def freshen_provers_fixtures
-    on_outdated_cassettes(ontology_files, 'provers') do |file, subdir|
-      call_hets_provers(file, subdir)
-    end
-  end
-
-  def freshen_proof_fixtures
-    on_outdated_cassettes(prove_files, 'prove') do |file, subdir|
-      call_hets_prove(file, subdir)
-    end
-  end
-
-  def freshen_prover_output_fixtures
-    on_outdated_cassettes(prove_files, 'prover_output') do |file, subdir|
-      call_hets_prover_output(file, subdir, %w(CounterSatisfiable Theorem))
-    end
-  end
-
-  def setup_vcr
-    require 'vcr'
-    VCR.configure do |c|
-      c.cassette_library_dir = 'spec/fixtures/vcr'
-      c.hook_into :webmock
-    end
+  desc 'Enable coverage report (only useful as prerequisite of other tasks)'
+  task :enable_coverage do
+    ENV['COVERAGE'] = 'true'
   end
 
   def port_open?(ip, port, seconds=1)
@@ -187,21 +62,6 @@ namespace :test do
     false
   end
 
-  def with_running_hets(&block)
-    need_to_start_hets = !port_open?('127.0.0.1', 8000)
-    if need_to_start_hets
-      hets_pid = fork { exec("hets --server #{HETS_SERVER_ARGS.join(' ')}") }
-      # hets server needs some startup time
-      sleep 1
-    end
-    block.call
-  ensure
-    if need_to_start_hets
-      puts 'Stopping hets server.'
-      Process.kill('TERM', hets_pid)
-    end
-  end
-
   desc 'abort execution if elasticsearch is not running'
   task :abort_if_elasticsearch_is_not_running do
     elasticsearch_port = ENV['ELASTIC_TEST_PORT']
@@ -210,60 +70,6 @@ namespace :test do
       $stderr.puts 'Elasticsearch is not running. Please start it before running the tests.'
       $stderr.puts 'Aborting tests.'
       exit 1
-    end
-  end
-
-  desc 'Update all fixtures'
-  task :freshen_fixtures do
-    outdated_exist = outdated_cassettes(ontology_files, 'dg').any?
-    outdated_exist ||= outdated_cassettes(ontology_files, 'provers').any?
-    outdated_exist ||= outdated_cassettes(prove_files, 'prove').any?
-    outdated_exist ||= outdated_cassettes(prove_files, 'prover_output').any?
-    if outdated_exist
-      setup_vcr
-      with_running_hets do
-        freshen_ontology_fixtures
-        freshen_provers_fixtures
-        freshen_proof_fixtures
-        freshen_prover_output_fixtures
-      end
-    end
-  end
-
-  desc 'Update all ontology fixtures'
-  task :freshen_ontology_fixtures do
-    if outdated_cassettes(ontology_files, 'dg').any?
-      setup_vcr
-      with_running_hets { freshen_ontology_fixtures }
-    end
-  end
-
-  desc 'Update all provers fixtures'
-  task :freshen_provers_fixtures do
-    if outdated_cassettes(ontology_files, 'provers').any?
-      setup_vcr
-      with_running_hets { freshen_provers_fixtures }
-    end
-  end
-
-  desc 'Update all proof fixtures'
-  task :freshen_proof_fixtures do
-    if outdated_cassettes(prove_files, 'prove').any?
-      setup_vcr
-      with_running_hets { freshen_proof_fixtures }
-    end
-  end
-
-  desc 'Enable coverage report (only useful as prerequisite of other tasks)'
-  task :enable_coverage do
-    ENV['COVERAGE'] = 'true'
-  end
-
-  desc 'Update all prover output fixtures'
-  task :freshen_prover_output_fixtures do
-    if outdated_cassettes(prove_files, 'prover_output').any?
-      setup_vcr
-      with_running_hets { freshen_prover_output_fixtures }
     end
   end
 end
