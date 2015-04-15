@@ -216,4 +216,9 @@ namespace :test do
       with_running_hets { freshen_proof_fixtures }
     end
   end
+
+  desc 'Enable coverage report (only useful as prerequisite of other tasks)'
+  task :enable_coverage do
+    ENV['COVERAGE'] = 'true'
+  end
 end
