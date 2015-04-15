@@ -74,3 +74,4 @@ spec/fixtures/ontologies/hets-out/*
 
 spec/fixtures/ontologies/hets-out/prove
 !spec/fixtures/ontologies/hets-out/prove/.gitkeep
+spec/fixtures/prover_output/generated
