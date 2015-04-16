@@ -37,29 +37,4 @@ module DatabaseCleanerConfig
       end
     end
   end
-
-  if defined? ActiveSupport::TestCase
-    # Set strategy and clean once at load time
-    DatabaseCleaner.strategy = INITIAL_CLEAN_MODE, INITIAL_CLEAN_OPTIONS
-    DatabaseCleaner.clean
-    DatabaseCleaner.strategy = CLEAN_MODE
-
-    class ActiveSupport::TestCase
-
-      class_attribute :use_transactional_fixtures
-      class_attribute :use_instantiated_fixtures
-
-      self.use_transactional_fixtures = false
-      self.use_instantiated_fixtures  = false
-
-      setup do
-        DatabaseCleaner.start
-      end
-
-      teardown do
-        DatabaseCleaner.clean
-      end
-
-    end
-  end
 end
