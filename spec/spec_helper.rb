@@ -38,6 +38,25 @@ def stub_cp_keys
   allow(AuthorizedKeysManager).to receive(:copy_authorized_keys_to_git_home)
 end
 
+def current_full_description
+  RSpec.configuration.current_full_description
+end
+
+def current_description
+  RSpec.configuration.current_description
+end
+
+def current_file_path
+  prefix = 'spec/'
+  full_path = RSpec.configuration.current_file_path
+  full_path.match(/#{prefix}(?<path>.*)\.rb$/)[:path]
+end
+
+# Generate a generic cassette name for any example or context.
+def generate_cassette_name
+  "specs/#{current_file_path}/#{current_full_description}"
+end
+
 # Recording HTTP Requests
 VCR.configure do |c|
   c.cassette_library_dir = 'spec/fixtures/vcr'
@@ -51,6 +70,9 @@ VCR.configure do |c|
 end
 
 RSpec.configure do |config|
+  config.add_setting :current_full_description
+  config.add_setting :current_description
+  config.add_setting :current_file_path
   # ## Mock Framework
   # config.mock_with :mocha
   # config.mock_with :flexmock
@@ -63,9 +85,13 @@ RSpec.configure do |config|
     FactoryGirl.create :proof_statuses
   end
 
-  config.before(:each) do
+  config.before(:each) do |example|
     redis = WrappingRedis::RedisWrapper.new
     redis.del redis.keys if redis.keys.any?
+    config.current_full_description =
+      example.metadata[:example_group][:full_description]
+    config.current_description = example.description
+    config.current_file_path = example.file_path
   end
 
   config.after(:each) do
