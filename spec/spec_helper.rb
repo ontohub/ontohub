@@ -43,11 +43,11 @@ VCR.configure do |c|
   c.cassette_library_dir = 'spec/fixtures/vcr'
   c.hook_into :webmock
   c.ignore_localhost = true
-  c.ignore_hosts \
-    '127.0.0.1',
-    'localhost',
-    'colore.googlecode.com',
-    'trac.informatik.uni-bremen.de'
+  c.ignore_request do |request|
+    # ignore elasticsearch requests
+    URI(request.uri).host == 'localhost' &&
+    URI(request.uri).port == elasticsearch_port.to_i
+  end
 end
 
 RSpec.configure do |config|
