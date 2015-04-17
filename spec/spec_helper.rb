@@ -67,6 +67,9 @@ VCR.configure do |c|
     URI(request.uri).host == 'localhost' &&
     URI(request.uri).port == elasticsearch_port.to_i
   end
+  c.register_request_matcher :hets_prove_uri do |request1, request2|
+    hets_prove_matcher(request1, request2)
+  end
 end
 
 RSpec.configure do |config|
