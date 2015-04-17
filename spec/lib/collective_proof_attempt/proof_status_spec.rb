@@ -50,7 +50,7 @@ describe 'CollectiveProofAttempt - SZS', :http_interaction do
 
       context 'after proving' do
         before do
-          generator.with_cassette(generate_cassette_name) do
+          generator.with_cassette(generate_cassette_name, :hets_prove_uri) do
             cpa.run
           end
         end
@@ -76,7 +76,7 @@ describe 'CollectiveProofAttempt - SZS', :http_interaction do
 
       context 'after proving' do
         before do
-          generator.with_cassette(generate_cassette_name) do
+          generator.with_cassette(generate_cassette_name, :hets_prove_uri) do
             cpa.run
           end
         end
@@ -105,7 +105,7 @@ describe 'CollectiveProofAttempt - SZS', :http_interaction do
 
       context 'after proving' do
         before do
-          generator.with_cassette(generate_cassette_name) do
+          generator.with_cassette(generate_cassette_name, :hets_prove_uri) do
             cpa.run
           end
         end
@@ -131,7 +131,7 @@ describe 'CollectiveProofAttempt - SZS', :http_interaction do
 
       context 'after proving' do
         before do
-          generator.with_cassette(generate_cassette_name) do
+          generator.with_cassette(generate_cassette_name, :hets_prove_uri) do
             cpa.run
           end
         end

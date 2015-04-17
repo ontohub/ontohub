@@ -19,13 +19,16 @@ module FixturesGeneration
       # We don't want to call this before the tests.
     end
 
-    def with_cassette(cassette = nil, &block)
+    def with_cassette(cassette = nil, matcher = nil, &block)
       cassette ||= cassette_path_in_fixtures(file)
-      with_vcr(cassette, {}) do
+      vcr_options = {}
+      vcr_options[:match_requests_on] = [:method, matcher] if matcher
+      with_vcr(cassette, vcr_options) do
         block.call
       end
     rescue Exception
-      with_vcr(cassette, {record: :all}) do
+      vcr_options[:record] = :all
+      with_vcr(cassette, vcr_options) do
         with_running_hets do
           with_running_rails_server_test do
             block.call
