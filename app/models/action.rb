@@ -12,7 +12,7 @@ class Action < ActiveRecord::Base
   end
 
   def eta(time = Time.now)
-    diff = (created_at + initial_eta) - time
+    diff = (action_started_at + initial_eta) - time
     [diff, 0].max
   end
 
@@ -34,5 +34,9 @@ class Action < ActiveRecord::Base
     else
       TERMINAL_STATUSES.include?(status.to_s)
     end
+  end
+
+  def action_started_at
+    read_attribute(:action_started_at) || created_at
   end
 end
