@@ -3,7 +3,7 @@ require 'spec_helper'
 describe Action do
   context '#eta' do
     let(:action) { create :action }
-    let(:target) { action.created_at + action.eta }
+    let(:target) { action.action_started_at + action.eta }
 
     it 'should return the initial eta at creation time' do
       expect(action.eta(action.created_at).to_i).
@@ -16,6 +16,17 @@ describe Action do
 
     it 'should return 0 if the eta has been reached' do
       expect(action.eta(target + 5.minutes)).to eq(0)
+    end
+
+    it 'should return initial eta when action has been started' do
+      action.register_start_of_action
+      expect(action.eta(action.action_started_at).to_i).
+        to eq(action.initial_eta)
+    end
+
+    it 'should return correct eta when action has been started' do
+      action.register_start_of_action
+      expect(action.eta(target - 2).to_i).to eq(2)
     end
   end
 
