@@ -39,4 +39,8 @@ class Action < ActiveRecord::Base
   def action_started_at
     read_attribute(:action_started_at) || created_at
   end
+
+  def register_start_of_action
+    touch(:action_started_at)
+  end
 end
