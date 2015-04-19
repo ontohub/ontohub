@@ -25,7 +25,19 @@ email: noreply@example.com
 # Mail delivery
 # http://guides.rubyonrails.org/action_mailer_basics.html#action-mailer-configuration
 action_mailer:
-  delivery_method: sendmail
+  # possible values for delivery_method (see ActionMailer documentation):
+  # :smtp, :sendmail, :file, :test
+  delivery_method: :sendmail
+  perform_deliveries: true
+  raise_delivery_errors: true
+  smtp_settings:
+    address: 'mail'
+    port: 25
+    # Supply the fully qualified domain name in the settings.local.yml at:
+    domain: # nil
+    enable_starttls_auto: true
+    password: # nil
+    authentication: # nil
 
 # The number of days a user can access
 # the website without confirming his account.
@@ -54,14 +66,35 @@ exception_notifier:
 
 # Worker count
 workers:
-  hets: 4
+  hets: 1
+
+# The following paths can be absolute paths
+# or relative paths to the project root
+paths:
+  # General data.
+  data: data
+  # git repositories (names are numbers/ids)
+  git_repositories: data/repositories
+  # named symlinks to the git repositories
+  symlinks: data/git_daemon
+  # cache for files that needed to be checked out from the git repositories
+  commits: data/commits
 
 git:
+  user: # can be nil if git commands are to be executed with the current user
+  group: # can be nil if git commands are to be executed with the current group
   verify_url: http://localhost/
   default_branch: 'master'
   push_priority:
     commits: 1
     changed_files_per_commit: 5
+  fallbacks:
+    committer_name: 'ontohub_system'
+    committer_email: 'ontohub_system@ontohub.org'
+
+# The name of the repository in which the externally imported ontology files are
+# saved.
+external_repository_name: 'External'
 
 allowed_iri_schemes:
   - http
@@ -72,10 +105,6 @@ allowed_iri_schemes:
 
 display_head_commit: false
 display_symbols_tab: false
-
-external_repository_name: 'External'
-fallback_commit_user: 'ontohub_system'
-fallback_commit_email: 'ontohub_system@ontohub.org'
 
 format_selection: false
 

@@ -112,9 +112,67 @@ Add your repository URL as a remote to your local ontohub clone:
 
 #### Adjust settings
 
-Change the hostname in `config/settings/production.yml` to the one of your deployment machine and the capistrano `repo_url` setting in `config/deploy.rb` to your public repository URL.
+##### Settings Files
 
-Also consider changing the name of your Ontohub instance, the outgoing mail address and the footer links right now.
+Default settings can be found in the `config/settings.yml`.
+Those are overridden by whatever is in the `config/settings/production.yml`,
+which define defaults for the production environment. For your own deployment,
+we recommend to create the file `config/settings.local.yml` to sepcify the
+settings for your ontohub instance. That file overrides what is set in the
+former files. The complete settings loading pipeline is
+```
+config/settings.yml
+config/settings/#{environment}.yml
+config/environments/#{environment}.yml
+config/settings.local.yml
+config/settings/#{environment}.local.yml
+config/environments/#{environment}.local.yml
+```
+each overriding what was previously set.
+
+You will find some **other `.yml` files** in the `config` directory, e.g.
+`hets.yml`, but those **are supposed to be changed by developers only**,
+because they contain settings which, for example, define (options for)
+dependencies.
+
+Further, you *can* override configuration that needs some computation or the
+Rails environment, but **we recommend not to do this**. This is only needed
+for special purposes, i.e. for a development/debugging instance running in
+production mode. The pipeline is
+```
+config/environments/#{environment}.rb
+config/environments/#{environment}.local.rb
+```
+each overriding what was previously set.
+
+Not that the `*.local.*` files are ignored by git. If you want to have them in
+your repository, add them with `git add filename --force`
+
+##### Settings Validations
+
+The settings which are in the listed `.yml` from the pipeline files are
+validated, i.e. the data-types are checked and sometimes their values (email
+address format, number range, etc.). If the validations fail, the Rails
+application won't boot.
+
+##### Changing Settings
+
+Settings you most likely need to change include:
+```yml
+name
+hostname
+email
+action_mailer.*
+exception_notifier.exception_recepients
+paths
+```
+
+##### Settings for deployment with capistrano
+
+For deployment with capistrano, you need to change the hostname (in the
+production environment) to the one of your deployment machine and the
+capistrano `repo_url` setting in `config/deploy.rb` to your public repository
+URL.
 
 Now commit the settings:
 

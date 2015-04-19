@@ -4,6 +4,9 @@ hostname: "ontohub.org"
 exception_notifier:
   enabled: true
 
+action_mailer:
+  raise_delivery_errors: false
+
 git:
   user: 'git'
   group: 'git'

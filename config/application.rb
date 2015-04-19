@@ -76,16 +76,24 @@ module Ontohub
     config.external_url_mapping = APP_CONFIG = YAML.load(File.read(Rails.root + "config/external_link_mapping.yml"))
 
     config.before_initialize do
+      Settings.prepend_source!(Rails.root.join('config', 'hets.yml').to_s)
+      Settings.reload!
+
       # Enable serving of images, stylesheets, and JavaScripts from an asset server
       config.action_controller.asset_host = Settings.asset_host
 
       # ActionMailer settings
-      c = Settings.action_mailer
-      (c[:default_url_options] ||= {})[:host] ||= Settings.hostname
-      c.each do |key,val|
-        config.action_mailer.send("#{key}=", val)
+      require config.root.join('config', 'initializers', 'hostname.rb')
+      Settings.action_mailer[:default_url_options] ||= {}
+      Settings.action_mailer[:default_url_options][:host] ||= config.fqdn
+      Settings.action_mailer[:default_url_options][:port] ||= config.port
+      Settings.action_mailer.each do |key, value|
+        config.action_mailer.send("#{key}=", value)
       end
+    end
 
+    config.after_initialize do
+      SettingsValidator.new.validate!
     end
   end
 end
