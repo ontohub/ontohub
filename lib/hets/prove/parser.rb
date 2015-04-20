@@ -4,11 +4,11 @@ module Hets
       # possible hierarchy beginnings
       NODE = [:array, :object]
       GOAL = [*NODE, 'goals', :array, :object]
-      TACTIC_SCRIPT = [*GOAL, 'tacticScript', :object]
-      TACTIC_SCRIPT_EXTRA_OPTIONS = [*TACTIC_SCRIPT, 'extraOptions', :array]
-      USED_TIME = [*GOAL, 'usedTime', :object]
+      TACTIC_SCRIPT = [*GOAL, 'tactic_script', :object]
+      TACTIC_SCRIPT_EXTRA_OPTIONS = [*TACTIC_SCRIPT, 'extra_options', :array]
+      USED_TIME = [*GOAL, 'used_time', :object]
       USED_TIME_COMPONENTS = [*USED_TIME, 'components', :object]
-      USED_AXIOMS = [*GOAL, 'usedAxioms', :array]
+      USED_AXIOMS = [*GOAL, 'used_axioms', :array]
 
       BRANCHES = %w(NODE GOAL TACTIC_SCRIPT TACTIC_SCRIPT_EXTRA_OPTIONS
                     USED_TIME USED_TIME_COMPONENTS USED_AXIOMS)
