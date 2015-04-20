@@ -25,8 +25,7 @@ def download_from_ontohub_meta(source_file, target_file)
     if system("wget -O #{temp_file} #{source_url}")
       filepath = temp_file
     else
-      puts
-        'No connection to ontohub.org. Using local file for the current task.'
+      puts 'No connection to ontohub.org. Using local file for the current task.'
     end
   end
   version = meta_repository.
