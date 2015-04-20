@@ -12,8 +12,8 @@ module Hets
       def import
         hash = JSON.parse(io.read)
         provers = hash['provers']
-        provers.each do |prover_name|
-          prover = Prover.where(name: prover_name).first_or_create!
+        provers.each do |prover_hash|
+          prover = Prover.where(prover_hash).first_or_create!
           unless ontology_version.provers.include?(prover)
             ontology_version.provers << prover
           end
