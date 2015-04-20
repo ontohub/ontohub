@@ -1,7 +1,7 @@
 class Prover < ActiveRecord::Base
-  attr_accessible :name
+  attr_accessible :name, :display_name
 
   def to_s
-    name
+    display_name
   end
 end
