@@ -34,8 +34,7 @@ execute_or_die() {
 abort_unless_invoker_installed
 initialize_new_invoker_instance
 
-for i in "$@"
-do
+for i in "$@"; do
 case $i in
     -d|--download-fixtures)
     export DOWNLOAD_FIXTURES=true
@@ -50,8 +49,7 @@ case $i in
   shift
 done
 
-if [[ !($RESTART_INVOKER_ONLY) ]]
-then
+if [[ !($RESTART_INVOKER_ONLY) ]]; then
   execute_or_die "bundle exec rake elasticsearch:wipe"
   execute_or_die "bundle exec rake db:migrate:clean"
   execute_or_die "redis-cli flushdb"

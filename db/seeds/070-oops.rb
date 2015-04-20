@@ -1,9 +1,9 @@
 def handle_error(e, reason)
-  puts <<MSG
-  Could not seed "oops" because #{reason}.
-  #{e.class}: #{e.message}
-  Continuing with other data.
-MSG
+  puts <<-MSG.squish
+    Could not seed "oops" because #{reason}.
+    #{e.class}: #{e.message}
+    Continuing with other data.
+  MSG
 end
 
 # Add OOPS! requests and responses to pizza ontology.
