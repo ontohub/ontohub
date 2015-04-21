@@ -35,13 +35,10 @@ class Proof < FakeRecord
 
     @ontology = Ontology.find(opts[:ontology_id])
     @timeout = opts[:proof][:timeout].to_i if opts[:proof][:timeout].present?
-    @prover_ids = normalize_check_box_ids(opts[:proof][:prover_ids])
-    @axiom_ids = normalize_check_box_ids(opts[:proof][:axioms])
 
-    @proof_obligation = initialize_proof_obligation(opts)
-
-    initialize_provers
-    initialize_axioms
+    initialize_proof_obligation(opts)
+    initialize_provers(opts)
+    initialize_axioms(opts)
     initialize_prove_options_list
     initialize_proof_attempts
   end
@@ -62,8 +59,8 @@ class Proof < FakeRecord
 
   protected
 
-  # HACK: remove the empty string from params
-  # Rails 4.2 introduces the html form option :include_hidden
+  # HACK: Remove the empty string from params.
+  # Rails 4.2 introduces the html form option :include_hidden for this task.
   def normalize_check_box_ids(collection)
     collection.select(&:present?).map(&:to_i) if collection
   end
@@ -81,14 +78,16 @@ class Proof < FakeRecord
       end
   end
 
-  def initialize_provers
+  def initialize_provers(opts)
+    @prover_ids = normalize_check_box_ids(opts[:proof][:prover_ids])
     @provers = @prover_ids.map { |prover| Prover.where(id: prover).first }
     @provers.compact!
     @provers = [nil] if @provers.blank?
   end
 
-  def initialize_axioms
-    @axioms = @axiom_ids.map { |id| Axiom.find(id) } if @axiom_ids
+  def initialize_axioms(opts)
+    axiom_ids = normalize_check_box_ids(opts[:proof][:axioms])
+    @axioms = axiom_ids.map { |id| Axiom.find(id) } if @axiom_ids
   end
 
   def initialize_prove_options_list
