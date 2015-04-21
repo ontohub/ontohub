@@ -19,7 +19,7 @@ class Proof < FakeRecord
                    1.hours, 6.hours,
                    1.days, 2.days, 7.days]
 
-  attr_reader :proof_obligation, :prover_ids, :ontology, :timeout
+  attr_reader :proof_obligation, :prover_ids, :ontology, :timeout, :axioms
   attr_reader :proof_attempts, :prove_options_list, :options_to_attempts_hash
   attr_reader :prove_asynchronously
 
@@ -35,12 +35,13 @@ class Proof < FakeRecord
 
     @ontology = Ontology.find(opts[:ontology_id])
     @timeout = opts[:proof][:timeout].to_i if opts[:proof][:timeout].present?
-    # HACK: remove the empty string from params
-    # Rails 4.2 introduces the html form option :include_hidden
-    @prover_ids = opts[:proof][:prover_ids].select(&:present?).map(&:to_i)
+    @prover_ids = normalize_check_box_ids(opts[:proof][:prover_ids])
+    @axiom_ids = normalize_check_box_ids(opts[:proof][:axioms])
+
     @proof_obligation = initialize_proof_obligation(opts)
 
     initialize_provers
+    initialize_axioms
     initialize_prove_options_list
     initialize_proof_attempts
   end
@@ -61,6 +62,12 @@ class Proof < FakeRecord
 
   protected
 
+  # HACK: remove the empty string from params
+  # Rails 4.2 introduces the html form option :include_hidden
+  def normalize_check_box_ids(collection)
+    collection.select(&:present?).map(&:to_i) if collection
+  end
+
   def ontology_version
     @ontology_version ||= ontology.current_version
   end
@@ -80,9 +87,14 @@ class Proof < FakeRecord
     @provers = [nil] if @provers.blank?
   end
 
+  def initialize_axioms
+    @axioms = @axiom_ids.map { |id| Axiom.find(id) } if @axiom_ids
+  end
+
   def initialize_prove_options_list
     @prove_options_list = @provers.map do |prover|
       options = {prover: prover}
+      options[:axioms] = axioms if axioms.present?
       options[:timeout] = timeout if timeout.present?
       Hets::ProveOptions.new(options)
     end
