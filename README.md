@@ -53,7 +53,7 @@ the [GNU AGPL 3.0](http://www.gnu.org/licenses/agpl-3.0.html) license.
 [0]: http://www.tzi.org/~cabo/awe12
 [1]: http://www.tzi.org/~cabo
 [2]: http://iws.cs.uni-magdeburg.de/~mossakow/
-[3]: http://theo.cs.uni-magdeburg.de/theo_eng.html
+[3]: http://theo.cs.uni-magdeburg.de/
 [4]: http://wob.iai.uni-bonn.de/Wob/de/view/class217_id1582.html
 [5]: https://github.com/corny
 [6]: http://henning.orgizm.net
