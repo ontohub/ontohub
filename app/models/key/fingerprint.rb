@@ -3,7 +3,7 @@ module Key::Fingerprint
 
   included do
     before_validation :generate_fingerpint
-    validates :fingerprint, uniqueness: true
+    validates :fingerprint, uniqueness: true, presence: true
   end
 
 
