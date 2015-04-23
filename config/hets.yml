@@ -27,7 +27,7 @@ hets_owl_tools:
   - /Applications/Hets.app/Contents/Resources/hets-owl-tools
 
 version_minimum_version: 0.99
-version_minimum_revision: 1425547964
+version_minimum_revision: 1429678296
 
 stack_size: 1G
 
