@@ -55,7 +55,7 @@ describe LanguageAdjointsController do
         let!(:adjoint_from_db) { LanguageAdjoint.find_by_iri('http://test.de') }
 
         it 'should exist' do
-          expect(adjoint_from_db).not_to be_nil
+          expect(adjoint_from_db).not_to be(nil)
         end
 
         it 'should have correct translation' do
@@ -81,7 +81,7 @@ describe LanguageAdjointsController do
         let!(:adjoint_from_db) { LanguageAdjoint.find_by_iri('http://test2.de') }
 
         it 'should exist' do
-          expect(adjoint_from_db).not_to be_nil
+          expect(adjoint_from_db).not_to be(nil)
         end
 
         it 'should have correct translation' do
@@ -98,7 +98,7 @@ describe LanguageAdjointsController do
       before { delete :destroy, id: adjoint.id, mapping_id: mapping.id }
 
       it 'remove the record' do
-        expect(LanguageAdjoint.find_by_id(adjoint.id)).to be_nil
+        expect(LanguageAdjoint.find_by_id(adjoint.id)).to be(nil)
       end
     end
 
@@ -141,7 +141,7 @@ describe LanguageAdjointsController do
         let!(:adjoint_from_db) { LanguageAdjoint.find_by_iri('http://test.de') }
 
         it 'should exist' do
-          expect(adjoint_from_db).not_to be_nil
+          expect(adjoint_from_db).not_to be(nil)
         end
 
         it 'should have correct translation' do
@@ -164,7 +164,7 @@ describe LanguageAdjointsController do
       end
 
       it 'not change the record' do
-        expect(LanguageAdjoint.find_by_iri('http://test2.de')).to be_nil
+        expect(LanguageAdjoint.find_by_iri('http://test2.de')).to be(nil)
       end
     end
 
@@ -208,7 +208,7 @@ describe LanguageAdjointsController do
       end
 
       it 'not create the record' do
-        expect(LanguageAdjoint.find_by_iri("http://test.de")).to be_nil
+        expect(LanguageAdjoint.find_by_iri("http://test.de")).to be(nil)
       end
     end
 
@@ -222,7 +222,7 @@ describe LanguageAdjointsController do
       end
 
       it 'not change the record' do
-        expect(LanguageAdjoint.find_by_iri('http://test2.de')).to be_nil
+        expect(LanguageAdjoint.find_by_iri('http://test2.de')).to be(nil)
       end
     end
 

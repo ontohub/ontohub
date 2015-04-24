@@ -39,7 +39,7 @@ describe LanguageMappingsController do
         let!(:mapping_from_db) { LanguageMapping.find_by_iri('http://test.de') }
 
         it 'should exist' do
-          expect(mapping_from_db).not_to be_nil
+          expect(mapping_from_db).not_to be(nil)
         end
 
         it 'should have correct source' do
@@ -66,7 +66,7 @@ describe LanguageMappingsController do
         let!(:mapping_from_db) { LanguageMapping.find_by_iri('http://test2.de') }
 
         it 'should exist' do
-          expect(mapping_from_db).not_to be_nil
+          expect(mapping_from_db).not_to be(nil)
         end
 
         it 'should have correct source' do
@@ -83,7 +83,7 @@ describe LanguageMappingsController do
       before { delete :destroy, id: mapping.id, language_id: source_language.id }
 
       it 'remove the record' do
-        expect(LanguageMapping.find_by_id(mapping.id)).to be_nil
+        expect(LanguageMapping.find_by_id(mapping.id)).to be(nil)
       end
     end
 
@@ -129,7 +129,7 @@ describe LanguageMappingsController do
         let!(:mapping_from_db) { LanguageMapping.find_by_iri('http://test.de') }
 
         it 'should exist' do
-          expect(mapping_from_db).not_to be_nil
+          expect(mapping_from_db).not_to be(nil)
         end
 
         it 'should have correct source' do
@@ -153,7 +153,7 @@ describe LanguageMappingsController do
       end
 
       it 'not change the record' do
-        expect(LanguageMapping.find_by_iri('http://test2.de')).to be_nil
+        expect(LanguageMapping.find_by_iri('http://test2.de')).to be(nil)
       end
     end
 
@@ -199,7 +199,7 @@ describe LanguageMappingsController do
     end
 
     it 'not create the record' do
-      expect(LanguageMapping.find_by_iri('http://test.de')).to be_nil
+      expect(LanguageMapping.find_by_iri('http://test.de')).to be(nil)
     end
   end
 
@@ -214,7 +214,7 @@ describe LanguageMappingsController do
     end
 
     it 'not change the record' do
-      expect(LanguageMapping.find_by_iri('http://test2.de')).to be_nil
+      expect(LanguageMapping.find_by_iri('http://test2.de')).to be(nil)
     end
   end
 

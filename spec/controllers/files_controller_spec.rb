@@ -103,10 +103,10 @@ describe FilesController do
 
             it { should respond_with :found }
             it "should not show an error" do
-              expect(flash[:error]).to be_nil
+              expect(flash[:error]).to be(nil)
             end
             it "should show a success message" do
-              expect(flash[:success]).not_to be_nil
+              expect(flash[:success]).not_to be(nil)
             end
           end
 
@@ -120,10 +120,10 @@ describe FilesController do
 
             it { should respond_with :success }
             it "should set an error message for the message field" do
-              expect { flash[:error].messages[:message] }.not_to be_nil
+              expect { flash[:error].messages[:message] }.not_to be(nil)
             end
             it "should not show a success message" do
-              expect(flash[:success]).to be_nil
+              expect(flash[:success]).to be(nil)
             end
           end
         end
@@ -140,13 +140,13 @@ describe FilesController do
 
           it { should respond_with :found }
           it "should not show an error" do
-            expect(flash[:error]).to be_nil
+            expect(flash[:error]).to be(nil)
           end
           it "should show a success message" do
-            expect(flash[:success]).not_to be_nil
+            expect(flash[:success]).not_to be(nil)
           end
           it "should have added a file" do
-            expect(repository.path_exists? filepath).to be_true
+            expect(repository.path_exists? filepath).to be(true)
           end
           it "should actually not have added a file" do
             pending "this should be another controller action"

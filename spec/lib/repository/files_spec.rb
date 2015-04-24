@@ -19,7 +19,7 @@ describe 'GitRepositoryFiles' do
   context 'create single commit of a file' do
     before { repository.commit_file(userinfo, content, filepath, message) }
 
-    it { expect(repository.path_exists?(filepath)).to be_true }
+    it { expect(repository.path_exists?(filepath)).to be(true) }
     it { expect(repository.get_file(filepath).name).to eq(filepath.split('/')[-1]) }
     it { expect(repository.get_file(filepath).content).to eq(content) }
     it { expect(repository.get_file(filepath).mime_type).to eq(Mime::Type.lookup('text/plain')) }
@@ -34,7 +34,7 @@ describe 'GitRepositoryFiles' do
       repository.delete_file(userinfo, filepath)
     end
 
-    it { expect(repository.path_exists?(filepath)).to be_false }
+    it { expect(repository.path_exists?(filepath)).to be(false) }
   end
 
   context 'overwrite a file' do
@@ -58,9 +58,9 @@ describe 'GitRepositoryFiles' do
 
     before { repository.commit_file(userinfo, content, fullpath, message) }
 
-    it { expect(repository.points_through_file?(folder)).to be_false }
-    it { expect(repository.points_through_file?(fullpath)).to be_false }
-    it { expect(repository.points_through_file?("#{fullpath}/foo")).to be_true }
+    it { expect(repository.points_through_file?(folder)).to be(false) }
+    it { expect(repository.points_through_file?(fullpath)).to be(false) }
+    it { expect(repository.points_through_file?("#{fullpath}/foo")).to be(true) }
   end
 
   context 'throw Exception on erroneous paths' do

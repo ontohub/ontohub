@@ -15,7 +15,7 @@ describe SymbolMapping do
       let(:ontology) { dist_ontology.children.find_by_name('test') }
 
       it 'should not contain the mapped symbol' do
-        expect(ontology.symbols.find_by_name('Human')).to be_nil
+        expect(ontology.symbols.find_by_name('Human')).to be(nil)
       end
 
     end

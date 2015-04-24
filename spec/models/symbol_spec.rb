@@ -74,7 +74,7 @@ describe OntologyMember::Symbol do
         end
 
         it 'should have iri set to nil' do
-          expect(symbol.iri).to be_nil
+          expect(symbol.iri).to be(nil)
         end
       end
     end
@@ -123,11 +123,11 @@ describe OntologyMember::Symbol do
         before { ontology.symbols.update_or_create_from_hash(symbol_hash) }
 
         it 'should have display_name not set to nil' do
-          expect(symbol.display_name).to_not be_nil
+          expect(symbol.display_name).to_not be(nil)
         end
 
         it 'should have the iri set to nil' do
-          expect(symbol.iri).to be_nil
+          expect(symbol.iri).to be(nil)
         end
       end
     end

@@ -40,7 +40,7 @@ describe LogicMappingsController do
         let!(:mapping_from_db) { LogicMapping.find_by_iri('http://test.de') }
 
         it 'should exist' do
-          expect(mapping_from_db).not_to be_nil
+          expect(mapping_from_db).not_to be(nil)
         end
 
         it 'should have correct source' do
@@ -67,7 +67,7 @@ describe LogicMappingsController do
         let!(:mapping_from_db) { LogicMapping.find_by_iri('http://test2.de') }
 
         it 'should exist' do
-          expect(mapping_from_db).not_to be_nil
+          expect(mapping_from_db).not_to be(nil)
         end
 
         it 'should have correct source' do
@@ -84,7 +84,7 @@ describe LogicMappingsController do
       before { delete :destroy, id: mapping.to_param, logic_id: source_logic.id }
 
       it 'remove the record' do
-        expect(LogicMapping.find_by_id(mapping.id)).to be_nil
+        expect(LogicMapping.find_by_id(mapping.id)).to be(nil)
       end
     end
 
@@ -128,7 +128,7 @@ describe LogicMappingsController do
         let!(:mapping_from_db) { LogicMapping.find_by_iri('http://test.de') }
 
         it 'should exist' do
-          expect(mapping_from_db).not_to be_nil
+          expect(mapping_from_db).not_to be(nil)
         end
 
         it 'should have correct source' do
@@ -152,7 +152,7 @@ describe LogicMappingsController do
       end
 
       it 'not change the record' do
-        expect(LogicMapping.find_by_iri('http://test2.de')).to be_nil
+        expect(LogicMapping.find_by_iri('http://test2.de')).to be(nil)
       end
     end
 
@@ -198,7 +198,7 @@ describe LogicMappingsController do
     end
 
     it 'not create the record' do
-      expect(LogicMapping.find_by_iri('http://test.de')).to be_nil
+      expect(LogicMapping.find_by_iri('http://test.de')).to be(nil)
     end
   end
 
@@ -213,7 +213,7 @@ describe LogicMappingsController do
     end
 
     it 'not change the record' do
-      expect(LogicMapping.find_by_iri('http://test2.de')).to be_nil
+      expect(LogicMapping.find_by_iri('http://test2.de')).to be(nil)
     end
   end
 

@@ -68,11 +68,11 @@ describe OntologyVersion do
       end
 
       it 'should have state_updated_at' do
-        expect(ontology_version.state_updated_at).to_not be_nil
+        expect(ontology_version.state_updated_at).to_not be(nil)
       end
 
       it 'should contain a commit' do
-        expect(commit).to_not be_nil
+        expect(commit).to_not be(nil)
       end
 
       it 'should contain a commit which refers to commit_oid' do

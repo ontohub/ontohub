@@ -72,7 +72,7 @@ describe Repository do
       let(:permission) { repository.permissions.first }
 
       it 'permission should not be nil' do
-        expect(permission).not_to be_nil
+        expect(permission).not_to be(nil)
       end
 
       it 'permission should have subject' do

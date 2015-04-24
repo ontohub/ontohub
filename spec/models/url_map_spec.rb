@@ -51,7 +51,7 @@ describe UrlMap do
       describe 'source not unique' do
         it do
           url_map2 = url_map.dup
-          url_map2.errors.should_not be_nil
+          url_map2.errors.should_not be(nil)
         end
       end
     end

@@ -147,7 +147,7 @@ describe Proof do
         it 'are created' do
           proof.proof_attempts.each do |proof_attempt|
             expect(proof_attempt.reload.proof_attempt_configuration).
-              not_to be_nil
+              not_to be(nil)
           end
         end
 
@@ -305,7 +305,7 @@ describe Proof do
         it 'are created' do
           proof.proof_attempts.each do |proof_attempt|
             expect(proof_attempt.reload.proof_attempt_configuration).
-              not_to be_nil
+              not_to be(nil)
           end
         end
 

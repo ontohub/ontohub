@@ -28,7 +28,7 @@ describe "git import" do
   end
 
   it 'set imported_at' do
-    expect(repository.reload.imported_at).not_to be_nil
+    expect(repository.reload.imported_at).not_to be(nil)
   end
 
   it 'have all the commits' do

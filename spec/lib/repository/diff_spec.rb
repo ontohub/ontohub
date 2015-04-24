@@ -29,7 +29,7 @@ describe "git diff" do
   end
 
   it 'should detect that the last commit is the HEAD' do
-    expect(repository.is_head?(@commit3)).to be_true
+    expect(repository.is_head?(@commit3)).to be(true)
   end
 
   it 'should have the right file count when using the first commit' do
@@ -45,12 +45,12 @@ describe "git diff" do
   end
 
   it 'should have the type added in the list when using the first commit' do
-    expect(repository.changed_files(@commit1).first.added?).to be_true
+    expect(repository.changed_files(@commit1).first.added?).to be(true)
   end
 
   %w(modified deleted renamed).each do |status|
     it "should have the type #{status} in the list when using the first commit" do
-      expect(repository.changed_files(@commit1).first.send("#{status}?")).to be_false
+      expect(repository.changed_files(@commit1).first.send("#{status}?")).to be(false)
     end
   end
 
@@ -65,7 +65,7 @@ describe "git diff" do
   end
 
   it 'should have the right editable in the list when using the first commit' do
-    expect(repository.changed_files(@commit1).first.editable?).to be_true
+    expect(repository.changed_files(@commit1).first.editable?).to be(true)
   end
 
 
@@ -82,12 +82,12 @@ describe "git diff" do
   end
 
   it 'should have the type modified in the list when using a commit in the middle' do
-    expect(repository.changed_files(@commit2).first.modified?).to be_true
+    expect(repository.changed_files(@commit2).first.modified?).to be(true)
   end
 
   %w(added deleted renamed).each do |status|
     it "should have the type #{status} in the list when using a commit in the middle" do
-      expect(repository.changed_files(@commit2).first.send("#{status}?")).to be_false
+      expect(repository.changed_files(@commit2).first.send("#{status}?")).to be(false)
     end
   end
 
@@ -102,7 +102,7 @@ describe "git diff" do
   end
 
   it 'should have the right editable in the list when using a commit in the middle' do
-    expect(repository.changed_files(@commit2).first.editable?).to be_true
+    expect(repository.changed_files(@commit2).first.editable?).to be(true)
   end
 
 
@@ -119,12 +119,12 @@ describe "git diff" do
   end
 
   it 'should have the type deleted in the list when using the HEAD' do
-    expect(repository.changed_files.first.deleted?).to be_true
+    expect(repository.changed_files.first.deleted?).to be(true)
   end
 
   %w(added modified renamed).each do |status|
     it "should have the type #{status} in the list when using the HEAD" do
-      expect(repository.changed_files.first.send("#{status}?")).to be_false
+      expect(repository.changed_files.first.send("#{status}?")).to be(false)
     end
   end
 
@@ -138,6 +138,6 @@ describe "git diff" do
   end
 
   it 'should have the right editable in the list when using the HEAD' do
-    expect(repository.changed_files.first.editable?).to be_true
+    expect(repository.changed_files.first.editable?).to be(true)
   end
 end
