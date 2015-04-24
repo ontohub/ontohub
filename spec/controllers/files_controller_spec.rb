@@ -102,9 +102,6 @@ describe FilesController do
             end
 
             it { should respond_with :found }
-            it "should not show an error" do
-              expect(flash[:error]).to be(nil)
-            end
             it "should show a success message" do
               expect(flash[:success]).not_to be(nil)
             end
@@ -119,9 +116,6 @@ describe FilesController do
             end
 
             it { should respond_with :success }
-            it "should set an error message for the message field" do
-              expect { flash[:error].messages[:message] }.not_to be(nil)
-            end
             it "should not show a success message" do
               expect(flash[:success]).to be(nil)
             end
