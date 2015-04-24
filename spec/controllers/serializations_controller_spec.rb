@@ -13,7 +13,10 @@ describe SerializationsController do
 
       it { should respond_with :success }
       it { should render_template :show }
-      it { should_not set_the_flash }
+
+      it 'does not set the flash' do
+        expect(flash).to be_empty
+      end
     end
 
     context 'on get to new' do
@@ -83,7 +86,10 @@ describe SerializationsController do
       before { get :edit, id: serial.id }
       it { should respond_with :success }
       it { should render_template :edit }
-      it { should_not set_the_flash }
+
+      it 'does not set the flash' do
+        expect(flash).to be_empty
+      end
     end
   end
 
@@ -95,7 +101,10 @@ describe SerializationsController do
       before { get :show, id: serial.id }
       it { should respond_with :success }
       it { should render_template :show }
-      it { should_not set_the_flash }
+
+      it 'does not set the flash' do
+        expect(flash).to be_empty
+      end
     end
 
     context 'on get to new' do
@@ -165,7 +174,10 @@ describe SerializationsController do
       before { get :edit, id: serial.id }
       it { should respond_with :success }
       it { should render_template :edit }
-      it { should_not set_the_flash }
+
+      it 'does not set the flash' do
+        expect(flash).to be_empty
+      end
     end
   end
 
@@ -174,14 +186,20 @@ describe SerializationsController do
       before { get :show, id: serial.id, language_id: language.id }
       it { should respond_with :success }
       it { should render_template :show }
-      it { should_not set_the_flash }
+
+      it 'does not set the flash' do
+        expect(flash).to be_empty
+      end
     end
 
     context 'on get to new' do
       before { get :new, language_id: language.id }
 
       it { should respond_with :redirect }
-      it { should set_the_flash }
+
+      it 'sets the flash' do
+        expect(flash[:alert]).to match(/not authorized/)
+      end
     end
 
     context 'on POST to CREATE' do

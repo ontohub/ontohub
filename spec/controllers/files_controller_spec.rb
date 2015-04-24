@@ -162,14 +162,20 @@ describe FilesController do
       context "new" do
         before { get :new, repository_id: repository.to_param }
         it { should respond_with :redirect }
-        it { should set_the_flash.to(/not authorized/) }
+
+        it 'sets the flash' do
+          expect(flash[:alert]).to match(/not authorized/)
+        end
       end
 
       context "create" do
         context "without file" do
           before { post :create, repository_id: repository.to_param }
           it { should respond_with :redirect }
-          it { should set_the_flash.to(/not authorized/) }
+
+          it 'sets the flash' do
+            expect(flash[:alert]).to match(/not authorized/)
+          end
         end
 
         context "with file" do
@@ -183,7 +189,10 @@ describe FilesController do
             }
           }
           it { should respond_with :redirect }
-          it { should set_the_flash.to(/not authorized/) }
+
+          it 'sets the flash' do
+            expect(flash[:alert]).to match(/not authorized/)
+          end
         end
       end
     end

@@ -10,7 +10,10 @@ describe LanguagesController do
 
       it { should respond_with :success }
       it { should render_template :show }
-      it { should_not set_the_flash }
+
+      it 'does not set the flash' do
+        expect(flash).to be_empty
+      end
     end
 
     context 'signed in as Language-Owner' do
@@ -21,7 +24,10 @@ describe LanguagesController do
 
       it { should respond_with :success }
       it { should render_template :show }
-      it { should_not set_the_flash }
+
+      it 'does not set the flash' do
+        expect(flash).to be_empty
+      end
     end
   end
 
@@ -30,7 +36,10 @@ describe LanguagesController do
 
     it { should respond_with :success }
     it { should render_template :index }
-    it { should_not set_the_flash }
+
+    it 'does not set the flash' do
+      expect(flash).to be_empty
+    end
   end
 
   context 'on POST to create' do
@@ -48,8 +57,10 @@ describe LanguagesController do
     end
 
     it { should respond_with :redirect }
-    it { should set_the_flash.to(/created/i) }
 
+    it 'sets the flash' do
+      expect(flash[:notice]).to match(/created/i)
+    end
   end
 
   context 'on POST to update' do
@@ -72,7 +83,10 @@ describe LanguagesController do
       end
 
       it { should respond_with :redirect }
-      it { should set_the_flash.to(/successfully updated/i) }
+
+      it 'sets the flash' do
+        expect(flash[:notice]).to match(/successfully updated/i)
+      end
     end
 
     context 'not signed in' do
@@ -91,7 +105,10 @@ describe LanguagesController do
       end
 
       it { should respond_with :redirect }
-      it { should_not set_the_flash.to(/successfully updated/i) }
+
+      it 'sets the flash' do
+        expect(flash[:alert]).not_to match(/successfully updated/i)
+      end
     end
 
     context 'not permitted' do
@@ -113,7 +130,10 @@ describe LanguagesController do
       end
 
       it { should respond_with :redirect }
-      it { should_not set_the_flash.to(/successfully updated/i) }
+
+      it 'sets the flash' do
+        expect(flash[:alert]).not_to match(/successfully updated/i)
+      end
     end
 
   end
@@ -130,7 +150,10 @@ describe LanguagesController do
       end
 
       it { should respond_with :redirect }
-      it { should set_the_flash.to(/successfully destroyed/i) }
+
+      it 'sets the flash' do
+        expect(flash[:notice]).to match(/successfully destroyed/i)
+      end
     end
 
     context 'not signed in' do
@@ -141,7 +164,10 @@ describe LanguagesController do
       end
 
       it { should respond_with :redirect }
-      it { should_not set_the_flash.to(/successfully destroyed/i) }
+
+      it 'sets the flash' do
+        expect(flash[:alert]).not_to match(/successfully destroyed/i)
+      end
     end
 
     context 'not permitted' do
@@ -156,7 +182,10 @@ describe LanguagesController do
       end
 
       it { should respond_with :redirect }
-      it { should_not set_the_flash.to(/successfully destroyed/i) }
+
+      it 'sets the flash' do
+        expect(flash[:alert]).not_to match(/successfully destroyed/i)
+      end
     end
 
   end

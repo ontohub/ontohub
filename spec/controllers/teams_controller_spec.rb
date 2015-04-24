@@ -5,7 +5,9 @@ describe TeamsController do
     context 'on GET to index' do
       before { get :index }
 
-      it { should set_the_flash.to(/not authorized/) }
+      it 'sets the flash' do
+        expect(flash[:alert]).to match(/not authorized/)
+      end
       it { should redirect_to(:root) }
     end
   end
@@ -57,7 +59,10 @@ describe TeamsController do
           before { delete :destroy, id: team.id }
 
           it { should redirect_to(Team) }
-          it { should set_the_flash.to(/destroyed/) }
+
+          it 'sets the flash' do
+            expect(flash[:notice]).to match(/destroyed/)
+          end
         end
 
         context 'by non-admin' do
@@ -69,7 +74,10 @@ describe TeamsController do
           end
 
           it { should redirect_to(:root) }
-          it { should set_the_flash.to(/not authorized/) }
+
+          it 'sets the flash' do
+            expect(flash[:alert]).to match(/not authorized/)
+          end
         end
       end
     end

@@ -24,7 +24,11 @@ describe TeamUsersController do
         sign_in user
         get :index, team_id: team.to_param
       end
-      it { should set_the_flash.to(/not authorized/) }
+
+      it 'sets the flash' do
+        expect(flash[:alert]).to match(/not authorized/)
+      end
+
       it { should redirect_to(:root) }
     end
   end

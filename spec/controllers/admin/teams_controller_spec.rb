@@ -5,7 +5,10 @@ describe Admin::TeamsController do
     context 'not signed in' do
       before { get :index }
 
-      it { should set_the_flash.to(/admin privileges/) }
+      it 'sets the flash' do
+        expect(flash[:error]).to match(/admin privileges/)
+      end
+
       it { should respond_with :redirect }
     end
 
@@ -15,7 +18,10 @@ describe Admin::TeamsController do
         get :index
       end
 
-      it { should set_the_flash.to(/admin privileges/) }
+      it 'sets the flash' do
+        expect(flash[:error]).to match(/admin privileges/)
+      end
+
       it { should respond_with :redirect }
     end
 

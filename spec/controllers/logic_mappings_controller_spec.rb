@@ -16,7 +16,10 @@ describe LogicMappingsController do
       before { get :show, id: mapping.to_param, logic_id: source_logic.id }
       it { should respond_with :success }
       it { should render_template :show }
-      it { should_not set_the_flash }
+
+      it 'does not set the flash' do
+        expect(flash).to be_empty
+      end
     end
 
     context 'on get to new' do
@@ -92,7 +95,10 @@ describe LogicMappingsController do
       before { get :edit, id: mapping.to_param, logic_id: source_logic.id }
       it { should respond_with :success }
       it { should render_template :edit }
-      it { should_not set_the_flash }
+
+      it 'does not set the flash' do
+        expect(flash).to be_empty
+      end
     end
   end
 
@@ -104,7 +110,10 @@ describe LogicMappingsController do
       before { get :show, id: mapping.to_param, logic_id: source_logic.id }
       it { should respond_with :success }
       it { should render_template :show }
-      it { should_not set_the_flash }
+
+      it 'does not set the flash' do
+        expect(flash).to be_empty
+      end
     end
 
     context 'on get to new' do
@@ -167,7 +176,10 @@ describe LogicMappingsController do
     context 'on GET to EDIT' do
       before { get :edit, id: mapping.to_param, logic_id: source_logic.id }
       it { should respond_with :redirect }
-      it { should set_the_flash.to(/not authorized/i) }
+
+      it 'sets the flash' do
+        expect(flash[:alert]).to match(/not authorized/)
+      end
     end
   end
 
@@ -176,14 +188,20 @@ describe LogicMappingsController do
       before { get :show, id: mapping.to_param, logic_id: source_logic.id }
       it { should respond_with :success }
       it { should render_template :show }
-      it { should_not set_the_flash }
+
+      it 'does not set the flash' do
+        expect(flash).to be_empty
+      end
     end
 
     context 'on get to new' do
       before { get :new, logic_id: source_logic.id }
 
       it { should respond_with :redirect }
-      it { should set_the_flash }
+
+      it 'sets the flash' do
+        expect(flash[:alert]).to match(/not authorized/)
+      end
     end
   end
 
