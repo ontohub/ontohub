@@ -96,7 +96,7 @@ describe 'GitRepositoryFiles' do
     end
     #feature not implemented yet:
     it 'feature not implemented yet' do
-      pending { expect(@first_commit_oid).to eq(repository.head_oid) }
+      skip { expect(@first_commit_oid).to eq(repository.head_oid) }
     end
   end
 end

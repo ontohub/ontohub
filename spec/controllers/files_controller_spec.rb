@@ -149,7 +149,7 @@ describe FilesController do
             expect(repository.path_exists? filepath).to be(true)
           end
           it "should actually not have added a file" do
-            pending "this should be another controller action"
+            skip "this should be another controller action"
           end
         end
       end
