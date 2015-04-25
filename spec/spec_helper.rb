@@ -33,6 +33,7 @@ class ActionController::TestRequest
 end
 
 require Rails.root.join('spec', 'support', 'common_helper_methods.rb')
+require Rails.root.join('spec', 'support', 'documentation_progress_formatter.rb')
 
 def stub_cp_keys
   allow(AuthorizedKeysManager).to receive(:copy_authorized_keys_to_git_home)
