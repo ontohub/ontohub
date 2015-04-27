@@ -1,6 +1,7 @@
 class LogicMapping < ActiveRecord::Base
   include Resourcable
   include Permissionable
+  include Slug
 
   FAITHFULNESSES = %w( not_faithful faithful model_expansive model_bijective embedding sublogic )
   THEOROIDALNESSES = %w( plain simple_theoroidal theoroidal generalized )
@@ -24,16 +25,12 @@ class LogicMapping < ActiveRecord::Base
                   :faithfulness,
                   :theoroidalness,
                   :exactness,
-                  :user,
-                  :slug
+                  :user
 
   validates_presence_of :target, :source, :iri
 
-  before_save :set_slug, if: :iri_changed?
-
-  def to_param
-    slug
-  end
+  slug_base :name
+  slug_condition :iri_changed?
 
   def to_s
     "#{iri}: #{source} => #{target}"
@@ -46,13 +43,5 @@ class LogicMapping < ActiveRecord::Base
   private
   def name
     iri.split('/').last
-  end
-
-  def set_slug
-    self.slug = name.
-      gsub(/\s/, '_').
-      gsub(/[*.=]/,
-           '*' => 'Star',
-           '=' => 'Eq')
   end
 end
