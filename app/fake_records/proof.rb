@@ -136,6 +136,8 @@ class Proof < FakeRecord
   end
 
   def prove(options_and_pa_ids)
+    # Sidekiq requires `perform` to be defined on an instance while we added a
+    # class method `perform_async` to force the usage of a specific queue.
     if prove_asynchronously
       proving_object = CollectiveProofAttemptWorker
       proving_method = :perform_async
