@@ -8,5 +8,6 @@ class AddDisplayNameToProver < MigrationWithData
         update_attributes!(prover, attrs)
       end
     end
+    change_column :provers, :display_name, :string, null: false
   end
 end
