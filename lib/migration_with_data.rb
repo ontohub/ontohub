@@ -3,9 +3,10 @@
 # It allows to perform data migrations which won't fail because of renamed
 # or removed model-methods.
 class MigrationWithData < ActiveRecord::Migration
-  def select_attributes(record, *keys)
+  def select_attributes(record, *keys,
+                        search_column: :id, search_value: record.id)
     attributes = keys.map do |key|
-      record.class.where(id: record.id).pluck(key).first
+      record.class.where(search_column => search_value).pluck(key).first
     end
     Hash[keys.zip(attributes)]
   end
