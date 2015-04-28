@@ -1,6 +1,7 @@
 class LogicMapping < ActiveRecord::Base
   include Resourcable
   include Permissionable
+  include Slug
 
   FAITHFULNESSES = %w( not_faithful faithful model_expansive model_bijective embedding sublogic )
   THEOROIDALNESSES = %w( plain simple_theoroidal theoroidal generalized )
@@ -12,9 +13,24 @@ class LogicMapping < ActiveRecord::Base
   belongs_to :target, class_name: 'Logic'
   belongs_to :user
   has_many :logic_adjoints, :foreign_key => :translation_id
-  attr_accessible :source_id, :target_id, :source, :target, :iri, :standardization_status, :defined_by, :default, :projection, :faithfulness, :theoroidalness, :exactness, :user
+  attr_accessible :source_id,
+                  :target_id,
+                  :source,
+                  :target,
+                  :iri,
+                  :standardization_status,
+                  :defined_by,
+                  :default,
+                  :projection,
+                  :faithfulness,
+                  :theoroidalness,
+                  :exactness,
+                  :user
 
   validates_presence_of :target, :source, :iri
+
+  slug_base :name
+  slug_condition :iri_changed?
 
   def to_s
     "#{iri}: #{source} => #{target}"
@@ -24,4 +40,8 @@ class LogicMapping < ActiveRecord::Base
     LogicAdjoint.where("projection_id = ? OR translation_id = ?", self.id, self.id)
   end
 
+  private
+  def name
+    iri.split('/').last
+  end
 end

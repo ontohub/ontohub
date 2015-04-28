@@ -1,0 +1,78 @@
+---
+http_interactions:
+- request:
+    method: get
+    uri: https://masterthesis.rightsrestricted.com/ontohub/proof_status.json
+    body:
+      encoding: US-ASCII
+      string: ''
+    headers:
+      Accept-Encoding:
+      - gzip;q=1.0,deflate;q=0.6,identity;q=0.3
+      Accept:
+      - "*/*"
+      User-Agent:
+      - Ruby
+  response:
+    status:
+      code: 200
+      message: OK
+    headers:
+      Server:
+      - nginx/1.6.2
+      Date:
+      - Sat, 04 Apr 2015 19:35:51 GMT
+      Content-Type:
+      - application/json
+      Content-Length:
+      - '803'
+      Last-Modified:
+      - Wed, 01 Apr 2015 09:12:04 GMT
+      Connection:
+      - keep-alive
+      Etag:
+      - '"551bb664-323"'
+      Strict-Transport-Security:
+      - max-age=31536000
+      X-Frame-Options:
+      - DENY
+      Accept-Ranges:
+      - bytes
+    body:
+      encoding: UTF-8
+      string: |
+        {
+          "id": "https://masterthesis.rightsrestricted.com/ontohub/proof_status.json#",
+          "$schema": "http://json-schema.org/draft-04/schema#",
+          "title": "Proof-Status",
+          "description": "proof status of a theorem or a proof attempt",
+          "type": "object",
+          "properties": {
+            "iri": {
+              "description": "The unique identifier for the proof status",
+              "type": "string",
+              "format": "uri"
+            },
+            "identifier": {
+              "description": "The SZS identifier of the proof status",
+              "type": "string"
+            },
+            "name": {
+              "description": "The name of the proof status",
+              "type": "string"
+            },
+            "description": {
+              "description": "Description of the proof status",
+              "type": "string"
+            }
+          },
+          "required": [
+            "iri",
+            "identifier",
+            "name",
+            "description"
+          ]
+        }
+    http_version: 
+  recorded_at: Sat, 04 Apr 2015 19:35:51 GMT
+recorded_with: VCR 2.9.3

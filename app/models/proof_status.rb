@@ -8,9 +8,20 @@ class ProofStatus < ActiveRecord::Base
 
   self.primary_key = :identifier
 
-  attr_accessible :label, :description, :identifier, :name, :solved
+  attr_accessible :label,
+                  :description,
+                  :identifier,
+                  :name,
+                  :solved,
+                  :locid
 
   validates_presence_of :label
+
+  before_create :generate_locid
+
+  def self.find_with_locid(locid, _iri = nil)
+    where(locid: locid).first
+  end
 
   def to_s
     identifier
@@ -22,5 +33,11 @@ class ProofStatus < ActiveRecord::Base
 
   def solved?
     solved
+  end
+
+  protected
+
+  def generate_locid
+    self.locid = "/proof-statuses/#{identifier}"
   end
 end

@@ -1,7 +1,7 @@
 class TheoremsController < InheritedResources::Base
   belongs_to :ontology
 
-  actions :index, :show
+  actions :index
   respond_to :json, :xml
   has_pagination
 

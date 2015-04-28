@@ -19,17 +19,6 @@ describe TheoremsController do
       it { should respond_with :success }
       it { should render_template :index }
     end
-
-    context 'show' do
-      before do
-        get :show,
-          repository_id: repository.to_param,
-          ontology_id: ontology.to_param,
-          id: theorem.to_param
-      end
-      it { should respond_with :success }
-      it { should render_template :show }
-    end
   end
 
   context 'signed in without read access' do
@@ -57,24 +46,6 @@ describe TheoremsController do
         expect(response).to redirect_to(root_path)
       end
     end
-
-    context 'show' do
-      before do
-        get :show,
-          repository_id: repository.to_param,
-          ontology_id: ontology.to_param,
-          id: theorem.to_param
-      end
-      it { should respond_with :found }
-
-      it 'set the flash/alert' do
-        expect(flash[:alert]).to match(/not authorized/)
-      end
-
-      it 'redirect to the root path' do
-        expect(response).to redirect_to(root_path)
-      end
-    end
   end
 
   context 'not signed in' do
@@ -87,17 +58,6 @@ describe TheoremsController do
 
       it { should respond_with :success }
       it { should render_template :index }
-    end
-
-    context 'show' do
-      before do
-        get :show,
-          repository_id: repository.to_param,
-          ontology_id: ontology.to_param,
-          id: theorem.to_param
-      end
-      it { should respond_with :success }
-      it { should render_template :show }
     end
   end
 end

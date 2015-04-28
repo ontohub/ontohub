@@ -1,9 +1,14 @@
 class ProofAttemptsController < InheritedResources::Base
-  actions :show
-  helper_method :ontology
+  belongs_to :theorem
+  actions :index, :show
+  helper_method :ontology, :theorem
   before_filter :check_read_permissions
 
   protected
+
+  def theorem
+    @theorem ||= Theorem.find(params[:theorem_id])
+  end
 
   def ontology
     @ontology ||= Ontology.find(params[:ontology_id])

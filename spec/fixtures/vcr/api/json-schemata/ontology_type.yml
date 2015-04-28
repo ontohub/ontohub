@@ -21,17 +21,17 @@ http_interactions:
       Server:
       - nginx/1.6.2
       Date:
-      - Mon, 09 Mar 2015 14:37:42 GMT
+      - Sat, 04 Apr 2015 19:37:57 GMT
       Content-Type:
       - application/json
       Content-Length:
-      - '769'
+      - '815'
       Last-Modified:
-      - Fri, 06 Mar 2015 15:05:10 GMT
+      - Thu, 26 Mar 2015 10:32:13 GMT
       Connection:
       - keep-alive
       Etag:
-      - '"54f9c226-301"'
+      - '"5513e02d-32f"'
       Strict-Transport-Security:
       - max-age=31536000
       X-Frame-Options:
@@ -50,7 +50,8 @@ http_interactions:
           "properties": {
             "iri": {
               "description": "The unique identifier for an ontology type",
-              "type": "string"
+              "type": "string",
+              "format": "uri"
             },
             "name": {
               "description": "The name of the formality level",
@@ -62,7 +63,8 @@ http_interactions:
             },
             "documentation_url": {
               "description": "A url to specific documentation for this type",
-              "type": ["string", "null"]
+              "type": ["string", "null"],
+              "format": "uri"
             }
           },
           "required": [
@@ -70,5 +72,5 @@ http_interactions:
           ]
         }
     http_version: 
-  recorded_at: Mon, 09 Mar 2015 14:37:42 GMT
-recorded_with: VCR 2.9.2
+  recorded_at: Sat, 04 Apr 2015 19:37:57 GMT
+recorded_with: VCR 2.9.3

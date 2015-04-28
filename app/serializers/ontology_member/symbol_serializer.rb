@@ -9,12 +9,16 @@ class OntologyMember::SymbolSerializer < ApplicationSerializer
   end
 
   attributes :iri, :sentences
-  attributes :name, :text, :kind, :label, :comment
+  attributes :name, :definition, :kind, :label, :comment
 
   has_one :ontology, serializer: OntologySerializer::Reference
 
   def iri
     Reference.new(object).iri
+  end
+
+  def definition
+    object.text
   end
 
   def sentences

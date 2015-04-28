@@ -104,7 +104,7 @@ Currently the representation is a list of all axioms in the ontology.
       BODY
     end
 
-  specified_get '/ref/mmt/:repository_id/*path' => 'theorems#show',
+  specified_get '/ref/mmt/:repository_id/*path' => 'theorems#index',
     as: :theorem_iri_mmt,
     constraints: [
       MMTRouterConstraint.new(Theorem, ontology: :ontology_id, element: :id),
@@ -119,18 +119,18 @@ Currently the representation is a list of all theorems in the ontology.
       BODY
     end
 
-  specified_get '/ref/mmt/:repository_id/*path' => 'api/v1/sentences#show',
-    as: :sentence_iri_mmt,
+  specified_get '/ref/mmt/:repository_id/*path' => 'api/v1/proof_attempt_configurations#show',
+    as: :proof_attempt_configuration_iri_mmt,
     constraints: [
-      MMTRouterConstraint.new(Sentence, ontology: :ontology_id),
+      MMTRouterConstraint.new(ProofAttemptConfiguration, ontology: :ontology_id),
     ] do
       accept 'application/json'
 
-      doc title: 'MMT reference to a sentence',
+      doc title: 'MMT reference to a proof attempt configuration',
           body: <<-BODY
-Will return a representation of the sentence. The sentence
-is determined according to the *path and to the MMT-query-string.
-Currently the representation is a list of all sentences in the ontology.
+Will return a representation of the proof attempt configuration. The proof
+attempt configuration is determined according to the *path and to the
+MMT-query-string.
       BODY
     end
 
@@ -145,6 +145,7 @@ Currently the representation is a list of all sentences in the ontology.
     axioms theorems
     ontology_versions
     license_models formality_levels
+    proof_attempt_configurations
   )
 
   ontology_subsites.each do |category|
@@ -240,20 +241,79 @@ Currently this will return the list of all symbols of the ontology.
       BODY
     end
 
-  specified_get '/:repository_id/*locid' => 'api/v1/sentences#show',
-    as: :sentence_iri,
+  theorems_subsites = %i(proof_attempts)
+  theorems_subsites.each do |subsite|
+    specified_get "/:repository_id/*locid///#{subsite}" => "#{subsite}#index",
+      as: :"theorem_iri_#{subsite}",
+      constraints: [
+        LocIdRouterConstraint.new(Theorem, ontology: :ontology_id, element: :theorem_id),
+      ] do
+        accept 'text/html'
+        reroute_on_mime 'application/json', to: "api/v1/#{subsite}#index"
+
+        doc title: 'loc/id reference to a theorem subsite',
+            body: <<-BODY
+  Will return a representation of the theorem subsite. The theorem
+  is determined according to the *locid.
+        BODY
+      end
+  end
+
+
+  specified_get "/:repository_id/*locid" => "prover_outputs#show",
+    as: :"prover_output_iri",
     constraints: [
-      LocIdRouterConstraint.new(Axiom, ontology: :ontology_id, element: :id),
+      LocIdRouterConstraint.new(ProverOutput, ontology: :ontology_id, theorem: :theorem_id, proof_attempt: :proof_attempt_id, element: :id),
     ] do
       accept 'application/json'
+      reroute_on_mime 'application/json', to: "api/v1/prover_outputs#show"
 
-      doc title: 'loc/id reference to an axiom',
+      doc title: 'loc/id reference to a prover output',
           body: <<-BODY
-Will return a representation of the axiom. The axiom
-is determined according to the *locid.
-Currently this will return the list of all axioms of the ontology.
+  Will return a prover output.
+  The prover output is determined according to the *locid.
       BODY
     end
+
+  proof_attempt_api_subsites = %i(
+    used_axioms generated_axioms
+    used_theorems prover_output
+  )
+  proof_attempt_api_subsites.each do |subsite|
+    specified_get "/:repository_id/*locid///#{subsite}" => "api/v1/proof_attempts##{subsite}",
+      as: :"proof_attempt_iri_#{subsite}",
+      constraints: [
+        LocIdRouterConstraint.new(ProofAttempt, ontology: :ontology_id, theorem: :theorem_id, element: :id),
+      ] do
+        accept 'application/json'
+
+        doc title: 'loc/id reference to a proof attempt subsite',
+            body: <<-BODY
+  Will return a subsite of the proof attempt. The proof attempt is determined
+  according to the *locid.
+        BODY
+      end
+  end
+
+  sentence_types = %i(axiom theorem)
+  sentence_api_subsites = %i(symbols)
+  sentence_types.each do |type|
+    sentence_api_subsites.each do |subsite|
+      specified_get "/:repository_id/*locid///#{subsite}" => "api/v1/#{subsite}#index",
+        as: :"#{type}_iri_#{subsite}",
+        constraints: [
+          LocIdRouterConstraint.new(type.to_s.camelize.constantize, ontology: :ontology_id, element: :"sentence_id"),
+        ] do
+          accept 'application/json'
+
+          doc title: "loc/id reference to a #{type} subsite",
+              body: <<-BODY
+    Will return a representation of the #{type} subsite. The #{type}
+    is determined according to the *locid.
+          BODY
+        end
+    end
+  end
 
   specified_get '/:repository_id/*locid' => 'axioms#index',
     as: :axiom_iri,
@@ -271,7 +331,7 @@ Currently this will return the list of all axioms of the ontology.
       BODY
     end
 
-  specified_get '/:repository_id/*locid' => 'theorems#show',
+  specified_get '/:repository_id/*locid' => 'theorems#index',
     as: :theorem_iri,
     constraints: [
       LocIdRouterConstraint.new(Theorem, ontology: :ontology_id, element: :id),
@@ -282,6 +342,38 @@ Currently this will return the list of all axioms of the ontology.
       doc title: 'loc/id reference to a theorem',
           body: <<-BODY
 Will return a representation of the theorem. The theorem
+is determined according to the *locid.
+      BODY
+    end
+
+  proof_attempt_configuration_api_subsites =
+    %i(selected_axioms selected_theorems)
+  proof_attempt_configuration_api_subsites.each do |subsite|
+    specified_get "/:repository_id/*locid///#{subsite}" => "api/v1/proof_attempt_configurations##{subsite}",
+      as: :"proof_attempt_configuration_iri_#{subsite}",
+      constraints: [
+        LocIdRouterConstraint.new(ProofAttemptConfiguration, ontology: :ontology_id, element: :id),
+      ] do
+        accept 'application/json'
+
+        doc title: 'loc/id reference to a proof attempt configuration subsite',
+            body: <<-BODY
+  Will return a subsite of the proof attempt configuration. The proof attempt
+  configuration is determined according to the *locid.
+        BODY
+      end
+  end
+
+  specified_get '/:repository_id/*locid' => 'api/v1/proof_attempt_configurations#show',
+    as: :proof_attempt_configuration_iri,
+    constraints: [
+      LocIdRouterConstraint.new(ProofAttemptConfiguration, ontology: :ontology_id, element: :id),
+    ] do
+      accept 'application/json'
+
+      doc title: 'loc/id reference to a proof attempt configuration',
+          body: <<-BODY
+Will return a representation of the proof attempt configuration. The proof attempt configuration
 is determined according to the *locid.
       BODY
     end
@@ -308,8 +400,7 @@ Currently this will return the list of all sentences of the ontology.
       LocIdRouterConstraint.new(ProofAttempt, ontology: :ontology_id, theorem: :theorem_id, element: :id),
     ] do
       accept 'text/html'
-      # TODO: add api controller
-      #reroute_on_mime 'application/json', to: 'api/v1/proof_attempts#show'
+      reroute_on_mime 'application/json', to: 'api/v1/proof_attempts#show'
 
       doc title: 'loc/id reference to a proof attempt',
           body: <<-BODY
@@ -364,6 +455,30 @@ Will return a representation of the license model.
 Will return a representation of the formality level.
     BODY
   end
+
+  specified_get '/proof-statuses' => 'api/v1/proof_statuses#index',
+    as: :proof_statuses do
+      accept 'application/json'
+
+      doc title: 'index of proof statuses',
+          body: <<-BODY
+Will return a representation of the proof statuses index.
+      BODY
+    end
+
+  specified_get '*locid' => 'api/v1/proof_statuses#show',
+    as: :proof_status_iri,
+    constraints: [
+      LocIdRouterConstraint.new(ProofStatus, element: :id),
+    ] do
+      accept 'application/json'
+
+      doc title: 'loc/id reference to a proof status',
+          body: <<-BODY
+Will return a representation of the proof status. The proof status
+is determined according to the *locid.
+      BODY
+    end
   #
   ###############
 
@@ -389,7 +504,30 @@ Will return a representation of the formality level.
   end
 
   resources :language_mappings
-  resources :logic_mappings
+  resources :logic_mappings, except: %i(index show)
+  specified_get '/logic_mappings' => 'logic_mappings#index',
+    as: :logic_mapping do
+      accept 'text/html'
+      reroute_on_mime 'application/json', to: 'api/v1/logic_mappings#index'
+
+      doc title: 'index of logic mappings',
+          body: <<-BODY
+Will return a representation of the logic mappings index.
+      BODY
+    end
+
+  specified_get '/logic_mappings/:id' => 'logic_mappings#show',
+    as: :logic_mapping do
+      accept 'text/html'
+      reroute_on_mime 'application/json', to: 'api/v1/logic_mappings#show'
+
+      doc title: 'id reference to a logic mapping',
+          body: <<-BODY
+Will return a representation of the logic mapping. The logic mapping
+is determined according to the id.
+      BODY
+    end
+
 
   resources :mappings, only: :index
 
@@ -456,9 +594,11 @@ Will return a representation of the formality level.
       end
       resources :children, :only => :index
       resources :symbols, only: %i(index show)
-      resources :axioms, only: %i(index show)
-      resources :theorems, only: %i(index show) do
-        resources :proof_attempts, only: :show
+      resources :axioms, only: :index
+      resources :theorems, only: :index do
+        resources :proof_attempts, only: %i(index show) do
+          resource :prover_output, only: :show
+        end
         get '/proofs/new', controller: :proofs, action: :new
         post '/proofs', controller: :proofs, action: :create
       end
