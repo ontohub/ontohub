@@ -57,9 +57,6 @@ module Hets
         default_method_name = :"#{node_type}_#{order}"
         self.send(default_method_name, *args) if respond_to?(default_method_name)
       end
-    rescue Exception => e
-      cancel_concurrency_handling_on_error
-      raise e
     end
 
     protected
