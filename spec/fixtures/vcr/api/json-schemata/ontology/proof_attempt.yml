@@ -21,17 +21,17 @@ http_interactions:
       Server:
       - nginx/1.6.2
       Date:
-      - Sat, 04 Apr 2015 19:37:35 GMT
+      - Thu, 09 Apr 2015 13:36:30 GMT
       Content-Type:
       - application/json
       Content-Length:
-      - '2171'
+      - '2165'
       Last-Modified:
-      - Sat, 04 Apr 2015 10:02:53 GMT
+      - Thu, 09 Apr 2015 12:13:31 GMT
       Connection:
       - keep-alive
       Etag:
-      - '"551fb6cd-87b"'
+      - '"55266ceb-875"'
       Strict-Transport-Security:
       - max-age=31536000
       X-Frame-Options:
@@ -61,10 +61,7 @@ http_interactions:
               "description": "The name of the prover used during this attempt",
               "type": "string"
             },
-            "tactic_script": {
-              "description": "The tactic script of this attempt",
-              "type": "string"
-            },
+            "tactic_script": { "$ref": "https://masterthesis.rightsrestricted.com/ontohub/tactic_script.json" },
             "prover_output": {
               "oneOf": [
                 { "$ref": "references.json#/definitions/prover_output" },
@@ -116,7 +113,72 @@ http_interactions:
           ]
         }
     http_version: 
-  recorded_at: Sat, 04 Apr 2015 19:37:35 GMT
+  recorded_at: Thu, 09 Apr 2015 13:36:30 GMT
+- request:
+    method: get
+    uri: https://masterthesis.rightsrestricted.com/ontohub/tactic_script.json
+    body:
+      encoding: US-ASCII
+      string: ''
+    headers:
+      Accept-Encoding:
+      - gzip;q=1.0,deflate;q=0.6,identity;q=0.3
+      Accept:
+      - "*/*"
+      User-Agent:
+      - Ruby
+  response:
+    status:
+      code: 200
+      message: OK
+    headers:
+      Server:
+      - nginx/1.6.2
+      Date:
+      - Thu, 09 Apr 2015 13:36:30 GMT
+      Content-Type:
+      - application/json
+      Content-Length:
+      - '623'
+      Last-Modified:
+      - Thu, 09 Apr 2015 12:31:34 GMT
+      Connection:
+      - keep-alive
+      Etag:
+      - '"55267126-26f"'
+      Strict-Transport-Security:
+      - max-age=31536000
+      X-Frame-Options:
+      - DENY
+      Accept-Ranges:
+      - bytes
+    body:
+      encoding: UTF-8
+      string: |
+        {
+          "id": "https://masterthesis.rightsrestricted.com/ontohub/tactic_script.json#",
+          "$schema": "http://json-schema.org/draft-04/schema#",
+          "title": "Tactic Script",
+          "description": "The tactic script generated in a proof attempt",
+          "type": "object",
+          "properties": {
+            "time_limit": {
+              "description": "The time limit in seconds",
+              "type": "integer"
+            },
+            "extra_options": {
+              "description": "Additional prover-specific options",
+              "type": "array",
+              "items": {
+                "description": "A prover-specific option",
+                "type": "string"
+              }
+            }
+          },
+          "required": [ "time_limit" ]
+        }
+    http_version: 
+  recorded_at: Thu, 09 Apr 2015 13:36:30 GMT
 - request:
     method: get
     uri: https://masterthesis.rightsrestricted.com/ontohub/references.json
@@ -138,7 +200,7 @@ http_interactions:
       Server:
       - nginx/1.6.2
       Date:
-      - Sat, 04 Apr 2015 19:37:36 GMT
+      - Thu, 09 Apr 2015 13:36:30 GMT
       Content-Type:
       - application/json
       Content-Length:
@@ -397,5 +459,5 @@ http_interactions:
           }
         }
     http_version: 
-  recorded_at: Sat, 04 Apr 2015 19:37:36 GMT
+  recorded_at: Thu, 09 Apr 2015 13:36:30 GMT
 recorded_with: VCR 2.9.3

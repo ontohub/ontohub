@@ -10,8 +10,8 @@ class ProofAttemptSerializer < ApplicationSerializer
 
   attributes :iri,
              :number,
-             :used_prover,
-             :tactic_script
+             :used_prover
+  has_one :tactic_script
   has_one :prover_output, serializer: ProverOutputSerializer::Reference
   attributes :time_taken,
              :evaluation_state

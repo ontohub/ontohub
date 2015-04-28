@@ -12,6 +12,7 @@ module Hets
               fill_proof_attempt_instance(proof_attempt, proof_info)
               proof_attempt.associate_prover_with_ontology_version
               create_prover_output(proof_attempt, proof_info)
+              create_tactic_script(proof_attempt, proof_info)
               proof_attempt.save!
               proof_attempt.update_state!(:done)
             end
@@ -23,7 +24,6 @@ module Hets
         proof_attempt.proof_status = find_proof_status_from_hash(proof_info)
         proof_attempt.prover = find_or_create_prover_from_hash(proof_info)
         proof_attempt.time_taken = time_taken_from_hash(proof_info)
-        proof_attempt.tactic_script = tactic_script_from_hash(proof_info)
         used_axioms, used_theorems, generated_axioms =
           used_axioms_from_hash(proof_info, proof_attempt)
         proof_attempt.used_axioms = used_axioms
@@ -60,11 +60,21 @@ module Hets
         end
       end
 
-      def tactic_script_from_hash(proof_info)
-        {
-          time_limit: proof_info[:tactic_script_time_limit],
-          extra_options: proof_info[:tactic_script_extra_options],
-        }.to_json
+      def create_tactic_script(proof_attempt, proof_info)
+        if proof_info[:tactic_script_time_limit] &&
+            proof_info[:tactic_script_extra_options]
+          tactic_script = TacticScript.new
+          tactic_script.proof_attempt = proof_attempt
+          tactic_script.time_limit = proof_info[:tactic_script_time_limit].to_i
+          tactic_script.extra_options =
+            proof_info[:tactic_script_extra_options].map do |option|
+            extra_option = TacticScriptExtraOption.new
+            extra_option.option = option
+            extra_option
+          end
+          tactic_script.save!
+          tactic_script
+        end
       end
 
       def used_axioms_from_hash(proof_info, proof_attempt)
