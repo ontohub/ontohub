@@ -167,6 +167,12 @@ exception_notifier.exception_recepients
 paths
 ```
 
+Whenever you change the `paths` in the settings, you need to run
+`RAILS_ENV=production bundle exec rake git:compile_cp_keys` in order to have
+the git-ssh interaction working correctly, because the `paths` from the
+settings are compiled into the binary which manipulates the authorized_keys
+file.
+
 ##### Settings for deployment with capistrano
 
 For deployment with capistrano, you need to change the hostname (in the

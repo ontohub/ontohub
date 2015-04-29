@@ -1,8 +1,8 @@
 require 'spec_helper'
 
 describe KeysController do
-
   let(:user){ create :user }
+  before { stub_cp_keys }
 
   context 'not signed in' do
     before { get :index }
@@ -44,5 +44,4 @@ describe KeysController do
       end
     end
   end
-
 end

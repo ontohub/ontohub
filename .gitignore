@@ -64,3 +64,13 @@ config/environments/*.local.rb
 /coverage
 
 spec/fixtures/vcr/hets-out
+# Ignore custom compiled binaries
+bin/cp_keys
+
+spec/fixtures/ontologies/xml
+
+spec/fixtures/ontologies/hets-out/*
+!spec/fixtures/ontologies/hets-out/.gitkeep
+
+spec/fixtures/ontologies/hets-out/prove
+!spec/fixtures/ontologies/hets-out/prove/.gitkeep

@@ -3,15 +3,12 @@ require 'pathname'
 class AuthorizedKeysManager
 
   CONFIG               = Ontohub::Application.config
-  GIT_HOME             = Pathname.new(CONFIG.git_home)
-  SSH_DIR              = GIT_HOME.join('.ssh')
+  GIT_HOME_SSH_DIR     = CONFIG.git_home.join('.ssh')
+  SSH_DIR              = CONFIG.data_root.join('.ssh')
   AUTHORIZED_KEYS_FILE = SSH_DIR.join('authorized_keys')
   GIT_SHELL_FILE       = Rails.root.join('git', 'bin', 'git-shell').
     # replace capistrano-style release with 'current'-symlink
     sub(%r{/releases/\d+/}, '/current/')
-
-  # make sure ssh-dir exists.
-  SSH_DIR.mkpath
 
   class << self
     def add(key_id, key)
@@ -50,12 +47,17 @@ class AuthorizedKeysManager
     end
 
     def in_authorized_keys(mode)
+      SSH_DIR.mkpath
       File.open(AUTHORIZED_KEYS_FILE, mode) do |file|
         file.flock(File::LOCK_EX)
         yield file
       end
+      copy_authorized_keys_to_git_home
     end
 
+    def copy_authorized_keys_to_git_home
+      GIT_HOME_SSH_DIR.mkpath
+      system(Rails.root.join('bin', 'cp_keys').to_s)
+    end
   end
-
 end

@@ -11,6 +11,7 @@ describe Key do
 
   context 'creating a key' do
     let(:user){ create :user }
+    before { stub_cp_keys }
 
     context 'that is valid' do
       subject do
