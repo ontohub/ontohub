@@ -12,6 +12,12 @@ class MigrationWithData < ActiveRecord::Migration
   end
 
   def update_attributes!(record, **attributes)
-    record.update_attributes!(attributes, without_protection: true)
+    if record.persisted?
+      attributes.each do |key, value|
+        record.update_column(key, value)
+      end
+    else
+      record.update_attributes!(attributes, without_protection: true)
+    end
   end
 end
