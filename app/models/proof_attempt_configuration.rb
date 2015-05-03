@@ -28,7 +28,11 @@ class ProofAttemptConfiguration < ActiveRecord::Base
   end
 
   def generate_locid
-    self.locid =
-      "#{ontology.locid}//#{self.class.to_s.underscore.dasherize}-#{number}"
+    # It's possible that the database columns `locid` and `number` have not yet
+    # been created.
+    if respond_to?(:locid) && respond_to?(:number)
+      self.locid =
+        "#{ontology.locid}//#{self.class.to_s.underscore.dasherize}-#{number}"
+    end
   end
 end
