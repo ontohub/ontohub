@@ -211,6 +211,8 @@ You can deploy this codebase to your server with:
 
 ### Apache
 
+The [webserver configration page](https://github.com/ontohub/ontohub/tree/staging/doc/webserver_configuration.md) also provides details on Apache configuration.
+
 #### mod_rewrite
 
     a2enmod rewrite
