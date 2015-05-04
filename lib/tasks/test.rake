@@ -172,8 +172,8 @@ namespace :test do
     elasticsearch_port = ENV['ELASTIC_TEST_PORT']
     elasticsearch_port = '9250' unless elasticsearch_port.present?
     unless port_open?('127.0.0.1', elasticsearch_port)
-      puts 'Elasticsearch is not running. Please start it before running the tests.'
-      puts 'Aborting tests.'
+      $stderr.puts 'Elasticsearch is not running. Please start it before running the tests.'
+      $stderr.puts 'Aborting tests.'
       exit 1
     end
   end
