@@ -19,7 +19,7 @@ namespace :test do
       FixturesGeneration::ProverOutputGenerator
     ].map(&:new).
       select { |g| g.outdated_cassettes.any? }.
-      each { |g| g.call }
+      each(&:call)
   end
 
   desc 'Update all ontology fixtures'

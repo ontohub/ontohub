@@ -27,17 +27,20 @@ module FixturesGeneration
 
       FileUtils.rm_f(recorded_file(file))
       VCR.use_cassette(cassette_path_in_fixtures(file)) do
-        send("http_request_with_#{method}", URI(hets_iri), header, data)
+        http_request(method, URI(hets_iri), header, data)
       end
     end
 
-    def http_request_with_get(uri, _header, _data)
-      Net::HTTP.get_response(uri)
-    end
-
-    def http_request_with_post(uri, header, data)
-      Net::HTTP.start(uri.hostname, uri.port) do |http|
-        http.request_post(uri, data.to_json, header)
+    def http_request(method, uri, header, data)
+      case method
+      when :get
+        Net::HTTP.get_response(uri)
+      when :post
+        Net::HTTP.start(uri.hostname, uri.port) do |http|
+          http.request_post(uri, data.to_json, header)
+        end
+      else
+        raise "HTTP method #{method} is not supported."
       end
     end
   end
