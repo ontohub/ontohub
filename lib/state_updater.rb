@@ -30,8 +30,8 @@ module StateUpdater
       rescue Exception => ee
         # Can really happen (SQL Exceptions, etc.)
         error  = "Nested exception on updating state of #{self.class} #{id}\n"
-        error << "#{ee.class}: #{ee}\n  " << ee.backtrace.join("\n  ") << "\n"
-        error << "#{e.class}: #{e}\n  "   <<  e.backtrace.join("\n  ")
+        error << "#{ee.class}: #{ee.encoding_utf8}\n  " << ee.backtrace.join("\n  ") << "\n"
+        error << "#{e.class}: #{e.encoding_utf8}\n  "   <<  e.backtrace.join("\n  ")
 
         # Update attributes without any callbacks
         self.class.where(id: id).update_all \
