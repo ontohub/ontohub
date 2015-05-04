@@ -5,7 +5,7 @@ class UseProverReferenceInProofAttempts < MigrationWithData
     ProofAttempt.find_each do |proof_attempt|
       attrs = select_attributes(proof_attempt, :prover)
       prover = Prover.where(name: attrs[:prover]).first_or_create!
-      update_attributes!(proof_attempt, prover_id: prover.id)
+      update_columns(proof_attempt, prover_id: prover.id)
     end
 
     remove_columns :proof_attempts, :prover
