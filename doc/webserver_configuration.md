@@ -1,6 +1,6 @@
 Basically one can run any HTTP-Proxy infront (frontend) of the ruby rack
 application server (like puma or webrick), which in turn provides access to
-the ontohub web application. These notes provides some hints wrt. the frontends
+the ontohub web application. These notes provide some hints wrt. the frontends
 we use or collected from other contributors.
 
 Apache HTTPd configuration
@@ -9,15 +9,15 @@ Setup your apache httpd as usual. If in doubts or you don't reall know, what
 a directive mentioned below does or how to activate a certain httpd module,
 please consult your OS distro vendor's manual.
 
-Set the document root to ontohub's "public" directory (e.g.
-"DocumentRoot /local/home/ontohub/ontohub/public").
+Set the document root to ontohub's `public` directory (e.g.
+`DocumentRoot /local/home/ontohub/ontohub/public`).
 
 Make sure, that the rewrite module is activated, enable the rewrite engine
-("RewriteEngine On"), and put the follwing two blocks before any proxy
+(`RewriteEngine On`), and put the follwing two blocks before any proxy
 directives:
 
 	# Maintenance mode
-	RewriteCond /data/git/maintenance.txt -f
+	RewriteCond /data/maintenance.txt -f
 	RewriteCond %{REQUEST_URI} !^/(cgi-bin|icons|apache|error|server-)/
 	RewriteRule . /error/HTTP_SERVICE_UNAVAILABLE.html.var [R=503,L]
 
@@ -30,15 +30,16 @@ directives:
 	RewriteCond %{DOCUMENT_ROOT}%{REQUEST_URI}.gz -s
 	RewriteRule ^(.*\.(js|css))$ $1.gz [E=no-gzip,QSA,L]
 
-The first block just says, that if the file /data/git/maintenance.txt exists
+The first block just says, that if the file `/data/maintenance.txt` exists
+(where `/data` is just an example path which is called `$paths.data` from hereon)
 and the URL path of the request does not start with the given aka
 "not-used-by-ontohub-web-app" prefix, it answers with an service error status
 and the content of the file associated with the given URL path in the
-RewriteRule. Note that ontohub's git service uses a similar approach - it
-doesn't accept any command as long as ${git.data_dir}/maintenance.txt exist.
-The value for ${git.data_dir} can usually be found in config/settings.local.yml
-or, if this doesn't exist, in config/settings.yml. So using the same file in
-the first RewriteCond is recommended, makes the services behave consistent.
+`RewriteRule`. Note that ontohub's git service uses a similar approach - it
+doesn't accept any command as long as `$paths.data/maintenance.txt` exist.
+The value for `$paths.data` can usually be found in `config/settings.local.yml`
+or, if this doesn't exist, in `config/settings.yml`. So using the same file in
+the first `RewriteCond` is recommended, makes the services behave consistent.
 
 The second block is there for unknown/historical reasons and the 3rd block
 as shown in the comments above to avoid double compression.
