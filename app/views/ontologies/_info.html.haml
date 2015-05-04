@@ -33,7 +33,7 @@
   = render partial: '/ontologies/oops_state', locals: {resource: resource}
 
 - if resource.non_current_active_version?(current_user)
-  = render partial: '/ontologies/status'
+  = render partial: '/shared/state', locals: {resource: resource}
 
 %nav.nav_tab_level1
   %ul.nav.nav-tabs

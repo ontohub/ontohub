@@ -597,6 +597,9 @@ is determined according to the id.
       resources :axioms, only: :index
       resources :theorems, only: :index do
         resources :proof_attempts, only: %i(index show) do
+          member do
+            post 'retry_failed' => 'proof_attempts#retry_failed'
+          end
           resource :prover_output, only: :show
         end
         get '/proofs/new', controller: :proofs, action: :new

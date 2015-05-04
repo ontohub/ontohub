@@ -66,4 +66,19 @@ class ProofAttempt < ActiveRecord::Base
       ontology_version.save!
     end
   end
+
+  def retry_failed
+    options_to_attempts = CollectiveProofAttemptWorker.
+      normalize_for_async_call({prove_options_from_configuration => [self]})
+    CollectiveProofAttemptWorker.
+      perform_async(Theorem.to_s, theorem.id, options_to_attempts)
+  end
+
+  protected
+
+  def prove_options_from_configuration
+    pac = proof_attempt_configuration
+    Hets::ProveOptions.new({prover: pac.prover,
+                            timeout: pac.timeout})
+  end
 end

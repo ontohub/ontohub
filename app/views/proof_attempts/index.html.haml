@@ -6,6 +6,9 @@
   = link_to theorem, locid_for(theorem)
   = render partial: 'theorems/proof_status', locals: {proof_status: theorem.proof_status}
 
+- unless State::TERMINAL_STATES.include?(theorem.state)
+  = render partial: '/shared/state', locals: {resource: theorem}
+
 %h4 Proof Attempts
 = link_to t('theorems.show.prove'), [*resource_chain, theorem, :proofs, :new], class: 'btn btn-primary'
 - if collection.empty?
@@ -14,15 +17,15 @@
   %table
     %thead
       %tr
-        %th Number
-        %th Status
-        %th Date
-        %th Time taken
-        %th Prover
+        %th= t('proof_attempts.index.number')
+        %th= t('proof_attempts.index.date')
+        %th= t('proof_attempts.index.time_taken')
+        %th= t('proof_attempts.index.prover')
+        %th= t('proof_attempts.index.status')
+        %th= t('state')
     - collection.latest.each do |proof_attempt|
       %tr
         %td= link_to proof_attempt.number, proof_attempt.locid
-        %td= render partial: 'theorems/proof_status', locals: {proof_status: proof_attempt.proof_status}
         %td
           = link_to proof_attempt.locid do
             %span.timestamp= proof_attempt.created_at
@@ -30,3 +33,5 @@
           = proof_attempt.time_taken
           = t('proof_attempts.show.seconds')
         %td= proof_attempt.prover
+        %td= render partial: 'theorems/proof_status', locals: {proof_status: proof_attempt.proof_status}
+        %td= render partial: 'shared/state_tag', locals: {resource: proof_attempt}

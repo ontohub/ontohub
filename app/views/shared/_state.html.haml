@@ -1,0 +1,12 @@
+#state_infos.well
+  .ontology-state
+    = state_tag(resource)
+
+    - if resource.state == 'failed' && retriable?(resource) && can?(:write, repository)
+      = link_to 'Retry', retry_resource_chain, method: :post, class: 'btn btn-xs btn-primary', data: {disable_with: t(:wait)}
+    - elsif resource.state == 'pending'
+      .pending_message
+        Our servers are currently busy, please come back later.
+
+- if resource.state == 'failed' && resource.last_error
+  = format_error_message resource.last_error

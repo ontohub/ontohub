@@ -1,9 +1,0 @@
-#ontology_infos.well
-  .ontology-state
-    = status_tag(@ontology)
-
-    - if @ontology.state == 'failed'
-      = link_to 'Retry', [:retry_failed, @ontology.repository, @ontology], method: :post, class: 'btn btn-xs btn-primary', data: {disable_with: t(:wait)}
-    - elsif @ontology.state == 'pending'
-      .pending_message
-        Our servers are currently busy, please come back later.

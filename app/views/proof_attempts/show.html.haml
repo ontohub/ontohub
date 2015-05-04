@@ -7,6 +7,9 @@
   = link_to resource.theorem, locid_for(resource.theorem, :proof_attempts)
   = render partial: 'theorems/proof_status', locals: {proof_status: resource.proof_status}
 
+%h4= t('state')
+= render partial: '/shared/state', locals: {resource: resource}
+
 %h4= t('proof_attempts.show.created_at')
 = resource.created_at
 
@@ -45,4 +48,7 @@
 %pre= resource.tactic_script
 
 %h4= t('proof_attempts.show.prover_output')
-= link_to t('proof_attempts.show.prover_output'), locid_for(resource.prover_output)
+- if resource.prover_output
+  = link_to t('proof_attempts.show.prover_output'), locid_for(resource.prover_output)
+- else
+  = t('proof_attempts.show.no_prover_output')

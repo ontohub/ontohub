@@ -4,6 +4,12 @@ class ProofAttemptsController < InheritedResources::Base
   helper_method :ontology, :theorem
   before_filter :check_read_permissions
 
+  def retry_failed
+    check_write_permissions
+    resource.retry_failed
+    redirect_to locid_for(resource)
+  end
+
   protected
 
   def theorem
@@ -16,5 +22,9 @@ class ProofAttemptsController < InheritedResources::Base
 
   def check_read_permissions
     authorize! :show, ontology.repository
+  end
+
+  def check_write_permissions
+    authorize! :write, ontology.repository
   end
 end

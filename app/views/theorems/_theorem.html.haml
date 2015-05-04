@@ -2,3 +2,4 @@
   %td= link_to theorem, locid_for(theorem, :proof_attempts)
   %td= format_for_view(theorem)
   %td= render partial: 'proof_status', locals: {proof_status: theorem.proof_status}
+  %td= state_tag(theorem)

@@ -1,4 +1,4 @@
-containers    = $(".ontology-version-state")
+containers    = $(".evaluation-state")
 final_states  = ["done", "failed"]
 poll_time = 3000 # milliseconds
 

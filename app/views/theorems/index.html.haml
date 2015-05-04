@@ -9,8 +9,9 @@
   %table.sentences
     %thead
       %tr
-        %th Name
-        %th Text
-        %th Proof Status
+        %th= t('theorems.index.name')
+        %th= t('theorems.index.text')
+        %th= t('theorems.index.proof_status')
+        %th= t('state')
     %tbody
       = render partial: 'theorem', collection: collection
