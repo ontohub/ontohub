@@ -29,6 +29,7 @@ module Ontology::AssociationsAndAttributes
       autosave: false,
       extend: Ontology::Sentences::Methods
 
+    has_many :actions, as: :resource
 
     has_and_belongs_to_many :license_models
     has_and_belongs_to_many :projects

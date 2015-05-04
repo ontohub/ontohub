@@ -8,6 +8,12 @@ Specroutes.define(Ontohub::Application.routes) do
   # IRI Routing #
   ###############
   # as per Loc/Id definition
+  specified_get '/actions/:id' => 'api/v1/actions#show',
+    as: :action_iri,
+    format: :json do
+      accept 'application/json', constraint: true
+      doc title: 'An action that represents a long-running operation'
+    end
 
   # Special (/ref-based) Loc/Id routes
   specified_get '/ref/:reference/:repository_id/*locid' => 'api/v1/ontology_versions#show',
