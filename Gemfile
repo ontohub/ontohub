@@ -52,6 +52,7 @@ gem 'rails_config', github: 'eugenk/rails_config', ref: 'patched-for-ontohub'
 gem 'indefinite_article', '~> 0.2.0'
 
 # Fancy Forms
+# simple_form >= 3.0 is not compatible with rails 3
 gem 'simple_form', '~> 2.1.1'
 
 # Inherited Resources
