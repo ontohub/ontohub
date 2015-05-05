@@ -127,6 +127,7 @@ group :test do
   gem 'shoulda', '~> 3.5.0'
   gem "shoulda_routing_macros", "~> 0.1.2"
   gem 'rspec-activemodel-mocks', '~> 1.0.1'
+  # rspec-its >= 1.1 depends on rspec 3
   gem 'rspec-its', '~> 1.0.1'
   gem "factory_girl_rails", '~> 4.5.0'
 
