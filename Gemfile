@@ -23,6 +23,7 @@ group :assets do
   gem 'coffee-rails',   '~> 3.2.1'
   gem 'compass',        '~> 1.0.3'
   gem 'font-awesome-sass', '~> 4.3.1'
+  # jquery-rails > 3.1.2 is not compatible with rails 3
   gem 'jquery-rails', '~> 3.1.2'
   gem 'jquery-ui-rails', '5.0.3'
   gem 'momentjs-rails', '~> 2.9.0'
