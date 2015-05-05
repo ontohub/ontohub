@@ -26,7 +26,7 @@ group :assets do
   # jquery-rails > 3.1.2 is not compatible with rails 3
   gem 'jquery-rails', '~> 3.1.2'
   gem 'jquery-ui-rails', '5.0.3'
-  gem 'momentjs-rails', '~> 2.9.0'
+  gem 'momentjs-rails', '~> 2.10.2'
   gem 'd3_rails', '~> 3.5.5'
   gem 'therubyracer', '~> 0.12.1'
   gem 'uglifier', '>= 1.0.3'
