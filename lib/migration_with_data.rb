@@ -11,13 +11,47 @@ class MigrationWithData < ActiveRecord::Migration
     Hash[keys.zip(attributes)]
   end
 
+  # create_unsafe skips callbacks and validations.
+  def create_unsafe(record)
+    klass = record.class
+    skip_all_callbacks(klass)
+    record.save(validate: false)
+    set_all_callbacks(klass)
+  end
+
+  # update_columns skips callbacks and validations.
+  def update_columns(record, **attributes)
+    attributes.each do |key, value|
+      record.update_column(key, value)
+    end
+  end
+
+  # update_attributes! calls callbacks and validations (by calling save!).
   def update_attributes!(record, **attributes)
-    if record.persisted?
-      attributes.each do |key, value|
-        record.update_column(key, value)
+    record.update_attributes!(attributes, without_protection: true)
+  end
+
+  protected
+
+  # {skip,set}_all_callbacks was found on
+  # http://stackoverflow.com/questions/6537324/skipping-callbacks-and-validation/6538007#6538007
+  def skip_all_callbacks(klass)
+    [:validation, :save, :create, :commit].each do |name|
+      klass.send("_#{name}_callbacks").each do |_callback|
+        if _callback.filter != :enhanced_write_lobs
+          klass.skip_callback(name, _callback.kind, _callback.filter)
+        end
       end
-    else
-      record.update_attributes!(attributes, without_protection: true)
+    end
+  end
+
+  def set_all_callbacks(klass)
+    [:validation, :save, :create, :commit].each do |name|
+      klass.send("_#{name}_callbacks").each do |_callback|
+        if _callback.filter != :enhanced_write_lobs
+          klass.set_callback(name, _callback.kind, _callback.filter)
+        end
+      end
     end
   end
 end

@@ -1,6 +1,7 @@
 module Hets
   module Provers
     class Importer
+      ALLOWED_KEYS = %w(name display_name)
       attr_accessor :ontology_version, :io
 
       # io needs to be an instance of IO or a Tempfile.
@@ -12,8 +13,10 @@ module Hets
       def import
         hash = JSON.parse(io.read)
         provers = hash['provers']
-        provers.each do |prover_name|
-          prover = Prover.where(name: prover_name).first_or_create!
+        provers.each do |prover_hash|
+          prover_hash.select! { |k, _v| ALLOWED_KEYS.include?(k) }
+          prover = Prover.where(name: prover_hash.delete('name')).
+            first_or_create!(prover_hash)
           unless ontology_version.provers.include?(prover)
             ontology_version.provers << prover
           end

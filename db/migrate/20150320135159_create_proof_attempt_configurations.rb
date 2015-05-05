@@ -34,12 +34,13 @@ class CreateProofAttemptConfigurations < MigrationWithData
 
     ProofAttempt.find_each do |proof_attempt|
       config = ProofAttemptConfiguration.new
+      create_unsafe(config)
 
       pa_attrs = select_attributes(proof_attempt, :sentence_id)
       theorem = Theorem.find(pa_attrs[:sentence_id])
       theorem_attrs = select_attributes(theorem, :ontology_id)
 
-      update_attributes!(config, ontology_id: theorem_attrs[:ontology_id])
+      update_columns(config, ontology_id: theorem_attrs[:ontology_id])
 
       update_attributes!(proof_attempt,
                          proof_attempt_configuration_id: config.id)
