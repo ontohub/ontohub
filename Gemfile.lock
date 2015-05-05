@@ -196,7 +196,7 @@ GEM
       eventmachine
     erubis (2.7.0)
     eventmachine (1.0.7)
-    exception_notification (4.0.1)
+    exception_notification (4.1.0)
       actionmailer (>= 3.0.4)
       activesupport (>= 3.0.4)
     execjs (2.5.2)
@@ -549,7 +549,7 @@ DEPENDENCIES
   elasticsearch-extensions (~> 0.0.15)
   elasticsearch-model (~> 0.1.4)
   elasticsearch-rails (~> 0.1.4)
-  exception_notification (~> 4.0.1)
+  exception_notification (~> 4.1.0)
   factory_girl_rails (~> 4.5.0)
   faker (~> 1.2)
   font-awesome-sass (~> 4.3.1)

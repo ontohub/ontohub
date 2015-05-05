@@ -19,6 +19,7 @@ group :assets do
   gem 'jstree-rails', github: 'tristanm/jstree-rails'
   gem 'sass-rails',     '~> 3.2.3'
   gem 'bootstrap-sass', '~> 3.3.3'
+  # coffee-rails > 3.2.1 is not compatible with rails 3
   gem 'coffee-rails',   '~> 3.2.1'
   gem 'compass',        '~> 1.0.3'
   gem 'font-awesome-sass', '~> 4.3.1'
@@ -165,7 +166,7 @@ end
 
 group :production do
   gem 'god', '~> 0.13.4'
-  gem 'exception_notification', '~> 4.0.1'
+  gem 'exception_notification', '~> 4.1.0'
 end
 
 group :deployment do
