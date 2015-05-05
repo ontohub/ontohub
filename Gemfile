@@ -82,7 +82,7 @@ gem "strip_attributes", "~> 1.0"
 gem 'acts_as_tree', '~> 2.1.0'
 
 # HTTP Client
-gem "rest-client", '~> 1.7.3'
+gem "rest-client", '~> 1.8.0'
 
 # Background-Jobs
 gem 'sidekiq', '~> 3.3.2'
