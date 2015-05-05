@@ -17,6 +17,7 @@ gem 'rdf-n3', '~> 1.1.2'
 # in production environments by default.
 group :assets do
   gem 'jstree-rails', github: 'tristanm/jstree-rails'
+  # sass-rails >= 4.0 is not compativle with rails 3
   gem 'sass-rails',     '~> 3.2.3'
   gem 'bootstrap-sass', '~> 3.3.3'
   # coffee-rails > 3.2.1 is not compatible with rails 3
