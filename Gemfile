@@ -160,7 +160,7 @@ group :development, :test do
   gem 'rspec-rails', '~> 2.0'
   gem 'better_errors', '~> 2.1.1'
   gem 'binding_of_caller', '~> 0.7.2'
-  gem 'i18n-tasks', '~> 0.7.13'
+  gem 'i18n-tasks', '~> 0.8.3'
   gem 'pry-byebug', '~> 3.0.1'
 end
 
