@@ -2,9 +2,7 @@ require 'spec_helper'
 
 describe Hets::Prove::SZSParser do
   %w(Theorem CounterSatisfiable).each do |szs_status|
-    %w(MathServeBroker
-       SPASS
-       Vampire).each do |prover|
+    %w(SPASS).each do |prover|
       context "#{prover} on #{szs_status}" do
         let(:output) { File.read(prover_output_fixture(szs_status, prover)) }
 

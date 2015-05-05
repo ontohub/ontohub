@@ -126,7 +126,7 @@ namespace :test do
   def call_hets_prover_output(file, subdir, nodes)
     header = {'Content-Type' => 'application/json'}
     data_template = {format: 'json', include: 'true'}
-    provers = %w(MathServeBroker SPASS Vampire darwin darwin-non-fd eprover)
+    provers = %w(SPASS darwin darwin-non-fd eprover)
     nodes.each do |node|
       provers.each do |prover|
         data = data_template.merge({prover: prover, node: node})
