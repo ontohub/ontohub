@@ -4,7 +4,7 @@ class OopsResponse < ActiveRecord::Base
 
   scope :global, ->() do
     table = 'oops_responses_symbols'
-    joins("LEFT JOIN #{table} ON #{table}.id = #{table}.oops_response_id").
+    joins("LEFT JOIN #{table} ON oops_responses.id = #{table}.oops_response_id").
       where("#{table}.symbol_id" => nil)
   end
 
