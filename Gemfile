@@ -140,7 +140,7 @@ group :test do
 
   # Recording of HTTP Requests
   gem "vcr", '~> 2.9.3'
-  gem "webmock", '~> 1.20.4'
+  gem "webmock", '~> 1.21.0'
 
   gem 'cucumber-rails', '~> 1.4', require: false
   # Code Coverage Analysis
