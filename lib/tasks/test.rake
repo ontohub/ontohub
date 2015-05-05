@@ -75,7 +75,7 @@ namespace :test do
 
   def write_prover_output_fixture(node, prover, response_hash)
     file = prover_output_target_file(node, prover)
-    file.write(response_hash.first['goals'].first['proverOutput'])
+    file.write(response_hash.first['goals'].first['prover_output'])
     file.close
   end
 
