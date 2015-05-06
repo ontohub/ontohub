@@ -34,7 +34,6 @@ module SharedHelper
   end
 
   def use_simplecov
-    return unless ENV['COVERAGE']
     SimpleCov.start do
       add_group "Models",      "app/models"
       add_group "Controllers", "app/controllers"
