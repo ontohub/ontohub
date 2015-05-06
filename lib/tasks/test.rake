@@ -167,6 +167,17 @@ namespace :test do
     end
   end
 
+  desc 'abort execution if elasticsearch is not running'
+  task :abort_if_elasticsearch_is_not_running do
+    elasticsearch_port = ENV['ELASTIC_TEST_PORT']
+    elasticsearch_port = '9250' unless elasticsearch_port.present?
+    unless port_open?('127.0.0.1', elasticsearch_port)
+      $stderr.puts 'Elasticsearch is not running. Please start it before running the tests.'
+      $stderr.puts 'Aborting tests.'
+      exit 1
+    end
+  end
+
   desc 'Update all fixtures'
   task :freshen_fixtures do
     outdated_exist = outdated_cassettes(ontology_files, 'dg').any?
