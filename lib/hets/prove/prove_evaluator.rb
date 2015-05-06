@@ -26,6 +26,9 @@ module Hets
       register :tactic_script_extra_options, :end,
         to: :tactic_script_extra_options_end
 
+      register :used_prover, :start, to: :used_prover_start
+      register :used_prover, :end, to: :used_prover_end
+
       register :used_time, :start, to: :used_time_start
       register :used_time, :end, to: :used_time_end
 
@@ -81,6 +84,7 @@ module Hets
 
       %i(tactic_script
         tactic_script_extra_options
+        used_prover
         used_time
         used_time_components
         used_axioms).each do |hook|
@@ -103,6 +107,8 @@ module Hets
           {:"tactic_script_#{key.underscore}" => value}
         when :tactic_script_extra_options
           {:tactic_script_extra_options => nil}
+        when :used_prover
+          {:"used_prover_#{key.underscore}" => value}
         when :used_time
           {:time_taken => value} if key == 'seconds'
         when :used_time_components

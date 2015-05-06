@@ -49,7 +49,10 @@ module Hets
       end
 
       def find_or_create_prover_from_hash(proof_info)
-        Prover.where(name: proof_info[:used_prover]).first_or_create!
+        name = proof_info[:used_prover_name]
+        display_name = proof_info[:used_prover_display_name]
+        Prover.where(name: name).
+          first_or_create!(display_name: display_name)
       end
 
       def time_taken_from_hash(proof_info)
