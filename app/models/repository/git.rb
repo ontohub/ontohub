@@ -40,7 +40,7 @@ module Repository::Git
   def delete_file(filepath, user, message = nil, &block)
     commit_oid = git.delete_file(user_info(user), filepath, &block)
     commit_for!(commit_oid).commit_oid
-    mark_ontology_as_having_file(filepath, false)
+    mark_ontology_as_having_file(filepath, has_file: false)
   end
 
   def save_file(tmp_file, filepath, message, user, do_not_parse: false)
@@ -177,7 +177,7 @@ module Repository::Git
       git.changed_files(commit.oid).each { |f|
         current_file_count += 1
         if f.added? || f.modified?
-          mark_ontology_as_having_file(f.path, true)
+          mark_ontology_as_having_file(f.path, has_file: true)
           ontology_version_options = OntologyVersionOptions.new(
             f.path,
             options.delete(:user),
@@ -193,7 +193,7 @@ module Repository::Git
             previous_filepath: f.delta.old_file[:path])
           versions << save_ontology(commit.oid, ontology_version_options)
         elsif f.deleted?
-          mark_ontology_as_having_file(f.path, false)
+          mark_ontology_as_having_file(f.path, has_file: false)
         end
       }
       highest_change_file_count = [highest_change_file_count,
@@ -225,7 +225,7 @@ module Repository::Git
     @priority_settings ||= OpenStruct.new(Settings.git[:push_priority])
   end
 
-  def mark_ontology_as_having_file(path, has_file)
+  def mark_ontology_as_having_file(path, has_file: false)
     ontos = ontologies.with_path(path)
     return unless ontos.any? { |onto| onto.has_file != has_file }
     ontos.each do |onto|
