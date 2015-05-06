@@ -4,7 +4,7 @@ ENV["RAILS_ENV"] ||= 'test'
 require File.expand_path("../../spec/shared_helper", __FILE__)
 
 include SharedHelper
-use_simplecov
+use_simplecov if ENV['COVERAGE']
 
 require File.expand_path("../../config/environment", __FILE__)
 require File.expand_path("../hets_helper", __FILE__)
