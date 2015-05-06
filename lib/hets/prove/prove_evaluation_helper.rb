@@ -49,8 +49,8 @@ module Hets
       end
 
       def find_or_create_prover_from_hash(proof_info)
-        name = proof_info[:used_prover_name]
-        display_name = proof_info[:used_prover_display_name]
+        name = proof_info[:used_prover_identifier]
+        display_name = proof_info[:used_prover_name]
         Prover.where(name: name).
           first_or_create!(display_name: display_name)
       end
