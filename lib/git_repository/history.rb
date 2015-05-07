@@ -2,6 +2,8 @@ module GitRepository::History
   # depends on GitRepository
   extend ActiveSupport::Concern
 
+  WALK_ORDER = {reverse: Rugged::SORT_REVERSE, topo: Rugged::SORT_TOPO}
+
   class Commit
     attr_reader :rugged_commit, :path, :commits_to_diff
 
@@ -59,7 +61,7 @@ module GitRepository::History
     stop_oid = nil if stop_oid =~ /\A0+\z/
 
     walker = Rugged::Walker.new(@repo)
-    if rwo = rugged_walk_order(walk_order)
+    if rwo = WALK_ORDER[walk_order]
       walker.sorting(rwo)
     end
     walker.push(start_oid)
@@ -69,17 +71,6 @@ module GitRepository::History
       commits_path(walker, limit, offset, path, &block)
     else
       commits_all(walker, limit, offset, &block)
-    end
-  end
-
-  def rugged_walk_order(walk_order)
-    case walk_order
-    when :reverse
-      Rugged::SORT_REVERSE
-    when :topo
-      Rugged::SORT_TOPO
-    else
-      nil
     end
   end
 
