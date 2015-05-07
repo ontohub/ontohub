@@ -345,7 +345,10 @@ after that you have to set up the git Deamon which will be explained next.
 
 #### SSH access
 
-Adjust `/etc/ssh/sshd_config` by adding a line `StrictModes no`. The reasons for this is [issue 304](https://github.com/ontohub/ontohub/issues/304#issuecomment-30078775). Note, that this loosens security on your server (especially if it is a multi-user system).
+SSH access is provided by the `git` user.
+Every action started by a `git push` will be executed as this user, invoked
+by the `~git/.ssh/authorized_keys`, which is manipulated by the `cp_keys` binary.
+See [Changing Settings](#changing-settings) for details.
 
 #### Service
 
