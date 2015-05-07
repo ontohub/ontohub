@@ -195,6 +195,7 @@ class Ontology < ActiveRecord::Base
     current_version.locid
   end
 
+  # Checks if a file at the given commit (HEAD if nil) doesn't exist.
   def file_deleted?(commit_oid = nil)
     !has_file?(commit_oid)
   end
