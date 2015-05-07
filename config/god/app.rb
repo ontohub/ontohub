@@ -1,6 +1,6 @@
 require File.expand_path('../sidekiq_workers',  __FILE__)
 require File.expand_path('../hets_workers',  __FILE__)
-require File.expand_path('../../../lib/environment_light_with_hets.rb')
+require File.expand_path('../../../lib/environment_light_with_hets.rb', __FILE__)
 
 RAILS_ROOT = ENV['RAILS_ROOT'] || File.dirname(__FILE__) + '/../..'
 
