@@ -75,8 +75,8 @@ describe 'Repository saving a file' do
 
       it 'create a new ontology version' do
         expect(repository.ontologies.
-          where(basepath: File.basepath(target_path)).first!.versions.count).
-          to eq(2)
+               where(basepath: File.basepath(target_path)).
+               first!.versions.count).to eq(2)
       end
     end
   end
