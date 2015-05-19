@@ -32,7 +32,10 @@ describe LogicAdjointsController do
       before { get :show, id: adjoint.id, mapping_id: mapping.id }
       it { should respond_with :success }
       it { should render_template :show }
-      it { should_not set_the_flash }
+
+      it 'does not set the flash' do
+        expect(flash).to be_empty
+      end
     end
 
     context 'on get to new' do
@@ -55,7 +58,7 @@ describe LogicAdjointsController do
         let!(:adjoint_from_db) { LogicAdjoint.find_by_iri('http://test.de') }
 
         it 'should exist' do
-          expect(adjoint_from_db).not_to be_nil
+          expect(adjoint_from_db).not_to be(nil)
         end
 
         it 'should have correct translation' do
@@ -81,7 +84,7 @@ describe LogicAdjointsController do
         let!(:adjoint_from_db) { LogicAdjoint.find_by_iri('http://test2.de') }
 
         it 'should exist' do
-          expect(adjoint_from_db).not_to be_nil
+          expect(adjoint_from_db).not_to be(nil)
         end
 
         it 'should have correct translation' do
@@ -98,7 +101,7 @@ describe LogicAdjointsController do
       before { delete :destroy, id: adjoint.id, mapping_id: mapping.id }
 
       it 'remove the record' do
-        expect(LogicAdjoint.find_by_id(adjoint.id)).to be_nil
+        expect(LogicAdjoint.find_by_id(adjoint.id)).to be(nil)
       end
     end
 
@@ -106,7 +109,10 @@ describe LogicAdjointsController do
       before { get :edit, id: adjoint.id, mapping_id: mapping.id }
       it { should respond_with :success }
       it { should render_template :edit }
-      it { should_not set_the_flash }
+
+      it 'does not set the flash' do
+        expect(flash).to be_empty
+      end
     end
   end
 
@@ -118,7 +124,10 @@ describe LogicAdjointsController do
       before { get :show, id: adjoint.id, mapping_id: mapping.id }
       it { should respond_with :success }
       it { should render_template :show }
-      it { should_not set_the_flash }
+
+      it 'does not set the flash' do
+        expect(flash).to be_empty
+      end
     end
 
     context 'on get to new' do
@@ -141,7 +150,7 @@ describe LogicAdjointsController do
         let!(:adjoint_from_db) { LogicAdjoint.find_by_iri('http://test.de') }
 
         it 'should exist' do
-          expect(adjoint_from_db).not_to be_nil
+          expect(adjoint_from_db).not_to be(nil)
         end
 
         it 'should have correct translation' do
@@ -164,7 +173,7 @@ describe LogicAdjointsController do
       end
 
       it 'not change the record' do
-        expect(LogicAdjoint.find_by_iri('http://test2.de')).to be_nil
+        expect(LogicAdjoint.find_by_iri('http://test2.de')).to be(nil)
       end
     end
 
@@ -179,7 +188,10 @@ describe LogicAdjointsController do
     context 'on GET to EDIT' do
       before { get :edit, id: adjoint.id, translation_id: mapping.id }
       it { should respond_with :redirect }
-      it { should set_the_flash.to(/not authorized/i) }
+
+      it 'sets the flash' do
+        expect(flash[:alert]).to match(/not authorized/)
+      end
     end
   end
 
@@ -188,14 +200,20 @@ describe LogicAdjointsController do
       before { get :show, id: adjoint.id, translation_id: mapping.id }
       it { should respond_with :success }
       it { should render_template :show }
-      it { should_not set_the_flash }
+
+      it 'does not set the flash' do
+        expect(flash).to be_empty
+      end
     end
 
     context 'on get to new' do
       before { get :new, translation_id: mapping.id }
 
       it { should respond_with :redirect }
-      it { should set_the_flash }
+
+      it 'sets the flash' do
+        expect(flash[:alert]).to match(/not authorized/)
+      end
     end
 
     context 'on POST to CREATE' do
@@ -208,7 +226,7 @@ describe LogicAdjointsController do
       end
 
       it 'not create the record' do
-        expect(LogicAdjoint.find_by_iri("http://test.de")).to be_nil
+        expect(LogicAdjoint.find_by_iri("http://test.de")).to be(nil)
       end
     end
 
@@ -222,7 +240,7 @@ describe LogicAdjointsController do
       end
 
       it 'not change the record' do
-        expect(LogicAdjoint.find_by_iri('http://test2.de')).to be_nil
+        expect(LogicAdjoint.find_by_iri('http://test2.de')).to be(nil)
       end
     end
 

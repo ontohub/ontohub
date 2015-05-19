@@ -253,7 +253,7 @@ describe Ontology do
       end
 
       it 'should have an ontology-version' do
-        expect(ontology.ontology_version).to_not be_nil
+        expect(ontology.ontology_version).to_not be(nil)
       end
 
     end
@@ -300,11 +300,11 @@ describe Ontology do
   #   end
 
   #   it 'should have an ontology-version' do
-  #     expect(ontology.ontology_version).to_not be_nil
+  #     expect(ontology.ontology_version).to_not be(nil)
   #   end
 
   #   it 'should have a referenced ontology with an ontology-version' do
-  #     expect(referenced_ontology.ontology_version).to_not be_nil
+  #     expect(referenced_ontology.ontology_version).to_not be(nil)
   #   end
   # end
 
@@ -429,7 +429,7 @@ describe Ontology do
     end
 
     it 'should create a combined ontology' do
-      expect(combined).to_not be_nil
+      expect(combined).to_not be(nil)
     end
 
     context 'kinds' do

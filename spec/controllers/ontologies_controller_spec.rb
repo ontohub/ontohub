@@ -60,7 +60,10 @@ describe OntologiesController do
           delete :destroy, repository_id: repository.to_param, id: ontology.id
         end
 
-        it{ should set_the_flash.to(/is imported/) }
+        it 'sets the flash' do
+          expect(flash[:error]).to match(/is imported/)
+        end
+
         it{ should respond_with :found }
         it{ response.should redirect_to [repository, ontology] }
       end

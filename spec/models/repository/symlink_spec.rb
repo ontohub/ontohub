@@ -10,7 +10,7 @@ describe Repository::Symlink do
 
     describe 'repository destroy' do
       before { repository.destroy }
-      it("symlink removed"){ repository.symlink_name.exist?.should be_false }
+      it("symlink removed"){ repository.symlink_name.exist?.should be(false) }
     end
   end
 

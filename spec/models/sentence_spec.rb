@@ -66,7 +66,7 @@ describe Sentence do
       before { parse_ontology(user, ontology, 'owl/generations.owl') }
 
       it 'should have display_text set' do
-        expect(sentence.display_text).to_not be_nil
+        expect(sentence.display_text).to_not be(nil)
       end
 
       it "should not contain symbols' iris" do

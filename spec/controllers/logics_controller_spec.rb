@@ -11,7 +11,10 @@ describe LogicsController do
 
         it { should respond_with :success }
         it { should render_template :show }
-        it { should_not set_the_flash }
+
+        it 'does not set the flash' do
+          expect(flash).to be_empty
+        end
       end
 
       context 'signed in as Logic-Owner' do
@@ -22,7 +25,10 @@ describe LogicsController do
 
         it { should respond_with :success }
         it { should render_template :show }
-        it { should_not set_the_flash }
+
+        it 'does not set the flash' do
+          expect(flash).to be_empty
+        end
       end
     end
   end
@@ -32,6 +38,9 @@ describe LogicsController do
 
     it { should respond_with :success }
     it { should render_template :index }
-    it { should_not set_the_flash }
+
+    it 'does not set the flash' do
+      expect(flash).to be_empty
+    end
   end
 end

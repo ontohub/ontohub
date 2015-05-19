@@ -34,26 +34,26 @@ describe User do
     end
 
     it 'have email' do
-      expect(user.email).not_to be_nil
+      expect(user.email).not_to be(nil)
     end
 
     it 'have name' do
-      expect(user.name).not_to be_nil
+      expect(user.name).not_to be(nil)
     end
 
     it 'not have deleted_at' do
-      expect(user.deleted_at).to be_nil
+      expect(user.deleted_at).to be(nil)
     end
 
     context 'after deletion' do
       before { user.delete }
 
       it 'have blank email' do
-        expect(user.email).to be_nil
+        expect(user.email).to be(nil)
       end
 
       it 'have deleted_at' do
-        expect(user.deleted_at).not_to be_nil
+        expect(user.deleted_at).not_to be(nil)
       end
     end
 

@@ -151,7 +151,7 @@ describe "git history" do
     context 'state check' do
       it 'should detect that a file has not changed' do
         expect(repository.has_changed?(filepath, commit_add1, commit_add1)).
-          to be_false
+          to be(false)
       end
 
       it 'should detect that a file has changed' do
@@ -160,7 +160,7 @@ describe "git history" do
           [commit_delete1, commit_add2],
           [commit_delete1, commit_delete2] ].each do |previous, current|
           expect(repository.has_changed?(filepath, previous, current)).
-            to be_true
+            to be(true)
         end
       end
     end

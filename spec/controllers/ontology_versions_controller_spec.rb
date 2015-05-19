@@ -39,7 +39,7 @@ describe OntologyVersionsController do
 
       context 'for a single ontology' do
         it 'should assign the right versions' do
-          expect(assigns(:versions)).to_not be_nil
+          expect(assigns(:versions)).to_not be(nil)
         end
       end
     end

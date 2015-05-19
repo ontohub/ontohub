@@ -25,7 +25,7 @@ describe 'Repository saving a file' do
       end
 
       it 'create the file in the git repository' do
-        expect(repository.git.path_exists?(target_path)).to be_true
+        expect(repository.git.path_exists?(target_path)).to be(true)
       end
 
       it 'create the file with correct contents in the git repository' do
