@@ -2,7 +2,7 @@
 
 # Install an ontohub instance
 
-This guide assumes a fresh and updated [Ubuntu 13.10 Server]ekastu(http://www.ubuntu.com/start-download?distro=server&bits=64&release=latest) installation. Unless stated otherwise, the shell commandselast have to be executed as root. Make sure your filesystem supports ACLs.
+This guide assumes a fresh and updated [Ubuntu 13.10 Server](http://www.ubuntu.com/start-download?distro=server&bits=64&release=latest) installation. Unless stated otherwise, the shell commandselast have to be executed as root. Make sure your filesystem supports ACLs.
 
 _**Because we are using god this installation guide only works on Ubuntu.**_
 
@@ -325,27 +325,30 @@ after that you have to set up the git Deamon which will be explained next.
 
     cd /srv/http/ontohub/shared/data
 
-  mkdir -p git_daemon
-  chown ontohub:ontohub git_daemon
-  setfacl -m u:ontohub:rwx,d:u:ontohub:rwx git_daemon
-  setfacl -m g:ontohub:rwx,d:g:ontohub:rwx git_daemon
+    mkdir -p git_daemon
+    chown ontohub:ontohub git_daemon
+    setfacl -m u:ontohub:rwx,d:u:ontohub:rwx git_daemon
+    setfacl -m g:ontohub:rwx,d:g:ontohub:rwx git_daemon
 
     mkdir -p git_user/.ssh
-  chmod 770 git_user/.ssh
-  touch git_user/.ssh/authorized_keys
-  chmod 660 git_user/.ssh/authorized_keys
-  chown -R git:ontohub git_user
-  setfacl -Rm u:ontohub:rwx,d:u:ontohub:rwx git_user
-  setfacl -Rm g:ontohub:rwx,d:g:ontohub:rwx git_user
+    chmod 770 git_user/.ssh
+    touch git_user/.ssh/authorized_keys
+    chmod 660 git_user/.ssh/authorized_keys
+    chown -R git:ontohub git_user
+    setfacl -Rm u:ontohub:rwx,d:u:ontohub:rwx git_user
+    setfacl -Rm g:ontohub:rwx,d:g:ontohub:rwx git_user
 
-  mkdir -p repositories
-  chown ontohub:ontohub repositories
-  setfacl -m u:ontohub:rwx,d:u:ontohub:rwx repositories
-  setfacl -m g:ontohub:rwx,d:g:ontohub:rwx repositories
+    mkdir -p repositories
+    chown ontohub:ontohub repositories
+    setfacl -m u:ontohub:rwx,d:u:ontohub:rwx repositories
+    setfacl -m g:ontohub:rwx,d:g:ontohub:rwx repositories
 
 #### SSH access
 
-Adjust `/etc/ssh/sshd_config` by adding a line `StrictModes no`. The reasons for this is [issue 304](https://github.com/ontohub/ontohub/issues/304#issuecomment-30078775). Note, that this loosens security on your server (especially if it is a multi-user system).
+SSH access is provided by the `git` user.
+Every action started by a `git push` will be executed as this user, invoked
+by the `~git/.ssh/authorized_keys`, which is manipulated by the `cp_keys` binary.
+See [Changing Settings](#changing-settings) for details.
 
 #### Service
 
@@ -353,8 +356,8 @@ Create an upstart script (i.e. `/etc/init/git-daemon.conf`):
 
     start on startup
     stop on shutdown
-    setuid nobody
-    setgid nogroup
+    setuid ontohub
+    setgid ontohub
     exec /usr/bin/git daemon \
         --reuseaddr \
         --export-all \
@@ -384,6 +387,17 @@ and you should get an elasticsearch cluster.
 Now you have to import the ontology model, as ontohub user in /srv/http/ontohub/current do
 
     RAILS_ENV=production bundle exec rake environment elasticsearch:import:model CLASS=Ontology
+
+#### Securing Elasticsearch
+
+Elasticsearch versions 1.3.0-1.3.7 and 1.4.0-1.4.2 have a vulnerability in the Groovy scripting engine. The vulnerability allows an attacker to construct Groovy scripts that escape the sandbox and execute shell commands as the user running the Elasticsearch Java VM [[1]](http://www.elastic.co/guide/en/elasticsearch/reference/1.4/modules-scripting.html).
+Also you should disable dynamic scripting completely [[2]](http://www.vanimpe.eu/2014/07/09/elasticsearch-vulnerability-exploit/).
+```yml
+script.groovy.sandbox.enabled: false
+script.disable_dynamic: true
+```
+
+Next, allow to connect to elasticsearch (TCP Port 9200) only from localhost.
 
 ### Ontohub itself
 
@@ -422,4 +436,4 @@ Checkout the ontohub.org branch in your local ontohub git repository clone, then
 
 ## More Configuration Information
 
-For more information about our serversetup you can look at the [[Our productive configuration]] wiki page.
+For more information about our server setup you can look at the [[Our productive configuration]] wiki page.
