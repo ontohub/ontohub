@@ -34,8 +34,25 @@ execute_or_die() {
 abort_unless_invoker_installed
 initialize_new_invoker_instance
 
-execute_or_die "bundle exec rake elasticsearch:wipe"
-execute_or_die "bundle exec rake db:migrate:clean"
-execute_or_die "redis-cli flushdb"
-execute_or_die "bundle exec rake git:compile_cp_keys"
-execute_or_die "bundle exec rake db:seed"
+for i in "$@"; do
+case $i in
+    -d|--download-fixtures)
+    export DOWNLOAD_FIXTURES=true
+    ;;
+    -r|--restart)
+    RESTART_INVOKER_ONLY=true
+    ;;
+    *)
+    # unknown option
+    ;;
+  esac
+  shift
+done
+
+if [[ !($RESTART_INVOKER_ONLY) ]]; then
+  execute_or_die "bundle exec rake elasticsearch:wipe"
+  execute_or_die "bundle exec rake db:migrate:clean"
+  execute_or_die "redis-cli flushdb"
+  execute_or_die "bundle exec rake git:compile_cp_keys"
+  execute_or_die "bundle exec rake db:seed"
+fi
