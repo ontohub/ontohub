@@ -391,7 +391,7 @@ Now you have to import the ontology model, as ontohub user in /srv/http/ontohub/
 #### Securing Elasticsearch
 
 Elasticsearch versions 1.3.0-1.3.7 and 1.4.0-1.4.2 have a vulnerability in the Groovy scripting engine. The vulnerability allows an attacker to construct Groovy scripts that escape the sandbox and execute shell commands as the user running the Elasticsearch Java VM [[1]](http://www.elastic.co/guide/en/elasticsearch/reference/1.4/modules-scripting.html).
-Also you should disabl dynamic scripting completely [[2]](http://www.vanimpe.eu/2014/07/09/elasticsearch-vulnerability-exploit/).
+Also you should disable dynamic scripting completely [[2]](http://www.vanimpe.eu/2014/07/09/elasticsearch-vulnerability-exploit/).
 ```yml
 script.groovy.sandbox.enabled: false
 script.disable_dynamic: true
@@ -436,4 +436,4 @@ Checkout the ontohub.org branch in your local ontohub git repository clone, then
 
 ## More Configuration Information
 
-For more information about our serversetup you can look at the [[Our productive configuration]] wiki page.
+For more information about our server setup you can look at the [[Our productive configuration]] wiki page.
