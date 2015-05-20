@@ -58,10 +58,7 @@ module Repository::Git
 
   def save_file_only(tmp_file, filepath, message, user)
     commit = nil
-    name = user ? user.name : Settings.git.fallbacks.committer_name
-    email = user ? user.email : Settings.git.fallbacks.committer_email
-    userdata = {email: email, name: name}
-    git.add_file(userdata, tmp_file, filepath, message) do |commit_oid|
+    git.add_file(user_info(user), tmp_file, filepath, message) do |commit_oid|
       commit = commit_oid
     end
     commit_for!(commit)
@@ -236,7 +233,12 @@ module Repository::Git
   end
 
   def user_info(user)
-    {email: user.email, name: user.name}
+    if user
+      {email: user.email, name: user.name}
+    else
+      {email: Settings.git.fallbacks.committer_email,
+       name: Settings.git.fallbacks.committer_name}
+    end
   end
 
   def master_file?(ontology, ontology_version_options)
