@@ -1,0 +1,57 @@
+---
+http_interactions:
+- request:
+    method: post
+    uri: http://localhost:8000/prove/http:%2F%2Flocalhost:3001%2Fref%2F1%2Frepository-7%2FSimple_Implications%2F%2FCounterSatisfiable/auto
+    body:
+      encoding: UTF-8
+      string: '{"format":"json","include":"true","prover":"SPASS","theorems":["Ax2"],"node":"CounterSatisfiable"}'
+    headers:
+      Content-Type:
+      - application/json
+      Accept-Encoding:
+      - gzip;q=1.0,deflate;q=0.6,identity;q=0.3
+      Accept:
+      - "*/*"
+      User-Agent:
+      - Ruby
+      Host:
+      - localhost:8000
+  response:
+    status:
+      code: 200
+      message: OK
+    headers:
+      Transfer-Encoding:
+      - chunked
+      Date:
+      - Wed, 20 May 2015 07:41:30 GMT
+      Server:
+      - Warp/3.0.11
+      Content-Type:
+      - application/json
+    body:
+      encoding: UTF-8
+      string: |-
+        [{
+        "node": "CounterSatisfiable",
+        "goals": [{
+         "name": "Ax2",
+         "result": "Disproved",
+         "details": "",
+         "used_prover": { "identifier": "SPASS", "name": "SPASS" },
+         "used_translation": "CASL2SoftFOL",
+         "tactic_script": {
+          "time_limit": 1, "extra_options": [ "-DocProof"] },
+         "proof_tree": "",
+         "used_time": {
+          "seconds": 0, "components": { "hours": 0, "mins": 0, "secs": 0 }
+          },
+         "used_axioms": [],
+         "prover_output":
+          "\n--------------------------SPASS-START-----------------------------\nInput Problem:\n1[0:Inp] ||  -> equal(zero,one)**.\n2[0:Inp] ||  -> equal(U,zero)*.\n This is a unit equality problem.\n This is a problem that has, if any, a finite domain model.\n There is a finite domain clause.\n There are no function symbols.\n The conjecture is ground.\n Axiom clauses: 1 Conjecture clauses: 1\n Inferences: ISpR=1 ISpL=1 \n Reductions: RFRew=1 RBRew=1 RFMRR=1 RBMRR=1 RObv=1 RUnC=1 RTaut=1 RFSub=1 RBSub=1 \n Extras    : Input Saturation, Always Selection, No Splitting, Full Reduction,  Ratio: 5, FuncWeight: 1, VarWeight: 1\n Precedence: zero > one\n Ordering  : KBO\nProcessed Problem:\n\nWorked Off Clauses:\n\nUsable Clauses:\n3[0:Rew:1.0,2.0] ||  -> equal(U,one)*.\n\tGiven clause: 3[0:Rew:1.0,2.0] ||  -> equal(U,one)*.\n\tGiven clause: 5[0:SpR:3.0,3.0] ||  -> equal(U,V)*.\nSPASS V 3.7 \nSPASS beiseite: Completion found.\nProblem: Read from stdin. \nSPASS derived 3 clauses, backtracked 0 clauses, performed 0 splits and kept 4 clauses.\nSPASS allocated 45932 KBytes.\nSPASS spent\t0:00:00.03 on the problem.\n\t\t0:00:00.01 for the input.\n\t\t0:00:00.01 for the FLOTTER CNF translation.\n\t\t0:00:00.00 for inferences.\n\t\t0:00:00.00 for the backtracking.\n\t\t0:00:00.00 for the reduction.\n\n\n The saturated set of worked-off clauses is :\n5[0:SpR:3.0,3.0] ||  -> equal(U,V)*.\n--------------------------SPASS-STOP------------------------------\n"
+         }]
+        }]
+    http_version: 
+  recorded_at: Wed, 20 May 2015 07:41:30 GMT
+recorded_with: VCR 2.9.3
