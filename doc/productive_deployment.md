@@ -2,7 +2,7 @@
 
 # Install an ontohub instance
 
-This guide assumes a fresh and updated [Ubuntu 13.10 Server]ekastu(http://www.ubuntu.com/start-download?distro=server&bits=64&release=latest) installation. Unless stated otherwise, the shell commandselast have to be executed as root. Make sure your filesystem supports ACLs.
+This guide assumes a fresh and updated [Ubuntu 13.10 Server](http://www.ubuntu.com/start-download?distro=server&bits=64&release=latest) installation. Unless stated otherwise, the shell commandselast have to be executed as root. Make sure your filesystem supports ACLs.
 
 _**Because we are using god this installation guide only works on Ubuntu.**_
 
