@@ -16,6 +16,15 @@ Specroutes.define(Ontohub::Application.routes) do
       doc title: 'Retrieves the file according to the path inside the repository'
     end
 
+  specified_get '/treeref/:reference/:repository_id/*path' => 'files#show',
+    as: :tree_ref_iri,
+    constraints: [
+      FilesRouterConstraint.new,
+      TreeRefRouterConstraint.new
+    ] do
+      doc title: 'Retrieves the file according to the path and reference inside the repository'
+    end
+
   specified_get '/actions/:id' => 'api/v1/actions#show',
     as: :action_iri,
     format: :json do

@@ -46,6 +46,16 @@ class FilesRouterConstraint < RouterConstraint
   end
 end
 
+class TreeRefRouterConstraint < RouterConstraint
+  def matches?(request)
+    reference = params(request)[:reference]
+    if reference
+      add_path_parameters(request, ref: reference)
+    end
+    !! reference
+  end
+end
+
 class LocIdRouterConstraint < RouterConstraint
   def initialize(find_in_klass, **map)
     @find_in_klass = find_in_klass
