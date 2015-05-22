@@ -8,6 +8,14 @@ Specroutes.define(Ontohub::Application.routes) do
   # IRI Routing #
   ###############
   # as per Loc/Id definition
+  specified_get '/tree/:repository_id/*path' => 'files#show',
+    as: :tree_iri,
+    constraints: [
+     FilesRouterConstraint.new
+    ] do
+      doc title: 'Retrieves the file according to the path inside the repository'
+    end
+
   specified_get '/actions/:id' => 'api/v1/actions#show',
     as: :action_iri,
     format: :json do
