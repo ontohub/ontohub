@@ -1,5 +1,5 @@
 module StateHelper
-  def retry_resource_chain
+  def retry_resource_chain(resource)
     if resource.is_a?(Ontology)
       [:retry_failed, *resource_chain]
     elsif resource.is_a?(Theorem)
