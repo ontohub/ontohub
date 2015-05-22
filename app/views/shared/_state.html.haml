@@ -10,5 +10,5 @@
   .pending_message
     Our servers are currently busy, please come back later.
 
-- if resource.state == 'failed' && resource.last_error
-  = format_error_message resource.last_error
+- if erroneous_with_message?(resource)
+  = format_error_message error_message(resource)
