@@ -1,6 +1,6 @@
 FactoryGirl.define do
   factory :ontology_version do
-    association :ontology
+    association :ontology, factory: :done_ontology
     association :user
     basepath { SecureRandom.hex(10) }
     file_extension { '.owl' }
@@ -8,6 +8,8 @@ FactoryGirl.define do
     state_updated_at { Time.now }
 
     after(:create) do |version|
+      version.ontology.ontology_version = version
+      version.ontology.save!
       version.ontology.reload
     end
 
