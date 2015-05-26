@@ -1,10 +1,9 @@
 $ ->
-  prover_ids = $('#prover-list').find(':checkbox')
+  $('[data-select]').each(() ->
+    checkboxes = $($(this).attr('data-select'))
+    check = $(this).attr('data-select-target') == 'all'
 
-  $('#prover-list .select-all').on('click', (e) ->
-    prover_ids.prop('checked', true)
-  )
-
-  $('#prover-list .select-none').on('click', (e) ->
-    prover_ids.prop('checked', false) 
+    $(this).on('click', (e) ->
+      checkboxes.prop('checked', check)
+    )
   )
