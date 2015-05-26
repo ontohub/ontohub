@@ -2,13 +2,19 @@ Given(/^There is an ontology$/) do
   @ontology = FactoryGirl.create :ontology
 end
 
-Given(/^there is an ontology with a pending version$/) do
-  @ontology_version = FactoryGirl.create :ontology_version, state: 'pending'
+Given(/^there is an ontology with a "([^"]+)" version$/) do |state|
+  @ontology_version = FactoryGirl.create :ontology_version, state: state
   @ontology = @ontology_version.ontology
+  @ontology.state = state
+  @ontology.save!
 end
 
 Given(/^I visit the detail page of the ontology$/) do
   visit locid_for(@ontology, :ontology_versions)
+end
+
+Given(/^I visit the sub-page "([^"]+)" of the ontology$/) do |subpage|
+  visit locid_for(@ontology, subpage.to_sym)
 end
 
 When(/^we change the state of the ontology to: (\w+)$/) do |state|
@@ -17,11 +23,25 @@ When(/^we change the state of the ontology to: (\w+)$/) do |state|
 end
 
 Then(/^the page should change the state on its own$/) do
+  wait_for_ajax
+  steps %Q{
+  Then I should see the "#{@state}" state
+  }
+end
+
+Then(/^I should see the "([^"]+)" state$/) do |state|
   el_css = '.evaluation-state'
   field = 'data-id'
   field_klass = 'data-klass'
-  wait_for_ajax
   within %{#{el_css}[#{field}="#{@ontology_version.id}"][#{field_klass}="OntologyVersion"]} do
-    expect(find('span')).to have_content(@state)
+    expect(find('span')).to have_content(state)
+  end
+end
+
+Then(/^I should see the "([^"]+)" state inside of "([^"]+)"$/) do |state, inside|
+  within inside do
+    steps %Q{
+    Then I should see the "#{state}" state
+    }
   end
 end

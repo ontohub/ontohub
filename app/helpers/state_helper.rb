@@ -1,5 +1,15 @@
 module StateHelper
-  def retry_resource_chain
+  def erroneous_with_message?(resource)
+    resource.respond_to?(:last_error) &&
+      resource.state == 'failed' &&
+      resource.last_error
+  end
+
+  def error_message(resource)
+    resource.last_error
+  end
+
+  def retry_resource_chain(resource)
     if resource.is_a?(Ontology)
       [:retry_failed, *resource_chain]
     elsif resource.is_a?(Theorem)
