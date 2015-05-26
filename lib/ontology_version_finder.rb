@@ -23,6 +23,7 @@ class OntologyVersionFinder
     if ontology
       with_version_reference ||
         with_commit_reference ||
+        with_date_reference ||
         with_branch_reference
     end
   end
