@@ -3,7 +3,7 @@ require_relative 'direct_hets_generator.rb'
 module FixturesGeneration
   class ProverOutputGenerator < DirectHetsGenerator
     NODES = %w(CounterSatisfiable Theorem)
-    PROVERS = %w(MathServeBroker SPASS Vampire darwin darwin-non-fd eprover)
+    PROVERS = %w(SPASS darwin darwin-non-fd eprover)
     protected
 
     def perform(file)
