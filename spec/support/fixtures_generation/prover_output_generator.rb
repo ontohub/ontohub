@@ -31,7 +31,7 @@ module FixturesGeneration
 
     def write_prover_output_fixture(node, prover, response_hash)
       target_file(node, prover) do |file|
-        file.write(response_hash.first['goals'].first['proverOutput'])
+        file.write(response_hash.first['goals'].first['prover_output'])
       end
     end
 
