@@ -23,6 +23,10 @@ class CommitReference
     !!(reference =~ /\A\d{4}-\d{2}-\d{2}\Z/)
   end
 
+  def branch?
+    !! branch_oid
+  end
+
   def retrieve_commit_reference
     with_date_reference ||
       with_commit_reference ||
@@ -51,9 +55,7 @@ class CommitReference
 
   def branch_oid
     repository.git.branches.reduce(nil) do |_init, branch|
-      if reference == branch[:name]
-        return branch[:oid]
-      end
+      return branch[:oid] if reference == branch[:name]
     end
   end
 

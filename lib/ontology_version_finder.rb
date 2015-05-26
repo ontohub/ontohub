@@ -4,24 +4,27 @@ class OntologyVersionFinder
 
   attr_accessor :ontology, :reference
 
-  def self.applicable_reference?(reference)
-    new(reference, nil).applicable?
+  def self.applicable_reference?(reference, repository)
+    new(reference, repository: repository).applicable?
   end
 
   def self.find(path)
     res = path.match(REF_RE)
-    new(res[1], Ontology.find_with_locid(res[2])).find if res
+    new(res[1], ontology: Ontology.find_with_locid(res[2])).find if res
   end
 
-  def initialize(reference, ontology)
+  def initialize(reference, ontology: nil, repository: ontology.repository)
     self.reference = reference
     self.ontology = ontology
+    self.commit_reference = CommitReference.new(repository, reference)
   end
 
   def find
-    with_version_reference ||
-      with_commit_reference ||
-      with_branch_reference
+    if ontology
+      with_version_reference ||
+        with_commit_reference ||
+        with_branch_reference
+    end
   end
 
   def with_version_reference
@@ -31,28 +34,25 @@ class OntologyVersionFinder
 
   def with_commit_reference
     OntologyVersion.where(ontology_id: ontology,
-                          commit_oid: commit_reference).first
+                          commit_oid: commit_reference.commit_oid).first
   end
 
   def with_date_reference
     OntologyVersion.joins(:commit).where(ontology_id: ontology).
-      where('commits.author_date <= ?', end_of_day(date_reference)).
+      where('commits.author_date <= ?', commit_reference.commit.author_date).
       order('commits.author_date DESC').first
   end
 
   def with_branch_reference
-    if ontology
-      branch_commit = ontology.repository.commit_id(branch_reference)[:oid]
-      OntologyVersion.where(ontology_id: ontology,
-                            commit_oid: branch_commit).first
-    end
+    OntologyVersion.where(ontology_id: ontology,
+                          commit_oid: commit_reference.commit_oid).first
   end
 
   def applicable?
     result = version_reference ||
-      commit_reference ||
-      date_reference ||
-      branch_reference
+      commit_reference.commit_oid? ||
+      commit_reference.date? ||
+      commit_reference.branch?
     !! result
   end
 
@@ -60,27 +60,5 @@ class OntologyVersionFinder
     if reference =~ /\A\d+\Z/
       reference.to_i
     end
-  end
-
-  def commit_reference
-    if reference =~ /\A[a-fA-F0-9]+\Z/
-      reference
-    end
-  end
-
-  def date_reference
-    if reference =~ /\A\d{4}-\d{2}-\d{2}\Z/
-      reference
-    end
-  end
-
-  def branch_reference
-    if SUPPORTED_BRANCHES.include?(reference)
-      reference
-    end
-  end
-
-  def end_of_day(date_reference)
-    "#{date_reference} 23:59:59"
   end
 end
