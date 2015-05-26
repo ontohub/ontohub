@@ -1,0 +1,24 @@
+- if resource.state == 'done'
+  %h4= t('proof_attempts.result.headline')
+
+  .row.proof-attempt-result
+    .time-taken
+      = render partial: 'item', locals: {title: t('proof_attempts.result.time_taken.headline'), body: t('proof_attempts.result.time_taken.text', time_taken: resource.time_taken)}
+    .used-prover
+      = render partial: 'item', locals: {title: t('proof_attempts.result.used_prover.headline'), body: resource.prover}
+
+    .prover-output
+      = render partial: 'item', locals: {title: t('proof_attempts.result.prover_output.headline'), body: link_to(t('proof_attempts.result.prover_output.link_text'), locid_for(resource.prover_output))}
+
+    - if resource.tactic_script
+      .tactic-script
+        = render partial: 'item', locals: {title: t('proof_attempts.result.tactic_script.headline'), body: render(partial: 'tactic_script', locals: {tactic_script: resource.tactic_script})}
+
+    .used-axioms
+      = render partial: 'item', locals: {title: t('proof_attempts.result.used_axioms.headline'), body: render(partial: 'sentences_list', locals: {sentences: resource.used_axioms})}
+
+    .used-theorems
+      = render partial: 'item', locals: {title: t('proof_attempts.result.used_theorems.headline'), body: render(partial: 'sentences_list', locals: {sentences: resource.used_theorems})}
+
+    .generated-axioms
+      = render partial: 'item', locals: {title: t('proof_attempts.result.generated_axioms.headline'), body: render(partial: 'sentences_list', locals: {sentences: resource.generated_axioms})}

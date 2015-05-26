@@ -11,27 +11,26 @@
 
 %h4 Proof Attempts
 = link_to t('theorems.show.prove'), [*resource_chain, theorem, :proofs, :new], class: 'btn btn-primary'
-- if collection.empty?
-  = t('theorems.show.proof_attemps_empty')
-- else
-  %table
-    %thead
-      %tr
-        %th= t('proof_attempts.index.number')
-        %th= t('proof_attempts.index.date')
-        %th= t('proof_attempts.index.time_taken')
-        %th= t('proof_attempts.index.prover')
-        %th= t('proof_attempts.index.status')
-        %th= t('state')
-    - collection.latest.each do |proof_attempt|
-      %tr
-        %td= link_to proof_attempt.number, proof_attempt.locid
-        %td
-          = link_to proof_attempt.locid do
-            %span.timestamp= proof_attempt.created_at
-        %td
-          = proof_attempt.time_taken
-          = t('proof_attempts.show.seconds')
-        %td= proof_attempt.prover
-        %td= render partial: 'theorems/proof_status', locals: {proof_status: proof_attempt.proof_status}
-        %td= render partial: 'shared/state_tag', locals: {resource: proof_attempt}
+%div
+  - if collection.empty?
+    = t('theorems.show.proof_attemps_empty')
+  - else
+    %table
+      %thead
+        %tr
+          %th= t('proof_attempts.index.number')
+          %th= t('proof_attempts.index.date')
+          %th= t('proof_attempts.index.time_taken')
+          %th= t('proof_attempts.index.prover')
+          %th= t('proof_attempts.index.status')
+          %th= t('state')
+      - collection.latest.each do |proof_attempt|
+        %tr
+          %td= link_to proof_attempt.number, proof_attempt.locid
+          %td
+            = link_to proof_attempt.locid do
+              %span.timestamp= proof_attempt.created_at
+          %td= t('proof_attempts.result.time_taken.text', time_taken: proof_attempt.time_taken)
+          %td= used_or_configured_prover(proof_attempt)
+          %td= render partial: 'theorems/proof_status', locals: {proof_status: proof_attempt.proof_status}
+          %td= render partial: 'shared/state_tag', locals: {resource: proof_attempt}
