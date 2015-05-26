@@ -80,6 +80,22 @@ describe OntologyVersion do
       end
     end
 
+    context 'with url-catalog' do
+      let(:repository) { ontology.repository }
+      let!(:url_maps) { [1,2].map { create :url_map, repository: repository } }
+
+      before do
+        ontology_version
+        Worker.drain
+      end
+
+      it 'have sent a request with url-catalog' do
+        expect(WebMock).
+          to have_requested(:get,
+            /http:\/\/localhost:8000\/dg\/.*\?.*url-catalog=#{url_maps.join(',')}.*/)
+      end
+    end
+
     context 'on sidekiq shutdown' do
       before do
         allow(Hets).to receive(:parse_via_api).and_raise(Sidekiq::Shutdown)

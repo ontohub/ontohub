@@ -13,7 +13,8 @@ namespace :test do
   HETS_API_OPTIONS = '/auto'
   HETS_BASE_IRI = 'http://localhost:8000'
   HETS_PATH = `which hets`.strip
-  HETS_SERVER_ARGS = YAML.load(File.open('config/hets.yml'))['server_options']
+  HETS_SERVER_ARGS =
+    YAML.load(File.open('config/hets.yml'))['hets']['server_options']
 
   def all_files_beneath(dir)
     globbed_files = Dir.glob(File.join(dir, '**/*'))
