@@ -7,7 +7,7 @@ class CommitReference
   end
 
   def commit_oid
-    commit.commit_oid
+    commit.try(:commit_oid)
   end
 
   def commit
