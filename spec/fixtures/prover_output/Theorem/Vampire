@@ -1,0 +1,42 @@
+Calculus      : VampireResCalc
+Spent time    : CPU time        = 00:00:00.370999999999
+                Wall clock time = 00:00:00.370999999999
+Prover output :
+Refutation found. Thanks to Tanya!
+=========== Refutation ==========
+*********** [1, input] ***********
+~(! X0)X0=X0
+*********** [1->2, ENNF transformation] ***********
+~(! X0)X0=X0
+-----------------------------
+(? X0)X0!=X0
+*********** [2->3, skolemization] ***********
+(? X0)X0!=X0
+-----------------------------
+$s0!=$s0
+*********** [3->4, cnf transformation] ***********
+$s0!=$s0
+-----------------------------
+$s0!=$s0
+*********** [4->5, repeated literal deletion] ***********
+$s0!=$s0
+-----------------------------
+#
+======= End of refutation =======
+=========== Statistics ==========
+version: 7.45 Civatateo (v7.44 + more ASSERT's in LPO + several bug
+fixes in LPO)
+=== General:
+time: 0s
+memory: 18.4Mb
+termination reason: refutation found
+=== Generated clauses:
+total: 2
+=== Retained clauses:
+total: 1
+selected: 0
+currently_active: 0
+currently_passive: 0
+======= End of statistics =======
+FINAL WATCH: 0.0 CPU 0.0 WC
+---------------------------------------------------------------------------

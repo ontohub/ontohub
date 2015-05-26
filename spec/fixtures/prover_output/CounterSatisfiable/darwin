@@ -1,0 +1,36 @@
+Darwin 1.4.4
+
+Finite Domain: setting initial domain size to 1.
+Finite Domain: using non-ground splitting in preprocessing.
+
+Parsing /tmp/user/_ax212062.tptp ...
+Calling /usr/bin/eprover for clausification ...
+
+
+
+Proving  ...
+
+SZS status CounterSatisfiable for /tmp/user/_ax212062.tptp
+
+Statistics:
+Close                                   :        0
+Assert                                  :        4
+Split                                   :        0
+Resolve                                 :        1
+Subsume                                 :        4
+Compact                                 :        0
+Productivity Filtered                   :        0
+Assert Candidates                       :        4
+Split Candidates                        :        2
+Jumps                                   :        0
+Debug                                   :        0
+Global Debug                            :        0
+Global Debug2                           :        0
+Maximum Context Size                    :        4
+Incomplete Branches                     :        0
+Restarts                                :        0
+Bound                                   :        1
+Lemmas                                  :        0
+
+CPU  Time (s)                           :      0.0
+Memory    (MB)                          :        2

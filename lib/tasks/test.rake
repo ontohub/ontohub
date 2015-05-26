@@ -68,6 +68,18 @@ namespace :test do
     end
   end
 
+  def prover_output_target_file(node, prover)
+    filepath = "spec/fixtures/prover_output/generated/#{node}/#{prover}"
+    FileUtils.mkdir_p(File.dirname(filepath))
+    File.open(filepath, 'w')
+  end
+
+  def write_prover_output_fixture(node, prover, response_hash)
+    file = prover_output_target_file(node, prover)
+    file.write(response_hash.first['goals'].first['prover_output'])
+    file.close
+  end
+
   def http_request_with_get(uri, _header, _data)
     Net::HTTP.get_response(uri)
   end
@@ -112,6 +124,22 @@ namespace :test do
     call_hets(file, subdir, 'prove', method: :post, header: header, data: data)
   end
 
+  def call_hets_prover_output(file, subdir, nodes)
+    header = {'Content-Type' => 'application/json'}
+    data_template = {format: 'json', include: 'true'}
+    provers = %w(SPASS darwin darwin-non-fd eprover)
+    nodes.each do |node|
+      provers.each do |prover|
+        data = data_template.merge({prover: prover, node: node})
+        response = call_hets(file, subdir, 'prove',
+                        method: :post, header: header, data: data)
+        json = JSON.parse(response.read_body)
+        write_prover_output_fixture(node, prover, json)
+        response
+      end
+    end
+  end
+
   def freshen_ontology_fixtures
     on_outdated_cassettes(ontology_files, 'dg') do |file, subdir|
       call_hets_dg(file, subdir)
@@ -127,6 +155,12 @@ namespace :test do
   def freshen_proof_fixtures
     on_outdated_cassettes(prove_files, 'prove') do |file, subdir|
       call_hets_prove(file, subdir)
+    end
+  end
+
+  def freshen_prover_output_fixtures
+    on_outdated_cassettes(prove_files, 'prover_output') do |file, subdir|
+      call_hets_prover_output(file, subdir, %w(CounterSatisfiable Theorem))
     end
   end
 
@@ -184,12 +218,14 @@ namespace :test do
     outdated_exist = outdated_cassettes(ontology_files, 'dg').any?
     outdated_exist ||= outdated_cassettes(ontology_files, 'provers').any?
     outdated_exist ||= outdated_cassettes(prove_files, 'prove').any?
+    outdated_exist ||= outdated_cassettes(prove_files, 'prover_output').any?
     if outdated_exist
       setup_vcr
       with_running_hets do
         freshen_ontology_fixtures
         freshen_provers_fixtures
         freshen_proof_fixtures
+        freshen_prover_output_fixtures
       end
     end
   end
@@ -221,5 +257,13 @@ namespace :test do
   desc 'Enable coverage report (only useful as prerequisite of other tasks)'
   task :enable_coverage do
     ENV['COVERAGE'] = 'true'
+  end
+
+  desc 'Update all prover output fixtures'
+  task :freshen_prover_output_fixtures do
+    if outdated_cassettes(prove_files, 'prover_output').any?
+      setup_vcr
+      with_running_hets { freshen_prover_output_fixtures }
+    end
   end
 end

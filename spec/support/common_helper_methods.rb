@@ -10,6 +10,18 @@ def fixture_file(path)
   fixture_path.join(path)
 end
 
+def prover_output_fixture(node, prover)
+  generated = fixture_file('').join('prover_output', 'generated', node, prover)
+  if File.exist?(generated)
+    generated
+  else
+    $stderr.
+      puts("Generated prover output fixture for #{node}, #{prover} not found.")
+    $stderr.puts 'Using (possibly outdated) fallback.'
+    fixture_file('').join('prover_output', node, prover)
+  end
+end
+
 def ontology_file(path, ext=nil)
   portion =
     if ext

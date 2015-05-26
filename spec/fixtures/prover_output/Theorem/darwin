@@ -1,0 +1,11 @@
+Darwin 1.4.4
+
+Finite Domain: setting initial domain size to 1.
+Finite Domain: using non-ground splitting in preprocessing.
+
+Parsing /tmp/user/_ax112062.tptp ...
+Calling /usr/bin/eprover for clausification ...
+
+Input contains empty clause.
+
+SZS status Theorem for /tmp/user/_ax112062.tptp
