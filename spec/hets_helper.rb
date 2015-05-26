@@ -1,6 +1,31 @@
 # In this file, 'ontology_fixture' is always the path to the ontology file
 # relative to Rails.root.join('spec/fixtures/ontologies/')
 
+def hets_prove_matcher(request1, request2)
+  uri1 = URI(request1.uri)
+  uri2 = URI(request2.uri)
+
+  regexp_prove_path = %r{^/prove/(?<escaped_iri>[^/]*)(?<end>.*)$}
+  regexp_ontology_path = %r{^/ref/\d+/(?<repo>[^/]+)/(?<ontology>.*)$}
+
+  match1 = uri1.path.match(regexp_prove_path)
+  match2 = uri2.path.match(regexp_prove_path)
+
+  return request1.uri == request2.uri unless match1 && match2
+
+  inner_iri1 = URI.unescape(match1[:escaped_iri])
+  inner_iri2 = URI.unescape(match2[:escaped_iri])
+
+  inner_match1 = URI(inner_iri1).path.match(regexp_ontology_path)
+  inner_match2 = URI(inner_iri2).path.match(regexp_ontology_path)
+
+  return request1.uri == request2.uri unless inner_match1 && inner_match2
+
+  match1[:end] == match2[:end] &&
+  inner_match1[:ontology] == inner_match2[:ontology] &&
+  %i(scheme host port query fragment).all? { |m| uri1.send(m) == uri2.send(m)}
+end
+
 def hets_vcr_file(subdir, ontology_fixture)
   # Replace last occurence of '.' by '_' in the filepath (VCR convention).
   portions = ontology_fixture.split('.')
