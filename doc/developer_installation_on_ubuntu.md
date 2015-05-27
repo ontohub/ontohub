@@ -71,17 +71,11 @@ After this we should create the config directory for postgres:
 
 - `initdb /usr/local/var/postgres -E utf8`
 
-Now when you use `psql` you should be connected to the
-database (`\q` lets you quit).
+Now when you use
+- `sudo su -l postgres`
+- `psql` 
+you should be connected to the database (`\q` lets you quit).
 
-Now we have to create the user to be used by ontohub in development:
-
-- `createuser -d -w -s postgres`
-
-You'll also (probably) need to create the two databases:
-
-- `createdb ontohub_development`
-- `createdb ontohub_test`
 
 ## gems
 
@@ -92,8 +86,16 @@ on the system, so we will have to install one:
 
 - `sudo apt-get install libqtwebkit-dev`
 
+Clone the ontohub sources:
+- `git clone git@github.com:ontohub/ontohub.git`
+Note that you need to get access rights from the Ontohub team first.
+If you do not have access rights, you can create a read-only clone
+(not recommended for developers):
+- `git clone https://github.com/ontohub/ontohub.git`
+
 Now we can actually start installing the necessary gems:
 
+- `cd ontohub`
 - `gem install bundler`
 - `bundle install`
 
