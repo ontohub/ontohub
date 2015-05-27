@@ -1,2 +1,3 @@
 --color
---format documentation
+--require ./spec/support/documentation_progress_formatter.rb
+--format DocumentationProgressFormatter
