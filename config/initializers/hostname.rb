@@ -13,6 +13,12 @@ module Hostname
   def self.port
     Settings.hostname.split(':').last if Settings.hostname
   end
+
+  def self.url_authority(scheme: 'http')
+    port = Ontohub::Application.config.port
+    port = ":#{port}" if port
+    "#{scheme}://#{Ontohub::Application.config.fqdn}#{port}/"
+  end
 end
 
 Ontohub::Application.config.fqdn = Hostname.fqdn
