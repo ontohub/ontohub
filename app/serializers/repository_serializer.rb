@@ -4,7 +4,9 @@ class RepositorySerializer < ApplicationSerializer
     attributes :name
 
     def iri
-      urls.repository_url(object, host: Ontohub::Application.config.fqdn)
+      urls.repository_url(object,
+                          host: Ontohub::Application.config.fqdn,
+                          port: Ontohub::Application.config.port)
     end
   end
 

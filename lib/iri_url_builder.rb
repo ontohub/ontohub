@@ -15,6 +15,7 @@ module IRIUrlBuilder
     def versioned_iri
       paths.ontology_iri_versioned_url(
         host: Ontohub::Application.config.fqdn,
+        port: Ontohub::Application.config.port,
         path: path,
         locid: file,
         reference: ontology_version.number,

@@ -3,7 +3,9 @@ class ActionSerializer < ApplicationSerializer
     attributes :iri
 
     def iri
-      urls.action_iri_url(object, host: Settings.hostname)
+      urls.action_iri_url(object,
+                          host: Settings.hostname,
+                          port: Ontohub::Application.config.port)
     end
   end
 
