@@ -88,10 +88,7 @@ on the system, so we will have to install one:
 
 Clone the ontohub sources:
 - `git clone git@github.com:ontohub/ontohub.git`
-Note that you need to get access rights from the Ontohub team first.
-If you do not have access rights, you can create a read-only clone
-(not recommended for developers):
-- `git clone https://github.com/ontohub/ontohub.git`
+(Side note: if you want to push later on, you need to get access rights from the Ontohub team first.)
 
 Now we can actually start installing the necessary gems:
 
