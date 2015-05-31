@@ -24,6 +24,9 @@ execute_or_die() {
   execute_or_die_unless_match "$cmd" ""
 }
 
+# An empty expression will not be checked. This in fact means, that there is no
+# check for 'empty-output', but seeing as that should probably be never the
+# case it is a good way to combine both execute_or... versions
 execute_or_die_unless_match() {
   cmd="$1"
   expression="$2"
@@ -39,6 +42,9 @@ execute_or_die_unless_match() {
   fi
 }
 
+# Currently the match cannot be a 'normal' regular expression.
+# This however can be changed by adding a 'P' to the switches list for the
+# grep-command.
 check_and_handle_result_text() {
   result="$1"
   expression="$2"
