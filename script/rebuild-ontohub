@@ -58,8 +58,7 @@ abort_cmd() {
   exit 1
 }
 
-abort_unless_invoker_installed
-initialize_new_invoker_instance
+run_invoker="1"
 
 for i in "$@"; do
 case $i in
@@ -69,12 +68,20 @@ case $i in
     -r|--restart)
     RESTART_INVOKER_ONLY=true
     ;;
+    --no-invoker)
+    run_invoker="0"
+    ;;
     *)
     # unknown option
     ;;
   esac
   shift
 done
+
+if [[ "$run_invoker" -eq "1" ]]; then
+  abort_unless_invoker_installed
+  initialize_new_invoker_instance
+fi
 
 if [[ !($RESTART_INVOKER_ONLY) ]]; then
   execute_or_die_unless_match "bundle exec rake elasticsearch:wipe" "Elasticsearch::Transport::Transport::Errors::NotFound"
