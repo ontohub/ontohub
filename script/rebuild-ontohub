@@ -31,6 +31,24 @@ execute_or_die() {
   fi
 }
 
+execute_or_die_unless_match() {
+  cmd="$1"
+  expression="$2"
+  echo ">>> Executing '$cmd'"
+  result="$($cmd 2>&1)"
+  state="$?"
+  if [[ "$state" -ne "0" ]]; then
+    echo "$result" | grep -q "$expression"
+    matchstate="$?"
+    if [[ "$matchstate" -ne "0" ]]; then
+      echo ">>> Failed to execute '$cmd', aborting further commands."
+      exit 1
+    else
+      echo ">>> Failed to execute '$cmd', but ignoring the result."
+    fi
+  fi
+}
+
 abort_unless_invoker_installed
 initialize_new_invoker_instance
 
@@ -50,7 +68,7 @@ case $i in
 done
 
 if [[ !($RESTART_INVOKER_ONLY) ]]; then
-  execute_or_die "bundle exec rake elasticsearch:wipe"
+  execute_or_die_unless_match "bundle exec rake elasticsearch:wipe" "Elasticsearch::Transport::Transport::Errors::NotFound"
   execute_or_die "bundle exec rake db:migrate:clean"
   execute_or_die "redis-cli flushdb"
   execute_or_die "bundle exec rake git:compile_cp_keys"
