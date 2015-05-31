@@ -21,14 +21,7 @@ initialize_new_invoker_instance() {
 
 execute_or_die() {
   cmd="$1"
-  echo ">>> Executing '$cmd'"
-  result="$($cmd 2>&1)"
-  state="$?"
-  if [[ "$state" -ne "0" ]]; then
-    echo "$result"
-    echo ">>> Failed to execute '$cmd', aborting further commands."
-    exit 1
-  fi
+  execute_or_die_unless_match "$cmd" ""
 }
 
 execute_or_die_unless_match() {
@@ -38,15 +31,31 @@ execute_or_die_unless_match() {
   result="$($cmd 2>&1)"
   state="$?"
   if [[ "$state" -ne "0" ]]; then
-    echo "$result" | grep -q "$expression"
-    matchstate="$?"
-    if [[ "$matchstate" -ne "0" ]]; then
-      echo ">>> Failed to execute '$cmd', aborting further commands."
-      exit 1
+    if [[ -n "$expression" ]]; then
+      check_and_handle_result_text "$result" "$expression" "$cmd"
     else
-      echo ">>> Failed to execute '$cmd', but ignoring the result."
+      abort_cmd "$cmd"
     fi
   fi
+}
+
+check_and_handle_result_text() {
+  result="$1"
+  expression="$2"
+  cmd="$3"
+  echo "$result" | grep -q "$expression"
+  matchstate="$?"
+  if [[ "$matchstate" -ne "0" ]]; then
+    abort_cmd "$cmd"
+  else
+    echo ">>> Failed to execute '$cmd', but ignoring the result."
+  fi
+}
+
+abort_cmd() {
+  cmd="$1"
+  echo ">>> Failed to execute '$cmd', aborting further commands."
+  exit 1
 }
 
 abort_unless_invoker_installed
