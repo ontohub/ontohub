@@ -26,7 +26,7 @@ module Hostname
   end
 
   def self.port
-    Settings.hostname.split(':').last if Settings.hostname
+    Settings.hostname.split(':').last if Settings.hostname.include?(':')
   end
 
   def self.url_authority(scheme: 'http')
