@@ -6,7 +6,22 @@ module Hostname
     if hostname == 'localhost' || (hostname && hostname.include?('.'))
       hostname
     else
-      Addrinfo.tcp(Socket.gethostname, 0).getnameinfo.first
+      begin
+        Addrinfo.tcp(Socket.gethostname, 0).getnameinfo.first
+      rescue ::SocketError => e
+        message = <<-MSG.strip_heredoc
+          Could not automatically determine the hostname:
+          #{e.class}: #{e.message}
+
+          Please set the hostname manually in the configuration
+          or consult the documentation of `gethostname`:
+           * http://ruby-doc.org/stdlib/libdoc/socket/rdoc/Socket.html#method-c-gethostname
+           * man gethostname
+           * http://linux.die.net/man/2/gethostname
+        MSG
+        $stderr.puts message
+        exit
+      end
     end
   end
 
