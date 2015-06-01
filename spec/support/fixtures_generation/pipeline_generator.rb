@@ -2,10 +2,11 @@ require_relative 'base_generator.rb'
 
 module FixturesGeneration
   class PipelineGenerator < BaseGenerator
+    RAILS_SERVER_TEST_FQDN = "localhost"
     RAILS_SERVER_TEST_PORT = 3001
     RAILS_SERVER_TEST_PID = Rails.root.join('tmp', 'pids',
                                             'rails-server-test.pid')
-    RAILS_SERVER_HOSTNAME = "localhost:#{RAILS_SERVER_TEST_PORT}"
+    RAILS_SERVER_HOSTNAME = "#{RAILS_SERVER_TEST_FQDN}:#{RAILS_SERVER_TEST_PORT}"
 
     attr_reader :file, :subdir
 

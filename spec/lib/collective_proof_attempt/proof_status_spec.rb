@@ -2,6 +2,7 @@ require 'spec_helper'
 
 describe 'CollectiveProofAttempt - SZS', :http_interaction do
   setup_hets
+  stub_fqdn_and_port_for_pipeline_generator
 
   let(:user) { create :user }
   let(:repository) { create :repository }
