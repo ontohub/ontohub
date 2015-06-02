@@ -40,7 +40,7 @@ describe 'Repository Access' do
     end
 
     context 'after generate_access_token' do
-      let!(:access_token) { ontology_version.generate_access_token }
+      let!(:access_token) { repository.generate_access_token }
 
       it 'should generate a token' do
         expect(repository.access_tokens).not_to be_empty

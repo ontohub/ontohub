@@ -12,6 +12,16 @@ module Repository::Access
     access_tokens.select(&:expired?).map(&:destroy)
   end
 
+  def generate_access_token
+    if is_private
+      access_token = AccessToken.create_for(self)
+      access_tokens << access_token
+      save!
+
+      access_token
+    end
+  end
+
   def is_private
     access.start_with?('private')
   end
