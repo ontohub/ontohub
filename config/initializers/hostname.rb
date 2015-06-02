@@ -32,7 +32,7 @@ module Hostname
   def self.url_authority(scheme: 'http')
     port = Ontohub::Application.config.port
     port = ":#{port}" if port
-    "#{scheme}://#{Ontohub::Application.config.fqdn}#{port}/"
+    "#{scheme}://#{Ontohub::Application.config.fqdn}#{port}"
   end
 end
 
