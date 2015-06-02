@@ -43,6 +43,27 @@ describe Hets::HetsOptions do
     end
   end
 
+  context 'access token' do
+    context 'access token is nil' do
+      let(:access_token_options) { {**options, :'access-token' => nil} }
+      let(:hets_options) { Hets::HetsOptions.new(access_token_options) }
+
+      it 'has no access token key' do
+        expect(hets_options.options.has_key?(:'access-token')).to be(false)
+      end
+    end
+
+    context 'access token exists' do
+      let(:access_token) { create :access_token }
+      let(:access_token_options) { {**options, :'access-token' => access_token} }
+      let(:hets_options) { Hets::HetsOptions.new(access_token_options) }
+
+      it 'has the correct access token' do
+        expect(hets_options.options[:'access-token']).to eq(access_token.to_s)
+      end
+    end
+  end
+
   context 'url-catalog' do
     context 'empty' do
       let(:catalog_options) { {**options, :'url-catalog' => %w()} }
