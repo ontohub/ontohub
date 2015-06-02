@@ -7,6 +7,7 @@ class ScenarioProgressFormatter < Cucumber::Formatter::Progress
   def initialize(runtime, path_or_io, options)
     super(runtime, path_or_io, options)
     @failed_scenario_steps = []
+    @processed_steps = []
   end
 
   def after_feature_element(feature_element)
