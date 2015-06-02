@@ -69,6 +69,7 @@ class ScenarioProgressFormatter < Cucumber::Formatter::Progress
 
   def exception(exception, status)
     return if @hide_this_step
+    return if exception.is_a?(Cucumber::Pending)
     @processed_steps << format_exception(exception, status, EXCEPTION_INDENT)
     @failed = true
   end
