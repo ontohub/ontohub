@@ -173,7 +173,9 @@ describe FilesController do
         it "should show a success message" do
           expect(flash[:success]).not_to be_nil
         end
-        it { should set_the_flash.to(/success/i) }
+        it 'sets the flash' do
+          expect(flash[:success]).to match(/success/i)
+        end
       end
     end
 
