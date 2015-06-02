@@ -246,7 +246,7 @@ module Repository::Git
   end
 
   def generate_iri(basepath)
-    "http://#{Settings.hostname}#{generate_locid(basepath)}"
+    "http://#{Ontohub::Application.config.fqdn}#{generate_locid(basepath)}"
   end
 
   def generate_locid(basepath)

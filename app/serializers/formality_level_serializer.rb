@@ -4,7 +4,9 @@ class FormalityLevelSerializer < ApplicationSerializer
     attributes :name
 
     def iri
-      urls.formality_level_url(object, host: Settings.hostname)
+      urls.license_model_url(object,
+                             host: Ontohub::Application.config.fqdn,
+                             port: Ontohub::Application.config.port)
     end
   end
 

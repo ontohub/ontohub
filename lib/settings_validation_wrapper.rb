@@ -9,7 +9,6 @@ class SettingsValidationWrapper
   NPROC_AVAILABLE = NPROC_PATH.present? && File.executable?(NPROC_PATH)
 
   PRESENCE = %i(yml__name
-                yml__hostname
                 yml__OMS
                 yml__OMS_qualifier
                 yml__action_mailer__delivery_method
@@ -76,7 +75,6 @@ class SettingsValidationWrapper
   FLOAT = %i(yml__hets__version_minimum_version)
 
   STRING = %i(yml__name
-              yml__hostname
               yml__OMS
               yml__OMS_qualifier
               yml__email

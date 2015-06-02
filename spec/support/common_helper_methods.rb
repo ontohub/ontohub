@@ -45,6 +45,16 @@ def version_for_file(repository, path)
   version = repository.save_file path, basename, "#{basename} added", dummy_user
 end
 
+def stub_fqdn_and_port_for_pipeline_generator
+  before do
+    fqdn = FixturesGeneration::PipelineGenerator::RAILS_SERVER_TEST_FQDN
+    port = FixturesGeneration::PipelineGenerator::RAILS_SERVER_TEST_PORT
+
+    allow(Ontohub::Application.config).to receive(:fqdn).and_return(fqdn)
+    allow(Ontohub::Application.config).to receive(:port).and_return(port)
+  end
+end
+
 def schema_for(name)
   "https://masterthesis.rightsrestricted.com/ontohub/#{name}.json"
 end

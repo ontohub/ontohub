@@ -2,7 +2,7 @@
 http_interactions:
 - request:
     method: post
-    uri: http://localhost:8000/prove/http:%2F%2Flocalhost:3001%2Fref%2F1%2Frepository-9%2FSimple_Implications%2F%2FTheorem/auto
+    uri: http://localhost:8000/prove/http:%2F%2Flocalhost:3001%2Fref%2F1%2Frepository-448%2FSimple_Implications%2F%2FTheorem/auto
     body:
       encoding: UTF-8
       string: '{"format":"json","include":"true","prover":"SPASS","theorems":["Ax1"],"node":"Theorem"}'
@@ -25,7 +25,7 @@ http_interactions:
       Transfer-Encoding:
       - chunked
       Date:
-      - Wed, 20 May 2015 07:41:32 GMT
+      - Tue, 02 Jun 2015 06:49:03 GMT
       Server:
       - Warp/3.0.11
       Content-Type:
@@ -53,5 +53,5 @@ http_interactions:
          }]
         }]
     http_version: 
-  recorded_at: Wed, 20 May 2015 07:41:32 GMT
+  recorded_at: Tue, 02 Jun 2015 06:49:03 GMT
 recorded_with: VCR 2.9.3
