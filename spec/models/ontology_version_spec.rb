@@ -37,7 +37,7 @@ describe OntologyVersion do
     context 'in subdirectory' do
       let(:ontology) { create :ontology, basepath: 'subdir/pizza' }
       let(:qualified_locid) do
-        "http://#{Ontohub::Application.config.fqdn}#{ontology_version.locid}"
+        "#{Hostname.url_authority}#{ontology_version.locid}"
       end
 
       before do
