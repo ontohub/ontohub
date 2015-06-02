@@ -22,7 +22,6 @@ describe OopsRequestsController do
         end
 
         it { should respond_with :created }
-        #it { should set_the_flash.to(/Your request is send to OOPS!/i) }
       end
 
       context 'send second request' do
@@ -38,7 +37,6 @@ describe OopsRequestsController do
           end
 
           it { should respond_with :forbidden }
-          #it { should set_the_flash.to(/Already send to OOPS/i) }
         end
 
         context 'when failed' do
