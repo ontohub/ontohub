@@ -47,9 +47,13 @@ module Hets
     end
 
     def prepare_url_catalog
-      @options[:'url-catalog'].try(:compact!)
-      if @options[:'url-catalog'].blank?
-        @options.delete(:'url-catalog')
+      if @options[:'url-catalog'].is_a?(Array)
+        @options[:'url-catalog'].try(:compact!)
+        if @options[:'url-catalog'].blank?
+          @options.delete(:'url-catalog')
+        else
+          @options[:'url-catalog'] = @options[:'url-catalog'].join(',')
+        end
       end
     end
 

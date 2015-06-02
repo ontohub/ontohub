@@ -90,7 +90,7 @@ describe Hets::HetsOptions do
       let(:hets_options) { Hets::HetsOptions.new(catalog_options) }
 
       it "removes the nil value from  :'url-catalog'" do
-        expect(hets_options.options[:'url-catalog']).to eq(%w(a=b c=d))
+        expect(hets_options.options[:'url-catalog']).to eq('a=b,c=d')
       end
     end
 
@@ -99,7 +99,7 @@ describe Hets::HetsOptions do
       let(:hets_options) { Hets::HetsOptions.new(catalog_options) }
 
       it "has the same :'url-catalog'" do
-        expect(hets_options.options[:'url-catalog']).to eq(%w(a=b c=d))
+        expect(hets_options.options[:'url-catalog']).to eq('a=b,c=d')
       end
     end
   end

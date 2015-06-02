@@ -19,7 +19,7 @@ describe 'OntologyVersion - Proving' do
     context 'with url-maps' do
       let!(:url_maps) { [create(:url_map, repository: repository)] }
       it 'have the url-maps as url-catalog parameter' do
-        expect(prove_options.options[:'url-catalog']).to eq(url_maps)
+        expect(prove_options.options[:'url-catalog']).to eq(url_maps.join(','))
       end
     end
 
