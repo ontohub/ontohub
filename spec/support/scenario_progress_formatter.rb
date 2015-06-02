@@ -7,6 +7,7 @@ class ScenarioProgressFormatter < Cucumber::Formatter::Progress
   def initialize(runtime, path_or_io, options)
     super(runtime, path_or_io, options)
     @failed_scenario_steps = []
+    @processed_steps = []
   end
 
   def after_feature_element(feature_element)
@@ -69,6 +70,7 @@ class ScenarioProgressFormatter < Cucumber::Formatter::Progress
 
   def exception(exception, status)
     return if @hide_this_step
+    return if exception.is_a?(Cucumber::Pending)
     @processed_steps << format_exception(exception, status, EXCEPTION_INDENT)
     @failed = true
   end
