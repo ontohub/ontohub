@@ -4,6 +4,10 @@ module Repository::Access
   OPTIONS = %w[public_r public_rw private_r private_rw]
   DEFAULT_OPTION = OPTIONS[0]
 
+  def self.as_read_only(access)
+    access.split('_').first + '_r'
+  end
+
   def destroy_expired_access_tokens
     access_tokens.select(&:expired?).map(&:destroy)
   end
@@ -26,10 +30,6 @@ module Repository::Access
 
   def public_r?
     access == 'public_r'
-  end
-
-  def self.as_read_only(access)
-    access.split('_').first + '_r'
   end
 
   private
