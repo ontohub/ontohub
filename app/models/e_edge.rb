@@ -5,6 +5,6 @@ class EEdge < ActiveRecord::Base
   attr_accessible :parent_id, :child_id
 
   acts_as_edge
-  connects 'EntityGroup'
+  connects 'SymbolGroup'
 
 end

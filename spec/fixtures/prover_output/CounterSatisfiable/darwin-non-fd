@@ -1,0 +1,35 @@
+Darwin 1.4.4
+
+
+Parsing /tmp/user/_ax212062.tptp ...
+Calling /usr/bin/eprover for clausification ...
+
+
+Horn problem: ignoring negative assert candidates.
+
+Proving  ...
+
+SZS status CounterSatisfiable for /tmp/user/_ax212062.tptp
+
+Statistics:
+Close                                   :        0
+Assert                                  :        4
+Split                                   :        0
+Resolve                                 :        3
+Subsume                                 :        5
+Compact                                 :        3
+Productivity Filtered                   :        0
+Assert Candidates                       :       20
+Split Candidates                        :        0
+Jumps                                   :        0
+Debug                                   :        0
+Global Debug                            :        0
+Global Debug2                           :        0
+Maximum Context Size                    :        4
+Incomplete Branches                     :        0
+Restarts                                :        0
+Bound                                   :        2
+Lemmas                                  :        0
+
+CPU  Time (s)                           :      0.0
+Memory    (MB)                          :        0

@@ -104,7 +104,7 @@ Style/ClassAndModuleCamelCase:
 
 Style/ClassAndModuleChildren:
   Description: 'Checks style of children classes and modules.'
-  Enabled: true
+  Enabled: false
 
 Style/ClassCheck:
   Description: 'Enforces consistent use of `Object#is_a?` or `Object#kind_of?`.'
@@ -121,6 +121,13 @@ Style/ClassVars:
 Style/CollectionMethods:
   Description: 'Preferred collection methods.'
   Enabled: true
+  PreferredMethods:
+    collect: 'map'
+    collect!: 'map!'
+    inject: 'reduce'
+    detect: 'find'
+    find_all: 'select'
+
 
 Style/ColonMethodCall:
   Description: 'Do not use :: for method call.'
@@ -202,7 +209,7 @@ Style/EvenOdd:
 
 Style/FileName:
   Description: 'Use snake_case for source file names.'
-  Enabled: true
+  Enabled: false
   Exclude:
     - 'db/**/*'
 
@@ -224,7 +231,7 @@ Style/GlobalVars:
 
 Style/GuardClause:
   Description: 'Check for conditionals that can be replaced with guard clauses'
-  Enabled: true
+  Enabled: false
 
 Style/HashSyntax:
   Description: >-
@@ -262,7 +269,7 @@ Style/IndentHash:
 
 Style/Lambda:
   Description: 'Use the new lambda literal syntax for single-line blocks.'
-  Enabled: true
+  Enabled: false
 
 Style/LambdaCall:
   Description: 'Use lambda.call(...) instead of lambda.(...).'
@@ -388,7 +395,7 @@ Style/Proc:
 
 Style/RaiseArgs:
   Description: 'Checks the arguments passed to raise/fail.'
-  Enabled: true
+  Enabled: false
 
 Style/RedundantBegin:
   Description: "Don't use begin blocks when they are not needed."
@@ -521,6 +528,7 @@ Style/SpaceInsideBrackets:
 Style/SpaceInsideHashLiteralBraces:
   Description: "Use spaces inside hash literal braces - or don't."
   Enabled: true
+  EnforcedStyle: no_space
 
 Style/SpaceInsideParens:
   Description: 'No spaces after ( or before ).'
@@ -545,6 +553,7 @@ Style/TrailingBlankLines:
   Enabled: true
 
 Style/TrailingComma:
+  EnforcedStyleForMultiline: comma
   Description: 'Checks for trailing comma in parameter lists and literals.'
   Enabled: true
 
@@ -805,7 +814,7 @@ Lint/Void:
 
 Rails/ActionFilter:
   Description: 'Enforces consistent use of action filter methods.'
-  Enabled: true
+  Enabled: false
 
 Rails/DefaultScope:
   Description: 'Checks if the argument passed to default_scope is a block.'
@@ -817,7 +826,7 @@ Rails/Delegate:
 
 Rails/HasAndBelongsToMany:
   Description: 'Prefer has_many :through to has_and_belongs_to_many.'
-  Enabled: true
+  Enabled: false
 
 Rails/Output:
   Description: 'Checks for calls to puts, print, etc.'

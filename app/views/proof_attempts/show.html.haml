@@ -1,0 +1,13 @@
+= repository_nav ontology.repository, :ontologies
+
+= ontology_nav ontology, :theorems
+
+%h3
+  = t('proof_attempts.show.headline')
+  = link_to resource.theorem, locid_for(resource.theorem, :proof_attempts)
+  = render partial: 'theorems/proof_status', locals: {proof_status: resource.proof_status}
+
+= render partial: '/shared/state', locals: {resource: resource}
+
+= render partial: 'configuration', locals: {configuration: resource.proof_attempt_configuration}
+= render partial: 'result', locals: {resource: resource}

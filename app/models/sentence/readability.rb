@@ -2,17 +2,18 @@ module Sentence::Readability
   extend ActiveSupport::Concern
 
   def set_display_text!
-    new_text = self.text.dup
+    if text
+      self.display_text = text.dup
 
-    self.entities.each do |entity|
-      unless entity.display_name.nil?
-        new_text.gsub!(entity.iri, entity.display_name)
+      symbols.each do |symbol|
+        if symbol.display_name && symbol.iri
+          display_text.gsub!(symbol.iri, symbol.display_name)
+        end
       end
+
+      display_text.gsub!(/\s+/, ' ')
+
+      save!
     end
-
-    new_text.gsub!(/\s+/, ' ')
-
-    self.display_text = new_text
-    save!
   end
 end

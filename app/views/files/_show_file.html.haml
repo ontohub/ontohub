@@ -37,7 +37,7 @@
     - unless resource.ontologies.empty?
       %h4
         Defining
-        = pluralize resource.ontologies.size, 'ontology'
+        = pluralize resource.ontologies.size, Settings.OMS
       %ul.ontology-list
         - resource.ontologies.each do |ontology|
           %li= fancy_link ontology

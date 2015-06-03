@@ -96,7 +96,7 @@ describe ConcurrencyBalancer do
     it "should still release the lock on internal errors" do
       expect { ConcurrencyBalancer.sequential_lock { raise ArgumentError } }.
         to raise_error(ArgumentError)
-      expect(redis.sismember ConcurrencyBalancer::REDIS_KEY, 'iri').to be_false
+      expect(redis.sismember ConcurrencyBalancer::REDIS_KEY, 'iri').to be(false)
     end
   end
 

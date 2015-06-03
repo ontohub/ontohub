@@ -1,8 +1,8 @@
 require 'spec_helper'
 
 describe 'Repository saving (worker job count)' do
-  let(:user)        { FactoryGirl.create :user }
-  let(:repository)  { FactoryGirl.create :repository, user: user }
+  let(:user)        { create :user }
+  let(:repository)  { create :repository, user: user }
 
   let(:files) do {
       'inroot1.clif' => "(In1 Root)\n",

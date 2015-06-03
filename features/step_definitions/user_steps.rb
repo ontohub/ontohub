@@ -57,3 +57,47 @@ Then(/^I should be logged in\.$/) do
   page.should have_content(@user.name)
   page.should have_content("Signed in successfully")
 end
+
+Given(/^that I am really logged in$/) do
+  steps %Q{
+  Given I am a registered and confirmed user.
+  And I visit the landing page.
+  When I fill in the login form.
+  And click on the sign in button.
+  Then I should be logged in.
+  }
+end
+
+Given(/^I visit the Account page$/) do
+  visit root_path
+  click_on 'Account'
+end
+
+Given(/^there is no existing API\-Key$/) do
+  expect { find('form#new_api_key input#api_key_key') }.
+    to raise_error(Capybara::ElementNotFound)
+end
+
+When(/^I click on the generate button$/) do
+  find('form#new_api_key input[name=commit]').click
+end
+
+Then(/^I should see an API\-Key$/) do
+  expect(find('form#new_api_key input#api_key_key').value).
+    to eq(@user.api_keys.valid.first.key)
+end
+
+Given(/^I have an API-Key$/) do
+  @api_key = ApiKey.create_new_key!(@user)
+end
+
+Then(/^I should see the existing API\-Key$/) do
+  expect(find('form#new_api_key input#api_key_key').value).
+    to eq(@api_key.key)
+end
+
+Then(/^I should see the new API\-Key$/) do
+  key = find('form#new_api_key input#api_key_key').value
+  expect(key).to eq(@user.api_keys.valid.first.key)
+  expect(key).to_not eq(@api_key.key)
+end

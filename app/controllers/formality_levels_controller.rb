@@ -1,12 +1,15 @@
 class FormalityLevelsController < InheritedResources::Base
   belongs_to :ontology, optional: true
   before_filter :check_read_permissions
+
+  respond_to :html
+
   load_and_authorize_resource
 
   def create
     create! do |success, failure|
       if parent
-        parent.formality_levels << resource
+        parent.formality_level = resource
         parent.save
       end
       success.html { redirect_to [*resource_chain, :formality_levels] }

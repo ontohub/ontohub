@@ -2,13 +2,16 @@
 # See https://github.com/svenfuchs/rails-i18n/tree/master/rails%2Flocale for starting points.
 
 en:
+  successful_api_key_generation: API-Key was successfully generated
+  api_key_headline: API-Key
+  generate_initial_api_key: Generate initial API-Key
+  generate_api_key: Generate new API-Key
   admin_deletion_error_message: |
     You probably shouldn't remove this account, as deleting
     it would leave the system with too few admins.
     The threshold level is: %{minimal_count}.
-  in_process_ontologies: "Ontologies with pending work:"
-  ontology_versions_status: "In-Process Ontology-Version found:"
   wait: 'Please wait …'
+  state: 'Evaluation State'
   relation_list:
     team_user:
       placeholder: Add users to your team
@@ -20,15 +23,15 @@ en:
       placeholder: 'Add a support'
       help: Enter at least three characters to search for a support
   search:
-    help: "Enter all words that must be included in the entities. You can search a special kind by adding a 'kind:<value>'"
+    help: "Enter all words that must be included in the symbols. You can search a special kind by adding a 'kind:<value>'"
   support:
-    placeholder: 
+    placeholder:
       language: Support an new logic
       logic: Support an new language
-    help: 
+    help:
       language: Enter characters to search for a logic
       logic: Enter characters to search for a language
-  Link: Ontology-Link
+  Mapping: Ontology-Mapping
   LogicMapping: Logic-Mapping
   repositories:
     index:
@@ -36,6 +39,17 @@ en:
       clone_list_link: repository clone-urls
   repository:
     delete: Delete Repository
+    delete_error: "Can't delete repository: It contains %{oms} that is imported by another repository."
+    deleted: Deleted
+    deleting_at: 'This repository will be deleted irreversibly '
+    undelete:
+      headline: Undelete Repository
+      description:
+        If you undelete this repository, it will be accessible again with the same permissions as before the deletion.
+      button: Undelete Repository
+    undestroy:
+      success: Successfully undeleted the Repository.
+      failure: Cannot undelete the Repository - It has already been completely removed.
     errors: Errors
     permissions: Permissions
     edit: Edit repository
@@ -47,6 +61,31 @@ en:
         private_rw: Private readable and writable
         public_r: Public readable
         public_rw: Public readable and writable
+    remote_type:
+      text: A mirror will be synchronized periodically. A fork is just a one-time copy.
+    un_mirror:
+      label: Un-mirror
+      text: If you un-mirror this repository, it won't get synchronized with the remote reposoitory any more. There is no possibility to synchronize it ever again.
+  repository_directory:
+    create: Successfully created directory "%{name}".
+    create_additional: "That is, the following directories have been created: %{directories}"
+    form:
+      submit: Create subdirectory
+      placeholder:
+        name: Directory name
+      hint:
+        slashes: Use slashes to directly create subdirectories.
+  ontology:
+    deleted:
+      label: File deleted
+      info: The defining file %{path} of this %{oms} was deleted. However, you can check the
+      last_file_version: last version of that file
+    delete: Delete
+    delete_error: Can't delete an %{oms} that's imported by another one.
+    delete_confirm:
+      text: "Really delete the ontology %{name}?\n\nThe %{parent_text}%{children_text}defining file %{path} will be deleted as well."
+      parent: 'parent ontology including its children and the '
+      children: 'subontologies and the '
   permission:
     delete_header: Are you sure you want to delete the permission?
     delete_desc: If you remove this %{role} permission, %{subject} won't be able to access the %{class} %{item} according to it.
@@ -57,6 +96,12 @@ en:
         it would leave the %{item} with too few owners.
         The threshold level is: %{minimal_count}.
   files:
+    delete:
+      button_text: Delete File
+      header_text: Are you sure about deleting the file?
+      body_text:
+        If you delete the file %{path}, only the file is deleted from the repository.
+        The containing ontologies will still be accessible, but the file cannot be referenced any more from other ontology files.
     discard: Discard
     discard_confirmation: You made changes to the code. Are you sure you want to discard them?
     discard_desc: |
@@ -64,19 +109,108 @@ en:
 
       This action is irreversible!
   sentences:
-    index:
-      display_only_self_defined_sentences:
-        Currently we display only self-defined sentences.
-      to_display_only_self_defined_sentences:
-        to display only the self-defined sentences.
-      display_all_sentences:
-        Currently we display all sentences, self-defined and imported
-        ones.
-      to_display_all_sentences:
-        to display all related sentences (including translations/blendoids).
     sentence:
       defined_in:
         defined in %{link}
+  axioms:
+    index:
+      display_only_self_defined_axioms:
+        Currently we display only self-defined axioms.
+      to_display_only_self_defined_axioms:
+        to display only the self-defined axioms.
+      display_all_axioms:
+        Currently we display all axioms, self-defined and imported
+        ones.
+      to_display_all_axioms:
+        to display all related axioms (including translations/blendoids).
+  theorems:
+    index:
+      prove: Prove all theorems
+      name: Name
+      text: Text
+      proof_status: Proof Status
+    show:
+      prove: Prove this theorem
+      proof_attemps_empty: There are no proof attempts.
+  proofs:
+    new:
+      title: 'Attempt to prove  %{klass} %{resource}'
+      send: 'Prove'
+      klass:
+        theorem: 'theorem'
+        ontology_version: 'ontology'
+      provers:
+        label: Provers
+        none_is_default: Selecting none will result in using the default prover.
+        select_all: Select all
+        select_none: Select none
+      axioms:
+        none_is_default: Selecting none will result in using all axioms.
+        select_all: Select all
+        select_none: Select none
+      timeout:
+        label: Timeout
+        hint: The timeout will be split evenly across the proof obligations.
+        default: Default (10 seconds)
+        day: day
+        hour: hour
+        minute: minute
+        second: second
+    create:
+      starting_jobs: Proving jobs have been scheduled. Please come back in a few moments.
+      invalid_resource: Invalid proving request.
+  proof_attempts:
+    index:
+      number: Number
+      date: Date
+      time_taken: Time taken
+      prover: Prover
+      status: Proof Status
+    show:
+      headline: Proof Attempt of
+      no_sentences: None
+    configuration:
+      headline: Configuration
+      timeout:
+        headline: Timeout
+        text: "%{timeout} seconds"
+      prover:
+        headline: Prover
+      axioms:
+        headline: Selected axioms
+      goals:
+        headline: Selected theorems to prove
+      logic_mapping:
+        headline: Selected logic mapping
+    result:
+      headline: Result
+      time_taken:
+        headline: Time taken
+        text: "%{time_taken} seconds"
+      used_prover:
+        headline: Used prover
+      tactic_script:
+        headline: Tactic script
+      used_axioms:
+        headline: Used axioms
+      used_theorems:
+        headline: Used theorems
+      generated_axioms:
+        headline: Generated axioms used
+      prover_output:
+        headline: Prover output
+        link_text: Show prover output
+    tactic_script:
+      time_limit:
+        text: "Time limit: %{time_limit}"
+      extra_options:
+        headline: "Extra options:"
+  prover_outputs:
+    show:
+      head_html: "Prover Output for %{theorem}'s %{proof_attempt_text}"
+      head_attempt_html: "proof attempt #%{number}"
+      prover: Prover
+      prover_output: Prover Output
   have:
     one: has
     other: have
@@ -85,16 +219,14 @@ en:
     what_happens: |
           For full qualified access to Ontohub you have to confirm your e-mail address.
           We have sent an mail with instructions for you.
-    wiki: | 
+    wiki: |
         You can find more information about Ontohub in the %{link}.
         Moreover, context specific information is available with the "Help" button, leading to a specfic wiki page.
     need_help: Need Help?
   delete_repository: Are you sure about deleting the Repository?
   delete_repository_desc: |
       If you delete this repository, all ontologies, which are related to this repository, will be deleted too.
-                            
       This action is irreversible!
-  discard_changes: Are you sure
   cancel: Cancel
   edit: Edit
   delete: Delete
@@ -111,3 +243,9 @@ en:
     details: Details
     ontology_count_by_state: Ontologies-count by state
     iris_marked_as_processing: Count of iris that are processing
+    overview: Overview
+    other_data: Other data
+  ontologies:
+    download: download
+  oops:
+    responses: We have %{all} Responses, %{global} of them represent global 

@@ -2,6 +2,9 @@ class LicenseModelsController < InheritedResources::Base
 
   belongs_to :ontology, optional: true
   before_filter :check_read_permissions
+
+  respond_to :html
+
   load_and_authorize_resource
 
   def create

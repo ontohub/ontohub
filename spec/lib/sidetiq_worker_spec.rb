@@ -1,8 +1,7 @@
 require 'spec_helper'
 
 describe SidetiqWorker do
-
-  subject!{ create :repository, source_address: 'remote.git', source_type: 'git' }
+  subject! { create :repository_with_empty_remote }
   before{ Worker.clear }
 
   shared_examples 'perform' do |state, minutes, created_jobs_count|
@@ -14,7 +13,9 @@ describe SidetiqWorker do
         )
         SidetiqWorker.new.perform
       end
-      it("should create #{created_jobs_count} jobs"){ assert_equal Worker.jobs.count, created_jobs_count }
+      it("should create #{created_jobs_count} jobs") do
+        expect(created_jobs_count).to eq(Worker.jobs.count)
+      end
     end
   end
 
@@ -25,5 +26,4 @@ describe SidetiqWorker do
   include_examples 'perform', :done,        20, 1
   include_examples 'perform', :failed,     nil, 0
   include_examples 'perform', :failed,      20, 0
-
 end

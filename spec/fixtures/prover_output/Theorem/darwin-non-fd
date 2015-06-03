@@ -1,0 +1,9 @@
+Darwin 1.4.4
+
+
+Parsing /tmp/user/_ax112062.tptp ...
+Calling /usr/bin/eprover for clausification ...
+
+Input contains empty clause.
+
+SZS status Theorem for /tmp/user/_ax112062.tptp

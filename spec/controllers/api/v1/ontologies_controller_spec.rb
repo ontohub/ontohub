@@ -2,45 +2,34 @@ require 'spec_helper'
 
 describe Api::V1::OntologiesController do
 
-  render_views
+  context 'Ontology Instance' do
+    let(:ontology) { create :single_ontology, state: 'done' }
+    let(:repository) { ontology.repository }
 
-  let(:user){ create :user }
-  let!(:ontology){ create :ontology }
+    context 'on GET to show' do
+      context 'with format json', api_specification: true do
+        let(:ontology_schema) { schema_for('ontology') }
 
-  before{ request.env['HTTP_AUTHORIZATION'] = ActionController::HttpAuthentication::Basic.encode_credentials(user.email, user.password) }
+        before do
+          get :show,
+            repository_id: repository.to_param,
+            format:        :json,
+            locid: ontology.locid,
+            id: ontology.to_param
+        end
 
-  context 'index by basepath and repository_id' do
-    before do
-      get :index,
-        format:        :json,
-        repository_id: ontology.repository_id,
-        basepath:      ontology.basepath
-    end
+        it { should respond_with :success }
 
-    it{ should respond_with :success }
-  end
+        it 'respond with json content type' do
+          expect(response.content_type.to_s).to eq('application/json')
+        end
 
-  context 'update' do
-    let(:params){{
-      id:       ontology.id,
-      format:   :json,
-      ontology: {description: 'foobar'}
-    }}
-
-    context 'without permission' do
-      before do
-        put :update, params
-
+        it 'should return a representation that validates against the schema' do
+          VCR.use_cassette 'api/json-schemata/ontology' do
+            expect(response.body).to match_json_schema(ontology_schema)
+          end
+        end
       end
-      it{ should respond_with :forbidden }
-    end
-
-    context 'with permission' do
-      before do
-        create :permission, subject: user, item: ontology.repository
-        put :update, params
-      end
-      it{ should respond_with :no_content }
     end
   end
 end

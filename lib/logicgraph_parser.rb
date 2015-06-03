@@ -52,9 +52,13 @@ module LogicgraphParser
     # Makes a logic mapping singleton for a given key
     def make_mapping(key)
       @mappings[key] ||= begin
-        mapping = LogicMapping.new
-        mapping.iri = "http://purl.net/dol/logic-mapping/" + key
-        mapping.standardization_status = "Unofficial"
+        iri = "http://purl.net/dol/logic-mapping/" + key
+        mapping = LogicMapping.find_by_iri(iri)
+        if mapping.nil?
+          mapping = LogicMapping.new
+          mapping.iri = iri
+          mapping.standardization_status = "Unofficial"
+        end
         mapping
       end
     end
@@ -70,6 +74,7 @@ module LogicgraphParser
           logic.name = key
           logic.standardization_status = "Unofficial"
         end
+        logic.description = nil
         logic
       end
     end
@@ -84,6 +89,7 @@ module LogicgraphParser
           language.iri = iri
           language.name = key
         end
+        language.description = nil
         language
       end
     end
@@ -191,7 +197,7 @@ module LogicgraphParser
         when SOURCE_SUBLOGIC
           @current_axiom = nil
         when TARGET_SUBLOGIC
-          @current_link = nil
+          @current_mapping = nil
         when DESCRIPTION
         when SERIALIZATION
         when PROVER
@@ -204,8 +210,14 @@ module LogicgraphParser
     def characters(text)
       case @path.last
         when DESCRIPTION
-          @current_logic.description = text if @current_logic
-          @current_language.description = text if @current_language
+          if @current_logic
+            @current_logic.description ||= ''
+            @current_logic.description << text
+          end
+          if @current_language
+            @current_language.description ||= ''
+            @current_language.description << text
+          end
       end
     end
 

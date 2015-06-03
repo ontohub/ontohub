@@ -1,0 +1,7 @@
+<% named_nodes.each do |(name, node)| %>
+ontology <%= name %> = <%= "<#{node}>" %>
+<% end %>
+
+ontology <%= combination_name %> =
+  combine <%= named_nodes.map { |(name, _)| name }.join(", ") %>
+end

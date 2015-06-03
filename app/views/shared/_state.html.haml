@@ -1,0 +1,14 @@
+#state_infos
+  %span.ontology-state
+    = state_tag(resource)
+  - if updated_at = resource.updated_at
+    %span.updated-at= raw "(#{timestamp(updated_at)})"
+
+- if resource.state == 'failed' && retriable?(resource) && can?(:write, repository)
+  = link_to 'Retry', retry_resource_chain(resource), method: :post, class: 'btn btn-xs btn-primary', data: {disable_with: t(:wait)}
+- elsif resource.state == 'pending'
+  .pending_message
+    Our servers are currently busy, please come back later.
+
+- if erroneous_with_message?(resource)
+  = format_error_message error_message(resource)

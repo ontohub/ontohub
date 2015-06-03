@@ -2,19 +2,7 @@
 # Add your own tasks in files placed in lib/tasks ending in .rake,
 # for example lib/tasks/capistrano.rake, and they will automatically be available to Rake.
 
-class Rake::Task
-  # methods found on http://blog.jayfields.com/2008/02/rake-task-overwriting.html
-  def overwrite(&block)
-    @actions.clear
-    prerequisites.clear
-    enhance(&block)
-  end
-  def abandon
-    prerequisites.clear
-    @actions.clear
-  end
-end
-
+require File.expand_path('../lib/rake/task.rb', __FILE__)
 require File.expand_path('../config/application', __FILE__)
 
 Ontohub::Application.load_tasks
@@ -28,4 +16,9 @@ Rake::Task['db:test:clone_structure'].prerequisites.delete('db:test:load_structu
 Rake::Task['db:test:clone_structure'].prerequisites << 'db:test:purge'
 
 # Run all test suites per default
-task :default => [:spec, :test]
+Rake::Task['default'].prerequisites.delete('spec')
+Rake::Task['default'].prerequisites.delete('cucumber')
+Rake::Task['default'].enhance([:'test:abort_if_elasticsearch_is_not_running'])
+Rake::Task['default'].enhance([:'test:enable_coverage'])
+Rake::Task['default'].enhance([:'test:freshen_fixtures'])
+task :default => [:spec, :cucumber]

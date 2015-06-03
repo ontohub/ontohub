@@ -17,4 +17,5 @@ describe 'FilesControllerRouting' do
   it { should     route(:post, 'repositories/repopath/files'                ).to(repository_id: 'repopath', controller: :files, action: :create ) }
   it { should     route(:get,  'repositories/repopath/12ab/action'          ).to(repository_id: 'repopath', controller: :files, action: :action, ref: '12ab' ) }
   it { should     route(:get,  'repositories/repopath/12ab/files/some/path' ).to(repository_id: 'repopath', controller: :files, action: :show, ref: '12ab', path: 'some/path' ) }
+  it { should     route(:delete, 'repopath/some/path'                       ).to(repository_id: 'repopath', controller: :files, action: :destroy, path: 'some/path') }
 end

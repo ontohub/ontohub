@@ -4,7 +4,7 @@ module GitRepository::GetDiff
 
   # Represents a added/changed/deleted file
   class FileChange
-    attr_accessor :directory, :name, :status, :delta
+    attr_accessor :directory, :name, :status, :delta, :diff
 
     def initialize(repo, directory, name, delta)
       @repo      = repo
@@ -14,7 +14,6 @@ module GitRepository::GetDiff
       @status    = delta.status
       @binary    = delta.binary
       @diff      = nil
-      @diff_size = delta
     end
 
     %i( added modified deleted renamed ).each do |status|
@@ -25,6 +24,10 @@ module GitRepository::GetDiff
 
     def path
       directory.join(name).to_s
+    end
+
+    def old_path
+      delta.old_file[:path]
     end
 
     def binary?
@@ -46,21 +49,19 @@ module GitRepository::GetDiff
     def editable?
       GitRepository.mime_type_editable?(mime_type)
     end
+  end
 
-    def diff
-      @diff ||= begin
-        patch = delta.diff.patch
-        if patch.size > Settings.max_combined_diff_size
-          :diff_too_large
-        else
-          patch
-        end
-      end
+  def diff(commit_oid = nil, *opts)
+    if rugged_commit = get_commit(commit_oid)
+      patch = GitRepository::History::Commit.new(rugged_commit, *opts).
+        combined_diff.patch
+
+      patch.size > Settings.max_combined_diff_size ? :diff_too_large : patch
     end
   end
 
   # returns a list of files changed by a commit
-  def changed_files(commit_oid=nil)
+  def changed_files(commit_oid = nil)
     rugged_commit = get_commit(commit_oid)
     file_changes = []
     if rugged_commit

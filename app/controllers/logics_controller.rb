@@ -2,10 +2,13 @@
 # Controller for Logics
 #
 class LogicsController < InheritedResources::Base
+  actions :index, :show
+  defaults finder: :find_by_slug!
 
-  respond_to :json, :xml
   has_pagination
   has_scope :search
+
+  respond_to :html
 
   load_and_authorize_resource :except => [:index, :show]
 
@@ -16,11 +19,6 @@ class LogicsController < InheritedResources::Base
         @search = nil if @search.blank?
       end
     end
-  end
-
-  def create
-    @logic.user = current_user
-    super
   end
 
   def show
@@ -59,6 +57,4 @@ class LogicsController < InheritedResources::Base
   def all_logics?
     params[:all].present?
   end
-
-
 end

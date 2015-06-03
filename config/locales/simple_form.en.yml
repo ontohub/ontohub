@@ -2,6 +2,11 @@ en:
   simple_form:
     "yes": 'Yes'
     "no": 'No'
+    options:
+      repository:
+        remote_type:
+          fork: Fork
+          mirror: Mirror
     
     creating: "Creating..."
     updating: 'Updating...'
@@ -30,12 +35,15 @@ en:
       logic:
         extension: File extension
         mimetype: MIME-Type
+      repository:
+        remote_type: Remote Type
     hints:
       ontology_version:
-        source_url: Please enter the URL to import the ontology from.
     placeholders:
       comment:
         text: Write a new comment
       metadatum:
         key: URI
         value: Value
+      repository_directory:
+        name: Directory name

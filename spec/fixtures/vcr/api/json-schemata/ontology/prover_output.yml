@@ -1,0 +1,356 @@
+---
+http_interactions:
+- request:
+    method: get
+    uri: https://masterthesis.rightsrestricted.com/ontohub/prover_output.json
+    body:
+      encoding: US-ASCII
+      string: ''
+    headers:
+      Accept-Encoding:
+      - gzip;q=1.0,deflate;q=0.6,identity;q=0.3
+      Accept:
+      - "*/*"
+      User-Agent:
+      - Ruby
+  response:
+    status:
+      code: 200
+      message: OK
+    headers:
+      Server:
+      - nginx/1.6.2
+      Date:
+      - Sat, 04 Apr 2015 19:37:03 GMT
+      Content-Type:
+      - application/json
+      Content-Length:
+      - '760'
+      Last-Modified:
+      - Wed, 01 Apr 2015 09:31:10 GMT
+      Connection:
+      - keep-alive
+      Etag:
+      - '"551bbade-2f8"'
+      Strict-Transport-Security:
+      - max-age=31536000
+      X-Frame-Options:
+      - DENY
+      Accept-Ranges:
+      - bytes
+    body:
+      encoding: UTF-8
+      string: |
+        {
+          "id": "https://masterthesis.rightsrestricted.com/ontohub/prover_output.json#",
+          "$schema": "http://json-schema.org/draft-04/schema#",
+          "title": "Prover Output",
+          "description": "The prover output for a specific proof attempt",
+          "type": "object",
+          "properties": {
+            "iri": {
+              "description": "The unique identifier for the prover output",
+              "type": "string",
+              "format": "uri"
+            },
+            "prover": {
+              "description": "The name of the prover",
+              "type": "string"
+            },
+            "content": {
+              "description": "The actual prover output",
+              "type": "string"
+            },
+            "proof_attempt": { "$ref": "references.json#/definitions/proof_attempt" }
+          },
+          "required": [
+            "iri",
+            "prover",
+            "content",
+            "proof_attempt"
+          ]
+        }
+    http_version: 
+  recorded_at: Sat, 04 Apr 2015 19:37:03 GMT
+- request:
+    method: get
+    uri: https://masterthesis.rightsrestricted.com/ontohub/references.json
+    body:
+      encoding: US-ASCII
+      string: ''
+    headers:
+      Accept-Encoding:
+      - gzip;q=1.0,deflate;q=0.6,identity;q=0.3
+      Accept:
+      - "*/*"
+      User-Agent:
+      - Ruby
+  response:
+    status:
+      code: 200
+      message: OK
+    headers:
+      Server:
+      - nginx/1.6.2
+      Date:
+      - Sat, 04 Apr 2015 19:37:03 GMT
+      Content-Type:
+      - application/json
+      Content-Length:
+      - '6367'
+      Last-Modified:
+      - Thu, 02 Apr 2015 10:02:57 GMT
+      Connection:
+      - keep-alive
+      Etag:
+      - '"551d13d1-18df"'
+      Strict-Transport-Security:
+      - max-age=31536000
+      X-Frame-Options:
+      - DENY
+      Accept-Ranges:
+      - bytes
+    body:
+      encoding: UTF-8
+      string: |
+        {
+          "id": "https://masterthesis.rightsrestricted.com/ontohub/references.json#",
+          "$schema": "http://json-schema.org/draft-04/schema#",
+          "definitions": {
+            "repository": {
+              "description": "Reference to a repository",
+              "type": "object",
+              "properties": {
+                "name": {
+                  "description": "The name of the repository",
+                  "type": "string"
+                },
+                "iri": {
+                  "description": "The unique identifier of the repository",
+                  "type": "string",
+                  "format": "uri"
+                }
+              }
+            },
+            "logic": {
+              "description": "Reference to a logic",
+              "type": "object",
+              "properties": {
+                "name": {
+                  "description": "The name of the logic",
+                  "type": "string"
+                },
+                "iri": {
+                  "description": "The unique identifier of the logic",
+                  "type": "string",
+                  "format": "uri"
+                }
+              }
+            },
+            "ontology": {
+              "description": "Reference to an ontology",
+              "type": "object",
+              "properties": {
+                "name": {
+                  "description": "The name of the ontology",
+                  "type": "string"
+                },
+                "iri": {
+                  "description": "The unique identifier of the ontology",
+                  "type": "string",
+                  "format": "uri"
+                }
+              }
+            },
+            "license_model": {
+              "description": "Reference to a license model",
+              "type": "object",
+              "properties": {
+                "name": {
+                  "description": "The name of the license model",
+                  "type": "string"
+                },
+                "iri": {
+                  "description": "The unique identifier of the license model",
+                  "type": "string",
+                  "format": "uri"
+                }
+              }
+            },
+            "formality_level": {
+              "description": "Reference to a formality level",
+              "type": "object",
+              "properties": {
+                "name": {
+                  "description": "The name of the formality level",
+                  "type": "string"
+                },
+                "iri": {
+                  "description": "The unique identifier of the formality level",
+                  "type": "string",
+                  "format": "uri"
+                }
+              }
+            },
+            "ontology_type": {
+              "description": "Reference to an ontology type",
+              "type": "object",
+              "properties": {
+                "name": {
+                  "description": "The name of the ontology type",
+                  "type": "string"
+                },
+                "iri": {
+                  "description": "The unique identifier of the ontology type",
+                  "type": "string",
+                  "format": "uri"
+                }
+              }
+            },
+            "ontology_version": {
+              "description": "Reference to an ontology-version",
+              "type": "object",
+              "properties": {
+                "number": {
+                  "description": "The version number of the version of the ontology",
+                  "type": "integer"
+                },
+                "iri": {
+                  "description": "The unique identifier of the ontology-version",
+                  "type": "string",
+                  "format": "uri"
+                }
+              }
+            },
+            "logic_mapping": {
+              "description": "Reference to a mapping between logics",
+              "type": "object",
+              "properties": {
+                "iri": {
+                  "description": "The unique identifier of the logic mapping",
+                  "type": "string",
+                  "format": "uri"
+                }
+              }
+            },
+            "mapping": {
+              "description": "Reference to a mapping",
+              "type": "object",
+              "properties": {
+                "name": {
+                  "description": "The name of the mapping",
+                  "type": "string"
+                },
+                "iri": {
+                  "description": "The unique identifier of the mapping",
+                  "type": "string",
+                  "format": "uri"
+                }
+              }
+            },
+            "sentence": {
+              "description": "Reference to a sentence",
+              "type": "object",
+              "properties": {
+                "name": {
+                  "description": "The name of the sentence",
+                  "type": "string"
+                },
+                "iri": {
+                  "description": "The unique identifier of the sentence",
+                  "type": "string",
+                  "format": "uri"
+                }
+              }
+            },
+            "symbol": {
+              "description": "Reference to a symbol",
+              "type": "object",
+              "properties": {
+                "name": {
+                  "description": "The name of the symbol",
+                  "type": "string"
+                },
+                "iri": {
+                  "description": "The unique identifier of the symbol",
+                  "type": "string",
+                  "format": "uri"
+                }
+              }
+            },
+            "theorem": {
+              "description": "Reference to a theorem",
+              "type": "object",
+              "properties": {
+                "name": {
+                  "description": "The name of the theorem",
+                  "type": "string"
+                },
+                "iri": {
+                  "description": "The unique identifier of the theorem",
+                  "type": "string",
+                  "format": "uri"
+                }
+              }
+            },
+            "proof_attempt": {
+              "description": "Reference to a proof attempt",
+              "type": "object",
+              "properties": {
+                "iri": {
+                  "description": "The unique identifier of the proof attempt",
+                  "type": "string",
+                  "format": "uri"
+                },
+                "number": {
+                  "description": "The number of the proof attempt relative to its theorem",
+                  "type": "integer"
+                }
+              }
+            },
+            "proof_status": {
+              "description": "Reference to a proof status",
+              "type": "object",
+              "properties": {
+                "iri": {
+                  "description": "The unique identifier of the proof status",
+                  "type": "string",
+                  "format": "uri"
+                },
+                "identifier": {
+                  "description": "The identifier of the proof status",
+                  "type": "string"
+                },
+                "name": {
+                  "description": "The name of the proof status (human-readable)",
+                  "type": "string"
+                }
+              }
+            },
+            "prover_output": {
+              "description": "Reference to a prover output",
+              "type": "object",
+              "properties": {
+                "iri": {
+                  "description": "The unique identifier of the prover output",
+                  "type": "string",
+                  "format": "uri"
+                }
+              }
+            },
+            "proof_attempt_configuration": {
+              "description": "Reference to a proof attempt configuration",
+              "type": "object",
+              "properties": {
+                "iri": {
+                  "description": "The unique identifier of the proof attempt configuration",
+                  "type": "string",
+                  "format": "uri"
+                }
+              }
+            }
+          }
+        }
+    http_version: 
+  recorded_at: Sat, 04 Apr 2015 19:37:03 GMT
+recorded_with: VCR 2.9.3

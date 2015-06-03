@@ -19,9 +19,11 @@
       = next_page_tag unless current_page.last?
       = last_page_tag unless current_page.last? || exclude.include?(:last)
     - unless exclude.include?(:per_page)
-      %form
+      %form.row
         %label
-          %select{:name => 'per_page'}
-            - [25, 50, 100, 500].each do |num|
-              %option{:selected => (per_page==num)}= num
-          per page
+          .col-md-6
+            %select{name: 'per_page', class: 'form-control'}
+              - [25, 50, 100, 500].each do |num|
+                %option{:selected => (per_page==num)}= num
+          .col-md-6
+            per page

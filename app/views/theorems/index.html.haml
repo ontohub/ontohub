@@ -1,0 +1,17 @@
+= repository_nav parent.repository, :ontologies
+
+= ontology_nav @ontology, :theorems
+
+- if can? :write, parent.repository
+  = link_to t('theorems.index.prove'), [*resource_chain, :proofs, :new], class: 'btn btn-primary'
+
+= pagination do
+  %table.sentences
+    %thead
+      %tr
+        %th= t('theorems.index.name')
+        %th= t('theorems.index.text')
+        %th= t('theorems.index.proof_status')
+        %th= t('state')
+    %tbody
+      = render partial: 'theorem', collection: collection

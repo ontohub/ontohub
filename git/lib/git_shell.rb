@@ -8,7 +8,8 @@ class GitShell
   def initialize(key_id, command)
     @key_id     = key_id
     @command    = command
-    @repos_path = File.join(Settings.git_home, 'repositories')
+    # Here, Settings has added values from the PathsInitializer
+    @repos_path = Settings.symlink_path
   end
 
   def exec
@@ -51,7 +52,7 @@ for more information about permissions."
   end
 
   def process_cmd
-    repo_full_path = File.join(repos_path, repo_name)
+    repo_full_path = repos_path.join(repo_name)
     cmd = "#{@git_cmd} #{repo_full_path}"
     Rails.logger.info "git-shell: executing git command <#{cmd}> for #{log_username}."
     exec_cmd(cmd)

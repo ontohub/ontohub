@@ -11,12 +11,6 @@ describe OntologyVersion do
 
   let(:user) { create :user }
 
-  context 'Validating OntologyVersion' do
-    %w(http://example.com/ https://example.com/).each do |url|
-      it { should allow_value(url).for :source_url }
-    end
-  end
-
   context 'OntologyVersion' do
     let(:ontology_version) { create :ontology_version }
 
@@ -37,9 +31,31 @@ describe OntologyVersion do
     before do
       # Clear Jobs
       Worker.jobs.clear
+      stub_hets_for('owl/pizza.owl')
+    end
+
+    context 'in subdirectory' do
+      let(:ontology) { create :ontology, basepath: 'subdir/pizza' }
+      let(:qualified_locid) do
+        "#{Hostname.url_authority}#{ontology_version.locid}"
+      end
+
+      before do
+        ontology_version
+        allow_any_instance_of(Hets::ParseCaller).to receive(:call) do |iri, *_args|
+          throw(:iri, iri)
+        end
+      end
+
+      it 'should use the locid-ref for calling the parse-caller' do
+        expect { Worker.drain }.
+          to throw_symbol(:iri, qualified_locid)
+      end
     end
 
     context 'without exception' do
+      let(:commit) { ontology_version.commit }
+
       before do
         # Run Job
         # binding.pry
@@ -51,19 +67,38 @@ describe OntologyVersion do
         expect(ontology.reload.state).to eq('done')
       end
 
-      it 'should have checksum' do
-        checksum_regex = /^[a-z0-9]{40}$/
-        expect(ontology_version.reload.checksum).to match(checksum_regex)
+      it 'should have state_updated_at' do
+        expect(ontology_version.state_updated_at).to_not be(nil)
       end
 
-      it 'should have state_updated_at' do
-        expect(ontology_version.state_updated_at).to_not be_nil
+      it 'should contain a commit' do
+        expect(commit).to_not be(nil)
+      end
+
+      it 'should contain a commit which refers to commit_oid' do
+        expect(commit.commit_oid).to eq(ontology_version.commit_oid)
+      end
+    end
+
+    context 'with url-catalog' do
+      let(:repository) { ontology.repository }
+      let!(:url_maps) { [1,2].map { create :url_map, repository: repository } }
+
+      before do
+        ontology_version
+        Worker.drain
+      end
+
+      it 'have sent a request with url-catalog' do
+        expect(WebMock).
+          to have_requested(:get,
+            /http:\/\/localhost:8000\/dg\/.*\?.*url-catalog=#{url_maps.join(',')}.*/)
       end
     end
 
     context 'on sidekiq shutdown' do
       before do
-        allow(Hets).to receive(:parse).and_raise(Sidekiq::Shutdown)
+        allow(Hets).to receive(:parse_via_api).and_raise(Sidekiq::Shutdown)
         ontology_version
         expect { Worker.drain }.to raise_error(Sidekiq::Shutdown)
       end
@@ -75,7 +110,7 @@ describe OntologyVersion do
 
     context 'on hets error' do
       before do
-        allow(Hets).to receive(:parse).
+        allow(Hets).to receive(:parse_via_api).
           and_raise(Hets::HetsError, "serious error")
         ontology_version
         expect { Worker.drain }.to raise_error(Hets::HetsError)
@@ -91,7 +126,7 @@ describe OntologyVersion do
       let(:ontology_version) { ontology.save_file(ontology_file('owl/pizza.owl'), 'message', user) }
 
       before do
-        allow(Hets).to receive(:parse).
+        allow(Hets).to receive(:parse_via_api).
           and_raise(Hets::HetsError, "first error")
         allow_any_instance_of(OntologyVersion).to receive(:after_failed).and_raise('second exception')
         ontology_version

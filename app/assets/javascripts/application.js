@@ -12,6 +12,7 @@
 // ----------------------------------------------
 // Bootstrap
 //= require bootstrap
+//= require bootstrap-select
 
 // ----------------------------------------------
 // Other Plugins

@@ -1,8 +1,78 @@
 require 'spec_helper'
 
 describe Ontology do
-
   let(:user) { create :user }
+  setup_hets
+
+  context 'associations' do
+    %i(language logic ontology_version ontology_type).each do |association|
+      it { should belong_to(association) }
+    end
+
+    %i(versions comments sentences symbols).each do |association|
+      it { should have_many(association) }
+    end
+
+    %i(projects).each do |association|
+      it { should have_and_belong_to_many(association) }
+    end
+  end
+
+  context 'migrations' do
+    it { should have_db_index(:iri).unique(true) }
+    it { should have_db_index(:state) }
+    it { should have_db_index(:language_id) }
+    it { should have_db_index(:logic_id) }
+  end
+
+  context 'attributes' do
+    it { should strip_attribute :name }
+    it { should strip_attribute :iri }
+    it { should_not strip_attribute :description }
+  end
+
+  context 'Validations' do
+    ['http://example.com/', 'https://example.com/', 'file://path/to/file'].
+      each do |val|
+      it { should allow_value(val).for :iri }
+    end
+
+    it { should_not allow_value(nil).for :iri }
+
+    [
+      'http://example.com/',
+      'https://example.com/',
+      'file://path/to/file',
+      '',
+      nil
+    ].each do |val|
+      it { should allow_value(val).for :documentation }
+    end
+
+    it { should_not allow_value('fooo').for :documentation }
+  end
+
+  context 'ontology instance' do
+    let(:ontology) { create :ontology }
+
+    context 'with name' do
+      let(:name) { 'fooo' }
+
+      before { ontology.name = name }
+
+      it 'have to_s' do
+        expect(ontology.to_s).to eq(name)
+      end
+    end
+
+    context 'without name' do
+      before { ontology.name = nil }
+
+      it 'have to_s' do
+        expect(ontology.to_s).to eq(ontology.iri)
+      end
+    end
+  end
 
   context 'when naming an ontology' do
     let(:ontology) { create :ontology }
@@ -16,15 +86,17 @@ describe Ontology do
   context 'when deleting' do
     context 'a general ontology' do
       let(:ontology) { create :ontology }
-      it 'should delete the defining file as well' do
-        file = ontology.path
-        repository = ontology.repository
+      let(:file) { ontology.path }
+      let(:repository) { ontology.repository }
 
+      before do
         repository.git.commit_file(repository.user_info(user), 'file deletion test', file, 'add file')
+      end
 
-        expect(repository.path_exists?(file)).to be_true
+      it 'should delete the defining file as well' do
+        expect(repository.path_exists?(file)).to be(true)
         ontology.destroy_with_parent(user)
-        expect(repository.path_exists?(file)).to be_false
+        expect(repository.path_exists?(file)).to be(false)
       end
 
       it 'should be deleted' do
@@ -37,11 +109,24 @@ describe Ontology do
     context 'a single ontology in a distributed ontology' do
       let(:distributed_ontology) { create :linked_distributed_ontology }
       let(:ontology) { distributed_ontology.children.first }
-      it 'should delete the parent and its child ontologies as well' do
-        params = distributed_ontology.children.map(&:to_param)
-        params << distributed_ontology.to_param
-        ontology.destroy_with_parent(user)
 
+      before do
+        stub = ->(_u, _t, _m, &block) { block.call('0'*40) }
+        allow_any_instance_of(Repository).to receive(:delete_file, &stub)
+      end
+
+      it 'should delete the parent' do
+        param = distributed_ontology.to_param
+
+        ontology.destroy_with_parent(user)
+        expect { Ontology.find(param) }.
+          to raise_error(ActiveRecord::RecordNotFound)
+      end
+
+      it 'should delete all child ontologies as well' do
+        params = distributed_ontology.children.map(&:to_param)
+
+        ontology.destroy_with_parent(user)
         params.each do |param|
           expect { Ontology.find(param) }.to raise_error(ActiveRecord::RecordNotFound)
         end
@@ -49,24 +134,39 @@ describe Ontology do
     end
 
     context 'a distributed ontology' do
-      let (:ontology) { create :distributed_ontology }
+      let (:ontology) { create :linked_distributed_ontology }
+
+      before do
+        stub = ->(_u, _t, _m, &block) { block.call('0'*40) }
+        allow_any_instance_of(Repository).to receive(:delete_file, &stub)
+      end
+
       it 'should delete the child ontologies as well' do
-        params = ontology.children.map(&:to_param)
-        params << ontology.to_param
+        param = ontology.to_param
         ontology.destroy_with_parent(user)
 
-        params.each do |param|
-          expect { Ontology.find(param) }.to raise_error(ActiveRecord::RecordNotFound)
-        end
+        expect { Ontology.find(param) }.to raise_error(ActiveRecord::RecordNotFound)
+      end
+
+      it 'should delete the child ontologies as well' do
+        params = ontology.children.map(&:to_param)
+        ontology.destroy_with_parent(user)
+
+        expect { Ontology.find(params) }.to raise_error(ActiveRecord::RecordNotFound)
       end
     end
 
     context 'an imported ontology' do
       let(:ontology) { create :ontology }
 
+      before do
+        stub = ->(_u, _t, _m, &block) { block.call('0'*40) }
+        allow_any_instance_of(Repository).to receive(:delete_file, &stub)
+      end
+
       it 'should not be allowed' do
         importing = create :ontology
-        create :import_link, target: importing, source: ontology
+        create :import_mapping, target: importing, source: ontology
         expect { ontology.destroy_with_parent(user) }.to raise_error(Ontology::DeleteError)
       end
     end
@@ -86,7 +186,7 @@ describe Ontology do
     let!(:ontology) { create :ontology }
     let!(:imported_ontology) do
       imported = create :single_ontology
-      create :import_link, target: ontology, source: imported
+      create :import_mapping, target: ontology, source: imported
       imported
     end
 
@@ -98,7 +198,7 @@ describe Ontology do
     context 'which have imports themselves' do
       let!(:imported_imported_ontology) do
         imported = create :single_ontology
-        create :import_link, target: imported_ontology, source: imported
+        create :import_mapping, target: imported_ontology, source: imported
         imported
       end
 
@@ -116,8 +216,13 @@ describe Ontology do
     context 'a distributed ontology' do
       let(:user) { create :user }
       let(:repository) { create :repository, user: user }
+
+      before do
+        stub_hets_for('casl/partial_order.casl')
+      end
+
       it 'should have logic DOL' do
-        path = File.join(Rails.root, 'test', 'fixtures', 'ontologies', 'casl', 'partial_order.casl')
+        path = ontology_file('casl/partial_order')
         version = repository.save_file(
           path,
           'partial_order.casl',
@@ -136,90 +241,92 @@ describe Ontology do
 
     context 'the logically translated ontology' do
 
+      before do
+        stub_hets_for('dol/double_mapped_logic_translated_blendoid.dol')
+      end
       it 'should contain imported sentences' do
         expect(ontology.imported_sentences).to_not be_empty
       end
 
       it 'should contain logic translations' do
-        expect(ontology.contains_logic_translations?).to be_true
+        expect(ontology.contains_logic_translations?).to be(true)
       end
 
       it 'should have an ontology-version' do
-        expect(ontology.ontology_version).to_not be_nil
+        expect(ontology.ontology_version).to_not be(nil)
       end
 
     end
 
   end
 
-  context 'when parsing an ontology which is referenced by another ontology', :needs_hets do
-    let(:repository) { create :repository }
-    let(:presentation) do
-      referenced_ontology = nil
-      ontology = define_ontology('Foo') do
-        this = prefix('ontohub')
-        imports define('Bar', as: :referenced_ontology) do
-          prefix('other_ontohub').class('SomeBar')
-        end
-        this.class('Bar').sub_class_of this.class('Foo')
-      end
-    end
-    let(:referenced_presentation) { presentation.referenced_ontology }
-    let(:version) { version_for_file(repository, presentation.file.path) }
-    let(:ontology) { version.ontology.reload }
+  # context 'when parsing an ontology which is referenced by another ontology', :needs_hets do
+  #   let(:repository) { create :repository }
+  #   let(:presentation) do
+  #     referenced_ontology = nil
+  #     ontology = define_ontology('Foo') do
+  #       this = prefix('ontohub')
+  #       imports define('Bar', as: :referenced_ontology) do
+  #         prefix('other_ontohub').class('SomeBar')
+  #       end
+  #       this.class('Bar').sub_class_of this.class('Foo')
+  #     end
+  #   end
+  #   let(:referenced_presentation) { presentation.referenced_ontology }
+  #   let(:version) { version_for_file(repository, presentation.file.path) }
+  #   let(:ontology) { version.ontology.reload }
 
-    before do
-      ExternalRepository.stub(:download_iri) do |external_iri|
-        absolute_path = external_iri.sub('file://', '')
-        dir = Pathname.new('/tmp/reference_ontologies/').
-          join(ExternalRepository.determine_path(external_iri, :dirpath))
-        ExternalRepository.send(:ensure_path_existence, dir)
-        filepath = dir.join(ExternalRepository.send(:determine_basename, external_iri))
-        FileUtils.cp(absolute_path, filepath)
-        filepath
-      end
-      version
-      ExternalRepository.unstub(:download_iri)
-    end
+  #   before do
+  #     ExternalRepository.stub(:download_iri) do |external_iri|
+  #       absolute_path = external_iri.sub('file://', '')
+  #       dir = Pathname.new('/tmp/reference_ontologies/').
+  #         join(ExternalRepository.determine_path(external_iri, :dirpath))
+  #       ExternalRepository.send(:ensure_path_existence, dir)
+  #       filepath = dir.join(ExternalRepository.send(:determine_basename, external_iri))
+  #       FileUtils.cp(absolute_path, filepath)
+  #       filepath
+  #     end
+  #     version
+  #     ExternalRepository.unstub(:download_iri)
+  #   end
 
-    let(:referenced_ontology) do
-      name = File.basename(referenced_presentation.name, '.owl')
-      Ontology.where("name LIKE '#{name}%'").first!
-    end
+  #   let(:referenced_ontology) do
+  #     name = File.basename(referenced_presentation.name, '.owl')
+  #     Ontology.where("name LIKE '#{name}%'").first!
+  #   end
 
-    it 'should import an ontology with that name' do
-      expect(ontology.direct_imported_ontologies).to include(referenced_ontology)
-    end
+  #   it 'should import an ontology with that name' do
+  #     expect(ontology.direct_imported_ontologies).to include(referenced_ontology)
+  #   end
 
-    it 'should have an ontology-version' do
-      expect(ontology.ontology_version).to_not be_nil
-    end
+  #   it 'should have an ontology-version' do
+  #     expect(ontology.ontology_version).to_not be(nil)
+  #   end
 
-    it 'should have a referenced ontology with an ontology-version' do
-      expect(referenced_ontology.ontology_version).to_not be_nil
-    end
-  end
+  #   it 'should have a referenced ontology with an ontology-version' do
+  #     expect(referenced_ontology.ontology_version).to_not be(nil)
+  #   end
+  # end
 
   context 'Import single Ontology' do
     let(:user) { create :user }
     let(:ontology) { create :single_ontology }
 
     before do
-      parse_this(user, ontology, fixture_file('test1.xml'),
-                 fixture_file('test1.pp.xml'))
+      parse_ontology(user, ontology, 'casl/test1.casl')
     end
 
     it 'should save the logic' do
       expect(ontology.logic.try(:name)).to eq('CASL')
     end
 
-    context 'entity count' do
+    context 'symbol count' do
       it 'should be correct' do
-        expect(ontology.entities.count).to eq(2)
+        expect(ontology.symbols.count).to eq(2)
       end
 
       it 'should be reflected in the corresponding field' do
-        expect(ontology.entities_count).to eq(ontology.entities.count)
+        expect(ontology.symbols_count).to eq(ontology.symbols.count)
       end
     end
 
@@ -232,6 +339,26 @@ describe Ontology do
         expect(ontology.sentences_count).to eq(ontology.sentences.count)
       end
     end
+
+    context 'axioms count' do
+      it 'should be correct' do
+        expect(ontology.axioms.count).to eq(1)
+      end
+
+      it 'should be reflected in the corresponding field' do
+        expect(ontology.axioms_count).to eq(ontology.axioms.count)
+      end
+    end
+
+    context 'theorems count' do
+      it 'should be correct' do
+        expect(ontology.theorems.count).to eq(0)
+      end
+
+      it 'should be reflected in the corresponding field' do
+        expect(ontology.theorems_count).to eq(ontology.theorems.count)
+      end
+    end
   end
 
   context 'Import distributed Ontology' do
@@ -239,8 +366,7 @@ describe Ontology do
     let(:ontology) { create :distributed_ontology }
 
     before do
-      parse_this(user, ontology, fixture_file('test2.xml'),
-                 fixture_file('test2.pp.xml'))
+      parse_ontology(user, ontology, 'casl/test2.casl')
     end
 
     it 'should create all single ontologies' do
@@ -251,16 +377,16 @@ describe Ontology do
       expect(ontology.children.count).to eq(4)
     end
 
-    it 'should have the correct link count' do
-      expect(ontology.links.count).to eq(3)
+    it 'should have the correct mapping count' do
+      expect(ontology.mappings.count).to eq(3)
     end
 
     it 'should have the DOL-logic assigned to the logic-field' do
       expect(ontology.logic.try(:name)).to eq('DOL')
     end
 
-    it 'should have no entities' do
-      expect(ontology.entities.count).to eq(0)
+    it 'should have no symbols' do
+      expect(ontology.symbols.count).to eq(0)
     end
 
     it 'should have no sentences' do
@@ -270,8 +396,8 @@ describe Ontology do
     context 'first child ontology' do
       let(:child) { ontology.children.where(name: 'sp__E1').first }
 
-      it 'should have entities' do
-        expect(child.entities.count).to eq(2)
+      it 'should have symbols' do
+        expect(child.symbols.count).to eq(2)
       end
 
       it 'should have one sentence' do
@@ -295,21 +421,19 @@ describe Ontology do
     let(:combined) { ontology.children.where(name: 'VAlignedOntology').first }
 
     before do
-      parse_this(user, ontology, fixture_file('align.xml'),
-                 fixture_file('align.pp.xml'))
+      parse_ontology(user, ontology, 'dol/align.dol')
     end
 
     it 'should create single ontologies' do
-      assert_equal 4, SingleOntology.count
       expect(SingleOntology.count).to eq(4)
     end
 
     it 'should create a combined ontology' do
-      expect(combined).to_not be_nil
+      expect(combined).to_not be(nil)
     end
 
     context 'kinds' do
-      let(:kinds) { combined.entities.map(&:kind) }
+      let(:kinds) { combined.symbols.map(&:kind) }
 
       it 'should be assigned to symbols of the combined ontology' do
         expect(kinds).to_not include('Undefined')
@@ -326,29 +450,205 @@ describe Ontology do
     before do
       # Stub ontology_end because this is always run after the iri
       # has been locked by the ConcurrencyBalancer.
-      allow_any_instance_of(Hets::NodeEvaluator).
+      allow_any_instance_of(Hets::DG::NodeEvaluator).
         to receive(:ontology_end).and_raise(error_text)
     end
 
     it 'should propagate the error' do
-      expect { parse_this(user, ontology, fixture_file('test1.xml'),
-                 fixture_file('test1.pp.xml')) }.
+      expect { parse_ontology(user, ontology, 'casl/test1.casl') }.
         to raise_error(Exception, error_text)
     end
 
     it 'should be possible to parse it again (no AlreadyProcessingError)' do
       begin
-        parse_this(user, ontology, fixture_file('test1.xml'),
-                 fixture_file('test1.pp.xml'))
+        parse_ontology(user, ontology, 'casl/test1.casl')
       rescue Exception => e
-        allow_any_instance_of(Hets::NodeEvaluator).
+        allow_any_instance_of(Hets::DG::NodeEvaluator).
           to receive(:ontology_end).and_call_original
 
-        expect { parse_this(user, ontology, fixture_file('test1.xml'),
-                 fixture_file('test1.pp.xml')) }.
+        expect { parse_ontology(user, ontology, 'casl/test1.casl') }.
           not_to raise_error
       end
     end
   end
 
+  context 'Import Ontology with a theorem' do
+    let(:user) { create :user }
+    let(:ontology) { create :distributed_ontology }
+    let(:child_with_theorem) do
+      ontology.children.where(name: 'strict_partial_order').first
+    end
+
+    before do
+      parse_ontology(user, ontology, 'casl/partial_order.casl')
+    end
+
+    context 'theorem count' do
+      it 'should be correct' do
+        expect(child_with_theorem.theorems.count).to eq(1)
+      end
+
+      it 'should be reflected in the corresponding field' do
+        expect(child_with_theorem.theorems_count).
+          to eq(child_with_theorem.theorems.count)
+      end
+    end
+  end
+
+  context 'Import Ontology with extension mappings' do
+    let(:user) { create :user }
+    let(:ontology) { create :distributed_ontology }
+    let(:children_with_theorems) do
+      [ontology.children.where(name: 'my_ont').first,
+        ontology.children.where(name: 'Scenario').first]
+    end
+
+    before do
+      parse_ontology(user, ontology, 'dol/CompetencyQuestion.dol')
+    end
+
+    context 'theorems count' do
+      it 'should be correct' do
+        children_with_theorems.each do |child|
+          expect(child.theorems.count).to eq(1)
+        end
+      end
+
+      it 'should be reflected in the corresponding field' do
+        children_with_theorems.each do |child|
+          expect(child.theorems_count).to eq(child.theorems.count)
+        end
+      end
+    end
+  end
+
+  context 'checking ordering of Ontology list' do
+    before do
+      Ontology::States::STATES.each do |state|
+        create :ontology, state: state
+      end
+    end
+    let(:ontology_list) { Ontology.list }
+    let(:done_state) { 'done' }
+
+    it 'list done ontologies first' do
+      expect(ontology_list.first.state).to eq(done_state)
+    end
+  end
+
+  context 'determining active version of ontology' do
+    context 'with only one version' do
+      let(:ontology_one_version) do
+        create(:ontology_version).ontology
+      end
+      it 'be equal to current version' do
+        expect(ontology_one_version.active_version).
+          to eq(ontology_one_version.ontology_version)
+      end
+    end
+
+    context 'if current is done' do
+      let(:ontology_two_versions) do
+        create(:ontology_version).ontology
+      end
+      before do
+        create(:ontology_version, ontology: ontology_two_versions)
+      end
+
+      it 'be equal to current version' do
+        expect(ontology_two_versions.active_version).
+          to eq(ontology_two_versions.ontology_version)
+      end
+    end
+
+    context 'if current failed' do
+      let!(:ontology) { create :ontology }
+      let!(:done_version) do
+        create :ontology_version,
+          state: 'done', ontology: ontology
+      end
+      let!(:failed_version) do
+        create(:ontology_version,
+          state: 'failed', ontology: ontology)
+      end
+
+      before do
+        ontology.ontology_version = failed_version
+        ontology.state = 'failed'
+        ontology.save
+      end
+
+      it 'be equal to second to latest version' do
+        expect(ontology.active_version).to eq(done_version)
+      end
+    end
+  end
+
+  context 'correctness of non_current_active_version? question' do
+    let!(:admin) { create(:user, admin: true) }
+    let!(:user) { create(:user) }
+    let!(:owner) { create(:user) }
+    let!(:ontology) { create(:ontology) }
+    let!(:failed_version) do
+      create(:ontology_version,
+        state: 'failed', user: owner, ontology: ontology)
+    end
+
+    let!(:current_ontology) { create(:ontology) }
+    let!(:current_ontology_version) do
+      create(:ontology_version,
+        state: 'done', user: owner, ontology: current_ontology)
+    end
+    before do
+      create(:ontology_version,
+                         state: 'done',
+                         user: owner,
+                         ontology: ontology)
+      ontology.ontology_version = failed_version
+      ontology.state = 'failed'
+      ontology.save
+      current_ontology.ontology_version = current_ontology_version
+      current_ontology.save
+    end
+
+    context 'be true, iff the active version != current one '\
+      'according to user' do
+
+      it 'not the non-current active version' do
+        expect(ontology.non_current_active_version?).to be(false)
+      end
+
+      it 'not the non-current active version for the user' do
+        expect(ontology.non_current_active_version?(user)).to be(false)
+      end
+
+      it 'not the non-current active version for the admin' do
+        expect(ontology.non_current_active_version?(admin)).to be(true)
+      end
+
+      it 'not the non-current active version for the owner' do
+        expect(ontology.non_current_active_version?(owner)).to be(true)
+      end
+    end
+
+    context 'be false, iff the active version == current one '\
+      'according to user' do
+
+      it 'not the non-current active version' do
+        expect(current_ontology.non_current_active_version?).to be(false)
+      end
+
+      it 'not the non-current active version for the user' do
+        expect(current_ontology.non_current_active_version?(user)).to be(false)
+      end
+
+      it 'not the non-current active version for the admin' do
+        expect(current_ontology.non_current_active_version?(admin)).to be(false)
+      end
+
+      it 'not the non-current active version for the owner' do
+        expect(current_ontology.non_current_active_version?(owner)).to be(false)
+      end
+    end
+  end
 end

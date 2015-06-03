@@ -8,11 +8,13 @@ describe Repository do
     let(:repository){ ontology.repository }
 
     before {
-      ontology.versions.first.send :update_state!, :failed
+      ontology.versions.last.send :update_state!, :failed
       Worker.jobs.clear
 
       repository.ontologies.retry_failed
       repository.reload
+
+      ontology.reload
     }
 
     it { Worker.jobs.size.should == 1 }

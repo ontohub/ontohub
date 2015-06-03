@@ -3,9 +3,15 @@ class Sentence < ActiveRecord::Base
   include Readability
 
   belongs_to :ontology
-  has_and_belongs_to_many :entities
+  has_and_belongs_to_many :symbols, class_name: 'OntologyMember::Symbol'
   has_many :translated_sentences, dependent: :destroy
   default_scope where(imported: false)
+
+  attr_accessible :locid
+
+  def self.find_with_locid(locid, _iri = nil)
+    where(locid: locid).first
+  end
 
   def hierarchical_class_names
     match = self.text.match(%r{
@@ -31,4 +37,7 @@ class Sentence < ActiveRecord::Base
     end
   end
 
+  def to_s
+    name
+  end
 end

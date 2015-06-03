@@ -1,16 +1,28 @@
 require 'spec_helper'
 
 describe Repository do
-  let(:user)       { FactoryGirl.create :user }
-  let(:repository) { FactoryGirl.create :repository, user: user }
+  context 'associations' do
+    %i(ontologies permissions).each do |association|
+      it { should have_many(association) }
+    end
+  end
+
+  let(:user)       { create :user }
+  let(:repository) { create :repository, user: user }
 
   context 'a repository with a reserved name should be invalid' do
-    let(:repository_invalid) { FactoryGirl.build :repository, user: user, name: 'repositories' }
-    it { expect(repository_invalid.invalid?).to be_true }
+    let(:repository_invalid) do
+      build :repository, user: user, name: 'repositories'
+    end
+    it 'be invalid' do
+      expect(repository_invalid.invalid?).to be(true)
+    end
 
     context 'error messages' do
       before { repository_invalid.invalid? }
-      it { expect(repository_invalid.errors[:name].any?).to be_true }
+      it 'have errors' do
+        expect(repository_invalid.errors[:name].any?).to be(true)
+      end
     end
   end
 
@@ -21,14 +33,17 @@ describe Repository do
     end
   end
 
-  context 'when deleting a repository' do
+  context 'when deleting a repository', :process_jobs_synchronously do
     let (:ontology) { create :ontology, repository: repository }
 
     context 'with ontologies that import internally' do
       it 'should not raise an error' do
         importing = create :ontology, repository: repository
-        create :link, target: importing, source: ontology, kind: 'import'
-        expect { repository.destroy }.not_to raise_error
+        create :mapping, target: importing, source: ontology, kind: 'import'
+        Sidekiq::Testing.fake! do
+          repository.destroy_asynchronously
+          expect { RepositoryDeletionWorker.drain }.not_to raise_error
+        end
       end
     end
 
@@ -36,8 +51,18 @@ describe Repository do
       it 'should raise an error' do
         repository2 = create :repository
         importing   = create :ontology, repository: repository2
-        create :link, target: importing, source: ontology, kind: 'import'
-        expect { repository.destroy }.to raise_error(Ontology::DeleteError)
+        create :mapping, target: importing, source: ontology, kind: 'import'
+        expect { repository.destroy_asynchronously }.to(
+          raise_error(Repository::DeleteError))
+      end
+    end
+
+    it 'should be removed' do
+      Sidekiq::Testing.fake! do
+        repository.destroy_asynchronously
+        RepositoryDeletionWorker.drain
+        expect { repository.reload }.
+          to raise_error(ActiveRecord::RecordNotFound)
       end
     end
   end
@@ -47,7 +72,7 @@ describe Repository do
       let(:permission) { repository.permissions.first }
 
       it 'permission should not be nil' do
-        expect(permission).not_to be_nil
+        expect(permission).not_to be(nil)
       end
 
       it 'permission should have subject' do
@@ -60,31 +85,37 @@ describe Repository do
     end
 
     context 'made private' do
-      let(:editor) { FactoryGirl.create :user }
-      let(:readers) { [FactoryGirl.create(:user), FactoryGirl.create(:user), FactoryGirl.create(:user)] }
+      let(:editor) { create :user }
+      let(:readers) { [create(:user), create(:user), create(:user)] }
 
       before do
         repository.access = 'private_rw'
         repository.save
 
-        FactoryGirl.create(:permission, subject: editor, role: 'editor', item: repository)
-        readers.each { |r| FactoryGirl.create(:permission, subject: r, role: 'reader', item: repository) }
+        create(:permission, subject: editor, role: 'editor', item: repository)
+        readers.each { |r| create(:permission, subject: r, role: 'reader', item: repository) }
       end
 
       context 'not clear reader premissions when saved, but not set public' do
-        it { expect(repository.permissions.where(role: 'reader').count).to eq(3) }
+        it 'have three readers' do
+          expect(repository.permissions.where(role: 'reader').count).to eq(3)
+        end
 
         context 'change name' do
           before do
             repository.name += "_foo"
             repository.save
           end
-          it { expect(repository.permissions.where(role: 'reader').count). to eq(3) }
+          it 'have three readers' do
+            expect(repository.permissions.where(role: 'reader').count). to eq(3)
+          end
         end
       end
 
       context 'clear reader premissions when set public' do
-        it { expect(repository.permissions.where(role: 'reader').count).to eq(3) }
+        it 'have three readers' do
+          expect(repository.permissions.where(role: 'reader').count).to eq(3)
+        end
 
         context 'change access' do
           before do
@@ -92,7 +123,9 @@ describe Repository do
             repository.save
           end
 
-          it { expect(repository.permissions.where(role: 'reader').count). to eq(0) }
+          it 'have no readers' do
+            expect(repository.permissions.where(role: 'reader').count). to eq(0)
+          end
         end
       end
     end

@@ -5,103 +5,36 @@ class Ontology < ActiveRecord::Base
   include Metadatable
 
   # Ontology Model Includes
-  include Ontology::Import
-  include Ontology::Scopes
-  include Ontology::States
-  include Ontology::Versions
-  include Ontology::Entities
-  include Ontology::Sentences
-  include Ontology::Links
-  include Ontology::Distributed
+  include GraphStructures::SpecificFetchers::Mappings
+  include IRIUrlBuilder::Includeable
+  include Ontology::AssociationsAndAttributes
   include Ontology::Categories
-  include Ontology::Oops
-  include Ontology::Projects
-  include Ontology::Tools
-  include Ontology::Tasks
-  include Ontology::LicenseModels
+  include Ontology::ClassMethodsAndScopes
+  include Ontology::Distributed
   include Ontology::FileExtensions
+  include Ontology::Import
+  include Ontology::Mappings
+  include Ontology::Oops
+  include Ontology::OwlClasses
   include Ontology::Searching
-  include GraphStructures::SpecificFetchers::Links
+  include Ontology::Sentences
+  include Ontology::States
+  include Ontology::Symbols
+  include Ontology::Validations
+  include Ontology::Versions
 
   # Multiple Class Features
   include Aggregatable
 
   class Ontology::DeleteError < StandardError; end
 
-  belongs_to :language
-  belongs_to :logic, counter_cache: true
-  belongs_to :ontology_type
-  belongs_to :repository
-  belongs_to :license_model
-  belongs_to :formality_level
-  belongs_to :task
-
-  has_many :entity_groups
-  has_many :alternative_iris, dependent: :destroy
-  has_many :source_links, class_name: 'Link', foreign_key: 'source_id', dependent: :destroy
-  has_many :target_links, class_name: 'Link', foreign_key: 'target_id', dependent: :destroy
-
-  has_and_belongs_to_many :license_models
-  has_and_belongs_to_many :formality_levels
-
-  attr_accessible :iri, :name, :description, :acronym, :documentation,
-                  :logic_id,
-                  :category_ids,
-                  :acronym,
-                  :file_extension,
-                  :projects,
-                  :present,
-                  :alternative_iris,
-                  :ontology_type_id,
-                  :license_model_ids,
-                  :formality_level_ids,
-                  :task_ids,
-                  :project_ids
-
-  validates_uniqueness_of :iri, :if => :iri_changed?
-  validates_format_of :iri, :with => URI::regexp(Settings.allowed_iri_schemes)
-
-  validates :documentation,
-    allow_blank: true,
-    format: { with: URI::regexp(Settings.allowed_iri_schemes) }
-
-  validates_presence_of :basepath
-
   delegate :permission?, to: :repository
 
   strip_attributes :only => [:name, :iri]
 
-  scope :list, includes(:logic).order('ontologies.state asc, ontologies.entities_count desc')
-
-  scope :with_path, ->(path) do
-    condition = <<-CONDITION
-      ("ontology_versions"."file_extension" = :extname)
-        OR (("ontology_versions"."file_extension" IS NULL)
-          AND ("ontologies"."file_extension" = :extname))
-    CONDITION
-
-    with_basepath(File.basepath(path)).
-      where(condition, extname: File.extname(path)).
-      readonly(false)
+  def repository
+    @repository ||= Repository.find(repository_id)
   end
-
-  scope :with_basepath, ->(path) do
-    join = <<-JOIN
-      LEFT JOIN "ontology_versions"
-      ON "ontologies"."ontology_version_id" = "ontology_versions"."id"
-    JOIN
-
-    condition = <<-CONDITION
-      ("ontology_versions"."basepath" = :path)
-        OR (("ontology_versions"."basepath" IS NULL)
-          AND ("ontologies"."basepath" = :path))
-    CONDITION
-
-    joins(join).where(condition, path: path).readonly(false)
-  end
-
-  scope :parents_first, order('(CASE WHEN ontologies.parent_id IS NULL THEN 1 ELSE 0 END) DESC, ontologies.parent_id asc')
-
 
   def generate_name(name)
     match = name.match(%r{
@@ -126,6 +59,11 @@ class Ontology < ActiveRecord::Base
     child_name.include?("://") ? child_name : "#{iri}?#{child_name}"
   end
 
+  def locid_for_child(child_name)
+    child_name = child_name[1..-2] if child_name[0] == '<'
+    child_name.include?('://') ? child_name : "#{locid}//#{child_name}"
+  end
+
   def is?(logic_name)
     self.logic ? (self.logic.name == logic_name) : false
   end
@@ -134,67 +72,64 @@ class Ontology < ActiveRecord::Base
     self.is?('OWL') || self.is?('OWL2')
   end
 
-  def symbols
-    entities
-  end
-
-  def symbols_count
-    entities_count
-  end
-
   def to_s
     name? ? name : iri
   end
 
-  # Title for links
+  # Title for mappings
   def title
     name? ? iri : nil
   end
 
-  def self.find_with_iri(iri)
-    ontology = self.find_by_iri(iri)
-    if ontology.nil?
-      ontology = AlternativeIri.find_by_iri(iri).try(:ontology)
-    end
-
-    ontology
-  end
-
   def is_imported?
-    import_links.present?
+    import_mappings.present?
   end
 
   def is_imported_from_other_repository?
-    import_links_from_other_repositories.present?
+    import_mappings_from_other_repositories.present?
   end
 
   def imported_by
-    import_links.map(&:source)
+    import_mappings.map(&:source)
   end
 
   def destroy_with_parent(user)
     if parent
-      repository.delete_file(parent.path, user, "Delete ontology #{parent}") do
+      repository.delete_file(parent.path, user,
+        "Delete #{Settings.OMS} #{parent}") do
         parent.destroy
       end
     else
-      repository.delete_file(path, user, "Delete ontology #{self}") do
+      repository.delete_file(path, user,
+        "Delete #{Settings.OMS} #{self}") do
         destroy
       end
     end
   end
 
   def destroy
-    # if repository destroying, then check if imported externally
-    if is_imported? &&
-         (!repository.is_destroying? || is_imported_from_other_repository?)
-      raise Ontology::DeleteError
-    end
+    raise Ontology::DeleteError unless can_be_deleted?
     super
   end
 
+  def can_be_deleted?
+    if repository.is_destroying
+      can_be_deleted_with_whole_repository?
+    else
+      can_be_deleted_alone?
+    end
+  end
+
+  def can_be_deleted_alone?
+    !is_imported?
+  end
+
+  def can_be_deleted_with_whole_repository?
+    !is_imported_from_other_repository?
+  end
+
   def imported_ontologies
-    fetch_links_by_kind(self, 'import')
+    fetch_mappings_by_kind(self, 'import')
   end
 
   def contains_logic_translations?
@@ -203,7 +138,7 @@ class Ontology < ActiveRecord::Base
   end
 
   def direct_imported_ontologies
-    ontology_ids = Link.where(target_id: self, kind: 'import').
+    ontology_ids = Mapping.where(target_id: self, kind: 'import').
       pluck(:source_id)
     Ontology.where(id: ontology_ids)
   end
@@ -217,19 +152,17 @@ class Ontology < ActiveRecord::Base
   # those who are self defined and those which
   # are imported (ImpAxioms)
   def all_sentences
-    Sentence.unscoped.
-      where(ontology_id: self).
-      where('imported = ? OR imported = ?', true, false)
+    Sentence.unscoped.where(ontology_id: self)
+  end
+
+  def all_axioms
+    Axiom.unscoped.where(ontology_id: self)
   end
 
   def imported_sentences
     Sentence.unscoped.
       where(ontology_id: self).
       where('imported = ?', true)
-  end
-
-  def current_version
-    self.versions.current
   end
 
   def basepath
@@ -248,14 +181,45 @@ class Ontology < ActiveRecord::Base
     current_version.present?
   end
 
+  def file_in_repository
+    repository.get_file(path)
+  end
+
+  # Uses where in order to force a Relation as a result
+  def formality_levels
+    FormalityLevel.joins(:ontologies).
+      where(ontologies: {id: self})
+  end
+
+  def versioned_locid
+    current_version.locid
+  end
+
+  # Checks if a file at the given commit (HEAD if nil) doesn't exist.
+  def file_deleted?(commit_oid = nil)
+    !has_file?(commit_oid)
+  end
+
+  # alias_method doesn't work for this one.
+  def has_file?(commit_oid = nil)
+    has_file(commit_oid)
+  end
+
+  def has_file(commit_oid = nil)
+    if repository.is_head?(commit_oid)
+      self[:has_file]
+    else
+      repository.path_exists?(path, commit_oid)
+    end
+  end
+
   protected
 
-  def import_links
-    Link.where(source_id: self.id, kind: "import")
+  def import_mappings
+    Mapping.where(source_id: id, kind: 'import')
   end
 
-  def import_links_from_other_repositories
-    import_links.select { |l| l.target.repository != self.repository }
+  def import_mappings_from_other_repositories
+    import_mappings.select { |l| l.target.repository != repository }
   end
-
 end

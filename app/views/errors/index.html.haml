@@ -4,7 +4,7 @@
 
 - if @orphans.any?
   %h3
-    Orphaned ontologies
+    Orphaned #{Settings.OMS.pluralize}
     .badge= @orphans.count
   %p no version and no parent
   %ul.no-bullet

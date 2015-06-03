@@ -6,47 +6,56 @@
     - if resource.logic
       = link_to resource.logic.to_s, resource.logic
   = resource.acronym
+  - if resource.file_deleted?
+    %small
+      %span.label.label-warning= t 'ontology.deleted.label'
 
 - if resource.ontology_type
   %small
     %p
-      Ontology Type:
+      #{Settings.OMS} Type:
       = fancy_link resource.ontology_type
 
 %small
-  Ontology defined
   - if resource.parent
-    by
-    %span= fancy_link(resource.parent)
-  in the file
-  = fancy_link repository_tree_path(resource.repository, resource.path)
+    %p
+      This #{Settings.OMS} is a child of
+      %span= fancy_link(resource.parent)
+  %p
+    - if resource.has_file?
+      #{Settings.OMS} defined in the file
+      = fancy_link repository_tree_path(resource.repository, resource.path)
+    - else
+      = t 'ontology.deleted.info', path: resource.path, oms: Settings.OMS
+      = raw "#{link_to t('ontology.deleted.last_file_version'), last_file_path(resource)}."
   - if resource.documentation
     See for detailed documentation
     = link_to resource.documentation, resource.documentation
 
 
-%p= link_to resource.iri, download_path(resource) if download_path(resource)
+%p
+  %span.iri-link= link_to locid_for(resource), locid_for(resource)
 %p= resource.description
 
 - if resource.oops_supported?
   = render partial: '/ontologies/oops_state', locals: {resource: resource}
 
 - if resource.non_current_active_version?(current_user)
-  = render partial: '/ontologies/status'
+  = render partial: '/shared/state', locals: {resource: resource}
 
 %nav.nav_tab_level1
   %ul.nav.nav-tabs
-    - @top_level_pages.each do |(page_title, page)|
-      %li{class: page==current_page || in_subcontroller?(page, current_page) ? 'active' : nil}
-        = link_to page_title, [*resource_chain, page]
-  - if %w[entities sentences children].include? controller_name
+    - @top_level_pages.each do |(page_title, page, controller)|
+      %li{class: controller==current_page || in_subcontroller?(controller, current_page) ? 'active' : nil}
+        = link_to page_title, page
+  - if %w(symbols axioms theorems children proof_attempts prover_outputs).include?(controller_name)
     %nav.nav_tab_level2
       %ul.nav.nav-tabs
-        - @entities.each do |entity|
-          %li{:class => (entity.kind == @active_kind ? 'active' : nil)}
-            = link_to repository_ontology_entities_path(*resource_chain, kind: entity.kind) do
-              = entity.count == 1 ? entity.kind : entity.kind.pluralize
-              %span.badge{:style => entity.count == 0 && 'display:none'}= entity.count
+        - @symbols.each do |symbols|
+          %li{:class => (symbols.kind == @active_kind ? 'active' : nil)}
+            = link_to locid_for(resource_chain.last, :symbols, kind: symbols.kind) do
+              = symbols.count == 1 ? symbols.kind : symbols.kind.pluralize
+              %span.badge{:style => symbols.count == 0 && 'display:none'}= symbols.count
         - pages.each do |page, path, count|
           %li{:class => (page==current_page ? 'active' : nil)}
             = link_to path do
@@ -56,6 +65,6 @@
   - if in_metadata?
     %nav.nav_tab_level2
       %ul.nav.nav-tabs
-        - @metadatas.each do |(page_title, page)|
-          %li{class: page[-1]==current_page ? 'active' : nil}
+        - @metadatas.each do |(page_title, page, controller)|
+          %li{class: controller==current_page ? 'active' : nil}
             = link_to page_title, page

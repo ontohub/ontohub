@@ -1,0 +1,76 @@
+---
+http_interactions:
+- request:
+    method: get
+    uri: https://masterthesis.rightsrestricted.com/ontohub/logic.json
+    body:
+      encoding: US-ASCII
+      string: ''
+    headers:
+      Accept-Encoding:
+      - gzip;q=1.0,deflate;q=0.6,identity;q=0.3
+      Accept:
+      - "*/*"
+      User-Agent:
+      - Ruby
+  response:
+    status:
+      code: 200
+      message: OK
+    headers:
+      Server:
+      - nginx/1.6.2
+      Date:
+      - Sat, 04 Apr 2015 19:35:27 GMT
+      Content-Type:
+      - application/json
+      Content-Length:
+      - '812'
+      Last-Modified:
+      - Thu, 26 Mar 2015 10:31:44 GMT
+      Connection:
+      - keep-alive
+      Etag:
+      - '"5513e010-32c"'
+      Strict-Transport-Security:
+      - max-age=31536000
+      X-Frame-Options:
+      - DENY
+      Accept-Ranges:
+      - bytes
+    body:
+      encoding: UTF-8
+      string: |
+        {
+          "id": "https://masterthesis.rightsrestricted.com/ontohub/logic.json#",
+          "$schema": "http://json-schema.org/draft-04/schema#",
+          "title": "Logic",
+          "description": "A logic as registered with Ontohub",
+          "type": "object",
+          "properties": {
+            "iri": {
+              "description": "The unique identifier for the logic",
+              "type": "string",
+              "format": "uri"
+            },
+            "name": {
+              "description": "The name of the logic",
+              "type": "string"
+            },
+            "description": {
+              "description": "Description of the logic",
+              "type": "string"
+            },
+            "standardization_status": {
+              "description": "The standardization status of the logic",
+              "type": "string"
+            },
+            "defined_by": {
+              "description": "The resource which defined the logic",
+              "type": ["string", "null"]
+            }
+          }
+        }
+    http_version: 
+  recorded_at: Sat, 04 Apr 2015 19:35:27 GMT
+recorded_with: VCR 2.9.3

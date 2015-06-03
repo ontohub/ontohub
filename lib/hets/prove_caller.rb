@@ -1,0 +1,27 @@
+module Hets
+  class ProveCaller < ActionCaller
+    CMD = 'prove'
+    METHOD = :post
+    COMMAND_LIST = %w(auto)
+
+    PROVE_OPTIONS = {format: 'json', include: 'true'}
+
+    def call(iri)
+      escaped_iri = Rack::Utils.escape_path(iri)
+      arguments = [escaped_iri, *COMMAND_LIST]
+      api_uri = build_api_uri(CMD, arguments, build_query_string)
+      perform(api_uri, PROVE_OPTIONS.merge(hets_options.options), METHOD)
+    rescue UnfollowableResponseError => error
+      handle_possible_hets_error(error)
+    end
+
+    def build_query_string
+      {}
+    end
+
+    def timeout
+      timeout = hets_options.options['timeout']
+      30.seconds + 2 * timeout.to_i if timeout
+    end
+  end
+end

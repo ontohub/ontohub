@@ -1,15 +1,22 @@
 # This file is copied to spec/ when you run 'rails generate rspec:install'
 ENV["RAILS_ENV"] ||= 'test'
 
-require File.expand_path("../../test/shared_helper", __FILE__)
+require File.expand_path("../../spec/shared_helper", __FILE__)
 
 include SharedHelper
-use_simplecov
+use_simplecov if ENV['COVERAGE']
 
 require File.expand_path("../../config/environment", __FILE__)
+require File.expand_path("../hets_helper", __FILE__)
 require 'rspec/rails'
 require 'rspec/autorun'
 require Rails.root.join('config', 'database_cleaner.rb')
+require 'addressable/template'
+require 'webmock/rspec'
+
+WebMock.disable_net_connect!(allow_localhost: true)
+elasticsearch_port = ENV['ELASTIC_TEST_PORT'].present? ? ENV['ELASTIC_TEST_PORT'] : '9250'
+Elasticsearch::Model.client = Elasticsearch::Client.new host: "localhost:#{elasticsearch_port}"
 
 # Requires supporting ruby files with custom matchers and macros, etc,
 # in spec/support/ and its subdirectories.
@@ -25,55 +32,70 @@ class ActionController::TestRequest
 
 end
 
-def fixture_file(name)
-  ontology_file("xml/#{name}")
+require Rails.root.join('spec', 'support', 'common_helper_methods.rb')
+require Rails.root.join('spec', 'support', 'documentation_progress_formatter.rb')
+
+def stub_cp_keys
+  allow(AuthorizedKeysManager).to receive(:copy_authorized_keys_to_git_home)
 end
 
-def ontology_file(path)
-  Rails.root + "test/fixtures/ontologies/" + path
+def current_full_description
+  RSpec.configuration.current_full_description
 end
 
-def add_fixture_file(repository, relative_file)
-  path = File.join(Rails.root, 'test', 'fixtures', 'ontologies', relative_file)
-  version_for_file(repository, path)
+def current_description
+  RSpec.configuration.current_description
 end
 
-def version_for_file(repository, path)
-  dummy_user = FactoryGirl.create :user
-  basename = File.basename(path)
-  version = repository.save_file path, basename, "#{basename} added", dummy_user
+def current_file_path
+  prefix = 'spec/'
+  full_path = RSpec.configuration.current_file_path
+  full_path.match(/#{prefix}(?<path>.*)\.rb$/)[:path]
 end
 
-# includes the convenience-method `define_ontology('name')`
-include OntologyUnited::Convenience
+# Generate a generic cassette name for any example or context.
+def generate_cassette_name
+  "specs/#{current_file_path}/#{current_full_description}"
+end
 
-def parse_this(user, ontology, xml_path, code_path)
-  opts =
-    if ontology.current_version
-      version = ontology.current_version
-      allow(version).to receive(:xml_path) { xml_path }
-      allow(version).to receive(:code_reference_path) { code_path }
-      {version: version}
-    else
-      {
-        path: xml_path,
-        code_path: code_path
-      }
-    end
-  evaluator = Hets::Evaluator.new(user, ontology, opts)
-  evaluator.import
+# Recording HTTP Requests
+VCR.configure do |c|
+  c.cassette_library_dir = 'spec/fixtures/vcr'
+  c.hook_into :webmock
+  c.ignore_localhost = true
+  c.ignore_request do |request|
+    # ignore elasticsearch requests
+    URI(request.uri).host == 'localhost' &&
+    URI(request.uri).port == elasticsearch_port.to_i
+  end
+  c.register_request_matcher :hets_prove_uri do |request1, request2|
+    hets_prove_matcher(request1, request2)
+  end
 end
 
 RSpec.configure do |config|
+  config.add_setting :current_full_description
+  config.add_setting :current_description
+  config.add_setting :current_file_path
   # ## Mock Framework
   # config.mock_with :mocha
   # config.mock_with :flexmock
   # config.mock_with :rr
   config.mock_with :rspec
 
-  config.before(:each) do
+  config.tty ||= ENV["SPEC_OPTS"].include?('--color') if ENV["SPEC_OPTS"]
+
+  config.before(:suite) do
+    FactoryGirl.create :proof_statuses
+  end
+
+  config.before(:each) do |example|
     redis = WrappingRedis::RedisWrapper.new
     redis.del redis.keys if redis.keys.any?
+    config.current_full_description =
+      example.metadata[:example_group][:full_description]
+    config.current_description = example.description
+    config.current_file_path = example.file_path
   end
 
   config.after(:each) do
@@ -87,11 +109,16 @@ RSpec.configure do |config|
 
   config.include Devise::TestHelpers, type: :controller
 
-  config.treat_symbols_as_metadata_keys_with_true_values = true
+  # The following option is already set in the database_cleaner.rb:
+  # config.treat_symbols_as_metadata_keys_with_true_values = true
 
   # Run specs in random order to surface order dependencies. If you find an
   # order dependency and want to debug it, you can fix the order by providing
   # the seed, which is printed after each run.
   #     --seed 1234
   config.order = "random"
+
+  config.mock_with :rspec do |mocks|
+    mocks.yield_receiver_to_any_instance_implementation_blocks = false
+  end
 end

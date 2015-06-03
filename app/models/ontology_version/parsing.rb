@@ -1,7 +1,6 @@
 module OntologyVersion::Parsing
 
   extend ActiveSupport::Concern
-  include Hets::ErrorHandling
 
   included do
     @queue = 'hets'
@@ -27,24 +26,16 @@ module OntologyVersion::Parsing
   end
 
   def parse(refresh_cache: false, structure_only: self.fast_parse)
-#    do_or_set_failed do
-#      condition = ['checksum = ? and id != ?', self.checksum, self.id]
-#      if OntologyVersion.where(condition).any?
-#        raise Exception.new('Another file with same checksum already exists.')
-#      end
-#    end
-
     update_state! :processing
 
     do_or_set_failed do
-      refresh_checksum! unless checksum?
-
       # run hets if necessary
-      cmd = generate_xml(structure_only: structure_only) if refresh_cache || !xml_file?
+      cmd, input_io = generate_xml(structure_only: structure_only)
       return if cmd == :abort
 
       # Import version
-      self.ontology.import_version self, self.user
+      ontology.import_version(self, self.user, input_io)
+      retrieve_available_provers_for_self_and_children
 
       update_state! :done
     end
@@ -52,16 +43,11 @@ module OntologyVersion::Parsing
 
   # generate XML by passing the raw ontology to Hets
   def generate_xml(structure_only: false)
-    paths = Hets.parse(raw_path!, ontology.repository.url_maps, xml_dir, structure_only: structure_only)
-    path = paths.last
-
-    set_pp_xml_name(paths, perform_save: false)
-    set_xml_name(paths)
-    # move generated file to destination
-    File.rename path, xml_path
-  rescue Hets::ExecutionError => e
-    handle_hets_execution_error(e, self)
-    :abort
+    hets_options =
+      Hets::HetsOptions.new(:'url-catalog' => ontology.repository.url_maps)
+    input_io = Hets.parse_via_api(ontology, hets_options,
+                                  structure_only: structure_only)
+    [:all_is_well, input_io]
   end
 
   def parse_full
@@ -72,17 +58,20 @@ module OntologyVersion::Parsing
     parse(structure_only: true)
   end
 
-  protected
-  def set_pp_xml_name(paths, perform_save: true)
-    if paths.size > 1
-      self.pp_xml_name = File.basename(paths.first)
-      save! if perform_save
+  def retrieve_available_provers_for_self_and_children
+    retrieve_available_provers
+    if ontology.distributed?
+      ontology.children.each do |child|
+        child.versions.find_by_commit_oid(commit_oid).retrieve_available_provers
+      end
     end
   end
 
-  def set_xml_name(paths, perform_save: true)
-    self.xml_name = File.basename(paths.last)
-    save! if perform_save
+  def retrieve_available_provers
+    hets_options =
+      Hets::ProversOptions.new(:'url-catalog' => ontology.repository.url_maps,
+                               ontology: ontology)
+    provers_io = Hets.provers_via_api(ontology, hets_options)
+    Hets::Provers::Importer.new(self, provers_io).import
   end
-
 end

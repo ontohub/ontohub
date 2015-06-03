@@ -1,31 +1,41 @@
-- @page_title = resource
+- @page_title = resource.iri
+
 %h2= link_to resource, resource, 'data-type' => resource_class
+%p= fancy_tag(resource, [:theorem, :local, :proven, :inclusion]) { |a| ' | ' + a}
 
-- if can? :update, resource.class
-  %ul.actions.pull-right
-    %li= link_to 'Edit mapping', edit_resource_path
-    - if can? :delete, resource.class
-      %li= link_to 'Delete mapping', resource, :confirm => 'Are you sure?', :method => :delete
+- if can? :update, Mapping
+  .pull-right
+    .btn-group
+      = link_to 'Edit Metadata', :edit_mapping, class: 'btn btn-default'
+      = link_to 'Update Mapping', :update_version_mapping, class: 'btn btn-default'
+      - if can? :delete, Mapping
+        = link_to 'Delete Mapping', :mapping, confirm: 'Are you sure?', method: :delete, class: 'btn btn-default'
 
-%h5 Maps 
-= fancy_link resource.source 
+%h5 Mappings
+= fancy_link resource.source
 to
 = fancy_link resource.target
 
-%p.definedBy 
-  %h5 Defined by: 
-  = resource.defined_by
-%p.standardStatus 
-  %h5 Standardization-status: 
-  = resource.standardization_status
+- if !resource.symbol_mappings.empty?
+  %h5 Symbols
+  %table
+    %thead
+      %t
+        %th Source
+        %th Target
+    %tbody
+      - resource.symbol_mappings.each do |mapping|
+        %tr
+          %td= mapping.source
+          %td= mapping.target
 
-- if resource.has_attribute? :faithfulness
-  %p.faithfulness
-    %h5 Faithfulness
-    = resource.faithfulness
-- if resource.has_attribute? :theoroidalness
-  %p.theoroidalness
-    %h5 Theoroidalness
-    = resource.theoroidalness
-
-= render :partial => "adjoints"
+%h5 Status
+%p 
+  Proven:  
+  = resource.current_version.proof_status
+%p 
+  Required Consstatus: 
+  = resource.current_version.required_cons_status
+%p 
+  Proven Consstatus: 
+  = resource.current_version.proven_cons_status

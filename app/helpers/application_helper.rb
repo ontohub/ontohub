@@ -11,7 +11,7 @@ module ApplicationHelper
       'shared/user_ontologies'
     elsif params[:action] != 'index'
       false
-    elsif %w[categories logics links ontologies].include? params[:controller]
+    elsif %w(categories logics mappings ontologies).include? params[:controller]
       'shared/user_ontologies' unless in_repository?
     elsif params[:controller] == 'repositories'
       'shared/user_repositories'
@@ -25,7 +25,7 @@ module ApplicationHelper
   end
 
   def in_repository?
-    params[:repository_id] || params[:controller] == 'repositories'
+    params[:repository_id].present? || params[:controller] == 'repositories'
   end
 
   def resource_chain
@@ -76,5 +76,9 @@ module ApplicationHelper
 
   def to_name(sym)
     sym.to_s.gsub('_', ' ')
+  end
+
+  def determine_label_type(state)
+    State::STATE_LABEL[state.to_sym]
   end
 end

@@ -1,10 +1,9 @@
 class Repository < ActiveRecord::Base
-
   include Permissionable
-
   include Repository::Access
+  include Repository::AssociationsAndAttributes
   include Repository::Destroying
-  include Repository::GitRepositories
+  include Repository::Git
   include Repository::Importing
   include Repository::Ontologies
   include Repository::Scopes
@@ -13,16 +12,12 @@ class Repository < ActiveRecord::Base
 
   DEFAULT_CLONE_TYPE = 'git'
 
-  has_many :ontologies, dependent: :destroy
-  has_many :url_maps, dependent: :destroy
+  class Error < ::StandardError; end
+  class DeleteError < Error; end
 
-  attr_accessible :name,
-                  :description,
-                  :source_type,
-                  :source_address,
-                  :access
   attr_accessor :user
 
+  before_validation :set_path
   after_save :clear_readers
 
   scope :latest, order('updated_at DESC')
@@ -35,4 +30,11 @@ class Repository < ActiveRecord::Base
     path
   end
 
+  def blank?
+    !self
+  end
+
+  def set_path
+    self.path ||= name.parameterize if name
+  end
 end

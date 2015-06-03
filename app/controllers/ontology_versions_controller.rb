@@ -6,7 +6,8 @@ class OntologyVersionsController < InheritedResources::Base
   defaults :collection_name => :versions, :finder => :find_by_number!
   actions :index, :show, :new, :create
   belongs_to :ontology
-  respond_to :json, :xml
+
+  respond_to :html
 
   before_filter :check_changeable, only: [:new, :create]
   before_filter :check_read_permissions
@@ -19,12 +20,12 @@ class OntologyVersionsController < InheritedResources::Base
 
         send_file resource.raw_path, filename: File.basename(resource.ontology.path)
       end
-      format.json do
-        render json: resource
-      end
     end
   rescue Errno::ENOENT, NoMethodError => e
-    redirect_to collection_path, flash: { error: "The file was not found: #{e.message}" }
+    redirect_to collection_path,
+    flash: {
+      error: "The file was not found: #{e.message}"
+    }
   end
 
   def create
@@ -38,7 +39,7 @@ class OntologyVersionsController < InheritedResources::Base
   def oops
     resource.build_request.save!
     flash[:notice] = "Your request is send to OOPS!"
-    redirect_to ontology_entities_path(resource.ontology)
+    redirect_to ontology_symbols_path(resource.ontology)
   end
 
 
@@ -46,7 +47,10 @@ class OntologyVersionsController < InheritedResources::Base
 
   def check_changeable
     unless parent.changeable?
-      redirect_to collection_path, flash: { error: 'There are pending ontology versions.' }
+      redirect_to collection_path,
+      flash: {
+        error: "There are pending #{Settings.OMS} versions."
+      }
     end
   end
 

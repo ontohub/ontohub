@@ -11,6 +11,7 @@
 class Logic < ActiveRecord::Base
   include Resourcable
   include Permissionable
+  include Slug
 
   # Multiple Class Features
   include Aggregatable
@@ -31,7 +32,8 @@ class Logic < ActiveRecord::Base
   # * may be the original logician or anyone else
   belongs_to :user
 
-  attr_accessible :name, :iri, :description, :standardization_status, :defined_by, :user
+  attr_accessible :name, :iri
+  attr_accessible :description, :standardization_status, :defined_by, :user
 
   validates_presence_of :name
   validates_uniqueness_of :name, if: :name_changed?
@@ -45,6 +47,9 @@ class Logic < ActiveRecord::Base
   scope :autocomplete_search, ->(query) {
     where("name ILIKE ?", "%" << query << "%")
   }
+
+  slug_base :name
+  slug_condition :iri_changed?
 
   def to_s
     name
@@ -64,4 +69,9 @@ class Logic < ActiveRecord::Base
     LogicMapping.find_all_by_target_id self.id
   end
 
+  def standardization_iri
+    if standardization_status
+      "http://purl.net/dol/1.0/standardization##{standardization_status}"
+    end
+  end
 end

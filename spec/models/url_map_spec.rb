@@ -2,8 +2,8 @@ require 'spec_helper'
 
 describe UrlMap do
 
-  let(:repository) { FactoryGirl.create :repository }
-  let(:url_map)    { FactoryGirl.create :url_map, repository: repository }
+  let(:repository) { create :repository }
+  let(:url_map)    { create :url_map, repository: repository }
 
   subject { url_map }
 
@@ -51,7 +51,7 @@ describe UrlMap do
       describe 'source not unique' do
         it do
           url_map2 = url_map.dup
-          url_map2.errors.should_not be_nil
+          url_map2.errors.should_not be(nil)
         end
       end
     end

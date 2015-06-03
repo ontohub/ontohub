@@ -10,8 +10,7 @@ describe OntologyVersionsController do
     let(:repository) { ontology.repository }
 
     before do
-      parse_this(user, ontology, fixture_file('test2.xml'),
-                 fixture_file('test2.pp.xml'))
+      parse_ontology(user, ontology, 'casl/test2.casl')
     end
 
     context 'on GET to index of a child' do
@@ -40,10 +39,9 @@ describe OntologyVersionsController do
 
       context 'for a single ontology' do
         it 'should assign the right versions' do
-          expect(assigns(:versions)).to_not be_nil
+          expect(assigns(:versions)).to_not be(nil)
         end
       end
     end
   end
-
 end

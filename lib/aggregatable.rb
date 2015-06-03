@@ -19,7 +19,7 @@ module Aggregatable
   end
 
   def aggregate_ontology
-    counts = entities.groups_by_kind.map { |entity| {name: entity.kind, count: entity.count} }
+    counts = symbols.groups_by_kind.map { |symbol| {name: symbol.kind, count: symbol.count} }
     {
       counts: counts
     }

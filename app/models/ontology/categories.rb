@@ -13,15 +13,15 @@ module Ontology::Categories
     # Delete previous set of categories.
     [Category, CEdge].map(&:destroy_all)
 
-    classes = self.entities.select { |e| e.kind == 'Class' }
+    classes = symbols.select { |e| e.kind == 'Class' }
     classes.map! { |c| categorify(c) }
 
     subclasses = self.sentences.select { |e| e.text.include?('SubClassOf')}
     subclasses.each do |s|
       c1, c2 = s.hierarchical_class_names
 
-      e1 = self.entities.where('name = ? OR iri = ?', c1, c1).first
-      e2 = self.entities.where('name = ? OR iri = ?', c2, c2).first
+      e1 = symbols.where('name = ? OR iri = ?', c1, c1).first
+      e2 = symbols.where('name = ? OR iri = ?', c2, c2).first
 
       CEdge.create!(child_id: categorify(e1).id, parent_id: categorify(e2).id)
     end
@@ -30,9 +30,9 @@ module Ontology::Categories
 
   protected
 
-  def categorify(entity)
-    return if entity.kind != 'Class'
-    Category.where(name: entity.display_name || entity.name).
+  def categorify(symbol)
+    return if symbol.kind != 'Class'
+    Category.where(name: symbol.display_name || symbol.name).
       first_or_create!
   end
 

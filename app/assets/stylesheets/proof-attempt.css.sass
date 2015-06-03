@@ -1,0 +1,35 @@
+ul.sentences-list
+  padding-left: 0
+  display: inline
+  list-style: none
+
+  li
+    display: inline
+
+  li:after
+    content: ", "
+
+  li:last-child:after
+    content: ""
+
+.proof-attempt-configuration, .proof-attempt-result
+  > div
+    @extend .col-lg-3
+    @extend .col-md-3
+    @extend .col-sm-4
+    @extend .col-xs-12
+    display: inline
+
+.proof-attempt-result > .tactic-script .panel-body > ul
+  list-style: none
+  padding: 0
+  margin-bottom: 0
+  > li > ul
+    list-style: none
+    padding-left: 2em
+
+.panel-heading-small
+  padding: 5px 7px
+
+.panel-body-small
+  padding: 5px 7px

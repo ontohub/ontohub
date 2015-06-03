@@ -14,8 +14,12 @@ describe LicenseModelsController do
     end
 
     context "show" do
-      before { get :show, id: license_model.id }
-      it { should respond_with :success }
+      context 'requesting standard representation' do
+        before { get :show, id: license_model.to_param }
+
+        it { should respond_with :success }
+        it { should render_template :show }
+      end
     end
 
     context "new" do

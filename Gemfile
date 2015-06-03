@@ -1,6 +1,6 @@
 source 'https://rubygems.org'
 
-gem 'rails', '~> 3.2.19'
+gem 'rails', '~> 3.2.21'
 gem 'rack-protection', '~> 1.5.3'
 gem 'secure_headers', '~> 1.2.0'
 
@@ -31,14 +31,21 @@ group :assets do
   gem 'handlebars_assets', '~> 0.14.1'
   gem 'hamlbars', '~> 2.1.1'
   gem 'underscore-rails', '~> 1.6.0'
+  gem 'bootstrap-select-rails', '~> 1.6.2'
 end
 
 gem 'haml-rails', '~> 0.4'
 
 # Project configuration
-# Version above and including 0.4 requires rails
-# which is a problem in git-hooks
-gem 'rails_config', '~> 0.3.0'
+# Official version above and including 0.4 requires Rails
+# which is a problem in git-hooks.
+# The specified commit is from a fork and allows to overwrite arrays.
+# It has been pull-requested:
+# https://github.com/railsconfig/rails_config/pull/99
+gem 'rails_config', github: 'hnakamur/rails_config', ref: 'overwrite_arrays'
+
+#provides  correct indefinite article 
+gem 'indefinite_article', '~> 0.2.0'
 
 # Fancy Forms
 gem 'simple_form', '~> 2.1.1'
@@ -48,7 +55,10 @@ gem 'inherited_resources', '~> 1.4.0'
 gem 'has_scope', '~> 0.6.0.rc'
 
 # JSON views
-gem 'rabl', '~> 0.10.1'
+gem 'active_model_serializers', '~> 0.9.3'
+
+# JSON Parser
+gem 'json-stream', '~> 0.2.1'
 
 # XML Parser
 gem 'nokogiri', '~> 1.6.3.1'
@@ -75,11 +85,15 @@ gem "rest-client", '~> 1.7.2'
 gem 'sidekiq', '~> 3.2.1'
 gem 'sidetiq', '~> 0.6.1'
 gem 'sidekiq-failures', '~> 0.4.3'
+gem 'sidekiq-status', '~> 0.5.2'
 gem 'sinatra', '~> 1.4.5', require: false, group: [:development, :production]
 
 # Search engine
-gem 'sunspot_rails', :git => 'git://github.com/digineo/sunspot.git'
 gem 'progress_bar', '~> 1.0.2'
+gem 'elasticsearch-model', '~> 0.1.4'
+gem 'elasticsearch-rails', '~> 0.1.4'
+gem 'elasticsearch', '~> 1.0.4'
+gem 'elasticsearch-extensions', '~> 0.0.15'
 
 # Graph visualization
 gem 'ruby-graphviz', "~> 1.0.8"
@@ -92,22 +106,30 @@ gem 'rugged', '0.21.0'
 gem 'codemirror-rails', github: 'llwt/codemirror-rails'
 gem 'js-routes', '~> 0.9.8'
 
+# API
+gem 'specroutes', github: '0robustus1/specroutes'
+
 # Ancestry enabling tree structure in category model
 # gem 'ancestry'
 
 # Use dagnabit to model categories
 gem 'dagnabit', '~> 3.0.1'
 
+# Migrate data in separate tasks
+gem 'data_migrate', '~> 1.2.0'
+
 group :test do
   gem 'mocha', '~> 1.1.0', require: false
   gem 'shoulda', '~> 3.5.0'
   gem "shoulda_routing_macros", "~> 0.1.2"
   gem "factory_girl_rails", '~> 4.4.1'
+  gem 'rspec-activemodel-mocks', '~> 1.0.1'
+  gem 'rspec-its', '~> 1.0.1'
 
   # Required for integration tests
-  gem "capybara", '~> 2.4.1'
-  gem "capybara-webkit", '~> 1.1.0'
-  gem "launchy", '~> 2.4.2'
+  gem 'capybara', '~> 2.4.1'
+  gem 'poltergeist', '~> 1.6.0'
+  gem 'launchy', '~> 2.4.2'
 
   # Recording of HTTP Requests
   gem "vcr", '~> 2.9.2'
@@ -117,16 +139,17 @@ group :test do
   # Code Coverage Analysis
   gem 'simplecov', '~> 0.9.0', require: false
 
+  # So we can validate against json-schemas
+  gem 'json-schema', '~> 2.5.0'
+
   # Writing test ontologies
   gem 'ontology-united', github: '0robustus1/ontology-united'
 end
 
 group :development do
-  # pre-packaged Solr distribution for use in development
-  gem 'sunspot_solr', :git => 'git://github.com/digineo/sunspot.git'
   gem "rails-erd", '~> 1.1.0'
   gem 'quiet_assets', '~> 1.0.3'
-  gem 'invoker', '~> 1.2.0'
+  gem 'invoker', '~> 1.3.2'
 end
 
 group :development, :test do
@@ -134,6 +157,8 @@ group :development, :test do
   gem 'rspec-rails', '~> 2.0'
   gem 'better_errors', '~> 1.1.0'
   gem 'binding_of_caller', '~> 0.7.2'
+  gem 'i18n-tasks', '~> 0.7.6'
+  gem 'pry-byebug', '~> 2.0.0'
 end
 
 group :production do

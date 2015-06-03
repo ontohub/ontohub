@@ -1,9 +1,10 @@
 #
 # Controller for LogicMappings
 #
-class LogicMappingsController < MappingsController
+class LogicMappingsController < GeneralMappingsController
 #  belongs_to :source, :class_name => "Logic"
 #  belongs_to :target, :class_name => "Logic"
+  defaults finder: :find_by_slug!
 
   load_and_authorize_resource :except => [:index, :show]
 

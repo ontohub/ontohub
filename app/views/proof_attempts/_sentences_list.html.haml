@@ -1,0 +1,9 @@
+- if sentences.any?
+  %ul.sentences-list
+    - sentences.each do |sentence|
+      - if sentence.is_a?(GeneratedAxiom)
+        %li= sentence
+      - else
+        %li= link_to sentence, locid_for(sentence)
+- else
+  = t('proof_attempts.show.no_sentences')

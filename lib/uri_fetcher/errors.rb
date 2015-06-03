@@ -3,6 +3,17 @@ module UriFetcher
     class Error < StandardError; end
     class ArgumentError < ::ArgumentError; end
 
+    class UnfollowableResponseError < Error
+      DEFAULT_MSG = "can't follow the response, and response not useable"
+
+      attr_reader :last_response
+
+      def initialize(msg=DEFAULT_MSG, last_response: nil)
+        @last_response = last_response
+        super(msg)
+      end
+    end
+
     class TooManyRedirectionsError < ArgumentError
       DEFAULT_MSG = 'too many HTTP redirects encountered'
 

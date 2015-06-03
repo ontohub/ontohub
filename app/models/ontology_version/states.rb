@@ -1,7 +1,7 @@
 #
 # states:
 # * pending
-# * downloading
+# * fetching
 # * processing
 # * failed
 # * done
@@ -11,7 +11,7 @@ module OntologyVersion::States
 
   include StateUpdater
 
-  TERMINAL_STATES = %w(failed done)
+  TERMINAL_STATES = State::TERMINAL_STATES
 
   included do
     after_save :after_update_state, if: :change_applicable?

@@ -26,7 +26,7 @@ class ExternalRepository
     end
 
     def determine_iri(external_iri)
-      "http://#{Settings.hostname}/#{repository.path}/#{determine_path(external_iri, :fullpath)}"
+      "http://#{Ontohub::Application.config.fqdn}/#{repository.path}/#{determine_path(external_iri, :fullpath)}"
     end
 
     def determine_path(external_iri, symbol)

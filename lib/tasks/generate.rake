@@ -8,30 +8,57 @@ def update_or_create_by_name(klass, h)
   x
 end
 
+def meta_repository
+  Repository.where(name: 'meta').
+    first_or_create!(description: 'Meta ontologies for Ontohub')
+end
+
+def download_from_ontohub_meta(source_file, target_file)
+  meta_repository
+  user = User.where(admin: true).first
+  filepath = "#{Rails.root}/spec/fixtures/seeds/#{target_file}"
+  basename = File.basename(filepath)
+  if ENV['DOWNLOAD_FIXTURES']
+    source_url =
+      "https://ontohub.org/repositories/meta/master/download/#{source_file}"
+    temp_file = Tempfile.new([target_file, File.extname(target_file)]).path
+    if system("wget -O #{temp_file} #{source_url}")
+      filepath = temp_file
+    else
+      puts 'No connection to ontohub.org. Using local file for the current task.'
+    end
+  end
+  version = meta_repository.
+    save_file(filepath, basename, "Add #{basename}.", user, do_not_parse: true)
+  version.parse
+  version.ontology
+end
+
 namespace :generate do
   desc 'Import the categories for the ontologies'
   task :categories => :environment do
-    repository = Repository.where(name: 'meta').first_or_create!(description: 'Meta ontologies for Ontohub')
-    ontology = repository.ontologies.where("name ilike '%Domain Fields Core'").first
+    ontology = meta_repository.ontologies.
+      where("name ilike '%Domain Fields Core'").first
     if ontology
       ontology.create_categories
     else
-      user = User.where(admin: true).first
-      filepath = "#{Rails.root}/test/fixtures/ontologies/categories.owl"
-      system("wget -O #{filepath} https://ontohub.org/repositories/meta/master/download/Domain_Fields_Core.owl")
-      basename = File.basename(filepath)
-      version = repository.save_file(filepath, basename, "#{basename} added", user, do_not_parse: true)
-      version.parse
-      system("rm #{filepath}")
-      ontology = version.ontology
+      ontology = download_from_ontohub_meta(
+        'Domain_Fields_Core.owl', 'categories.owl')
     end
     ontology.create_categories
   end
 
-  desc 'Generate entity trees for ALL OWL ontologies'
+  desc 'Import the proof statuses for theorems'
+  task :proof_statuses => :environment do
+    meta_repository
+    download_from_ontohub_meta('proof_statuses.owl', 'proof_statuses.owl')
+    ProofStatus.refresh_statuses
+  end
+
+  desc 'Generate symbol trees for ALL OWL ontologies'
   task :owl_ontology_class_hierarchies => :environment do
     #cleaning up
-    EntityGroup.destroy_all
+    SymbolGroup.destroy_all
     #generating new
     logics = Logic.where(name: ["OWL2", "OWL"])
     ontologies = Ontology.where(logic_id: logics)
@@ -39,16 +66,17 @@ namespace :generate do
       begin
         TarjanTree.for(ontology)
       rescue ActiveRecord::RecordNotFound => e
-        puts "Could not create entity tree for: #{ontology.name} (#{ontology.id}) caused #{e}"
+        puts "Could not create symbol tree for: #{ontology.name} (#{ontology.id}) caused #{e}"
       end
     end
   end
+  
+  desc 'Generate symbol tree for one specific OWL ontologies'
 
-  desc 'Generate entity tree for one specific OWL ontology'
   task :class_hierachy_for_specific_ontology, [:ontology_id] => :environment do |t,args|
     ontology = Ontology.find!(args.ontology_id)
-    #cleaning up to prevent duplicated entity_groups
-    ontology.entity_groups.destroy_all
+    #cleaning up to prevent duplicated symbol_groups
+    ontology.symbol_groups.destroy_all
     #generating new
     begin
       TarjanTree.for(ontology)

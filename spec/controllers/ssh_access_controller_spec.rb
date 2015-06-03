@@ -5,6 +5,8 @@ describe SSHAccessController do
   let(:repository) { create :repository }
   let(:user) { create :user }
 
+  before { stub_cp_keys }
+
   context 'should return valid response when encountering error' do
     before do
       get :index, repository_id: repository.to_param, key_id: nil, permission: 'write'
@@ -51,7 +53,7 @@ describe SSHAccessController do
   end
 
   context 'should return false-permission on valid request with write to mirror' do
-    let(:repository) { create :repository, source_address: 'http://some_source_address.example.com', source_type: 'git' }
+    let(:repository) { create :repository_with_empty_remote }
     let!(:key) { create :key, user: user }
     before do
       get :index, repository_id: repository.to_param, key_id: key.id.to_s, permission: 'write'

@@ -14,16 +14,11 @@ th.right
 td.left
   text-align: left
 
-div#ontology_infos
-  padding: 0.2em
-  max-width: 620px
-  +background-image(linear-gradient(#FFFFBB, #FFFFEE))
-
 #ontology-state
   span
     font-weight: bold
 
-  &.pending, &.downloading, &.processing
+  &.pending, &.fetching, &.processing
     span
     color: #999
 
@@ -44,3 +39,11 @@ ul.fancy_ontology_list
   list-style: none
   li
     margin: 0.6em 0 0.3em 0
+
+#search_form .col-md-10
+  padding-right: 1px
+  margin-bottom: 10px
+
+#search_form .col-md-2
+  padding-left: 1px
+  margin-bottom: 10px

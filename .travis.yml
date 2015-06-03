@@ -3,6 +3,12 @@ language: ruby
 rvm:
   - 2.1
 
+cache:
+  bundler: true
+
+addons:
+  postgresql: '9.3'
+
 branches:
   except:
     - ontohub.org
@@ -11,9 +17,16 @@ branches:
 
 services:
   - redis-server
+  - elasticsearch
 
 notifications:
   email: false
+  webhooks:
+    urls:
+      - https://webhooks.gitter.im/e/1e9d1f1a0e20c6c7c6ba
+    on_success: always  # options: [always|never|change] default: always
+    on_failure: always  # options: [always|never|change] default: always
+    on_start: true     # default: false
 
 before_install:
   - 'export DISPLAY=:99.0'
@@ -21,8 +34,7 @@ before_install:
   - 'gem install bundler'
 
 script:
-  - bundle exec rake cucumber
-  - bundle exec rake
+  - SPEC_OPTS='--format documentation' CUCUMBER_OPTS='--format pretty' ELASTIC_TEST_PORT=9200 bundle exec rake
 
 before_script:
   - psql -c 'create database ontohub_test;' -U postgres
@@ -33,4 +45,3 @@ before_script:
   - sudo apt-get install libsane libgphoto2-2 hets-core subversion udrawgraph git-svn
   - sudo hets -update
   - RAILS_ENV=test bundle exec rake db:migrate || true
-  - RAILS_ENV=test bundle exec rake sunspot:solr:start

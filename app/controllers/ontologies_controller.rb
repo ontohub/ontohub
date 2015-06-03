@@ -6,19 +6,21 @@ class OntologiesController < InheritedResources::Base
   include FilesHelper
 
   belongs_to :repository, finder: :find_by_path!
-  respond_to :json, :xml
   has_pagination
   has_scope :search, :state
+
   actions :index, :show, :edit, :update, :destroy
 
-  before_filter :check_write_permission, :except => [:index, :show, :oops_state]
-  before_filter :check_read_permissions
+  respond_to :html, except: %i(show)
 
   def index
     if in_repository?
+      @search_response = paginate_for(parent.ontologies)
       @count = end_of_association_chain.total_count
+      @repository_id = parent.id
       render :index_repository
     else
+      @search_response = paginate_for(Ontology.scoped)
       @count = resource_class.count
       render :index_global
     end
@@ -60,21 +62,19 @@ class OntologiesController < InheritedResources::Base
     respond_to do |format|
       format.html do
         if !resource.distributed?
-          redirect_to repository_ontology_entities_path(parent, resource,
-                       :kind => resource.entities.groups_by_kind.first.kind)
+          default_kind = resource.symbols.groups_by_kind.first.kind
+          redirect_to locid_for(resource, :symbols, kind: default_kind)
         else
-          redirect_to repository_ontology_children_path(parent, resource)
+          redirect_to locid_for(resource, :children)
         end
-      end
-      format.json do
-        respond_with resource
       end
     end
   end
 
   def destroy
     if resource.is_imported?
-      flash[:error] = "Can't delete an ontology that is imported by another one."
+      flash[:error] = "Can't delete #{Settings.OMS.with_indefinite_article}
+      that is imported by another one."
       redirect_to resource_chain
     else
       resource.destroy_with_parent(current_user)
@@ -84,7 +84,6 @@ class OntologiesController < InheritedResources::Base
 
   def retry_failed
     scope = end_of_association_chain
-
     if id = params[:id]
       # retry a specific ontology
       scope = scope.where(id: id)
@@ -140,6 +139,4 @@ class OntologiesController < InheritedResources::Base
   def repository
     parent
   end
-
-
 end

@@ -25,7 +25,7 @@ module RepositoriesHelper
     when 'git'
       repository_tree_url(repository, protocol: 'git', port: nil) << '.git'
     when 'ssh-git'
-      "git@#{Settings.hostname}:#{repository.path}.git"
+      "git@#{Ontohub::Application.config.fqdn}:#{repository.path}.git"
     end
   end
 
@@ -44,6 +44,17 @@ module RepositoriesHelper
   end
 
   def repository_modal_body
-    modal_body(t("delete_repository"), t("delete_repository_desc"), (controller_name == "repositories" ? resource : parent), t("repository.delete"))
+    modal_body(t('delete_repository'), t('delete_repository_desc'),
+      reource_repository, t('repository.delete'))
+  end
+
+  def repository_undelete_modal_body
+    modal_body(t('repository.undelete.headline'),
+      t('repository.undelete.description'), [reource_repository, :undestroy],
+      t('repository.undelete.button'), method: :post, btn_class: 'btn-primary')
+  end
+
+  def reource_repository
+    controller_name == 'repositories' ? resource : parent
   end
 end

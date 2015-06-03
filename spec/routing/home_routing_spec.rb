@@ -1,5 +1,5 @@
 require 'spec_helper'
 
 describe HomeController do
-  it { should     route(:get,  '/'  ).to(action: :index) }
+  it { should route(:get, '/').to(controller: :home, action: :index) }
 end

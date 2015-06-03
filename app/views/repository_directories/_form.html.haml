@@ -1,0 +1,5 @@
+= simple_form_for resource, url: repository_repository_directories_path(repository), remote: true, html: {class: 'form-horizontal'}, wrapper: :'directory-create' do |f|
+  = f.hidden_field :target_directory
+  = f.input :name, placeholder: "#{t('repository_directory.form.placeholder.name')} - #{t('repository_directory.form.hint.slashes')}", label: false, input_html: {class: 'input-sm'}
+  .col-lg-3
+    = f.button :submit, t('repository_directory.form.submit'), class: 'btn btn-primary btn-sm'

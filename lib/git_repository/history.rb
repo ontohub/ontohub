@@ -2,15 +2,18 @@ module GitRepository::History
   # depends on GitRepository
   extend ActiveSupport::Concern
 
+  WALK_ORDER = {reverse: Rugged::SORT_REVERSE, topo: Rugged::SORT_TOPO}
+
   class Commit
     attr_reader :rugged_commit, :path, :commits_to_diff
 
     delegate :oid, :message, :committer, :author, to: :rugged_commit
 
     def initialize(commit, commits_to_diff: nil, path: nil)
-      @rugged_commit   = commit
-      @commits_to_diff = commits_to_diff ? commits_to_diff : commit.parents
-      @path            = path
+      @rugged_commit = commit
+      @commits_to_diff =
+        commits_to_diff.present? ? commits_to_diff : commit.parents
+      @path = path
     end
 
     # Diff against _all_ parents
@@ -50,7 +53,7 @@ module GitRepository::History
   #                     :path (file to show changes for)
   #                     :limit (max number of commits)
   #                     :offset (number of commits to skip)
-  #                     :walk_order (Rugged-Walkorder)
+  #                     :walk_order (:reverse, :topo or nil)
   def commits(start_oid: nil, stop_oid: nil, path: nil, limit: nil, offset: 0, walk_order: nil, &block)
     return [] if @repo.empty?
     start_oid ||= head_oid
@@ -58,7 +61,9 @@ module GitRepository::History
     stop_oid = nil if stop_oid =~ /\A0+\z/
 
     walker = Rugged::Walker.new(@repo)
-    walker.sorting(walk_order) if walk_order
+    if rwo = WALK_ORDER[walk_order]
+      walker.sorting(rwo)
+    end
     walker.push(start_oid)
     walker.hide(stop_oid) if stop_oid
 

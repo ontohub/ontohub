@@ -1,15 +1,9 @@
 module Ontology::States
   extend ActiveSupport::Concern
 
-  STATES = %w(pending downloading processing done failed)
+  STATES = State::STATES
 
   included do
-    validates_inclusion_of :state, :in => STATES
-
-    scope :state, ->(*states){
-      where state: states.map(&:to_s)
-    }
-
     STATES.each do |state|
       eval "def #{state}?; state == '#{state}'; end"
     end

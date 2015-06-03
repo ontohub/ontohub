@@ -1,0 +1,1315 @@
+<?xml version="1.0"?>
+
+<!DOCTYPE rdf:RDF [
+    <!ENTITY owl "http://www.w3.org/2002/07/owl#" >
+    <!ENTITY xsd "http://www.w3.org/2001/XMLSchema#" >
+    <!ENTITY owl2xml "http://www.w3.org/2006/12/owl2-xml#" >
+    <!ENTITY rdfs "http://www.w3.org/2000/01/rdf-schema#" >
+    <!ENTITY rdf "http://www.w3.org/1999/02/22-rdf-syntax-ns#" >
+    <!ENTITY SZS "http://http://ontohub.org/meta/SZS.owl#" >
+]>
+
+<rdf:RDF xmlns="http://http://ontohub.org/meta/SZS.owl#"
+     xml:base="http://http://ontohub.org/meta/SZS.owl"
+     xmlns:SZS="http://http://ontohub.org/meta/SZS.owl#"
+     xmlns:rdfs="http://www.w3.org/2000/01/rdf-schema#"
+     xmlns:owl2xml="http://www.w3.org/2006/12/owl2-xml#"
+     xmlns:owl="http://www.w3.org/2002/07/owl#"
+     xmlns:xsd="http://www.w3.org/2001/XMLSchema#"
+     xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#">
+    <owl:Ontology rdf:about="http://http://ontohub.org/meta/SZS.owl"/>
+
+    <owl:ObjectProperty rdf:about="#hasLabel">
+        <rdf:type rdf:resource="&owl;FunctionalProperty"/>
+        <rdfs:range rdf:resource="#Label"/>
+    </owl:ObjectProperty>
+
+
+    <owl:Class rdf:about="&SZS;Output_Status">
+        <rdfs:subClassOf>
+            <owl:Restriction>
+                <owl:onProperty rdf:resource="#hasLabel"/>
+                <owl:someValuesFrom rdf:resource="#OutputStatus"/>
+            </owl:Restriction>
+        </rdfs:subClassOf>
+    </owl:Class>
+
+    <owl:Class rdf:about="&SZS;Problem_Status">
+        <rdfs:subClassOf>
+            <owl:Restriction>
+                <owl:onProperty rdf:resource="#hasLabel"/>
+                <owl:someValuesFrom rdf:resource="#ProblemStatus"/>
+            </owl:Restriction>
+        </rdfs:subClassOf>
+        <rdfs:comment rdf:datatype="&xsd;string">The output from current ATP systems varies widely in quantity, quality, and
+meaning.  At the low end of the scale, systems that search for a refutation of
+a set of clauses may output only an assurance that a refutation exists (the
+wonderful "yes" output). At the high end of the scale a system may output a
+natural deduction proof of a problem expressed in FOF. In some cases the
+output is misleading, e.g., when a CNF based system claims that a FOF input
+problem is "unsatisfiable" it typically means that the negated CNF of the
+problem is unsatisfiable.
+
+In order to use ATP systems' results, e.g., as input to other tools, it is
+necessary that the ATP systems correctly and precisely specify what has been
+established. To this end the SZS problem status ontology has been established.
+The ontology was based on initial work done to establish communication
+protocols for systems on the MathWeb Software Bus. The ontology is shown
+below.
+
+The ontology assumes that the input F is of the form Ax => C, where Ax is a
+set (conjunction) of axioms and C is a single conjecture formula. This is a
+common standard usage of ATP systems.
++ The status value indicates the relationship between Ax and C.
++ By showing that F is valid, an ATP system shows that C is a theorem (a
+  logical consequence) of Ax, i.e., Ax |= C, where |= is the standard first
+  order entailment.
++ If F is not valid, there are several other possible relationships between Ax
+  and C, as shown in the ontology.
+
+If F is not of the form Ax => C, it is treated as a single monolithic
+conjecture formula (even if it is an "axiom" or "set of axioms" from the user
+view point). This is equivalent to Ax being TRUE. In this case not all of the
+statuses are appropriate, and those that are possible are marked with a * in
+the ontology.
++ Systems that report Theorem for a monolithic formula must have established
+  Tautology.
++ A set of axioms is treated as a conjecture formed from the conjunction of the
+  formulae.
++ This is the scenario for a set of clauses.</rdfs:comment>
+    </owl:Class>
+
+    <owl:Class rdf:about="&SZS;SUC">
+        <rdfs:label rdf:datatype="&xsd;string">Success</rdfs:label>
+        <rdfs:comment rdf:datatype="&xsd;string">The logical data has been processed successfully.</rdfs:comment>
+        <rdfs:subClassOf>
+            <owl:Restriction>
+                <owl:onProperty rdf:resource="#hasLabel"/>
+                <owl:someValuesFrom rdf:resource="#success"/>
+            </owl:Restriction>
+        </rdfs:subClassOf>
+        <rdfs:subClassOf rdf:resource="&SZS;Problem_Status"/>
+    </owl:Class>
+
+
+    <owl:Class rdf:about="&SZS;UNP">
+        <rdfs:label rdf:datatype="&xsd;string">UnsatisfiabilityPreserving</rdfs:label>
+        <rdfs:comment rdf:datatype="&xsd;string">If there does not exist a model of Ax then there does not exist a model of
+C, i.e., if Ax is unsatisfiable then C is unsatisfiable.</rdfs:comment>
+        <rdfs:subClassOf>
+            <owl:Restriction>
+                <owl:onProperty rdf:resource="#hasLabel"/>
+                <owl:someValuesFrom rdf:resource="#success"/>
+            </owl:Restriction>
+        </rdfs:subClassOf>
+        <rdfs:subClassOf rdf:resource="&SZS;SUC"/>
+    </owl:Class>
+
+    <owl:Class rdf:about="&SZS;SAP">
+        <rdfs:label rdf:datatype="&xsd;string">SatisfiabilityPreserving</rdfs:label>
+        <rdfs:comment rdf:datatype="&xsd;string">If there exists a model of Ax then there exists a model of C, i.e., if Ax
+is satisfiable then C is satisfiable.
+- F is satisfiable.</rdfs:comment>
+        <rdfs:subClassOf>
+            <owl:Restriction>
+                <owl:onProperty rdf:resource="#hasLabel"/>
+                <owl:someValuesFrom rdf:resource="#success"/>
+            </owl:Restriction>
+        </rdfs:subClassOf>
+        <rdfs:subClassOf rdf:resource="&SZS;SUC"/>
+    </owl:Class>
+
+    <owl:Class rdf:about="&SZS;ESA">
+        <rdfs:label rdf:datatype="&xsd;string">EquiSatisfiable</rdfs:label>
+        <rdfs:comment rdf:datatype="&xsd;string">There exists a model of Ax iff there exists a model of C, i.e., Ax is
+(un)satisfiable iff C is (un)satisfiable.</rdfs:comment>
+        <rdfs:subClassOf>
+            <owl:Restriction>
+                <owl:onProperty rdf:resource="#hasLabel"/>
+                <owl:someValuesFrom rdf:resource="#success"/>
+            </owl:Restriction>
+        </rdfs:subClassOf>
+        <rdfs:subClassOf rdf:resource="&SZS;UNP"/>
+        <rdfs:subClassOf rdf:resource="&SZS;SAP"/>
+    </owl:Class>
+
+    <owl:Class rdf:about="&SZS;SAT">
+        <rdfs:label rdf:datatype="&xsd;string">Satisfiable</rdfs:label>
+        <rdfs:comment rdf:datatype="&xsd;string">Some interpretations are models of Ax, and
+some models of Ax are models of C.
+- F is satisfiable, and ~F is not valid.
+- Possible dataforms are Models of Ax | C.</rdfs:comment>
+        <rdfs:subClassOf>
+            <owl:Restriction>
+                <owl:onProperty rdf:resource="#hasLabel"/>
+                <owl:someValuesFrom rdf:resource="#success"/>
+            </owl:Restriction>
+        </rdfs:subClassOf>
+        <rdfs:subClassOf rdf:resource="&SZS;ESA"/>
+    </owl:Class>
+
+    <owl:Class rdf:about="&SZS;FSA">
+        <rdfs:label rdf:datatype="&xsd;string">FinitelySatisfiable</rdfs:label>
+        <rdfs:comment rdf:datatype="&xsd;string">Some finite interpretations are finite models of Ax, and
+some finite models of Ax are finite models of C.
+- F is satisfiable, and ~F is not valid.
+- Possible dataforms are FiniteModels of Ax | C.</rdfs:comment>
+        <rdfs:subClassOf>
+            <owl:Restriction>
+                <owl:onProperty rdf:resource="#hasLabel"/>
+                <owl:someValuesFrom rdf:resource="#success"/>
+            </owl:Restriction>
+        </rdfs:subClassOf>
+        <rdfs:subClassOf rdf:resource="&SZS;SAT"/>
+    </owl:Class>
+
+    <owl:Class rdf:about="&SZS;FTH">
+        <rdfs:label rdf:datatype="&xsd;string">FiniteTheorem</rdfs:label>
+        <rdfs:comment rdf:datatype="&xsd;string">All finite models of Ax are finite models of C.
+- Any models of Ax | ~C are infinite.</rdfs:comment>
+        <rdfs:subClassOf>
+            <owl:Restriction>
+                <owl:onProperty rdf:resource="#hasLabel"/>
+                <owl:someValuesFrom rdf:resource="#success"/>
+            </owl:Restriction>
+        </rdfs:subClassOf>
+        <rdfs:subClassOf rdf:resource="&SZS;SUC"/>
+    </owl:Class>
+
+    <owl:Class rdf:about="&SZS;THM">
+        <rdfs:label rdf:datatype="&xsd;string">Theorem</rdfs:label>
+        <rdfs:comment rdf:datatype="&xsd;string">All models of Ax are models of C.
+- F is valid, and C is a theorem of Ax.
+- Possible dataforms are Proofs of C from Ax.</rdfs:comment>
+        <rdfs:subClassOf>
+            <owl:Restriction>
+                <owl:onProperty rdf:resource="#hasLabel"/>
+                <owl:someValuesFrom rdf:resource="#success"/>
+            </owl:Restriction>
+        </rdfs:subClassOf>
+        <rdfs:subClassOf rdf:resource="&SZS;SAP"/>
+        <rdfs:subClassOf rdf:resource="&SZS;FTH"/>
+    </owl:Class>
+
+    <owl:Class rdf:about="&SZS;STH">
+        <rdfs:label rdf:datatype="&xsd;string">SatisfiableTheorem</rdfs:label>
+        <rdfs:comment rdf:datatype="&xsd;string">Some interpretations are models of Ax, and
+all models of Ax are models of C.
+- F is valid, and C is a theorem of Ax.
+- Possible dataforms are Models of Ax with Proofs of C from Ax.</rdfs:comment>
+        <rdfs:subClassOf>
+            <owl:Restriction>
+                <owl:onProperty rdf:resource="#hasLabel"/>
+                <owl:someValuesFrom rdf:resource="#success"/>
+            </owl:Restriction>
+        </rdfs:subClassOf>
+        <rdfs:subClassOf rdf:resource="&SZS;THM"/>
+    </owl:Class>
+
+    <owl:Class rdf:about="&SZS;EQV">
+        <rdfs:label rdf:datatype="&xsd;string">Equivalent</rdfs:label>
+        <rdfs:comment rdf:datatype="&xsd;string">Some interpretations are models of Ax,
+all models of Ax are models of C, and
+all models of C are models of Ax.
+- F is valid, C is a theorem of Ax, and Ax is a theorem of C.
+- Possible dataforms are Proofs of C from Ax and of Ax from C.</rdfs:comment>
+        <rdfs:subClassOf>
+            <owl:Restriction>
+                <owl:onProperty rdf:resource="#hasLabel"/>
+                <owl:someValuesFrom rdf:resource="#success"/>
+            </owl:Restriction>
+        </rdfs:subClassOf>
+        <rdfs:subClassOf rdf:resource="&SZS;SAT"/>
+        <rdfs:subClassOf rdf:resource="&SZS;STH"/>
+    </owl:Class>
+
+    <owl:Class rdf:about="&SZS;TAC">
+        <rdfs:label rdf:datatype="&xsd;string">TautologousConclusion</rdfs:label>
+        <rdfs:comment rdf:datatype="&xsd;string">Some interpretations are models of Ax, and
+all interpretations are models of C.
+- F is valid, and C is a tautology.
+- Possible dataforms are Proofs of C.</rdfs:comment>
+        <rdfs:subClassOf>
+            <owl:Restriction>
+                <owl:onProperty rdf:resource="#hasLabel"/>
+                <owl:someValuesFrom rdf:resource="#success"/>
+            </owl:Restriction>
+        </rdfs:subClassOf>
+        <rdfs:subClassOf rdf:resource="&SZS;SAT"/>
+        <rdfs:subClassOf rdf:resource="&SZS;STH"/>
+    </owl:Class>
+
+    <owl:Class rdf:about="&SZS;WEC">
+        <rdfs:label rdf:datatype="&xsd;string">WeakerConclusion</rdfs:label>
+        <rdfs:comment rdf:datatype="&xsd;string">Some interpretations are models of Ax,
+all models of Ax are models of C, and
+some models of C are not models of Ax.
+- See Theorem and Satisfiable.</rdfs:comment>
+        <rdfs:subClassOf>
+            <owl:Restriction>
+                <owl:onProperty rdf:resource="#hasLabel"/>
+                <owl:someValuesFrom rdf:resource="#warning"/>
+            </owl:Restriction>
+        </rdfs:subClassOf>
+        <rdfs:subClassOf rdf:resource="&SZS;SAT"/>
+        <rdfs:subClassOf rdf:resource="&SZS;STH"/>
+    </owl:Class>
+
+    <owl:Class rdf:about="&SZS;ETH">
+        <rdfs:label rdf:datatype="&xsd;string">EquivalentTheorem</rdfs:label>
+        <rdfs:comment rdf:datatype="&xsd;string">Some, but not all, interpretations are models of Ax,
+all models of Ax are models of C, and
+all models of C are models of Ax.
+- See Equivalent.</rdfs:comment>
+        <rdfs:subClassOf>
+            <owl:Restriction>
+                <owl:onProperty rdf:resource="#hasLabel"/>
+                <owl:someValuesFrom rdf:resource="#success"/>
+            </owl:Restriction>
+        </rdfs:subClassOf>
+        <rdfs:subClassOf rdf:resource="&SZS;EQV"/>
+    </owl:Class>
+
+    <owl:Class rdf:about="&SZS;TAU">
+        <rdfs:label rdf:datatype="&xsd;string">Tautology</rdfs:label>
+        <rdfs:comment rdf:datatype="&xsd;string">All interpretations are models of Ax, and
+all interpretations are models of C.
+- F is valid, ~F is unsatisfiable, and C is a tautology.
+- Possible dataforms are Proofs of Ax and of C.</rdfs:comment>
+        <rdfs:subClassOf>
+            <owl:Restriction>
+                <owl:onProperty rdf:resource="#hasLabel"/>
+                <owl:someValuesFrom rdf:resource="#success"/>
+            </owl:Restriction>
+        </rdfs:subClassOf>
+        <rdfs:subClassOf rdf:resource="&SZS;EQV"/>
+        <rdfs:subClassOf rdf:resource="&SZS;TAC"/>
+    </owl:Class>
+
+    <owl:Class rdf:about="&SZS;WTC">
+        <rdfs:label rdf:datatype="&xsd;string">WeakerTautologousConclusion</rdfs:label>
+        <rdfs:comment rdf:datatype="&xsd;string">Some, but not all, interpretations are models of Ax, and
+all interpretations are models of C.
+- F is valid, and C is a tautology.
+- See TautologousConclusion and WeakerConclusion.</rdfs:comment>
+        <rdfs:subClassOf>
+            <owl:Restriction>
+                <owl:onProperty rdf:resource="#hasLabel"/>
+                <owl:someValuesFrom rdf:resource="#success"/>
+            </owl:Restriction>
+        </rdfs:subClassOf>
+        <rdfs:subClassOf rdf:resource="&SZS;TAC"/>
+        <rdfs:subClassOf rdf:resource="&SZS;WEC"/>
+    </owl:Class>
+
+    <owl:Class rdf:about="&SZS;WTH">
+        <rdfs:label rdf:datatype="&xsd;string">WeakerTheorem</rdfs:label>
+        <rdfs:comment rdf:datatype="&xsd;string">Some interpretations are models of Ax,
+all models of Ax are models of C,
+some models of C are not models of Ax, and
+some interpretations are not models of C.
+- See Theorem and Satisfiable.</rdfs:comment>
+        <rdfs:subClassOf>
+            <owl:Restriction>
+                <owl:onProperty rdf:resource="#hasLabel"/>
+                <owl:someValuesFrom rdf:resource="#warning"/>
+            </owl:Restriction>
+        </rdfs:subClassOf>
+        <rdfs:subClassOf rdf:resource="&SZS;WEC"/>
+    </owl:Class>
+
+    <owl:Class rdf:about="&SZS;CAX">
+        <rdfs:label rdf:datatype="&xsd;string">ContradictoryAxioms</rdfs:label>
+        <rdfs:comment rdf:datatype="&xsd;string">No interpretations are models of Ax.
+- F is valid, and anything is a theorem of Ax.
+- Possible dataforms are Refutations of Ax.</rdfs:comment>
+        <rdfs:subClassOf>
+            <owl:Restriction>
+                <owl:onProperty rdf:resource="#hasLabel"/>
+                <owl:someValuesFrom rdf:resource="#warning"/>
+            </owl:Restriction>
+        </rdfs:subClassOf>
+        <rdfs:subClassOf rdf:resource="&SZS;THM"/>
+        <rdfs:subClassOf rdf:resource="&SZS;CTH"/>
+    </owl:Class>
+
+    <owl:Class rdf:about="&SZS;SCA">
+        <rdfs:label rdf:datatype="&xsd;string">SatisfiableConclusionContradictoryAxioms</rdfs:label>
+        <rdfs:comment rdf:datatype="&xsd;string">No interpretations are models of Ax, and
+some interpretations are models of C.
+- See ContradictoryAxioms.</rdfs:comment>
+        <rdfs:subClassOf>
+            <owl:Restriction>
+                <owl:onProperty rdf:resource="#hasLabel"/>
+                <owl:someValuesFrom rdf:resource="#warning"/>
+            </owl:Restriction>
+        </rdfs:subClassOf>
+        <rdfs:subClassOf rdf:resource="&SZS;CAX"/>
+    </owl:Class>
+
+    <owl:Class rdf:about="&SZS;TCA">
+        <rdfs:label rdf:datatype="&xsd;string">TautologousConclusionContradictoryAxioms</rdfs:label>
+        <rdfs:comment rdf:datatype="&xsd;string">No interpretations are models of Ax, and
+all interpretations are models of C.
+- See TautologousConclusion and SatisfiableConclusionContradictoryAxioms.</rdfs:comment>
+        <rdfs:subClassOf>
+            <owl:Restriction>
+                <owl:onProperty rdf:resource="#hasLabel"/>
+                <owl:someValuesFrom rdf:resource="#warning"/>
+            </owl:Restriction>
+        </rdfs:subClassOf>
+        <rdfs:subClassOf rdf:resource="&SZS;SCA"/>
+    </owl:Class>
+
+    <owl:Class rdf:about="&SZS;WCA">
+        <rdfs:label rdf:datatype="&xsd;string">WeakerConclusionContradictoryAxioms</rdfs:label>
+        <rdfs:comment rdf:datatype="&xsd;string">No interpretations are models of Ax, and
+some, but not all, interpretations are models of C.
+- See SatisfiableConclusionContradictoryAxioms and
+SatisfiableCounterConclusionContradictoryAxioms.</rdfs:comment>
+        <rdfs:subClassOf>
+            <owl:Restriction>
+                <owl:onProperty rdf:resource="#hasLabel"/>
+                <owl:someValuesFrom rdf:resource="#warning"/>
+            </owl:Restriction>
+        </rdfs:subClassOf>
+        <rdfs:subClassOf rdf:resource="&SZS;SCA"/>
+        <rdfs:subClassOf rdf:resource="&SZS;SCC"/>
+    </owl:Class>
+
+    <owl:Class rdf:about="&SZS;CUP">
+        <rdfs:label rdf:datatype="&xsd;string">CounterUnsatisfiabilityPreserving</rdfs:label>
+        <rdfs:comment rdf:datatype="&xsd;string">If there does not exist a model of Ax then there does not exist a model of
+~C, i.e., if Ax is unsatisfiable then ~C is unsatisfiable.</rdfs:comment>
+        <rdfs:subClassOf>
+            <owl:Restriction>
+                <owl:onProperty rdf:resource="#hasLabel"/>
+                <owl:someValuesFrom rdf:resource="#success"/>
+            </owl:Restriction>
+        </rdfs:subClassOf>
+        <rdfs:subClassOf rdf:resource="&SZS;SUC"/>
+    </owl:Class>
+
+    <owl:Class rdf:about="&SZS;CSP">
+        <rdfs:label rdf:datatype="&xsd;string">CounterSatisfiabilityPreserving</rdfs:label>
+        <rdfs:comment rdf:datatype="&xsd;string">If there exists a model of Ax then there exists a model of ~C, i.e., if Ax
+is satisfiable then ~C is satisfiable.</rdfs:comment>
+        <rdfs:subClassOf>
+            <owl:Restriction>
+                <owl:onProperty rdf:resource="#hasLabel"/>
+                <owl:someValuesFrom rdf:resource="#success"/>
+            </owl:Restriction>
+        </rdfs:subClassOf>
+        <rdfs:subClassOf rdf:resource="&SZS;SUC"/>
+    </owl:Class>
+
+    <owl:Class rdf:about="&SZS;ECS">
+        <rdfs:label rdf:datatype="&xsd;string">EquiCounterSatisfiable</rdfs:label>
+        <rdfs:comment rdf:datatype="&xsd;string">There exists a model of Ax iff there exists a model of ~C, i.e., Ax is
+(un)satisfiable iff ~C is (un)satisfiable.</rdfs:comment>
+        <rdfs:subClassOf>
+            <owl:Restriction>
+                <owl:onProperty rdf:resource="#hasLabel"/>
+                <owl:someValuesFrom rdf:resource="#success"/>
+            </owl:Restriction>
+        </rdfs:subClassOf>
+        <rdfs:subClassOf rdf:resource="&SZS;CSP"/>
+        <rdfs:subClassOf rdf:resource="&SZS;CUP"/>
+    </owl:Class>
+
+    <owl:Class rdf:about="&SZS;CSA">
+        <rdfs:label rdf:datatype="&xsd;string">CounterSatisfiable</rdfs:label>
+        <rdfs:comment rdf:datatype="&xsd;string">Some interpretations are models of Ax, and
+some models of Ax are models of ~C.
+- F is not valid, ~F is satisfiable, and C is not a theorem of Ax.
+- Possible dataforms are Models of Ax | ~C.</rdfs:comment>
+        <rdfs:subClassOf>
+            <owl:Restriction>
+                <owl:onProperty rdf:resource="#hasLabel"/>
+                <owl:someValuesFrom rdf:resource="#danger"/>
+            </owl:Restriction>
+        </rdfs:subClassOf>
+        <rdfs:subClassOf rdf:resource="&SZS;ECS"/>
+    </owl:Class>
+
+    <owl:Class rdf:about="&SZS;FCS">
+        <rdfs:label rdf:datatype="&xsd;string">FinitelyCounterSatisfiable</rdfs:label>
+        <rdfs:comment rdf:datatype="&xsd;string">Some finite interpretations are finite models of Ax, and
+some finite models of Ax are finite models of ~C.
+- F is not valid, ~F is satisfiable, and C is not a theorem of Ax.
+- Possible dataforms are FiniteModels of Ax | ~C.</rdfs:comment>
+        <rdfs:subClassOf>
+            <owl:Restriction>
+                <owl:onProperty rdf:resource="#hasLabel"/>
+                <owl:someValuesFrom rdf:resource="#danger"/>
+            </owl:Restriction>
+        </rdfs:subClassOf>
+        <rdfs:subClassOf rdf:resource="&SZS;CSA"/>
+    </owl:Class>
+
+    <owl:Class rdf:about="&SZS;CTH">
+        <rdfs:label rdf:datatype="&xsd;string">CounterTheorem</rdfs:label>
+        <rdfs:comment rdf:datatype="&xsd;string">All models of Ax are models of ~C.
+- F is not valid, and ~C is a theorem of Ax.
+- Possible dataforms are Proofs of ~C from Ax.</rdfs:comment>
+        <rdfs:subClassOf>
+            <owl:Restriction>
+                <owl:onProperty rdf:resource="#hasLabel"/>
+                <owl:someValuesFrom rdf:resource="#danger"/>
+            </owl:Restriction>
+        </rdfs:subClassOf>
+        <rdfs:subClassOf rdf:resource="&SZS;CSP"/>
+    </owl:Class>
+
+    <owl:Class rdf:about="&SZS;SCT">
+        <rdfs:label rdf:datatype="&xsd;string">SatisfiableCounterTheorem</rdfs:label>
+        <rdfs:comment rdf:datatype="&xsd;string">Some interpretations are models of Ax, and
+all models of Ax are models of ~C.
+- F is valid, and ~C is a theorem of Ax.
+- Possible dataforms are Models of Ax with Proofs of ~C from Ax.</rdfs:comment>
+        <rdfs:subClassOf>
+            <owl:Restriction>
+                <owl:onProperty rdf:resource="#hasLabel"/>
+                <owl:someValuesFrom rdf:resource="#danger"/>
+            </owl:Restriction>
+        </rdfs:subClassOf>
+        <rdfs:subClassOf rdf:resource="&SZS;CTH"/>
+    </owl:Class>
+
+    <owl:Class rdf:about="&SZS;CEQ">
+        <rdfs:label rdf:datatype="&xsd;string">CounterEquivalent</rdfs:label>
+        <rdfs:comment rdf:datatype="&xsd;string">Some interpretations are models of Ax,
+all models of Ax are models of ~C, and
+all models of ~C are models of Ax
+(i.e., all interpretations are models of Ax xor of C).
+- F is not valid, and ~C is a theorem of Ax.
+- Possible dataforms are Proofs of ~C from Ax and of Ax from ~C.</rdfs:comment>
+        <rdfs:subClassOf>
+            <owl:Restriction>
+                <owl:onProperty rdf:resource="#hasLabel"/>
+                <owl:someValuesFrom rdf:resource="#danger"/>
+            </owl:Restriction>
+        </rdfs:subClassOf>
+        <rdfs:subClassOf rdf:resource="&SZS;CSA"/>
+    </owl:Class>
+
+    <owl:Class rdf:about="&SZS;UNC">
+        <rdfs:label rdf:datatype="&xsd;string">UnsatisfiableConclusion</rdfs:label>
+        <rdfs:comment rdf:datatype="&xsd;string">Some interpretations are models of Ax, and
+all interpretations are models of ~C
+(i.e., no interpretations are models of C).
+- F is not valid, and ~C is a tautology.
+- Possible dataforms are Proofs of ~C.</rdfs:comment>
+        <rdfs:subClassOf>
+            <owl:Restriction>
+                <owl:onProperty rdf:resource="#hasLabel"/>
+                <owl:someValuesFrom rdf:resource="#danger"/>
+            </owl:Restriction>
+        </rdfs:subClassOf>
+        <rdfs:subClassOf rdf:resource="&SZS;SCT"/>
+        <rdfs:subClassOf rdf:resource="&SZS;CSA"/>
+    </owl:Class>
+
+    <owl:Class rdf:about="&SZS;WCC">
+        <rdfs:label rdf:datatype="&xsd;string">WeakerCounterConclusion</rdfs:label>
+        <rdfs:comment rdf:datatype="&xsd;string">Some interpretations are models of Ax, and
+all models of Ax are models of ~C, and
+some models of ~C are not models of Ax.
+- See CounterTheorem and CounterSatisfiable.</rdfs:comment>
+        <rdfs:subClassOf>
+            <owl:Restriction>
+                <owl:onProperty rdf:resource="#hasLabel"/>
+                <owl:someValuesFrom rdf:resource="#danger"/>
+            </owl:Restriction>
+        </rdfs:subClassOf>
+        <rdfs:subClassOf rdf:resource="&SZS;SCT"/>
+        <rdfs:subClassOf rdf:resource="&SZS;CSA"/>
+    </owl:Class>
+
+    <owl:Class rdf:about="&SZS;ECT">
+        <rdfs:label rdf:datatype="&xsd;string">EquivalentCounterTheorem</rdfs:label>
+        <rdfs:comment rdf:datatype="&xsd;string">Some, but not all, interpretations are models of Ax,
+all models of Ax are models of ~C, and
+all models of ~C are models of Ax.
+- See CounterEquivalent.</rdfs:comment>
+        <rdfs:subClassOf>
+            <owl:Restriction>
+                <owl:onProperty rdf:resource="#hasLabel"/>
+                <owl:someValuesFrom rdf:resource="#danger"/>
+            </owl:Restriction>
+        </rdfs:subClassOf>
+        <rdfs:subClassOf rdf:resource="&SZS;CEQ"/>
+        <rdfs:subClassOf rdf:resource="&SZS;FUN"/>
+    </owl:Class>
+
+    <owl:Class rdf:about="&SZS;FUN">
+        <rdfs:label rdf:datatype="&xsd;string">FinitelyUnsatisfiable</rdfs:label>
+        <rdfs:comment rdf:datatype="&xsd;string">All finite interpretations are finite models of Ax, and
+all finite interpretations are finite models of ~C
+(i.e., no finite interpretations are finite models of C).</rdfs:comment>
+        <rdfs:subClassOf>
+            <owl:Restriction>
+                <owl:onProperty rdf:resource="#hasLabel"/>
+                <owl:someValuesFrom rdf:resource="#danger"/>
+            </owl:Restriction>
+        </rdfs:subClassOf>
+        <rdfs:subClassOf rdf:resource="&SZS;SUC"/>
+    </owl:Class>
+
+    <owl:Class rdf:about="&SZS;UNS">
+        <rdfs:label rdf:datatype="&xsd;string">Unsatisfiable</rdfs:label>
+        <rdfs:comment rdf:datatype="&xsd;string">All interpretations are models of Ax, and
+all interpretations are models of ~C.
+(i.e., no interpretations are models of C).
+- F is unsatisfiable, ~F is valid, and ~C is a tautology.
+- Possible dataforms are Proofs of Ax and of C, and Refutations of F.</rdfs:comment>
+        <rdfs:subClassOf>
+            <owl:Restriction>
+                <owl:onProperty rdf:resource="#hasLabel"/>
+                <owl:someValuesFrom rdf:resource="#danger"/>
+            </owl:Restriction>
+        </rdfs:subClassOf>
+        <rdfs:subClassOf rdf:resource="&SZS;UNC"/>
+        <rdfs:subClassOf rdf:resource="&SZS;FUN"/>
+    </owl:Class>
+
+    <owl:Class rdf:about="&SZS;WUC">
+        <rdfs:label rdf:datatype="&xsd;string">WeakerUnsatisfiableConclusion</rdfs:label>
+        <rdfs:comment rdf:datatype="&xsd;string">Some, but not all, interpretations are models of Ax, and
+all interpretations are models of ~C.
+- See Unsatisfiable and WeakerCounterConclusion.</rdfs:comment>
+        <rdfs:subClassOf>
+            <owl:Restriction>
+                <owl:onProperty rdf:resource="#hasLabel"/>
+                <owl:someValuesFrom rdf:resource="#danger"/>
+            </owl:Restriction>
+        </rdfs:subClassOf>
+        <rdfs:subClassOf rdf:resource="&SZS;WCC"/>
+        <rdfs:subClassOf rdf:resource="&SZS;UNC"/>
+    </owl:Class>
+
+    <owl:Class rdf:about="&SZS;WCT">
+        <rdfs:label rdf:datatype="&xsd;string">WeakerCounterTheorem</rdfs:label>
+        <rdfs:comment rdf:datatype="&xsd;string">Some interpretations are models of Ax,
+all models of Ax are models of ~C,
+some models of ~C are not models of Ax, and
+some interpretations are not models of ~C.
+- See CounterSatisfiable.</rdfs:comment>
+        <rdfs:subClassOf>
+            <owl:Restriction>
+                <owl:onProperty rdf:resource="#hasLabel"/>
+                <owl:someValuesFrom rdf:resource="#danger"/>
+            </owl:Restriction>
+        </rdfs:subClassOf>
+        <rdfs:subClassOf rdf:resource="&SZS;WCC"/>
+    </owl:Class>
+
+    <owl:Class rdf:about="&SZS;SCC">
+        <rdfs:label rdf:datatype="&xsd;string">SatisfiableCounterConclusionContradictoryAxioms</rdfs:label>
+        <rdfs:comment rdf:datatype="&xsd;string">No interpretations are models of Ax, and
+some interpretations are models of ~C.
+- See ContradictoryAxioms.</rdfs:comment>
+        <rdfs:subClassOf>
+            <owl:Restriction>
+                <owl:onProperty rdf:resource="#hasLabel"/>
+                <owl:someValuesFrom rdf:resource="#danger"/>
+            </owl:Restriction>
+        </rdfs:subClassOf>
+        <rdfs:subClassOf rdf:resource="&SZS;CAX"/>
+    </owl:Class>
+
+    <owl:Class rdf:about="&SZS;UCA">
+        <rdfs:label rdf:datatype="&xsd;string">UnsatisfiableConclusionContradictoryAxioms</rdfs:label>
+        <rdfs:comment rdf:datatype="&xsd;string">No interpretations are models of Ax, and
+all interpretations are models of ~C
+(i.e., no interpretations are models of C).
+- See UnsatisfiableConclusion and
+- SatisfiableCounterConclusionContradictoryAxioms.</rdfs:comment>
+        <rdfs:subClassOf>
+            <owl:Restriction>
+                <owl:onProperty rdf:resource="#hasLabel"/>
+                <owl:someValuesFrom rdf:resource="#danger"/>
+            </owl:Restriction>
+        </rdfs:subClassOf>
+        <rdfs:subClassOf rdf:resource="&SZS;SCC"/>
+    </owl:Class>
+
+    <owl:Class rdf:about="&SZS;NOC">
+        <rdfs:label rdf:datatype="&xsd;string">NoConsequence</rdfs:label>
+        <rdfs:comment rdf:datatype="&xsd;string">Some interpretations are models of Ax,
+some models of Ax are models of C, and
+some models of Ax are models of ~C.
+- F is not valid, F is satisfiable, ~F is not valid, ~F is satisfiable, and
+C is not a theorem of Ax.
+- Possible dataforms are pairs of models, one Model of Ax | C and one Model
+of Ax | ~C.</rdfs:comment>
+        <rdfs:subClassOf>
+            <owl:Restriction>
+                <owl:onProperty rdf:resource="#hasLabel"/>
+                <owl:someValuesFrom rdf:resource="#danger"/>
+            </owl:Restriction>
+        </rdfs:subClassOf>
+        <rdfs:subClassOf rdf:resource="&SZS;SAT"/>
+        <rdfs:subClassOf rdf:resource="&SZS;CSA"/>
+    </owl:Class>
+
+
+    <owl:Class rdf:about="&SZS;NOS">
+        <rdfs:label rdf:datatype="&xsd;string">NoSuccess</rdfs:label>
+        <rdfs:comment rdf:datatype="&xsd;string">The logical data has not been processed successfully (yet).</rdfs:comment>
+        <rdfs:subClassOf>
+            <owl:Restriction>
+                <owl:onProperty rdf:resource="#hasLabel"/>
+                <owl:someValuesFrom rdf:resource="#primary"/>
+            </owl:Restriction>
+        </rdfs:subClassOf>
+        <rdfs:subClassOf rdf:resource="&SZS;Problem_Status"/>
+    </owl:Class>
+
+    <owl:Class rdf:about="&SZS;OPN">
+        <rdfs:label rdf:datatype="&xsd;string">Open</rdfs:label>
+        <rdfs:comment rdf:datatype="&xsd;string">A success value has never been established.</rdfs:comment>
+        <rdfs:subClassOf>
+            <owl:Restriction>
+                <owl:onProperty rdf:resource="#hasLabel"/>
+                <owl:someValuesFrom rdf:resource="#primary"/>
+            </owl:Restriction>
+        </rdfs:subClassOf>
+        <rdfs:subClassOf rdf:resource="&SZS;NOS"/>
+    </owl:Class>
+
+    <owl:Class rdf:about="&SZS;UNK">
+        <rdfs:label rdf:datatype="&xsd;string">Unknown</rdfs:label>
+        <rdfs:comment rdf:datatype="&xsd;string">Success value unknown, and no assumption has been made.</rdfs:comment>
+        <rdfs:subClassOf>
+            <owl:Restriction>
+                <owl:onProperty rdf:resource="#hasLabel"/>
+                <owl:someValuesFrom rdf:resource="#primary"/>
+            </owl:Restriction>
+        </rdfs:subClassOf>
+        <rdfs:subClassOf rdf:resource="&SZS;NOS"/>
+    </owl:Class>
+
+    <owl:Class rdf:about="&SZS;ASS">
+        <rdfs:label rdf:datatype="&xsd;string">Assumed(UNK,SUC)</rdfs:label>
+        <rdfs:comment rdf:datatype="&xsd;string">The success ontology value S has been assumed because the actual value is
+unknown for the no-success ontology reason U. U is taken from the
+subontology starting at Unknown in the no-success ontology.</rdfs:comment>
+        <rdfs:subClassOf>
+            <owl:Restriction>
+                <owl:onProperty rdf:resource="#hasLabel"/>
+                <owl:someValuesFrom rdf:resource="#primary"/>
+            </owl:Restriction>
+        </rdfs:subClassOf>
+        <rdfs:subClassOf rdf:resource="&SZS;NOS"/>
+    </owl:Class>
+
+    <owl:Class rdf:about="&SZS;STP">
+        <rdfs:label rdf:datatype="&xsd;string">Stopped</rdfs:label>
+        <rdfs:comment rdf:datatype="&xsd;string">Software attempted to process the data, and stopped without a success status.</rdfs:comment>
+        <rdfs:subClassOf>
+            <owl:Restriction>
+                <owl:onProperty rdf:resource="#hasLabel"/>
+                <owl:someValuesFrom rdf:resource="#primary"/>
+            </owl:Restriction>
+        </rdfs:subClassOf>
+        <rdfs:subClassOf rdf:resource="&SZS;UNK"/>
+    </owl:Class>
+
+    <owl:Class rdf:about="&SZS;ERR">
+        <rdfs:label rdf:datatype="&xsd;string">Error</rdfs:label>
+        <rdfs:comment rdf:datatype="&xsd;string">Software stopped due to an error.</rdfs:comment>
+        <rdfs:subClassOf>
+            <owl:Restriction>
+                <owl:onProperty rdf:resource="#hasLabel"/>
+                <owl:someValuesFrom rdf:resource="#primary"/>
+            </owl:Restriction>
+        </rdfs:subClassOf>
+        <rdfs:subClassOf rdf:resource="&SZS;STP"/>
+    </owl:Class>
+
+    <owl:Class rdf:about="&SZS;OSE">
+        <rdfs:label rdf:datatype="&xsd;string">OSError</rdfs:label>
+        <rdfs:comment rdf:datatype="&xsd;string">Software stopped due to an operating system error.</rdfs:comment>
+        <rdfs:subClassOf>
+            <owl:Restriction>
+                <owl:onProperty rdf:resource="#hasLabel"/>
+                <owl:someValuesFrom rdf:resource="#primary"/>
+            </owl:Restriction>
+        </rdfs:subClassOf>
+        <rdfs:subClassOf rdf:resource="&SZS;ERR"/>
+    </owl:Class>
+
+    <owl:Class rdf:about="&SZS;INE">
+        <rdfs:label rdf:datatype="&xsd;string">InputError</rdfs:label>
+        <rdfs:comment rdf:datatype="&xsd;string">Software stopped due to an input error.</rdfs:comment>
+        <rdfs:subClassOf>
+            <owl:Restriction>
+                <owl:onProperty rdf:resource="#hasLabel"/>
+                <owl:someValuesFrom rdf:resource="#warning"/>
+            </owl:Restriction>
+        </rdfs:subClassOf>
+        <rdfs:subClassOf rdf:resource="&SZS;ERR"/>
+    </owl:Class>
+
+    <owl:Class rdf:about="&SZS;USE">
+        <rdfs:label rdf:datatype="&xsd;string">UsageError</rdfs:label>
+        <rdfs:comment rdf:datatype="&xsd;string">Software stopped due to an ATP system usage error.</rdfs:comment>
+        <rdfs:subClassOf>
+            <owl:Restriction>
+                <owl:onProperty rdf:resource="#hasLabel"/>
+                <owl:someValuesFrom rdf:resource="#primary"/>
+            </owl:Restriction>
+        </rdfs:subClassOf>
+        <rdfs:subClassOf rdf:resource="&SZS;INE"/>
+    </owl:Class>
+
+    <owl:Class rdf:about="&SZS;SYE">
+        <rdfs:label rdf:datatype="&xsd;string">SyntaxError</rdfs:label>
+        <rdfs:comment rdf:datatype="&xsd;string">Software stopped due to an input syntax error.</rdfs:comment>
+        <rdfs:subClassOf>
+            <owl:Restriction>
+                <owl:onProperty rdf:resource="#hasLabel"/>
+                <owl:someValuesFrom rdf:resource="#warning"/>
+            </owl:Restriction>
+        </rdfs:subClassOf>
+        <rdfs:subClassOf rdf:resource="&SZS;INE"/>
+    </owl:Class>
+
+    <owl:Class rdf:about="&SZS;SEE">
+        <rdfs:label rdf:datatype="&xsd;string">SemanticError</rdfs:label>
+        <rdfs:comment rdf:datatype="&xsd;string">Software stopped due to an input semantic error.</rdfs:comment>
+        <rdfs:subClassOf>
+            <owl:Restriction>
+                <owl:onProperty rdf:resource="#hasLabel"/>
+                <owl:someValuesFrom rdf:resource="#warning"/>
+            </owl:Restriction>
+        </rdfs:subClassOf>
+        <rdfs:subClassOf rdf:resource="&SZS;INE"/>
+    </owl:Class>
+
+    <owl:Class rdf:about="&SZS;TYE">
+        <rdfs:label rdf:datatype="&xsd;string">TypeError</rdfs:label>
+        <rdfs:comment rdf:datatype="&xsd;string">Software stopped due to an input type error (for typed logical data).</rdfs:comment>
+        <rdfs:subClassOf>
+            <owl:Restriction>
+                <owl:onProperty rdf:resource="#hasLabel"/>
+                <owl:someValuesFrom rdf:resource="#warning"/>
+            </owl:Restriction>
+        </rdfs:subClassOf>
+        <rdfs:subClassOf rdf:resource="&SZS;SEE"/>
+    </owl:Class>
+
+    <owl:Class rdf:about="&SZS;FOR">
+        <rdfs:label rdf:datatype="&xsd;string">Forced</rdfs:label>
+        <rdfs:comment rdf:datatype="&xsd;string">Software was forced to stop by an external force.</rdfs:comment>
+        <rdfs:subClassOf>
+            <owl:Restriction>
+                <owl:onProperty rdf:resource="#hasLabel"/>
+                <owl:someValuesFrom rdf:resource="#primary"/>
+            </owl:Restriction>
+        </rdfs:subClassOf>
+        <rdfs:subClassOf rdf:resource="&SZS;STP"/>
+    </owl:Class>
+
+    <owl:Class rdf:about="&SZS;USR">
+        <rdfs:label rdf:datatype="&xsd;string">User</rdfs:label>
+        <rdfs:comment rdf:datatype="&xsd;string">Software was forced to stop by the user.</rdfs:comment>
+        <rdfs:subClassOf>
+            <owl:Restriction>
+                <owl:onProperty rdf:resource="#hasLabel"/>
+                <owl:someValuesFrom rdf:resource="#primary"/>
+            </owl:Restriction>
+        </rdfs:subClassOf>
+        <rdfs:subClassOf rdf:resource="&SZS;FOR"/>
+    </owl:Class>
+
+    <owl:Class rdf:about="&SZS;RSO">
+        <rdfs:label rdf:datatype="&xsd;string">ResourceOut</rdfs:label>
+        <rdfs:comment rdf:datatype="&xsd;string">Software stopped because some resource ran out.</rdfs:comment>
+        <rdfs:subClassOf>
+            <owl:Restriction>
+                <owl:onProperty rdf:resource="#hasLabel"/>
+                <owl:someValuesFrom rdf:resource="#primary"/>
+            </owl:Restriction>
+        </rdfs:subClassOf>
+        <rdfs:subClassOf rdf:resource="&SZS;FOR"/>
+        <rdfs:subClassOf rdf:resource="&SZS;GUP"/>
+    </owl:Class>
+
+    <owl:Class rdf:about="&SZS;TMO">
+        <rdfs:label rdf:datatype="&xsd;string">Timeout</rdfs:label>
+        <rdfs:comment rdf:datatype="&xsd;string">Software stopped because the CPU time limit ran out.</rdfs:comment>
+        <rdfs:subClassOf>
+            <owl:Restriction>
+                <owl:onProperty rdf:resource="#hasLabel"/>
+                <owl:someValuesFrom rdf:resource="#primary"/>
+            </owl:Restriction>
+        </rdfs:subClassOf>
+        <rdfs:subClassOf rdf:resource="&SZS;RSO"/>
+    </owl:Class>
+
+    <owl:Class rdf:about="&SZS;MMO">
+        <rdfs:label rdf:datatype="&xsd;string">MemoryOut</rdfs:label>
+        <rdfs:comment rdf:datatype="&xsd;string">Software stopped because the memory limit ran out.</rdfs:comment>
+        <rdfs:subClassOf>
+            <owl:Restriction>
+                <owl:onProperty rdf:resource="#hasLabel"/>
+                <owl:someValuesFrom rdf:resource="#primary"/>
+            </owl:Restriction>
+        </rdfs:subClassOf>
+        <rdfs:subClassOf rdf:resource="&SZS;RSO"/>
+    </owl:Class>
+
+    <owl:Class rdf:about="&SZS;GUP">
+        <rdfs:label rdf:datatype="&xsd;string">GaveUp</rdfs:label>
+        <rdfs:comment rdf:datatype="&xsd;string">Software gave up of its own accord.</rdfs:comment>
+        <rdfs:subClassOf>
+            <owl:Restriction>
+                <owl:onProperty rdf:resource="#hasLabel"/>
+                <owl:someValuesFrom rdf:resource="#primary"/>
+            </owl:Restriction>
+        </rdfs:subClassOf>
+        <rdfs:subClassOf rdf:resource="&SZS;STP"/>
+    </owl:Class>
+
+    <owl:Class rdf:about="&SZS;INC">
+        <rdfs:label rdf:datatype="&xsd;string">Incomplete</rdfs:label>
+        <rdfs:comment rdf:datatype="&xsd;string">Software gave up because it's incomplete.</rdfs:comment>
+        <rdfs:subClassOf>
+            <owl:Restriction>
+                <owl:onProperty rdf:resource="#hasLabel"/>
+                <owl:someValuesFrom rdf:resource="#primary"/>
+            </owl:Restriction>
+        </rdfs:subClassOf>
+        <rdfs:subClassOf rdf:resource="&SZS;GUP"/>
+    </owl:Class>
+
+    <owl:Class rdf:about="&SZS;IAP">
+        <rdfs:label rdf:datatype="&xsd;string">Inappropriate</rdfs:label>
+        <rdfs:comment rdf:datatype="&xsd;string">Software gave up because it cannot process this type of data.</rdfs:comment>
+        <rdfs:subClassOf>
+            <owl:Restriction>
+                <owl:onProperty rdf:resource="#hasLabel"/>
+                <owl:someValuesFrom rdf:resource="#primary"/>
+            </owl:Restriction>
+        </rdfs:subClassOf>
+        <rdfs:subClassOf rdf:resource="&SZS;GUP"/>
+    </owl:Class>
+
+    <owl:Class rdf:about="&SZS;INP">
+        <rdfs:label rdf:datatype="&xsd;string">InProgress</rdfs:label>
+        <rdfs:comment rdf:datatype="&xsd;string">Software is still running.</rdfs:comment>
+        <rdfs:subClassOf>
+            <owl:Restriction>
+                <owl:onProperty rdf:resource="#hasLabel"/>
+                <owl:someValuesFrom rdf:resource="#primary"/>
+            </owl:Restriction>
+        </rdfs:subClassOf>
+        <rdfs:subClassOf rdf:resource="&SZS;UNK"/>
+    </owl:Class>
+
+    <owl:Class rdf:about="&SZS;NTT">
+        <rdfs:label rdf:datatype="&xsd;string">NotTried</rdfs:label>
+        <rdfs:comment rdf:datatype="&xsd;string">Software has not tried to process the data.</rdfs:comment>
+        <rdfs:subClassOf>
+            <owl:Restriction>
+                <owl:onProperty rdf:resource="#hasLabel"/>
+                <owl:someValuesFrom rdf:resource="#primary"/>
+            </owl:Restriction>
+        </rdfs:subClassOf>
+        <rdfs:subClassOf rdf:resource="&SZS;UNK"/>
+    </owl:Class>
+
+    <owl:Class rdf:about="&SZS;NTY">
+        <rdfs:label rdf:datatype="&xsd;string">NotTriedYet</rdfs:label>
+        <rdfs:comment rdf:datatype="&xsd;string">Software has not tried to process the data yet, but might in the future.</rdfs:comment>
+        <rdfs:subClassOf>
+            <owl:Restriction>
+                <owl:onProperty rdf:resource="#hasLabel"/>
+                <owl:someValuesFrom rdf:resource="#primary"/>
+            </owl:Restriction>
+        </rdfs:subClassOf>
+        <rdfs:subClassOf rdf:resource="&SZS;NTT"/>
+    </owl:Class>
+
+
+    <owl:Class rdf:about="&SZS;LDa">
+        <rdfs:label rdf:datatype="&xsd;string">LogicalData</rdfs:label>
+        <rdfs:comment rdf:datatype="&xsd;string">Logical data.</rdfs:comment>
+        <rdfs:subClassOf>
+            <owl:Restriction>
+                <owl:onProperty rdf:resource="#hasLabel"/>
+                <owl:someValuesFrom rdf:resource="#info"/>
+            </owl:Restriction>
+        </rdfs:subClassOf>
+        <rdfs:subClassOf rdf:resource="&SZS;Output_Status"/>
+    </owl:Class>
+
+    <owl:Class rdf:about="&SZS;Sln">
+        <rdfs:label rdf:datatype="&xsd;string">Solution</rdfs:label>
+        <rdfs:comment rdf:datatype="&xsd;string">A solution.</rdfs:comment>
+        <rdfs:subClassOf>
+            <owl:Restriction>
+                <owl:onProperty rdf:resource="#hasLabel"/>
+                <owl:someValuesFrom rdf:resource="#info"/>
+            </owl:Restriction>
+        </rdfs:subClassOf>
+        <rdfs:subClassOf rdf:resource="&SZS;LDa"/>
+    </owl:Class>
+
+    <owl:Class rdf:about="&SZS;Prf">
+        <rdfs:label rdf:datatype="&xsd;string">Proof</rdfs:label>
+        <rdfs:comment rdf:datatype="&xsd;string">A proof.</rdfs:comment>
+        <rdfs:subClassOf>
+            <owl:Restriction>
+                <owl:onProperty rdf:resource="#hasLabel"/>
+                <owl:someValuesFrom rdf:resource="#info"/>
+            </owl:Restriction>
+        </rdfs:subClassOf>
+        <rdfs:subClassOf rdf:resource="&SZS;Sln"/>
+    </owl:Class>
+
+    <owl:Class rdf:about="&SZS;Der">
+        <rdfs:label rdf:datatype="&xsd;string">Derivation</rdfs:label>
+        <rdfs:comment rdf:datatype="&xsd;string">A derivation (inference steps ending in the theorem, in the Hilbert style).</rdfs:comment>
+        <rdfs:subClassOf>
+            <owl:Restriction>
+                <owl:onProperty rdf:resource="#hasLabel"/>
+                <owl:someValuesFrom rdf:resource="#info"/>
+            </owl:Restriction>
+        </rdfs:subClassOf>
+        <rdfs:subClassOf rdf:resource="&SZS;Prf"/>
+    </owl:Class>
+
+    <owl:Class rdf:about="&SZS;Ref">
+        <rdfs:label rdf:datatype="&xsd;string">Refutation</rdfs:label>
+        <rdfs:comment rdf:datatype="&xsd;string">A refutation (starting with Ax U ~C and ending in FALSE).</rdfs:comment>
+        <rdfs:subClassOf>
+            <owl:Restriction>
+                <owl:onProperty rdf:resource="#hasLabel"/>
+                <owl:someValuesFrom rdf:resource="#info"/>
+            </owl:Restriction>
+        </rdfs:subClassOf>
+        <rdfs:subClassOf rdf:resource="&SZS;Prf"/>
+    </owl:Class>
+
+    <owl:Class rdf:about="&SZS;CRf">
+        <rdfs:label rdf:datatype="&xsd;string">CNFRefutation</rdfs:label>
+        <rdfs:comment rdf:datatype="&xsd;string">A refutation in clause normal form, including, for FOF Ax or C, the
+translation from FOF to CNF (without the FOF to CNF translation it's an
+IncompleteProof).</rdfs:comment>
+        <rdfs:subClassOf>
+            <owl:Restriction>
+                <owl:onProperty rdf:resource="#hasLabel"/>
+                <owl:someValuesFrom rdf:resource="#info"/>
+            </owl:Restriction>
+        </rdfs:subClassOf>
+        <rdfs:subClassOf rdf:resource="&SZS;Ref"/>
+    </owl:Class>
+
+    <owl:Class rdf:about="&SZS;Int">
+        <rdfs:label rdf:datatype="&xsd;string">Interpretation</rdfs:label>
+        <rdfs:comment rdf:datatype="&xsd;string">An interpretation.</rdfs:comment>
+        <rdfs:subClassOf>
+            <owl:Restriction>
+                <owl:onProperty rdf:resource="#hasLabel"/>
+                <owl:someValuesFrom rdf:resource="#info"/>
+            </owl:Restriction>
+        </rdfs:subClassOf>
+        <rdfs:subClassOf rdf:resource="&SZS;Sln"/>
+    </owl:Class>
+
+    <owl:Class rdf:about="&SZS;DIn">
+        <rdfs:label rdf:datatype="&xsd;string">DomainInterpretation</rdfs:label>
+        <rdfs:comment rdf:datatype="&xsd;string">An interpretation expressed as a domain, a mapping for functions, and a
+relation for predicates.</rdfs:comment>
+        <rdfs:subClassOf>
+            <owl:Restriction>
+                <owl:onProperty rdf:resource="#hasLabel"/>
+                <owl:someValuesFrom rdf:resource="#info"/>
+            </owl:Restriction>
+        </rdfs:subClassOf>
+        <rdfs:subClassOf rdf:resource="&SZS;Int"/>
+    </owl:Class>
+
+    <owl:Class rdf:about="&SZS;FIn">
+        <rdfs:label rdf:datatype="&xsd;string">FiniteInterpretation</rdfs:label>
+        <rdfs:comment rdf:datatype="&xsd;string">A domain interpretation with a finite domain.</rdfs:comment>
+        <rdfs:subClassOf>
+            <owl:Restriction>
+                <owl:onProperty rdf:resource="#hasLabel"/>
+                <owl:someValuesFrom rdf:resource="#info"/>
+            </owl:Restriction>
+        </rdfs:subClassOf>
+        <rdfs:subClassOf rdf:resource="&SZS;DIn"/>
+    </owl:Class>
+
+    <owl:Class rdf:about="&SZS;IIn">
+        <rdfs:label rdf:datatype="&xsd;string">InfiniteInterpretation</rdfs:label>
+        <rdfs:comment rdf:datatype="&xsd;string">A domain interpretation with an infinite domain.</rdfs:comment>
+        <rdfs:subClassOf>
+            <owl:Restriction>
+                <owl:onProperty rdf:resource="#hasLabel"/>
+                <owl:someValuesFrom rdf:resource="#info"/>
+            </owl:Restriction>
+        </rdfs:subClassOf>
+        <rdfs:subClassOf rdf:resource="&SZS;DIn"/>
+    </owl:Class>
+
+    <owl:Class rdf:about="&SZS;HIn">
+        <rdfs:label rdf:datatype="&xsd;string">HerbrandInterpretation</rdfs:label>
+        <rdfs:comment rdf:datatype="&xsd;string">A Herbrand interpretation.</rdfs:comment>
+        <rdfs:subClassOf>
+            <owl:Restriction>
+                <owl:onProperty rdf:resource="#hasLabel"/>
+                <owl:someValuesFrom rdf:resource="#info"/>
+            </owl:Restriction>
+        </rdfs:subClassOf>
+        <rdfs:subClassOf rdf:resource="&SZS;DIn"/>
+    </owl:Class>
+
+    <owl:Class rdf:about="&SZS;Mod">
+        <rdfs:label rdf:datatype="&xsd;string">Model</rdfs:label>
+        <rdfs:comment rdf:datatype="&xsd;string">A model.</rdfs:comment>
+        <rdfs:subClassOf>
+            <owl:Restriction>
+                <owl:onProperty rdf:resource="#hasLabel"/>
+                <owl:someValuesFrom rdf:resource="#info"/>
+            </owl:Restriction>
+        </rdfs:subClassOf>
+        <rdfs:subClassOf rdf:resource="&SZS;Int"/>
+    </owl:Class>
+
+    <owl:Class rdf:about="&SZS;DMo">
+        <rdfs:label rdf:datatype="&xsd;string">DomainModel</rdfs:label>
+        <rdfs:comment rdf:datatype="&xsd;string">A model expressed as a domain, a mapping for functions, and a relation for
+predicates.</rdfs:comment>
+        <rdfs:subClassOf>
+            <owl:Restriction>
+                <owl:onProperty rdf:resource="#hasLabel"/>
+                <owl:someValuesFrom rdf:resource="#info"/>
+            </owl:Restriction>
+        </rdfs:subClassOf>
+        <rdfs:subClassOf rdf:resource="&SZS;DIn"/>
+        <rdfs:subClassOf rdf:resource="&SZS;Mod"/>
+    </owl:Class>
+
+    <owl:Class rdf:about="&SZS;FMo">
+        <rdfs:label rdf:datatype="&xsd;string">FiniteModel</rdfs:label>
+        <rdfs:comment rdf:datatype="&xsd;string">A domain model with a finite domain.</rdfs:comment>
+        <rdfs:subClassOf>
+            <owl:Restriction>
+                <owl:onProperty rdf:resource="#hasLabel"/>
+                <owl:someValuesFrom rdf:resource="#info"/>
+            </owl:Restriction>
+        </rdfs:subClassOf>
+        <rdfs:subClassOf rdf:resource="&SZS;FIn"/>
+        <rdfs:subClassOf rdf:resource="&SZS;DMo"/>
+    </owl:Class>
+
+    <owl:Class rdf:about="&SZS;IMo">
+        <rdfs:label rdf:datatype="&xsd;string">InfiniteModel</rdfs:label>
+        <rdfs:comment rdf:datatype="&xsd;string">A domain model with an infinite domain.</rdfs:comment>
+        <rdfs:subClassOf>
+            <owl:Restriction>
+                <owl:onProperty rdf:resource="#hasLabel"/>
+                <owl:someValuesFrom rdf:resource="#info"/>
+            </owl:Restriction>
+        </rdfs:subClassOf>
+        <rdfs:subClassOf rdf:resource="&SZS;DMo"/>
+    </owl:Class>
+
+    <owl:Class rdf:about="&SZS;HMo">
+        <rdfs:label rdf:datatype="&xsd;string">HerbrandModel</rdfs:label>
+        <rdfs:comment rdf:datatype="&xsd;string">A Herbrand model.</rdfs:comment>
+        <rdfs:subClassOf>
+            <owl:Restriction>
+                <owl:onProperty rdf:resource="#hasLabel"/>
+                <owl:someValuesFrom rdf:resource="#info"/>
+            </owl:Restriction>
+        </rdfs:subClassOf>
+        <rdfs:subClassOf rdf:resource="&SZS;DMo"/>
+    </owl:Class>
+
+    <owl:Class rdf:about="&SZS;Sat">
+        <rdfs:label rdf:datatype="&xsd;string">Saturation</rdfs:label>
+        <rdfs:comment rdf:datatype="&xsd;string">A model expressed as a saturating set of formulae.</rdfs:comment>
+        <rdfs:subClassOf>
+            <owl:Restriction>
+                <owl:onProperty rdf:resource="#hasLabel"/>
+                <owl:someValuesFrom rdf:resource="#info"/>
+            </owl:Restriction>
+        </rdfs:subClassOf>
+        <rdfs:subClassOf rdf:resource="&SZS;Mod"/>
+        <rdfs:subClassOf rdf:resource="&SZS;Lof"/>
+    </owl:Class>
+
+    <owl:Class rdf:about="&SZS;Lof">
+        <rdfs:label rdf:datatype="&xsd;string">ListOfFormulae</rdfs:label>
+        <rdfs:comment rdf:datatype="&xsd;string">A list of formulae.</rdfs:comment>
+        <rdfs:subClassOf>
+            <owl:Restriction>
+                <owl:onProperty rdf:resource="#hasLabel"/>
+                <owl:someValuesFrom rdf:resource="#info"/>
+            </owl:Restriction>
+        </rdfs:subClassOf>
+        <rdfs:subClassOf rdf:resource="&SZS;Sln"/>
+    </owl:Class>
+
+    <owl:Class rdf:about="&SZS;Lth">
+        <rdfs:label rdf:datatype="&xsd;string">ListOfTHF</rdfs:label>
+        <rdfs:comment rdf:datatype="&xsd;string">A list of THF formulae.</rdfs:comment>
+        <rdfs:subClassOf>
+            <owl:Restriction>
+                <owl:onProperty rdf:resource="#hasLabel"/>
+                <owl:someValuesFrom rdf:resource="#info"/>
+            </owl:Restriction>
+        </rdfs:subClassOf>
+        <rdfs:subClassOf rdf:resource="&SZS;Lof"/>
+    </owl:Class>
+
+    <owl:Class rdf:about="&SZS;Ltf">
+        <rdfs:label rdf:datatype="&xsd;string">ListOfTFF</rdfs:label>
+        <rdfs:comment rdf:datatype="&xsd;string">A list of TFF formulae.</rdfs:comment>
+        <rdfs:subClassOf>
+            <owl:Restriction>
+                <owl:onProperty rdf:resource="#hasLabel"/>
+                <owl:someValuesFrom rdf:resource="#info"/>
+            </owl:Restriction>
+        </rdfs:subClassOf>
+        <rdfs:subClassOf rdf:resource="&SZS;Lof"/>
+    </owl:Class>
+
+    <owl:Class rdf:about="&SZS;Lfo">
+        <rdfs:label rdf:datatype="&xsd;string">ListOfFOF</rdfs:label>
+        <rdfs:comment rdf:datatype="&xsd;string">A list of FOF formulae.</rdfs:comment>
+        <rdfs:subClassOf>
+            <owl:Restriction>
+                <owl:onProperty rdf:resource="#hasLabel"/>
+                <owl:someValuesFrom rdf:resource="#info"/>
+            </owl:Restriction>
+        </rdfs:subClassOf>
+        <rdfs:subClassOf rdf:resource="&SZS;Lof"/>
+    </owl:Class>
+
+    <owl:Class rdf:about="&SZS;Lcn">
+        <rdfs:label rdf:datatype="&xsd;string">ListOfCNF</rdfs:label>
+        <rdfs:comment rdf:datatype="&xsd;string">A list of CNF formulae.</rdfs:comment>
+        <rdfs:subClassOf>
+            <owl:Restriction>
+                <owl:onProperty rdf:resource="#hasLabel"/>
+                <owl:someValuesFrom rdf:resource="#info"/>
+            </owl:Restriction>
+        </rdfs:subClassOf>
+        <rdfs:subClassOf rdf:resource="&SZS;Lof"/>
+    </owl:Class>
+
+    <owl:Class rdf:about="&SZS;NSo">
+        <rdfs:label rdf:datatype="&xsd;string">NotASolution</rdfs:label>
+        <rdfs:comment rdf:datatype="&xsd;string">Something that is not a well formed solution.</rdfs:comment>
+        <rdfs:subClassOf>
+            <owl:Restriction>
+                <owl:onProperty rdf:resource="#hasLabel"/>
+                <owl:someValuesFrom rdf:resource="#info"/>
+            </owl:Restriction>
+        </rdfs:subClassOf>
+        <rdfs:subClassOf rdf:resource="&SZS;LDa"/>
+    </owl:Class>
+
+    <owl:Class rdf:about="&SZS;Ass">
+        <rdfs:label rdf:datatype="&xsd;string">Assurance</rdfs:label>
+        <rdfs:comment rdf:datatype="&xsd;string">Only an assurance of the success ontology value.</rdfs:comment>
+        <rdfs:subClassOf>
+            <owl:Restriction>
+                <owl:onProperty rdf:resource="#hasLabel"/>
+                <owl:someValuesFrom rdf:resource="#info"/>
+            </owl:Restriction>
+        </rdfs:subClassOf>
+        <rdfs:subClassOf rdf:resource="&SZS;NSo"/>
+    </owl:Class>
+
+    <owl:Class rdf:about="&SZS;IPr">
+        <rdfs:label rdf:datatype="&xsd;string">IncompleteProof</rdfs:label>
+        <rdfs:comment rdf:datatype="&xsd;string">A proof with some part missing.</rdfs:comment>
+        <rdfs:subClassOf>
+            <owl:Restriction>
+                <owl:onProperty rdf:resource="#hasLabel"/>
+                <owl:someValuesFrom rdf:resource="#info"/>
+            </owl:Restriction>
+        </rdfs:subClassOf>
+        <rdfs:subClassOf rdf:resource="&SZS;NSo"/>
+    </owl:Class>
+
+    <owl:Class rdf:about="&SZS;IIn">
+        <rdfs:label rdf:datatype="&xsd;string">IncompleteInterpretation</rdfs:label>
+        <rdfs:comment rdf:datatype="&xsd;string">An interpretation with some part missing.</rdfs:comment>
+        <rdfs:subClassOf>
+            <owl:Restriction>
+                <owl:onProperty rdf:resource="#hasLabel"/>
+                <owl:someValuesFrom rdf:resource="#info"/>
+            </owl:Restriction>
+        </rdfs:subClassOf>
+        <rdfs:subClassOf rdf:resource="&SZS;NSo"/>
+    </owl:Class>
+
+    <owl:Class rdf:about="&SZS;Non">
+        <rdfs:label rdf:datatype="&xsd;string">None</rdfs:label>
+        <rdfs:comment rdf:datatype="&xsd;string">Nothing.</rdfs:comment>
+        <rdfs:subClassOf>
+            <owl:Restriction>
+                <owl:onProperty rdf:resource="#hasLabel"/>
+                <owl:someValuesFrom rdf:resource="#info"/>
+            </owl:Restriction>
+        </rdfs:subClassOf>
+        <rdfs:subClassOf rdf:resource="&SZS;LDa"/>
+    </owl:Class>
+
+
+    <owl:Class rdf:about="&SZS;Label">
+        <rdfs:label rdf:datatype="&xsd;string">Label</rdfs:label>
+        <owl:equivalentClass>
+            <owl:Class>
+                <owl:unionOf rdf:parseType="Collection">
+                    <rdf:Description rdf:about="#success"/>
+                    <rdf:Description rdf:about="#warning"/>
+                    <rdf:Description rdf:about="#danger"/>
+                    <rdf:Description rdf:about="#info"/>
+                    <rdf:Description rdf:about="#primary"/>
+                    <rdf:Description rdf:about="#default"/>
+                </owl:unionOf>
+            </owl:Class>
+        </owl:equivalentClass>
+    </owl:Class>
+
+    <owl:Class rdf:about="&SZS;success">
+        <rdfs:label rdf:datatype="&xsd;string">success</rdfs:label>
+        <rdfs:subClassOf rdf:resource="&SZS;Label"/>
+    </owl:Class>
+
+    <owl:Class rdf:about="&SZS;warning">
+        <rdfs:label rdf:datatype="&xsd;string">warning</rdfs:label>
+        <rdfs:subClassOf rdf:resource="&SZS;Label"/>
+    </owl:Class>
+
+    <owl:Class rdf:about="&SZS;danger">
+        <rdfs:label rdf:datatype="&xsd;string">danger</rdfs:label>
+        <rdfs:subClassOf rdf:resource="&SZS;Label"/>
+    </owl:Class>
+
+    <owl:Class rdf:about="&SZS;info">
+        <rdfs:label rdf:datatype="&xsd;string">info</rdfs:label>
+        <rdfs:subClassOf rdf:resource="&SZS;Label"/>
+    </owl:Class>
+
+    <owl:Class rdf:about="&SZS;primary">
+        <rdfs:label rdf:datatype="&xsd;string">primary</rdfs:label>
+        <rdfs:subClassOf rdf:resource="&SZS;Label"/>
+    </owl:Class>
+
+    <owl:Class rdf:about="&SZS;default">
+        <rdfs:label rdf:datatype="&xsd;string">default</rdfs:label>
+        <rdfs:subClassOf rdf:resource="&SZS;Label"/>
+    </owl:Class>
+</rdf:RDF>
+

@@ -1,5 +1,5 @@
 #
-# Lists entities of an ontology
+# Lists symbols of an ontology
 #
 class ChildrenController < InheritedResources::Base
 

@@ -31,8 +31,9 @@ and [Christoph Lange][4].
 
 Initial developers are [Julian Kornberger][5] and [Henning Müller][6].
 
-Documentation generated with yard is to be found on
-[rubydoc.info](http://rubydoc.info/github/ontohub/ontohub/frames).
+Developer- and deployment-centric documentation can be found in the
+[doc/ directory](https://github.com/ontohub/ontohub/tree/staging/doc) and in our
+[Wiki pages](https://github.com/ontohub/ontohub/wiki).
 
 Installation
 ------------
@@ -42,11 +43,17 @@ A guide to set up your own instance of ontohub you can find in the [deployment g
 Also a guide for development environment for [Mac OS X][8] and [Ubuntu][9]
 in the Wiki.
 
+License
+--------
+
+Copyright © 2012 [Universität Bremen](http://www.uni-bremen.de/) and
+ [Universität Magdeburg](http://iws.cs.uni-magdeburg.de/), released under
+the [GNU AGPL 3.0](http://www.gnu.org/licenses/agpl-3.0.html) license.
 
 [0]: http://www.tzi.org/~cabo/awe12
 [1]: http://www.tzi.org/~cabo
 [2]: http://iws.cs.uni-magdeburg.de/~mossakow/
-[3]: http://theo.cs.uni-magdeburg.de/theo_eng.html
+[3]: http://theo.cs.uni-magdeburg.de/
 [4]: http://wob.iai.uni-bonn.de/Wob/de/view/class217_id1582.html
 [5]: https://github.com/corny
 [6]: http://henning.orgizm.net

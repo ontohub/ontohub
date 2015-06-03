@@ -1,0 +1,98 @@
+#!/bin/bash
+
+abort_unless_invoker_installed() {
+  result="$(which invoker 2>&1)"
+  if [[ "$?" -ne "0" ]]; then
+    echo ">>> Invoker not installed, please install"
+    exit 1
+  fi
+}
+
+initialize_new_invoker_instance() {
+  result="$(invoker list 2>&1)"
+  if [[ "$?" -eq "0" ]]; then
+    echo ">>> Invoker running, restarting..."
+    result=`invoker stop 2>&1`
+  else
+    echo ">>> Invoker not running, starting..."
+  fi
+  invoker start invoker.ini --daemon
+}
+
+execute_or_die() {
+  cmd="$1"
+  execute_or_die_unless_match "$cmd" ""
+}
+
+# An empty expression will not be checked. This in fact means, that there is no
+# check for 'empty-output', but seeing as that should probably be never the
+# case it is a good way to combine both execute_or... versions
+execute_or_die_unless_match() {
+  cmd="$1"
+  expression="$2"
+  echo ">>> Executing '$cmd'"
+  result="$($cmd 2>&1)"
+  state="$?"
+  if [[ "$state" -ne "0" ]]; then
+    if [[ -n "$expression" ]]; then
+      check_and_handle_result_text "$result" "$expression" "$cmd"
+    else
+      abort_cmd "$cmd"
+    fi
+  fi
+}
+
+# Currently the match cannot be a 'normal' regular expression.
+# This however can be changed by adding a 'P' to the switches list for the
+# grep-command.
+check_and_handle_result_text() {
+  result="$1"
+  expression="$2"
+  cmd="$3"
+  echo "$result" | grep -q "$expression"
+  matchstate="$?"
+  if [[ "$matchstate" -ne "0" ]]; then
+    abort_cmd "$cmd"
+  else
+    echo ">>> Failed to execute '$cmd', but ignoring the result."
+  fi
+}
+
+abort_cmd() {
+  cmd="$1"
+  echo ">>> Failed to execute '$cmd', aborting further commands."
+  exit 1
+}
+
+run_invoker="1"
+
+for i in "$@"; do
+case $i in
+    -d|--download-fixtures)
+    export DOWNLOAD_FIXTURES=true
+    ;;
+    -r|--restart)
+    RESTART_INVOKER_ONLY=true
+    ;;
+    --no-invoker)
+    run_invoker="0"
+    ;;
+    *)
+    # unknown option
+    ;;
+  esac
+  shift
+done
+
+if [[ "$run_invoker" -eq "1" ]]; then
+  abort_unless_invoker_installed
+  initialize_new_invoker_instance
+fi
+
+if [[ !($RESTART_INVOKER_ONLY) ]]; then
+  execute_or_die_unless_match "bundle exec rake elasticsearch:wipe" "Elasticsearch::Transport::Transport::Errors::NotFound"
+  execute_or_die "bundle exec rake db:migrate:clean"
+  execute_or_die "redis-cli flushdb"
+  execute_or_die "bundle exec rake git:compile_cp_keys"
+  execute_or_die "bundle exec rake db:seed"
+fi

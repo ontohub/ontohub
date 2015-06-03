@@ -1,37 +1,31 @@
 require 'spec_helper'
 
 describe KeysController do
-
   let(:user){ create :user }
+  before { stub_cp_keys }
 
   context 'not signed in' do
-    before do
-      get :index
-    end
+    before { get :index }
 
     it{ should respond_with :redirect }
   end
 
   context 'signed in' do
-    before do
-      sign_in user
-    end
+    before { sign_in user }
 
     context 'GET to new' do
-      before do
-        get :new
-      end
+      before { get :new }
 
       it{ should respond_with :success }
       it{ should render_template :new }
     end
 
     context 'POST to create' do
-      before do
-        post :create, key: attributes_for(:key)
-      end
+      before { post :create, key: attributes_for(:key) }
 
-      it{ should set_the_flash.to(/successfully created/) }
+      it 'sets the flash' do
+        expect(flash[:notice]).to match(/successfully created/)
+      end
       it{ should redirect_to(:keys) }
     end
 
@@ -39,22 +33,17 @@ describe KeysController do
       let!(:key){ create :key, user: user }
 
       context 'GET to index' do
-        before do
-          get :index
-        end
+        before { get :index }
 
         it{ should respond_with :success }
         it{ should render_template :index }
       end
 
       context 'DELETE to destroy' do
-        before do
-          delete :destroy, id: key.id
-        end
+        before { delete :destroy, id: key.id }
 
         it{ should redirect_to(:keys) }
       end
     end
   end
-
 end

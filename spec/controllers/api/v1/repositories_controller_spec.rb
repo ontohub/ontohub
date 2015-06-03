@@ -1,34 +1,29 @@
 require 'spec_helper'
 
 describe Api::V1::RepositoriesController do
+  context 'on GET to show' do
+    let(:repository){ create :repository }
 
-  let(:user){ create :user }
+    context 'requesting json representation', api_specification: true do
+      let(:repository_schema) { schema_for('repository') }
 
-  context 'unauthenticated' do
-    before do
-      get :index, format: :json
-    end
-
-    it{ should respond_with :unauthorized }
-  end
-
-  context 'http authenticated' do
-    context 'wrong credentials' do
       before do
-        request.env['HTTP_AUTHORIZATION'] = ActionController::HttpAuthentication::Basic.encode_credentials(user.email, user.password + "x")
-        get :index, format: :json
+        get :show,
+          id: repository.to_param,
+          format: :json
       end
 
-      it{ should respond_with :unauthorized }
-    end
+      it { should respond_with :success }
 
-    context 'correct credentials' do
-      before do
-        request.env['HTTP_AUTHORIZATION'] = ActionController::HttpAuthentication::Basic.encode_credentials(user.email, user.password)
-        get :index, format: :json
+      it 'respond with json content type' do
+        expect(response.content_type.to_s).to eq('application/json')
       end
 
-      it{ should respond_with :success }
+      it 'should return a representation that validates against the schema' do
+        VCR.use_cassette 'api/json-schemata/repository' do
+          expect(response.body).to match_json_schema(repository_schema)
+        end
+      end
     end
   end
 end

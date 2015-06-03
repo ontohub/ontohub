@@ -1,6 +1,7 @@
 class RepositoriesController < InheritedResources::Base
 
-  respond_to :html, :text
+  respond_to :html
+  respond_to :text, only: %i(index)
 
   defaults finder: :find_by_path!
 
@@ -8,11 +9,16 @@ class RepositoriesController < InheritedResources::Base
 
   def create
     resource.user = current_user
+    unless params[:source_address]
+      params[:repository].except!(:source_type, :remote_type)
+    end
     super
   end
 
   def update
-    params[:repository].except!(:source_address, :source_type, :name)
+    resource.convert_to_local! if params[:un_mirror]
+    params[:repository].
+      except!(:source_address, :source_type, :remote_type, :name)
     super
   end
 
@@ -22,16 +28,33 @@ class RepositoriesController < InheritedResources::Base
   end
 
   def destroy
-    super
-  rescue Ontology::DeleteError => e
+    resource.destroy_asynchronously
+    redirect_to repositories_path
+  rescue Repository::DeleteError => e
     flash[:error] = e.message
     redirect_to resource
   end
 
-  protected
-
-  def collection
-    super.order(:name)
+  def undestroy
+    resource.undestroy
+    begin
+      resource.reload
+      flash[:success] = t('repository.undestroy.success')
+      redirect_to resource
+    rescue ActiveRecord::RecordNotFound
+      flash[:alert] = t('repository.undestroy.failure')
+      redirect_to Repository
+    end
   end
 
+  protected
+
+  def resource
+    path = params[:repository_id] || params[:id]
+    @repository ||= Repository.find_by_path(path)
+  end
+
+  def collection
+    super.active.order(:name)
+  end
 end

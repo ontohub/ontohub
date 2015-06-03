@@ -1,5 +1,7 @@
 class Project < ActiveRecord::Base
 
+  scope :not_empty, joins(:ontologies).group('projects.id')
+
   has_and_belongs_to_many :ontologies
 
   attr_accessible :contact, :description, :homepage, :institution, :name
@@ -27,4 +29,7 @@ class Project < ActiveRecord::Base
     name
   end
 
+  def name_with_ontology_count
+    "#{self} (#{self.ontologies.count})"
+  end
 end

@@ -1,8 +1,13 @@
-class SetOntologyIdOnTranslatedSentenceCorrectly < ActiveRecord::Migration
+class SetOntologyIdOnTranslatedSentenceCorrectly < MigrationWithData
   def up
-    TranslatedSentence.all.each do |sentence|
-      sentence.ontology_id = sentence.sentence.read_attribute(:ontology_id)
-      sentence.save!
+    TranslatedSentence.find_each do |translated_sentence|
+      ts_attrs = select_attributes(translated_sentence, :sentence_id)
+
+      sentence = Sentence.find(ts_attrs[:sentence_id])
+      sen_attrs = select_attributes(sentence, :ontology_id)
+
+      update_attributes!(translated_sentence,
+                         ontology_id: sen_attrs[:ontology_id])
     end
   end
 

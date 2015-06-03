@@ -4,3 +4,10 @@ hostname: example.com
 email: noreply@example.com
 action_mailer:
   delivery_method: :test
+
+paths:
+  data: tmp/data
+  git_repositories: tmp/data/git
+  symlinks: tmp/data/git_daemon
+  commits: tmp/data/commits
+  git_home: tmp/git
