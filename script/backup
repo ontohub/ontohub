@@ -191,7 +191,7 @@ To continue, I try the command again using sudo.
 
 Super user privileges are needed to reset the file permissions as
 they were before the backup. If you refuse to enter the password
-(Crtl-C) or enter a wrong password, only the permissions will not be
+(Ctl-C) or enter a wrong password, only the permissions will not be
 restored and all restored files will belong to the current user/group.
       MSG
       try_as_sudo_with_fallback('tar', verbose ? '-v' : '', '-xzf',
