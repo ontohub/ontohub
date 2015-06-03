@@ -1,5 +1,39 @@
 #!/usr/bin/env ruby
 
+# Description
+#   This backup script creates and restores backups of ontohub data. It includes:
+#     * bare git repositories (data/repositories)
+#     * named symlinks to git repositories (data/git_daemon)
+#     * the postgres database
+#
+# Usage
+#   To create a backup, run this script with the argument `create`:
+#     $ script/backup create
+#   Then a backup named with the current date and time is created in the
+#   backup directory (see below).
+#
+#   To restore a backup, run this script with the argument `restore <backup name>`
+#     $ script/backup restore 2015-01-01_00-00
+#   Then the selected backup is fully restored
+#
+# Backup directory
+#   For development machines, the backup directory is:
+#     <rails root>/tmp/backup/
+#   And for production machines, the backup directory is:
+#     /home/ontohub/ontohub_data_backup
+#
+# Super user privileges
+#   To create and restore, we need root privileges. Otherwise file modes are not
+#   preserved. This script will call `sudo` when needed and inform you about the
+#   reason for calling `sudo`. If you don't allow sudo, a backup will be created
+#   or restored anyway, but the file modes and ownership are not preserved.
+#   Then, you need to adjust them manually.
+#
+# Maintenance mode
+#   While backing up and restoring the data, the maintenance mode is activated.
+#   This way we guarantee data consistency of the backup.
+
+
 require 'tmpdir.rb'
 require 'fileutils'
 require 'pathname'
