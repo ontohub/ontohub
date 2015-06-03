@@ -291,16 +291,20 @@ end
 
 # We assume, this script runs in "RAILS_ROOT/script/".
 RAILS_ROOT = Pathname.new(__FILE__).dirname.join('..')
+BACKUP_ROOT_PRODUCTION = '/home/ontohub/ontohub_data_backup'
 
-DATABASE = if on_development_system?(RAILS_ROOT)
+DATABASE =
+  if on_development_system?(RAILS_ROOT)
     'ontohub_development'
   else
     'ontohub'
   end
-BACKUP_ROOT = if on_development_system?(RAILS_ROOT)
+
+BACKUP_ROOT =
+  if on_development_system?(RAILS_ROOT)
     RAILS_ROOT.join('tmp', 'backup')
   else
-    File.realpath('/home/ontohub/ontohub_data_backup')
+    File.realpath(BACKUP_ROOT_PRODUCTION)
   end
 
 backup = Backup::Backup.new(DATABASE, data_root(RAILS_ROOT), BACKUP_ROOT,
