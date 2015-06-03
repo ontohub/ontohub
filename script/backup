@@ -7,6 +7,7 @@
 #     * the postgres database
 #
 # Usage
+#   First note: Run this as the ontohub user, *not* as root.
 #   To create a backup, run this script with the argument `create`:
 #     $ script/backup create
 #   Then a backup named with the current date and time is created in the
@@ -287,6 +288,13 @@ end
 
 def on_development_system?(rails_root)
   !File.symlink?(rails_root.join('data'))
+end
+
+# Don't allow this to be run as the root user.
+if ENV['USER'] == 'root'
+  puts 'Running this script as the root user is disabled.'
+  puts 'Please run it as a normal user that has sudo privileges, e.g. ontohub.'
+  exit
 end
 
 # We assume, this script runs in "RAILS_ROOT/script/".
