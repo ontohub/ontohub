@@ -9,7 +9,7 @@ module Repository::Access
   end
 
   def destroy_expired_access_tokens
-    access_tokens.select(&:expired?).map(&:destroy)
+    access_tokens.select(&:expired?).each(&:destroy)
   end
 
   def generate_access_token
