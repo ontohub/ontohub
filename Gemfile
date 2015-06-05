@@ -118,10 +118,6 @@ gem 'dagnabit', '~> 3.0.1'
 # Migrate data in separate tasks
 gem 'data_migrate', '~> 1.2.0'
 
-# Recording of HTTP Requests
-gem "vcr", '~> 2.9.2'
-gem "webmock", '~> 1.9.0'
-
 group :test do
   gem 'mocha', '~> 1.1.0', require: false
   gem 'shoulda', '~> 3.5.0'
@@ -159,6 +155,10 @@ group :development, :test do
   gem 'binding_of_caller', '~> 0.7.2'
   gem 'i18n-tasks', '~> 0.7.6'
   gem 'pry-byebug', '~> 2.0.0'
+
+  # Recording of HTTP Requests
+  gem "vcr", '~> 2.9.2'
+  gem "webmock", '~> 1.9.0'
 end
 
 group :production do
