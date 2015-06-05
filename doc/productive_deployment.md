@@ -439,3 +439,8 @@ Checkout the ontohub.org branch in your local ontohub git repository clone, then
 ## More Configuration Information
 
 For more information about our server setup you can look at the [[Our productive configuration]] wiki page.
+
+# General Notes
+## Gems
+
+* [vcr](https://github.com/vcr/vcr) and [webmock](https://github.com/bblimke/webmock) are actually used for testing, but they are needed outside of the `test` group in the `Gemfile` because they are used in rake tasks. All rake tasks are loaded during deployment and if the gems are not installed, the loading (and thus the deployment) fails.
