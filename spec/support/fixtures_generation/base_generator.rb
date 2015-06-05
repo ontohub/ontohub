@@ -1,6 +1,5 @@
 require 'socket'
 require 'timeout'
-require 'vcr'
 
 module FixturesGeneration
   # This is an abstract class. Subclasses need to implement

@@ -35,10 +35,10 @@
 * [RSpec](http://rspec.info/) as testing framework
 * [Shoulda](https://github.com/colszowka/simplecov) delivers matchers for RSpec
 * [SimepleCov](https://github.com/colszowka/simplecov) for generating reports of the test coverage
+* [vcr](https://github.com/vcr/vcr) and [webmock](https://github.com/bblimke/webmock) for recording HTTP requests that are played back during testing
 
 ## Deployment
 
 * [capistrano](https://github.com/capistrano/capistrano) for deployment
 * [god](http://godrb.com/) for monitoring of background processes
 * [rails_config](https://github.com/railsjedi/rails_config) for the configuration of a ontohub instance
-
