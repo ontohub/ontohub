@@ -58,7 +58,7 @@ module Hets
     end
 
     def prepare_access_token
-      if @options[:'access-token'].is_a?(AccessToken)
+      if @options[:'access-token']
         @options[:'access-token'] = @options[:'access-token'].to_s
       end
     end
