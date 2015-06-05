@@ -5,7 +5,7 @@ module Repository::Access
   DEFAULT_OPTION = OPTIONS[0]
 
   def self.as_read_only(access)
-    access.split('_').first + '_r'
+    access.split('_', 2).first + '_r'
   end
 
   def destroy_expired_access_tokens
