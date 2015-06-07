@@ -1,6 +1,5 @@
 require 'socket'
 require 'timeout'
-require 'vcr'
 
 module FixturesGeneration
   # This is an abstract class. Subclasses need to implement
@@ -38,6 +37,8 @@ module FixturesGeneration
     protected
 
     def setup_vcr
+      require 'webmock'
+      require 'vcr'
       unless VCR.configuration.cassette_library_dir
         VCR.configure do |c|
           c.cassette_library_dir = 'spec/fixtures/vcr'

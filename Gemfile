@@ -131,10 +131,6 @@ group :test do
   gem 'poltergeist', '~> 1.6.0'
   gem 'launchy', '~> 2.4.2'
 
-  # Recording of HTTP Requests
-  gem "vcr", '~> 2.9.2'
-  gem "webmock", '~> 1.9.0'
-
   gem 'cucumber-rails', '~> 1.4', require: false
   # Code Coverage Analysis
   gem 'simplecov', '~> 0.9.0', require: false
@@ -159,6 +155,10 @@ group :development, :test do
   gem 'binding_of_caller', '~> 0.7.2'
   gem 'i18n-tasks', '~> 0.7.6'
   gem 'pry-byebug', '~> 2.0.0'
+
+  # Recording of HTTP Requests
+  gem "vcr", '~> 2.9.2', require: false
+  gem "webmock", '~> 1.9.0', require: false
 end
 
 group :production do
