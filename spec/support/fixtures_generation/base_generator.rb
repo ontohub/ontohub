@@ -37,6 +37,8 @@ module FixturesGeneration
     protected
 
     def setup_vcr
+      require 'webmock'
+      require 'vcr'
       unless VCR.configuration.cassette_library_dir
         VCR.configure do |c|
           c.cassette_library_dir = 'spec/fixtures/vcr'
