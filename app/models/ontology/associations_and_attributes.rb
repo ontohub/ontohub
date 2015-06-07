@@ -35,7 +35,7 @@ module Ontology::AssociationsAndAttributes
     has_and_belongs_to_many :projects
     has_and_belongs_to_many :tasks
 
-    attr_accessible :iri, :locid
+    attr_accessible :locid
     attr_accessible :name, :description, :acronym, :documentation,
                     :has_file,
                     :logic_id,

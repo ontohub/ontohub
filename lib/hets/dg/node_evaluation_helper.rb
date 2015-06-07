@@ -36,14 +36,12 @@ module Hets
 
       def procure_child_ontology(internal_iri)
         # generate IRI for child-ontology
-        child_iri = parent_ontology.iri_for_child(internal_iri)
         child_locid = parent_ontology.locid_for_child(internal_iri)
 
         # find or create child-ontology by IRI
-        ontology = parent_ontology.children.find_with_locid(child_locid, child_iri)
+        ontology = parent_ontology.children.find_with_locid(child_locid)
         if ontology.nil?
           options = {
-            iri: child_iri,
             locid: child_locid,
             name: internal_iri,
             basepath: parent_ontology.basepath,
