@@ -90,7 +90,7 @@ module Hets
           end
         else
           if parent_ontology.distributed?
-            ontohub_iri = parent_ontology.iri_for_child(internal_iri)
+            ontohub_iri = parent_ontology.locid_for_child(internal_iri)
           else
             # we use 0 here, because the first time around, we
             # have ontologies_count 0 which is increased by one
