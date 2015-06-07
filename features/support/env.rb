@@ -8,6 +8,8 @@ require File.expand_path("../../../spec/shared_helper", __FILE__)
 require 'sidekiq/testing'
 require 'cucumber/rails'
 require 'capybara/poltergeist'
+require 'webmock'
+require 'vcr'
 
 Capybara.current_driver = :poltergeist
 Capybara.javascript_driver = :poltergeist
