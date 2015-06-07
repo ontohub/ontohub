@@ -37,7 +37,7 @@ execute_or_die_unless_match() {
     if [[ -n "$expression" ]]; then
       check_and_handle_result_text "$result" "$expression" "$cmd"
     else
-      abort_cmd "$cmd"
+      abort_cmd "$cmd" "$result"
     fi
   fi
 }
@@ -52,7 +52,7 @@ check_and_handle_result_text() {
   echo "$result" | grep -q "$expression"
   matchstate="$?"
   if [[ "$matchstate" -ne "0" ]]; then
-    abort_cmd "$cmd"
+    abort_cmd "$cmd" "$result"
   else
     echo ">>> Failed to execute '$cmd', but ignoring the result."
   fi
@@ -60,7 +60,12 @@ check_and_handle_result_text() {
 
 abort_cmd() {
   cmd="$1"
+  message="$2"
   echo ">>> Failed to execute '$cmd', aborting further commands."
+  if [[ -n "$message" ]]; then
+    echo ">>> Message:"
+    echo "$message"
+  fi
   exit 1
 }
 
