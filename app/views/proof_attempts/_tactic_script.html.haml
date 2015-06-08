@@ -1,0 +1,7 @@
+%ul
+  %li= t('proof_attempts.tactic_script.time_limit.text', time_limit: tactic_script.time_limit)
+  %li
+    = t('proof_attempts.tactic_script.extra_options.headline')
+    %ul
+      - tactic_script.extra_options.each do |extra_option|
+        %li= extra_option

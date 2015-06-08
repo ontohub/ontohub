@@ -4,8 +4,9 @@ module Repository::Git
   extend ActiveSupport::Concern
 
   delegate :commit_id, :dir?, :empty?, :get_file, :has_changed?,
-    :is_head?, :path_exists?, :paths_starting_with, :points_through_file?,
-    to: :git
+           :is_head?, :path_exists?, :paths_starting_with,
+           :points_through_file?, :deepest_existing_dir,
+           to: :git
 
   included do
     after_create  :create_and_init_git
@@ -40,6 +41,7 @@ module Repository::Git
   def delete_file(filepath, user, message = nil, &block)
     commit_oid = git.delete_file(user_info(user), filepath, &block)
     commit_for!(commit_oid).commit_oid
+    mark_ontology_as_having_file(filepath, has_file: false)
   end
 
   def save_file(tmp_file, filepath, message, user, do_not_parse: false)
@@ -56,10 +58,7 @@ module Repository::Git
 
   def save_file_only(tmp_file, filepath, message, user)
     commit = nil
-    name = user ? user.name : Settings.git.fallbacks.committer_name
-    email = user ? user.email : Settings.git.fallbacks.committer_email
-    userdata = {email: email, name: name}
-    git.add_file(userdata, tmp_file, filepath, message) do |commit_oid|
+    git.add_file(user_info(user), tmp_file, filepath, message) do |commit_oid|
       commit = commit_oid
     end
     commit_for!(commit)
@@ -176,6 +175,7 @@ module Repository::Git
       git.changed_files(commit.oid).each { |f|
         current_file_count += 1
         if f.added? || f.modified?
+          mark_ontology_as_having_file(f.path, has_file: true)
           ontology_version_options = OntologyVersionOptions.new(
             f.path,
             options.delete(:user),
@@ -190,7 +190,8 @@ module Repository::Git
             do_not_parse: true,
             previous_filepath: f.delta.old_file[:path])
           versions << save_ontology(commit.oid, ontology_version_options)
-        # TODO: elsif f.deleted?
+        elsif f.deleted?
+          mark_ontology_as_having_file(f.path, has_file: false)
         end
       }
       highest_change_file_count = [highest_change_file_count,
@@ -222,8 +223,22 @@ module Repository::Git
     @priority_settings ||= OpenStruct.new(Settings.git[:push_priority])
   end
 
+  def mark_ontology_as_having_file(path, has_file: false)
+    ontos = ontologies.with_path(path)
+    return unless ontos.any? { |onto| onto.has_file != has_file }
+    ontos.each do |onto|
+      onto.has_file = has_file
+      onto.save
+    end
+  end
+
   def user_info(user)
-    {email: user.email, name: user.name}
+    if user
+      {email: user.email, name: user.name}
+    else
+      {email: Settings.git.fallbacks.committer_email,
+       name: Settings.git.fallbacks.committer_name}
+    end
   end
 
   def master_file?(ontology, ontology_version_options)
@@ -231,7 +246,7 @@ module Repository::Git
   end
 
   def generate_iri(basepath)
-    "http://#{Settings.hostname}#{generate_locid(basepath)}"
+    "http://#{Ontohub::Application.config.fqdn}#{generate_locid(basepath)}"
   end
 
   def generate_locid(basepath)

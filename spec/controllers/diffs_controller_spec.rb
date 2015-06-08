@@ -59,7 +59,10 @@ describe DiffsController do
         before { get :show, repository_id: repository.to_param, ref: 'master' }
         it { should respond_with :found }
         it { should redirect_to root_path }
-        it { should set_the_flash.to(/not authorized/) }
+
+        it 'sets the flash' do
+          expect(flash[:alert]).to match(/not authorized/)
+        end
       end
     end
 
@@ -68,7 +71,10 @@ describe DiffsController do
         before { get :show, repository_id: repository.to_param, ref: 'master' }
         it { should respond_with :found }
         it { should redirect_to root_path }
-        it { should set_the_flash.to(/not authorized/) }
+
+        it 'sets the flash' do
+          expect(flash[:alert]).to match(/not authorized/)
+        end
       end
     end
   end

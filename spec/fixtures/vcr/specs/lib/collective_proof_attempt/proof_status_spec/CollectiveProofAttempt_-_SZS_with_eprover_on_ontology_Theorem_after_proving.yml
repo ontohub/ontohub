@@ -1,0 +1,57 @@
+---
+http_interactions:
+- request:
+    method: post
+    uri: http://localhost:8000/prove/http:%2F%2Flocalhost:3001%2Fref%2F1%2Frepository-444%2FSimple_Implications%2F%2FTheorem/auto
+    body:
+      encoding: UTF-8
+      string: '{"format":"json","include":"true","prover":"eprover","theorems":["Ax1"],"node":"Theorem"}'
+    headers:
+      Content-Type:
+      - application/json
+      Accept-Encoding:
+      - gzip;q=1.0,deflate;q=0.6,identity;q=0.3
+      Accept:
+      - "*/*"
+      User-Agent:
+      - Ruby
+      Host:
+      - localhost:8000
+  response:
+    status:
+      code: 200
+      message: OK
+    headers:
+      Transfer-Encoding:
+      - chunked
+      Date:
+      - Tue, 02 Jun 2015 06:48:27 GMT
+      Server:
+      - Warp/3.0.11
+      Content-Type:
+      - application/json
+    body:
+      encoding: UTF-8
+      string: |-
+        [{
+        "node": "Theorem",
+        "goals": [{
+         "name": "Ax1",
+         "result": "Proved",
+         "details": "",
+         "used_prover": { "identifier": "eprover", "name": "eprover" },
+         "used_translation": "CASL2SoftFOL",
+         "tactic_script": { "time_limit": 1, "extra_options": [] },
+         "proof_tree": "",
+         "used_time": {
+          "seconds": -1,
+          "components": { "hours": -1, "mins": 59, "secs": 59 }
+          },
+         "used_axioms": [],
+         "prover_output":
+          "# Parsed axioms                        : 1\n# SZS output end CNFRefutation.\n# SZS output start CNFRefutation.\n# SZS status Theorem\n"
+         }]
+        }]
+    http_version: 
+  recorded_at: Tue, 02 Jun 2015 06:48:27 GMT
+recorded_with: VCR 2.9.3

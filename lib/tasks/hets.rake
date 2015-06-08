@@ -1,5 +1,4 @@
 namespace :hets do
-
   HETS_LOGFILE = Rails.root.join('log', 'hets.log')
   HETS_PIDFILE = Rails.root.join('tmp', 'pids', 'hets.pid')
 
@@ -63,19 +62,24 @@ namespace :hets do
   end
 
   def hets_binary
-    hets_config['hets_path'].
+    # Find first executable from those specified in settings_for_development.yml
+    settings_for_development['paths']['hets']['executable'].
       map { |path| File.expand_path path }.
-      find { |path| File.exists?(path) }
+      find { |path| File.executable?(path) }
   end
 
   def hets_server_options
-    hets_config['server_options'] || []
+    load_environment_light_with_hets
+    Settings.hets.server_options
   end
 
-  def hets_config
-    return @hets_config if @hets_config
-    hets_yml = File.expand_path('../../../config/hets.yml', __FILE__)
-    @hets_config = YAML.load_file(hets_yml)
+  def settings_for_development
+    @settings_for_development ||=
+      YAML.load_file(Rails.root.join('config',
+                                     'settings_for_development.yml').to_s)
   end
 
+  def load_environment_light_with_hets
+    require Rails.root.join('lib', 'environment_light_with_hets.rb').to_s
+  end
 end

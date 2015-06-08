@@ -29,9 +29,9 @@ update = (container) ->
           container.find(".spinner").
             replaceWith($('<a />').
               attr('href', document.location.href).
-              attr('class', 'btn btn-info btn-sm').
+              attr('class', 'btn btn-xs btn-primary').
               append($('<i />').
-                attr('class', 'icon-refresh')).
+                attr('class', 'fa fa-refresh')).
               text('refresh'))
         else
           enqueue(container)

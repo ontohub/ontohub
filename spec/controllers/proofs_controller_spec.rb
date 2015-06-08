@@ -34,7 +34,7 @@ describe ProofsController do
         end
 
         it 'set the flash/success' do
-          expect(flash[:success]).not_to be_nil
+          expect(flash[:success]).not_to be(nil)
         end
 
         it { should respond_with :found }
@@ -60,7 +60,7 @@ describe ProofsController do
         end
 
         it 'set the flash/alert' do
-          expect(flash[:alert]).not_to be_nil
+          expect(flash[:alert]).not_to be(nil)
         end
 
         it { should respond_with :found }
@@ -141,7 +141,7 @@ describe ProofsController do
         end
 
         it 'set the flash/success' do
-          expect(flash[:success]).not_to be_nil
+          expect(flash[:success]).not_to be(nil)
         end
 
         it { should respond_with :found }
@@ -169,7 +169,7 @@ describe ProofsController do
         end
 
         it 'set the flash/alert' do
-          expect(flash[:alert]).not_to be_nil
+          expect(flash[:alert]).not_to be(nil)
         end
 
         it { should respond_with :found }

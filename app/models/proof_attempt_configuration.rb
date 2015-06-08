@@ -21,6 +21,10 @@ class ProofAttemptConfiguration < ActiveRecord::Base
   validates :ontology, presence: true
   before_create :generate_locid
 
+  def empty?
+    [logic_mapping, prover, timeout, axioms, goals].all?(&:blank?)
+  end
+
   protected
 
   def self.find_with_locid(locid, _iri = nil)

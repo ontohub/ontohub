@@ -57,7 +57,7 @@ describe HetsInstance do
       end
 
       it 'should have a non-null version' do
-        expect(hets_instance.version).to_not be_nil
+        expect(hets_instance.version).to_not be(nil)
       end
 
       it 'should have a correct general_version' do
@@ -81,15 +81,15 @@ describe HetsInstance do
       end
 
       it 'should have a nil version' do
-        expect(hets_instance.version).to be_nil
+        expect(hets_instance.version).to be(nil)
       end
 
       it 'should have a nil general_version' do
-        expect(hets_instance.general_version).to be_nil
+        expect(hets_instance.general_version).to be(nil)
       end
 
       it 'should have a nil specific version' do
-        expect(hets_instance.specific_version).to be_nil
+        expect(hets_instance.specific_version).to be(nil)
       end
     end
   end

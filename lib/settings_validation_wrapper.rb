@@ -9,7 +9,6 @@ class SettingsValidationWrapper
   NPROC_AVAILABLE = NPROC_PATH.present? && File.executable?(NPROC_PATH)
 
   PRESENCE = %i(yml__name
-                yml__hostname
                 yml__OMS
                 yml__OMS_qualifier
                 yml__action_mailer__delivery_method
@@ -22,7 +21,6 @@ class SettingsValidationWrapper
                 yml__exception_notifier__email_prefix
                 yml__exception_notifier__sender_address
                 yml__exception_notifier__exception_recipients
-                yml__workers__hets
                 yml__paths__data
                 yml__paths__git_repositories
                 yml__paths__symlinks
@@ -40,15 +38,12 @@ class SettingsValidationWrapper
                 yml__ontology_types
                 yml__tasks
 
-                yml__hets_path
-                yml__hets_lib
-                yml__hets_owl_tools
-                yml__version_minimum_version
-                yml__version_minimum_revision
-                yml__stack_size
-                yml__cmd_line_options
-                yml__server_options
-                yml__env__LANG
+                yml__hets__version_minimum_version
+                yml__hets__version_minimum_revision
+                yml__hets__stack_size
+                yml__hets__cmd_line_options
+                yml__hets__server_options
+                yml__hets__env__LANG
 
                 initializers__fqdn
                 initializers__data_root
@@ -56,6 +51,9 @@ class SettingsValidationWrapper
                 initializers__git_root
                 initializers__symlink_path
                 initializers__commits_path)
+
+  PRESENCE_IN_PRODUCTION = %i(yml__hets__executable_path
+                              yml__hets__instances_count)
 
   BOOLEAN = %i(yml__exception_notifier__enabled
                yml__display_head_commit
@@ -67,17 +65,16 @@ class SettingsValidationWrapper
 
                initializers__consider_all_requests_local)
 
-  FIXNUM = %i(yml__workers__hets
+  FIXNUM = %i(yml__hets__instances_count
               yml__action_mailer__smtp_settings__port
               yml__allow_unconfirmed_access_for_days
               yml__git__push_priority__commits
               yml__git__push_priority__changed_files_per_commit
-              yml__version_minimum_revision)
+              yml__hets__version_minimum_revision)
 
-  FLOAT = %i(yml__version_minimum_version)
+  FLOAT = %i(yml__hets__version_minimum_version)
 
   STRING = %i(yml__name
-              yml__hostname
               yml__OMS
               yml__OMS_qualifier
               yml__email
@@ -102,11 +99,8 @@ class SettingsValidationWrapper
              yml__ontology_types
              yml__tasks
 
-             yml__hets_path
-             yml__hets_lib
-             yml__hets_owl_tools
-             yml__cmd_line_options
-             yml__server_options)
+             yml__hets__cmd_line_options
+             yml__hets__server_options)
 
   DIRECTORY_PRODUCTION = %i(initializers__data_root
                             initializers__git_home
@@ -114,17 +108,13 @@ class SettingsValidationWrapper
                             initializers__symlink_path
                             initializers__commits_path)
 
-  # Elements of those arrays need to be absolute filepaths
-  ABSOLUTE_FILEPATH = %i(yml__hets_path
-                         yml__hets_lib
-                         yml__hets_owl_tools)
-
   ELEMENT_PRESENT = %i(yml__allowed_iri_schemes
-                       yml__cmd_line_options
-                       yml__server_options)
+                       yml__hets__cmd_line_options
+                       yml__hets__server_options)
 
 
   validates_presence_of *PRESENCE
+  validates_presence_of *PRESENCE_IN_PRODUCTION, if: :in_production?
 
   BOOLEAN.each do |field|
     validates field, class: {in: [TrueClass, FalseClass]}
@@ -135,9 +125,6 @@ class SettingsValidationWrapper
   ARRAY.each { |field| validates field, class: {in: [Array]} }
   DIRECTORY_PRODUCTION.each do |field|
     validates field, directory: true, if: :in_production?
-  end
-  ABSOLUTE_FILEPATH.each do |field|
-    validates field, elements_are_absolute_filepaths: true
   end
   ELEMENT_PRESENT.each { |field| validates field, elements_are_present: true }
 
@@ -177,17 +164,19 @@ class SettingsValidationWrapper
   validates :yml__tasks,
             elements_have_keys: {keys: %i(name description)}
 
-  validates :yml__hets_path, elements_with_one_executable: true
-
   validates :initializers__log_level,
             inclusion: {in: %i(fatal error warn info debug)}
 
+  validates :yml__hets__executable_path, executable: true, if: :in_production?
   if NPROC_AVAILABLE
-    validates :yml__workers__hets,
+    validates :yml__hets__instances_count,
               numericality: {greater_than: 0,
-                             less_than_or_equal_to: `nproc`.to_i}
+                             less_than_or_equal_to: `nproc`.to_i},
+              if: :in_production?
   else
-    validates :yml__workers__hets, numericality: {greater_than: 0}
+    validates :yml__hets__instances_count,
+              numericality: {greater_than: 0},
+              if: :in_production?
   end
 
   protected

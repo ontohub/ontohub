@@ -23,7 +23,9 @@ describe KeysController do
     context 'POST to create' do
       before { post :create, key: attributes_for(:key) }
 
-      it{ should set_the_flash.to(/successfully created/) }
+      it 'sets the flash' do
+        expect(flash[:notice]).to match(/successfully created/)
+      end
       it{ should redirect_to(:keys) }
     end
 

@@ -44,9 +44,9 @@ gem 'haml-rails', '~> 0.4'
 # Official version above and including 0.4 requires Rails
 # which is a problem in git-hooks.
 # The specified commit is from a fork and allows to overwrite arrays.
-# Further, it adds the method prepend_source! to the Settings.
-# Also, it removes the Rails dependency.
-gem 'rails_config', github: 'eugenk/rails_config', ref: 'patched-for-ontohub'
+# It has been pull-requested:
+# https://github.com/railsconfig/rails_config/pull/99
+gem 'rails_config', github: 'hnakamur/rails_config', ref: 'overwrite_arrays'
 
 #provides  correct indefinite article 
 gem 'indefinite_article', '~> 0.2.0'
@@ -138,10 +138,6 @@ group :test do
   gem 'poltergeist', '~> 1.6.0'
   gem 'launchy', '~> 2.4.3'
 
-  # Recording of HTTP Requests
-  gem "vcr", '~> 2.9.3'
-  gem "webmock", '~> 1.21.0'
-
   gem 'cucumber-rails', '~> 1.4', require: false
   # Code Coverage Analysis
   gem 'simplecov', '~> 0.10.0', require: false
@@ -166,6 +162,10 @@ group :development, :test do
   gem 'binding_of_caller', '~> 0.7.2'
   gem 'i18n-tasks', '~> 0.8.3'
   gem 'pry-byebug', '~> 3.1.0'
+
+  # Recording of HTTP Requests
+  gem "vcr", '~> 2.9.3', require: false
+  gem "webmock", '~> 1.21.0', require: false
 end
 
 group :production do

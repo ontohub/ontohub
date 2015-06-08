@@ -37,7 +37,7 @@ describe OntologyVersion do
     context 'in subdirectory' do
       let(:ontology) { create :ontology, basepath: 'subdir/pizza' }
       let(:qualified_locid) do
-        "http://#{Settings.hostname}#{ontology_version.locid}"
+        "#{Hostname.url_authority}#{ontology_version.locid}"
       end
 
       before do
@@ -68,15 +68,31 @@ describe OntologyVersion do
       end
 
       it 'should have state_updated_at' do
-        expect(ontology_version.state_updated_at).to_not be_nil
+        expect(ontology_version.state_updated_at).to_not be(nil)
       end
 
       it 'should contain a commit' do
-        expect(commit).to_not be_nil
+        expect(commit).to_not be(nil)
       end
 
       it 'should contain a commit which refers to commit_oid' do
         expect(commit.commit_oid).to eq(ontology_version.commit_oid)
+      end
+    end
+
+    context 'with url-catalog' do
+      let(:repository) { ontology.repository }
+      let!(:url_maps) { [1,2].map { create :url_map, repository: repository } }
+
+      before do
+        ontology_version
+        Worker.drain
+      end
+
+      it 'have sent a request with url-catalog' do
+        expect(WebMock).
+          to have_requested(:get,
+            /http:\/\/localhost:8000\/dg\/.*\?.*url-catalog=#{url_maps.join(',')}.*/)
       end
     end
 

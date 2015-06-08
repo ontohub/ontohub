@@ -76,6 +76,10 @@ en:
       hint:
         slashes: Use slashes to directly create subdirectories.
   ontology:
+    deleted:
+      label: File deleted
+      info: The defining file %{path} of this %{oms} was deleted. However, you can check the
+      last_file_version: last version of that file
     delete: Delete
     delete_error: Can't delete an %{oms} that's imported by another one.
     delete_confirm:
@@ -92,6 +96,12 @@ en:
         it would leave the %{item} with too few owners.
         The threshold level is: %{minimal_count}.
   files:
+    delete:
+      button_text: Delete File
+      header_text: Are you sure about deleting the file?
+      body_text:
+        If you delete the file %{path}, only the file is deleted from the repository.
+        The containing ontologies will still be accessible, but the file cannot be referenced any more from other ontology files.
     discard: Discard
     discard_confirmation: You made changes to the code. Are you sure you want to discard them?
     discard_desc: |
@@ -132,8 +142,12 @@ en:
       provers:
         label: Provers
         none_is_default: Selecting none will result in using the default prover.
-      select_all_provers: Select all
-      select_no_provers: Select none
+        select_all: Select all
+        select_none: Select none
+      axioms:
+        none_is_default: Selecting none will result in using all axioms.
+        select_all: Select all
+        select_none: Select none
       timeout:
         label: Timeout
         hint: The timeout will be split evenly across the proof obligations.
@@ -153,20 +167,44 @@ en:
       prover: Prover
       status: Proof Status
     show:
-      head: Proof Attempt of
-      created_at: Date
-      time_taken: Time taken
-      used_axioms: Axioms Used
-      no_used_axioms: None
-      used_theorems: Previously Proven Theorems Used
-      no_used_theorems: None
-      generated_axioms: Generated Axioms Used
-      no_generated_axioms: None
-      prover: Prover
-      tactic_script: Tactic script
-      prover_output: Prover output
-      no_prover_output: There is no prover output.
-      seconds: seconds
+      headline: Proof Attempt of
+      no_sentences: None
+    configuration:
+      headline: Configuration
+      timeout:
+        headline: Timeout
+        text: "%{timeout} seconds"
+      prover:
+        headline: Prover
+      axioms:
+        headline: Selected axioms
+      goals:
+        headline: Selected theorems to prove
+      logic_mapping:
+        headline: Selected logic mapping
+    result:
+      headline: Result
+      time_taken:
+        headline: Time taken
+        text: "%{time_taken} seconds"
+      used_prover:
+        headline: Used prover
+      tactic_script:
+        headline: Tactic script
+      used_axioms:
+        headline: Used axioms
+      used_theorems:
+        headline: Used theorems
+      generated_axioms:
+        headline: Generated axioms used
+      prover_output:
+        headline: Prover output
+        link_text: Show prover output
+    tactic_script:
+      time_limit:
+        text: "Time limit: %{time_limit}"
+      extra_options:
+        headline: "Extra options:"
   prover_outputs:
     show:
       head_html: "Prover Output for %{theorem}'s %{proof_attempt_text}"

@@ -9,7 +9,7 @@
 name: "MyOntohub"
 
 # Hostname of the installation
-hostname: example.com
+hostname: #nil - overwrite in the settings.local.yml
 
 # Generalizing term "Ontology",ALternatives are M:Models and S:Specification
 OMS: ontology
@@ -64,10 +64,6 @@ exception_notifier:
   exception_recipients:
     - exception-recipient@example.com
 
-# Worker count
-workers:
-  hets: 1
-
 # The following paths can be absolute paths
 # or relative paths to the project root
 paths:
@@ -82,6 +78,14 @@ paths:
   # home directory of the git user
   #   needed for handling of ssh keys in ~git/.ssh/authorized_keys
   git_home: ~git
+
+hets:
+  # This is the path to the hets executable we use in `rake hets:*` and for the
+  # process manager in production mode (god)
+  executable_path: /usr/bin/hets
+  # The number of hets instances to run in parallel in production mode.
+  # Minimum: 1, Maximum: number of processors
+  instances_count: 1
 
 git:
   verify_url: http://localhost/

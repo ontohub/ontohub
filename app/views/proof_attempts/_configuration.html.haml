@@ -1,0 +1,23 @@
+- unless configuration.empty?
+  %h4= t('proof_attempts.configuration.headline')
+
+  .row.proof-attempt-configuration
+    - if configuration.timeout
+      .timeout
+        = render partial: 'item', locals: {title: t('proof_attempts.configuration.timeout.headline'), body: t('proof_attempts.configuration.timeout.text', timeout: configuration.timeout)}
+
+    - if configuration.prover
+      .prover
+        = render partial: 'item', locals: {title: t('proof_attempts.configuration.prover.headline'), body: configuration.prover}
+
+    - if configuration.logic_mapping
+      .logic_mapping
+        = render partial: 'item', locals: {title: t('proof_attempts.configuration.logic_mapping.headline'), body: configuration.logic_mapping}
+
+    - if configuration.axioms.present?
+      .axioms
+        = render partial: 'item', locals: {title: t('proof_attempts.configuration.axioms.headline'), body: render(partial: 'sentences_list', locals: {sentences: configuration.axioms})}
+
+    - if configuration.goals.present?
+      .goals
+        = render partial: 'item', locals: {title: t('proof_attempts.configuration.goals.headline'), body: render(partial: 'sentences_list', locals: {sentences: configuration.goals})}

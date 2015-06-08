@@ -16,7 +16,10 @@ describe LanguageMappingsController do
       before { get :show, id: mapping.id, language_id: source_language.id }
       it { should respond_with :success }
       it { should render_template :show }
-      it { should_not set_the_flash }
+
+      it 'does not set the flash' do
+        expect(flash).to be_empty
+      end
     end
 
     context 'on get to new' do
@@ -39,7 +42,7 @@ describe LanguageMappingsController do
         let!(:mapping_from_db) { LanguageMapping.find_by_iri('http://test.de') }
 
         it 'should exist' do
-          expect(mapping_from_db).not_to be_nil
+          expect(mapping_from_db).not_to be(nil)
         end
 
         it 'should have correct source' do
@@ -66,7 +69,7 @@ describe LanguageMappingsController do
         let!(:mapping_from_db) { LanguageMapping.find_by_iri('http://test2.de') }
 
         it 'should exist' do
-          expect(mapping_from_db).not_to be_nil
+          expect(mapping_from_db).not_to be(nil)
         end
 
         it 'should have correct source' do
@@ -83,7 +86,7 @@ describe LanguageMappingsController do
       before { delete :destroy, id: mapping.id, language_id: source_language.id }
 
       it 'remove the record' do
-        expect(LanguageMapping.find_by_id(mapping.id)).to be_nil
+        expect(LanguageMapping.find_by_id(mapping.id)).to be(nil)
       end
     end
 
@@ -91,7 +94,10 @@ describe LanguageMappingsController do
       before { get :edit, id: mapping.id, language_id: source_language.id }
       it { should respond_with :success }
       it { should render_template :edit }
-      it { should_not set_the_flash }
+
+      it 'does not set the flash' do
+        expect(flash).to be_empty
+      end
     end
   end
 
@@ -105,7 +111,10 @@ describe LanguageMappingsController do
       before { get :show, id: mapping.id, language_id: source_language.id }
       it { should respond_with :success }
       it { should render_template :show }
-      it { should_not set_the_flash }
+
+      it 'does not set the flash' do
+        expect(flash).to be_empty
+      end
     end
 
     context 'on get to new' do
@@ -129,7 +138,7 @@ describe LanguageMappingsController do
         let!(:mapping_from_db) { LanguageMapping.find_by_iri('http://test.de') }
 
         it 'should exist' do
-          expect(mapping_from_db).not_to be_nil
+          expect(mapping_from_db).not_to be(nil)
         end
 
         it 'should have correct source' do
@@ -153,7 +162,7 @@ describe LanguageMappingsController do
       end
 
       it 'not change the record' do
-        expect(LanguageMapping.find_by_iri('http://test2.de')).to be_nil
+        expect(LanguageMapping.find_by_iri('http://test2.de')).to be(nil)
       end
     end
 
@@ -168,7 +177,10 @@ describe LanguageMappingsController do
     context 'on GET to EDIT' do
       before { get :edit, id: mapping.id, language_id: source_language.id }
       it { should respond_with :redirect }
-      it { should set_the_flash.to(/not authorized/i) }
+
+      it 'sets the flash' do
+        expect(flash[:alert]).to match(/not authorized/)
+      end
     end
   end
 
@@ -177,14 +189,20 @@ describe LanguageMappingsController do
       before { get :show, id: mapping.id, language_id: source_language.id }
       it { should respond_with :success }
       it { should render_template :show }
-      it { should_not set_the_flash }
+
+      it 'does not set the flash' do
+        expect(flash).to be_empty
+      end
     end
 
     context 'on get to new' do
       before { get :new, language_id: source_language.id }
 
       it { should respond_with :redirect }
-      it { should set_the_flash }
+
+      it 'sets the flash' do
+        expect(flash[:alert]).to match(/not authorized/)
+      end
     end
   end
 
@@ -199,7 +217,7 @@ describe LanguageMappingsController do
     end
 
     it 'not create the record' do
-      expect(LanguageMapping.find_by_iri('http://test.de')).to be_nil
+      expect(LanguageMapping.find_by_iri('http://test.de')).to be(nil)
     end
   end
 
@@ -214,7 +232,7 @@ describe LanguageMappingsController do
     end
 
     it 'not change the record' do
-      expect(LanguageMapping.find_by_iri('http://test2.de')).to be_nil
+      expect(LanguageMapping.find_by_iri('http://test2.de')).to be(nil)
     end
   end
 

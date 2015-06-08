@@ -7,6 +7,10 @@ FactoryGirl.define do
     name { 'SPASS' }
     display_name { 'SPASS Prover' }
 
+    initialize_with do
+      Prover.find_by_name(name) || Prover.new(name: name)
+    end
+
     trait :with_sequenced_name do
       after(:build) do |prover|
         prover.name = generate :prover_name

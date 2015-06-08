@@ -8,7 +8,10 @@ describe Teams::PermissionsController do
     context 'not signed in' do
       before { get :index, team_id: team.to_param }
 
-      it { should set_the_flash.to(/not authorized/) }
+      it 'sets the flash' do
+        expect(flash[:alert]).to match(/not authorized/)
+      end
+
       it { should respond_with :redirect }
     end
 

@@ -1,0 +1,57 @@
+---
+http_interactions:
+- request:
+    method: post
+    uri: http://localhost:8000/prove/http:%2F%2Flocalhost:3001%2Fref%2F1%2Frepository-442%2FSimple_Implications%2F%2FCounterSatisfiable/auto
+    body:
+      encoding: UTF-8
+      string: '{"format":"json","include":"true","prover":"eprover","theorems":["Ax2"],"node":"CounterSatisfiable"}'
+    headers:
+      Content-Type:
+      - application/json
+      Accept-Encoding:
+      - gzip;q=1.0,deflate;q=0.6,identity;q=0.3
+      Accept:
+      - "*/*"
+      User-Agent:
+      - Ruby
+      Host:
+      - localhost:8000
+  response:
+    status:
+      code: 200
+      message: OK
+    headers:
+      Transfer-Encoding:
+      - chunked
+      Date:
+      - Tue, 02 Jun 2015 06:48:09 GMT
+      Server:
+      - Warp/3.0.11
+      Content-Type:
+      - application/json
+    body:
+      encoding: UTF-8
+      string: |-
+        [{
+        "node": "CounterSatisfiable",
+        "goals": [{
+         "name": "Ax2",
+         "result": "Disproved",
+         "details": "",
+         "used_prover": { "identifier": "eprover", "name": "eprover" },
+         "used_translation": "CASL2SoftFOL",
+         "tactic_script": { "time_limit": 1, "extra_options": [] },
+         "proof_tree": "",
+         "used_time": {
+          "seconds": -1,
+          "components": { "hours": -1, "mins": 59, "secs": 59 }
+          },
+         "used_axioms": [],
+         "prover_output":
+          "# Parsed axioms                        : 2\n# SZS output end Saturation.\nfof(c_0_1, axiom, (![X1]:X1=zero), c_0_0).\nfof(c_0_0, axiom, (![X1]:X1=zero), file('/var/folders/h0/h5fs6h4n4wg1qpj05yd205dc0000gn/T/_ax21137623865997389814.tptp', ax1)).\n# SZS output start Saturation.\n# SZS status CounterSatisfiable\n# Scanning for AC axioms\n"
+         }]
+        }]
+    http_version: 
+  recorded_at: Tue, 02 Jun 2015 06:48:09 GMT
+recorded_with: VCR 2.9.3

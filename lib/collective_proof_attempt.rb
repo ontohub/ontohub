@@ -73,9 +73,6 @@ class CollectiveProofAttempt
   def execute_proof(prove_options)
     input_io = Hets.prove_via_api(ontology, prove_options)
     [:all_is_well, input_io]
-  rescue Hets::ExecutionError => e
-    handle_hets_execution_error(e, self)
-    [:abort, nil]
   rescue => e
     # Avoid stack level too deep in sidekiq.
     # See https://github.com/mperham/sidekiq/issues/2284

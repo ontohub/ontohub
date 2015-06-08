@@ -25,7 +25,7 @@ module RepositoriesHelper
     when 'git'
       repository_tree_url(repository, protocol: 'git', port: nil) << '.git'
     when 'ssh-git'
-      "git@#{Settings.hostname}:#{repository.path}.git"
+      "git@#{Ontohub::Application.config.fqdn}:#{repository.path}.git"
     end
   end
 

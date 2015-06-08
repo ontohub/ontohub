@@ -27,6 +27,27 @@ FactoryGirl.define do
         end
     end
 
+    factory :done_ontology do
+      state { 'done' }
+
+      ontology.after(:build) do |ontology|
+        version = ontology.versions.build({
+            commit_oid: '0'*40,
+            user: nil,
+            state: 'done',
+            basepath: ontology.basepath,
+            file_extension: ontology.file_extension
+          }, without_protection: true)
+
+        version.do_not_parse!
+      end
+
+      ontology.after(:create) do |ontology|
+        ontology.ontology_version = ontology.versions.last
+        ontology.save!
+      end
+    end
+
     ontology.after(:build) do |ontology|
       version = ontology.versions.build({
           commit_oid: '0'*40,

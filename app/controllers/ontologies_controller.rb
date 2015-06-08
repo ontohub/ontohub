@@ -13,9 +13,6 @@ class OntologiesController < InheritedResources::Base
 
   respond_to :html, except: %i(show)
 
-  before_filter :check_write_permission, except: [:index, :show, :oops_state]
-  before_filter :check_read_permissions
-
   def index
     if in_repository?
       @search_response = paginate_for(parent.ontologies)

@@ -35,7 +35,7 @@ describe Mapping do
           end
 
           it 'has a mapping-version set' do
-            expect(mapping.mapping_version).to_not be_nil
+            expect(mapping.mapping_version).to_not be(nil)
           end
 
           it 'has a mapping-version that points to the current mapping-version' do

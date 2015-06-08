@@ -195,6 +195,24 @@ class Ontology < ActiveRecord::Base
     current_version.locid
   end
 
+  # Checks if a file at the given commit (HEAD if nil) doesn't exist.
+  def file_deleted?(commit_oid = nil)
+    !has_file?(commit_oid)
+  end
+
+  # alias_method doesn't work for this one.
+  def has_file?(commit_oid = nil)
+    has_file(commit_oid)
+  end
+
+  def has_file(commit_oid = nil)
+    if repository.is_head?(commit_oid)
+      self[:has_file]
+    else
+      repository.path_exists?(path, commit_oid)
+    end
+  end
+
   protected
 
   def import_mappings

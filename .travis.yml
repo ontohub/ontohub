@@ -34,7 +34,7 @@ before_install:
   - 'gem install bundler'
 
 script:
-  - ELASTIC_TEST_PORT=9200 bundle exec rake
+  - SPEC_OPTS='--format documentation' CUCUMBER_OPTS='--format pretty' ELASTIC_TEST_PORT=9200 bundle exec rake
 
 before_script:
   - psql -c 'create database ontohub_test;' -U postgres

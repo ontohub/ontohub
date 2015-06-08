@@ -3,7 +3,9 @@ class LogicMappingSerializer < ApplicationSerializer
     attributes :iri
 
     def iri
-      urls.logic_mapping_url(object, host: Settings.hostname)
+      urls.logic_mapping_url(object,
+                             host: Ontohub::Application.config.fqdn,
+                             port: Ontohub::Application.config.port)
     end
   end
 

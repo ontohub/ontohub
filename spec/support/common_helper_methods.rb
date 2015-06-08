@@ -10,6 +10,18 @@ def fixture_file(path)
   fixture_path.join(path)
 end
 
+def prover_output_fixture(node, prover)
+  generated = fixture_file('').join('prover_output', 'generated', node, prover)
+  if File.exist?(generated)
+    generated
+  else
+    $stderr.
+      puts("Generated prover output fixture for #{node}, #{prover} not found.")
+    $stderr.puts 'Using (possibly outdated) fallback.'
+    fixture_file('').join('prover_output', node, prover)
+  end
+end
+
 def ontology_file(path, ext=nil)
   portion =
     if ext
@@ -28,9 +40,19 @@ def add_fixture_file(repository, relative_file)
 end
 
 def version_for_file(repository, path)
-  dummy_user = create :user
+  dummy_user = FactoryGirl.create :user
   basename = File.basename(path)
   version = repository.save_file path, basename, "#{basename} added", dummy_user
+end
+
+def stub_fqdn_and_port_for_pipeline_generator
+  before do
+    fqdn = FixturesGeneration::PipelineGenerator::RAILS_SERVER_TEST_FQDN
+    port = FixturesGeneration::PipelineGenerator::RAILS_SERVER_TEST_PORT
+
+    allow(Ontohub::Application.config).to receive(:fqdn).and_return(fqdn)
+    allow(Ontohub::Application.config).to receive(:port).and_return(port)
+  end
 end
 
 def schema_for(name)

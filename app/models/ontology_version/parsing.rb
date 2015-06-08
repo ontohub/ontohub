@@ -1,7 +1,6 @@
 module OntologyVersion::Parsing
 
   extend ActiveSupport::Concern
-  include Hets::ErrorHandling
 
   included do
     @queue = 'hets'
@@ -49,9 +48,6 @@ module OntologyVersion::Parsing
     input_io = Hets.parse_via_api(ontology, hets_options,
                                   structure_only: structure_only)
     [:all_is_well, input_io]
-  rescue Hets::ExecutionError => e
-    handle_hets_execution_error(e, self)
-    e.abort_execution ? [:abort, nil] : raise(e)
   end
 
   def parse_full

@@ -14,7 +14,7 @@ class RepositoryUpdateWorker < Worker
       .suspended_save_ontologies \
         start_oid: newrev,
         stop_oid:  oldrev,
-        walk_order: Rugged::SORT_REVERSE
+        walk_order: :reverse
   end
 
 end

@@ -86,10 +86,11 @@ describe FilesController do
           let(:message)      { "message" }
 
           before do
-            FileUtils.rm_rf(tmp_filepath)
-            File.open(tmp_filepath, 'w+') { |f| f.write("unchanged") }
+            tmpfile = Tempfile.new('repository_test')
+            tmpfile.write('unchanged')
+            tmpfile.close
 
-            repository.save_file_only(tmp_filepath, filepath, message, user)
+            repository.save_file_only(tmpfile, filepath, message, user)
           end
 
           context "without validation error" do
@@ -102,11 +103,8 @@ describe FilesController do
             end
 
             it { should respond_with :found }
-            it "should not show an error" do
-              expect(flash[:error]).to be_nil
-            end
             it "should show a success message" do
-              expect(flash[:success]).not_to be_nil
+              expect(flash[:success]).not_to be(nil)
             end
           end
 
@@ -119,11 +117,8 @@ describe FilesController do
             end
 
             it { should respond_with :success }
-            it "should set an error message for the message field" do
-              expect { flash[:error].messages[:message] }.not_to be_nil
-            end
             it "should not show a success message" do
-              expect(flash[:success]).to be_nil
+              expect(flash[:success]).to be(nil)
             end
           end
         end
@@ -140,17 +135,46 @@ describe FilesController do
 
           it { should respond_with :found }
           it "should not show an error" do
-            expect(flash[:error]).to be_nil
+            expect(flash[:error]).to be(nil)
           end
           it "should show a success message" do
-            expect(flash[:success]).not_to be_nil
+            expect(flash[:success]).not_to be(nil)
           end
           it "should have added a file" do
-            expect(repository.path_exists? filepath).to be_true
+            expect(repository.path_exists? filepath).to be(true)
           end
           it "should actually not have added a file" do
-            pending "this should be another controller action"
+            skip "this should be another controller action"
           end
+        end
+      end
+
+      context "destroy" do
+        let(:filepath)     { "existing-file" }
+        let(:tmp_filepath) { Rails.root.join('tmp', filepath) }
+        let(:message)      { "message" }
+
+        before do
+          tmpfile = Tempfile.new('repository_test')
+          tmpfile.write('unchanged')
+          tmpfile.close
+
+          repository.save_file_only(tmpfile, filepath, message, user)
+        end
+
+        before do
+          delete :destroy, repository_id: repository.to_param, path: filepath
+        end
+
+        it { should respond_with :found }
+        it "should not show an error" do
+          expect(flash[:error]).to be_nil
+        end
+        it "should show a success message" do
+          expect(flash[:success]).not_to be_nil
+        end
+        it 'sets the flash' do
+          expect(flash[:success]).to match(/success/i)
         end
       end
     end
@@ -162,14 +186,20 @@ describe FilesController do
       context "new" do
         before { get :new, repository_id: repository.to_param }
         it { should respond_with :redirect }
-        it { should set_the_flash.to(/not authorized/) }
+
+        it 'sets the flash' do
+          expect(flash[:alert]).to match(/not authorized/)
+        end
       end
 
       context "create" do
         context "without file" do
           before { post :create, repository_id: repository.to_param }
           it { should respond_with :redirect }
-          it { should set_the_flash.to(/not authorized/) }
+
+          it 'sets the flash' do
+            expect(flash[:alert]).to match(/not authorized/)
+          end
         end
 
         context "with file" do
@@ -183,7 +213,10 @@ describe FilesController do
             }
           }
           it { should respond_with :redirect }
-          it { should set_the_flash.to(/not authorized/) }
+
+          it 'sets the flash' do
+            expect(flash[:alert]).to match(/not authorized/)
+          end
         end
       end
     end
