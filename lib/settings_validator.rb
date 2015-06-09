@@ -60,6 +60,10 @@ class SettingsValidator
   end
 
   def format_message(message)
+    if message == 'is not included in the list'
+      message =
+        "#{message} (see the comments in the config/settings.yml at this key)"
+    end
     "  #{message}"
   end
 
