@@ -186,6 +186,29 @@ class SettingsValidationWrapper
   validates :yml__hets__time_between_updates,
             numericality: {greater_than_or_equal_to: 1}
 
+  def self.base(first_portion)
+    case first_portion
+    when 'yml'
+      Settings
+    when 'initializers'
+      Ontohub::Application.config
+    else
+      :error
+    end
+  end
+
+  def self.get_value(object, key_chain)
+    key_chain.each do |key|
+      if object.respond_to?(key)
+        object = object.send(key)
+      else
+        # The nil value shall be caught by the presence validators.
+        return nil
+      end
+    end
+    object
+  end
+
   protected
 
   def in_production?
@@ -199,35 +222,12 @@ class SettingsValidationWrapper
   # initializers__git__verify_url maps to @config.git.verify_url.
   def method_missing(method_name, *_args)
     portions = method_name.to_s.split('__')
-    object = base(portions[0])
+    object = self.class.base(portions[0])
     key_chain = portions[1..-1]
     if object == :error || key_chain.blank?
       raise NoMethodError,
         "undefined method `#{method_name}' for #{self}:#{self.class}"
     end
-    get_value(object, key_chain)
-  end
-
-  def base(first_portion)
-    case first_portion
-    when 'yml'
-      Settings
-    when 'initializers'
-      Ontohub::Application.config
-    else
-      :error
-    end
-  end
-
-  def get_value(object, key_chain)
-    key_chain.each do |key|
-      if object.respond_to?(key)
-        object = object.send(key)
-      else
-        # The nil value shall be caught by the presence validators.
-        return nil
-      end
-    end
-    object
+    self.class.get_value(object, key_chain)
   end
 end

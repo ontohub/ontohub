@@ -38,9 +38,11 @@ class SettingsValidator
       else
         format_key(key_portions)
       end
+    bad_value = value_of(category, key_portions)
     <<-MESSAGE.strip_heredoc
       #{opening_line}:
       #{format_messages(messages)}
+        Value: #{value_of(category, key_portions)}
     MESSAGE
   end
 
@@ -71,5 +73,10 @@ class SettingsValidator
       # other possible values: %w(consider_all_requests_local secret_token log_level)
       "Please set a valid value in the #{CONFIG_INITIALIZER_FILES} for"
     end
+  end
+
+  def value_of(category, key_portions)
+    object = SettingsValidationWrapper.base(category.to_s)
+    SettingsValidationWrapper.get_value(object, key_portions)
   end
 end
