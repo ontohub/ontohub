@@ -133,6 +133,7 @@ class RefIRIRouterConstraint < IRIRouterConstraint
     # remove the ref/:version_number portion from path
     path = Journey::Router::Utils.unescape_uri(request.original_fullpath).
       sub(%r{\A/ref/\d+/}, '')
+
     super(request, path)
   end
 end

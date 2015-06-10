@@ -70,6 +70,7 @@ class SettingsValidationWrapper
               yml__allow_unconfirmed_access_for_days
               yml__git__push_priority__commits
               yml__git__push_priority__changed_files_per_commit
+              yml__access_token__expiration_minutes
               yml__hets__version_minimum_revision)
 
   FLOAT = %i(yml__hets__version_minimum_version)
@@ -153,6 +154,8 @@ class SettingsValidationWrapper
   validates :yml__git__push_priority__commits,
             numericality: {greater_than_or_equal_to: 1}
   validates :yml__git__push_priority__changed_files_per_commit,
+            numericality: {greater_than_or_equal_to: 1}
+  validates :yml__access_token__expiration_minutes,
             numericality: {greater_than_or_equal_to: 1}
 
   validates :yml__footer, elements_have_keys: {keys: %i(text)}

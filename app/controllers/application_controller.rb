@@ -7,6 +7,8 @@ class ApplicationController < ActionController::Base
   include PathHelpers
   include ApplicationHelper
 
+  PARAMS_TO_PASS_ON_REDIRECT = %i(access-token)
+
   # CanCan Authorization
   rescue_from CanCan::AccessDenied do |exception|
     if request.format.html?
@@ -39,6 +41,14 @@ class ApplicationController < ActionController::Base
 
 
   protected
+
+  def current_ability
+    @current_ability ||= Ability.new(current_user, params[:'access-token'])
+  end
+
+  def params_to_pass_on_redirect
+    params.select { |k, _v| PARAMS_TO_PASS_ON_REDIRECT.include?(k) }
+  end
 
   def authenticate_admin!
     unless admin?

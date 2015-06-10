@@ -38,6 +38,7 @@ module Hets
     def prepare
       remove_nil_fields
       prepare_url_catalog
+      prepare_access_token
     end
 
     def remove_nil_fields
@@ -46,9 +47,19 @@ module Hets
     end
 
     def prepare_url_catalog
-      @options[:'url-catalog'].try(:compact!)
-      if @options[:'url-catalog'].blank?
-        @options.delete(:'url-catalog')
+      if @options[:'url-catalog'].is_a?(Array)
+        @options[:'url-catalog'].try(:compact!)
+        if @options[:'url-catalog'].blank?
+          @options.delete(:'url-catalog')
+        else
+          @options[:'url-catalog'] = @options[:'url-catalog'].join(',')
+        end
+      end
+    end
+
+    def prepare_access_token
+      if @options[:'access-token']
+        @options[:'access-token'] = @options[:'access-token'].to_s
       end
     end
   end

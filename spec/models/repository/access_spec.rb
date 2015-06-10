@@ -24,4 +24,35 @@ describe 'Repository Access' do
       end
     end
   end
+
+  context 'private repository' do
+    let(:ontology_version) { create :ontology_version }
+    let(:repository) { ontology_version.repository }
+    before do
+      repository.access = 'private_rw'
+      repository.save
+    end
+
+    context 'without access token' do
+      it 'should not have a token yet' do
+        expect(repository.access_tokens).to be_empty
+      end
+    end
+
+    context 'after generate_access_token' do
+      let!(:access_token) { repository.generate_access_token }
+
+      it 'should generate a token' do
+        expect(repository.access_tokens).not_to be_empty
+      end
+
+      it 'should associate with the generated token' do
+        expect(repository.access_tokens.first).to eq(access_token)
+      end
+
+      it 'should save the token' do
+        expect(repository.access_tokens.first.persisted?).to be_truthy
+      end
+    end
+  end
 end
