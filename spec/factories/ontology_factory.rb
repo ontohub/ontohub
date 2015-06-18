@@ -1,7 +1,7 @@
 FactoryGirl.define do
 
   sequence :iri do |n|
-    "gopher://host/ontology/#{n}"
+    "gopher://host/object/#{n}"
   end
 
   sequence :name do |n|
@@ -10,7 +10,6 @@ FactoryGirl.define do
 
   factory :ontology do |ontology|
     association :repository
-    iri { FactoryGirl.generate :iri }
     name { FactoryGirl.generate :name }
     basepath { SecureRandom.hex(10) }
     file_extension { '.owl' }
