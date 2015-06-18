@@ -47,9 +47,9 @@ module StateUpdater
   end
 
   def update_state!(state, error_message = nil)
-    self.state            = state.to_s
-    self.state_updated_at = Time.now
-    self.last_error       = error_message
-    save!
+    update_attributes!({state: state.to_s,
+                        state_updated_at: Time.now,
+                        last_error: error_message},
+                        without_protection: true)
   end
 end
