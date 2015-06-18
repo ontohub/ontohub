@@ -9,8 +9,8 @@ class Ontology
     end
 
     module Methods
-      def iri_for_child(*args)
-        proxy_association.owner.iri_for_child(*args)
+      def locid_for_child(*args)
+        proxy_association.owner.locid_for_child(*args)
       end
 
       def determine_mapping_type(typename)
@@ -29,10 +29,10 @@ class Ontology
       def update_or_create_from_hash(hash, _user, timestamp = Time.now)
         raise ArgumentError, 'No hash given.' unless hash.is_a? Hash
         # hash['name'] # maybe nil, in this case, we need to generate a name
-        mapping_iri   = iri_for_child(hash['name'] || hash['linkid'])
+        mapping_iri   = locid_for_child(hash['name'] || hash['linkid'])
         mapping_name  = hash['name']
-        source_iri = hash['source_iri'] || iri_for_child(hash['source'])
-        target_iri = hash['target_iri'] || iri_for_child(hash['target'])
+        source_iri = hash['source_iri'] || locid_for_child(hash['source'])
+        target_iri = hash['target_iri'] || locid_for_child(hash['target'])
 
         source = Ontology.find_with_iri(source_iri) || (raise ArgumentError,
           "source #{Settings.OMS} not found: #{source_iri}")
