@@ -88,9 +88,8 @@ module Repository::Git
 
     if !ontology
       basepath = File.basepath(ontology_version_options.filepath)
-      iri = generate_iri(basepath)
       locid = generate_locid(basepath)
-      ontology = create_ontology(ontology_version_options.filepath, iri, locid)
+      ontology = create_ontology(ontology_version_options.filepath, locid)
     end
 
     ontology
@@ -102,12 +101,11 @@ module Repository::Git
       without_parent.first
   end
 
-  def create_ontology(filepath, iri, locid)
+  def create_ontology(filepath, locid)
     ontology = corresponding_ontology_klass(filepath).new
 
     ontology.basepath = File.basepath(filepath)
     ontology.file_extension = File.extname(filepath)
-    ontology.iri = iri
     ontology.locid = locid
     ontology.name = filepath.split('/')[-1].split(".")[0].capitalize
     ontology.repository = self
@@ -243,10 +241,6 @@ module Repository::Git
 
   def master_file?(ontology, ontology_version_options)
     ontology.path == ontology_version_options.pre_saving_filepath
-  end
-
-  def generate_iri(basepath)
-    "http://#{Ontohub::Application.config.fqdn}#{generate_locid(basepath)}"
   end
 
   def generate_locid(basepath)
