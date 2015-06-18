@@ -87,13 +87,24 @@ module Ontology::ClassMethodsAndScopes
     end
 
     def find_with_iri(iri)
-      ontology = where('iri LIKE ?', '%' << iri).first
+      locid = iri_to_locid(iri)
+      ontology = where('locid LIKE ?', '%' << locid).first
       if ontology.nil?
         ontology = AlternativeIri.where('iri LIKE ?', '%' << iri).
           first.try(:ontology)
       end
 
       ontology
+    end
+
+    private
+    def iri_to_locid(iri)
+      if iri.start_with?('/')
+        # iri can be considered as locid
+        iri
+      else
+        "/#{iri.split('/', 4).last}"
+      end
     end
   end
 end
