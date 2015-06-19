@@ -86,6 +86,8 @@ hets:
   # The number of hets instances to run in parallel in production mode.
   # Minimum: 1, Maximum: number of processors
   instances_count: 1
+  # The time between update-checks of registered hets-instances in hours
+  time_between_updates: 6
 
 git:
   verify_url: http://localhost/
