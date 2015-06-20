@@ -5,6 +5,23 @@ describe HetsInstance do
   let(:specific_version) { Hets.minimum_revision.to_s }
   let(:hets_instance) { create :local_hets_instance }
 
+  context 'when registering a hets instance' do
+    context 'wrt. to update-jobs' do
+      before do
+        Sidekiq::Testing.fake! { hets_instance }
+      end
+
+      it 'should create a job' do
+        expect(HetsInstanceWorker.jobs.count).to eq(1)
+      end
+
+      it 'should have a job with the correct attributes' do
+        expect(HetsInstanceWorker.jobs.first).
+          to include('args' => [hets_instance.id])
+      end
+    end
+  end
+
   context 'when choosing a hets instance' do
     context 'and there is no hets instance recorded' do
       it 'should raise the appropriate error' do
