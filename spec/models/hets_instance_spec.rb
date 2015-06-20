@@ -3,12 +3,16 @@ require 'spec_helper'
 describe HetsInstance do
   let(:general_version) { Hets.minimum_version.to_s }
   let(:specific_version) { Hets.minimum_revision.to_s }
-  let(:hets_instance) { create :local_hets_instance }
+  let(:hets_instance) { create_local_hets_instance }
 
   context 'when registering a hets instance' do
     context 'wrt. to update-jobs' do
       before do
-        Sidekiq::Testing.fake! { hets_instance }
+        stub_request(:get, "http://localhost:8000/version").
+          to_return(status: 200,
+                    body: "v#{general_version}, #{specific_version}",
+                    headers: {})
+        hets_instance
       end
 
       it 'should create a job' do
@@ -31,7 +35,7 @@ describe HetsInstance do
     end
 
     context 'and there is no acceptable hets instance' do
-      let(:hets_instance) { create :local_hets_instance }
+      let(:hets_instance) { create_local_hets_instance }
 
       before do
         stub_request(:get, "http://localhost:8000/version").
