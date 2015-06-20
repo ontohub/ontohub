@@ -1,6 +1,6 @@
 class SetBasepathWhereNil < ActiveRecord::Migration
   def self.up
-    OntologyVersion.where(basepath: nil).find_each do |ov|
+    OntologyVersion.where(basepath: nil).includes(:ontology).find_each do |ov|
       ov.basepath = ov.ontology.read_attribute(:basepath)
       ov.file_extension = ov.ontology.read_attribute(:file_extension)
       ov.save!
