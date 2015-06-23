@@ -22,7 +22,6 @@ module Ontohub
 
     # HACK https://gist.github.com/1184816
     if defined? Compass
-      config.sass.load_paths << Compass::Frameworks['blueprint'].stylesheets_directory
       config.sass.load_paths << Compass::Frameworks['compass'].stylesheets_directory
     end
 

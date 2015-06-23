@@ -29,12 +29,12 @@
                         %i.icon-bolt{ title: "processing #{ontology.state}" }
           %td.icon
             - if entry.dir?
-              %i.icon-folder-close
+              %i.fa.fa-folder
             - else
               - if entry.ontologies.empty?
-                %i.icon-file
+                %i.fa.fa-file
               - else
-                %i.glyphicon.glyphicon-file
+                %i.fa.fa-file-o
           %td.name
             = link_to entry.name.force_encoding('UTF-8'), fancy_repository_path(repository, path: entry.path, ref: oid)
           %td.last-commit.muted
