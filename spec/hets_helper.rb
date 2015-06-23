@@ -79,7 +79,7 @@ end
 
 
 def setup_hets
-  let(:hets_instance) { create(:local_hets_instance) }
+  let(:hets_instance) { create_local_hets_instance }
   before do
     stub_request(:get, 'http://localhost:8000/version').
       to_return(body: Hets.minimal_version_string)
@@ -99,14 +99,18 @@ def stub_hets_for(ontology_fixture,
   end
 end
 
+def create_local_hets_instance
+  Sidekiq::Testing.fake! { FactoryGirl.create(:local_hets_instance) }
+end
+
 def hets_uri(command = 'dg', portion = nil, version = nil)
-  hets_instance = HetsInstance.choose!
-rescue HetsInstance::NoRegisteredHetsInstanceError => e
-  if hets_instance.nil?
-    FactoryGirl.create(:local_hets_instance)
-    hets_instance = HetsInstance.choose!
-  end
-ensure
+  hets_instance =
+    begin
+      HetsInstance.choose!
+    rescue HetsInstance::NoRegisteredHetsInstanceError
+      create_local_hets_instance
+      HetsInstance.choose!
+    end
   specific = ''
   # %2F is percent-encoding for forward slash /
   specific << "ref%2F#{version}.*" if version

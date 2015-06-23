@@ -22,6 +22,7 @@ has a minimal Hets version of #{Hets.minimal_version_string}
   attr_accessible :name, :uri
 
   before_save :set_up_state
+  after_create :start_update_clock
 
   scope :active_instances, -> do
     where(up: true).where('version >= ?', Hets.minimal_version_string)
@@ -31,6 +32,10 @@ has a minimal Hets version of #{Hets.minimal_version_string}
     raise NoRegisteredHetsInstanceError.new unless any?
     instance = active_instances.first
     instance or raise NoSelectableHetsInstanceError.new
+  end
+
+  def self.check_up_state!(hets_instance_id)
+    find(hets_instance_id).send(:set_up_state!)
   end
 
   # will result in 0.99 for <v0.99, something or other>
@@ -65,5 +70,9 @@ has a minimal Hets version of #{Hets.minimal_version_string}
   def set_up_state!
     set_up_state
     save!
+  end
+
+  def start_update_clock
+    HetsInstanceWorker.schedule_update(id)
   end
 end

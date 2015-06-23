@@ -71,6 +71,7 @@ class SettingsValidationWrapper
               yml__git__push_priority__commits
               yml__git__push_priority__changed_files_per_commit
               yml__access_token__expiration_minutes
+              yml__hets__time_between_updates
               yml__hets__version_minimum_revision)
 
   FLOAT = %i(yml__hets__version_minimum_version)
@@ -181,6 +182,9 @@ class SettingsValidationWrapper
               numericality: {greater_than: 0},
               if: :in_production?
   end
+
+  validates :yml__hets__time_between_updates,
+            numericality: {greater_than_or_equal_to: 1}
 
   protected
 
