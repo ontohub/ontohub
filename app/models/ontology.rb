@@ -30,7 +30,11 @@ class Ontology < ActiveRecord::Base
 
   delegate :permission?, to: :repository
 
-  strip_attributes :only => [:name, :iri]
+  strip_attributes :only => [:name]
+
+  def iri
+    "#{Hostname.url_authority}#{locid}"
+  end
 
   def repository
     @repository ||= Repository.find(repository_id)
@@ -52,11 +56,6 @@ class Ontology < ActiveRecord::Base
     else
       name
     end
-  end
-
-  def iri_for_child(child_name)
-    child_name = child_name[1..-2] if child_name[0] == '<'
-    child_name.include?("://") ? child_name : "#{iri}?#{child_name}"
   end
 
   def locid_for_child(child_name)

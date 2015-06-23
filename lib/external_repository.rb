@@ -6,7 +6,7 @@ class ExternalRepository
     def create_ontology(internal_iri, name: internal_iri)
       options = {
         name: name,
-        iri: determine_iri(internal_iri),
+        locid: determine_locid(internal_iri),
         basepath: determine_path(internal_iri, :basepath),
         file_extension: determine_path(internal_iri, :extension),
         repository_id: repository.id,
@@ -25,8 +25,12 @@ class ExternalRepository
                                 message, user)
     end
 
+    def determine_locid(external_iri)
+      "/#{repository.path}/#{determine_path(external_iri, :fullpath)}"
+    end
+
     def determine_iri(external_iri)
-      "http://#{Ontohub::Application.config.fqdn}/#{repository.path}/#{determine_path(external_iri, :fullpath)}"
+      "#{Hostname.url_authority}#{determine_locid(external_iri)}"
     end
 
     def determine_path(external_iri, symbol)

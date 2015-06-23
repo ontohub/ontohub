@@ -19,7 +19,6 @@ describe Ontology do
   end
 
   context 'migrations' do
-    it { should have_db_index(:iri).unique(true) }
     it { should have_db_index(:state) }
     it { should have_db_index(:language_id) }
     it { should have_db_index(:logic_id) }
@@ -27,18 +26,10 @@ describe Ontology do
 
   context 'attributes' do
     it { should strip_attribute :name }
-    it { should strip_attribute :iri }
     it { should_not strip_attribute :description }
   end
 
   context 'Validations' do
-    ['http://example.com/', 'https://example.com/', 'file://path/to/file'].
-      each do |val|
-      it { should allow_value(val).for :iri }
-    end
-
-    it { should_not allow_value(nil).for :iri }
-
     [
       'http://example.com/',
       'https://example.com/',
