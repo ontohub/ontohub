@@ -6,6 +6,7 @@ describe Proof do
   let(:theorem) { create :theorem }
   let(:ontology) { theorem.ontology }
   let(:theorem2) { create :theorem, ontology: ontology }
+  let(:axioms) { (1..3).map { create :axiom, ontology: ontology } }
   let(:ontology_version) { ontology.current_version }
   let(:repository) { ontology.repository }
   let(:params) do
@@ -84,6 +85,28 @@ describe Proof do
       proof.options_to_attempts_hash.keys.each do |options|
         expect(proof.options_to_attempts_hash[options].size).
           to eq(theorems_count)
+      end
+    end
+
+    context 'axiom selection is correct' do
+      let(:params_modified) do
+        params.merge({proof: params[:proof].merge({
+          axioms: axioms.map(&:id)
+        })})
+      end
+      let(:proof_modified) { Proof.new(params_modified) }
+
+      it 'left inclusion' do
+        axioms.map(&:name).each do |axiom|
+          expect(proof_modified.instance_variable_get(:@axioms)).
+            to include(axiom)
+        end
+      end
+
+      it 'right inclusion' do
+        proof_modified.instance_variable_get(:@axioms).each do |selection|
+          expect(axioms.map(&:name)).to include(selection)
+        end
       end
     end
 
@@ -233,6 +256,28 @@ describe Proof do
     it 'map ProveOptions to a list of "theorems count" many ProofAttempt ids' do
       proof.options_to_attempts_hash.keys.each do |options|
         expect(proof.options_to_attempts_hash[options].size).to eq(1)
+      end
+    end
+
+    context 'axiom selection is correct' do
+      let(:params_modified) do
+        params.merge({proof: params[:proof].merge({
+          axioms: axioms.map(&:id)
+        })})
+      end
+      let(:proof_modified) { Proof.new(params_modified) }
+
+      it 'left inclusion' do
+        axioms.map(&:name).each do |axiom|
+          expect(proof_modified.instance_variable_get(:@axioms)).
+            to include(axiom)
+        end
+      end
+
+      it 'right inclusion' do
+        proof_modified.instance_variable_get(:@axioms).each do |selection|
+          expect(axioms.map(&:name)).to include(selection)
+        end
       end
     end
 
