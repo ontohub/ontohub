@@ -88,7 +88,7 @@ describe Proof do
       end
     end
 
-    context 'axiom selection is correct' do
+    context 'axiom selection' do
       let(:params_modified) do
         params.merge({proof: params[:proof].merge({
           axioms: axioms.map(&:id)
@@ -96,17 +96,9 @@ describe Proof do
       end
       let(:proof_modified) { Proof.new(params_modified) }
 
-      it 'left inclusion' do
-        axioms.map(&:name).each do |axiom|
-          expect(proof_modified.instance_variable_get(:@axioms)).
-            to include(axiom)
-        end
-      end
-
-      it 'right inclusion' do
-        proof_modified.instance_variable_get(:@axioms).each do |selection|
-          expect(axioms.map(&:name)).to include(selection)
-        end
+      it 'is correct' do
+        expect(proof_modified.instance_variable_get(:@axioms)).
+          to match_array(axioms.map(&:name))
       end
     end
 
@@ -259,7 +251,7 @@ describe Proof do
       end
     end
 
-    context 'axiom selection is correct' do
+    context 'axiom selection' do
       let(:params_modified) do
         params.merge({proof: params[:proof].merge({
           axioms: axioms.map(&:id)
@@ -267,17 +259,9 @@ describe Proof do
       end
       let(:proof_modified) { Proof.new(params_modified) }
 
-      it 'left inclusion' do
-        axioms.map(&:name).each do |axiom|
-          expect(proof_modified.instance_variable_get(:@axioms)).
-            to include(axiom)
-        end
-      end
-
-      it 'right inclusion' do
-        proof_modified.instance_variable_get(:@axioms).each do |selection|
-          expect(axioms.map(&:name)).to include(selection)
-        end
+      it 'is correct' do
+        expect(proof_modified.instance_variable_get(:@axioms)).
+          to match_array(axioms.map(&:name))
       end
     end
 
