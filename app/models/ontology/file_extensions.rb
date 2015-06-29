@@ -2,7 +2,7 @@ module Ontology::FileExtensions
   extend ActiveSupport::Concern
 
   module ClassMethods
-    include GraphStructures::SqlHelper
+    include SqlHelper
     def file_extensions
       @file_extensions ||= file_extensions_distributed + file_extensions_single
     end
