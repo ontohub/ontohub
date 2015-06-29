@@ -97,6 +97,7 @@ module Ontohub
 
     config.after_initialize do
       SettingsValidator.new.validate!
+      SettingsInterpreter.new.call
     end
   end
 end
