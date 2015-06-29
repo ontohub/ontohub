@@ -39,10 +39,11 @@ class SettingsValidator
         format_key(key_portions)
       end
     bad_value = value_of(category, key_portions)
-    <<-MESSAGE.strip_heredoc
-      #{opening_line}:
-      #{format_messages(messages)}
-        Value: #{value_of(category, key_portions)}
+    <<-MESSAGE
+#{opening_line}:
+#{format_messages(messages)}
+  Value: #{value_of(category, key_portions)}
+
     MESSAGE
   end
 
