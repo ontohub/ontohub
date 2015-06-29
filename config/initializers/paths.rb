@@ -1,4 +1,3 @@
-
 module PathsInitializer
   class << self
     def expand(path)
@@ -9,6 +8,18 @@ module PathsInitializer
       path.sub(%r(/releases/\d+/), "/current/")
     end
 
+    # Only defines methods to prevent NoMethodErrors
+    # To be called before settings validation.
+    def empty_initialization(config)
+      config.data_root = nil
+      config.git_root = nil
+      config.git_home = nil
+      config.symlink_path = nil
+      config.commits_path = nil
+    end
+
+    # Actually performs initialization
+    # To be called after settings validation
     def perform_initialization(config)
       config.data_root = cleanup_release(expand(Settings.paths.data))
       config.git_root = cleanup_release(expand(Settings.paths.git_repositories))
@@ -21,6 +32,6 @@ end
 
 if defined?(Ontohub::Application)
   Ontohub::Application.configure do |app|
-    PathsInitializer.perform_initialization(app.config)
+    PathsInitializer.empty_initialization(app.config)
   end
 end
