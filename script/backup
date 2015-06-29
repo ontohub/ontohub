@@ -213,6 +213,12 @@ To continue, I try the command again using sudo.
 
     def enable_maintenance_mode
       puts 'Enabling maintenance mode...'
+      if File.exist?(maintenance_file)
+        $stderr.puts 'Maintenance mode was already enabled.'
+        $stderr.puts "Please check the file #{maintenance_file}"
+        $stderr.puts 'Aborting.'
+        exit
+      end
       puts "FileUtils.touch #{maintenance_file}" if verbose
       FileUtils.touch maintenance_file unless dry_run
     end
