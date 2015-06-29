@@ -10,6 +10,10 @@ module SettingsValidationWrapper::Validators
 
   class DirectoryValidator < ActiveModel::EachValidator
     def validate_each(record, attribute, value)
+      begin
+        Dir.chdir(Rails.root) { value = Pathname.new(value).expand_path }
+      rescue
+      end
       unless File.directory?(value)
         record.errors.add attribute, 'is not a directory'
       end

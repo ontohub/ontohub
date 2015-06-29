@@ -25,6 +25,7 @@ class SettingsValidationWrapper
                 yml__paths__git_repositories
                 yml__paths__symlinks
                 yml__paths__commits
+                yml__paths__git_home
                 yml__git__verify_url
                 yml__git__default_branch
                 yml__git__push_priority__commits
@@ -45,12 +46,7 @@ class SettingsValidationWrapper
                 yml__hets__server_options
                 yml__hets__env__LANG
 
-                initializers__fqdn
-                initializers__data_root
-                initializers__git_home
-                initializers__git_root
-                initializers__symlink_path
-                initializers__commits_path)
+                initializers__fqdn)
 
   PRESENCE_IN_PRODUCTION = %i(yml__hets__executable_path
                               yml__hets__instances_count)
@@ -87,6 +83,7 @@ class SettingsValidationWrapper
               yml__paths__git_repositories
               yml__paths__symlinks
               yml__paths__commits
+              yml__paths__git_home
               yml__git__verify_url
               yml__git__default_branch
               yml__git__fallbacks__committer_name
@@ -104,11 +101,11 @@ class SettingsValidationWrapper
              yml__hets__cmd_line_options
              yml__hets__server_options)
 
-  DIRECTORY_PRODUCTION = %i(initializers__data_root
-                            initializers__git_home
-                            initializers__git_root
-                            initializers__symlink_path
-                            initializers__commits_path)
+  DIRECTORY_PRODUCTION = %i(yml__paths__data
+                            yml__paths__git_repositories
+                            yml__paths__symlinks
+                            yml__paths__commits
+                            yml__paths__git_home)
 
   ELEMENT_PRESENT = %i(yml__allowed_iri_schemes
                        yml__hets__cmd_line_options
