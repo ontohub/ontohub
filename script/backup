@@ -121,8 +121,7 @@ module Backup
     def create_sql_dump
       puts 'Creating SQL dump...'
       Dir.chdir(backup_instance_dir) do
-        exec('pg_dump', *pg_user_switch, '-Fc', db_name,
-          file_dest: SQL_DUMP_FILE)
+        exec('pg_dump', *pg_user_switch, '-Fc', db_name, '-f', SQL_DUMP_FILE)
       end
     end
 
@@ -224,12 +223,11 @@ To continue, I try the command again using sudo.
       FileUtils.rm maintenance_file unless dry_run
     end
 
-    def exec(*args, file_dest: nil)
+    def exec(*args)
       puts "[executing next command in #{Dir.getwd}]" if verbose
       out = args.join(' ')
-      out << " > #{file_dest}" if file_dest
       puts out if verbose
-      Subprocess.run(*args, file_dest: file_dest) unless dry_run
+      system(*args) unless dry_run
     end
 
     def try_as_sudo_with_fallback(*args)
@@ -257,27 +255,6 @@ To continue, I try the command again using sudo.
 
     def self.backup_dirs_allowed_to_delete(entries)
       entries.reject{ |entry| %w(. ..).include?(entry) }[0..-(BACKUPS_COUNT+1)]
-    end
-  end
-
-  class Subprocess
-    def self.run(*args, file_dest: nil)
-      stdin, stdout, stderr, wait_thr, io_dest = run_streaming(*args,
-        file_dest: file_dest)
-      exit_code = wait_thr.value # wait for the process to finish
-      io_dest.close if io_dest
-
-      [stdout.read, stderr.read, exit_code]
-    end
-
-    def self.run_streaming(*args, file_dest: nil)
-      stdin, stdout, stderr, wait_thr = Open3.popen3(*args)
-      io_dest = nil
-      if file_dest
-        io_dest = File.open(file_dest, 'w')
-        IO.copy_stream(stdout, io_dest)
-      end
-      [stdin, stdout, stderr, wait_thr, io_dest]
     end
   end
 end
