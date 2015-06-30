@@ -4,9 +4,9 @@ end
 
 When(/^I fill in the registration form\.$/) do
   within "#new_user" do
-    fill_in 'user_email',    :with => 'foobar@example.com'
-    fill_in 'user_name',     :with => 'Foo Bar'
-    fill_in 'user_password', :with => 'simple-password'
+    fill_in 'signup_email',    :with => 'foobar@example.com'
+    fill_in 'signup_name',     :with => 'Foo Bar'
+    fill_in 'signup_password', :with => 'simple-password'
   end
 end
 
@@ -42,8 +42,8 @@ end
 
 When(/^I fill in the login form\.$/) do
   within '#sign_in' do
-    fill_in 'user_email',    :with => @user.email
-    fill_in 'user_password', :with => @password
+    fill_in 'signin_email',    :with => @user.email
+    fill_in 'signin_password', :with => @password
   end
 end
 
