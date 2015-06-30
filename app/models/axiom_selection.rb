@@ -1,4 +1,6 @@
 class AxiomSelection < ActiveRecord::Base
+  METHODS = %i(manual_axiom_selection)
+
   acts_as_superclass
   has_one :proof_attempt_configuration
 
