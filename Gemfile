@@ -123,6 +123,9 @@ gem 'dagnabit', '~> 3.0.1'
 # Migrate data in separate tasks
 gem 'data_migrate', '~> 1.2.0'
 
+# Multi Table Inheritance. For Rails 4, mirgrate to active_record-acts_as.
+gem 'acts_as_relation', '~> 0.1.3'
+
 group :test do
   gem 'mocha', '~> 1.1.0', require: false
   gem 'shoulda', '~> 3.5.0'
