@@ -7,6 +7,13 @@ require File.expand_path('../config/application', __FILE__)
 
 Ontohub::Application.load_tasks
 
+# Prevent Rspec to print file list unless enforced by the environment.
+if defined?(RSpec) && ENV['SPEC_VERBOSE'] != 'true'
+  task(:spec).clear
+  RSpec::Core::RakeTask.new(:spec) do |t|
+    t.verbose = false
+  end
+end
 
 # Remove load_schema/load_structure in tests, as db:migrate:clean
 # will take care of everything.
