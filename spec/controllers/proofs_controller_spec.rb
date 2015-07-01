@@ -5,7 +5,8 @@ describe ProofsController do
   let(:theorem) { create :theorem }
   let(:ontology) { theorem.ontology }
   let(:repository) { ontology.repository }
-  let(:proof_params) { {'prover_ids' => [prover.id.to_s, '']} }
+  let(:proof_params) { {'prover_ids' => [prover.id.to_s, ''],
+                        'axiom_selection_method' => AxiomSelection::METHODS.first.to_s} }
 
   context 'on ontology' do
     context 'signed in with write access' do
