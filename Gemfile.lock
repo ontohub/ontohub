@@ -292,7 +292,7 @@ GEM
       activesupport (>= 3.0.0)
     launchy (2.4.3)
       addressable (~> 2.3)
-    libv8 (3.16.14.9)
+    libv8 (3.16.14.7)
     libxml-ruby (2.8.0)
     link_header (0.0.8)
     macaddr (1.7.1)
