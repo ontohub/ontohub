@@ -99,6 +99,16 @@ describe Proof do
 
       before { proof_modified.save! }
 
+      it 'has as many AxiomSelections as ProofOptions' do
+        expect(proof_modified.axiom_selections.size).
+          to eq(proof_modified.prove_options_list.size)
+      end
+
+      it 'is of the correct class' do
+        expect(proof_modified.axiom_selections.first.class).
+          to eq(ManualAxiomSelection)
+      end
+
       it 'is correct' do
         expect(proof_modified.axiom_selections.first.axioms).
           to match_array(axioms)
@@ -263,6 +273,16 @@ describe Proof do
       let(:proof_modified) { Proof.new(params_modified) }
 
       before { proof_modified.save! }
+
+      it 'has as many AxiomSelections as ProofOptions' do
+        expect(proof_modified.axiom_selections.size).
+          to eq(proof_modified.prove_options_list.size)
+      end
+
+      it 'is of the correct class' do
+        expect(proof_modified.axiom_selections.first.class).
+          to eq(ManualAxiomSelection)
+      end
 
       it 'is correct' do
         expect(proof_modified.axiom_selections.first.axioms).
