@@ -41,8 +41,11 @@ namespace :git do
 
   desc 'Compile cp_keys binary'
   task :compile_cp_keys => :environment do
+    target_dir = Ontohub::Application.config.git_home.join('.ssh')
+    target_dir.mkpath
+
     source_file = Rails.root.join('script', 'cp_keys.c')
-    target_path = Rails.root.join('bin', 'cp_keys').to_s
+    target_path = target_dir.join('cp_keys').to_s
 
     reconfigured_source_tempfile = reconfigure_cp_keys(source_file)
     compile_gcc(reconfigured_source_tempfile.path, target_path)

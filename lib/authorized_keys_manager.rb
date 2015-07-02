@@ -57,7 +57,7 @@ class AuthorizedKeysManager
 
     def copy_authorized_keys_to_git_home
       GIT_HOME_SSH_DIR.mkpath
-      system(Rails.root.join('bin', 'cp_keys').to_s)
+      system(GIT_HOME_SSH_DIR.join('cp_keys').to_s)
     end
   end
 end
