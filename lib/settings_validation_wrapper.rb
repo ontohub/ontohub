@@ -129,6 +129,9 @@ class SettingsValidationWrapper
                        yml__hets__cmd_line_options
                        yml__hets__server_options)
 
+  attr_reader :cp_keys
+
+  validates :cp_keys, executable: true, if: :in_production?
 
   validates_with DataPathsValidator, if: :in_production?
 
@@ -227,6 +230,38 @@ class SettingsValidationWrapper
       end
     end
     object
+  end
+
+  def initialize
+    # define a value for the cp_keys location
+    @cp_keys = Ontohub::Application.config.git_home.join('.ssh', 'cp_keys')
+  end
+
+  def cp_keys=(_path)
+    # Noop - the value is supposed to be hard-coded.
+    # The validations require the existence of a setter, though.
+  end
+
+  protected
+
+  def in_production?
+    Rails.env.production?
+  end
+
+  # We use '__' as a separator. It will be replaced by a dot.
+  # This uses the fact that our settings-keys never have two consecutive
+  # underscores.
+  # yml__git__verify_url maps to Settings.git.verify_url.
+  # initializers__git__verify_url maps to @config.git.verify_url.
+  def method_missing(method_name, *_args)
+    portions = method_name.to_s.split('__')
+    object = base(portions[0])
+    key_chain = portions[1..-1]
+    if object == :error || key_chain.blank?
+      raise NoMethodError,
+        "undefined method `#{method_name}' for #{self}:#{self.class}"
+    end
+    get_value(object, key_chain)
   end
 
   protected
