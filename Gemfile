@@ -48,7 +48,7 @@ gem 'haml-rails', '~> 0.4'
 # https://github.com/railsconfig/rails_config/pull/99
 gem 'rails_config', github: 'hnakamur/rails_config', ref: 'overwrite_arrays'
 
-#provides  correct indefinite article 
+#provides  correct indefinite article
 gem 'indefinite_article', '~> 0.2.0'
 
 # Fancy Forms
@@ -72,7 +72,7 @@ gem 'nokogiri', '~> 1.6.6.2'
 gem 'devise', '~> 3.4.1'
 
 # Authorization
-gem 'cancan', '~> 1.6.7'
+gem 'pundit', '~> 1.0.1'
 
 # Pagination
 gem 'kaminari', '~> 0.16.1'
