@@ -8,6 +8,7 @@ module OntologyMember
 
     belongs_to :ontology
     belongs_to :symbol_group
+    has_many :sine_symbol_axiom_triggers
     has_and_belongs_to_many :sentences
     has_and_belongs_to_many :oops_responses
 
