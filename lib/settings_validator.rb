@@ -42,7 +42,7 @@ class SettingsValidator
     <<-MESSAGE
 #{opening_line}:
 #{format_messages(messages)}
-  Value: #{value_of(category, key_portions)}
+  Value: #{bad_value.inspect}
 
     MESSAGE
   end
