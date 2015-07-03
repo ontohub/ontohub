@@ -1,5 +1,8 @@
 #!/usr/bin/env ruby
 
+# You can find more extensive documentation of this script at
+# https://github.com/ontohub/ontohub/blob/staging/doc/backup_and_restore_of_ontohub_data.md
+
 # Description
 #   This backup script creates and restores backups of ontohub data. It includes:
 #     * bare git repositories (data/repositories)
