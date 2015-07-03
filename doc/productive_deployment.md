@@ -206,7 +206,8 @@ You can deploy this codebase to your server with:
 
     rake secret
 
-... and save it into `config/initializers/secret_token.rb`.
+This prints a long enough secret for verifying the integrity of signed cookies.
+Save it to `config/settings/production.local.yml` or `config/settings.local.yml` at the key `secret_token` and keep that file secret.
 
 
 ### Apache
