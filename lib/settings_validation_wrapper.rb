@@ -183,6 +183,9 @@ class SettingsValidationWrapper
   validates :yml__hets__time_between_updates,
             numericality: {greater_than_or_equal_to: 1}
 
+  validates :yml__asynchronous_execution__log_level,
+            inclusion: {in: %w(UNKNOWN FATAL ERROR WARN INFO DEBUG)}
+
   def self.base(first_portion)
     case first_portion
     when 'yml'

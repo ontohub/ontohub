@@ -8,3 +8,6 @@ display_head_commit: true
 
 paths:
   git_home: tmp/git
+
+asynchronous_execution:
+  log_level: INFO
