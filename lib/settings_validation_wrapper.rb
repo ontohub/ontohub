@@ -25,6 +25,7 @@ class SettingsValidationWrapper
                 yml__paths__git_repositories
                 yml__paths__symlinks
                 yml__paths__commits
+                yml__paths__git_home
                 yml__git__verify_url
                 yml__git__default_branch
                 yml__git__push_priority__commits
@@ -45,12 +46,7 @@ class SettingsValidationWrapper
                 yml__hets__server_options
                 yml__hets__env__LANG
 
-                initializers__fqdn
-                initializers__data_root
-                initializers__git_home
-                initializers__git_root
-                initializers__symlink_path
-                initializers__commits_path)
+                initializers__fqdn)
 
   PRESENCE_IN_PRODUCTION = %i(yml__hets__executable_path
                               yml__hets__instances_count)
@@ -87,6 +83,7 @@ class SettingsValidationWrapper
               yml__paths__git_repositories
               yml__paths__symlinks
               yml__paths__commits
+              yml__paths__git_home
               yml__git__verify_url
               yml__git__default_branch
               yml__git__fallbacks__committer_name
@@ -104,11 +101,11 @@ class SettingsValidationWrapper
              yml__hets__cmd_line_options
              yml__hets__server_options)
 
-  DIRECTORY_PRODUCTION = %i(initializers__data_root
-                            initializers__git_home
-                            initializers__git_root
-                            initializers__symlink_path
-                            initializers__commits_path)
+  DIRECTORY_PRODUCTION = %i(yml__paths__data
+                            yml__paths__git_repositories
+                            yml__paths__symlinks
+                            yml__paths__commits
+                            yml__paths__git_home)
 
   ELEMENT_PRESENT = %i(yml__allowed_iri_schemes
                        yml__hets__cmd_line_options
@@ -186,6 +183,29 @@ class SettingsValidationWrapper
   validates :yml__hets__time_between_updates,
             numericality: {greater_than_or_equal_to: 1}
 
+  def self.base(first_portion)
+    case first_portion
+    when 'yml'
+      Settings
+    when 'initializers'
+      Ontohub::Application.config
+    else
+      :error
+    end
+  end
+
+  def self.get_value(object, key_chain)
+    key_chain.each do |key|
+      if object.respond_to?(key)
+        object = object.send(key)
+      else
+        # The nil value shall be caught by the presence validators.
+        return nil
+      end
+    end
+    object
+  end
+
   protected
 
   def in_production?
@@ -199,35 +219,12 @@ class SettingsValidationWrapper
   # initializers__git__verify_url maps to @config.git.verify_url.
   def method_missing(method_name, *_args)
     portions = method_name.to_s.split('__')
-    object = base(portions[0])
+    object = self.class.base(portions[0])
     key_chain = portions[1..-1]
     if object == :error || key_chain.blank?
       raise NoMethodError,
         "undefined method `#{method_name}' for #{self}:#{self.class}"
     end
-    get_value(object, key_chain)
-  end
-
-  def base(first_portion)
-    case first_portion
-    when 'yml'
-      Settings
-    when 'initializers'
-      Ontohub::Application.config
-    else
-      :error
-    end
-  end
-
-  def get_value(object, key_chain)
-    key_chain.each do |key|
-      if object.respond_to?(key)
-        object = object.send(key)
-      else
-        # The nil value shall be caught by the presence validators.
-        return nil
-      end
-    end
-    object
+    self.class.get_value(object, key_chain)
   end
 end
