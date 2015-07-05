@@ -11,7 +11,7 @@ class SettingsValidator
       plain_errors = settings_validations_wrapper.errors.messages
       formatted_errors = format_errors(plain_errors)
       print_errors(formatted_errors)
-      exit
+      exit 1
     end
   end
 
