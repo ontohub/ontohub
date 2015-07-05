@@ -234,7 +234,7 @@ class SettingsValidationWrapper
 
   def initialize
     # define a value for the cp_keys location
-    @cp_keys = Ontohub::Application.config.git_home.join('.ssh', 'cp_keys')
+    @cp_keys = Pathname.new(Settings.paths.git_home).join('.ssh', 'cp_keys').to_s
   end
 
   def cp_keys=(_path)
