@@ -432,7 +432,7 @@ GEM
     ruby-prof (0.15.8)
     rubydns (0.8.5)
       eventmachine (~> 1.0.0)
-    rugged (0.21.4)
+    rugged (0.22.2)
     safe_yaml (1.0.4)
     sass (3.4.15)
     sass-rails (3.2.6)
@@ -597,7 +597,7 @@ DEPENDENCIES
   rspec-its (~> 1.0.1)
   rspec-rails (~> 2.0)
   ruby-graphviz (~> 1.0.8)
-  rugged (~> 0.21.4)
+  rugged (~> 0.22.0)
   sass-rails (~> 3.2.3)
   secure_headers (~> 2.0.2)
   shoulda (~> 3.5.0)
@@ -617,3 +617,6 @@ DEPENDENCIES
   vcr (~> 2.9.3)
   webmock (~> 1.21.0)
   yard (~> 0.8.7.6)
+
+BUNDLED WITH
+   1.10.5
