@@ -101,8 +101,7 @@ gem 'elasticsearch', '~> 1.0.4'
 gem 'elasticsearch-extensions', '~> 0.0.15'
 
 # Graph visualization
-# Newer versions than 1.0.x are not compatible with rails-erd
-gem 'ruby-graphviz', "~> 1.0.8"
+gem 'ruby-graphviz', "~> 1.2.2"
 
 # Fake-inputs for tests and seeds
 gem "faker", "~> 1.2"
@@ -150,7 +149,7 @@ group :test do
 end
 
 group :development do
-  gem "rails-erd", '~> 1.3.1'
+  gem "rails-erd", '~> 1.4.1'
   gem 'quiet_assets', '~> 1.1.0'
   gem 'invoker', '~> 1.3.2'
 end
