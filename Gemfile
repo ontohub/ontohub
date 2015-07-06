@@ -156,7 +156,7 @@ end
 
 group :development, :test do
   gem 'database_cleaner', '~> 1.4.1'
-  gem 'rspec-rails', '~> 2.0'
+  gem 'rspec-rails', '~> 3.3.2'
   gem 'better_errors', '~> 2.1.1'
   gem 'binding_of_caller', '~> 0.7.2'
   gem 'i18n-tasks', '~> 0.8.3'
