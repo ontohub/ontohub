@@ -9,17 +9,13 @@ describe FilesController do
 
     before do
       @repository_file = 'repository_file'
-      request.stub(:accepts) { [Mime::HTML] }
-      @repository_file.stub(:ontologies) { [dist_ontology] }
-      RepositoryFile.stub(:find_with_path) { @repository_file }
+      allow(request).to receive(:accepts).and_return([Mime::HTML])
+      allow(@repository_file).
+        to receive(:ontologies).and_return([dist_ontology])
+      allow(RepositoryFile).
+        to receive(:find_with_path).and_return(@repository_file)
       @request.query_string = do_child.name
       get :show, repository_id: repository.path, path: dist_ontology.name
-    end
-
-    after do
-      RepositoryFile.unstub(:find_with_path)
-      request.unstub(:accepts)
-      @repository_file.unstub(:ontologies)
     end
 
     context 'should allow us to get to a do-child' do
@@ -35,14 +31,10 @@ describe FilesController do
     context "files" do
       before do
         @repository_file = 'repository_file'
-        @repository_file.stub(:file?) { false }
-        RepositoryFile.stub(:find_with_path) { @repository_file }
+        allow(@repository_file).to receive(:file?).and_return(false)
+        allow(RepositoryFile).
+          to receive(:find_with_path).and_return(@repository_file)
         get :show, repository_id: repository.to_param
-      end
-
-      after do
-        RepositoryFile.unstub(:find_with_path)
-        @repository_file.unstub(:file?)
       end
 
       it { should respond_with :success }

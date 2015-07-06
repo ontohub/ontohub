@@ -2,13 +2,8 @@ require 'spec_helper'
 
 describe 'FilesControllerRouting' do
   before do
-    Repository.stub(:find_by_path) { true }
-    RepositoryFile.stub(:find_with_path) { true }
-  end
-
-  after do
-    Repository.unstub(:find_by_path)
-    RepositoryFile.unstub(:find_with_path)
+    allow(Repository).to receive(:find_by_path).and_return(true)
+    allow(RepositoryFile).to receive(:find_with_path).and_return(true)
   end
 
   it { should     route(:get,  'repopath'                                   ).to(repository_id: 'repopath', controller: :files, action: :show ) }
