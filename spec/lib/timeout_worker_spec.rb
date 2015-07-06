@@ -6,10 +6,8 @@ describe TimeoutWorker do
 
     let(:worker) { TimeoutWorker.new }
 
-    before { Settings.stub(:ontology_parse_timeout) { nil } }
-
-    after do
-      Settings.unstub(:ontology_parse_timeout)
+    before do
+      allow(Settings).to receive(:ontology_parse_timeout).and_return(nil)
     end
 
     it 'will complain with an error' do
