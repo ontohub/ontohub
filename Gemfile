@@ -2,7 +2,7 @@ source 'https://rubygems.org'
 
 gem 'rails', '~> 3.2.21'
 gem 'rack-protection', '~> 1.5.3'
-gem 'secure_headers', '~> 2.0.2'
+gem 'secure_headers', '~> 2.2.2'
 
 gem 'pry-rails', '~> 0.3.2'
 
@@ -26,7 +26,7 @@ group :assets do
   gem 'font-awesome-sass', '~> 4.3.1'
   # jquery-rails > 3.1.2 is not compatible with rails 3
   gem 'jquery-rails', '~> 3.1.2'
-  gem 'jquery-ui-rails', '5.0.3'
+  gem 'jquery-ui-rails', '~> 5.0.5'
   gem 'momentjs-rails', '~> 2.10.2'
   gem 'd3_rails', '~> 3.5.5'
   gem 'therubyracer', '~> 0.12.1'
@@ -46,7 +46,7 @@ gem 'haml-rails', '~> 0.4'
 # The specified commit is from a fork and allows to overwrite arrays.
 # It has been pull-requested:
 # https://github.com/railsconfig/rails_config/pull/99
-gem 'rails_config', github: 'hnakamur/rails_config', ref: 'overwrite_arrays'
+gem 'rails_config', github: 'eugenk/rails_config', ref: 'overwrite_arrays'
 
 #provides  correct indefinite article 
 gem 'indefinite_article', '~> 0.2.0'
@@ -101,14 +101,13 @@ gem 'elasticsearch', '~> 1.0.4'
 gem 'elasticsearch-extensions', '~> 0.0.15'
 
 # Graph visualization
-# Newer versions than 1.0.x are not compatible with rails-erd
-gem 'ruby-graphviz', "~> 1.0.8"
+gem 'ruby-graphviz', "~> 1.2.2"
 
 # Fake-inputs for tests and seeds
 gem "faker", "~> 1.2"
 
 # Git
-gem 'rugged', '~> 0.21.4'
+gem 'rugged', '~> 0.22.0'
 gem 'codemirror-rails', github: 'llwt/codemirror-rails'
 
 # API
@@ -150,7 +149,7 @@ group :test do
 end
 
 group :development do
-  gem "rails-erd", '~> 1.3.1'
+  gem "rails-erd", '~> 1.4.1'
   gem 'quiet_assets', '~> 1.1.0'
   gem 'invoker', '~> 1.3.2'
 end
@@ -169,6 +168,8 @@ group :development, :test do
 end
 
 group :production do
+  # puma is __the only exception__ for which we don't specify a version.
+  gem 'puma'
   gem 'god', '~> 0.13.4'
   gem 'exception_notification', '~> 4.1.0'
 end
@@ -181,5 +182,5 @@ end
 
 group :documentation do
   gem 'yard', '~> 0.8.7.6'
-  gem 'redcarpet', '~> 3.2.2'
+  gem 'redcarpet', '~> 3.3.2'
 end
