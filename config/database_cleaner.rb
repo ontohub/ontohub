@@ -27,9 +27,6 @@ module DatabaseCleanerConfig
       config.use_transactional_fixtures = false
       config.add_setting :original_hostname
 
-      # This belongs into the spec_helper, but it needs to be done already here:
-      config.treat_symbols_as_metadata_keys_with_true_values = true
-
       config.before(:suite) do
         DatabaseCleaner.strategy = INITIAL_CLEAN_MODE, CLEAN_OPTIONS
         DatabaseCleaner.clean
