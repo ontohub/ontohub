@@ -46,7 +46,7 @@ gem 'haml-rails', '~> 0.4'
 # The specified commit is from a fork and allows to overwrite arrays.
 # It has been pull-requested:
 # https://github.com/railsconfig/rails_config/pull/99
-gem 'rails_config', github: 'hnakamur/rails_config', ref: 'overwrite_arrays'
+gem 'rails_config', github: 'eugenk/rails_config', ref: 'overwrite_arrays'
 
 #provides  correct indefinite article 
 gem 'indefinite_article', '~> 0.2.0'
