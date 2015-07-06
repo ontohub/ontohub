@@ -130,7 +130,7 @@ class SettingsValidationWrapper
                        yml__hets__server_options)
 
 
-  validates_with DataPathsValidator
+  validates_with DataPathsValidator, if: :in_production?
 
   validates_presence_of *PRESENCE
   validates_presence_of *PRESENCE_IN_PRODUCTION, if: :in_production?
