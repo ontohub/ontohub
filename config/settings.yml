@@ -50,6 +50,11 @@ max_combined_diff_size: 1_048_576
 # Timeout for ontology parsing jobs in hours
 ontology_parse_timeout: 6
 
+asynchronous_execution:
+  # possible values for log level (in ascending order of verbosity):
+  # UNKNOWN, FATAL, ERROR, WARN, INFO, DEBUG
+  log_level: WARN
+
 # Footer links and texts
 footer:
   - text: Foo Institute

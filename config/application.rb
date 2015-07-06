@@ -98,6 +98,8 @@ module Ontohub
     config.after_initialize do
       SettingsValidator.new.validate!
       SettingsInterpreter.new.call
+      Sidekiq::Logging.logger.level =
+        Kernel.const_get("Logger::#{Settings.asynchronous_execution.log_level}")
     end
   end
 end
