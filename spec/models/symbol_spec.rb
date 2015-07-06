@@ -40,7 +40,7 @@ describe OntologyMember::Symbol do
       commented_symbols = ontology.symbols.
         where('comment IS NOT NULL')
       described_symbols_count = labeled_symbols.size + commented_symbols.size
-      described_symbols_count.should eq(115)
+      expect(described_symbols_count).to eq(115)
     end
 
   end

@@ -2,7 +2,7 @@ require 'spec_helper'
 
 describe Subprocess do
 
-  it{ Subprocess.run("echo", "what's", "up").should == "what's up\n" }
-  it{ ->{ Subprocess.run 'false' }.should raise_error Subprocess::Error }
+  it{ expect(Subprocess.run("echo", "what's", "up")).to eq("what's up\n") }
+  it{ expect { Subprocess.run 'false' }.to raise_error Subprocess::Error }
 
 end

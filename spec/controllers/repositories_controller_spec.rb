@@ -13,7 +13,7 @@ describe RepositoriesController do
         before { delete :destroy, id: repository.to_param }
 
         it{ expect(subject).to respond_with :found }
-        it{ response.should redirect_to Repository }
+        it{ expect(response).to redirect_to Repository }
       end
 
       context 'unsuccessful deletion' do
@@ -29,7 +29,7 @@ describe RepositoriesController do
         end
 
         it{ expect(subject).to respond_with :found }
-        it{ response.should redirect_to repository }
+        it{ expect(response).to redirect_to repository }
       end
     end
   end
@@ -78,7 +78,7 @@ describe RepositoriesController do
         end
 
         it { expect(subject).to respond_with :found }
-        it { response.should redirect_to Repository.find_by_path('repo') }
+        it { expect(response).to redirect_to Repository.find_by_path('repo') }
         it 'should have created a mirrored repository' do
           expect(Repository.find_by_path('repo').mirror?).to be_truthy
         end
@@ -92,7 +92,7 @@ describe RepositoriesController do
         end
 
         it { expect(subject).to respond_with :found }
-        it { response.should redirect_to Repository.find_by_path('repo') }
+        it { expect(response).to redirect_to Repository.find_by_path('repo') }
         it 'should have created a non-mirrored repository' do
           expect(Repository.find_by_path('repo').mirror?).to be_falsy
         end

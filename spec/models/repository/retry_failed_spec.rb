@@ -17,8 +17,8 @@ describe Repository do
       ontology.reload
     }
 
-    it { Worker.jobs.size.should == 1 }
-    it { ontology.state.should == 'pending' }
+    it { expect(Worker.jobs.size).to eq(1) }
+    it { expect(ontology.state).to eq('pending') }
   end
 
 end

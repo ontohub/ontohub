@@ -16,7 +16,7 @@ describe OntologiesController do
     context 'on collection' do
       before { post :retry_failed, repository_id: repository.to_param }
 
-      it{ response.should redirect_to [repository, :ontologies] }
+      it { expect(response).to redirect_to [repository, :ontologies] }
     end
 
     context 'on member' do
@@ -24,7 +24,7 @@ describe OntologiesController do
         post :retry_failed, repository_id: repository.to_param, id: ontology.id
       end
 
-      it{ response.should redirect_to [repository, ontology, :ontology_versions] }
+      it{ expect(response).to redirect_to [repository, ontology, :ontology_versions] }
     end
 
   end
@@ -65,7 +65,7 @@ describe OntologiesController do
         end
 
         it{ expect(subject).to respond_with :found }
-        it{ response.should redirect_to [repository, ontology] }
+        it{ expect(response).to redirect_to [repository, ontology] }
       end
     end
   end

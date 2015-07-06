@@ -24,11 +24,11 @@ describe Category do
     end
 
     it 'parent ontology expect(subject).to have 2 related ontologies' do
-      @parent_category.related_ontologies.count.should == 2
+      expect(@parent_category.related_ontologies.count).to eq(2)
     end
 
     it 'child ontology expect(subject).to have 1 related ontology' do
-      @child_category.related_ontologies.count.should == 1
+      expect(@child_category.related_ontologies.count).to eq(1)
     end
   end
 
@@ -41,11 +41,11 @@ describe Category do
     end
 
     it 'should be the correct categories count' do
-      Category.count.should == 123
+      expect(Category.count).to eq(123)
     end
 
     it 'should be the correct category edges count' do
-      CEdge.count.should == 122
+      expect(CEdge.count).to eq(122)
     end
   end
 

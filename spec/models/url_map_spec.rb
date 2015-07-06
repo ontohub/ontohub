@@ -33,25 +33,26 @@ describe UrlMap do
         subject do
           source = ""
         end
-        it do
+
+        it 'have correct error message' do
           url_map.source = ""
           url_map.valid?
-          url_map.errors[:source].should == ["can't be blank"]
+          expect(url_map.errors[:source]).to eq(["can't be blank"])
         end
       end
 
       describe 'target empty' do
-        it do
+        it 'have correct error message' do
           url_map.target = ""
           url_map.valid?
-          url_map.errors[:target].should == ["can't be blank"]
+          expect(url_map.errors[:target]).to eq(["can't be blank"])
         end
       end
 
       describe 'source not unique' do
         it do
           url_map2 = url_map.dup
-          url_map2.errors.should_not be(nil)
+          expect(url_map2.errors).not_to be(nil)
         end
       end
     end

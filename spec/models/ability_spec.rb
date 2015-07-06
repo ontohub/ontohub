@@ -195,13 +195,13 @@ describe Ability do
     context 'reader, editor, owner' do
       it 'not be allowed: to write' do
         [reader, editor, owner].each do |role|
-          Ability.new(role, nil).should_not be_able_to(:write, item)
+          expect(Ability.new(role, nil)).not_to be_able_to(:write, item)
         end
       end
 
       it 'be allowed: to read' do
         [reader, editor, owner].each do |role|
-          Ability.new(role, nil).should be_able_to(:show, item)
+          expect(Ability.new(role, nil)).to be_able_to(:show, item)
         end
       end
     end
@@ -209,12 +209,12 @@ describe Ability do
     context 'update:' do
       it 'reader, editor expect(subject).to be allowed' do
         [reader, editor].each do |role|
-          Ability.new(role, nil).should_not be_able_to(:update, item)
+          expect(Ability.new(role, nil)).not_to be_able_to(:update, item)
         end
       end
 
       it 'owner expect(subject).to not be allowed' do
-        Ability.new(owner, nil).should be_able_to(:update, item)
+        expect(Ability.new(owner, nil)).to be_able_to(:update, item)
       end
     end
   end
