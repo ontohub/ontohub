@@ -15,8 +15,8 @@ describe SymbolsController do
           repository_id: repository.to_param, ontology_id: ontology.to_param
       end
 
-      it { should respond_with :success }
-      it { should_not render_template(partial: '_oops_state') }
+      it { expect(subject).to respond_with :success }
+      it { expect(subject).to_not render_template(partial: '_oops_state') }
     end
   end
 
@@ -32,8 +32,8 @@ describe SymbolsController do
           repository_id: repository.to_param, ontology_id: ontology.to_param
       end
 
-      it { should respond_with :success }
-      it { should render_template(partial: '_oops_state') }
+      it { expect(subject).to respond_with :success }
+      it { expect(subject).to render_template(partial: '_oops_state') }
     end
   end
 end

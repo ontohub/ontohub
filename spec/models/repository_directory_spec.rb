@@ -68,7 +68,7 @@ describe RepositoryDirectory do
 
   context 'fields' do
     let(:repository_directory) { FactoryGirl.build :repository_directory }
-    it 'path should be target_directory plus name' do
+    it 'path expect(subject).to be target_directory plus name' do
       repository_directory.target_directory = 'dir'
       expect(repository_directory.target_path).
         to eq(File.join(repository_directory.target_directory, repository_directory.name))

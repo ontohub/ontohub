@@ -14,9 +14,9 @@ describe TeamUsersController do
         get :index, team_id: team.to_param
       end
 
-      it { should render_template 'relation_list/_relation_list' }
-      it { should render_template :index }
-      it { should respond_with :success }
+      it { expect(subject).to render_template 'relation_list/_relation_list' }
+      it { expect(subject).to render_template :index }
+      it { expect(subject).to respond_with :success }
     end
 
     context 'as user' do
@@ -29,7 +29,7 @@ describe TeamUsersController do
         expect(flash[:alert]).to match(/not authorized/)
       end
 
-      it { should redirect_to(:root) }
+      it { expect(subject).to redirect_to(:root) }
     end
   end
 
@@ -40,8 +40,8 @@ describe TeamUsersController do
         xhr :post, :create, team_id: team.id, team_user: { user_id: user.id }
       end
 
-      it { should render_template 'team_users/_team_user' }
-      it { should respond_with :success }
+      it { expect(subject).to render_template 'team_users/_team_user' }
+      it { expect(subject).to respond_with :success }
     end
   end
 
@@ -56,7 +56,7 @@ describe TeamUsersController do
         expect(response.body).to match(/What the hell/)
       end
 
-      it { should respond_with :unprocessable_entity }
+      it { expect(subject).to respond_with :unprocessable_entity }
     end
   end
 
@@ -70,8 +70,8 @@ describe TeamUsersController do
           team_id: team.id, id: team_user.id, team_user: { admin: 1 }
       end
 
-      it { should render_template 'team_users/_team_user' }
-      it { should respond_with :success }
+      it { expect(subject).to render_template 'team_users/_team_user' }
+      it { expect(subject).to respond_with :success }
     end
 
     context 'team admin deleting other user' do
@@ -80,7 +80,7 @@ describe TeamUsersController do
         xhr :delete, :destroy, team_id: team.id, id: team_user.id
       end
 
-      it { should respond_with :success }
+      it { expect(subject).to respond_with :success }
     end
 
   end

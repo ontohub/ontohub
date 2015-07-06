@@ -8,7 +8,7 @@ describe TeamsController do
       it 'sets the flash' do
         expect(flash[:alert]).to match(/not authorized/)
       end
-      it { should redirect_to(:root) }
+      it { expect(subject).to redirect_to(:root) }
     end
   end
 
@@ -19,15 +19,15 @@ describe TeamsController do
     context 'on GET to index without teams' do
       before { get :index }
 
-      it { should respond_with :success }
-      it { should render_template :index }
+      it { expect(subject).to respond_with :success }
+      it { expect(subject).to render_template :index }
     end
 
     context 'on GET to new' do
       before { get :new }
 
-      it { should respond_with :success }
-      it { should render_template :new }
+      it { expect(subject).to respond_with :success }
+      it { expect(subject).to render_template :new }
     end
 
     context 'with teams' do
@@ -36,29 +36,29 @@ describe TeamsController do
       context 'on GET to index' do
         before { get :index }
 
-        it { should respond_with :success }
-        it { should render_template :index }
+        it { expect(subject).to respond_with :success }
+        it { expect(subject).to render_template :index }
       end
 
       context 'on GET to show' do
         before { get :show, id: team.to_param }
 
-        it { should respond_with :success }
-        it { should render_template :show }
+        it { expect(subject).to respond_with :success }
+        it { expect(subject).to render_template :show }
       end
 
       context 'on GET to edit' do
         before { get :edit, id: team.to_param }
 
-        it { should respond_with :success }
-        it { should render_template :edit }
+        it { expect(subject).to respond_with :success }
+        it { expect(subject).to render_template :edit }
       end
 
       context 'on DELETE to destroy' do
         context 'by team admin' do
           before { delete :destroy, id: team.id }
 
-          it { should redirect_to(Team) }
+          it { expect(subject).to redirect_to(Team) }
 
           it 'sets the flash' do
             expect(flash[:notice]).to match(/destroyed/)
@@ -73,7 +73,7 @@ describe TeamsController do
             delete :destroy, id: team.id
           end
 
-          it { should redirect_to(:root) }
+          it { expect(subject).to redirect_to(:root) }
 
           it 'sets the flash' do
             expect(flash[:alert]).to match(/not authorized/)

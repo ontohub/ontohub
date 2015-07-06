@@ -3,7 +3,7 @@ require 'spec_helper'
 describe TeamUser do
   context 'Associations' do
     %i(team user creator).each do |association|
-      it { should belong_to(association) }
+      it { expect(subject).to belong_to(association) }
     end
   end
 

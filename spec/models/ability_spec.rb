@@ -21,17 +21,17 @@ describe Ability do
 
       it 'not be allowed: new, create' do
         %i(new create).each do |perm|
-          should_not be_able_to(perm, Repository.new)
+          expect(subject).to_not be_able_to(perm, Repository.new)
         end
       end
 
       it 'be allowed: show' do
-        should be_able_to(:show, Repository.new)
+        expect(subject).to be_able_to(:show, Repository.new)
       end
 
       it 'not be allowed some actions' do
         %i(edit update destroy write).each do |perm|
-          should_not be_able_to(perm, item)
+          expect(subject).to_not be_able_to(perm, item)
         end
       end
     end
@@ -41,18 +41,18 @@ describe Ability do
 
       it 'be allowed: new, create' do
         %i(new create).each do |perm|
-          should be_able_to(perm, Repository.new)
+          expect(subject).to be_able_to(perm, Repository.new)
         end
       end
 
       it 'not be allowed some actions' do
         %i(edit update destroy write).each do |perm|
-          should_not be_able_to(perm, item)
+          expect(subject).to_not be_able_to(perm, item)
         end
       end
 
       it 'be allowed: show' do
-        should be_able_to(:show, create(:repository))
+        expect(subject).to be_able_to(:show, create(:repository))
       end
     end
 
@@ -61,19 +61,19 @@ describe Ability do
 
       it 'be allowed: new, create' do
         %i(new create).each do |perm|
-          should be_able_to(perm, Repository.new)
+          expect(subject).to be_able_to(perm, Repository.new)
         end
       end
 
       it 'be allowed: edit, update, destroy, permissions, write' do
         %i(show edit update destroy permissions).each do |perm|
-          should be_able_to(perm, item)
+          expect(subject).to be_able_to(perm, item)
         end
       end
 
       it 'not be allowed on other: edit, update, destroy, permissions' do
         %i(edit update destroy permissions).each do |perm|
-          should_not be_able_to(perm, create(:repository))
+          expect(subject).to_not be_able_to(perm, create(:repository))
         end
       end
     end
@@ -83,13 +83,13 @@ describe Ability do
 
       it 'be allowed: write' do
         %i(show write).each do |perm|
-          should be_able_to(perm, item)
+          expect(subject).to be_able_to(perm, item)
         end
       end
 
       it 'not be allowed: edit, update, destroy, permissions' do
         %i(edit update destroy permissions).each do |perm|
-          should_not be_able_to(perm, item)
+          expect(subject).to_not be_able_to(perm, item)
         end
       end
     end
@@ -115,7 +115,7 @@ describe Ability do
 
       it 'not be allowed: anything' do
         %i(show update write).each do |perm|
-          should_not be_able_to(perm, item)
+          expect(subject).to_not be_able_to(perm, item)
         end
       end
 
@@ -126,13 +126,13 @@ describe Ability do
         context 'not be allowed: change' do
           %i(update write).each do |perm|
             it "via #{perm}" do
-              should_not be_able_to(perm, item)
+              expect(subject).to_not be_able_to(perm, item)
             end
           end
         end
 
         it 'be allowed: read' do
-          should be_able_to(:show, item)
+          expect(subject).to be_able_to(:show, item)
         end
       end
     end
@@ -142,12 +142,12 @@ describe Ability do
 
       it 'not be allowed: to manage' do
         %i(update write).each do |perm|
-          should_not be_able_to(perm, item)
+          expect(subject).to_not be_able_to(perm, item)
         end
       end
 
       it 'be allowed: to read' do
-        should be_able_to(:show, item)
+        expect(subject).to be_able_to(:show, item)
       end
     end
 
@@ -156,7 +156,7 @@ describe Ability do
 
       it 'be allowed: to read and manage' do
         %i(show write).each do |perm|
-          should be_able_to(perm, item)
+          expect(subject).to be_able_to(perm, item)
         end
       end
     end
@@ -166,7 +166,7 @@ describe Ability do
 
       it 'be allowed: everything' do
         %i(show update write).each do |perm|
-          should be_able_to(perm, item)
+          expect(subject).to be_able_to(perm, item)
         end
       end
     end
@@ -187,7 +187,7 @@ describe Ability do
 
       it 'not be allowed: anything' do
         %i(show update write).each do |perm|
-          should_not be_able_to(perm, item)
+          expect(subject).to_not be_able_to(perm, item)
         end
       end
     end
@@ -207,13 +207,13 @@ describe Ability do
     end
 
     context 'update:' do
-      it 'reader, editor should be allowed' do
+      it 'reader, editor expect(subject).to be allowed' do
         [reader, editor].each do |role|
           Ability.new(role, nil).should_not be_able_to(:update, item)
         end
       end
 
-      it 'owner should not be allowed' do
+      it 'owner expect(subject).to not be allowed' do
         Ability.new(owner, nil).should be_able_to(:update, item)
       end
     end
@@ -231,7 +231,7 @@ describe Ability do
     context 'admin' do
       it 'be allowed: edit, update, destroy' do
         %i(edit update destroy).each do |perm|
-          should be_able_to(perm, create(:team_user, user: user).team)
+          expect(subject).to be_able_to(perm, create(:team_user, user: user).team)
         end
       end
     end
@@ -239,19 +239,19 @@ describe Ability do
     context 'member' do
       it 'be allowed: create, show, index' do
         %i(create show index).each do |perm|
-          should be_able_to(perm, Team.new)
+          expect(subject).to be_able_to(perm, Team.new)
         end
       end
 
       it 'not be allowed: edit, update, destroy (without admin on team)' do
         %i(edit update destroy).each do |perm|
-          should_not be_able_to(perm, @memberteam)
+          expect(subject).to_not be_able_to(perm, @memberteam)
         end
       end
 
       it 'not be allowed: edit, update, destroy (without being on team)' do
         %i(edit update destroy).each do |perm|
-          should_not be_able_to(perm, otherteam)
+          expect(subject).to_not be_able_to(perm, otherteam)
         end
       end
     end
@@ -264,11 +264,11 @@ describe Ability do
       subject(:ability){ Ability.new(comment.user, nil) }
 
       it 'destroy his own comment' do
-        should be_able_to(:destroy, comment)
+        expect(subject).to be_able_to(:destroy, comment)
       end
 
       it 'not be allowed to destroy others comment' do
-        should_not be_able_to(:destroy, create(:comment))
+        expect(subject).to_not be_able_to(:destroy, create(:comment))
       end
     end
 
@@ -276,7 +276,7 @@ describe Ability do
       subject(:ability){ Ability.new(create(:admin), nil) }
 
       it 'destroy others comment' do
-        should be_able_to(:destroy, comment)
+        expect(subject).to be_able_to(:destroy, comment)
       end
     end
 
@@ -288,7 +288,7 @@ describe Ability do
       end
 
       it 'destroy others comments for his repository' do
-        should be_able_to(:destroy, comment)
+        expect(subject).to be_able_to(:destroy, comment)
       end
     end
 
@@ -299,7 +299,7 @@ describe Ability do
       end
 
       it 'not destroy others comments for his repository' do
-        should_not be_able_to(:destroy, comment)
+        expect(subject).to_not be_able_to(:destroy, comment)
       end
     end
   end

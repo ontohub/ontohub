@@ -2,11 +2,11 @@ require 'spec_helper'
 
 describe ProofAttempt do
   context 'Associations' do
-    it { should belong_to(:theorem) }
-    it { should belong_to(:proof_status) }
-    it { should belong_to(:proof_attempt_configuration) }
-    it { should have_one(:prover_output) }
-    it { should have_one(:tactic_script) }
+    it { expect(subject).to belong_to(:theorem) }
+    it { expect(subject).to belong_to(:proof_status) }
+    it { expect(subject).to belong_to(:proof_attempt_configuration) }
+    it { expect(subject).to have_one(:prover_output) }
+    it { expect(subject).to have_one(:tactic_script) }
   end
 
   let(:proof_attempt) { create :proof_attempt }

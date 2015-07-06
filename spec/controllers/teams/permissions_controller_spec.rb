@@ -12,7 +12,7 @@ describe Teams::PermissionsController do
         expect(flash[:alert]).to match(/not authorized/)
       end
 
-      it { should respond_with :redirect }
+      it { expect(subject).to respond_with :redirect }
     end
 
     context 'signed in as normal user' do
@@ -23,9 +23,9 @@ describe Teams::PermissionsController do
         get :index, team_id: team.to_param
       end
 
-      it { should respond_with :success }
-      it { should render_template :index }
-      it { should render_template 'teams/permissions/_permission' }
+      it { expect(subject).to respond_with :success }
+      it { expect(subject).to render_template :index }
+      it { expect(subject).to render_template 'teams/permissions/_permission' }
     end
   end
 end

@@ -19,8 +19,11 @@ describe FilesController do
     end
 
     context 'should allow us to get to a do-child' do
-      it { should respond_with :redirect }
-      it { should redirect_to repository_ontology_path(repository, do_child) }
+      it { expect(subject).to respond_with :redirect }
+      it do
+        expect(subject).
+          to redirect_to(repository_ontology_path(repository, do_child))
+      end
     end
 
   end
@@ -37,8 +40,8 @@ describe FilesController do
         get :show, repository_id: repository.to_param
       end
 
-      it { should respond_with :success }
-      it { should render_template :show }
+      it { expect(subject).to respond_with :success }
+      it { expect(subject).to render_template :show }
     end
 
     context "signed in with write access" do
@@ -47,13 +50,13 @@ describe FilesController do
 
       context "new" do
         before { get :new, repository_id: repository.to_param }
-        it { should respond_with :success }
+        it { expect(subject).to respond_with(:success) }
       end
 
       context "create" do
         context "without file" do
           before { post :create, repository_id: repository.to_param }
-          it { should respond_with :success }
+          it { expect(subject).to respond_with(:success) }
         end
 
         context "with file" do
@@ -66,7 +69,7 @@ describe FilesController do
                 ontology_file('owl/pizza.owl'),'image/jpg')
             }
           }
-          it { should respond_with :redirect }
+          it { expect(subject).to respond_with(:redirect) }
         end
       end
 
@@ -94,7 +97,7 @@ describe FilesController do
                 content: "changed"
             end
 
-            it { should respond_with :found }
+            it { expect(subject).to respond_with(:found) }
             it "should show a success message" do
               expect(flash[:success]).not_to be(nil)
             end
@@ -108,7 +111,7 @@ describe FilesController do
                 content: "changed"
             end
 
-            it { should respond_with :success }
+            it { expect(subject).to respond_with(:success) }
             it "should not show a success message" do
               expect(flash[:success]).to be(nil)
             end
@@ -125,7 +128,7 @@ describe FilesController do
               content: "changed"
           end
 
-          it { should respond_with :found }
+          it { expect(subject).to respond_with(:found) }
           it "should not show an error" do
             expect(flash[:error]).to be(nil)
           end
@@ -136,7 +139,7 @@ describe FilesController do
             expect(repository.path_exists? filepath).to be(true)
           end
           it "should actually not have added a file" do
-            skip "this should be another controller action"
+            skip "this expect(subject).to be another controller action"
           end
         end
       end
@@ -158,7 +161,7 @@ describe FilesController do
           delete :destroy, repository_id: repository.to_param, path: filepath
         end
 
-        it { should respond_with :found }
+        it { expect(subject).to respond_with(:found) }
         it "should not show an error" do
           expect(flash[:error]).to be_nil
         end
@@ -177,7 +180,7 @@ describe FilesController do
 
       context "new" do
         before { get :new, repository_id: repository.to_param }
-        it { should respond_with :redirect }
+        it { expect(subject).to respond_with(:redirect) }
 
         it 'sets the flash' do
           expect(flash[:alert]).to match(/not authorized/)
@@ -187,7 +190,7 @@ describe FilesController do
       context "create" do
         context "without file" do
           before { post :create, repository_id: repository.to_param }
-          it { should respond_with :redirect }
+          it { expect(subject).to respond_with(:redirect) }
 
           it 'sets the flash' do
             expect(flash[:alert]).to match(/not authorized/)
@@ -204,7 +207,7 @@ describe FilesController do
                 ontology_file('owl/pizza.owl'),'image/jpg')
             }
           }
-          it { should respond_with :redirect }
+          it { expect(subject).to respond_with(:redirect) }
 
           it 'sets the flash' do
             expect(flash[:alert]).to match(/not authorized/)

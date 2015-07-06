@@ -14,7 +14,7 @@ describe FiletypesController do
       post :create, iri: iri
     end
 
-    it { should respond_with :success }
+    it { expect(subject).to respond_with :success }
     it 'should contain the iri' do
       expect(response.body).to include(%{"iri":"#{iri}"})
     end
@@ -37,7 +37,7 @@ describe FiletypesController do
       post :create, iri: iri
     end
 
-    it { should respond_with 415 }
+    it { expect(subject).to respond_with 415 }
     it 'should contain the status' do
       expect(response.body).to include(%{"status":415})
     end

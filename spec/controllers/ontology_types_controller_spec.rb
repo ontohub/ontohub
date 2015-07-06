@@ -9,8 +9,8 @@ describe OntologyTypesController do
     context 'requesting standard representation' do
       before { get :show, id: ontology_type.to_param }
 
-      it { should respond_with :success }
-      it { should render_template :show }
+      it { expect(subject).to respond_with :success }
+      it { expect(subject).to render_template :show }
     end
   end
 end

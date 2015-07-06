@@ -21,7 +21,7 @@ describe OopsRequestsController do
             format: :json
         end
 
-        it { should respond_with :created }
+        it { expect(subject).to respond_with :created }
       end
 
       context 'send second request' do
@@ -36,7 +36,7 @@ describe OopsRequestsController do
               format: :json
           end
 
-          it { should respond_with :forbidden }
+          it { expect(subject).to respond_with :forbidden }
         end
 
         context 'when failed' do
@@ -50,7 +50,7 @@ describe OopsRequestsController do
               format: :json
           end
 
-          it { should respond_with :created }
+          it { expect(subject).to respond_with :created }
         end
       end
 
@@ -67,7 +67,7 @@ describe OopsRequestsController do
               format: :json
           end
 
-          it { should respond_with :success }
+          it { expect(subject).to respond_with :success }
         end
 
         context 'without OopsRequest' do

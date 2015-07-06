@@ -19,8 +19,8 @@ describe ProofsController do
             ontology_id: ontology.to_param
         end
 
-        it { should respond_with :ok }
-        it { should render_template :new }
+        it { expect(subject).to respond_with :ok }
+        it { expect(subject).to render_template :new }
       end
 
       context 'create' do
@@ -37,7 +37,7 @@ describe ProofsController do
           expect(flash[:success]).not_to be(nil)
         end
 
-        it { should respond_with :found }
+        it { expect(subject).to respond_with :found }
 
         it 'redirect to the theorems view' do
           expect(response).to redirect_to([repository, ontology, :theorems])
@@ -63,7 +63,7 @@ describe ProofsController do
           expect(flash[:alert]).not_to be(nil)
         end
 
-        it { should respond_with :found }
+        it { expect(subject).to respond_with :found }
 
         it 'redirect to the new action again' do
           expect(response).to redirect_to(action: :new)
@@ -125,8 +125,8 @@ describe ProofsController do
             theorem_id: theorem.to_param
         end
 
-        it { should respond_with :ok }
-        it { should render_template :new }
+        it { expect(subject).to respond_with :ok }
+        it { expect(subject).to render_template :new }
       end
 
       context 'create' do
@@ -144,7 +144,7 @@ describe ProofsController do
           expect(flash[:success]).not_to be(nil)
         end
 
-        it { should respond_with :found }
+        it { expect(subject).to respond_with :found }
 
         it 'redirect to the proof_attempts index' do
           expect(response).
@@ -172,7 +172,7 @@ describe ProofsController do
           expect(flash[:alert]).not_to be(nil)
         end
 
-        it { should respond_with :found }
+        it { expect(subject).to respond_with :found }
 
         it 'redirect to the new action again' do
           expect(response).to redirect_to(action: :new)

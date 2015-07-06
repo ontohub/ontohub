@@ -11,7 +11,7 @@ describe Api::V1::LogicsController do
         get :show, id: logic.to_param, format: :xml
       end
 
-      it { should respond_with :success }
+      it { expect(subject).to respond_with :success }
 
       it 'should respond as a application/rdf+xml' do
         expect(response.content_type).to eq('application/rdf+xml')
@@ -24,7 +24,7 @@ describe Api::V1::LogicsController do
         get :show, id: logic.to_param, format: :json
       end
 
-      it { should respond_with :success }
+      it { expect(subject).to respond_with :success }
 
       it 'respond with json content type' do
         expect(response.content_type.to_s).to eq('application/json')

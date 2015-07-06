@@ -9,7 +9,7 @@ describe RepositoryDirectoriesController do
       post :create, repository_directory: attributes_for(:repository_directory), repository_id: repository.to_param
     end
 
-    it{ should respond_with :redirect }
+    it{ expect(subject).to respond_with :redirect }
   end
 
   context 'signed in' do
@@ -28,7 +28,7 @@ describe RepositoryDirectoriesController do
           }, repository_id: repository.to_param
       end
 
-      it { should respond_with(201) }
+      it { expect(subject).to respond_with(201) }
     end
 
     context 'POST to create when it already exists' do
@@ -46,7 +46,7 @@ describe RepositoryDirectoriesController do
           }, repository_id: repository.to_param
       end
 
-      it { should respond_with(422) }
+      it { expect(subject).to respond_with(422) }
     end
   end
 

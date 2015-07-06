@@ -8,8 +8,8 @@ describe UrlMapsController do
 
     describe "index" do
       before { get :index, repository_id: repository.to_param }
-      it { should respond_with :success }
-      it { should render_template :index }
+      it { expect(subject).to respond_with :success }
+      it { expect(subject).to render_template :index }
     end
 
     describe "signed in with write access" do
@@ -18,54 +18,54 @@ describe UrlMapsController do
 
       describe "new" do
         before { get :new, repository_id: repository.to_param }
-        it { should respond_with :success }
+        it { expect(subject).to respond_with :success }
       end
 
       describe "edit" do
         before { get :edit, repository_id: repository.to_param, id: url_map.to_param }
-        it { should respond_with :success }
+        it { expect(subject).to respond_with :success }
       end
 
       describe "create" do
         before { post :create, repository_id: repository.to_param }
-        it { should respond_with :success }
+        it { expect(subject).to respond_with :success }
       end
 
       describe "update" do
         before { put :update, repository_id: repository.to_param, id: url_map.to_param }
-        it { should respond_with :found }
+        it { expect(subject).to respond_with :found }
       end
 
       describe "destroy" do
         before { delete :destroy, repository_id: repository.to_param, id: url_map.to_param }
-        it { should respond_with :found }
+        it { expect(subject).to respond_with :found }
       end
     end
 
     describe "without write access" do
       describe "new" do
         before { get :new, repository_id: repository.to_param }
-        it { should respond_with :found }
+        it { expect(subject).to respond_with :found }
       end
 
       describe "edit" do
         before { get :edit, repository_id: repository.to_param, id: url_map.to_param }
-        it { should respond_with :found }
+        it { expect(subject).to respond_with :found }
       end
 
       describe "create" do
         before { post :create, repository_id: repository.to_param }
-        it { should respond_with :found }
+        it { expect(subject).to respond_with :found }
       end
 
       describe "update" do
         before { put :update, repository_id: repository.to_param, id: url_map.to_param }
-        it { should respond_with :found }
+        it { expect(subject).to respond_with :found }
       end
 
       describe "destroy" do
         before { delete :destroy, repository_id: repository.to_param, id: url_map.to_param }
-        it { should respond_with :found }
+        it { expect(subject).to respond_with :found }
       end
     end
   end

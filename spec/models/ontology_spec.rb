@@ -6,27 +6,27 @@ describe Ontology do
 
   context 'associations' do
     %i(language logic ontology_version ontology_type).each do |association|
-      it { should belong_to(association) }
+      it { expect(subject).to belong_to(association) }
     end
 
     %i(versions comments sentences symbols).each do |association|
-      it { should have_many(association) }
+      it { expect(subject).to have_many(association) }
     end
 
     %i(projects).each do |association|
-      it { should have_and_belong_to_many(association) }
+      it { expect(subject).to have_and_belong_to_many(association) }
     end
   end
 
   context 'migrations' do
-    it { should have_db_index(:state) }
-    it { should have_db_index(:language_id) }
-    it { should have_db_index(:logic_id) }
+    it { expect(subject).to have_db_index(:state) }
+    it { expect(subject).to have_db_index(:language_id) }
+    it { expect(subject).to have_db_index(:logic_id) }
   end
 
   context 'attributes' do
-    it { should strip_attribute :name }
-    it { should_not strip_attribute :description }
+    it { expect(subject).to strip_attribute :name }
+    it { expect(subject).to_not strip_attribute :description }
   end
 
   context 'Validations' do
@@ -37,10 +37,10 @@ describe Ontology do
       '',
       nil
     ].each do |val|
-      it { should allow_value(val).for :documentation }
+      it { expect(subject).to allow_value(val).for :documentation }
     end
 
-    it { should_not allow_value('fooo').for :documentation }
+    it { expect(subject).to_not allow_value('fooo').for :documentation }
   end
 
   context 'ontology instance' do
@@ -167,7 +167,7 @@ describe Ontology do
     let(:repository) { create :repository }
     let(:version) { add_fixture_file(repository, 'xml/catalog-v001.xml') }
 
-    it 'no ontology should exist' do
+    it 'no ontology expect(subject).to exist' do
       expect(repository.ontologies).to be_empty
     end
 

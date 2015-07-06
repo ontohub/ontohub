@@ -14,7 +14,7 @@ describe DiffsController do
 
       context "show" do
         before { get :show, repository_id: repository.to_param, ref: 'master' }
-        it { should respond_with :success }
+        it { expect(subject).to respond_with :success }
       end
     end
 
@@ -24,14 +24,14 @@ describe DiffsController do
 
       context "show" do
         before { get :show, repository_id: repository.to_param, ref: 'master' }
-        it { should respond_with :success }
+        it { expect(subject).to respond_with :success }
       end
     end
 
     context "not signed in" do
       context "show" do
         before { get :show, repository_id: repository.to_param, ref: 'master' }
-        it { should respond_with :success }
+        it { expect(subject).to respond_with :success }
       end
     end
   end
@@ -47,7 +47,7 @@ describe DiffsController do
 
       context "show" do
         before { get :show, repository_id: repository.to_param, ref: 'master' }
-        it { should respond_with :success }
+        it { expect(subject).to respond_with :success }
       end
     end
 
@@ -57,8 +57,8 @@ describe DiffsController do
 
       context "show" do
         before { get :show, repository_id: repository.to_param, ref: 'master' }
-        it { should respond_with :found }
-        it { should redirect_to root_path }
+        it { expect(subject).to respond_with :found }
+        it { expect(subject).to redirect_to root_path }
 
         it 'sets the flash' do
           expect(flash[:alert]).to match(/not authorized/)
@@ -69,8 +69,8 @@ describe DiffsController do
     context "not signed in" do
       context "show" do
         before { get :show, repository_id: repository.to_param, ref: 'master' }
-        it { should respond_with :found }
-        it { should redirect_to root_path }
+        it { expect(subject).to respond_with :found }
+        it { expect(subject).to redirect_to root_path }
 
         it 'sets the flash' do
           expect(flash[:alert]).to match(/not authorized/)

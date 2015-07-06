@@ -19,7 +19,7 @@ describe Api::V1::OntologyVersionsController do
           format: :json
       end
 
-      it { should respond_with :success }
+      it { expect(subject).to respond_with :success }
 
       it 'respond with json content type' do
         expect(response.content_type.to_s).to eq('application/json')
@@ -48,7 +48,7 @@ describe Api::V1::OntologyVersionsController do
           format: :json
       end
 
-      it { should respond_with :success }
+      it { expect(subject).to respond_with :success }
 
       it 'respond with json content type' do
         expect(response.content_type.to_s).to eq('application/json')

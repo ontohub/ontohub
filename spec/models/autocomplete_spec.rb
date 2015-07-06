@@ -14,7 +14,7 @@ describe Autocomplete do
     let!(:team_faker) { create :team, name: 'faker' }
 
     before do
-      # should never be found
+      # expect(subject).to never be found
       create :user, name: 'xxyyzz'
       create :team, name: 'aabbbccc'
     end

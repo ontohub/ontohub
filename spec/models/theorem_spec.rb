@@ -2,8 +2,8 @@ require 'spec_helper'
 
 describe Theorem do
   context 'Associations' do
-    it { should have_many(:proof_attempts) }
-    it { should belong_to(:proof_status) }
+    it { expect(subject).to have_many(:proof_attempts) }
+    it { expect(subject).to belong_to(:proof_status) }
   end
 
   context 'Theorem of an ontology' do

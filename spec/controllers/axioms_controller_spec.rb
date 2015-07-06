@@ -13,8 +13,8 @@ describe AxiomsController do
         ontology_id: ontology.to_param
     end
 
-    it { should respond_with :success }
-    it { should render_template :index }
-    it { should render_template 'axioms/_axiom' }
+    it { expect(subject).to respond_with :success }
+    it { expect(subject).to render_template :index }
+    it { expect(subject).to render_template 'axioms/_axiom' }
   end
 end

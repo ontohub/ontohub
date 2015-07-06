@@ -14,8 +14,8 @@ describe CommentsController do
           get :index, :ontology_id => ontology.to_param, :repository_id => repository.to_param
         end
 
-        it{ should respond_with :success }
-        it{ should render_template 'comments/index' }
+        it{ expect(subject).to respond_with :success }
+        it{ expect(subject).to render_template 'comments/index' }
       end
 
       context 'with comment' do
@@ -24,8 +24,8 @@ describe CommentsController do
           get :index, :ontology_id => ontology.to_param, :repository_id => repository.to_param
         end
 
-        it{ should respond_with :success }
-        it{ should render_template 'comments/index' }
+        it{ expect(subject).to respond_with :success }
+        it{ expect(subject).to render_template 'comments/index' }
       end
     end
   end
@@ -40,8 +40,8 @@ describe CommentsController do
           get :index, :ontology_id => ontology.to_param, :repository_id => repository.to_param
         end
 
-        it{ should respond_with :success }
-        it{ should render_template 'comments/index' }
+        it{ expect(subject).to respond_with :success }
+        it{ expect(subject).to render_template 'comments/index' }
       end
 
       context 'with comment' do
@@ -50,8 +50,8 @@ describe CommentsController do
           get :index, :ontology_id => ontology.to_param, :repository_id => repository.to_param
         end
 
-        it{ should respond_with :success }
-        it{ should render_template 'comments/index' }
+        it{ expect(subject).to respond_with :success }
+        it{ expect(subject).to render_template 'comments/index' }
       end
 
       context 'on POST to delete' do
@@ -60,7 +60,7 @@ describe CommentsController do
           xhr :delete, :destroy, :ontology_id => ontology.to_param, :repository_id => repository.to_param, :id => comment.id
         end
 
-        it{ should respond_with :success }
+        it{ expect(subject).to respond_with :success }
       end
     end
 
@@ -72,7 +72,7 @@ describe CommentsController do
             repository_id: repository.to_param,
             comment:     {text: 'foo'}
         end
-        it{ should respond_with :unprocessable_entity }
+        it{ expect(subject).to respond_with :unprocessable_entity }
       end
 
       context 'with too enough text' do
@@ -83,7 +83,7 @@ describe CommentsController do
             comment:     {text: 'fooo baaaaaaaaaaaaaaar'}
         end
 
-        it{ should respond_with :success }
+        it{ expect(subject).to respond_with :success }
       end
     end
   end

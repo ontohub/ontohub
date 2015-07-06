@@ -12,7 +12,7 @@ describe RepositoriesController do
       context 'successful deletion' do
         before { delete :destroy, id: repository.to_param }
 
-        it{ should respond_with :found }
+        it{ expect(subject).to respond_with :found }
         it{ response.should redirect_to Repository }
       end
 
@@ -28,7 +28,7 @@ describe RepositoriesController do
           expect(flash[:error]).to match(/is imported/)
         end
 
-        it{ should respond_with :found }
+        it{ expect(subject).to respond_with :found }
         it{ response.should redirect_to repository }
       end
     end
@@ -42,17 +42,17 @@ describe RepositoriesController do
     context 'on GET to index' do
       before { get :index }
 
-      it { should respond_with :success }
-      it { should render_template :index }
-      it { should render_template 'repositories/_repository' }
+      it { expect(subject).to respond_with :success }
+      it { expect(subject).to render_template :index }
+      it { expect(subject).to render_template 'repositories/_repository' }
     end
 
     context 'on GET to show' do
       context 'requesting standard representation' do
         before { get :show, id: repository.path }
 
-        it { should respond_with :success }
-        it { should render_template :show }
+        it { expect(subject).to respond_with :success }
+        it { expect(subject).to render_template :show }
       end
 
     end
@@ -77,7 +77,7 @@ describe RepositoriesController do
           FileUtils.rm_rf(git_repository.path)
         end
 
-        it { should respond_with :found }
+        it { expect(subject).to respond_with :found }
         it { response.should redirect_to Repository.find_by_path('repo') }
         it 'should have created a mirrored repository' do
           expect(Repository.find_by_path('repo').mirror?).to be_truthy
@@ -91,7 +91,7 @@ describe RepositoriesController do
             remote_type: 'fork' }
         end
 
-        it { should respond_with :found }
+        it { expect(subject).to respond_with :found }
         it { response.should redirect_to Repository.find_by_path('repo') }
         it 'should have created a non-mirrored repository' do
           expect(Repository.find_by_path('repo').mirror?).to be_falsy

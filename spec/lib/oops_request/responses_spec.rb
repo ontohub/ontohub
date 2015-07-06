@@ -23,7 +23,7 @@ describe 'OopsRequest::Responses' do
       expect(request.responses).not_to be_empty
     end
 
-    it 'affected symbol with should be connected with response' do
+    it 'affected symbol with expect(subject).to be connected with response' do
       expect(symbol.oops_responses).not_to be_empty
     end
   end

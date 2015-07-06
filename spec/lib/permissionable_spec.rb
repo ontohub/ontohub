@@ -2,7 +2,7 @@ require 'spec_helper'
 
 describe Permissionable do
 
-  context 'on repository should find the highest permission' do
+  context 'on repository expect(subject).to find the highest permission' do
     let!(:team) { create :team_with_user_and_permission }
     let!(:user) { team.users.first }
     let!(:permission) { team.permissions.first }

@@ -18,8 +18,8 @@ describe ProofAttemptsController do
           theorem_id: theorem.to_param,
           id: proof_attempt.to_param
       end
-      it { should respond_with :success }
-      it { should render_template :show }
+      it { expect(subject).to respond_with :success }
+      it { expect(subject).to render_template :show }
     end
 
     context 'retry_failed' do
@@ -60,7 +60,7 @@ describe ProofAttemptsController do
           theorem_id: theorem.to_param,
           id: proof_attempt.to_param
       end
-      it { should respond_with :found }
+      it { expect(subject).to respond_with :found }
 
       it 'set the flash/alert' do
         expect(flash[:alert]).to match(/not authorized/)
@@ -102,8 +102,8 @@ describe ProofAttemptsController do
           theorem_id: theorem.to_param,
           id: proof_attempt.to_param
       end
-      it { should respond_with :success }
-      it { should render_template :show }
+      it { expect(subject).to respond_with :success }
+      it { expect(subject).to render_template :show }
     end
 
     context 'retry_failed' do

@@ -22,12 +22,12 @@ describe UrlMap do
   describe 'UrlMapInstance' do
     describe 'responsiveness' do
       [:source, :target, :repository].each do |field|
-        it { should respond_to(field) }
+        it { expect(subject).to respond_to(field) }
       end
     end
 
     describe 'validations' do
-      it { should be_valid }
+      it { expect(subject).to be_valid }
 
       describe 'source empty' do
         subject do

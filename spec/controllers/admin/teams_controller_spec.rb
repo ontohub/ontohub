@@ -9,7 +9,7 @@ describe Admin::TeamsController do
         expect(flash[:error]).to match(/admin privileges/)
       end
 
-      it { should respond_with :redirect }
+      it { expect(subject).to respond_with :redirect }
     end
 
     context 'signed in as normal user' do
@@ -22,7 +22,7 @@ describe Admin::TeamsController do
         expect(flash[:error]).to match(/admin privileges/)
       end
 
-      it { should respond_with :redirect }
+      it { expect(subject).to respond_with :redirect }
     end
 
     context 'signed in as admin user' do
@@ -31,7 +31,7 @@ describe Admin::TeamsController do
         get :index
       end
 
-      it { should respond_with :success }
+      it { expect(subject).to respond_with :success }
     end
   end
 end

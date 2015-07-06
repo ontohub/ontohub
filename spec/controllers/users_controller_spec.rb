@@ -7,8 +7,8 @@ describe UsersController do
     context 'on GET to show' do
       before { get :show, id: user.to_param }
 
-      it { should respond_with :success }
-      it { should render_template :show }
+      it { expect(subject).to respond_with :success }
+      it { expect(subject).to render_template :show }
     end
   end
 
@@ -20,8 +20,8 @@ describe UsersController do
     context 'on GET to show' do
       before { get :show, id: user.to_param }
 
-      it { should respond_with :success }
-      it { should render_template :show }
+      it { expect(subject).to respond_with :success }
+      it { expect(subject).to render_template :show }
     end
   end
 end

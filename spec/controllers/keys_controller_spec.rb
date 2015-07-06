@@ -7,7 +7,7 @@ describe KeysController do
   context 'not signed in' do
     before { get :index }
 
-    it{ should respond_with :redirect }
+    it{ expect(subject).to respond_with :redirect }
   end
 
   context 'signed in' do
@@ -16,8 +16,8 @@ describe KeysController do
     context 'GET to new' do
       before { get :new }
 
-      it{ should respond_with :success }
-      it{ should render_template :new }
+      it{ expect(subject).to respond_with :success }
+      it{ expect(subject).to render_template :new }
     end
 
     context 'POST to create' do
@@ -26,7 +26,7 @@ describe KeysController do
       it 'sets the flash' do
         expect(flash[:notice]).to match(/successfully created/)
       end
-      it{ should redirect_to(:keys) }
+      it{ expect(subject).to redirect_to(:keys) }
     end
 
     context 'existing key' do
@@ -35,14 +35,14 @@ describe KeysController do
       context 'GET to index' do
         before { get :index }
 
-        it{ should respond_with :success }
-        it{ should render_template :index }
+        it{ expect(subject).to respond_with :success }
+        it{ expect(subject).to render_template :index }
       end
 
       context 'DELETE to destroy' do
         before { delete :destroy, id: key.id }
 
-        it{ should redirect_to(:keys) }
+        it{ expect(subject).to redirect_to(:keys) }
       end
     end
   end

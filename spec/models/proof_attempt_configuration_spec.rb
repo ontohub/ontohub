@@ -2,11 +2,11 @@ require 'spec_helper'
 
 describe ProofAttemptConfiguration do
   context 'Associations' do
-    it { should belong_to(:prover) }
-    it { should belong_to(:logic_mapping) }
-    it { should have_many(:proof_attempts) }
-    it { should have_and_belong_to_many(:axioms) }
-    it { should have_and_belong_to_many(:goals) }
+    it { expect(subject).to belong_to(:prover) }
+    it { expect(subject).to belong_to(:logic_mapping) }
+    it { expect(subject).to have_many(:proof_attempts) }
+    it { expect(subject).to have_and_belong_to_many(:axioms) }
+    it { expect(subject).to have_and_belong_to_many(:goals) }
   end
 
   context 'locid' do

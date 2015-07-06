@@ -16,8 +16,8 @@ describe TheoremsController do
           ontology_id: ontology.to_param
       end
 
-      it { should respond_with :success }
-      it { should render_template :index }
+      it { expect(subject).to respond_with :success }
+      it { expect(subject).to render_template :index }
     end
   end
 
@@ -36,7 +36,7 @@ describe TheoremsController do
           ontology_id: ontology.to_param
       end
 
-      it { should respond_with :found }
+      it { expect(subject).to respond_with :found }
 
       it 'set the flash/alert' do
         expect(flash[:alert]).to match(/not authorized/)
@@ -56,8 +56,8 @@ describe TheoremsController do
           ontology_id: ontology.to_param
       end
 
-      it { should respond_with :success }
-      it { should render_template :index }
+      it { expect(subject).to respond_with :success }
+      it { expect(subject).to render_template :index }
     end
   end
 end

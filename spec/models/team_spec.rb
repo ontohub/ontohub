@@ -1,22 +1,22 @@
 require 'spec_helper'
 
 describe Team do
-  it { should strip_attribute :name }
+  it { expect(subject).to strip_attribute :name }
 
   context 'Associations' do
     %i(permissions team_users users).each do |association|
-      it { should have_many(association) }
+      it { expect(subject).to have_many(association) }
     end
-    it { should have_many(:users).through(:team_users) }
+    it { expect(subject).to have_many(:users).through(:team_users) }
   end
 
   context 'Validations' do
     [ 'foo', '123 4', 'A multiword name' ].each do |val|
-      it { should allow_value(val).for :name }
+      it { expect(subject).to allow_value(val).for :name }
     end
 
     [ nil, '','   A   ', 'fo','a very tooooooooooooooooooooooooooooooooooooooooooooooo long name' ].each do |val|
-      it { should_not allow_value(val).for :name }
+      it { expect(subject).to_not allow_value(val).for :name }
     end
   end
 

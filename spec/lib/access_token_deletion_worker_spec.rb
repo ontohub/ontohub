@@ -8,14 +8,14 @@ describe AccessTokenDeletionWorker do
     end
   end
 
-  it 'before perfoming there should be 3 tokens' do
+  it 'before perfoming there expect(subject).to be 3 tokens' do
     expect(AccessToken.count).to eq(3)
   end
 
   context 'after perfoming' do
     before { AccessTokenDeletionWorker.new.perform }
 
-    it 'there should be only 1 token' do
+    it 'there expect(subject).to be only 1 token' do
       expect(AccessToken.count).to eq(1)
     end
   end

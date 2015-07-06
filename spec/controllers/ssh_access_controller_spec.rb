@@ -12,7 +12,7 @@ describe SSHAccessController do
       get :index, repository_id: repository.to_param, key_id: nil, permission: 'write'
     end
 
-    it { should respond_with :success }
+    it { expect(subject).to respond_with :success }
     it 'contains error-reason' do
       expect(response.body).to include('reason')
     end
@@ -24,7 +24,7 @@ describe SSHAccessController do
       get :index, repository_id: repository.to_param, key_id: key.id.to_s, permission: 'write'
     end
 
-    it { should respond_with :success }
+    it { expect(subject).to respond_with :success }
     it 'contains correct permission' do
       expect(response.body).to include('"allowed":false')
     end
@@ -41,7 +41,7 @@ describe SSHAccessController do
       get :index, repository_id: repository.to_param, key_id: key.id.to_s, permission: 'read'
     end
 
-    it { should respond_with :success }
+    it { expect(subject).to respond_with :success }
     it 'contains correct permission' do
       expect(response.body).to include('"allowed":true')
     end
@@ -59,7 +59,7 @@ describe SSHAccessController do
       get :index, repository_id: repository.to_param, key_id: key.id.to_s, permission: 'write'
     end
 
-    it { should respond_with :success }
+    it { expect(subject).to respond_with :success }
     it 'contains correct permission' do
       expect(response.body).to include('"allowed":false')
     end

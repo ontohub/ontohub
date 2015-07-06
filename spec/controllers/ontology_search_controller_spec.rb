@@ -8,7 +8,7 @@ describe OntologySearchController do
 
       get :search
 
-      should respond_with :success
+      expect(subject).to respond_with :success
       expect(assigns (:search_response)).to eq(Ontology.scoped)
     end
   end

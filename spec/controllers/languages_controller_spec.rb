@@ -8,8 +8,8 @@ describe LanguagesController do
     context 'not signed in' do
       before { get :show, id: language.to_param }
 
-      it { should respond_with :success }
-      it { should render_template :show }
+      it { expect(subject).to respond_with :success }
+      it { expect(subject).to render_template :show }
 
       it 'does not set the flash' do
         expect(flash).to be_empty
@@ -22,8 +22,8 @@ describe LanguagesController do
         get :show, id: language.to_param
       end
 
-      it { should respond_with :success }
-      it { should render_template :show }
+      it { expect(subject).to respond_with :success }
+      it { expect(subject).to render_template :show }
 
       it 'does not set the flash' do
         expect(flash).to be_empty
@@ -34,8 +34,8 @@ describe LanguagesController do
   context 'in GET to index' do
     before { get :index }
 
-    it { should respond_with :success }
-    it { should render_template :index }
+    it { expect(subject).to respond_with :success }
+    it { expect(subject).to render_template :index }
 
     it 'does not set the flash' do
       expect(flash).to be_empty
@@ -56,7 +56,7 @@ describe LanguagesController do
       expect(Language.find_by_name(language2.name).name).to eq(language2.name)
     end
 
-    it { should respond_with :redirect }
+    it { expect(subject).to respond_with :redirect }
 
     it 'sets the flash' do
       expect(flash[:notice]).to match(/created/i)
@@ -82,7 +82,7 @@ describe LanguagesController do
         expect(Language.find_by_name("test3")).to be_truthy
       end
 
-      it { should respond_with :redirect }
+      it { expect(subject).to respond_with :redirect }
 
       it 'sets the flash' do
         expect(flash[:notice]).to match(/successfully updated/i)
@@ -104,7 +104,7 @@ describe LanguagesController do
         expect(Language.find_by_name("test3")).to be_falsy
       end
 
-      it { should respond_with :redirect }
+      it { expect(subject).to respond_with :redirect }
 
       it 'sets the flash' do
         expect(flash[:alert]).not_to match(/successfully updated/i)
@@ -129,7 +129,7 @@ describe LanguagesController do
         expect(Language.find_by_name('test3')).to be_falsy
       end
 
-      it { should respond_with :redirect }
+      it { expect(subject).to respond_with :redirect }
 
       it 'sets the flash' do
         expect(flash[:alert]).not_to match(/successfully updated/i)
@@ -149,7 +149,7 @@ describe LanguagesController do
         expect(Language.find_by_name(language.name)).to be_falsy
       end
 
-      it { should respond_with :redirect }
+      it { expect(subject).to respond_with :redirect }
 
       it 'sets the flash' do
         expect(flash[:notice]).to match(/successfully destroyed/i)
@@ -163,7 +163,7 @@ describe LanguagesController do
         expect(Language.find_by_name(language.name)).to be_truthy
       end
 
-      it { should respond_with :redirect }
+      it { expect(subject).to respond_with :redirect }
 
       it 'sets the flash' do
         expect(flash[:alert]).not_to match(/successfully destroyed/i)
@@ -181,7 +181,7 @@ describe LanguagesController do
         expect(Language.find_by_name(language.name)).to be_truthy
       end
 
-      it { should respond_with :redirect }
+      it { expect(subject).to respond_with :redirect }
 
       it 'sets the flash' do
         expect(flash[:alert]).not_to match(/successfully destroyed/i)

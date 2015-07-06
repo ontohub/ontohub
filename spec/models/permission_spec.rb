@@ -3,17 +3,17 @@ require 'spec_helper'
 describe Permission do
   context 'associations' do
     %i(creator item subject).each do |association|
-      it { should belong_to(association) }
+      it { expect(subject).to belong_to(association) }
     end
   end
 
   context 'validations' do
     %w(owner editor).each do |val|
-      it { should allow_value(val).for :role }
+      it { expect(subject).to allow_value(val).for :role }
     end
 
     [ nil, '','foo' ].each do |val|
-      it { should_not allow_value(val).for :role }
+      it { expect(subject).to_not allow_value(val).for :role }
     end
   end
 

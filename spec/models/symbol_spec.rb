@@ -17,15 +17,15 @@ describe OntologyMember::Symbol do
     }
 
     columns.each_pair do |column, column_type|
-      it { should have_db_column(column).of_type(column_type) }
+      it { expect(subject).to have_db_column(column).of_type(column_type) }
     end
 
-    it { should have_db_index([:ontology_id, :id]).unique(true) }
-    it { should have_db_index([:ontology_id, :text]).unique(true) }
-    it { should have_db_index([:ontology_id, :kind]) }
+    it { expect(subject).to have_db_index([:ontology_id, :id]).unique(true) }
+    it { expect(subject).to have_db_index([:ontology_id, :text]).unique(true) }
+    it { expect(subject).to have_db_index([:ontology_id, :kind]) }
 
-    it { should belong_to(:ontology) }
-    it { should have_and_belong_to_many :sentences }
+    it { expect(subject).to belong_to(:ontology) }
+    it { expect(subject).to have_and_belong_to_many :sentences }
   end
 
   context 'when importing an ontology' do

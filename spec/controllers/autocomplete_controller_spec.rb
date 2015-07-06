@@ -22,7 +22,7 @@ describe AutocompleteController do
           expect(response.content_type.to_s).to eq('application/json')
         end
 
-        it { should respond_with :success }
+        it { expect(subject).to respond_with :success }
       end
 
       context 'with results, one excluded' do
@@ -41,7 +41,7 @@ describe AutocompleteController do
           expect(response.content_type.to_s).to eq('application/json')
         end
 
-        it { should respond_with :success }
+        it { expect(subject).to respond_with :success }
       end
 
       context 'without results' do
@@ -51,7 +51,7 @@ describe AutocompleteController do
             term:  'xxxyyyzzz'
         end
 
-        it { should respond_with :success }
+        it { expect(subject).to respond_with :success }
       end
     end
 
@@ -65,7 +65,7 @@ describe AutocompleteController do
           term:  'bar'
       end
 
-      it { should respond_with :unprocessable_entity }
+      it { expect(subject).to respond_with :unprocessable_entity }
     end
 
     context 'without scope' do
@@ -84,7 +84,7 @@ describe AutocompleteController do
           term:  ''
       end
 
-      it { should respond_with :success }
+      it { expect(subject).to respond_with :success }
     end
 
     context 'on GET to index without term' do
@@ -93,7 +93,7 @@ describe AutocompleteController do
           scope: 'foo'
       end
 
-      it { should respond_with :success }
+      it { expect(subject).to respond_with :success }
     end
   end
 end

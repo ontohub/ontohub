@@ -2,7 +2,7 @@ require 'spec_helper'
 
 describe TacticScriptExtraOption do
   context 'Associations' do
-    it { should belong_to(:tactic_script) }
+    it { expect(subject).to belong_to(:tactic_script) }
   end
 
   context 'validations' do

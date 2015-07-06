@@ -4,13 +4,13 @@ describe User do
   context 'associations' do
     %i(comments ontology_versions team_users teams permissions keys).
       each do |association|
-      it { should have_many(association) }
+      it { expect(subject).to have_many(association) }
     end
   end
 
-  it { should strip_attribute :name }
-  it { should strip_attribute :email }
-  it { should_not strip_attribute :password }
+  it { expect(subject).to strip_attribute :name }
+  it { expect(subject).to strip_attribute :email }
+  it { expect(subject).to_not strip_attribute :password }
 
   context 'when there are only two users, one admin and one not' do
     let!(:admin) { create :admin }

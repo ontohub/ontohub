@@ -35,7 +35,7 @@ describe OntologyVersionsController do
         get :index, repository_id: repository.to_param, ontology_id: ontology.to_param
       end
 
-      it { should respond_with :success }
+      it { expect(subject).to respond_with :success }
 
       context 'for a single ontology' do
         it 'should assign the right versions' do

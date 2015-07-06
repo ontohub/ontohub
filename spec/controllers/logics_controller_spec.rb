@@ -9,8 +9,8 @@ describe LogicsController do
       context 'not signed in' do
         before { get :show, id: logic.to_param }
 
-        it { should respond_with :success }
-        it { should render_template :show }
+        it { expect(subject).to respond_with :success }
+        it { expect(subject).to render_template :show }
 
         it 'does not set the flash' do
           expect(flash).to be_empty
@@ -23,8 +23,8 @@ describe LogicsController do
           get :show, id: logic.to_param
         end
 
-        it { should respond_with :success }
-        it { should render_template :show }
+        it { expect(subject).to respond_with :success }
+        it { expect(subject).to render_template :show }
 
         it 'does not set the flash' do
           expect(flash).to be_empty
@@ -36,8 +36,8 @@ describe LogicsController do
   context 'in GET to index' do
     before { get :index }
 
-    it { should respond_with :success }
-    it { should render_template :index }
+    it { expect(subject).to respond_with :success }
+    it { expect(subject).to render_template :index }
 
     it 'does not set the flash' do
       expect(flash).to be_empty

@@ -83,7 +83,7 @@ describe PermissionsController do
           expect(flash[:alert]).to match(/not authorized/)
         end
 
-        it { should redirect_to(:root) }
+        it { expect(subject).to redirect_to(:root) }
       end
     end
   end

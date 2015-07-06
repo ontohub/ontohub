@@ -3,7 +3,7 @@ require 'spec_helper'
 describe Mapping do
   context 'associations' do
     %i(source target).each do |association|
-      it { should belong_to(association) }
+      it { expect(subject).to belong_to(association) }
     end
   end
 

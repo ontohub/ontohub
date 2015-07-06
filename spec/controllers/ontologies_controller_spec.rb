@@ -47,7 +47,7 @@ describe OntologiesController do
           delete :destroy, repository_id: repository.to_param, id: ontology.id
         end
 
-        it{ should respond_with :found }
+        it{ expect(subject).to respond_with :found }
         it 'should redirect to ontologies-index of repository' do
           expect(response).to redirect_to([repository, :ontologies])
         end
@@ -64,7 +64,7 @@ describe OntologiesController do
           expect(flash[:error]).to match(/is imported/)
         end
 
-        it{ should respond_with :found }
+        it{ expect(subject).to respond_with :found }
         it{ response.should redirect_to [repository, ontology] }
       end
     end
@@ -80,13 +80,13 @@ describe OntologiesController do
       context 'for a repository' do
         before { get :index, repository_id: repository.to_param }
 
-        it { should respond_with :success }
-        it { should render_template :index_repository }
+        it { expect(subject).to respond_with :success }
+        it { expect(subject).to render_template :index_repository }
       end
       context 'for the whole website' do
         before { get :index }
-        it { should respond_with :success }
-        it { should render_template :index_global }
+        it { expect(subject).to respond_with :success }
+        it { expect(subject).to render_template :index_global }
       end
     end
 
@@ -100,9 +100,9 @@ describe OntologiesController do
             id:            ontology.to_param
         end
 
-        it { should respond_with :redirect }
+        it { expect(subject).to respond_with :redirect }
         it do
-          should redirect_to(controllers_locid_for(ontology, :symbols, kind: 'Symbol'))
+          expect(subject).to redirect_to(controllers_locid_for(ontology, :symbols, kind: 'Symbol'))
         end
       end
 
@@ -114,9 +114,9 @@ describe OntologiesController do
             id:            ontology.to_param
         end
 
-        it { should respond_with :redirect }
+        it { expect(subject).to respond_with :redirect }
         it do
-          should redirect_to(controllers_locid_for(ontology, :symbols, kind: 'Class'))
+          expect(subject).to redirect_to(controllers_locid_for(ontology, :symbols, kind: 'Class'))
         end
       end
     end
@@ -136,8 +136,8 @@ describe OntologiesController do
             id:            ontology.to_param
         end
 
-        it { should respond_with :success }
-        it { should render_template :edit }
+        it { expect(subject).to respond_with :success }
+        it { expect(subject).to render_template :edit }
       end
 
       context 'on PUT to update' do
@@ -148,7 +148,7 @@ describe OntologiesController do
             name:          'foo bar'
         end
 
-        it { should redirect_to([repository, ontology]) }
+        it { expect(subject).to redirect_to([repository, ontology]) }
       end
     end
   end

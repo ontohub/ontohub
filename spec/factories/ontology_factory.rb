@@ -96,7 +96,7 @@ FactoryGirl.define do
         ontology.locid = "/#{ontology.repository.path}/#{ontology.name}"
       end
 
-      # Should always be fully linked, so every child should
+      # Should always be fully linked, so every child expect(subject).to
       # have a linked (defined by the DO) pointing or sourcing
       # to/from it.
       factory :linked_distributed_ontology do |ontology|

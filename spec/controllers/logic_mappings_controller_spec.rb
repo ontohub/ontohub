@@ -14,8 +14,8 @@ describe LogicMappingsController do
 
     context 'on get to show' do
       before { get :show, id: mapping.to_param, logic_id: source_logic.id }
-      it { should respond_with :success }
-      it { should render_template :show }
+      it { expect(subject).to respond_with :success }
+      it { expect(subject).to render_template :show }
 
       it 'does not set the flash' do
         expect(flash).to be_empty
@@ -25,8 +25,8 @@ describe LogicMappingsController do
     context 'on get to new' do
       before { get :new, logic_id: source_logic.id }
 
-      it { should respond_with :success }
-      it { should render_template :new }
+      it { expect(subject).to respond_with :success }
+      it { expect(subject).to render_template :new }
     end
 
     context 'on POST to CREATE' do
@@ -93,8 +93,8 @@ describe LogicMappingsController do
 
     context 'on GET to EDIT' do
       before { get :edit, id: mapping.to_param, logic_id: source_logic.id }
-      it { should respond_with :success }
-      it { should render_template :edit }
+      it { expect(subject).to respond_with :success }
+      it { expect(subject).to render_template :edit }
 
       it 'does not set the flash' do
         expect(flash).to be_empty
@@ -108,8 +108,8 @@ describe LogicMappingsController do
 
     context 'on get to show' do
       before { get :show, id: mapping.to_param, logic_id: source_logic.id }
-      it { should respond_with :success }
-      it { should render_template :show }
+      it { expect(subject).to respond_with :success }
+      it { expect(subject).to render_template :show }
 
       it 'does not set the flash' do
         expect(flash).to be_empty
@@ -119,8 +119,8 @@ describe LogicMappingsController do
     context 'on get to new' do
       before { get :new, logic_id: source_logic.id }
 
-      it { should respond_with :success }
-      it { should render_template :new }
+      it { expect(subject).to respond_with :success }
+      it { expect(subject).to render_template :new }
     end
 
     context 'on POST to CREATE' do
@@ -175,7 +175,7 @@ describe LogicMappingsController do
 
     context 'on GET to EDIT' do
       before { get :edit, id: mapping.to_param, logic_id: source_logic.id }
-      it { should respond_with :redirect }
+      it { expect(subject).to respond_with :redirect }
 
       it 'sets the flash' do
         expect(flash[:alert]).to match(/not authorized/)
@@ -186,8 +186,8 @@ describe LogicMappingsController do
   context 'not signed in' do
     context 'on get to show' do
       before { get :show, id: mapping.to_param, logic_id: source_logic.id }
-      it { should respond_with :success }
-      it { should render_template :show }
+      it { expect(subject).to respond_with :success }
+      it { expect(subject).to render_template :show }
 
       it 'does not set the flash' do
         expect(flash).to be_empty
@@ -197,7 +197,7 @@ describe LogicMappingsController do
     context 'on get to new' do
       before { get :new, logic_id: source_logic.id }
 
-      it { should respond_with :redirect }
+      it { expect(subject).to respond_with :redirect }
 
       it 'sets the flash' do
         expect(flash[:alert]).to match(/not authorized/)

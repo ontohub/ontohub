@@ -3,14 +3,14 @@ require 'spec_helper'
 describe Repository do
   context 'associations' do
     %i(ontologies permissions).each do |association|
-      it { should have_many(association) }
+      it { expect(subject).to have_many(association) }
     end
   end
 
   let(:user)       { create :user }
   let(:repository) { create :repository, user: user }
 
-  context 'a repository with a reserved name should be invalid' do
+  context 'a repository with a reserved name expect(subject).to be invalid' do
     let(:repository_invalid) do
       build :repository, user: user, name: 'repositories'
     end
@@ -71,15 +71,15 @@ describe Repository do
     context 'creating a permission' do
       let(:permission) { repository.permissions.first }
 
-      it 'permission should not be nil' do
+      it 'permission expect(subject).to not be nil' do
         expect(permission).not_to be(nil)
       end
 
-      it 'permission should have subject' do
+      it 'permission expect(subject).to have subject' do
         expect(permission.subject).to eq(user)
       end
 
-      it 'permission should have role owner' do
+      it 'permission expect(subject).to have role owner' do
         expect(permission.role).to eq('owner')
       end
     end
