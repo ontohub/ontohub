@@ -26,7 +26,7 @@ group :assets do
   gem 'font-awesome-sass', '~> 4.3.1'
   # jquery-rails > 3.1.2 is not compatible with rails 3
   gem 'jquery-rails', '~> 3.1.2'
-  gem 'jquery-ui-rails', '5.0.3'
+  gem 'jquery-ui-rails', '~> 5.0.5'
   gem 'momentjs-rails', '~> 2.10.2'
   gem 'd3_rails', '~> 3.5.5'
   gem 'therubyracer', '~> 0.12.1'
