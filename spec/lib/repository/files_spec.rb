@@ -79,7 +79,7 @@ describe 'GitRepositoryFiles' do
         repository.commit_file(userinfo, content, filepath, message) do
           raise Exception
         end
-      end.to raise_error
+      end.to raise_error(Exception)
     end
   end
 
