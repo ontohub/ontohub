@@ -224,10 +224,16 @@ If you want to have a secure environment, or if you don't run a standard (Ubuntu
 
 ### Change secret token
 
-    rake secret
+    bundle exec rake secret
 
 This prints a long enough secret for verifying the integrity of signed cookies.
 Save it to `config/settings/production.local.yml` or `config/settings.local.yml` at the key `secret_token` and keep that file secret.
+
+If the `secret_token` leaked, you can replace it simply by invoking
+
+    RAILS_ENV=production bundle exec rake secret:replace
+
+It is important to do this in the correct environment because the settings files for the environment are searched for the token in descending order of priority.
 
 
 ### Apache
