@@ -65,7 +65,7 @@ config/environments/*.local.rb
 
 spec/fixtures/vcr/hets-out
 # Ignore custom compiled binaries
-bin/cp_keys
+data/git/.ssh/cp_keys
 
 spec/fixtures/ontologies/xml
 
