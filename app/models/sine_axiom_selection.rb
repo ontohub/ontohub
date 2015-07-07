@@ -14,7 +14,17 @@ class SineAxiomSelection < ActiveRecord::Base
 
   delegate :mark_as_finished!, to: :axiom_selection
 
+  def call
+    preprocess
+    select_axioms
+  end
+
   protected
+
+  def preprocess
+    calculate_commonness_table
+    calculate_symbol_axiom_trigger_table
+  end
 
   def calculate_commonness_table
     ontology.symbols.each { |symbol| calculate_commonness(symbol) }
@@ -67,5 +77,27 @@ class SineAxiomSelection < ActiveRecord::Base
 
   def commonness_of_least_common_symbol(axiom)
     least_common_symbol(axiom).sine_symbol_commonness.commonness
+  end
+
+  def select_axioms
+    @selected_axioms = []
+    goals.each { |goal| select_new_axioms(goal) }
+    self.axioms = @selected_axioms
+  end
+
+  def select_new_axioms(sentence)
+    new_axioms = select_axioms_by_sentence(sentence) - @selected_axioms
+    @selected_axioms += new_axioms
+    new_axioms.each { |axiom| select_new_axioms(axiom) }
+  end
+
+  def select_axioms_by_sentence(sentence)
+    sentence.symbols.map { |symbol| triggered_axioms(symbol) }.flatten
+  end
+
+  def triggered_axioms(symbol)
+    Axiom.unscoped.joins(:sine_symbol_axiom_triggers).
+      where('sine_symbol_axiom_triggers.symbol_id = ?', symbol.id).
+      where('sine_symbol_axiom_triggers.tolerance <= ?', tolerance)
   end
 end
