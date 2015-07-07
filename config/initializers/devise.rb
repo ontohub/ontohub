@@ -11,7 +11,12 @@ Devise.setup do |config|
   # Configure the e-mail address which will be shown in Devise::Mailer,
   # note that it will be overwritten if you use your own mailer class
   # with default "from" parameter.
-  config.mailer_sender = Settings.email
+  config.mailer_sender =
+    if Settings.email.include?('@')
+      Settings.email
+    else
+      "#{Settings.email}@#{Ontohub::Application.config.fqdn}"
+    end
 
   # Configure the class responsible to send e-mails.
   config.mailer = 'Devise::Mailer'
