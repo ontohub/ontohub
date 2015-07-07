@@ -75,13 +75,17 @@ paths:
   # General data.
   data: data
   # git repositories (names are numbers/ids)
+  # May be nil - then paths.data/repositories is used
   git_repositories: data/repositories
   # named symlinks to the git repositories
+  # May be nil - then paths.data/git_daemon is used
   symlinks: data/git_daemon
   # cache for files that needed to be checked out from the git repositories
+  # May be nil - then paths.data/commits is used
   commits: data/commits
   # home directory of the git user
   #   needed for handling of ssh keys in ~git/.ssh/authorized_keys
+  # May be nil - then paths.data/git is used
   git_home: ~git
 
 hets:
