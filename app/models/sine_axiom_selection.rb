@@ -34,4 +34,38 @@ class SineAxiomSelection < ActiveRecord::Base
   def query_commonness(symbol)
     ontology.all_axioms.joins(:symbols).where(:'symbols.id' => symbol.id).count
   end
+
+  def calculate_symbol_axiom_trigger_table
+    ontology.all_axioms.each do |axiom|
+      axiom.symbols.each do |symbol|
+        calculate_symbol_axiom_trigger(symbol, axiom)
+      end
+    end
+  end
+
+  def calculate_symbol_axiom_trigger(symbol, axiom)
+    ssat = SineSymbolAxiomTrigger.
+      where(symbol_id: symbol.id,
+            axiom_id: axiom.id,
+            axiom_selection_id: axiom_selection.id).first_or_initialize
+    unless ssat.tolerance
+      ssat.tolerance = needed_tolerance(symbol, axiom)
+      ssat.save!
+    end
+  end
+
+  def needed_tolerance(symbol, axiom)
+    lcs_commonness = commonness_of_least_common_symbol(axiom)
+    sym_commonness = symbol.sine_symbol_commonness.commonness
+    sym_commonness.to_f / lcs_commonness.to_f
+  end
+
+  def least_common_symbol(axiom)
+    axiom.symbols.includes(:sine_symbol_commonness).
+      order('sine_symbol_commonnesses.commonness ASC').first
+  end
+
+  def commonness_of_least_common_symbol(axiom)
+    least_common_symbol(axiom).sine_symbol_commonness.commonness
+  end
 end
