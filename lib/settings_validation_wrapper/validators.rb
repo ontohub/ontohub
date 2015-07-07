@@ -73,7 +73,7 @@ module SettingsValidationWrapper::Validators
   class ExecutableValidator < ActiveModel::EachValidator
     def validate_each(record, attribute, value)
       unless File.executable?(value)
-        record.errors.add attribute, "must be an executable file: #{value}"
+        record.errors.add attribute, 'must be an executable file'
       end
     end
   end

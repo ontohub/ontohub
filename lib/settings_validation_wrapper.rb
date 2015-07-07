@@ -1,4 +1,34 @@
 class SettingsValidationWrapper
+  class DataPathsValidator < ActiveModel::Validator
+    def defaults(key)
+      [Settings.paths[key], PathsInitializer::DEFAULT_PATHS[key]]
+    end
+
+    def set_directory(key)
+      setting, fallback = defaults(key)
+      PathsInitializer.prepare(setting, fallback)
+    end
+
+    def failure_condition_met?(key)
+      setting, _fallback = defaults(key)
+      setting.nil? && !File.directory?(set_directory(key))
+    end
+
+    def validate(record)
+      PathsInitializer::DEFAULT_PATHS.each do |key, _default_value|
+        dir = set_directory(key)
+        if failure_condition_met?(key)
+          record.errors["yml__paths__#{key}".to_sym] =
+            "Implicitly set data directory path '#{dir}' is not a directory."
+        elsif !Settings.paths[key].is_a?(String)
+          record.errors["yml__paths__#{key}".to_sym] = 'Is not a String value.'
+        elsif !File.directory?(dir)
+          record.errors["yml__paths__#{key}".to_sym] = 'Is not a directory.'
+        end
+      end
+    end
+  end
+
   include ActiveModel::Validations
   include SettingsValidationWrapper::Validators
 
@@ -22,10 +52,6 @@ class SettingsValidationWrapper
                 yml__exception_notifier__sender_address
                 yml__exception_notifier__exception_recipients
                 yml__paths__data
-                yml__paths__git_repositories
-                yml__paths__symlinks
-                yml__paths__commits
-                yml__paths__git_home
                 yml__git__verify_url
                 yml__git__default_branch
                 yml__git__push_priority__commits
@@ -80,10 +106,6 @@ class SettingsValidationWrapper
               yml__exception_notifier__email_prefix
               yml__exception_notifier__sender_address
               yml__paths__data
-              yml__paths__git_repositories
-              yml__paths__symlinks
-              yml__paths__commits
-              yml__paths__git_home
               yml__git__verify_url
               yml__git__default_branch
               yml__git__fallbacks__committer_name
@@ -101,16 +123,14 @@ class SettingsValidationWrapper
              yml__hets__cmd_line_options
              yml__hets__server_options)
 
-  DIRECTORY_PRODUCTION = %i(yml__paths__data
-                            yml__paths__git_repositories
-                            yml__paths__symlinks
-                            yml__paths__commits
-                            yml__paths__git_home)
+  DIRECTORY_PRODUCTION = %i(yml__paths__data)
 
   ELEMENT_PRESENT = %i(yml__allowed_iri_schemes
                        yml__hets__cmd_line_options
                        yml__hets__server_options)
 
+
+  validates_with DataPathsValidator, if: :in_production?
 
   validates_presence_of *PRESENCE
   validates_presence_of *PRESENCE_IN_PRODUCTION, if: :in_production?
