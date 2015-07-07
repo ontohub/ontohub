@@ -153,7 +153,7 @@ class SettingsValidationWrapper
             if: :in_production?
 
   validates :yml__email,
-            email_from_host: {hostname: ->(record) { record.initializers__fqdn }},
+            email_host: {hostname: ->(record) { record.initializers__fqdn }},
             if: :in_production?
 
   validates :yml__exception_notifier__exception_recipients,

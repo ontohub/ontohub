@@ -55,7 +55,7 @@ module SettingsValidationWrapper::Validators
     end
   end
 
-  class EmailFromHostValidator < ActiveModel::EachValidator
+  class EmailHostValidator < ActiveModel::EachValidator
     def validate_each(record, attribute, value)
       fqdn =
         if options[:hostname].respond_to?(:call)
@@ -63,7 +63,11 @@ module SettingsValidationWrapper::Validators
         else
           options[:hostname]
         end
-      unless value.match(/@#{fqdn}\z/)
+      if value.match(/@.*@/)
+        record.errors.add attribute,
+          'email address must have a valid email format.'
+      end
+      if value.include?('@') && !value.match(/@#{fqdn}\z/)
         record.errors.add attribute,
           "email adress must belong to the fully qualified domain name '#{fqdn}'."
       end

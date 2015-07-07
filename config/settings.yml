@@ -19,8 +19,9 @@ OMS_qualifier: modeling
 # Optional asset host for delivery of static files (css, images, javascripts)
 # asset_host: assets.example.com
 
-# Sender address for outgoing mail
-email: noreply@example.com
+# Sender address for outgoing mail.
+# The host will be appended automatically if it does not contain an @ character.
+email: noreply
 
 # Mail delivery
 # http://guides.rubyonrails.org/action_mailer_basics.html#action-mailer-configuration
