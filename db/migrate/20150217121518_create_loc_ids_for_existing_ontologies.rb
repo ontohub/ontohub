@@ -20,7 +20,7 @@ class CreateLocIdsForExistingOntologies < ActiveRecord::Migration
         mapping.update_column(:locid, "#{ontology.locid}//#{mapping.name}")
       end
 
-      ontology.sentences.find_each do |sentence|
+      ontology.sentences.original.find_each do |sentence|
         sentence.update_column(:locid, "#{ontology.locid}//#{sentence.name}")
       end
     end

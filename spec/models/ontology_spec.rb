@@ -323,11 +323,11 @@ describe Ontology do
 
     context 'sentence count' do
       it 'should be correct' do
-        expect(ontology.sentences.count).to eq(1)
+        expect(ontology.sentences.original.count).to eq(1)
       end
 
       it 'should be reflected in the corresponding field' do
-        expect(ontology.sentences_count).to eq(ontology.sentences.count)
+        expect(ontology.sentences_count).to eq(ontology.sentences.original.count)
       end
     end
 
@@ -381,7 +381,7 @@ describe Ontology do
     end
 
     it 'should have no sentences' do
-      expect(ontology.sentences.count).to eq(0)
+      expect(ontology.sentences.original.count).to eq(0)
     end
 
     context 'first child ontology' do
@@ -392,7 +392,7 @@ describe Ontology do
       end
 
       it 'should have one sentence' do
-        expect(child.sentences.count).to eq(1)
+        expect(child.sentences.original.count).to eq(1)
       end
     end
 
