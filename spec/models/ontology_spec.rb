@@ -333,11 +333,11 @@ describe Ontology do
 
     context 'axioms count' do
       it 'should be correct' do
-        expect(ontology.axioms.count).to eq(1)
+        expect(ontology.axioms.original.count).to eq(1)
       end
 
       it 'should be reflected in the corresponding field' do
-        expect(ontology.axioms_count).to eq(ontology.axioms.count)
+        expect(ontology.axioms_count).to eq(ontology.axioms.original.count)
       end
     end
 
