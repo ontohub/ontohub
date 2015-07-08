@@ -5,7 +5,8 @@ class Sentence < ActiveRecord::Base
   belongs_to :ontology
   has_and_belongs_to_many :symbols, class_name: 'OntologyMember::Symbol'
   has_many :translated_sentences, dependent: :destroy
-  default_scope where(imported: false)
+
+  scope :original, where(imported: false)
 
   attr_accessible :locid
 
