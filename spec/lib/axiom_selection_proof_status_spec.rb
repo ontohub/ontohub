@@ -27,7 +27,7 @@ describe 'Axiom Selection: Proof Status', :http_interaction do
   let(:ontology) do
     parent_ontology.children.find_by_name('Group')
   end
-  let(:theorem) { ontology.theorems.find_by_name('rightunit') }
+  let(:theorem) { ontology.theorems.original.find_by_name('rightunit') }
   let(:axioms) { ontology.axioms }
 
   let(:prover) { create :prover }
