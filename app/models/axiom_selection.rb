@@ -1,5 +1,5 @@
 class AxiomSelection < ActiveRecord::Base
-  METHODS = %i(manual_axiom_selection)
+  METHODS = %i(manual_axiom_selection sine_axiom_selection)
 
   acts_as_superclass
 
