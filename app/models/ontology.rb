@@ -144,22 +144,22 @@ class Ontology < ActiveRecord::Base
 
   def combined_sentences
     affected_ontology_ids = [self.id] + imported_ontologies.pluck(:id)
-    Sentence.where(ontology_id: affected_ontology_ids)
+    Sentence.original.where(ontology_id: affected_ontology_ids)
   end
 
   # list all sentences defined on this ontology,
   # those who are self defined and those which
   # are imported (ImpAxioms)
   def all_sentences
-    Sentence.unscoped.where(ontology_id: self)
+    Sentence.where(ontology_id: self)
   end
 
   def all_axioms
-    Axiom.unscoped.where(ontology_id: self)
+    Axiom.where(ontology_id: self)
   end
 
   def imported_sentences
-    Sentence.unscoped.
+    Sentence.
       where(ontology_id: self).
       where('imported = ?', true)
   end
