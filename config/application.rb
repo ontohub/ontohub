@@ -88,6 +88,8 @@ module Ontohub
       # ActionMailer settings
       require config.root.join('config', 'initializers', 'hostname.rb')
       Settings.action_mailer[:default_url_options] ||= {}
+      Settings.action_mailer[:default_url_options] =
+        Settings.action_mailer[:default_url_options].to_hash
       Settings.action_mailer[:default_url_options][:host] ||= config.fqdn
       Settings.action_mailer[:default_url_options][:port] ||= config.port
       Settings.action_mailer.each do |key, value|
