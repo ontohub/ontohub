@@ -18,7 +18,7 @@ class Ontology
         sentence_ids = translated.pluck(:sentence_id)
         imported =
           direct_imported_ontologies.reduce([[], []]) do |arr, ontology|
-            other_split = ontology.split_translated_sentences
+            other_split = ontology.split_translated_sentences(method)
             other_translated = other_split.first
             other_translated.delete_if do |translated_sentence|
               sentence_ids.include?(translated_sentence.sentence_id)
