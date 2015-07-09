@@ -1,7 +1,7 @@
 namespace :git do
   def reconfigure_cp_keys(source_file)
     data_root = Ontohub::Application.config.data_root
-    git_home = Ontohub::Application.config.git_home
+    git_home = ENV['GIT_HOME']
 
     reconfigured_source = File.read(source_file).
       sub(/^#define DATA_ROOT .*$/, "#define DATA_ROOT \"#{data_root}\"").
@@ -41,6 +41,13 @@ namespace :git do
 
   desc 'Compile cp_keys binary'
   task :compile_cp_keys => :environment do
+    unless ENV['GIT_HOME']
+      $stderr.puts 'Please specify the environment variable GIT_HOME.'
+      $stderr.puts "It must contain the absolute path to the git user's home."
+      $stderr.puts 'Exiting.'
+      exit 1
+    end
+
     target_dir = AuthorizedKeysManager::SSH_DIR
     target_dir.mkpath
 
