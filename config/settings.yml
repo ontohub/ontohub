@@ -71,19 +71,16 @@ exception_notifier:
     - exception-recipient@example.com
 
 # The following paths can be absolute paths
-# or relative paths to the project root
+# or relative paths (relative to the project root)
 paths:
   # General data.
   data: data
-  # git repositories (names are numbers/ids)
-  # May be nil - then paths.data/repositories is used
-  git_repositories: data/repositories
+  # git repositories (names of repositories are numbers/ids)
+  git_repositories: # nil - then data/repositories is used
   # named symlinks to the git repositories
-  # May be nil - then paths.data/git_daemon is used
-  symlinks: data/git_daemon
+  symlinks: # nil - then data/git_daemon is used
   # cache for files that needed to be checked out from the git repositories
-  # May be nil - then paths.data/commits is used
-  commits: data/commits
+  commits: # nil - then data/commits is used
 
 hets:
   # This is the path to the hets executable we use in `rake hets:*` and for the
