@@ -31,7 +31,7 @@ class Ontology
             other_sentences.each { |os| arr.last << os }
             arr
           end
-        [translated + imported.first, send(method) + imported.last]
+        [translated + imported.first, send(method).original + imported.last]
       end
 
       # Find import-mappings which describe the following mapping:
