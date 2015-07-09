@@ -20,7 +20,7 @@ class SettingsValidationWrapper
         if failure_condition_met?(key)
           record.errors["yml__paths__#{key}".to_sym] =
             "Implicitly set data directory path '#{dir}' is not a directory."
-        elsif !Settings.paths[key].is_a?(String)
+        elsif !Settings.paths[key].nil? && !Settings.paths[key].is_a?(String)
           record.errors["yml__paths__#{key}".to_sym] = 'Is not a String value.'
         elsif !File.directory?(dir)
           record.errors["yml__paths__#{key}".to_sym] = 'Is not a directory.'
