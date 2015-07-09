@@ -240,7 +240,7 @@ class SettingsValidationWrapper
   end
 
   def cp_keys=(_path)
-    # Noop - the value is supposed to be hard-coded.
+    # No-Op - the value is supposed to be hard-coded.
     # The validations require the existence of a setter, though.
   end
 
