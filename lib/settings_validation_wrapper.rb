@@ -233,8 +233,10 @@ class SettingsValidationWrapper
   end
 
   def initialize
-    # define a value for the cp_keys location
-    @cp_keys = Pathname.new(Settings.paths.git_home).join('.ssh', 'cp_keys').to_s
+    # Define a value for the cp_keys location.
+    # This must be defined in two places. Make sure this value is synchronized
+    # with AuthorizedKeysManager.cp_keys_executable.
+    @cp_keys = Pathname.new(Settings.paths.data).join('.ssh', 'cp_keys').to_s
   end
 
   def cp_keys=(_path)

@@ -41,7 +41,7 @@ namespace :git do
 
   desc 'Compile cp_keys binary'
   task :compile_cp_keys => :environment do
-    target_dir = Ontohub::Application.config.git_home.join('.ssh')
+    target_dir = AuthorizedKeysManager::SSH_DIR
     target_dir.mkpath
 
     source_file = Rails.root.join('script', 'cp_keys.c')
