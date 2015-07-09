@@ -203,8 +203,8 @@ You can deploy this codebase to your server with:
 For security reasons, we don't directly manipulate the git-user's `authorized_keys` file in the Ontohub code.
 Instead, we use a separate executable `cp_keys` which copies an `authorized_keys` file to the git-user's `.ssh` directory and prevails the correct permissions on that file.
 
-The executable, which is located at `${paths.git_home}/.ssh/cp_keys`, is called with no arguments.
-It copies the file `${paths.data}/.ssh/authorized_keys` to `${paths.git_home}/.ssh/authorized_keys`.
+The executable, which is located at `${paths.data}/.ssh/cp_keys`, is called with no arguments.
+It copies the file `${paths.data}/.ssh/authorized_keys` to `${paths.data}/.ssh/authorized_keys`.
 The target file's owner must be the git-user and the permissions must be set as usual for an `authorized_keys` file.
 
 We prepared C-code for this task for Linux machines.
@@ -213,7 +213,7 @@ It needs to be edited to have the paths from the `settings[.local].yml` hardcode
 
 We also prepared a rake task to edit and compile the executable for you:
 ```
-RAILS_ENV=production bundle exec rake git:compile_cp_keys
+RAILS_ENV=production GIT_HOME=/home/git bundle exec rake git:compile_cp_keys
 ```
 Although this takes some work off your shoulders, it also prints what you need to do.
 This task is only for convenience.
