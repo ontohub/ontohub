@@ -35,8 +35,10 @@ class SettingsValidator
     opening_line =
       if category == :initializers
         "#{format_initializer_error(key_portions)} #{format_key(key_portions)}"
-      else
+      elsif category == :yml
         format_key(key_portions)
+      else
+        key
       end
     bad_value = value_of(category, key_portions)
     <<-MESSAGE
@@ -72,7 +74,7 @@ class SettingsValidator
     key = key_portions.join('.')
     if 'fqdn' == key
       "The FQDN could not be determined. Please set the hostname in #{CONFIG_YML_FILES}"
-    elsif %w(data_root git_home git_root symlink_path commits_path).include?(key)
+    elsif %w(data_root git_root symlink_path commits_path).include?(key)
       'Please check the paths keys in the settings -'
     else
       # other possible values: %w(consider_all_requests_local secret_token log_level)
@@ -81,7 +83,11 @@ class SettingsValidator
   end
 
   def value_of(category, key_portions)
-    object = SettingsValidationWrapper.base(category.to_s)
-    SettingsValidationWrapper.get_value(object, key_portions)
+    if !%i(yml initializers).include?(category)
+      SettingsValidationWrapper.new.send(category)
+    else
+      object = SettingsValidationWrapper.base(category.to_s)
+      SettingsValidationWrapper.get_value(object, key_portions)
+    end
   end
 end

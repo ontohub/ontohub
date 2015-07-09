@@ -10,4 +10,3 @@ paths:
   git_repositories: tmp/data/git
   symlinks: tmp/data/git_daemon
   commits: tmp/data/commits
-  git_home: tmp/git

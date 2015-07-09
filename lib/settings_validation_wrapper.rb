@@ -20,7 +20,7 @@ class SettingsValidationWrapper
         if failure_condition_met?(key)
           record.errors["yml__paths__#{key}".to_sym] =
             "Implicitly set data directory path '#{dir}' is not a directory."
-        elsif !Settings.paths[key].is_a?(String)
+        elsif !Settings.paths[key].nil? && !Settings.paths[key].is_a?(String)
           record.errors["yml__paths__#{key}".to_sym] = 'Is not a String value.'
         elsif !File.directory?(dir)
           record.errors["yml__paths__#{key}".to_sym] = 'Is not a directory.'
@@ -233,12 +233,14 @@ class SettingsValidationWrapper
   end
 
   def initialize
-    # define a value for the cp_keys location
-    @cp_keys = Pathname.new(Settings.paths.git_home).join('.ssh', 'cp_keys').to_s
+    # Define a value for the cp_keys location.
+    # This must be defined in two places. Make sure this value is synchronized
+    # with AuthorizedKeysManager.cp_keys_executable.
+    @cp_keys = Pathname.new(Settings.paths.data).join('.ssh', 'cp_keys').to_s
   end
 
   def cp_keys=(_path)
-    # Noop - the value is supposed to be hard-coded.
+    # No-Op - the value is supposed to be hard-coded.
     # The validations require the existence of a setter, though.
   end
 

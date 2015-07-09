@@ -1,8 +1,7 @@
 module PathsInitializer
   DEFAULT_PATHS = {git_repositories: 'repositories',
                    symlinks: 'git_daemon',
-                   commits: 'commits',
-                   git_home: 'git'}
+                   commits: 'commits'}
   class << self
     def expand(path)
       Dir.chdir(Rails.root) { Pathname.new(path).expand_path }
@@ -22,7 +21,6 @@ module PathsInitializer
     def empty_initialization(config)
       config.data_root = nil
       config.git_root = nil
-      config.git_home = nil
       config.symlink_path = nil
       config.commits_path = nil
     end
@@ -34,7 +32,6 @@ module PathsInitializer
       config.git_root = prepare(Settings.paths.git_repositories, DEFAULT_PATHS[:git_repositories])
       config.symlink_path = prepare(Settings.paths.symlinks, DEFAULT_PATHS[:symlinks])
       config.commits_path = prepare(Settings.paths.commits, DEFAULT_PATHS[:commits])
-      config.git_home = prepare(Settings.paths.git_home, DEFAULT_PATHS[:git_home])
     end
   end
 end
