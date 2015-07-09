@@ -35,8 +35,10 @@ class SettingsValidator
     opening_line =
       if category == :initializers
         "#{format_initializer_error(key_portions)} #{format_key(key_portions)}"
-      else
+      elsif category == :yml
         format_key(key_portions)
+      else
+        key
       end
     bad_value = value_of(category, key_portions)
     <<-MESSAGE
@@ -81,7 +83,11 @@ class SettingsValidator
   end
 
   def value_of(category, key_portions)
-    object = SettingsValidationWrapper.base(category.to_s)
-    SettingsValidationWrapper.get_value(object, key_portions)
+    if !%i(yml initializers).include?(category)
+      SettingsValidationWrapper.new.send(category)
+    else
+      object = SettingsValidationWrapper.base(category.to_s)
+      SettingsValidationWrapper.get_value(object, key_portions)
+    end
   end
 end
