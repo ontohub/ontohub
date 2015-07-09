@@ -1,16 +1,25 @@
 require 'pathname'
 
 class AuthorizedKeysManager
-
-  CONFIG               = Ontohub::Application.config
-  SSH_DIR              = CONFIG.data_root.join('.ssh')
-  AUTHORIZED_KEYS_FILE = SSH_DIR.join('authorized_keys')
-  CP_KEYS_EXECUTABLE   = SSH_DIR.join('cp_keys')
-  GIT_SHELL_FILE       = Rails.root.join('git', 'bin', 'git-shell').
+  GIT_SHELL_FILE = Rails.root.join('git', 'bin', 'git-shell').
     # replace capistrano-style release with 'current'-symlink
     sub(%r{/releases/\d+/}, '/current/')
 
   class << self
+    def ssh_dir
+      Ontohub::Application.config.data_root.join('.ssh')
+    end
+
+    def authorized_keys_file
+      ssh_dir.join('authorized_keys')
+    end
+
+    # This must be defined in two places. Make sure this value is synchronized
+    # with SettingsValidationWrapper#cp_keys.
+    def cp_keys_executable
+      ssh_dir.join('cp_keys')
+    end
+
     def add(key_id, key)
       in_authorized_keys('a') do |f|
         f << build_key_line(key_id, key)
@@ -18,7 +27,7 @@ class AuthorizedKeysManager
     end
 
     def remove(key_id)
-      return if !AUTHORIZED_KEYS_FILE.exist?
+      return if !authorized_keys_file.exist?
 
       in_authorized_keys('r+') do |f|
         lines = []
@@ -47,8 +56,8 @@ class AuthorizedKeysManager
     end
 
     def in_authorized_keys(mode)
-      SSH_DIR.mkpath
-      File.open(AUTHORIZED_KEYS_FILE, mode) do |file|
+      ssh_dir.mkpath
+      File.open(authorized_keys_file, mode) do |file|
         file.flock(File::LOCK_EX)
         yield file
       end
@@ -56,7 +65,7 @@ class AuthorizedKeysManager
     end
 
     def copy_authorized_keys_to_git_home
-      system(CP_KEYS_EXECUTABLE.to_s)
+      system(cp_keys_executable.to_s)
     end
   end
 end

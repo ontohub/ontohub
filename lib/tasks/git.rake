@@ -48,7 +48,7 @@ namespace :git do
       exit 1
     end
 
-    target_dir = AuthorizedKeysManager::SSH_DIR
+    target_dir = AuthorizedKeysManager.ssh_dir
     target_dir.mkpath
 
     source_file = Rails.root.join('script', 'cp_keys.c')
@@ -66,11 +66,11 @@ namespace :git do
 
   desc 'Create authorized_keys file and set its permissions'
   task :prepare_authorized_keys => :environment do
-    AuthorizedKeysManager::SSH_DIR.mkpath
-    if !File.exists?(AuthorizedKeysManager::AUTHORIZED_KEYS)
-      puts "Creating the file #{AuthorizedKeysManager::AUTHORIZED_KEYS}."
-      FileUtils.touch(AuthorizedKeysManager::AUTHORIZED_KEYS)
-      set_permissions('0640', AuthorizedKeysManager::AUTHORIZED_KEYS.to_s,
+    AuthorizedKeysManager.ssh_dir.mkpath
+    if !File.exists?(AuthorizedKeysManager.authorized_keys)
+      puts "Creating the file #{AuthorizedKeysManager.authorized_keys}."
+      FileUtils.touch(AuthorizedKeysManager.authorized_keys)
+      set_permissions('0640', AuthorizedKeysManager.authorized_keys.to_s,
                       'the webserver-running user.')
     end
   end
