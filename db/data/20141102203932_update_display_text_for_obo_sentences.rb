@@ -3,7 +3,7 @@ class UpdateDisplayTextForOboSentences < ActiveRecord::Migration
     obo_ontologies = Ontology.joins(:ontology_version).
       where(ontology_versions: {file_extension: '.obo'})
     obo_ontologies.each do |ontology|
-      ontology.sentences.find_each { |s| s.set_display_text! }
+      ontology.sentences.select(%i(id text)).find_each(&:set_display_text!)
     end
   end
 

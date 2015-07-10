@@ -55,7 +55,7 @@ class OntologiesController < InheritedResources::Base
     if !params[:repository_id]
       # redirect for legacy routing
       ontology = Ontology.find params[:id]
-      redirect_to [ontology.repository, ontology]
+      redirect_to [ontology.repository, ontology, params_to_pass_on_redirect]
       return
     end
 
@@ -63,9 +63,10 @@ class OntologiesController < InheritedResources::Base
       format.html do
         if !resource.distributed?
           default_kind = resource.symbols.groups_by_kind.first.kind
-          redirect_to locid_for(resource, :symbols, kind: default_kind)
+          redirect_to locid_for(resource, :symbols,
+            params_to_pass_on_redirect.merge(kind: default_kind))
         else
-          redirect_to locid_for(resource, :children)
+          redirect_to locid_for(resource, :children, params_to_pass_on_redirect)
         end
       end
     end

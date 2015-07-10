@@ -2,8 +2,7 @@ module Ontology::Validations
   extend ActiveSupport::Concern
 
   included do
-    validates :iri, uniqueness: true, if: :iri_changed?
-    validates :iri, format: {with: URI.regexp(Settings.allowed_iri_schemes)}
+    validates :locid, uniqueness: true, if: :locid_changed?
 
     validates :documentation,
       allow_blank: true,

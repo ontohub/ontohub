@@ -167,11 +167,8 @@ exception_notifier.exception_recepients
 paths
 ```
 
-Whenever you change the `paths` in the settings, you need to run
-`RAILS_ENV=production bundle exec rake git:compile_cp_keys` in order to have
-the git-ssh interaction working correctly, because the `paths` from the
-settings are compiled into the binary which manipulates the authorized_keys
-file.
+Remember to adjust your `cp_keys` executable (see [Set up Git-SSH requirements](#set-up-git-ssh-requirements)) whenever you change the paths in the settings.
+This is needed to have the git-ssh interaction working correctly.
 
 ##### Settings for deployment with capistrano
 
@@ -200,13 +197,43 @@ You can deploy this codebase to your server with:
 
 (This should work&trade; now without any errors).
 
+
+## Set up Git-SSH requirements
+
+For security reasons, we don't directly manipulate the git-user's `authorized_keys` file in the Ontohub code.
+Instead, we use a separate executable `cp_keys` which copies an `authorized_keys` file to the git-user's `.ssh` directory and prevails the correct permissions on that file.
+
+The executable, which is located at `${paths.data}/.ssh/cp_keys`, is called with no arguments.
+It copies the file `${paths.data}/.ssh/authorized_keys` to `${paths.data}/.ssh/authorized_keys`.
+The target file's owner must be the git-user and the permissions must be set as usual for an `authorized_keys` file.
+
+We prepared C-code for this task for Linux machines.
+The source file is located at `script/cp_keys.c` and it contains an extensive comment on how to compile it and set it up.
+It needs to be edited to have the paths from the `settings[.local].yml` hardcoded.
+
+We also prepared a rake task to edit and compile the executable for you:
+```
+RAILS_ENV=production GIT_HOME=/home/git bundle exec rake git:compile_cp_keys
+```
+Although this takes some work off your shoulders, it also prints what you need to do.
+This task is only for convenience.
+If you want to have a secure environment, or if you don't run a standard (Ubuntu) Linux, we highly recommend to go through the file `script/cp_keys.c` and at least read its documenting comments.
+
+
 ## Configuration
 
 ### Change secret token
 
-    rake secret
+    bundle exec rake secret
 
-... and save it into `config/initializers/secret_token.rb`.
+This prints a long enough secret for verifying the integrity of signed cookies.
+Save it to `config/settings/production.local.yml` or `config/settings.local.yml` at the key `secret_token` and keep that file secret.
+
+If the `secret_token` leaked, you can replace it simply by invoking
+
+    RAILS_ENV=production bundle exec rake secret:replace
+
+It is important to do this in the correct environment because the settings files for the environment are searched for the token in descending order of priority.
 
 
 ### Apache
@@ -350,7 +377,7 @@ after that you have to set up the git Deamon which will be explained next.
 SSH access is provided by the `git` user.
 Every action started by a `git push` will be executed as this user, invoked
 by the `~git/.ssh/authorized_keys`, which is manipulated by the `cp_keys` binary.
-See [Changing Settings](#changing-settings) for details.
+See [Set up Git-SSH requirements](#set-up-git-ssh-requirements) for details.
 
 #### Service
 
@@ -394,6 +421,7 @@ Now you have to import the ontology model, as ontohub user in /srv/http/ontohub/
 
 Elasticsearch versions 1.3.0-1.3.7 and 1.4.0-1.4.2 have a vulnerability in the Groovy scripting engine. The vulnerability allows an attacker to construct Groovy scripts that escape the sandbox and execute shell commands as the user running the Elasticsearch Java VM [[1]](http://www.elastic.co/guide/en/elasticsearch/reference/1.4/modules-scripting.html).
 Also you should disable dynamic scripting completely [[2]](http://www.vanimpe.eu/2014/07/09/elasticsearch-vulnerability-exploit/).
+To restrict elasticsearch, add the following lines to your `/etc/elasticsearch/elasticsearch.yml`:
 ```yml
 script.groovy.sandbox.enabled: false
 script.disable_dynamic: true

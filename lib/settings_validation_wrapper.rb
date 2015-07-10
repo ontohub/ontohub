@@ -1,4 +1,34 @@
 class SettingsValidationWrapper
+  class DataPathsValidator < ActiveModel::Validator
+    def defaults(key)
+      [Settings.paths[key], PathsInitializer::DEFAULT_PATHS[key]]
+    end
+
+    def set_directory(key)
+      setting, fallback = defaults(key)
+      PathsInitializer.prepare(setting, fallback)
+    end
+
+    def failure_condition_met?(key)
+      setting, _fallback = defaults(key)
+      setting.nil? && !File.directory?(set_directory(key))
+    end
+
+    def validate(record)
+      PathsInitializer::DEFAULT_PATHS.each do |key, _default_value|
+        dir = set_directory(key)
+        if failure_condition_met?(key)
+          record.errors["yml__paths__#{key}".to_sym] =
+            "Implicitly set data directory path '#{dir}' is not a directory."
+        elsif !Settings.paths[key].nil? && !Settings.paths[key].is_a?(String)
+          record.errors["yml__paths__#{key}".to_sym] = 'Is not a String value.'
+        elsif !File.directory?(dir)
+          record.errors["yml__paths__#{key}".to_sym] = 'Is not a directory.'
+        end
+      end
+    end
+  end
+
   include ActiveModel::Validations
   include SettingsValidationWrapper::Validators
 
@@ -22,9 +52,6 @@ class SettingsValidationWrapper
                 yml__exception_notifier__sender_address
                 yml__exception_notifier__exception_recipients
                 yml__paths__data
-                yml__paths__git_repositories
-                yml__paths__symlinks
-                yml__paths__commits
                 yml__git__verify_url
                 yml__git__default_branch
                 yml__git__push_priority__commits
@@ -45,12 +72,7 @@ class SettingsValidationWrapper
                 yml__hets__server_options
                 yml__hets__env__LANG
 
-                initializers__fqdn
-                initializers__data_root
-                initializers__git_home
-                initializers__git_root
-                initializers__symlink_path
-                initializers__commits_path)
+                initializers__fqdn)
 
   PRESENCE_IN_PRODUCTION = %i(yml__hets__executable_path
                               yml__hets__instances_count)
@@ -70,6 +92,8 @@ class SettingsValidationWrapper
               yml__allow_unconfirmed_access_for_days
               yml__git__push_priority__commits
               yml__git__push_priority__changed_files_per_commit
+              yml__access_token__expiration_minutes
+              yml__hets__time_between_updates
               yml__hets__version_minimum_revision)
 
   FLOAT = %i(yml__hets__version_minimum_version)
@@ -82,9 +106,6 @@ class SettingsValidationWrapper
               yml__exception_notifier__email_prefix
               yml__exception_notifier__sender_address
               yml__paths__data
-              yml__paths__git_repositories
-              yml__paths__symlinks
-              yml__paths__commits
               yml__git__verify_url
               yml__git__default_branch
               yml__git__fallbacks__committer_name
@@ -102,16 +123,17 @@ class SettingsValidationWrapper
              yml__hets__cmd_line_options
              yml__hets__server_options)
 
-  DIRECTORY_PRODUCTION = %i(initializers__data_root
-                            initializers__git_home
-                            initializers__git_root
-                            initializers__symlink_path
-                            initializers__commits_path)
+  DIRECTORY_PRODUCTION = %i(yml__paths__data)
 
   ELEMENT_PRESENT = %i(yml__allowed_iri_schemes
                        yml__hets__cmd_line_options
                        yml__hets__server_options)
 
+  attr_reader :cp_keys
+
+  validates :cp_keys, executable: true, if: :in_production?
+
+  validates_with DataPathsValidator, if: :in_production?
 
   validates_presence_of *PRESENCE
   validates_presence_of *PRESENCE_IN_PRODUCTION, if: :in_production?
@@ -134,7 +156,7 @@ class SettingsValidationWrapper
             if: :in_production?
 
   validates :yml__email,
-            email_from_host: {hostname: ->(record) { record.initializers__fqdn }},
+            email_host: {hostname: ->(record) { record.initializers__fqdn }},
             if: :in_production?
 
   validates :yml__exception_notifier__exception_recipients,
@@ -153,6 +175,8 @@ class SettingsValidationWrapper
   validates :yml__git__push_priority__commits,
             numericality: {greater_than_or_equal_to: 1}
   validates :yml__git__push_priority__changed_files_per_commit,
+            numericality: {greater_than_or_equal_to: 1}
+  validates :yml__access_token__expiration_minutes,
             numericality: {greater_than_or_equal_to: 1}
 
   validates :yml__footer, elements_have_keys: {keys: %i(text)}
@@ -179,6 +203,47 @@ class SettingsValidationWrapper
               if: :in_production?
   end
 
+  validates :yml__hets__time_between_updates,
+            numericality: {greater_than_or_equal_to: 1}
+
+  validates :yml__asynchronous_execution__log_level,
+            inclusion: {in: %w(UNKNOWN FATAL ERROR WARN INFO DEBUG)}
+
+  def self.base(first_portion)
+    case first_portion
+    when 'yml'
+      Settings
+    when 'initializers'
+      Ontohub::Application.config
+    else
+      :error
+    end
+  end
+
+  def self.get_value(object, key_chain)
+    key_chain.each do |key|
+      if object.respond_to?(key)
+        object = object.send(key)
+      else
+        # The nil value shall be caught by the presence validators.
+        return nil
+      end
+    end
+    object
+  end
+
+  def initialize
+    # Define a value for the cp_keys location.
+    # This must be defined in two places. Make sure this value is synchronized
+    # with AuthorizedKeysManager.cp_keys_executable.
+    @cp_keys = Pathname.new(Settings.paths.data).join('.ssh', 'cp_keys').to_s
+  end
+
+  def cp_keys=(_path)
+    # No-Op - the value is supposed to be hard-coded.
+    # The validations require the existence of a setter, though.
+  end
+
   protected
 
   def in_production?
@@ -201,26 +266,25 @@ class SettingsValidationWrapper
     get_value(object, key_chain)
   end
 
-  def base(first_portion)
-    case first_portion
-    when 'yml'
-      Settings
-    when 'initializers'
-      Ontohub::Application.config
-    else
-      :error
-    end
+  protected
+
+  def in_production?
+    Rails.env.production?
   end
 
-  def get_value(object, key_chain)
-    key_chain.each do |key|
-      if object.respond_to?(key)
-        object = object.send(key)
-      else
-        # The nil value shall be caught by the presence validators.
-        return nil
-      end
+  # We use '__' as a separator. It will be replaced by a dot.
+  # This uses the fact that our settings-keys never have two consecutive
+  # underscores.
+  # yml__git__verify_url maps to Settings.git.verify_url.
+  # initializers__git__verify_url maps to @config.git.verify_url.
+  def method_missing(method_name, *_args)
+    portions = method_name.to_s.split('__')
+    object = self.class.base(portions[0])
+    key_chain = portions[1..-1]
+    if object == :error || key_chain.blank?
+      raise NoMethodError,
+        "undefined method `#{method_name}' for #{self}:#{self.class}"
     end
-    object
+    self.class.get_value(object, key_chain)
   end
 end

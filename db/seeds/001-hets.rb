@@ -1,3 +1,5 @@
-%w(localhost:8000).each do |uri|
-  HetsInstance.create(name: uri, uri: "http://#{uri}")
+Sidekiq::Testing.disable! do
+  %w(localhost:8000).each do |uri|
+    HetsInstance.create(name: uri, uri: "http://#{uri}")
+  end
 end

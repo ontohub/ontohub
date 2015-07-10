@@ -44,4 +44,5 @@ before_script:
   - sudo apt-get update
   - sudo apt-get install libsane libgphoto2-2 hets-core subversion udrawgraph git-svn
   - sudo hets -update
+  - mkdir -p tmp/{git,data/{git,git_daemon,commits}}
   - RAILS_ENV=test bundle exec rake db:migrate || true

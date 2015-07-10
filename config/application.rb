@@ -22,7 +22,6 @@ module Ontohub
 
     # HACK https://gist.github.com/1184816
     if defined? Compass
-      config.sass.load_paths << Compass::Frameworks['blueprint'].stylesheets_directory
       config.sass.load_paths << Compass::Frameworks['compass'].stylesheets_directory
     end
 
@@ -89,6 +88,8 @@ module Ontohub
       # ActionMailer settings
       require config.root.join('config', 'initializers', 'hostname.rb')
       Settings.action_mailer[:default_url_options] ||= {}
+      Settings.action_mailer[:default_url_options] =
+        Settings.action_mailer[:default_url_options].to_hash
       Settings.action_mailer[:default_url_options][:host] ||= config.fqdn
       Settings.action_mailer[:default_url_options][:port] ||= config.port
       Settings.action_mailer.each do |key, value|
@@ -98,6 +99,9 @@ module Ontohub
 
     config.after_initialize do
       SettingsValidator.new.validate!
+      SettingsInterpreter.new.call
+      Sidekiq::Logging.logger.level =
+        Kernel.const_get("Logger::#{Settings.asynchronous_execution.log_level}")
     end
   end
 end

@@ -22,10 +22,25 @@ describe Theorem do
         expect(prove_options.options[:theorems]).to eq([theorem.name])
       end
 
+      context 'on a private repository' do
+        before do
+          repository.access = 'private_rw'
+          repository.save!
+        end
+
+        it 'have an existing access-token parameter' do
+          expect(prove_options.options[:'access-token']).to be_present
+        end
+        it 'have the access token as access-token parameter' do
+          expect(prove_options.options[:'access-token']).
+            to eq(repository.access_tokens.first.to_s)
+        end
+      end
+
       context 'with url-maps' do
         let!(:url_maps) { [create(:url_map, repository: repository)] }
         it 'have the url-maps as url-catalog parameter' do
-          expect(prove_options.options[:'url-catalog']).to eq(url_maps)
+          expect(prove_options.options[:'url-catalog']).to eq(url_maps.join(','))
         end
       end
 

@@ -19,8 +19,9 @@ OMS_qualifier: modeling
 # Optional asset host for delivery of static files (css, images, javascripts)
 # asset_host: assets.example.com
 
-# Sender address for outgoing mail
-email: noreply@example.com
+# Sender address for outgoing mail.
+# The host will be appended automatically if it does not contain an @ character.
+email: noreply
 
 # Mail delivery
 # http://guides.rubyonrails.org/action_mailer_basics.html#action-mailer-configuration
@@ -50,6 +51,11 @@ max_combined_diff_size: 1_048_576
 # Timeout for ontology parsing jobs in hours
 ontology_parse_timeout: 6
 
+asynchronous_execution:
+  # possible values for log level (in ascending order of verbosity):
+  # UNKNOWN, FATAL, ERROR, WARN, INFO, DEBUG
+  log_level: WARN
+
 # Footer links and texts
 footer:
   - text: Foo Institute
@@ -65,19 +71,16 @@ exception_notifier:
     - exception-recipient@example.com
 
 # The following paths can be absolute paths
-# or relative paths to the project root
+# or relative paths (relative to the project root)
 paths:
   # General data.
   data: data
-  # git repositories (names are numbers/ids)
-  git_repositories: data/repositories
+  # git repositories (names of repositories are numbers/ids)
+  git_repositories: # nil - then data/repositories is used
   # named symlinks to the git repositories
-  symlinks: data/git_daemon
+  symlinks: # nil - then data/git_daemon is used
   # cache for files that needed to be checked out from the git repositories
-  commits: data/commits
-  # home directory of the git user
-  #   needed for handling of ssh keys in ~git/.ssh/authorized_keys
-  git_home: ~git
+  commits: # nil - then data/commits is used
 
 hets:
   # This is the path to the hets executable we use in `rake hets:*` and for the
@@ -86,6 +89,8 @@ hets:
   # The number of hets instances to run in parallel in production mode.
   # Minimum: 1, Maximum: number of processors
   instances_count: 1
+  # The time between update-checks of registered hets-instances in minutes
+  time_between_updates: 360
 
 git:
   verify_url: http://localhost/
@@ -101,6 +106,9 @@ git:
 # saved.
 external_repository_name: 'External'
 
+access_token:
+  expiration_minutes: 360
+
 allowed_iri_schemes:
   - http
   - https
@@ -112,6 +120,15 @@ display_head_commit: false
 display_symbols_tab: false
 
 format_selection: false
+
+# Your secret key for verifying the integrity of signed cookies.
+# If you change this key, all old signed cookies will become invalid!
+# Make sure the secret is at least 64 characters and all random,
+# no regular words or you'll be exposed to dictionary attacks.
+#
+# This is just an example value.
+# Overwrite this in your settings.local.yml or settings/production.local.yml!
+secret_token: '6b198bfe3759ee41524d3a0d7547890a2d277f44f2ce472921ced9bac1833830028bbcacf58fdac0b482265042baa8df4de86a86ad63711ef5b50f70e57d5a07'
 
 # Possible values for metadata, adapted from OMV
 formality_levels:

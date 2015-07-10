@@ -10,8 +10,17 @@ module SettingsValidationWrapper::Validators
 
   class DirectoryValidator < ActiveModel::EachValidator
     def validate_each(record, attribute, value)
+      error = nil
+      begin
+        Dir.chdir(Rails.root) { value = Pathname.new(value).expand_path }
+      rescue ::StandardError => e
+        error = e
+      end
       unless File.directory?(value)
         record.errors.add attribute, 'is not a directory'
+      end
+      if error
+        record.errors.add attribute, error.message
       end
     end
   end
@@ -46,7 +55,7 @@ module SettingsValidationWrapper::Validators
     end
   end
 
-  class EmailFromHostValidator < ActiveModel::EachValidator
+  class EmailHostValidator < ActiveModel::EachValidator
     def validate_each(record, attribute, value)
       fqdn =
         if options[:hostname].respond_to?(:call)
@@ -54,7 +63,11 @@ module SettingsValidationWrapper::Validators
         else
           options[:hostname]
         end
-      unless value.match(/@#{fqdn}\z/)
+      if value.match(/@.*@/)
+        record.errors.add attribute,
+          'email address must have a valid email format.'
+      end
+      if value.include?('@') && !value.match(/@#{fqdn}\z/)
         record.errors.add attribute,
           "email adress must belong to the fully qualified domain name '#{fqdn}'."
       end
@@ -64,7 +77,7 @@ module SettingsValidationWrapper::Validators
   class ExecutableValidator < ActiveModel::EachValidator
     def validate_each(record, attribute, value)
       unless File.executable?(value)
-        record.errors.add attribute, "must be an executable file: #{value}"
+        record.errors.add attribute, 'must be an executable file'
       end
     end
   end

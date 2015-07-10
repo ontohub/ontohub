@@ -87,7 +87,7 @@ class Proof < FakeRecord
 
   def initialize_axioms(opts)
     axiom_ids = normalize_check_box_ids(opts[:proof][:axioms])
-    @axioms = axiom_ids.map { |id| Axiom.find(id) } if @axiom_ids
+    @axioms = axiom_ids.map { |id| Axiom.unscoped.find(id) } if axiom_ids
   end
 
   def initialize_prove_options_list

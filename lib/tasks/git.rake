@@ -1,7 +1,7 @@
 namespace :git do
   def reconfigure_cp_keys(source_file)
     data_root = Ontohub::Application.config.data_root
-    git_home = Ontohub::Application.config.git_home
+    git_home = ENV['GIT_HOME']
 
     reconfigured_source = File.read(source_file).
       sub(/^#define DATA_ROOT .*$/, "#define DATA_ROOT \"#{data_root}\"").
@@ -41,8 +41,18 @@ namespace :git do
 
   desc 'Compile cp_keys binary'
   task :compile_cp_keys => :environment do
+    unless ENV['GIT_HOME']
+      $stderr.puts 'Please specify the environment variable GIT_HOME.'
+      $stderr.puts "It must contain the absolute path to the git user's home."
+      $stderr.puts 'Exiting.'
+      exit 1
+    end
+
+    target_dir = AuthorizedKeysManager.ssh_dir
+    target_dir.mkpath
+
     source_file = Rails.root.join('script', 'cp_keys.c')
-    target_path = Rails.root.join('bin', 'cp_keys').to_s
+    target_path = target_dir.join('cp_keys').to_s
 
     reconfigured_source_tempfile = reconfigure_cp_keys(source_file)
     compile_gcc(reconfigured_source_tempfile.path, target_path)
@@ -56,13 +66,11 @@ namespace :git do
 
   desc 'Create authorized_keys file and set its permissions'
   task :prepare_authorized_keys => :environment do
-    SSH_DIR = Ontohub::Application.config.data_root.join('.ssh')
-    AUTHORIZED_KEYS = SSH_DIR.join('authorized_keys')
-    SSH_DIR.mkpath
-    if !File.exists?(AUTHORIZED_KEYS)
-      puts "Creating the file #{AUTHORIZED_KEYS}."
-      FileUtils.touch(AUTHORIZED_KEYS)
-      set_permissions('0640', AUTHORIZED_KEYS.to_s,
+    AuthorizedKeysManager.ssh_dir.mkpath
+    if !File.exists?(AuthorizedKeysManager.authorized_keys)
+      puts "Creating the file #{AuthorizedKeysManager.authorized_keys}."
+      FileUtils.touch(AuthorizedKeysManager.authorized_keys)
+      set_permissions('0640', AuthorizedKeysManager.authorized_keys.to_s,
                       'the webserver-running user.')
     end
   end
