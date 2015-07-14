@@ -119,7 +119,6 @@ class Proof < FakeRecord
   def initialize_proof_attempts_for_theorem(opts, theorem)
     provers.each do |prover|
       pac = ProofAttemptConfiguration.new
-      pac.ontology = ontology
       pac.prover = prover
       pac.timeout = timeout
       pac.axiom_selection = axiom_selection
@@ -127,6 +126,7 @@ class Proof < FakeRecord
       proof_attempt = ProofAttempt.new
       proof_attempt.theorem = theorem
       proof_attempt.proof_attempt_configuration = pac
+      pac.proof_attempt = proof_attempt
 
       @proof_attempts << proof_attempt
     end

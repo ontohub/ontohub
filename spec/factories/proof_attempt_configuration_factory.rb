@@ -4,7 +4,6 @@ FactoryGirl.define do
 
     association :prover, :with_sequenced_name
     association :logic_mapping
-    association :ontology
 
     pac.after(:build) do |pac|
       unless pac.axiom_selection

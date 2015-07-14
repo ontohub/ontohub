@@ -1,6 +1,7 @@
 class Api::V1::ProofAttemptConfigurationsController < Api::V1::Base
   inherit_resources
-  belongs_to :ontology
+  defaults singleton: true
+  belongs_to :proof_attempt
 
   actions :index, :show
 
