@@ -6,11 +6,7 @@ class ProofAttemptConfiguration < ActiveRecord::Base
   belongs_to :prover
   belongs_to :ontology
   belongs_to :axiom_selection
-  has_many :proof_attempts, dependent: :destroy
-  has_and_belongs_to_many :goals,
-                          class_name: 'Theorem',
-                          association_foreign_key: 'sentence_id',
-                          join_table: 'goals_proof_attempt_configurations'
+  has_one :proof_attempt, dependent: :destroy
   # timeout in seconds
   attr_accessible :timeout
   attr_accessible :locid
@@ -21,7 +17,7 @@ class ProofAttemptConfiguration < ActiveRecord::Base
   delegate :axioms, to: :axiom_selection
 
   def empty?
-    [logic_mapping, prover, timeout, axioms, goals].all?(&:blank?)
+    [logic_mapping, prover, timeout, axioms].all?(&:blank?)
   end
 
   def prove_options

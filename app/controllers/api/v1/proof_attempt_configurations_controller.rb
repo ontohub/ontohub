@@ -25,7 +25,7 @@ class Api::V1::ProofAttemptConfigurationsController < Api::V1::Base
   def selected_theorems
     respond_to do |format|
       format.json do
-        render json: resource.goals,
+        render json: [resource.proof_attempt.theorem],
                each_serializer: TheoremSerializer::Reference
       end
     end
