@@ -81,7 +81,7 @@ class SineAxiomSelection < ActiveRecord::Base
 
   def select_axioms
     @selected_axioms = []
-    goals.each { |goal| select_new_axioms(goal) }
+    select_new_axioms(goal)
     self.axioms = @selected_axioms
   end
 
