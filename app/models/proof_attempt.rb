@@ -68,10 +68,7 @@ class ProofAttempt < ActiveRecord::Base
   end
 
   def retry_failed
-    options_to_attempts = CollectiveProofAttemptWorker.
-      normalize_for_async_call({prove_options_from_configuration => [self]})
-    CollectiveProofAttemptWorker.
-      perform_async(Theorem.to_s, theorem.id, options_to_attempts)
+    ProofExecutionWorker.perform_async(id)
   end
 
   protected
