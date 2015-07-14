@@ -1,0 +1,57 @@
+---
+http_interactions:
+- request:
+    method: post
+    uri: http://localhost:8000/prove/http:%2F%2Flocalhost:3001%2Fref%2F1%2Frepository-1%2FSimple_Implications%2F%2FGroup/auto
+    body:
+      encoding: UTF-8
+      string: '{"format":"json","include":"true","prover":"SPASS","timeout":"6","axioms":["Ax2"],"theorems":["rightunit"],"node":"Group"}'
+    headers:
+      Content-Type:
+      - application/json
+      Accept-Encoding:
+      - gzip;q=1.0,deflate;q=0.6,identity;q=0.3
+      Accept:
+      - "*/*"
+      User-Agent:
+      - Ruby
+      Host:
+      - localhost:8000
+  response:
+    status:
+      code: 200
+      message: OK
+    headers:
+      Transfer-Encoding:
+      - chunked
+      Date:
+      - Tue, 14 Jul 2015 06:21:27 GMT
+      Server:
+      - Warp/3.0.11
+      Content-Type:
+      - application/json
+    body:
+      encoding: UTF-8
+      string: |-
+        [{
+        "node": "Group",
+        "goals": [{
+         "name": "rightunit",
+         "result": "Disproved",
+         "details": "",
+         "used_prover": { "identifier": "SPASS", "name": "SPASS" },
+         "used_translation": "CASL2SoftFOL",
+         "tactic_script": {
+          "time_limit": 6, "extra_options": [ "-DocProof"] },
+         "proof_tree": "",
+         "used_time": {
+          "seconds": 0, "components": { "hours": 0, "mins": 0, "secs": 0 }
+          },
+         "used_axioms": [],
+         "prover_output":
+          "\n--------------------------SPASS-START-----------------------------\nInput Problem:\n1[0:Inp] || equal(o__Plus__(zero,skc1),skc1)** -> .\n2[0:Inp] ||  -> equal(o__Plus__(U,minus__(U)),zero)**.\n This is a unit equality problem.\n This is a problem that has, if any, a non-trivial domain model.\n The conjecture is ground.\n Axiom clauses: 1 Conjecture clauses: 1\n Inferences: IEqR=1 ISpR=1 ISpL=1 \n Reductions: RFRew=1 RBRew=1 RFMRR=1 RBMRR=1 RObv=1 RUnC=1 RTaut=1 RFSub=1 RBSub=1 \n Extras    : Input Saturation, No Selection, No Splitting, Full Reduction,  Ratio: 5, FuncWeight: 1, VarWeight: 1\n Precedence: o__Plus__ > minus__ > skc1 > skc0 > zero\n Ordering  : KBO\nProcessed Problem:\n\nWorked Off Clauses:\n\nUsable Clauses:\n1[0:Inp] || equal(o__Plus__(zero,skc1),skc1)** -> .\n2[0:Inp] ||  -> equal(o__Plus__(U,minus__(U)),zero)**.\n\tGiven clause: 1[0:Inp] || equal(o__Plus__(zero,skc1),skc1)** -> .\n\tGiven clause: 2[0:Inp] ||  -> equal(o__Plus__(U,minus__(U)),zero)**.\nSPASS V 3.7 \nSPASS beiseite: Completion found.\nProblem: Read from stdin. \nSPASS derived 1 clauses, backtracked 0 clauses, performed 0 splits and kept 2 clauses.\nSPASS allocated 45934 KBytes.\nSPASS spent\t0:00:00.05 on the problem.\n\t\t0:00:00.02 for the input.\n\t\t0:00:00.01 for the FLOTTER CNF translation.\n\t\t0:00:00.00 for inferences.\n\t\t0:00:00.00 for the backtracking.\n\t\t0:00:00.00 for the reduction.\n\n\n The saturated set of worked-off clauses is :\n2[0:Inp] ||  -> equal(o__Plus__(U,minus__(U)),zero)**.\n1[0:Inp] || equal(o__Plus__(zero,skc1),skc1)** -> .\n--------------------------SPASS-STOP------------------------------\n"
+         }]
+        }]
+    http_version: 
+  recorded_at: Tue, 14 Jul 2015 06:21:27 GMT
+recorded_with: VCR 2.9.3

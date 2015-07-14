@@ -2,10 +2,10 @@
 http_interactions:
 - request:
     method: post
-    uri: http://localhost:8000/prove/http:%2F%2Flocalhost:3001%2Fref%2F1%2Frepository-444%2FSimple_Implications%2F%2FTheorem/auto
+    uri: http://localhost:8000/prove/http:%2F%2Flocalhost:3001%2Fref%2F1%2Frepository-396%2FSimple_Implications%2F%2FCounterSatisfiable/auto
     body:
       encoding: UTF-8
-      string: '{"format":"json","include":"true","prover":"eprover","theorems":["Ax1"],"node":"Theorem"}'
+      string: '{"format":"json","include":"true","prover":"eprover","timeout":"5","theorems":["Ax2"],"node":"CounterSatisfiable"}'
     headers:
       Content-Type:
       - application/json
@@ -25,7 +25,7 @@ http_interactions:
       Transfer-Encoding:
       - chunked
       Date:
-      - Tue, 02 Jun 2015 06:48:27 GMT
+      - Tue, 14 Jul 2015 06:09:31 GMT
       Server:
       - Warp/3.0.11
       Content-Type:
@@ -34,14 +34,14 @@ http_interactions:
       encoding: UTF-8
       string: |-
         [{
-        "node": "Theorem",
+        "node": "CounterSatisfiable",
         "goals": [{
-         "name": "Ax1",
-         "result": "Proved",
+         "name": "Ax2",
+         "result": "Disproved",
          "details": "",
          "used_prover": { "identifier": "eprover", "name": "eprover" },
          "used_translation": "CASL2SoftFOL",
-         "tactic_script": { "time_limit": 1, "extra_options": [] },
+         "tactic_script": { "time_limit": 5, "extra_options": [] },
          "proof_tree": "",
          "used_time": {
           "seconds": -1,
@@ -49,9 +49,9 @@ http_interactions:
           },
          "used_axioms": [],
          "prover_output":
-          "# Parsed axioms                        : 1\n# SZS output end CNFRefutation.\n# SZS output start CNFRefutation.\n# SZS status Theorem\n"
+          "# Parsed axioms                        : 2\n# SZS output end Saturation.\nfof(c_0_1, axiom, (![X1]:X1=zero), c_0_0).\nfof(c_0_0, axiom, (![X1]:X1=zero), file('/var/folders/h0/h5fs6h4n4wg1qpj05yd205dc0000gn/T/_ax2172315317770982397.tptp', ax1)).\n# SZS output start Saturation.\n# SZS status CounterSatisfiable\n# Scanning for AC axioms\n"
          }]
         }]
     http_version: 
-  recorded_at: Tue, 02 Jun 2015 06:48:27 GMT
+  recorded_at: Tue, 14 Jul 2015 06:09:31 GMT
 recorded_with: VCR 2.9.3
