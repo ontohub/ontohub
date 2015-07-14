@@ -10,7 +10,8 @@
   = render partial: '/shared/state', locals: {resource: theorem}
 
 %h4 Proof Attempts
-= link_to t('theorems.show.prove'), [*resource_chain, theorem, :proofs, :new], class: 'btn btn-primary'
+- if can? :write, parent.repository
+  = link_to t('theorems.show.prove'), [*resource_chain, theorem, :proofs, :new], class: 'btn btn-primary'
 %div
   - if collection.empty?
     = t('theorems.show.proof_attemps_empty')
