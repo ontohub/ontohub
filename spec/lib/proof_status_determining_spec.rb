@@ -1,18 +1,17 @@
 require 'spec_helper'
 
-describe 'CollectiveProofAttempt - SZS', :http_interaction do
+describe 'Proof Status Determining', :http_interaction do
   setup_hets
   stub_fqdn_and_port_for_pipeline_generator
+  let(:generator) do
+    FixturesGeneration::PipelineGenerator.new
+  end
 
   let(:user) { create :user }
   let(:repository) { create :repository }
 
   let(:ontology_fixture_file) { %w(prove/Simple_Implications casl) }
   let(:ontology_filepath) { ontology_fixture_file.join('.') }
-
-  let(:generator) do
-    FixturesGeneration::PipelineGenerator.new
-  end
 
   before { stub_hets_for(ontology_filepath) }
 
@@ -38,12 +37,10 @@ describe 'CollectiveProofAttempt - SZS', :http_interaction do
       end
       let(:theorem) { ontology.theorems.first }
       let(:proof_attempt) do
-        create :proof_attempt, theorem: theorem, prover: prover
+        create :proof_attempt, theorem: theorem, prover: prover,
+               proof_attempt_configuration: create(:proof_attempt_configuration,
+                                                   prover: prover)
       end
-      let(:options_to_attempts) do
-        {Hets::ProveOptions.new(prover: prover) => [proof_attempt]}
-      end
-      let(:cpa) { CollectiveProofAttempt.new(theorem, options_to_attempts) }
 
       it "proof_attempt's proof_status is OPN" do
         expect(proof_attempt.reload.proof_status).to eq(status_open)
@@ -52,7 +49,7 @@ describe 'CollectiveProofAttempt - SZS', :http_interaction do
       context 'after proving' do
         before do
           generator.with_cassette(generate_cassette_name, :hets_prove_uri) do
-            cpa.run
+            ProofExecution.new(proof_attempt).call
           end
         end
 
@@ -68,17 +65,15 @@ describe 'CollectiveProofAttempt - SZS', :http_interaction do
       end
       let(:theorem) { ontology.theorems.first }
       let(:proof_attempt) do
-        create :proof_attempt, theorem: theorem, prover: prover
+        create :proof_attempt, theorem: theorem, prover: prover,
+               proof_attempt_configuration: create(:proof_attempt_configuration,
+                                                   prover: prover)
       end
-      let(:options_to_attempts) do
-        {Hets::ProveOptions.new(prover: prover) => [proof_attempt]}
-      end
-      let(:cpa) { CollectiveProofAttempt.new(theorem, options_to_attempts) }
 
       context 'after proving' do
         before do
           generator.with_cassette(generate_cassette_name, :hets_prove_uri) do
-            cpa.run
+            ProofExecution.new(proof_attempt).call
           end
         end
 
@@ -97,17 +92,15 @@ describe 'CollectiveProofAttempt - SZS', :http_interaction do
       end
       let(:theorem) { ontology.theorems.first }
       let(:proof_attempt) do
-        create :proof_attempt, theorem: theorem, prover: prover
+        create :proof_attempt, theorem: theorem, prover: prover,
+               proof_attempt_configuration: create(:proof_attempt_configuration,
+                                                   prover: prover)
       end
-      let(:options_to_attempts) do
-        {Hets::ProveOptions.new(prover: prover) => [proof_attempt]}
-      end
-      let(:cpa) { CollectiveProofAttempt.new(theorem, options_to_attempts) }
 
       context 'after proving' do
         before do
           generator.with_cassette(generate_cassette_name, :hets_prove_uri) do
-            cpa.run
+            ProofExecution.new(proof_attempt).call
           end
         end
 
@@ -123,17 +116,15 @@ describe 'CollectiveProofAttempt - SZS', :http_interaction do
       end
       let(:theorem) { ontology.theorems.first }
       let(:proof_attempt) do
-        create :proof_attempt, theorem: theorem, prover: prover
+        create :proof_attempt, theorem: theorem, prover: prover,
+               proof_attempt_configuration: create(:proof_attempt_configuration,
+                                                   prover: prover)
       end
-      let(:options_to_attempts) do
-        {Hets::ProveOptions.new(prover: prover) => [proof_attempt]}
-      end
-      let(:cpa) { CollectiveProofAttempt.new(theorem, options_to_attempts) }
 
       context 'after proving' do
         before do
           generator.with_cassette(generate_cassette_name, :hets_prove_uri) do
-            cpa.run
+            ProofExecution.new(proof_attempt).call
           end
         end
 
