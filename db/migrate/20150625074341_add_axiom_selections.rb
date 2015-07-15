@@ -17,6 +17,8 @@ class AddAxiomSelections < MigrationWithData
               # We need to supply a custom name because the generated name is
               # too long for PostgreSQL
               name: 'index_axioms_on_axiom_selection_id'
+    add_index :axioms_axiom_selections, [:sentence_id, :axiom_selection_id],
+              unique: true, name: 'index_axioms_axiom_selection_unique'
 
     up_migrate_association_data
 
