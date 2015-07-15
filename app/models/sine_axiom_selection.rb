@@ -21,6 +21,14 @@ class SineAxiomSelection < ActiveRecord::Base
 
   protected
 
+  def ontology
+    @ontology ||= goal.ontology
+  end
+
+  def goal
+    @goal ||= axiom_selection.proof_attempt_configuration.proof_attempt.theorem
+  end
+
   def preprocess
     calculate_commonness_table
     calculate_symbol_axiom_trigger_table
