@@ -5,7 +5,6 @@ class ProofAttemptConfiguration < ActiveRecord::Base
   has_one :proof_attempt, dependent: :destroy
   # timeout in seconds
   attr_accessible :timeout
-  attr_accessible :locid
 
   validates :proof_attempt, presence: true
 
@@ -23,20 +22,5 @@ class ProofAttemptConfiguration < ActiveRecord::Base
     options[:timeout] = timeout if timeout
     options[:axioms] = axiom_selection.axioms if axiom_selection.axioms.any?
     @prove_options = Hets::ProveOptions.new(options)
-  end
-
-  def generate_locid
-    # It's possible that the database columns `locid` and `number` have not yet
-    # been created.
-    if respond_to?(:locid) && respond_to?(:number)
-      self.locid =
-        "#{proof_attempt.locid}//#{self.class.to_s.underscore.dasherize}"
-    end
-  end
-
-  protected
-
-  def self.find_with_locid(locid, _iri = nil)
-    where(locid: locid).first
   end
 end
