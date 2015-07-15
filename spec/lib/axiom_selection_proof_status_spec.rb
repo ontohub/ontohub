@@ -36,14 +36,14 @@ describe 'Axiom Selection: Proof Status', :http_interaction do
 
   context 'all axioms' do
     let(:axiom_selection) { create :manual_axiom_selection, axioms: axioms }
-    let(:proof_attempt_configuration) do
-      create :proof_attempt_configuration,
-        prover: prover,
-        axiom_selection: axiom_selection.axiom_selection
-    end
     let(:proof_attempt) do
-      create :proof_attempt, theorem: theorem, prover: prover,
-        proof_attempt_configuration: proof_attempt_configuration
+      create :proof_attempt, theorem: theorem, prover: prover
+    end
+    let!(:proof_attempt_configuration) do
+      pac = proof_attempt.proof_attempt_configuration
+      pac.axiom_selection = axiom_selection.axiom_selection
+      pac.prover = prover
+      pac
     end
 
     before do
@@ -59,14 +59,14 @@ describe 'Axiom Selection: Proof Status', :http_interaction do
 
   context 'no axioms (meaning all are used)' do
     let(:axiom_selection) { create :manual_axiom_selection, axioms: [] }
-    let(:proof_attempt_configuration) do
-      create :proof_attempt_configuration,
-        prover: prover,
-        axiom_selection: axiom_selection.axiom_selection
-    end
     let(:proof_attempt) do
-      create :proof_attempt, theorem: theorem, prover: prover,
-        proof_attempt_configuration: proof_attempt_configuration
+      create :proof_attempt, theorem: theorem, prover: prover
+    end
+    let!(:proof_attempt_configuration) do
+      pac = proof_attempt.proof_attempt_configuration
+      pac.axiom_selection = axiom_selection.axiom_selection
+      pac.prover = prover
+      pac
     end
 
     before do
@@ -84,14 +84,14 @@ describe 'Axiom Selection: Proof Status', :http_interaction do
     let(:axiom_selection) do
       create :manual_axiom_selection, axioms: [axioms.first]
     end
-    let(:proof_attempt_configuration) do
-      create :proof_attempt_configuration,
-        prover: prover,
-        axiom_selection: axiom_selection.axiom_selection
-    end
     let(:proof_attempt) do
-      create :proof_attempt, theorem: theorem, prover: prover,
-        proof_attempt_configuration: proof_attempt_configuration
+      create :proof_attempt, theorem: theorem, prover: prover
+    end
+    let!(:proof_attempt_configuration) do
+      pac = proof_attempt.proof_attempt_configuration
+      pac.axiom_selection = axiom_selection.axiom_selection
+      pac.prover = prover
+      pac
     end
 
     before do

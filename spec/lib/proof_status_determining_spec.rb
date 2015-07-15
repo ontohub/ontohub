@@ -28,6 +28,7 @@ describe 'Proof Status Determining', :http_interaction do
   let(:status_csa) { create :proof_status_csa }
   let(:status_noc) { create :proof_status_disproven }
   let(:status_thm) { create :proof_status_proven }
+  let(:axiom_selection) { create :manual_axiom_selection, axioms: [] }
 
   context 'with eprover' do
     let(:prover) { create :prover, name: 'eprover' }
@@ -37,9 +38,13 @@ describe 'Proof Status Determining', :http_interaction do
       end
       let(:theorem) { ontology.theorems.first }
       let(:proof_attempt) do
-        create :proof_attempt, theorem: theorem, prover: prover,
-               proof_attempt_configuration: create(:proof_attempt_configuration,
-                                                   prover: prover)
+        create :proof_attempt, theorem: theorem, prover: prover
+      end
+      let!(:proof_attempt_configuration) do
+        pac = proof_attempt.proof_attempt_configuration
+        pac.axiom_selection = axiom_selection.axiom_selection
+        pac.prover = prover
+        pac
       end
 
       it "proof_attempt's proof_status is OPN" do
@@ -65,9 +70,13 @@ describe 'Proof Status Determining', :http_interaction do
       end
       let(:theorem) { ontology.theorems.first }
       let(:proof_attempt) do
-        create :proof_attempt, theorem: theorem, prover: prover,
-               proof_attempt_configuration: create(:proof_attempt_configuration,
-                                                   prover: prover)
+        create :proof_attempt, theorem: theorem, prover: prover
+      end
+      let!(:proof_attempt_configuration) do
+        pac = proof_attempt.proof_attempt_configuration
+        pac.axiom_selection = axiom_selection.axiom_selection
+        pac.prover = prover
+        pac
       end
 
       context 'after proving' do
@@ -92,9 +101,13 @@ describe 'Proof Status Determining', :http_interaction do
       end
       let(:theorem) { ontology.theorems.first }
       let(:proof_attempt) do
-        create :proof_attempt, theorem: theorem, prover: prover,
-               proof_attempt_configuration: create(:proof_attempt_configuration,
-                                                   prover: prover)
+        create :proof_attempt, theorem: theorem, prover: prover
+      end
+      let!(:proof_attempt_configuration) do
+        pac = proof_attempt.proof_attempt_configuration
+        pac.axiom_selection = axiom_selection.axiom_selection
+        pac.prover = prover
+        pac
       end
 
       context 'after proving' do
@@ -116,9 +129,13 @@ describe 'Proof Status Determining', :http_interaction do
       end
       let(:theorem) { ontology.theorems.first }
       let(:proof_attempt) do
-        create :proof_attempt, theorem: theorem, prover: prover,
-               proof_attempt_configuration: create(:proof_attempt_configuration,
-                                                   prover: prover)
+        create :proof_attempt, theorem: theorem, prover: prover
+      end
+      let!(:proof_attempt_configuration) do
+        pac = proof_attempt.proof_attempt_configuration
+        pac.axiom_selection = axiom_selection.axiom_selection
+        pac.prover = prover
+        pac
       end
 
       context 'after proving' do

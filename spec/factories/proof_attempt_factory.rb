@@ -5,10 +5,15 @@ FactoryGirl.define do
     association :proof_status, factory: :proof_status_open
     association :theorem
     association :prover, :with_sequenced_name
-    association :proof_attempt_configuration
 
     after(:build) do |proof_attempt|
-      proof_attempt.proof_attempt_configuration.save!
+      if proof_attempt.proof_attempt_configuration
+        proof_attempt.proof_attempt_configuration.proof_attempt = proof_attempt
+      else
+        proof_attempt.proof_attempt_configuration =
+          build :proof_attempt_configuration,
+                proof_attempt: proof_attempt
+      end
       proof_attempt.tactic_script =
         build :tactic_script, proof_attempt: proof_attempt
       create :prover_output, proof_attempt: proof_attempt
