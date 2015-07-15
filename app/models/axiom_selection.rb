@@ -16,4 +16,8 @@ class AxiomSelection < ActiveRecord::Base
   def axioms
     super.where(imported: [true, false])
   end
+
+  def call
+    # overwrite this in the "subclasses"
+  end
 end
