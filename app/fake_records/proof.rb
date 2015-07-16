@@ -142,7 +142,9 @@ class Proof < FakeRecord
   end
 
   def build_axiom_selection(opts)
-    send("build_#{axiom_selection_method}", opts) if AxiomSelection::METHODS.include?(axiom_selection_method)
+    if AxiomSelection::METHODS.include?(axiom_selection_method)
+      send("build_#{axiom_selection_method}", opts)
+    end
   end
 
   def build_manual_axiom_selection(opts)
