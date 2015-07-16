@@ -26,7 +26,7 @@ class Proof < FakeRecord
   # prover related
   attr_reader :prover_ids, :provers
   # axiom related
-  attr_reader :axiom_selection_method, :axiom_selection, :specific_axiom_selection, :axioms
+  attr_reader :axiom_selection_method, :specific_axiom_selection, :axioms
   # timeout
   attr_reader :timeout
   # result related
@@ -60,6 +60,10 @@ class Proof < FakeRecord
       end
     end
     prove
+  end
+
+  def axiom_selection
+    specific_axiom_selection.try(:axiom_selection)
   end
 
   def theorem?
@@ -148,13 +152,11 @@ class Proof < FakeRecord
       specific_axiom_selection.axioms =
         axiom_ids.map { |id| Axiom.unscoped.find(id) }
     end
-    @axiom_selection = @specific_axiom_selection.axiom_selection
   end
 
   def build_sine_axiom_selection(opts)
     @specific_axiom_selection =
       SineAxiomSelection.new(opts[:proof][:sine_axiom_selection])
-    @axiom_selection = @specific_axiom_selection.axiom_selection
   end
 
   def timeout_present?
