@@ -4,7 +4,7 @@ describe SineAxiomSelection do
   let(:sine_axiom_selection) { create :sine_axiom_selection }
 
   context "respond to the parent's methods" do
-    %i(proof_attempt_configuration axioms).each do |method|
+    %i(proof_attempt_configurations axioms).each do |method|
       it method do
         expect(sine_axiom_selection).to respond_to(method)
       end

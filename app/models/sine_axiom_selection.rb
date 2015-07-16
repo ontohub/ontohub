@@ -26,7 +26,7 @@ class SineAxiomSelection < ActiveRecord::Base
   end
 
   def goal
-    @goal ||= axiom_selection.proof_attempt_configuration.proof_attempt.theorem
+    @goal ||= proof_attempt_configurations.first.proof_attempt.theorem
   end
 
   def preprocess
