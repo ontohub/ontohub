@@ -12,11 +12,16 @@ class SineAxiomSelection < ActiveRecord::Base
                             only_integer: true
   validates_numericality_of :tolerance, greater_than_or_equal_to: 1
 
-  delegate :mark_as_finished!, to: :axiom_selection
+  delegate :lock_key, :mark_as_finished!, to: :axiom_selection
 
   def call
-    preprocess
-    select_axioms
+    Semaphore.exclusively(lock_key) do
+      unless finished
+        preprocess
+        select_axioms
+        mark_as_finished!
+      end
+    end
   end
 
   protected

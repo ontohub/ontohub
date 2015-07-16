@@ -26,6 +26,12 @@ class AxiomSelection < ActiveRecord::Base
     # overwrite this in the "subclasses"
   end
 
+  # This key is used for mutex locking: The selection only has to be done once,
+  # but many jobs may call it in parallel.
+  def lock_key
+    "#{self.class.to_s.underscore.dasherize}-#{id}"
+  end
+
   protected
 
   def mark_as_finished!
