@@ -2,12 +2,19 @@ class AxiomSelection < ActiveRecord::Base
   METHODS = %i(manual_axiom_selection)
 
   acts_as_superclass
-  has_many :proof_attempt_configurations
 
+  attr_accessible :finished
+
+  has_many :proof_attempt_configurations
   has_and_belongs_to_many :axioms,
                           class_name: 'Axiom',
                           association_foreign_key: 'sentence_id',
                           join_table: "axioms_axiom_selections"
+
+  def initialize(*args)
+    super(*args)
+    self.finished = false
+  end
 
   # This seems to be the only way to remove the default scope
   # (non-imported sentences) from the association
@@ -17,5 +24,12 @@ class AxiomSelection < ActiveRecord::Base
 
   def call
     # overwrite this in the "subclasses"
+  end
+
+  protected
+
+  def mark_as_finished!
+    self.finished = true
+    save!
   end
 end
