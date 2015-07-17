@@ -93,7 +93,7 @@ class SineAxiomSelection < ActiveRecord::Base
   end
 
   def select_axioms
-    @selected_axioms = []
+    @selected_axioms = triggered_axioms_by_commonness_threshold.to_a
     select_new_axioms(goal, 0)
     self.axioms = @selected_axioms
   end
@@ -113,6 +113,14 @@ class SineAxiomSelection < ActiveRecord::Base
     Axiom.unscoped.joins(:sine_symbol_axiom_triggers).
       where('sine_symbol_axiom_triggers.symbol_id = ?', symbol.id).
       where('sine_symbol_axiom_triggers.tolerance <= ?', tolerance)
+  end
+
+  def triggered_axioms_by_commonness_threshold
+    Axiom.unscoped.joins(:symbols).
+      where('symbols.id' => OntologyMember::Symbol.
+        where(ontology_id: ontology.id).joins(:sine_symbol_commonness).
+        where('sine_symbol_commonnesses.commonness < ?', commonness_threshold).
+        map(&:id))
   end
 
   def depth_limit_reached?(current_depth)
