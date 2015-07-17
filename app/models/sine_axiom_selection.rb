@@ -94,14 +94,15 @@ class SineAxiomSelection < ActiveRecord::Base
 
   def select_axioms
     @selected_axioms = []
-    select_new_axioms(goal)
+    select_new_axioms(goal, 0)
     self.axioms = @selected_axioms
   end
 
-  def select_new_axioms(sentence)
+  def select_new_axioms(sentence, current_depth)
+    return if depth_limit_reached?(current_depth)
     new_axioms = select_axioms_by_sentence(sentence) - @selected_axioms
     @selected_axioms += new_axioms
-    new_axioms.each { |axiom| select_new_axioms(axiom) }
+    new_axioms.each { |axiom| select_new_axioms(axiom, current_depth + 1) }
   end
 
   def select_axioms_by_sentence(sentence)
@@ -112,5 +113,13 @@ class SineAxiomSelection < ActiveRecord::Base
     Axiom.unscoped.joins(:sine_symbol_axiom_triggers).
       where('sine_symbol_axiom_triggers.symbol_id = ?', symbol.id).
       where('sine_symbol_axiom_triggers.tolerance <= ?', tolerance)
+  end
+
+  def depth_limit_reached?(current_depth)
+    depth_limited? && current_depth >= depth_limit
+  end
+
+  def depth_limited?
+    depth_limit != -1
   end
 end
