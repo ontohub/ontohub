@@ -95,7 +95,7 @@ class SineAxiomSelection < ActiveRecord::Base
   def select_axioms
     @selected_axioms = triggered_axioms_by_commonness_threshold.to_a
     select_new_axioms(goal, 0)
-    self.axioms = @selected_axioms
+    self.axioms = @selected_axioms.uniq
   end
 
   def select_new_axioms(sentence, current_depth)
