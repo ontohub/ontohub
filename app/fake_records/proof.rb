@@ -5,6 +5,14 @@
 # This class prepares the proving procedure and creates the models which are
 # presented in the UI (ProofAttempt).
 class Proof < FakeRecord
+  class AssociatedValidator < ActiveModel::EachValidator
+    def validate_each(record, attribute, value)
+      unless value.try(:valid?)
+        record.errors.add attribute, 'is not valid'
+      end
+    end
+  end
+
   class ProversValidator < ActiveModel::EachValidator
     def validate_each(record, attribute, value)
       not_provers = value.reject { |id| Prover.where(id: id).any? }
@@ -37,6 +45,7 @@ class Proof < FakeRecord
   validates :timeout,
             inclusion: {in: (TIMEOUT_RANGE.first..TIMEOUT_RANGE.last)},
             if: :timeout_present?
+  validates :specific_axiom_selection, associated: true
 
   delegate :to_s, to: :proof_obligation
 
