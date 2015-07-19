@@ -146,6 +146,17 @@ tests. You only need to install the package:
 sudo apt-get install -y phantomjs
 ```
 
+## Extra executables
+
+The SSH-Key handling requires an additional executable `data/.ssh/cp_keys` to exist.
+This can be compiled easily from the supplied C-code with (in the ontohub directory)
+
+    GIT_HOME=$(pwd)/tmp/git bundle exec rake git:compile_cp_keys
+
+Providing the `GIT_HOME` variable is mandatory for this rake task.
+It will print a message about changing permissions, but you don't need to do as the message says as long as you are in a development environment.
+It is only important for securing production systems.
+
 ## setup
 
 In ontohub directory:
