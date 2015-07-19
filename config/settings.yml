@@ -93,7 +93,7 @@ hets:
   time_between_updates: 360
 
 git:
-  verify_url: http://localhost/
+  verify_url: http://localhost
   default_branch: 'master'
   push_priority:
     commits: 1
