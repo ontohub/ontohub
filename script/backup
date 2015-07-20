@@ -269,7 +269,11 @@ To continue, I try the command again using sudo.
 end
 
 def data_root(rails_root)
-  File.realpath(rails_root.join('data'))
+  if on_development_system?(rails_root)
+    File.realpath(rails_root.join('data'))
+  else
+    ENV['DATA_ROOT'] ||'/data/git'
+  end
 end
 
 def on_development_system?(rails_root)
