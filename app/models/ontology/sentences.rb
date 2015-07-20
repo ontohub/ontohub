@@ -3,7 +3,7 @@ class Ontology
     extend ActiveSupport::Concern
 
     included do
-      include GraphStructures::SqlHelper
+      include SqlHelper
 
       def translated_sentences
         split_translated_sentences.flatten

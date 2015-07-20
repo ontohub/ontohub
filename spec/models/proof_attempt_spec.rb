@@ -37,17 +37,13 @@ describe ProofAttempt do
     let(:pac) { proof_attempt.proof_attempt_configuration }
     before do
       proof_attempt.update_state!(:failed)
-      allow(CollectiveProofAttemptWorker).to receive(:perform_async)
+      allow(ProofExecutionWorker).to receive(:perform_async)
       proof_attempt.retry_failed
     end
 
     it 'calls perform_async' do
-      expect(CollectiveProofAttemptWorker).
-        to have_received(:perform_async).
-        with('Theorem', theorem.id,
-             {Hets::ProveOptions.new({prover: pac.prover,
-                                      timeout: pac.timeout}).to_json =>
-              [proof_attempt.id]})
+      expect(ProofExecutionWorker).
+        to have_received(:perform_async).with(proof_attempt.id)
     end
   end
 end

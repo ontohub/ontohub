@@ -3,6 +3,7 @@
 # It allows to perform data migrations which won't fail because of renamed
 # or removed model-methods.
 class MigrationWithData < ActiveRecord::Migration
+  include SqlHelper
   def select_attributes(record, *keys,
                         search_column: :id, search_value: record.id)
     attributes = keys.map do |key|

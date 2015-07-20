@@ -17,7 +17,3 @@
     - if configuration.axioms.present?
       .axioms
         = render partial: 'item', locals: {title: t('proof_attempts.configuration.axioms.headline'), body: render(partial: 'sentences_list', locals: {sentences: configuration.axioms})}
-
-    - if configuration.goals.present?
-      .goals
-        = render partial: 'item', locals: {title: t('proof_attempts.configuration.goals.headline'), body: render(partial: 'sentences_list', locals: {sentences: configuration.goals})}

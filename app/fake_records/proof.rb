@@ -19,50 +19,59 @@ class Proof < FakeRecord
                    1.hours, 6.hours,
                    1.days, 2.days, 7.days]
 
-  attr_reader :proof_obligation, :prover_ids, :ontology, :timeout, :axioms
-  attr_reader :proof_attempts, :prove_options_list, :options_to_attempts_hash
+  # flags
   attr_reader :prove_asynchronously
+  # ontology related
+  attr_reader :ontology, :proof_obligation
+  # prover related
+  attr_reader :prover_ids, :provers
+  # axiom related
+  attr_reader :axiom_selection_method, :axiom_selection, :specific_axiom_selection, :axioms
+  # timeout
+  attr_reader :timeout
+  # result related
+  attr_reader :proof_attempts
 
   validates :prover_ids, provers: true
+  validates :axiom_selection_method, inclusion: {in: AxiomSelection::METHODS}
   validates :timeout,
             inclusion: {in: (TIMEOUT_RANGE.first..TIMEOUT_RANGE.last)},
             if: :timeout_present?
 
-  def initialize(opts, prove_asynchronously: true)
-    @prove_asynchronously = prove_asynchronously
-    opts[:proof] ||= {}
-    opts[:proof][:prover_ids] ||= []
+  delegate :to_s, to: :proof_obligation
 
+  def initialize(opts, prove_asynchronously: true)
+    prepare_options(opts)
+    @prove_asynchronously = prove_asynchronously
     @ontology = Ontology.find(opts[:ontology_id])
     @timeout = opts[:proof][:timeout].to_i if opts[:proof][:timeout].present?
-
     initialize_proof_obligation(opts)
     initialize_provers(opts)
-    initialize_axioms(opts)
-    initialize_prove_options_list
-    initialize_proof_attempts
+    initialize_axiom_selection(opts)
+    initialize_proof_attempts(opts)
   end
 
   def save!
-    proof_attempts.each(&:save!)
-    ontology_version.update_state!(:pending)
-    prove(normalize_for_async_call(options_to_attempts_hash))
+    ActiveRecord::Base.transaction do
+      specific_axiom_selection.save!
+      proof_attempts.each do |proof_attempt|
+        proof_attempt.save!
+        proof_attempt.proof_attempt_configuration.save!
+      end
+    end
+    prove
   end
 
   def theorem?
     proof_obligation.is_a?(Theorem)
   end
 
-  def to_s
-    proof_obligation.to_s
-  end
-
   protected
 
-  # HACK: Remove the empty string from params.
-  # Rails 4.2 introduces the html form option :include_hidden for this task.
-  def normalize_check_box_ids(collection)
-    collection.select(&:present?).map(&:to_i) if collection
+  # This is needed for the validations to run.
+  def prepare_options(opts)
+    opts[:proof] ||= {}
+    opts[:proof][:prover_ids] ||= []
   end
 
   def ontology_version
@@ -85,81 +94,69 @@ class Proof < FakeRecord
     @provers = [nil] if @provers.blank?
   end
 
-  def initialize_axioms(opts)
-    axiom_ids = normalize_check_box_ids(opts[:proof][:axioms])
-    @axioms = axiom_ids.map { |id| Axiom.unscoped.find(id) } if axiom_ids
+  # HACK: Remove the empty string from params.
+  # Rails 4.2 introduces the html form option :include_hidden for this task.
+  def normalize_check_box_ids(collection)
+    collection.select(&:present?).map(&:to_i) if collection
   end
 
-  def initialize_prove_options_list
-    @prove_options_list = @provers.map do |prover|
-      options = {prover: prover}
-      options[:axioms] = axioms if axioms.present?
-      options[:timeout] = timeout if timeout.present?
-      Hets::ProveOptions.new(options)
-    end
+  def initialize_axiom_selection(opts)
+    @axiom_selection_method = opts[:proof][:axiom_selection_method].try(:to_sym)
+    build_axiom_selection(opts)
   end
 
-  def initialize_proof_attempts
-    @options_to_attempts_hash = {}
+  def initialize_proof_attempts(opts)
     @proof_attempts = []
-
-    prove_options_list.each do |prove_options|
-      pa_configuration = build_proof_attempt_configuration(prove_options)
-      current_proof_attempts = build_proof_attempts(pa_configuration)
-
-      @options_to_attempts_hash[prove_options] = current_proof_attempts
-      @proof_attempts += current_proof_attempts
-    end
-  end
-
-  def build_proof_attempt_configuration(prove_options)
-    proof_attempt_configuration = ProofAttemptConfiguration.new
-    proof_attempt_configuration.prover =
-      Prover.find_by_name(prove_options.options[:prover])
-    proof_attempt_configuration.timeout = timeout
-    proof_attempt_configuration
-  end
-
-  def build_proof_attempts(proof_attempt_configuration)
-    proof_attempt_configuration.ontology = proof_obligation.ontology
     if theorem?
-      [build_proof_attempt(proof_obligation, proof_attempt_configuration)]
+      initialize_proof_attempts_for_theorem(opts, proof_obligation)
     else
-      proof_obligation.theorems.map do |theorem|
-        build_proof_attempt(theorem, proof_attempt_configuration)
+      proof_obligation.theorems.each do |theorem|
+        initialize_proof_attempts_for_theorem(opts, theorem)
       end
     end
   end
 
-  def build_proof_attempt(theorem, proof_attempt_configuration)
-    proof_attempt = ProofAttempt.new
-    proof_attempt.theorem = theorem
-    proof_attempt.proof_attempt_configuration = proof_attempt_configuration
-    proof_attempt
-  end
+  def initialize_proof_attempts_for_theorem(opts, theorem)
+    provers.each do |prover|
+      pac = ProofAttemptConfiguration.new
+      pac.prover = prover
+      pac.timeout = timeout
+      pac.axiom_selection = axiom_selection
 
-  def normalize_for_async_call(options_to_attempts_hash)
-    CollectiveProofAttemptWorker.
-      normalize_for_async_call(options_to_attempts_hash)
-  end
+      proof_attempt = ProofAttempt.new
+      proof_attempt.theorem = theorem
+      proof_attempt.proof_attempt_configuration = pac
+      pac.proof_attempt = proof_attempt
 
-  def prove(options_and_pa_ids)
-    # Sidekiq requires `perform` to be defined on an instance while we added a
-    # class method `perform_async` to force the usage of a specific queue.
-    if prove_asynchronously
-      proving_object = CollectiveProofAttemptWorker
-      proving_method = :perform_async
-    else
-      proving_object = CollectiveProofAttemptWorker.new
-      proving_method = :perform
+      @proof_attempts << proof_attempt
     end
-    proving_object.send(proving_method,
-                        proof_obligation.class.to_s,
-                        proof_obligation.id,
-                        options_and_pa_ids)
+  end
+
+  def build_axiom_selection(opts)
+    send("build_#{axiom_selection_method}", opts) if AxiomSelection::METHODS.include?(axiom_selection_method)
+  end
+
+  def build_manual_axiom_selection(opts)
+    axiom_ids = normalize_check_box_ids(opts[:proof][:axioms])
+    @specific_axiom_selection = ManualAxiomSelection.new
+    if axiom_ids
+      specific_axiom_selection.axioms =
+        axiom_ids.map { |id| Axiom.unscoped.find(id) }
+    end
+    @axiom_selection = @specific_axiom_selection.axiom_selection
   end
 
   def timeout_present?
     timeout.present?
+  end
+
+  def prove
+    proof_attempts.each do |proof_attempt|
+      if prove_asynchronously
+        ProofExecutionWorker.perform_async(proof_attempt.id)
+      else
+        ProofExecutionWorker.new.perform(proof_attempt.id)
+      end
+    end
   end
 end

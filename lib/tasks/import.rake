@@ -55,7 +55,7 @@ namespace :import do
 
     Dir.mktmpdir do |dir|
       Dir.chdir(dir) do
-        system('hets -G')
+        system("#{Settings.hets.executable_path} -G")
         LogicgraphParser.parse(File.open(File.join(dir, 'LogicGraph.xml')),
           logic:          Proc.new{ |h| save(h) },
           language:       Proc.new{ |h| save(h) },

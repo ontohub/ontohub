@@ -132,6 +132,8 @@ en:
     show:
       prove: Prove this theorem
       proof_attemps_empty: There are no proof attempts.
+  axiom_selection:
+    manual_axiom_selection: Manual
   proofs:
     new:
       title: 'Attempt to prove  %{klass} %{resource}'
@@ -144,6 +146,8 @@ en:
         none_is_default: Selecting none will result in using the default prover.
         select_all: Select all
         select_none: Select none
+      axiom_selection:
+        method: Axiom Selection Method
       axioms:
         none_is_default: Selecting none will result in using all axioms.
         select_all: Select all
@@ -178,8 +182,6 @@ en:
         headline: Prover
       axioms:
         headline: Selected axioms
-      goals:
-        headline: Selected theorems to prove
       logic_mapping:
         headline: Selected logic mapping
     result:
@@ -249,3 +251,7 @@ en:
     download: download
   oops:
     responses: We have %{all} Responses, %{global} of them represent global 
+  simple_form:
+    labels:
+      proof:
+        axioms: Manual Axiom Selection
