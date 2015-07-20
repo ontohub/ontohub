@@ -45,7 +45,7 @@ describe Proof do
       expect(Proof.new(params).valid?).to be(false)
     end
 
-    it 'is not valied with bad axiom_selection_method' do
+    it 'is not valid with bad axiom_selection_method' do
       params[:proof][:axiom_selection_method] = :'_not_existent'
       expect(Proof.new(params).valid?).to be(false)
     end
