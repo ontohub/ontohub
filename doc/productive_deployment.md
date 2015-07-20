@@ -391,7 +391,7 @@ Create an upstart script (i.e. `/etc/init/git-daemon.conf`):
         --reuseaddr \
         --export-all \
         --syslog \
-        --base-path=/srv/http/ontohub/shared/data/git_daemon
+        --base-path=/data/git/git_daemon
     respawn
 
 Start the git daemon:
