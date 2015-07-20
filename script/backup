@@ -277,7 +277,8 @@ def data_root(rails_root)
 end
 
 def on_development_system?(rails_root)
-  !File.symlink?(rails_root.join('data'))
+  data_path = rails_root.join('data')
+  File.exist?(data_path) && !File.symlink?(data_path)
 end
 
 # Don't allow this to be run as the root user.
