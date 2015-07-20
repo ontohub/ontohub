@@ -5,11 +5,8 @@ class ProofAttemptConfiguration < ActiveRecord::Base
   belongs_to :logic_mapping
   belongs_to :prover
   belongs_to :ontology
+  belongs_to :axiom_selection
   has_many :proof_attempts, dependent: :destroy
-  has_and_belongs_to_many :axioms,
-                          class_name: 'Axiom',
-                          association_foreign_key: 'sentence_id',
-                          join_table: 'axioms_proof_attempt_configurations'
   has_and_belongs_to_many :goals,
                           class_name: 'Theorem',
                           association_foreign_key: 'sentence_id',
@@ -20,6 +17,8 @@ class ProofAttemptConfiguration < ActiveRecord::Base
 
   validates :ontology, presence: true
   before_create :generate_locid
+
+  delegate :axioms, to: :axiom_selection
 
   def empty?
     [logic_mapping, prover, timeout, axioms, goals].all?(&:blank?)

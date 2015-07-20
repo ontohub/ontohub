@@ -6,11 +6,14 @@
     .col-lg-10.select_checkboxes_buttons
       = link_to t('proofs.new.provers.select_all'), '#', class: 'btn btn-xs btn-default', data: {select: '#prover-list :checkbox', select_target: 'all'}
       = link_to t('proofs.new.provers.select_none'), '#', class: 'btn btn-xs btn-default', data: {select: '#prover-list :checkbox', select_target: 'none'}
-  #axiom-list.columnized-items
-    = f.input :axioms, collection: ontology.all_axioms, as: :check_boxes, hint: t('proofs.new.axioms.none_is_default')
-    .col-lg-2
-    .col-lg-10.select_checkboxes_buttons
-      = link_to t('proofs.new.axioms.select_all'), '#', class: 'btn btn-xs btn-default', data: {select: '#axiom-list :checkbox', select_target: 'all'}
-      = link_to t('proofs.new.axioms.select_none'), '#', class: 'btn btn-xs btn-default', data: {select: '#axiom-list :checkbox', select_target: 'none'}
+  .columnized-items
+    = f.input :axiom_selection_method, label: t('proofs.new.axiom_selection.method'), collection: AxiomSelection::METHODS, as: :radio, include_blank: false, label_method: ->(value) { t("axiom_selection.#{value}") }, checked: AxiomSelection::METHODS.first
+  #axiom-selection
+    #manual_axiom_selection.columnized-items
+      = f.input :axioms, collection: ontology.all_axioms, as: :check_boxes, hint: t('proofs.new.axioms.none_is_default')
+      .col-lg-2
+      .col-lg-10.select_checkboxes_buttons
+        = link_to t('proofs.new.axioms.select_all'), '#', class: 'btn btn-xs btn-default', data: {select: '#manual_axiom_selection :checkbox', select_target: 'all'}
+        = link_to t('proofs.new.axioms.select_none'), '#', class: 'btn btn-xs btn-default', data: {select: '#manual_axiom_selection :checkbox', select_target: 'none'}
   = f.input :timeout, label: t('proofs.new.timeout.label'), collection: Proof::TIMEOUT_RANGE, label_method: ->(value) { proof_timeout_label(value) }, hint: t('proofs.new.timeout.hint'), input_html: {class: 'timeout'}, include_blank: t('proofs.new.timeout.default')
   = f.button :submit, t('proofs.new.send'), class: 'btn btn-primary'

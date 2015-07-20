@@ -14,6 +14,7 @@ describe Proof do
       repository_id: repository.to_param,
       ontology_id: ontology.to_param,
       proof: {prover_ids: [*provers.map(&:id).map(&:to_s), ''],
+              axiom_selection_method: AxiomSelection::METHODS.first,
               timeout: timeout}
     }
   end
@@ -96,9 +97,21 @@ describe Proof do
       end
       let(:proof_modified) { Proof.new(params_modified) }
 
+      before { proof_modified.save! }
+
+      it 'has as many AxiomSelections as ProofOptions' do
+        expect(proof_modified.axiom_selections.size).
+          to eq(proof_modified.prove_options_list.size)
+      end
+
+      it 'is of the correct class' do
+        expect(proof_modified.axiom_selections.first.class).
+          to eq(ManualAxiomSelection)
+      end
+
       it 'is correct' do
-        expect(proof_modified.instance_variable_get(:@axioms)).
-          to match_array(axioms.map(&:name))
+        expect(proof_modified.axiom_selections.first.axioms).
+          to match_array(axioms)
       end
     end
 
@@ -259,9 +272,21 @@ describe Proof do
       end
       let(:proof_modified) { Proof.new(params_modified) }
 
+      before { proof_modified.save! }
+
+      it 'has as many AxiomSelections as ProofOptions' do
+        expect(proof_modified.axiom_selections.size).
+          to eq(proof_modified.prove_options_list.size)
+      end
+
+      it 'is of the correct class' do
+        expect(proof_modified.axiom_selections.first.class).
+          to eq(ManualAxiomSelection)
+      end
+
       it 'is correct' do
-        expect(proof_modified.instance_variable_get(:@axioms)).
-          to match_array(axioms.map(&:name))
+        expect(proof_modified.axiom_selections.first.axioms).
+          to match_array(axioms)
       end
     end
 

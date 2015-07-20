@@ -20,10 +20,13 @@ class Proof < FakeRecord
                    1.days, 2.days, 7.days]
 
   attr_reader :proof_obligation, :prover_ids, :ontology, :timeout, :axioms
+  attr_reader :axiom_selection_method
   attr_reader :proof_attempts, :prove_options_list, :options_to_attempts_hash
+  attr_reader :axiom_selections
   attr_reader :prove_asynchronously
 
   validates :prover_ids, provers: true
+  validates :axiom_selection_method, inclusion: {in: AxiomSelection::METHODS}
   validates :timeout,
             inclusion: {in: (TIMEOUT_RANGE.first..TIMEOUT_RANGE.last)},
             if: :timeout_present?
@@ -38,15 +41,18 @@ class Proof < FakeRecord
 
     initialize_proof_obligation(opts)
     initialize_provers(opts)
-    initialize_axioms(opts)
+    initialize_axiom_selection_method(opts)
     initialize_prove_options_list
-    initialize_proof_attempts
+    initialize_proof_attempts(opts)
   end
 
   def save!
-    proof_attempts.each(&:save!)
-    ontology_version.update_state!(:pending)
-    prove(normalize_for_async_call(options_to_attempts_hash))
+    ActiveRecord::Base.transaction do
+      proof_attempts.each(&:save!)
+      axiom_selections.each(&:save!)
+      ontology_version.update_state!(:pending)
+      prove(normalize_for_async_call(options_to_attempts_hash))
+    end
   end
 
   def theorem?
@@ -85,9 +91,8 @@ class Proof < FakeRecord
     @provers = [nil] if @provers.blank?
   end
 
-  def initialize_axioms(opts)
-    axiom_ids = normalize_check_box_ids(opts[:proof][:axioms])
-    @axioms = axiom_ids.map { |id| Axiom.unscoped.find(id) } if axiom_ids
+  def initialize_axiom_selection_method(opts)
+    @axiom_selection_method = opts[:proof][:axiom_selection_method].try(:to_sym)
   end
 
   def initialize_prove_options_list
@@ -99,17 +104,34 @@ class Proof < FakeRecord
     end
   end
 
-  def initialize_proof_attempts
+  def initialize_proof_attempts(opts)
     @options_to_attempts_hash = {}
     @proof_attempts = []
+    @axiom_selections = []
 
     prove_options_list.each do |prove_options|
       pa_configuration = build_proof_attempt_configuration(prove_options)
+      axiom_selection = build_axiom_selection(opts, pa_configuration)
       current_proof_attempts = build_proof_attempts(pa_configuration)
 
       @options_to_attempts_hash[prove_options] = current_proof_attempts
       @proof_attempts += current_proof_attempts
+      @axiom_selections << axiom_selection if axiom_selection
     end
+  end
+
+  def build_axiom_selection(opts, proof_attempt_configuration)
+    if AxiomSelection::METHODS.include?(axiom_selection_method) && axiom_selection = send("build_#{axiom_selection_method}", opts)
+      proof_attempt_configuration.axiom_selection = axiom_selection.axiom_selection
+      axiom_selection
+    end
+  end
+
+  def build_manual_axiom_selection(opts)
+    axiom_ids = normalize_check_box_ids(opts[:proof][:axioms])
+    selection = ManualAxiomSelection.new
+    selection.axioms = axiom_ids.map { |id| Axiom.unscoped.find(id) } if axiom_ids
+    selection
   end
 
   def build_proof_attempt_configuration(prove_options)
