@@ -244,8 +244,7 @@ To continue, I try the command again using sudo.
     end
 
     def try_as_sudo_with_fallback(*args)
-      _out, _err, exit_code = exec('sudo', *args)
-      unless exit_code.success?
+      unless exec('sudo', *args)
         sudo_not_given_fallback(*args) # Wrong sudo password
       end
     rescue Exception => e
