@@ -128,7 +128,7 @@ Currently the representation is a list of all theorems in the ontology.
   specified_get '/ref/mmt/:repository_id/*path' => 'api/v1/proof_attempt_configurations#show',
     as: :proof_attempt_configuration_iri_mmt,
     constraints: [
-      MMTRouterConstraint.new(ProofAttemptConfiguration, ontology: :ontology_id),
+      MMTRouterConstraint.new(ProofAttempt, element: :proof_attempt_id),
     ] do
       accept 'application/json'
 
@@ -151,7 +151,6 @@ MMT-query-string.
     axioms theorems
     ontology_versions
     license_models formality_levels
-    proof_attempt_configurations
   )
 
   ontology_subsites.each do |category|
@@ -355,10 +354,10 @@ is determined according to the *locid.
   proof_attempt_configuration_api_subsites =
     %i(selected_axioms selected_theorems)
   proof_attempt_configuration_api_subsites.each do |subsite|
-    specified_get "/:repository_id/*locid///#{subsite}" => "api/v1/proof_attempt_configurations##{subsite}",
+    specified_get "/:repository_id/*locid///proof-attempt-configuration///#{subsite}" => "api/v1/proof_attempt_configurations##{subsite}",
       as: :"proof_attempt_configuration_iri_#{subsite}",
       constraints: [
-        LocIdRouterConstraint.new(ProofAttemptConfiguration, ontology: :ontology_id, element: :id),
+        LocIdRouterConstraint.new(ProofAttempt, element: :proof_attempt_id),
       ] do
         accept 'application/json'
 
@@ -370,10 +369,10 @@ is determined according to the *locid.
       end
   end
 
-  specified_get '/:repository_id/*locid' => 'api/v1/proof_attempt_configurations#show',
+  specified_get '/:repository_id/*locid///proof-attempt-configuration' => 'api/v1/proof_attempt_configurations#show',
     as: :proof_attempt_configuration_iri,
     constraints: [
-      LocIdRouterConstraint.new(ProofAttemptConfiguration, ontology: :ontology_id, element: :id),
+      LocIdRouterConstraint.new(ProofAttempt, element: :proof_attempt_id),
     ] do
       accept 'application/json'
 

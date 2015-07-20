@@ -1,17 +1,17 @@
 require 'spec_helper'
 
-describe 'CollectiveProofAttempt - Axiom Selection', :http_interaction do
+describe 'Axiom Selection: Proof Status', :http_interaction do
   setup_hets
+  stub_fqdn_and_port_for_pipeline_generator
+  let(:generator) do
+    FixturesGeneration::PipelineGenerator.new
+  end
 
   let(:user) { create :user }
   let(:repository) { create :repository }
 
   let(:ontology_fixture_file) { %w(prove/Simple_Implications casl) }
   let(:ontology_filepath) { ontology_fixture_file.join('.') }
-
-  let(:generator) do
-    FixturesGeneration::PipelineGenerator.new
-  end
 
   before { stub_hets_for(ontology_filepath) }
 
@@ -34,20 +34,21 @@ describe 'CollectiveProofAttempt - Axiom Selection', :http_interaction do
   let(:status_disproven) { create :proof_status_disproven }
   let(:status_proven) { create :proof_status_proven }
 
-  let(:proof_attempt) do
-    create :proof_attempt, theorem: theorem, prover: prover
-  end
-
   context 'all axioms' do
-    let(:options) do
-      Hets::ProveOptions.new(prover: prover, axioms: axioms)
+    let(:axiom_selection) { create :manual_axiom_selection, axioms: axioms }
+    let(:proof_attempt) do
+      create :proof_attempt, theorem: theorem, prover: prover
     end
-    let(:options_to_attempts) { {options => [proof_attempt]} }
-    let(:cpa) { CollectiveProofAttempt.new(theorem, options_to_attempts) }
+    let!(:proof_attempt_configuration) do
+      pac = proof_attempt.proof_attempt_configuration
+      pac.axiom_selection = axiom_selection.axiom_selection
+      pac.prover = prover
+      pac
+    end
 
     before do
       generator.with_cassette(generate_cassette_name, :hets_prove_uri) do
-        cpa.run
+        ProofExecution.new(proof_attempt).call
       end
     end
 
@@ -57,15 +58,20 @@ describe 'CollectiveProofAttempt - Axiom Selection', :http_interaction do
   end
 
   context 'no axioms (meaning all are used)' do
-    let(:options) do
-      Hets::ProveOptions.new(prover: prover, axioms: [])
+    let(:axiom_selection) { create :manual_axiom_selection, axioms: [] }
+    let(:proof_attempt) do
+      create :proof_attempt, theorem: theorem, prover: prover
     end
-    let(:options_to_attempts) { {options => [proof_attempt]} }
-    let(:cpa) { CollectiveProofAttempt.new(theorem, options_to_attempts) }
+    let!(:proof_attempt_configuration) do
+      pac = proof_attempt.proof_attempt_configuration
+      pac.axiom_selection = axiom_selection.axiom_selection
+      pac.prover = prover
+      pac
+    end
 
     before do
       generator.with_cassette(generate_cassette_name, :hets_prove_uri) do
-        cpa.run
+        ProofExecution.new(proof_attempt).call
       end
     end
 
@@ -75,15 +81,22 @@ describe 'CollectiveProofAttempt - Axiom Selection', :http_interaction do
   end
 
   context 'not sufficient axioms' do
-    let(:options) do
-      Hets::ProveOptions.new(prover: prover, axioms: [axioms.first])
+    let(:axiom_selection) do
+      create :manual_axiom_selection, axioms: [axioms.first]
     end
-    let(:options_to_attempts) { {options => [proof_attempt]} }
-    let(:cpa) { CollectiveProofAttempt.new(theorem, options_to_attempts) }
+    let(:proof_attempt) do
+      create :proof_attempt, theorem: theorem, prover: prover
+    end
+    let!(:proof_attempt_configuration) do
+      pac = proof_attempt.proof_attempt_configuration
+      pac.axiom_selection = axiom_selection.axiom_selection
+      pac.prover = prover
+      pac
+    end
 
     before do
       generator.with_cassette(generate_cassette_name, :hets_prove_uri) do
-        cpa.run
+        ProofExecution.new(proof_attempt).call
       end
     end
 

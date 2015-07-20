@@ -182,8 +182,6 @@ en:
         headline: Prover
       axioms:
         headline: Selected axioms
-      goals:
-        headline: Selected theorems to prove
       logic_mapping:
         headline: Selected logic mapping
     result:

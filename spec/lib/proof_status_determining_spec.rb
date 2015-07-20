@@ -1,18 +1,17 @@
 require 'spec_helper'
 
-describe 'CollectiveProofAttempt - SZS', :http_interaction do
+describe 'Proof Status Determining', :http_interaction do
   setup_hets
   stub_fqdn_and_port_for_pipeline_generator
+  let(:generator) do
+    FixturesGeneration::PipelineGenerator.new
+  end
 
   let(:user) { create :user }
   let(:repository) { create :repository }
 
   let(:ontology_fixture_file) { %w(prove/Simple_Implications casl) }
   let(:ontology_filepath) { ontology_fixture_file.join('.') }
-
-  let(:generator) do
-    FixturesGeneration::PipelineGenerator.new
-  end
 
   before { stub_hets_for(ontology_filepath) }
 
@@ -29,6 +28,7 @@ describe 'CollectiveProofAttempt - SZS', :http_interaction do
   let(:status_csa) { create :proof_status_csa }
   let(:status_noc) { create :proof_status_disproven }
   let(:status_thm) { create :proof_status_proven }
+  let(:axiom_selection) { create :manual_axiom_selection, axioms: [] }
 
   context 'with eprover' do
     let(:prover) { create :prover, name: 'eprover' }
@@ -40,10 +40,12 @@ describe 'CollectiveProofAttempt - SZS', :http_interaction do
       let(:proof_attempt) do
         create :proof_attempt, theorem: theorem, prover: prover
       end
-      let(:options_to_attempts) do
-        {Hets::ProveOptions.new(prover: prover) => [proof_attempt]}
+      let!(:proof_attempt_configuration) do
+        pac = proof_attempt.proof_attempt_configuration
+        pac.axiom_selection = axiom_selection.axiom_selection
+        pac.prover = prover
+        pac
       end
-      let(:cpa) { CollectiveProofAttempt.new(theorem, options_to_attempts) }
 
       it "proof_attempt's proof_status is OPN" do
         expect(proof_attempt.reload.proof_status).to eq(status_open)
@@ -52,7 +54,7 @@ describe 'CollectiveProofAttempt - SZS', :http_interaction do
       context 'after proving' do
         before do
           generator.with_cassette(generate_cassette_name, :hets_prove_uri) do
-            cpa.run
+            ProofExecution.new(proof_attempt).call
           end
         end
 
@@ -70,15 +72,17 @@ describe 'CollectiveProofAttempt - SZS', :http_interaction do
       let(:proof_attempt) do
         create :proof_attempt, theorem: theorem, prover: prover
       end
-      let(:options_to_attempts) do
-        {Hets::ProveOptions.new(prover: prover) => [proof_attempt]}
+      let!(:proof_attempt_configuration) do
+        pac = proof_attempt.proof_attempt_configuration
+        pac.axiom_selection = axiom_selection.axiom_selection
+        pac.prover = prover
+        pac
       end
-      let(:cpa) { CollectiveProofAttempt.new(theorem, options_to_attempts) }
 
       context 'after proving' do
         before do
           generator.with_cassette(generate_cassette_name, :hets_prove_uri) do
-            cpa.run
+            ProofExecution.new(proof_attempt).call
           end
         end
 
@@ -99,15 +103,17 @@ describe 'CollectiveProofAttempt - SZS', :http_interaction do
       let(:proof_attempt) do
         create :proof_attempt, theorem: theorem, prover: prover
       end
-      let(:options_to_attempts) do
-        {Hets::ProveOptions.new(prover: prover) => [proof_attempt]}
+      let!(:proof_attempt_configuration) do
+        pac = proof_attempt.proof_attempt_configuration
+        pac.axiom_selection = axiom_selection.axiom_selection
+        pac.prover = prover
+        pac
       end
-      let(:cpa) { CollectiveProofAttempt.new(theorem, options_to_attempts) }
 
       context 'after proving' do
         before do
           generator.with_cassette(generate_cassette_name, :hets_prove_uri) do
-            cpa.run
+            ProofExecution.new(proof_attempt).call
           end
         end
 
@@ -125,15 +131,17 @@ describe 'CollectiveProofAttempt - SZS', :http_interaction do
       let(:proof_attempt) do
         create :proof_attempt, theorem: theorem, prover: prover
       end
-      let(:options_to_attempts) do
-        {Hets::ProveOptions.new(prover: prover) => [proof_attempt]}
+      let!(:proof_attempt_configuration) do
+        pac = proof_attempt.proof_attempt_configuration
+        pac.axiom_selection = axiom_selection.axiom_selection
+        pac.prover = prover
+        pac
       end
-      let(:cpa) { CollectiveProofAttempt.new(theorem, options_to_attempts) }
 
       context 'after proving' do
         before do
           generator.with_cassette(generate_cassette_name, :hets_prove_uri) do
-            cpa.run
+            ProofExecution.new(proof_attempt).call
           end
         end
 

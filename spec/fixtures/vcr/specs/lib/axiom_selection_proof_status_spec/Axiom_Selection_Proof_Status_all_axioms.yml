@@ -1,0 +1,57 @@
+---
+http_interactions:
+- request:
+    method: post
+    uri: http://localhost:8000/prove/http:%2F%2Flocalhost:3001%2Fref%2F1%2Frepository-5%2FSimple_Implications%2F%2FGroup/auto
+    body:
+      encoding: UTF-8
+      string: '{"format":"json","include":"true","prover":"SPASS","timeout":"5","axioms":["ga_assoc___+__","Ax2","leftunit"],"theorems":["rightunit"],"node":"Group"}'
+    headers:
+      Content-Type:
+      - application/json
+      Accept-Encoding:
+      - gzip;q=1.0,deflate;q=0.6,identity;q=0.3
+      Accept:
+      - "*/*"
+      User-Agent:
+      - Ruby
+      Host:
+      - localhost:8000
+  response:
+    status:
+      code: 200
+      message: OK
+    headers:
+      Transfer-Encoding:
+      - chunked
+      Date:
+      - Tue, 14 Jul 2015 06:21:31 GMT
+      Server:
+      - Warp/3.0.11
+      Content-Type:
+      - application/json
+    body:
+      encoding: UTF-8
+      string: |-
+        [{
+        "node": "Group",
+        "goals": [{
+         "name": "rightunit",
+         "result": "Proved",
+         "details": "",
+         "used_prover": { "identifier": "SPASS", "name": "SPASS" },
+         "used_translation": "CASL2SoftFOL",
+         "tactic_script": {
+          "time_limit": 5, "extra_options": [ "-DocProof"] },
+         "proof_tree": "",
+         "used_time": {
+          "seconds": 0, "components": { "hours": 0, "mins": 0, "secs": 0 }
+          },
+         "used_axioms": [ "leftunit", "Ax2", "ga_assoc___+__"],
+         "prover_output":
+          "\n--------------------------SPASS-START-----------------------------\nInput Problem:\n1[0:Inp] ||  -> equal(o__Plus__(U,zero),U)**.\n2[0:Inp] || equal(o__Plus__(zero,skc1),skc1)** -> .\n3[0:Inp] ||  -> equal(o__Plus__(U,minus__(U)),zero)**.\n4[0:Inp] ||  -> equal(o__Plus__(o__Plus__(U,V),W),o__Plus__(U,o__Plus__(V,W)))**.\n This is a unit equality problem.\n This is a problem that has, if any, a non-trivial domain model.\n The conjecture is ground.\n Axiom clauses: 3 Conjecture clauses: 1\n Inferences: IEqR=1 ISpR=1 ISpL=1 \n Reductions: RFRew=1 RBRew=1 RFMRR=1 RBMRR=1 RObv=1 RUnC=1 RTaut=1 RFSub=1 RBSub=1 \n Extras    : Input Saturation, No Selection, No Splitting, Full Reduction,  Ratio: 5, FuncWeight: 1, VarWeight: 1\n Precedence: o__Plus__ > minus__ > skc1 > skc0 > zero\n Ordering  : KBO\nProcessed Problem:\n\nWorked Off Clauses:\n\nUsable Clauses:\n1[0:Inp] ||  -> equal(o__Plus__(U,zero),U)**.\n2[0:Inp] || equal(o__Plus__(zero,skc1),skc1)** -> .\n3[0:Inp] ||  -> equal(o__Plus__(U,minus__(U)),zero)**.\n4[0:Inp] ||  -> equal(o__Plus__(o__Plus__(U,V),W),o__Plus__(U,o__Plus__(V,W)))**.\n\tGiven clause: 1[0:Inp] ||  -> equal(o__Plus__(U,zero),U)**.\n\tGiven clause: 2[0:Inp] || equal(o__Plus__(zero,skc1),skc1)** -> .\n\tGiven clause: 3[0:Inp] ||  -> equal(o__Plus__(U,minus__(U)),zero)**.\n\tGiven clause: 4[0:Inp] ||  -> equal(o__Plus__(o__Plus__(U,V),W),o__Plus__(U,o__Plus__(V,W)))**.\n\tGiven clause: 11[0:SpR:1.0,4.0] ||  -> equal(o__Plus__(U,o__Plus__(zero,V)),o__Plus__(U,V))**.\n\tGiven clause: 21[0:Rew:1.0,20.0] ||  -> equal(o__Plus__(U,minus__(zero)),U)**.\n\tGiven clause: 8[0:SpR:4.0,3.0] ||  -> equal(o__Plus__(U,o__Plus__(V,minus__(o__Plus__(U,V)))),zero)**.\n\tGiven clause: 12[0:SpR:3.0,4.0] ||  -> equal(o__Plus__(U,o__Plus__(minus__(U),V)),o__Plus__(zero,V))**.\n\tGiven clause: 67[0:Rew:1.0,61.0] ||  -> equal(o__Plus__(zero,minus__(minus__(U))),U)**.\nSPASS V 3.7 \nSPASS beiseite: Proof found.\nProblem: Read from stdin. \nSPASS derived 48 clauses, backtracked 0 clauses, performed 0 splits and kept 17 clauses.\nSPASS allocated 46026 KBytes.\nSPASS spent\t0:00:00.02 on the problem.\n\t\t0:00:00.01 for the input.\n\t\t0:00:00.01 for the FLOTTER CNF translation.\n\t\t0:00:00.00 for inferences.\n\t\t0:00:00.00 for the backtracking.\n\t\t0:00:00.00 for the reduction.\n\n\nHere is a proof with depth 3, length 11 :\n1[0:Inp] ||  -> equal(o__Plus__(U,zero),U)**.\n2[0:Inp] || equal(o__Plus__(zero,skc1),skc1)** -> .\n3[0:Inp] ||  -> equal(o__Plus__(U,minus__(U)),zero)**.\n4[0:Inp] ||  -> equal(o__Plus__(o__Plus__(U,V),W),o__Plus__(U,o__Plus__(V,W)))**.\n11[0:SpR:1.0,4.0] ||  -> equal(o__Plus__(U,o__Plus__(zero,V)),o__Plus__(U,V))**.\n12[0:SpR:3.0,4.0] ||  -> equal(o__Plus__(U,o__Plus__(minus__(U),V)),o__Plus__(zero,V))**.\n61[0:SpR:3.0,12.0] ||  -> equal(o__Plus__(zero,minus__(minus__(U))),o__Plus__(U,zero))**.\n67[0:Rew:1.0,61.0] ||  -> equal(o__Plus__(zero,minus__(minus__(U))),U)**.\n77[0:SpR:67.0,11.0] ||  -> equal(o__Plus__(U,minus__(minus__(V))),o__Plus__(U,V))**.\n79[0:Rew:77.0,67.0] ||  -> equal(o__Plus__(zero,U),U)**.\n80[0:UnC:79.0,2.0] ||  -> .\nFormulae used in the proof : leftunit rightunit ax2 ga_assoc___Plus__\n\n--------------------------SPASS-STOP------------------------------\n"
+         }]
+        }]
+    http_version: 
+  recorded_at: Tue, 14 Jul 2015 06:21:31 GMT
+recorded_with: VCR 2.9.3

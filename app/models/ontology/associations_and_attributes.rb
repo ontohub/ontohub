@@ -15,7 +15,6 @@ module Ontology::AssociationsAndAttributes
     has_many :target_mappings,
       class_name: 'Mapping', foreign_key: 'target_id', dependent: :destroy
     has_many :tools
-    has_many :proof_attempt_configurations, dependent: :destroy
 
     has_many :sentences,
       autosave: false,

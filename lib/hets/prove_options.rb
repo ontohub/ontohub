@@ -51,7 +51,7 @@ module Hets
     end
 
     def prepare_sentences(field)
-      if @options[field].is_a?(Array)
+      if @options[field].respond_to?(:map)
         @options[field].map! do |sentence_or_name|
           if sentence_or_name.is_a?(Sentence)
             sentence_or_name.name

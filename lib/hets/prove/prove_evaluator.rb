@@ -3,7 +3,7 @@ module Hets
     class ProveEvaluator < BaseEvaluator
       include ProveEvaluationHelper
 
-      attr_accessor :proof_attempts, :proof_attempt_ids
+      attr_accessor :proof_attempt
       attr_accessor :object_hash, :hierarchy
 
       register :all, :start, to: :all_start
@@ -38,10 +38,9 @@ module Hets
       register :used_axioms, :start, to: :used_axioms_start
       register :used_axioms, :end, to: :used_axioms_end
 
-      def initialize(*args, proof_attempts)
+      def initialize(*args, proof_attempt)
         super(*args)
-        self.proof_attempts = proof_attempts
-        self.proof_attempt_ids = proof_attempts.map(&:id)
+        self.proof_attempt = proof_attempt
       end
 
       def all_start

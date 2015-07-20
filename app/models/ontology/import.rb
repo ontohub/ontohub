@@ -12,10 +12,10 @@ module Ontology::Import
     evaluator.import
   end
 
-  def import_proof(version, user, proof_attempts, io)
+  def import_proof(version, user, proof_attempt, io)
     evaluator = Hets::Prove::Importer.new(user,
                                           version.ontology,
-                                          proof_attempts,
+                                          proof_attempt,
                                           version: version, io: io)
     evaluator.import
   end

@@ -5,17 +5,13 @@ module Hets
         ontology = importer.ontology
         if ontology.name == proof_info[:ontology_name]
           theorem = find_theorem_from_hash(proof_info, ontology)
-          proof_attempt = theorem.proof_attempts.
-            where(id: proof_attempt_ids).first
-          if proof_attempt
-            proof_attempt.do_or_set_failed do
-              fill_proof_attempt_instance(proof_attempt, proof_info)
-              proof_attempt.associate_prover_with_ontology_version
-              create_prover_output(proof_attempt, proof_info)
-              create_tactic_script(proof_attempt, proof_info)
-              proof_attempt.save!
-              proof_attempt.update_state!(:done)
-            end
+          proof_attempt.do_or_set_failed do
+            fill_proof_attempt_instance(proof_attempt, proof_info)
+            proof_attempt.associate_prover_with_ontology_version
+            create_prover_output(proof_attempt, proof_info)
+            create_tactic_script(proof_attempt, proof_info)
+            proof_attempt.save!
+            proof_attempt.update_state!(:done)
           end
         end
       end
