@@ -58,10 +58,10 @@ module Backup
     DATA_DIRS = %w(repositories git_daemon)
 
     attr_reader :db_name, :data_root, :backup_root, :backup_instance_dir
-    attr_reader :dry_run, :verbose, :sql_dump_as_postgres_user
+    attr_reader :dry_run, :verbose, :sql_dump_as_db_user
 
     def initialize(db_name, data_root, backup_root,
-      verbose: false, dry_run: true, sql_dump_as_postgres_user: false)
+      verbose: false, dry_run: true, sql_dump_as_db_user: false)
       @db_name = db_name
       @backup_root = Pathname.new(backup_root)
       @data_root = Pathname.new(data_root)
@@ -70,7 +70,7 @@ module Backup
 
       @dry_run = dry_run
       @verbose = verbose
-      @sql_dump_as_postgres_user = sql_dump_as_postgres_user
+      @sql_dump_as_db_user = sql_dump_as_db_user
     end
 
     def create
@@ -260,7 +260,7 @@ To continue, I try the command again using sudo.
     end
 
     def pg_user_switch
-      sql_dump_as_postgres_user ? %w(-U postgres) : []
+      sql_dump_as_db_user ? %w(-U ontohub) : []
     end
 
     def self.backup_dirs_allowed_to_delete(entries)
@@ -308,7 +308,7 @@ BACKUP_ROOT =
   end
 
 backup = Backup::Backup.new(DATABASE, data_root(RAILS_ROOT), BACKUP_ROOT,
-  sql_dump_as_postgres_user: on_development_system?(RAILS_ROOT),
+  sql_dump_as_db_user: true,
   dry_run: false, verbose: true)
 
 case ARGV.first
