@@ -150,7 +150,10 @@ module Backup
     def restore_sql_dump
       'Restoring SQL dump...'
       Dir.chdir(backup_instance_dir) do
-        exec('pg_restore', '-c', *pg_user_switch, '-d', db_name, SQL_DUMP_FILE)
+        exec('pg_restore', '-n', 'public',
+             '-c', *pg_user_switch,
+             '-d', db_name,
+             SQL_DUMP_FILE)
       end
     end
 
