@@ -386,7 +386,7 @@ Create an upstart script (i.e. `/etc/init/git-daemon.conf`):
     start on startup
     stop on shutdown
     setuid ontohub
-    setgid ontohub
+    setgid webserv
     exec /usr/bin/git daemon \
         --reuseaddr \
         --export-all \
