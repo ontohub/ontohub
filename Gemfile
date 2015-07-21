@@ -41,12 +41,10 @@ end
 gem 'haml-rails', '~> 0.4'
 
 # Project configuration
-# Official version above and including 0.4 requires Rails
-# which is a problem in git-hooks.
 # The specified commit is from a fork and allows to overwrite arrays.
 # It has been pull-requested:
-# https://github.com/railsconfig/rails_config/pull/99
-gem 'rails_config', github: 'eugenk/rails_config', ref: 'overwrite_arrays'
+# https://github.com/railsconfig/rails_config/pull/103
+gem 'rails_config', github: 'dtaniwaki/rails_config', ref: 'merge-array-option'
 
 #provides  correct indefinite article 
 gem 'indefinite_article', '~> 0.2.0'
