@@ -13,9 +13,9 @@ GIT
       rails (~> 3.2.21)
 
 GIT
-  remote: git://github.com/eugenk/rails_config.git
-  revision: d5dc9f2c8727be4ff389c89472fd27deba352abf
-  ref: overwrite_arrays
+  remote: git://github.com/dtaniwaki/rails_config.git
+  revision: e07c116d5591d31584215ac3bccc50321eef23f2
+  ref: merge-array-option
   specs:
     rails_config (0.5.0.beta1)
       activesupport (>= 3.0)
@@ -471,7 +471,6 @@ GEM
       rspec-core (~> 2.99.0)
       rspec-expectations (~> 2.99.0)
       rspec-mocks (~> 2.99.0)
-    rspec-support (3.3.0)
     ruby-graphviz (1.2.2)
     ruby-prof (0.15.8)
     rubydns (0.8.5)
