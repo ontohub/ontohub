@@ -29,6 +29,8 @@ What happens is:
 * It activates the maintenance mode.
 * It restores the PostgreSQL dump `ontohub_sql_dump.postgresql`. This drops and recreates the whole database. In order to drop the database, there must be no other active connection to it.
 * It moves the current (pre-restore) repositories to a temporary directory (which one will be printed to stdout). This is done because the admin can do something with the repositories if restore fails.
-* It extracts the repository archive `ontohub_repositories.tar.gz` to the Ontohub instance. This is first tried with `sudo` because the permissions/file mode are only restored if executed with super user rights. If canceled (<kbd>CTRL</kbd>+<kbd>C</kbd>) or the wrong password is entered three times, the archive is extracted without `sudo`.
+* It extracts the repository archive `ontohub_repositories.tar.gz` to the Ontohub instance. This is first tried with `sudo` because the permissions/file mode are only restored if executed with super user rights. If cancelled (<kbd>CTRL</kbd>+<kbd>C</kbd>) or the wrong password is entered three times, the archive is extracted without `sudo`.
+The use of `sudo` is required to restore file permissions of the git repositories.
+If cancelled, the file permissions need to be set manually with `chown`.
 * It deletes the repositories which were moved to a temporary directory.
 * It deactivates the maintenance mode.
