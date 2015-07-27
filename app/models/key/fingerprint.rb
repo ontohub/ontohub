@@ -30,7 +30,7 @@ module Key::Fingerprint
       self.fingerprint = match.gsub(":","")
     end
   rescue Subprocess::Error => e
-    errors[:key] << e.output.split("\n").last.split(" ",2).last
+    errors[:key] << e.output.split("\n").last.split(" ",2).last.strip
   end
 
 end
