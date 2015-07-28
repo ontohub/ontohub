@@ -1,10 +1,10 @@
 %prefix(
-   path: <https://ontohub.org/fois-ontology-competition/FormalCAD/>
+   path: <https://github.com/ontohub/ontohub/raw/staging/spec/fixtures/ontologies/owl/>
     )%
 
-logic OWL 
+logic OWL
 
-ontology Features = 
+ontology Features =
  path:features.owl
 end
 
