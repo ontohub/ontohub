@@ -17,11 +17,29 @@ class SineAxiomSelection < ActiveRecord::Base
   def call
     Semaphore.exclusively(lock_key) do
       unless finished
+        cleanup
         preprocess
         select_axioms
         mark_as_finished!
       end
     end
+  end
+
+  # This can't be made a 'has one through' association because the
+  # `axiom_selection` association is polymorphic.
+  def sine_symbol_commonnesses
+    SineSymbolCommonness.where(axiom_selection_id: axiom_selection)
+  end
+
+  # This can't be made a 'has one through' association because the
+  # `axiom_selection` association is polymorphic.
+  def sine_symbol_axiom_triggers
+    SineSymbolAxiomTrigger.where(axiom_selection_id: axiom_selection)
+  end
+
+  def destroy
+    cleanup
+    super
   end
 
   protected
@@ -32,6 +50,11 @@ class SineAxiomSelection < ActiveRecord::Base
 
   def goal
     @goal ||= proof_attempt_configurations.first.proof_attempt.theorem
+  end
+
+  def cleanup
+    sine_symbol_commonnesses.each(&:destroy)
+    sine_symbol_axiom_triggers.each(&:destroy)
   end
 
   def preprocess
