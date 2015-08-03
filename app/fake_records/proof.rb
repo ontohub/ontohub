@@ -164,6 +164,11 @@ class Proof < FakeRecord
       SineAxiomSelection.new(opts[:proof][:sine_axiom_selection])
   end
 
+  def build_sine_fresym_axiom_selection(opts)
+    @specific_axiom_selection =
+      SineFresymAxiomSelection.new(opts[:proof][:sine_fresym_axiom_selection])
+  end
+
   def timeout_present?
     timeout.present?
   end
