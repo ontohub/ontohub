@@ -136,6 +136,7 @@ en:
   axiom_selection:
     manual_axiom_selection: Manual
     sine_axiom_selection: SInE
+    sine_fresym_axiom_selection: SInE-FreSyM
   proofs:
     new:
       title: 'Attempt to prove  %{klass} %{resource}'
@@ -158,6 +159,15 @@ en:
             commonness_threshold: Greater values result in selecting more axioms containing uncommon symbols.
             depth_limit: Number of SInE selection iterations. Greater values result in selecting more axioms. The value '-1' is interpreted as infinity.
             tolerance: Greater values result in selecting more axioms.
+        sine_fresym_axiom_selection:
+          headline: SInE-FreSyM Axiom Selection
+          hints:
+            commonness_threshold: Greater values result in selecting more axioms containing uncommon symbols.
+            depth_limit: Number of SInE selection iterations. Greater values result in selecting more axioms. The value '-1' is interpreted as infinity.
+            tolerance: Greater values result in selecting more axioms.
+            minimum_support_type: If 'relative' is chosen, the minimum support value must be between 0 and 100.
+            minimum_support: Minimum support for symbol set mining. Smaller values result in selecting more axioms.
+            symbol_set_tolerance: Greater values result in selecting more axioms.
       axioms:
         none_is_default: Selecting none will result in using all axioms.
         select_all: Select all
