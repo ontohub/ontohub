@@ -66,6 +66,16 @@ class AddAxiomSelections < MigrationWithData
                              sentence_id: axiom_id)
         end
       end
+
+    ProofAttemptConfiguration.find_each do |pac|
+      pac_attrs = select_attributes(pac, :axiom_selection_id)
+      if pac_attrs[:axiom_selection_id].nil?
+        mas = ManualAxiomSelection.new
+        mas.save!
+        as = AxiomSelection.where(as_axiom_selection_id: mas.id).first!
+        update_columns(pac, axiom_selection_id: as.id)
+      end
+    end
   end
 
   def down_migrate_association_data
