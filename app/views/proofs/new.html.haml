@@ -25,4 +25,5 @@
   #axiom-selection
     = render partial: 'axiom_selection/manual_axiom_selection', locals: {f: f, ontology: ontology}
     = render partial: 'axiom_selection/sine_axiom_selection', locals: {f: f}
+    = render partial: 'axiom_selection/sine_fresym_axiom_selection', locals: {f: f}
   = f.button :submit, t('proofs.new.send'), class: 'btn btn-primary'
