@@ -40,4 +40,13 @@ FactoryGirl.define do
       end
     end
   end
+
+  factory :sine_fresym_axiom_selection do
+    commonness_threshold { 0 }
+    depth_limit { -1 }
+    tolerance { 1.0 }
+    minimum_support { 1 }
+    minimum_support_type { 'absolute' }
+    symbol_set_tolerance { 1.0 }
+  end
 end
