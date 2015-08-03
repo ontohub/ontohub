@@ -9,6 +9,8 @@ class Sentence < ActiveRecord::Base
 
   attr_accessible :locid
 
+  delegate :repository, to: :ontology
+
   def self.find_with_locid(locid, _iri = nil)
     where(locid: locid).first
   end
