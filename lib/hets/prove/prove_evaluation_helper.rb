@@ -3,7 +3,8 @@ module Hets
     module ProveEvaluationHelper
       def fill_proof_attempt_from_hash(proof_info)
         ontology = importer.ontology
-        if ontology.name == proof_info[:ontology_name]
+        # The prove output of Hets may contain proofs for different ontologies.
+        if correct_ontology?(ontology, proof_info)
           theorem = find_theorem_from_hash(proof_info, ontology)
           proof_attempt.do_or_set_failed do
             fill_proof_attempt_instance(proof_attempt, proof_info)
@@ -129,6 +130,12 @@ module Hets
         prover_output.proof_attempt = proof_attempt
         prover_output.content = proof_info[:prover_output]
         prover_output.save!
+      end
+
+      def correct_ontology?(ontology, proof_info)
+        ontology.name == proof_info[:ontology_name] ||
+          proof_attempt.proof_attempt_configuration.prove_options.
+            single_theorem_input_type?
       end
     end
   end
