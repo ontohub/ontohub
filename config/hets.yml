@@ -2,7 +2,7 @@
 # overridden in other settings files.
 hets:
   version_minimum_version: 0.99
-  version_minimum_revision: 1430921534
+  version_minimum_revision: 1438758456
 
   stack_size: 1G
 
