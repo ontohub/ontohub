@@ -8,14 +8,8 @@ class Theorem < Sentence
 
   validates :state, inclusion: {in: State::STATES}
 
-  before_validation :set_default_state
-
   scope :provable, ->() { where(provable: true) }
   scope :unprovable, ->() { where(provable: false) }
-
-  def set_default_state
-    self.state ||= 'pending'
-  end
 
   def update_proof_status(proof_status)
     if proof_status.solved? || !self.proof_status.solved?
