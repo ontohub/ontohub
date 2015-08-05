@@ -224,7 +224,7 @@ describe Ontology do
       end
     end
 
-    context 'a TPTP file' do
+    context 'a TPTP file with an open theorem' do
       let(:version) do
         path = ontology_file('tptp/Simple_Implications_Group')
         repository.save_file(path,
@@ -247,6 +247,50 @@ describe Ontology do
 
       it 'have one Theorem' do
         expect(version.ontology.theorems.count).to eq(1)
+      end
+
+      it 'have a provable Theorem' do
+        expect(version.ontology.theorems.first.provable).to be(true)
+      end
+
+      it 'have an open Theorem' do
+        expect(version.ontology.theorems.first.proof_status.identifier).
+          to eq(ProofStatus::DEFAULT_OPEN_STATUS)
+      end
+    end
+
+    context 'a TPTP file with a proven theorem' do
+      let(:version) do
+        path = fixture_file('ontologies/tptp/zfmisc_1__t92_zfmisc_1.p')
+        repository.save_file(path,
+                             'zfmisc_1__t92_zfmisc_1.p',
+                             'parsing a TPTP file',
+                             user)
+      end
+
+      before do
+        stub_hets_for('tptp/zfmisc_1__t92_zfmisc_1.p')
+      end
+
+      it 'be a SingleOntology' do
+        expect(version.ontology.class).to be(SingleOntology)
+      end
+
+      it 'have logic SoftFOL' do
+        expect(version.ontology.logic.name).to eq('SoftFOL')
+      end
+
+      it 'have one Theorem' do
+        expect(version.ontology.theorems.count).to eq(1)
+      end
+
+      it 'have an unprovable Theorem' do
+        expect(version.ontology.theorems.first.provable).to be(false)
+      end
+
+      it 'have a proven Theorem' do
+        expect(version.ontology.theorems.first.proof_status.identifier).
+          to eq(ProofStatus::DEFAULT_PROVEN_STATUS)
       end
     end
   end
