@@ -1,7 +1,8 @@
 module Ontology::HetsOptions
   extend ActiveSupport::Concern
 
-  EXTENSIONS_TO_INPUT_TYPES = {'.tptp' => 'tptp'}
+  EXTENSIONS_TO_INPUT_TYPES = {'.tptp' => 'tptp',
+                               '.p' => 'tptp'}
 
   def hets_options
     Hets::HetsOptions.new(:'url-catalog' => repository.url_maps,
