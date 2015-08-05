@@ -128,6 +128,13 @@ class Ontology
         sentence.updated_at = timestamp
         if sentence.is_a?(Theorem)
           sentence.provable = hash['status'] == 'open'
+          status_id =
+            if hash['status'] == 'proven'
+              ProofStatus::DEFAULT_PROVEN_STATUS
+            else
+              ProofStatus::DEFAULT_OPEN_STATUS
+            end
+          sentence.proof_status = ProofStatus.find(status_id)
         end
 
         sep = '//'
