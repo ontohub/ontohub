@@ -23,22 +23,22 @@ namespace :test do
   end
 
   desc 'Update all ontology fixtures'
-  task :freshen_ontology_fixtures do
+  task :freshen_ontology_fixtures => :environment do
     FixturesGeneration::OntologyGenerator.new.call
   end
 
   desc 'Update all provers fixtures'
-  task :freshen_provers_fixtures do
+  task :freshen_provers_fixtures => :environment do
     FixturesGeneration::ProversGenerator.new.call
   end
 
   desc 'Update all proof fixtures'
-  task :freshen_proof_fixtures do
+  task :freshen_proof_fixtures => :environment do
     FixturesGeneration::ProofGenerator.new.call
   end
 
   desc 'Update all prover output fixtures'
-  task :freshen_prover_output_fixtures do
+  task :freshen_prover_output_fixtures => :environment do
     FixturesGeneration::ProverOutputGenerator.new.call
   end
 

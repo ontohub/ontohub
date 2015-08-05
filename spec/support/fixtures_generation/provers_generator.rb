@@ -5,7 +5,7 @@ module FixturesGeneration
     protected
 
     def perform(file)
-      query_string = '?format=json'
+      query_string = 'format=json'
       call_hets(file, 'provers', query_string: query_string)
     end
 
