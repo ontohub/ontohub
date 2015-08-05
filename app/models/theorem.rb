@@ -13,6 +13,9 @@ class Theorem < Sentence
   before_validation :set_default_state
   before_save :set_default_proof_status
 
+  scope :provable, ->() { where(provable: true) }
+  scope :unprovable, ->() { where(provable: false) }
+
   def set_default_state
     self.state ||= 'pending'
   end
