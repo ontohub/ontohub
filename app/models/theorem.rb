@@ -6,7 +6,7 @@ class Theorem < Sentence
   has_many :proof_attempts, foreign_key: 'sentence_id', dependent: :destroy
   belongs_to :proof_status
 
-  attr_accessible :state, :state_updated_at, :last_error
+  attr_accessible :state, :state_updated_at, :last_error, :provable
 
   validates :state, inclusion: {in: State::STATES}
 

@@ -126,6 +126,7 @@ class Ontology
         sentence.text       = hash['text'].to_s
         sentence.range      = hash['range']
         sentence.updated_at = timestamp
+        sentence.provable   = hash['status'] == 'open' if sentence.is_a?(Theorem)
 
         sep = '//'
         sentence.locid = "#{sentence.ontology.locid}#{sep}#{sentence.name}"
