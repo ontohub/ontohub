@@ -1,0 +1,18 @@
+%---------------------------------------------------------------------------
+% Problem : hets_exported
+% Name    : Simple_Implications?Group
+% Author  : hets
+% Status  : unknown
+% Desc    :
+% Date    : 2015-08-05 15:01:44.297581 UTC
+% Option  :
+%---------------------------------------------------------------------------
+fof(ga_conjunction_of_theorem,conjecture,
+    o__Plus__(zero, zero) = zero & ! [X] : o__Plus__(zero, X) = X).
+fof(ga_assoc___Plus__,axiom,
+    ! [X, Y, Z] : o__Plus__(o__Plus__(X, Y), Z)
+                  = o__Plus__(X, o__Plus__(Y, Z))).
+fof(ax2,axiom,
+    ! [X] : o__Plus__(X, minus__(X)) = zero).
+fof(leftunit,axiom,
+    ! [X] : o__Plus__(X, zero) = X).

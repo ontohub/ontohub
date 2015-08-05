@@ -204,10 +204,10 @@ describe Ontology do
   end
 
   context 'when parsing', :needs_hets do
-    context 'a distributed ontology' do
-      let(:user) { create :user }
-      let(:repository) { create :repository, user: user }
+    let(:user) { create :user }
+    let(:repository) { create :repository, user: user }
 
+    context 'a distributed ontology' do
       before do
         stub_hets_for('casl/partial_order.casl')
       end
@@ -221,6 +221,32 @@ describe Ontology do
           user)
 
         expect(version.ontology.logic.name).to eq('DOL')
+      end
+    end
+
+    context 'a TPTP file' do
+      let(:version) do
+        path = ontology_file('tptp/Simple_Implications_Group')
+        repository.save_file(path,
+                             'Simple_Implications_Group.tptp',
+                             'parsing a TPTP file',
+                             user)
+      end
+
+      before do
+        stub_hets_for('tptp/Simple_Implications_Group.tptp')
+      end
+
+      it 'be a SingleOntology' do
+        expect(version.ontology.class).to be(SingleOntology)
+      end
+
+      it 'have logic SoftFOL' do
+        expect(version.ontology.logic.name).to eq('SoftFOL')
+      end
+
+      it 'have one Theorem' do
+        expect(version.ontology.theorems.count).to eq(1)
       end
     end
   end
