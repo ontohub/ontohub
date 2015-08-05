@@ -28,7 +28,7 @@ module Hets
       end
 
       def find_theorem_from_hash(proof_info, ontology)
-        ontology.theorems.find_by_name(proof_info[:theorem_name])
+        ontology.theorems.original.find_by_name(proof_info[:theorem_name])
       end
 
       def find_proof_status_from_hash(proof_info)

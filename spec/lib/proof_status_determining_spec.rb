@@ -36,7 +36,7 @@ describe 'Proof Status Determining', :http_interaction do
       let(:ontology) do
         parent_ontology.children.find_by_name('CounterSatisfiable')
       end
-      let(:theorem) { ontology.theorems.first }
+      let(:theorem) { ontology.theorems.original.first }
       let(:proof_attempt) do
         create :proof_attempt, theorem: theorem, prover: prover
       end
@@ -68,7 +68,7 @@ describe 'Proof Status Determining', :http_interaction do
       let(:ontology) do
         parent_ontology.children.find_by_name('Theorem')
       end
-      let(:theorem) { ontology.theorems.first }
+      let(:theorem) { ontology.theorems.original.first }
       let(:proof_attempt) do
         create :proof_attempt, theorem: theorem, prover: prover
       end
@@ -99,7 +99,7 @@ describe 'Proof Status Determining', :http_interaction do
       let(:ontology) do
         parent_ontology.children.find_by_name('CounterSatisfiable')
       end
-      let(:theorem) { ontology.theorems.first }
+      let(:theorem) { ontology.theorems.original.first }
       let(:proof_attempt) do
         create :proof_attempt, theorem: theorem, prover: prover
       end
@@ -127,7 +127,7 @@ describe 'Proof Status Determining', :http_interaction do
       let(:ontology) do
         parent_ontology.children.find_by_name('Theorem')
       end
-      let(:theorem) { ontology.theorems.first }
+      let(:theorem) { ontology.theorems.original.first }
       let(:proof_attempt) do
         create :proof_attempt, theorem: theorem, prover: prover
       end

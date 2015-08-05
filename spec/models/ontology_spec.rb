@@ -323,31 +323,31 @@ describe Ontology do
 
     context 'sentence count' do
       it 'should be correct' do
-        expect(ontology.sentences.count).to eq(1)
+        expect(ontology.sentences.original.count).to eq(1)
       end
 
       it 'should be reflected in the corresponding field' do
-        expect(ontology.sentences_count).to eq(ontology.sentences.count)
+        expect(ontology.sentences_count).to eq(ontology.sentences.original.count)
       end
     end
 
     context 'axioms count' do
       it 'should be correct' do
-        expect(ontology.axioms.count).to eq(1)
+        expect(ontology.axioms.original.count).to eq(1)
       end
 
       it 'should be reflected in the corresponding field' do
-        expect(ontology.axioms_count).to eq(ontology.axioms.count)
+        expect(ontology.axioms_count).to eq(ontology.axioms.original.count)
       end
     end
 
     context 'theorems count' do
       it 'should be correct' do
-        expect(ontology.theorems.count).to eq(0)
+        expect(ontology.theorems.original.count).to eq(0)
       end
 
       it 'should be reflected in the corresponding field' do
-        expect(ontology.theorems_count).to eq(ontology.theorems.count)
+        expect(ontology.theorems_count).to eq(ontology.theorems.original.count)
       end
     end
   end
@@ -381,7 +381,7 @@ describe Ontology do
     end
 
     it 'should have no sentences' do
-      expect(ontology.sentences.count).to eq(0)
+      expect(ontology.sentences.original.count).to eq(0)
     end
 
     context 'first child ontology' do
@@ -392,7 +392,7 @@ describe Ontology do
       end
 
       it 'should have one sentence' do
-        expect(child.sentences.count).to eq(1)
+        expect(child.sentences.original.count).to eq(1)
       end
     end
 
@@ -476,12 +476,12 @@ describe Ontology do
 
     context 'theorem count' do
       it 'should be correct' do
-        expect(child_with_theorem.theorems.count).to eq(1)
+        expect(child_with_theorem.theorems.original.count).to eq(1)
       end
 
       it 'should be reflected in the corresponding field' do
         expect(child_with_theorem.theorems_count).
-          to eq(child_with_theorem.theorems.count)
+          to eq(child_with_theorem.theorems.original.count)
       end
     end
   end
@@ -501,13 +501,13 @@ describe Ontology do
     context 'theorems count' do
       it 'should be correct' do
         children_with_theorems.each do |child|
-          expect(child.theorems.count).to eq(1)
+          expect(child.theorems.original.count).to eq(1)
         end
       end
 
       it 'should be reflected in the corresponding field' do
         children_with_theorems.each do |child|
-          expect(child.theorems_count).to eq(child.theorems.count)
+          expect(child.theorems_count).to eq(child.theorems.original.count)
         end
       end
     end

@@ -42,10 +42,12 @@ describe Sentence do
         }
       end
 
-      before { ontology.sentences.update_or_create_from_hash sentence_hash }
+      before do
+        ontology.sentences.update_or_create_from_hash sentence_hash
+      end
 
       context 'correct attribute' do
-        let(:sentence) { ontology.sentences.first }
+        let(:sentence) { ontology.sentences.original.first }
 
         %i[name range].each do |attr|
           it "should be #{attr}" do
@@ -60,7 +62,7 @@ describe Sentence do
 
       let(:ontology) { create :single_ontology }
       let(:user) { create :user }
-      let(:sentence) { ontology.sentences.first }
+      let(:sentence) { ontology.sentences.original.first }
 
 
       before { parse_ontology(user, ontology, 'owl/generations.owl') }

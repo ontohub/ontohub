@@ -16,7 +16,8 @@ module Ontology::Categories
     classes = symbols.select { |e| e.kind == 'Class' }
     classes.map! { |c| categorify(c) }
 
-    subclasses = self.sentences.select { |e| e.text.include?('SubClassOf')}
+    subclasses = self.sentences.original.
+      select { |e| e.text.include?('SubClassOf')}
     subclasses.each do |s|
       c1, c2 = s.hierarchical_class_names
 

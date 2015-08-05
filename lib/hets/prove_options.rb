@@ -80,7 +80,7 @@ module Hets
       if @options[:theorems]
         @options[:theorems].size
       elsif @ontology && @ontology.in_distributed?
-        @ontology.theorems.count
+        @ontology.theorems.original.count
       else
         1
       end

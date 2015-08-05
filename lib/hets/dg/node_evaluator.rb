@@ -64,7 +64,7 @@ module Hets
         ontology.current_version.state = 'done' if ontology.parent
         ontology.save!
 
-        ontology.sentences.find_each(&:set_display_text!)
+        ontology.sentences.original.find_each(&:set_display_text!)
 
         finish_concurrency_handling
       end
