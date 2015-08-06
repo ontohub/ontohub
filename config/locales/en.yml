@@ -172,6 +172,8 @@ en:
     create:
       starting_jobs: Proving jobs have been scheduled. Please come back in a few moments.
       invalid_resource: Invalid proving request.
+  proof_evaluation_state_updater:
+    failed_proof_attempts: "Failed proof attempts: %{proof_attempts}"
   proof_attempts:
     index:
       number: Number
