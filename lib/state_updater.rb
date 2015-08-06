@@ -13,7 +13,7 @@ module StateUpdater
     # override if necessary
   end
 
-  def do_or_set_failed(&block)
+  def do_or_set_failed(updating_klass = nil, &block)
     raise ArgumentError.new('No block given.') unless block_given?
 
     begin
@@ -24,7 +24,11 @@ module StateUpdater
           # Sidekiq requeues the current job automatically
           update_state! :pending
         else
-          update_state! :failed, e.message
+          if updating_klass
+            updating_klass.new(self, :failed, e.message).call
+          else
+            update_state! :failed, e.message
+          end
           after_failed
         end
       rescue Exception => ee
