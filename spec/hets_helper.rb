@@ -85,6 +85,7 @@ def setup_hets
       to_return(body: Hets.minimal_version_string)
     hets_instance
   end
+  after { hets_instance.finish_work! }
 end
 
 def stub_hets_for(ontology_fixture,
