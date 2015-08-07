@@ -58,6 +58,7 @@ class SettingsValidationWrapper
                 yml__git__push_priority__changed_files_per_commit
                 yml__git__fallbacks__committer_name
                 yml__git__fallbacks__committer_email
+                yml__hets__instance_urls
                 yml__allowed_iri_schemes
                 yml__external_repository_name
                 yml__formality_levels
@@ -74,8 +75,7 @@ class SettingsValidationWrapper
 
                 initializers__fqdn)
 
-  PRESENCE_IN_PRODUCTION = %i(yml__hets__executable_path
-                              yml__hets__instances_count)
+  PRESENCE_IN_PRODUCTION = %i(yml__hets__executable_path)
 
   BOOLEAN = %i(yml__exception_notifier__enabled
                yml__display_head_commit
@@ -87,8 +87,7 @@ class SettingsValidationWrapper
 
                initializers__consider_all_requests_local)
 
-  FIXNUM = %i(yml__hets__instances_count
-              yml__action_mailer__smtp_settings__port
+  FIXNUM = %i(yml__action_mailer__smtp_settings__port
               yml__allow_unconfirmed_access_for_days
               yml__git__push_priority__commits
               yml__git__push_priority__changed_files_per_commit
@@ -120,6 +119,7 @@ class SettingsValidationWrapper
              yml__ontology_types
              yml__tasks
 
+             yml__hets__instance_urls
              yml__hets__cmd_line_options
              yml__hets__server_options)
 
@@ -193,13 +193,15 @@ class SettingsValidationWrapper
 
   validates :yml__hets__executable_path, executable: true, if: :in_production?
   if NPROC_AVAILABLE
-    validates :yml__hets__instances_count,
-              numericality: {greater_than: 0,
-                             less_than_or_equal_to: `nproc`.to_i},
+    validates :yml__hets__instance_urls,
+              length: {minimum: 1,
+                       maximum: `nproc`.to_i},
+              elements_are_uris: true,
               if: :in_production?
   else
-    validates :yml__hets__instances_count,
-              numericality: {greater_than: 0},
+    validates :yml__hets__instance_urls,
+              length: {minimum: 1},
+              elements_are_uris: true,
               if: :in_production?
   end
 
