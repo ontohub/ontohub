@@ -8,7 +8,7 @@ describe HetsInstance do
   context 'when registering a hets instance' do
     context 'wrt. to update-jobs' do
       before do
-        stub_request(:get, "http://localhost:8000/version").
+        stub_request(:get, %r{http://localhost:8\d{3}/version}).
           to_return(status: 200,
                     body: "v#{general_version}, #{specific_version}",
                     headers: {})
@@ -38,7 +38,7 @@ describe HetsInstance do
       let(:hets_instance) { create_local_hets_instance }
 
       before do
-        stub_request(:get, "http://localhost:8000/version").
+        stub_request(:get, %r{http://localhost:8\d{3}/version}).
           to_return(status: 500, body: "", headers: {})
         hets_instance
       end
@@ -51,7 +51,7 @@ describe HetsInstance do
 
     context 'and there is an acceptable hets instance' do
       before do
-        stub_request(:get, "http://localhost:8000/version").
+        stub_request(:get, %r{http://localhost:8\d{3}/version}).
           to_return(status: 200,
                     body: "v#{general_version}, #{specific_version}",
                     headers: {})
@@ -377,7 +377,7 @@ describe HetsInstance do
   context 'when creating a hets instance' do
     context 'and it has a reachable uri' do
       before do
-        stub_request(:get, "http://localhost:8000/version").
+        stub_request(:get, %r{http://localhost:8\d{3}/version}).
           to_return(status: 200,
                     body: "v#{general_version}, #{specific_version}",
                     headers: {})
@@ -403,7 +403,7 @@ describe HetsInstance do
 
     context 'and it has a non-reachable uri' do
       before do
-        stub_request(:get, "http://localhost:8000/version").
+        stub_request(:get, %r{http://localhost:8\d{3}/version}).
           to_return(status: 500, body: "", headers: {})
       end
 
