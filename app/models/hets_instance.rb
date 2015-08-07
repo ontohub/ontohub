@@ -19,10 +19,16 @@ has a minimal Hets version of #{Hets.minimal_version_string}
     end
   end
 
-  attr_accessible :name, :uri
+  STATES = %w(free force-free busy)
+
+  attr_accessible :name, :uri, :state, :queue_size
 
   before_save :set_up_state
+  before_save :set_state_updated_at
   after_create :start_update_clock
+
+  validate :state, inclusion: {in: STATES}
+  validate :queue_size, numericality: {greater_than_or_equal_to: 0}
 
   scope :active_instances, -> do
     where(up: true).where('version >= ?', Hets.minimal_version_string)
@@ -70,6 +76,10 @@ has a minimal Hets version of #{Hets.minimal_version_string}
   def set_up_state!
     set_up_state
     save!
+  end
+
+  def set_state_updated_at
+    self.state_updated_at = Time.now if state_changed?
   end
 
   def start_update_clock
