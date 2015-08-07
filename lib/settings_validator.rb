@@ -67,7 +67,7 @@ class SettingsValidator
       message =
         "#{message} (see the comments in the config/settings.yml at this key)"
     end
-    "  #{message}"
+    indent_message(message, 2)
   end
 
   def format_initializer_error(key_portions)
@@ -89,5 +89,9 @@ class SettingsValidator
       object = SettingsValidationWrapper.base(category.to_s)
       SettingsValidationWrapper.get_value(object, key_portions)
     end
+  end
+
+  def indent_message(message, indentation)
+    message.split("\n").map { |line| "#{' ' * indentation}#{line}"}.join("\n")
   end
 end
