@@ -48,6 +48,13 @@ has a minimal Hets version of #{Hets.minimal_version_string}
     order('queue_size ASC').order('state_updated_at ASC')
   end
 
+  def self.with_instance!
+    instance = choose!
+    result = yield(instance)
+    Semaphore.exclusively(MUTEX_KEY) { instance.finish_work! }
+    result
+  end
+
   def self.choose!
     raise NoRegisteredHetsInstanceError.new unless any?
     Semaphore.exclusively(MUTEX_KEY) do
@@ -79,6 +86,17 @@ has a minimal Hets version of #{Hets.minimal_version_string}
 
   def to_s
     "#{name}(#{uri})"
+  end
+
+  def finish_work!
+    reload
+    self.queue_size -= 1 if queue_size > 0
+    if queue_size > 0
+      set_busy!
+    else
+      set_free!
+    end
+    save!
   end
 
   def set_free!
