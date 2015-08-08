@@ -323,6 +323,57 @@ describe HetsInstance do
     end
   end
 
+  context 'force-freeing an instance' do
+    before do
+      stub_request(:get, %r{http://localhost:8\d{3}/version}).
+        to_return(status: 500, body: "", headers: {})
+    end
+
+    context 'set_busy!' do
+      let!(:hets_instance) { create :hets_instance, state: 'free' }
+
+      before do
+        allow(HetsInstanceForceFreeWorker).to receive(:perform_in)
+      end
+
+      it 'calls the HetsInstanceForceFreeWorker' do
+        hets_instance.set_busy!
+        expect(HetsInstanceForceFreeWorker).
+          to have_received(:perform_in).
+          with(HetsInstance::FORCE_FREE_WAITING_PERIOD, hets_instance.id)
+      end
+    end
+
+    context 'set_force_free!' do
+      context 'on a free instance' do
+        let!(:hets_instance) { create :hets_instance, state: 'free' }
+        before { hets_instance.set_force_free! }
+
+        it 'is a no-op' do
+          expect(hets_instance.state).to eq('free')
+        end
+      end
+
+      context 'on a force-free instance' do
+        let!(:hets_instance) { create :hets_instance, state: 'force-free' }
+        before { hets_instance.set_force_free! }
+
+        it 'is a no-op' do
+          expect(hets_instance.state).to eq('force-free')
+        end
+      end
+
+      context 'on a busy instance' do
+        let!(:hets_instance) { create :hets_instance, state: 'busy' }
+        before { hets_instance.set_force_free! }
+
+        it 'change the state' do
+          expect(hets_instance.state).to eq('force-free')
+        end
+      end
+    end
+  end
+
   context 'when creating a hets instance' do
     context 'and it has a reachable uri' do
       before do
