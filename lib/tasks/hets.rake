@@ -7,6 +7,16 @@ namespace :hets do
     HetsInstance.first_or_create(name: 'localhost:8000', uri: 'http://localhost:8000')
   end
 
+  desc 'Recreate Hets Instances from config'
+  task :recreate_hets_instances => :environment do
+    HetsInstance.all.each(&:destroy)
+    Settings.hets.instance_urls.each do |hets_url|
+      uri = URI(hets_url)
+      name = uri.host
+      name += ":#{uri.port}" if uri.port
+      HetsInstance.create(name: name, uri: uri.to_s, state: 'free', queue_size: 0)
+    end
+  end
 
   desc 'Start a hets server'
   task :start do
