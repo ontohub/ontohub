@@ -154,7 +154,9 @@ en:
         sine_axiom_selection:
           headline: SInE Axiom Selection
           hints:
-            depth_limit_infinity: The value '-1' is interpreted as infinity.
+            commonness_threshold: Greater values result in selecting more axioms containing uncommon symbols.
+            depth_limit: Number of SInE selection iterations. Greater values result in selecting more axioms. The value '-1' is interpreted as infinity.
+            tolerance: Greater values result in selecting more axioms.
       axioms:
         none_is_default: Selecting none will result in using all axioms.
         select_all: Select all

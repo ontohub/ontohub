@@ -2,9 +2,9 @@
   %hr
   %h4= t('proofs.new.axiom_selection.sine_axiom_selection.headline')
   = f.simple_fields_for((resource.specific_axiom_selection.is_a?(SineAxiomSelection) && resource.specific_axiom_selection.valid? || resource.specific_axiom_selection) || :sine_axiom_selection) do |sine_f|
-    = sine_f.input :commonness_threshold, input_html: {value: sine_value(:commonness_threshold, 0)}
+    = sine_f.input :commonness_threshold, input_html: {value: sine_value(:commonness_threshold, 0)}, hint: t('proofs.new.axiom_selection.sine_axiom_selection.hints.commonness_threshold')
     = f.error :proof_sine_axiom_selection_commonness_threshold
-    = sine_f.input :depth_limit, input_html: {value: sine_value(:depth_limit, -1)}, hint: t('proofs.new.axiom_selection.sine_axiom_selection.hints.depth_limit_infinity')
+    = sine_f.input :depth_limit, input_html: {value: sine_value(:depth_limit, -1)}, hint: t('proofs.new.axiom_selection.sine_axiom_selection.hints.depth_limit')
     = f.error :proof_sine_axiom_selection_depth_limit
-    = sine_f.input :tolerance, input_html: {value: sine_value(:tolerance, 1.0)}
+    = sine_f.input :tolerance, input_html: {value: sine_value(:tolerance, 1.0)}, hint: t('proofs.new.axiom_selection.sine_axiom_selection.hints.tolerance')
     = f.error :proof_sine_axiom_selection_tolerance
