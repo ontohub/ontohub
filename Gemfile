@@ -126,6 +126,9 @@ gem 'data_migrate', '~> 1.2.0'
 # Multi Table Inheritance. For Rails 4, mirgrate to active_record-acts_as.
 gem 'acts_as_relation', '~> 0.1.3'
 
+# Clean the database - especially needed in the seeds
+gem 'database_cleaner', '~> 1.4.1'
+
 group :test do
   gem 'mocha', '~> 1.1.0', require: false
   gem 'shoulda', '~> 3.5.0'
@@ -158,7 +161,6 @@ group :development do
 end
 
 group :development, :test do
-  gem 'database_cleaner', '~> 1.4.1'
   gem 'rspec-rails', '~> 2.0'
   gem 'better_errors', '~> 2.1.1'
   gem 'binding_of_caller', '~> 0.7.2'
