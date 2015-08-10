@@ -36,25 +36,25 @@
        end
      end
 
-     context 'first still working' do
+     context 'first still working, last is done' do
        let(:pesu1) { ProofEvaluationStateUpdater.new(proof_attempt1, :processing) }
        let(:pesu21) { ProofEvaluationStateUpdater.new(proof_attempt2, :processing) }
        let(:pesu22) { ProofEvaluationStateUpdater.new(proof_attempt2, :done) }
        before { [pesu1, pesu21, pesu22].each(&:call) }
 
-       it 'theorem is still processing' do
-         expect(theorem.state).to eq('processing')
+       it 'theorem is done' do
+         expect(theorem.state).to eq('done')
        end
      end
 
-     context 'last still working' do
+     context 'first is done, last still working' do
        let(:pesu11) { ProofEvaluationStateUpdater.new(proof_attempt1, :processing) }
        let(:pesu12) { ProofEvaluationStateUpdater.new(proof_attempt1, :done) }
        let(:pesu2) { ProofEvaluationStateUpdater.new(proof_attempt2, :processing) }
        before { [pesu11, pesu12, pesu2].each(&:call) }
 
-       it 'theorem is still processing' do
-         expect(theorem.state).to eq('processing')
+       it 'theorem is still done' do
+         expect(theorem.state).to eq('done')
        end
      end
 
@@ -65,8 +65,8 @@
        let(:pesu22) { ProofEvaluationStateUpdater.new(proof_attempt2, :done) }
        before { [pesu11, pesu12, pesu21, pesu22].each(&:call) }
 
-       it 'theorem is failed' do
-         expect(theorem.state).to eq('failed')
+       it 'theorem is done' do
+         expect(theorem.state).to eq('done')
        end
      end
 
@@ -77,8 +77,8 @@
        let(:pesu22) { ProofEvaluationStateUpdater.new(proof_attempt2, :failed) }
        before { [pesu11, pesu12, pesu21, pesu22].each(&:call) }
 
-       it 'theorem is failed' do
-         expect(theorem.state).to eq('failed')
+       it 'theorem is done' do
+         expect(theorem.state).to eq('done')
        end
      end
 
@@ -86,6 +86,10 @@
        let(:pesu1) { ProofEvaluationStateUpdater.new(proof_attempt1, :failed) }
        let(:pesu2) { ProofEvaluationStateUpdater.new(proof_attempt2, :failed) }
        before { [pesu1, pesu2].each(&:call) }
+
+       it 'theorem is failed' do
+         expect(theorem.state).to eq('failed')
+       end
 
        it 'theorem contains numbers of failed proof attempts' do
          expect(theorem.last_error).

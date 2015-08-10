@@ -15,27 +15,16 @@ class ProofEvaluationStateUpdater
 
   def update_theorem_state
     Semaphore.exclusively(theorem.locid) do
-      if proof_attempt.state == 'processing'
-        theorem.state = 'processing'
-      elsif terminal? && all_proof_attempts_terminal?
-        failed = failed_proof_attempts
-        if failed.any?
-          theorem.update_state!(:failed,
-                                I18n.t('proof_evaluation_state_updater.failed_proof_attempts',
-                                       proof_attempts: failed.map(&:number).join(', ')))
-        else
-          theorem.update_state!(:done)
+      theorem_message = nil
+      theorem_state = State.
+        most_successful(theorem.proof_attempts.select(:state).map(&:state))
+        if theorem_state == 'failed'
+          theorem_message =
+            I18n.t('proof_evaluation_state_updater.failed_proof_attempts',
+                   proof_attempts: failed_proof_attempts.map(&:number).join(', '))
         end
-      end
+      theorem.update_state!(theorem_state, theorem_message)
     end
-  end
-
-  def terminal?
-    State::TERMINAL_STATES.include?(state.to_s)
-  end
-
-  def all_proof_attempts_terminal?
-    !theorem.proof_attempts.state(*State::WORKING_STATES).any?
   end
 
   def failed_proof_attempts
