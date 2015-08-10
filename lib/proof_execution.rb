@@ -9,11 +9,16 @@ class ProofExecution
   end
 
   def call
+    prepare_axiom_selection
     prepare_prove_options
     prove
   end
 
   protected
+
+  def prepare_axiom_selection
+    proof_attempt_configuration.axiom_selection.specific.call
+  end
 
   def prepare_prove_options
     self.prove_options = proof_attempt.proof_attempt_configuration.prove_options

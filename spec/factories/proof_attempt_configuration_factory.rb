@@ -8,7 +8,7 @@ FactoryGirl.define do
     pac.after(:build) do |pac|
       unless pac.axiom_selection
         pac.axiom_selection = create :axiom_selection,
-                                     proof_attempt_configuration: pac
+                                     proof_attempt_configurations: [pac]
       end
     end
   end

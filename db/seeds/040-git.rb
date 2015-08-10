@@ -22,6 +22,7 @@ ontologies = %w[
   clif/cat.clif
   owl/generations.owl
   owl/pizza.owl
+  prove/Subclass.casl
 ]
 ontologies.each do |path|
   path = File.join(Rails.root, 'spec', 'fixtures', 'ontologies', path)

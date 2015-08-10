@@ -5,6 +5,14 @@
 # This class prepares the proving procedure and creates the models which are
 # presented in the UI (ProofAttempt).
 class Proof < FakeRecord
+  class AssociatedValidator < ActiveModel::EachValidator
+    def validate_each(record, attribute, value)
+      unless value.try(:valid?)
+        record.errors.add attribute, 'is not valid'
+      end
+    end
+  end
+
   class ProversValidator < ActiveModel::EachValidator
     def validate_each(record, attribute, value)
       not_provers = value.reject { |id| Prover.where(id: id).any? }
@@ -26,7 +34,7 @@ class Proof < FakeRecord
   # prover related
   attr_reader :prover_ids, :provers
   # axiom related
-  attr_reader :axiom_selection_method, :axiom_selection, :specific_axiom_selection, :axioms
+  attr_reader :axiom_selection_method, :specific_axiom_selection, :axioms
   # timeout
   attr_reader :timeout
   # result related
@@ -37,6 +45,7 @@ class Proof < FakeRecord
   validates :timeout,
             inclusion: {in: (TIMEOUT_RANGE.first..TIMEOUT_RANGE.last)},
             if: :timeout_present?
+  validates :specific_axiom_selection, associated: true
 
   delegate :to_s, to: :proof_obligation
 
@@ -60,6 +69,10 @@ class Proof < FakeRecord
       end
     end
     prove
+  end
+
+  def axiom_selection
+    specific_axiom_selection.try(:axiom_selection)
   end
 
   def theorem?
@@ -138,7 +151,9 @@ class Proof < FakeRecord
   end
 
   def build_axiom_selection(opts)
-    send("build_#{axiom_selection_method}", opts) if AxiomSelection::METHODS.include?(axiom_selection_method)
+    if AxiomSelection::METHODS.include?(axiom_selection_method)
+      send("build_#{axiom_selection_method}", opts)
+    end
   end
 
   def build_manual_axiom_selection(opts)
@@ -148,7 +163,11 @@ class Proof < FakeRecord
       specific_axiom_selection.axioms =
         axiom_ids.map { |id| Axiom.unscoped.find(id) }
     end
-    @axiom_selection = @specific_axiom_selection.axiom_selection
+  end
+
+  def build_sine_axiom_selection(opts)
+    @specific_axiom_selection =
+      SineAxiomSelection.new(opts[:proof][:sine_axiom_selection])
   end
 
   def timeout_present?
