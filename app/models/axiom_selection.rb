@@ -16,12 +16,6 @@ class AxiomSelection < ActiveRecord::Base
     self.finished = false
   end
 
-  # This seems to be the only way to remove the default scope
-  # (non-imported sentences) from the association
-  def axioms
-    super.where(imported: [true, false])
-  end
-
   def call
     # overwrite this in the "subclasses"
   end
