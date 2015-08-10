@@ -26,6 +26,14 @@ class AxiomSelection < ActiveRecord::Base
     # overwrite this in the "subclasses"
   end
 
+  def ontology
+    @ontology ||= goal.ontology
+  end
+
+  def goal
+    @goal ||= proof_attempt_configurations.first.proof_attempt.theorem
+  end
+
   # This key is used for mutex locking: The selection only has to be done once,
   # but many jobs may call it in parallel.
   def lock_key

@@ -12,7 +12,7 @@ class SineAxiomSelection < ActiveRecord::Base
                             only_integer: true
   validates_numericality_of :tolerance, greater_than_or_equal_to: 1
 
-  delegate :lock_key, :mark_as_finished!, to: :axiom_selection
+  delegate :goal, :ontology, :lock_key, :mark_as_finished!, to: :axiom_selection
 
   def call
     Semaphore.exclusively(lock_key) do
@@ -43,14 +43,6 @@ class SineAxiomSelection < ActiveRecord::Base
   end
 
   protected
-
-  def ontology
-    @ontology ||= goal.ontology
-  end
-
-  def goal
-    @goal ||= proof_attempt_configurations.first.proof_attempt.theorem
-  end
 
   def cleanup
     sine_symbol_commonnesses.each(&:destroy)

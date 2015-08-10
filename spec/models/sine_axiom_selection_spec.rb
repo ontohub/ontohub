@@ -4,8 +4,8 @@ describe SineAxiomSelection do
   context "respond to the parent's methods" do
     let(:sine_axiom_selection) { create :sine_axiom_selection }
     subject { sine_axiom_selection }
-    %i(finished lock_key mark_as_finished! proof_attempt_configurations
-      axioms).each do |method|
+    %i(goal ontology finished lock_key mark_as_finished!
+      proof_attempt_configurations axioms).each do |method|
       it method do
         expect(subject).to respond_to(method)
       end
