@@ -1,7 +1,6 @@
 module State
   STATES = %w(failed no_result pending fetching processing done)
   TERMINAL_STATES = %w(failed no_result done)
-  WORKING_STATES = STATES - TERMINAL_STATES
 
   STATE_LABEL = {
      pending: 'label-warning',
@@ -10,10 +9,6 @@ module State
      done: 'label-success',
      failed: 'label-danger',
      }
-
-  def self.working?(state)
-    WORKING_STATES.include?(state)
-  end
 
   def self.terminal?(state)
     TERMINAL_STATES.include?(state)
