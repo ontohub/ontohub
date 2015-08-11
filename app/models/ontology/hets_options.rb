@@ -1,6 +1,8 @@
 module Ontology::HetsOptions
   extend ActiveSupport::Concern
 
+  # Hets has some trouble inferring those input types
+  # by itself, so we give it a hint:
   EXTENSIONS_TO_INPUT_TYPES = {'.tptp' => 'tptp',
                                '.p' => 'tptp'}
 
