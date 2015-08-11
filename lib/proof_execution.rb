@@ -26,7 +26,7 @@ class ProofExecution
   end
 
   def prove
-    proof_attempt.update_state!(:processing)
+    ProofEvaluationStateUpdater.new(proof_attempt, :processing).call
     cmd, input_io = execute_proof(prove_options)
     return if cmd == :abort
 

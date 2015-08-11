@@ -58,8 +58,16 @@ describe 'Proof Status Determining', :http_interaction do
           end
         end
 
-        it "proof_attempt's proof_status is CSA" do |example|
+        it "proof_attempt's proof_status is CSA" do
           expect(proof_attempt.reload.proof_status).to eq(status_csa)
+        end
+
+        it "proof_attempt's state is done" do
+          expect(proof_attempt.state).to eq('done')
+        end
+
+        it "theorem's state is done" do
+          expect(theorem.state).to eq('done')
         end
       end
     end
