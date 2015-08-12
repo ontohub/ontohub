@@ -176,6 +176,22 @@ some finite models of Ax are finite models of C.
         <rdfs:subClassOf rdf:resource="&SZS;SUC"/>
     </owl:Class>
 
+    <owl:Class rdf:about="&SZS;CONTR">
+        <rdfs:label rdf:datatype="&xsd;string">Contradictory</rdfs:label>
+        <rdfs:comment rdf:datatype="&xsd;string">Contradictory ProofStatuses
+At least one ProofAttempt resulted in "proven" result
+while at least another ProofAttempt resulted in "disproven".
+This indicates an error in the system.</rdfs:comment>
+        <rdfs:subClassOf>
+            <owl:Restriction>
+                <owl:onProperty rdf:resource="#hasLabel"/>
+                <owl:someValuesFrom rdf:resource="#danger"/>
+            </owl:Restriction>
+        </rdfs:subClassOf>
+        <rdfs:subClassOf rdf:resource="&SZS;THM"/>
+        <rdfs:subClassOf rdf:resource="&SZS;NOC"/>
+    </owl:Class>
+
     <owl:Class rdf:about="&SZS;THM">
         <rdfs:label rdf:datatype="&xsd;string">Theorem</rdfs:label>
         <rdfs:comment rdf:datatype="&xsd;string">All models of Ax are models of C.
@@ -417,6 +433,24 @@ is satisfiable then ~C is satisfiable.</rdfs:comment>
         <rdfs:subClassOf rdf:resource="&SZS;CUP"/>
     </owl:Class>
 
+    <owl:Class rdf:about="&SZS;CSAS">
+        <rdfs:label rdf:datatype="&xsd;string">CounterSatisfiableWithSubset</rdfs:label>
+        <rdfs:comment rdf:datatype="&xsd;string">Countersatifiability shown with a subset of the axioms - Countersatisfiability of the goal has not been proven yet.
+Let SAx be the selected subset of Ax, SF = SAx + {C}.
+Some interpretations are models of the selected subset of SAx, and
+some models of SAx are models of ~C.
+
+- SF is not valid, ~SF is satisfiable, and C is not a theorem of SAx.
+- Possible dataforms are Models of SAx | ~C.</rdfs:comment>
+        <rdfs:subClassOf>
+            <owl:Restriction>
+                <owl:onProperty rdf:resource="#hasLabel"/>
+                <owl:someValuesFrom rdf:resource="#warning"/>
+            </owl:Restriction>
+        </rdfs:subClassOf>
+        <rdfs:subClassOf rdf:resource="&SZS;SUC"/>
+    </owl:Class>
+
     <owl:Class rdf:about="&SZS;CSA">
         <rdfs:label rdf:datatype="&xsd;string">CounterSatisfiable</rdfs:label>
         <rdfs:comment rdf:datatype="&xsd;string">Some interpretations are models of Ax, and
@@ -429,6 +463,7 @@ some models of Ax are models of ~C.
                 <owl:someValuesFrom rdf:resource="#danger"/>
             </owl:Restriction>
         </rdfs:subClassOf>
+        <rdfs:subClassOf rdf:resource="&SZS;CSAS"/>
         <rdfs:subClassOf rdf:resource="&SZS;ECS"/>
     </owl:Class>
 
