@@ -3,7 +3,7 @@ class ProofStatus < ActiveRecord::Base
 
   DEFAULT_OPEN_STATUS = 'OPN'
   DEFAULT_PROVEN_STATUS = 'THM'
-  DEFAULT_DISPROVEN_STATUS = 'NOC'
+  DEFAULT_DISPROVEN_STATUS = 'CSA'
   DEFAULT_UNKNOWN_STATUS = 'UNK'
 
   self.primary_key = :identifier
