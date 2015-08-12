@@ -71,6 +71,12 @@ class ProofAttempt < ActiveRecord::Base
     ProofExecutionWorker.perform_async(id)
   end
 
+  def proper_subset_of_axioms_selected?
+    selected = proof_attempt_configuration.axiom_selection.axioms
+    available = theorem.ontology.axioms
+    selected.any? && selected.count < available.count
+  end
+
   protected
 
   def prove_options_from_configuration
