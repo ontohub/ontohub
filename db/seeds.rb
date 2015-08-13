@@ -14,16 +14,15 @@ ActiveRecord::Base.logger = Logger.new($stdout) if ENV["VERBOSE_SEEDS"] == '1'
 
 # Run background jobs inline
 require 'sidekiq/testing'
-Sidekiq::Testing.inline!
+Sidekiq::Testing.inline! do
+  # Purge data directory
+  FileUtils.rm_rf(Dir.glob(Ontohub::Application.config.git_root.join('*')))
+  FileUtils.rm_rf(Dir.glob(Ontohub::Application.config.symlink_path.join('*')))
+  FileUtils.rm_rf(Dir.glob(Ontohub::Application.config.commits_path.join('*')))
 
-# Purge data directory
-FileUtils.rm_rf(Dir.glob(Ontohub::Application.config.git_root.join('*')))
-FileUtils.rm_rf(Dir.glob(Ontohub::Application.config.symlink_path.join('*')))
-FileUtils.rm_rf(Dir.glob(Ontohub::Application.config.commits_path.join('*')))
-
-# Include every .rb file inside db/seeds directory.
-Dir["#{Rails.root}/db/seeds/*.rb"].sort.each do |path|
-  puts File.basename path
-  require path
+  # Include every .rb file inside db/seeds directory.
+  Dir["#{Rails.root}/db/seeds/*.rb"].sort.each do |path|
+    puts File.basename path
+    require path
+  end
 end
-
