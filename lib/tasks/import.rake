@@ -41,28 +41,7 @@ namespace :import do
 
   desc 'Import logic graph.'
   task :logicgraph => :environment do
-    def save(symbol)
-      symbol.user = @user if symbol.has_attribute? "user_id"
-      begin
-        symbol.save!
-      rescue ActiveRecord::RecordInvalid => e
-        puts "Validation-Error: #{e.record} (#{e.message})"
-      end
-    end
-
-    @user = User.find_all_by_admin(true).first
-    @user = User.find_by_email! ENV['EMAIL'] unless ENV['EMAIL'].nil?
-
-    Dir.mktmpdir do |dir|
-      Dir.chdir(dir) do
-        system("#{Settings.hets.executable_path} -G")
-        LogicgraphParser.parse(File.open(File.join(dir, 'LogicGraph.xml')),
-          logic:          Proc.new{ |h| save(h) },
-          language:       Proc.new{ |h| save(h) },
-          logic_mapping:  Proc.new{ |h| save(h) },
-          support:        Proc.new{ |h| save(h) })
-        end
-    end
+    RakeHelper.import_logicgraph(ENV['EMAIL'])
   end
 
   desc 'Import keywords starting with P.'
