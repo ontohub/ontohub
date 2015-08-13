@@ -1,2 +1,2 @@
 # Initially import logics.
-RakeHelper.import_logicgraph
+RakeHelper::LogicGraph.import
