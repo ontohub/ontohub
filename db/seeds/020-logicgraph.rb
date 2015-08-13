@@ -1,2 +1,2 @@
 # Initially import logics.
-Rake::Task['import:logicgraph'].invoke
+RakeHelper.import_logicgraph
