@@ -15,6 +15,8 @@ Capybara.current_driver = :poltergeist
 Capybara.javascript_driver = :poltergeist
 Capybara.default_wait_time = 5
 
+WebMock.disable_net_connect!(allow_localhost: true)
+
 class Cucumber::Rails::World
   require Rails.root.join('spec', 'support', 'common_helper_methods.rb')
   require Rails.root.join('spec', 'support', 'scenario_progress_formatter.rb')
@@ -68,7 +70,43 @@ ActionController::Base.allow_rescue = false
 # Remove/comment out the lines below if your app doesn't have a database.
 # For some databases (like MongoDB and CouchDB) you may need to use :truncation instead.
 begin
-  DatabaseCleaner.strategy = :transaction
+  CLEAN_MODE = :transaction
+  NO_TRANSACTION_CLEAN_MODE = :deletion
+  INITIAL_CLEAN_MODE = :truncation
+  CLEAN_OPTIONS = {
+    except: %w(
+      ontology_file_extensions
+     file_extension_mime_type_mappings
+      proof_statuses
+    ),
+  }
+  DEFAULT_STRATEGY = CLEAN_MODE
+  NO_TRANSACTION_STRATEGY = NO_TRANSACTION_CLEAN_MODE, CLEAN_OPTIONS
+  STRATEGY =
+    if ENV['NO_TRANSACTION']
+      NO_TRANSACTION_STRATEGY
+    else
+      DEFAULT_STRATEGY
+    end
+  DatabaseCleaner.strategy = INITIAL_CLEAN_MODE, CLEAN_OPTIONS
+  DatabaseCleaner.clean
+
+  # Stub Hets:
+  # Hets can't access the rails server of cucumber. To make the ontology file
+  # accessible for Hets, we provide the file:// URL.
+  require Rails.root.join('lib', 'hets.rb')
+  module Hets
+    def self.qualified_loc_id_for(resource)
+      file = Tempfile.create(['hans', resource.file_extension])
+      file.write(resource.current_version.raw_data)
+      file.close
+      "file://#{file.path}"
+    end
+  end
+  # We need seeds in some of the cucumber features - The Selenium generated ones.
+  require Rails.root.join('db/seeds.rb')
+
+  DatabaseCleaner.strategy = STRATEGY
 rescue NameError
   raise "You need to add database_cleaner to your Gemfile (in the :test group) if you wish to use it."
 end
@@ -92,8 +130,6 @@ end
 # The :transaction strategy is faster, but might give you threading problems.
 # See https://github.com/cucumber/cucumber-rails/blob/master/features/choose_javascript_database_strategy.feature
 Cucumber::Rails::Database.javascript_strategy = :transaction
-
-WebMock.allow_net_connect!(:net_http_connect_on_start => true)
 
 include Warden::Test::Helpers
 Warden.test_mode!
