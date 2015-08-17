@@ -12,13 +12,7 @@ namespace :hets do
 
   desc 'Recreate Hets Instances from config'
   task :recreate_hets_instances => :environment do
-    HetsInstance.all.each(&:destroy)
-    Settings.hets.instance_urls.each do |hets_url|
-      uri = URI(hets_url)
-      name = uri.host
-      name += ":#{uri.port}" if uri.port
-      HetsInstance.create(name: name, uri: uri.to_s, state: 'free', queue_size: 0)
-    end
+    RakeHelper::Hets.recreate_instances
   end
 
   desc 'Start a hets server'

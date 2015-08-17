@@ -119,4 +119,20 @@ module RakeHelper
       version.ontology
     end
   end
+
+  module Hets
+    def self.recreate_instances
+      HetsInstance.all.each(&:destroy)
+      create_instances
+    end
+
+    def self.create_instances
+      Settings.hets.instance_urls.each do |hets_url|
+        uri = URI(hets_url)
+        name = uri.host
+        name += ":#{uri.port}" if uri.port
+        HetsInstance.create(name: name, uri: uri.to_s, state: 'free', queue_size: 0)
+      end
+    end
+  end
 end
