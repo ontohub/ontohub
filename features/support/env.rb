@@ -104,11 +104,13 @@ begin
     end
   end
   # We need seeds in some of the cucumber features - The Selenium generated ones.
+  WebMock.allow_net_connect!
   require Rails.root.join('db/seeds.rb')
+  WebMock.disable_net_connect!(allow_localhost: true)
 
   DatabaseCleaner.strategy = STRATEGY
-rescue NameError
-  raise "You need to add database_cleaner to your Gemfile (in the :test group) if you wish to use it."
+rescue NameError => e
+  raise "You need to add database_cleaner to your Gemfile (in the :test group) if you wish to use it. #{e.message}"
 end
 
 # You may also want to configure DatabaseCleaner to use different strategies for certain features and scenarios.
