@@ -12,9 +12,7 @@ DatabaseCleaner.clean_with :truncation, except: %w(
 # Output seed information iff environment variable VERBOSE_SEEDS is set to 1
 ActiveRecord::Base.logger = Logger.new($stdout) if ENV["VERBOSE_SEEDS"] == '1'
 
-# Run background jobs inline
-require 'sidekiq/testing'
-Sidekiq::Testing.inline! do
+def run_seeds
   # Purge data directory
   FileUtils.rm_rf(Dir.glob(Ontohub::Application.config.git_root.join('*')))
   FileUtils.rm_rf(Dir.glob(Ontohub::Application.config.symlink_path.join('*')))
@@ -25,4 +23,12 @@ Sidekiq::Testing.inline! do
     puts File.basename path
     require path
   end
+end
+
+if Rails.env.production?
+  run_seeds
+else
+  # Run background jobs inline
+  require 'sidekiq/testing'
+  Sidekiq::Testing.inline! { run_seeds }
 end
