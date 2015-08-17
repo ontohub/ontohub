@@ -1,0 +1,48 @@
+---
+http_interactions:
+- request:
+    method: post
+    uri: http://oops-ws.oeg-upm.net/rest
+    body:
+      encoding: UTF-8
+      string: |-
+        <?xml version="1.0" encoding="UTF-8"?>
+        <OOPSRequest><OntologyUrl>http://example.com/repositories/default/ontologies/16/versions/1</OntologyUrl><OntologyContent></OntologyContent><Pitfalls></Pitfalls><OutputFormat>XML</OutputFormat></OOPSRequest>
+    headers:
+      Accept:
+      - "*/*; q=0.5, application/xml"
+      Accept-Encoding:
+      - gzip, deflate
+      Content-Length:
+      - '245'
+      User-Agent:
+      - Ruby
+  response:
+    status:
+      code: 200
+      message: OK
+    headers:
+      Date:
+      - Mon, 17 Aug 2015 10:41:26 GMT
+      Server:
+      - Apache-Coyote/1.1
+      Content-Type:
+      - application/xml;charset=UTF-8
+      Via:
+      - 1.1 oops-ws.oeg-upm.net
+      Transfer-Encoding:
+      - chunked
+    body:
+      encoding: UTF-8
+      string: |-
+        <?xml version="1.0" encoding="UTF-8"?>
+        <oops:OOPSResponse xmlns:oops="http://www.oeg-upm.net/oops">
+        <oops:Pitfall>
+        <oops:Code>P37</oops:Code><oops:Name>Ontology not available</oops:Name>
+        <oops:Description>It is crucial you solve this if you want to contribute to the Semantic Web. You can follow the guidelines at LinkToDiegoRecipes to publish your ontology. If your ontology is correctly published and we have made an error detecting this pitfall please let us know and we will solve it a.s.a.p.</oops:Description>
+        <oops:Importance>Critical</oops:Importance>
+        </oops:Pitfall>
+        </oops:OOPSResponse>
+    http_version: 
+  recorded_at: Mon, 17 Aug 2015 10:41:25 GMT
+recorded_with: VCR 2.9.3

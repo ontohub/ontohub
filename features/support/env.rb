@@ -9,7 +9,8 @@ require 'sidekiq/testing'
 require 'cucumber/rails'
 require 'capybara/poltergeist'
 require 'webmock'
-require 'vcr'
+
+include SharedHelper
 
 Capybara.current_driver = :poltergeist
 Capybara.javascript_driver = :poltergeist
@@ -110,7 +111,7 @@ begin
 
   DatabaseCleaner.strategy = STRATEGY
 rescue NameError => e
-  raise "You need to add database_cleaner to your Gemfile (in the :test group) if you wish to use it. #{e.message}"
+  raise "You need to add database_cleaner to your Gemfile (in the :test group) if you wish to use it: #{e.message}."
 end
 
 # You may also want to configure DatabaseCleaner to use different strategies for certain features and scenarios.

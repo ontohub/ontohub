@@ -13,12 +13,9 @@ require 'rspec/autorun'
 require Rails.root.join('config', 'database_cleaner.rb')
 require 'addressable/template'
 require 'webmock'
-require 'vcr'
 require 'webmock/rspec'
 
 WebMock.disable_net_connect!(allow_localhost: true)
-elasticsearch_port = ENV['ELASTIC_TEST_PORT'].present? ? ENV['ELASTIC_TEST_PORT'] : '9250'
-Elasticsearch::Model.client = Elasticsearch::Client.new host: "localhost:#{elasticsearch_port}"
 
 # Requires supporting ruby files with custom matchers and macros, etc,
 # in spec/support/ and its subdirectories.
@@ -58,21 +55,6 @@ end
 # Generate a generic cassette name for any example or context.
 def generate_cassette_name
   "specs/#{current_file_path}/#{current_full_description}"
-end
-
-# Recording HTTP Requests
-VCR.configure do |c|
-  c.cassette_library_dir = 'spec/fixtures/vcr'
-  c.hook_into :webmock
-  c.ignore_localhost = true
-  c.ignore_request do |request|
-    # ignore elasticsearch requests
-    URI(request.uri).host == 'localhost' &&
-    URI(request.uri).port == elasticsearch_port.to_i
-  end
-  c.register_request_matcher :hets_prove_uri do |request1, request2|
-    hets_prove_matcher(request1, request2)
-  end
 end
 
 RSpec.configure do |config|
