@@ -3,9 +3,6 @@ ENV["RAILS_ENV"] ||= 'test'
 
 require File.expand_path("../../spec/shared_helper", __FILE__)
 
-include SharedHelper
-use_simplecov if ENV['COVERAGE']
-
 require File.expand_path("../../config/environment", __FILE__)
 require File.expand_path("../hets_helper", __FILE__)
 require 'rspec/rails'
@@ -14,6 +11,9 @@ require Rails.root.join('config', 'database_cleaner.rb')
 require 'addressable/template'
 require 'webmock'
 require 'webmock/rspec'
+
+include SharedHelper
+use_simplecov if ENV['COVERAGE']
 
 WebMock.disable_net_connect!(allow_localhost: true)
 
