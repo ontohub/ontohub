@@ -436,7 +436,7 @@ is satisfiable then ~C is satisfiable.</rdfs:comment>
     <owl:Class rdf:about="&SZS;CSAS">
         <rdfs:label rdf:datatype="&xsd;string">CounterSatisfiableWithSubset</rdfs:label>
         <rdfs:comment rdf:datatype="&xsd;string">Countersatifiability shown with a subset of the axioms - Countersatisfiability of the goal has not been proven yet.
-Let SAx be the selected subset of Ax, SF = SAx + {C}.
+Let SAx be the selected subset of Ax, SF = SAx => C.
 Some interpretations are models of the selected subset of SAx, and
 some models of SAx are models of ~C.
 
