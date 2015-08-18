@@ -58,47 +58,237 @@ describe Theorem do
     end
   end
 
-  context 'update_proof_status' do
+  context 'update_proof_status!' do
+    let(:open) { create :proof_status_open }
     let(:success) { create :proof_status_success }
-    let(:proven) { create :proof_status_proven }
     let(:unknown) { create :proof_status_unknown }
+    let(:disproven_on_subset) { create :proof_status_csas }
+    let(:disproven) { create :proof_status_csa }
+    let(:proven) { create :proof_status_proven }
+    let(:contr) { create :proof_status_contr}
 
-    context 'from solved status' do
-      let(:theorem) { create :theorem, proof_status: success }
-
-      context 'to solved status' do
-        before { theorem.update_proof_status(proven) }
-
-        it 'theorem has updated status' do
-          expect(theorem.proof_status).to eq(proven)
-        end
+    context 'from status open' do
+      let(:theorem) do
+        proof_attempt = create :proof_attempt, proof_status: open
+        proof_attempt.theorem
       end
 
-      context 'to unsolved status' do
-        before { theorem.update_proof_status(unknown) }
+      %i(open success unknown disproven_on_subset disproven proven contr).each do |status|
+        context "to status #{status}" do
+          before { create :proof_attempt, theorem: theorem, proof_status: send(status) }
 
-        it 'theorem still has previous status' do
-          expect(theorem.proof_status).to eq(success)
+          it "theorem has status #{status}" do
+            expect(theorem.proof_status).to eq(send(status))
+          end
         end
       end
     end
 
-    context 'from unsolved status' do
-      let(:theorem) { create :theorem, proof_status: unknown }
+    context 'from status success' do
+      let(:theorem) do
+        proof_attempt = create :proof_attempt, proof_status: success
+        proof_attempt.theorem
+      end
 
-      context 'to solved status' do
-        before { theorem.update_proof_status(proven) }
+      %i(open).each do |status|
+        context "to status #{status}" do
+          before { create :proof_attempt, theorem: theorem, proof_status: send(status) }
 
-        it 'theorem has updated status' do
-          expect(theorem.proof_status).to eq(proven)
+          it "theorem has status success" do
+            expect(theorem.proof_status).to eq(success)
+          end
         end
       end
 
-      context 'to unsolved status' do
-        before { theorem.update_proof_status(unknown) }
+      %i(success unknown disproven_on_subset disproven proven contr).each do |status|
+        context "to status #{status}" do
+          before { create :proof_attempt, theorem: theorem, proof_status: send(status) }
 
-        it 'theorem has updated status' do
-          expect(theorem.proof_status).to eq(unknown)
+          it "theorem has status #{status}" do
+            expect(theorem.proof_status).to eq(send(status))
+          end
+        end
+      end
+    end
+
+    context 'from status unknown' do
+      let(:theorem) do
+        proof_attempt = create :proof_attempt, proof_status: unknown
+        proof_attempt.theorem
+      end
+
+      %i(open success).each do |status|
+        context "to status #{status}" do
+          before { create :proof_attempt, theorem: theorem, proof_status: send(status) }
+
+          it "theorem has status unknown" do
+            expect(theorem.proof_status).to eq(unknown)
+          end
+        end
+      end
+
+      %i(unknown disproven_on_subset disproven proven contr).each do |status|
+        context "to status #{status}" do
+          before { create :proof_attempt, theorem: theorem, proof_status: send(status) }
+
+          it "theorem has status #{status}" do
+            expect(theorem.proof_status).to eq(send(status))
+          end
+        end
+      end
+    end
+
+    context 'from status disproven_on_subset' do
+      let(:theorem) do
+        proof_attempt = create :proof_attempt, proof_status: disproven_on_subset
+        proof_attempt.theorem
+      end
+
+      %i(open success unknown).each do |status|
+        context "to status #{status}" do
+          before { create :proof_attempt, theorem: theorem, proof_status: send(status) }
+
+          it "theorem has status unknown" do
+            expect(theorem.proof_status).to eq(disproven_on_subset)
+          end
+        end
+      end
+
+      %i(disproven_on_subset disproven proven contr).each do |status|
+        context "to status #{status}" do
+          before { create :proof_attempt, theorem: theorem, proof_status: send(status) }
+
+          it "theorem has status #{status}" do
+            expect(theorem.proof_status).to eq(send(status))
+          end
+        end
+      end
+    end
+
+    context 'from status disproven' do
+      let(:theorem) do
+        proof_attempt = create :proof_attempt, proof_status: disproven
+        proof_attempt.theorem
+      end
+
+      %i(open success unknown disproven_on_subset).each do |status|
+        context "to status #{status}" do
+          before { create :proof_attempt, theorem: theorem, proof_status: send(status) }
+
+          it "theorem has status unknown" do
+            expect(theorem.proof_status).to eq(disproven)
+          end
+        end
+      end
+
+      %i(disproven contr).each do |status|
+        context "to status #{status}" do
+          before { create :proof_attempt, theorem: theorem, proof_status: send(status) }
+
+          it "theorem has status #{status}" do
+            expect(theorem.proof_status).to eq(send(status))
+          end
+        end
+      end
+    end
+
+    context 'from status proven' do
+      let(:theorem) do
+        proof_attempt = create :proof_attempt, proof_status: proven
+        proof_attempt.theorem
+      end
+
+      %i(open success unknown disproven_on_subset).each do |status|
+        context "to status #{status}" do
+          before { create :proof_attempt, theorem: theorem, proof_status: send(status) }
+
+          it "theorem has status unknown" do
+            expect(theorem.proof_status).to eq(proven)
+          end
+        end
+      end
+
+      %i(proven contr).each do |status|
+        context "to status #{status}" do
+          before { create :proof_attempt, theorem: theorem, proof_status: send(status) }
+
+          it "theorem has status #{status}" do
+            expect(theorem.proof_status).to eq(send(status))
+          end
+        end
+      end
+    end
+
+    context 'from status contr' do
+      let(:theorem) do
+        proof_attempt = create :proof_attempt, proof_status: contr
+        proof_attempt.theorem
+      end
+
+      %i(open success unknown disproven_on_subset disproven proven contr).each do |status|
+        context "to status #{status}" do
+          before { create :proof_attempt, theorem: theorem, proof_status: send(status) }
+
+          it "theorem has status unknown" do
+            expect(theorem.proof_status).to eq(contr)
+          end
+        end
+      end
+    end
+
+    context '- contradictory -' do
+      [%w(THM THM), %w(CSA CSA)].each do |statuses|
+        context "#{statuses.first} and #{statuses.last} -" do
+          let!(:proof_attempt1) do
+            create :proof_attempt, proof_status: ProofStatus.find(statuses.first)
+          end
+          let!(:theorem) { proof_attempt1.theorem }
+          let!(:proof_attempt2) do
+            create :proof_attempt,
+                   proof_status: ProofStatus.find(statuses.last),
+                   theorem: theorem
+          end
+
+          it "theorem is #{statuses.first}" do
+            expect(theorem.proof_status.identifier).to eq(statuses.first)
+          end
+        end
+      end
+
+      [%w(THM CSAS), %w(CSA CSAS), %w(CSAS THM), %w(CSAS CSA)].each do |statuses|
+        context "#{statuses.first} and #{statuses.last} -" do
+          let!(:proof_attempt1) do
+            create :proof_attempt, proof_status: ProofStatus.find(statuses.first)
+          end
+          let!(:theorem) { proof_attempt1.theorem }
+          let!(:proof_attempt2) do
+            create :proof_attempt,
+                   proof_status: ProofStatus.find(statuses.last),
+                   theorem: theorem
+          end
+
+          it "theorem is #{statuses.select { |s| s != 'CSAS'}.first}" do
+            expect(theorem.proof_status.identifier).
+              to eq(statuses.select { |s| s != 'CSAS'}.first)
+          end
+        end
+      end
+
+      [%w(THM CSA), %w(CSA THM)].each do |statuses|
+        context "#{statuses.first} and #{statuses.last} -" do
+          let!(:proof_attempt1) do
+            create :proof_attempt, proof_status: ProofStatus.find(statuses.first)
+          end
+          let!(:theorem) { proof_attempt1.theorem }
+          let!(:proof_attempt2) do
+            create :proof_attempt,
+                   proof_status: ProofStatus.find(statuses.last),
+                   theorem: theorem
+          end
+
+          it 'theorem is CONTR' do
+            expect(theorem.reload.proof_status.identifier).to eq('CONTR')
+          end
         end
       end
     end

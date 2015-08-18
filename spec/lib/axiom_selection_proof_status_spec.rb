@@ -32,6 +32,7 @@ describe 'Axiom Selection: Proof Status', :http_interaction do
 
   let(:prover) { create :prover }
   let(:status_disproven) { create :proof_status_disproven }
+  let(:status_disproven_on_subset) { create :proof_status_csas }
   let(:status_proven) { create :proof_status_proven }
 
   context 'all axioms' do
@@ -100,8 +101,8 @@ describe 'Axiom Selection: Proof Status', :http_interaction do
       end
     end
 
-    it 'disproven' do |example|
-      expect(proof_attempt.reload.proof_status).to eq(status_disproven)
+    it 'disproven on subset' do |example|
+      expect(proof_attempt.reload.proof_status).to eq(status_disproven_on_subset)
     end
   end
 end

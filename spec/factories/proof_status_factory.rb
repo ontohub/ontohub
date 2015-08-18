@@ -7,6 +7,10 @@ FactoryGirl.define do
     initialize_with { ProofStatus.find('CSA') }
   end
 
+  factory :proof_status_csas, class: ProofStatus do
+    initialize_with { ProofStatus.find('CSAS') }
+  end
+
   factory :proof_status_open, class: ProofStatus do
     initialize_with { ProofStatus.find(ProofStatus::DEFAULT_OPEN_STATUS) }
   end
@@ -21,6 +25,10 @@ FactoryGirl.define do
 
   factory :proof_status_unknown, class: ProofStatus do
     initialize_with { ProofStatus.find(ProofStatus::DEFAULT_UNKNOWN_STATUS) }
+  end
+
+  factory :proof_status_contr, class: ProofStatus do
+    initialize_with { ProofStatus.find(ProofStatus::CONTRADICTORY) }
   end
 
   factory :proof_statuses, class: Array do
@@ -63,6 +71,15 @@ FactoryGirl.define do
         'description' =>
           'Success value unknown, and no assumption has been made.',
         'solved' => false},
+      { 'identifier' => ProofStatus::CONTRADICTORY,
+        'name' => 'Contradictory',
+        'label' => 'primary',
+        'description' =>
+          ['Contradictory ProofStatuses',
+           'At least one ProofAttempt resulted in "proven" result',
+           'while at least another ProofAttempt resulted in "disproven".',
+           'This indicates an error in the system.'].join("\n"),
+        'solved' => true},
       { 'identifier' => 'CSA',
         'name' => 'CounterSatisfiable',
         'label' => 'danger',
@@ -71,6 +88,17 @@ FactoryGirl.define do
            'some models of Ax are models of ~C.',
            '- F is not valid, ~F is satisfiable, and C is not a theorem of Ax.',
            '- Possible dataforms are Models of Ax | ~C.'].join("\n"),
+        'solved' => true},
+      { 'identifier' => 'CSAS',
+        'name' => 'CounterSatisfiableWithSubset',
+        'label' => 'danger',
+        'description' =>
+          ['Countersatifiability shown with a subset of the axioms - Countersatisfiability of the goal has not been proven yet.',
+           'Let SAx be the selected subset of Ax, SF = SAx + {C}.',
+           'Some interpretations are models of the selected subset of SAx, and',
+           'some models of SAx are models of ~C.',
+           '- SF is not valid, ~SF is satisfiable, and C is not a theorem of SAx.',
+           '- Possible dataforms are Models of SAx | ~C'].join("\n"),
         'solved' => true}]
 
     initialize_with do
