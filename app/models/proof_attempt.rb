@@ -56,7 +56,7 @@ class ProofAttempt < ActiveRecord::Base
   end
 
   def update_theorem_status
-    theorem.update_proof_status(proof_status)
+    theorem.update_proof_status!
   end
 
   def associate_prover_with_ontology_version
