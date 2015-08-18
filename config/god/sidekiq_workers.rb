@@ -9,6 +9,7 @@ class SidekiqWorkers < Watcher
     queue_opt = Array(queues).map { |q| " -q '#{q}'" }.join
     %W(
       exec nice bin/sidekiq
+      -e production
       -c #{concurrency}
       --pidfile #{pid_file}
       --logfile log/sidekiq.log
