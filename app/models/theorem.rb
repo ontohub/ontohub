@@ -2,9 +2,9 @@ class Theorem < Sentence
   include StateUpdater
 
   STATUS_ORDER = [ProofStatus::DEFAULT_OPEN_STATUS,
+                  ProofStatus::DEFAULT_UNKNOWN_STATUS,
                   # Any status not in this list comes here
                   :any,
-                  ProofStatus::DEFAULT_UNKNOWN_STATUS,
                   ProofStatus::DEFAULT_DISPROVEN_ON_SUBSET,
                   # Proven and disproven at the same time will result in
                   # contradictory. The order between those two is irrelevant.
