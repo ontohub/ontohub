@@ -73,34 +73,7 @@ describe Theorem do
         proof_attempt.theorem
       end
 
-      %i(open success unknown disproven_on_subset disproven proven contr).each do |status|
-        context "to status #{status}" do
-          before { create :proof_attempt, theorem: theorem, proof_status: send(status) }
-
-          it "theorem has status #{status}" do
-            expect(theorem.proof_status).to eq(send(status))
-          end
-        end
-      end
-    end
-
-    context 'from status success' do
-      let(:theorem) do
-        proof_attempt = create :proof_attempt, proof_status: success
-        proof_attempt.theorem
-      end
-
-      %i(open).each do |status|
-        context "to status #{status}" do
-          before { create :proof_attempt, theorem: theorem, proof_status: send(status) }
-
-          it "theorem has status success" do
-            expect(theorem.proof_status).to eq(success)
-          end
-        end
-      end
-
-      %i(success unknown disproven_on_subset disproven proven contr).each do |status|
+      %i(open unknown success disproven_on_subset disproven proven contr).each do |status|
         context "to status #{status}" do
           before { create :proof_attempt, theorem: theorem, proof_status: send(status) }
 
@@ -117,7 +90,7 @@ describe Theorem do
         proof_attempt.theorem
       end
 
-      %i(open success).each do |status|
+      %i(open).each do |status|
         context "to status #{status}" do
           before { create :proof_attempt, theorem: theorem, proof_status: send(status) }
 
@@ -127,7 +100,34 @@ describe Theorem do
         end
       end
 
-      %i(unknown disproven_on_subset disproven proven contr).each do |status|
+      %i(success disproven_on_subset disproven proven contr).each do |status|
+        context "to status #{status}" do
+          before { create :proof_attempt, theorem: theorem, proof_status: send(status) }
+
+          it "theorem has status #{status}" do
+            expect(theorem.proof_status).to eq(send(status))
+          end
+        end
+      end
+    end
+
+    context 'from status success' do
+      let(:theorem) do
+        proof_attempt = create :proof_attempt, proof_status: success
+        proof_attempt.theorem
+      end
+
+      %i(open unknown).each do |status|
+        context "to status #{status}" do
+          before { create :proof_attempt, theorem: theorem, proof_status: send(status) }
+
+          it "theorem has status success" do
+            expect(theorem.proof_status).to eq(success)
+          end
+        end
+      end
+
+      %i(success disproven_on_subset disproven proven contr).each do |status|
         context "to status #{status}" do
           before { create :proof_attempt, theorem: theorem, proof_status: send(status) }
 
@@ -144,7 +144,7 @@ describe Theorem do
         proof_attempt.theorem
       end
 
-      %i(open success unknown).each do |status|
+      %i(open unknown success).each do |status|
         context "to status #{status}" do
           before { create :proof_attempt, theorem: theorem, proof_status: send(status) }
 
@@ -171,7 +171,7 @@ describe Theorem do
         proof_attempt.theorem
       end
 
-      %i(open success unknown disproven_on_subset).each do |status|
+      %i(open unknown success disproven_on_subset).each do |status|
         context "to status #{status}" do
           before { create :proof_attempt, theorem: theorem, proof_status: send(status) }
 
@@ -198,7 +198,7 @@ describe Theorem do
         proof_attempt.theorem
       end
 
-      %i(open success unknown disproven_on_subset).each do |status|
+      %i(open unknown success disproven_on_subset).each do |status|
         context "to status #{status}" do
           before { create :proof_attempt, theorem: theorem, proof_status: send(status) }
 
@@ -225,7 +225,7 @@ describe Theorem do
         proof_attempt.theorem
       end
 
-      %i(open success unknown disproven_on_subset disproven proven contr).each do |status|
+      %i(open unknown success disproven_on_subset disproven proven contr).each do |status|
         context "to status #{status}" do
           before { create :proof_attempt, theorem: theorem, proof_status: send(status) }
 
