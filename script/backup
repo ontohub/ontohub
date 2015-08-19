@@ -61,7 +61,7 @@ module Backup
     attr_reader :dry_run, :verbose, :sql_dump_as_db_user
 
     def initialize(db_name, data_root, backup_root,
-      verbose: false, dry_run: true, sql_dump_as_db_user: false)
+      verbose: false, dry_run: true, sql_dump_as_db_user: nil)
       @db_name = db_name
       @backup_root = Pathname.new(backup_root)
       @data_root = Pathname.new(data_root)
@@ -262,7 +262,7 @@ To continue, I try the command again using sudo.
     end
 
     def pg_user_switch
-      sql_dump_as_db_user ? %w(-U ontohub) : []
+      sql_dump_as_db_user ? %W(-U #{sql_dump_as_db_user}) : []
     end
 
     def self.backup_dirs_allowed_to_delete(entries)
@@ -310,7 +310,7 @@ BACKUP_ROOT =
   end
 
 backup = Backup::Backup.new(DATABASE, data_root(RAILS_ROOT), BACKUP_ROOT,
-  sql_dump_as_db_user: true,
+  sql_dump_as_db_user: on_development_system?(RAILS_ROOT) ? 'postgres' : 'ontohub',
   dry_run: false, verbose: true)
 
 case ARGV.first
