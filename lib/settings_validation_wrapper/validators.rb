@@ -34,6 +34,30 @@ module SettingsValidationWrapper::Validators
     end
   end
 
+  class ElementsAreUrisValidator < ActiveModel::EachValidator
+    def validate_each(record, attribute, value)
+      bad_uris = []
+      if value.is_a?(Array)
+        value.each do |elem|
+          if elem.is_a?(String)
+            begin
+              URI(elem)
+            rescue URI::InvalidURIError
+              bad_uris << elem
+            end
+          else
+            bad_uris << elem
+          end
+        end
+      end
+      unless bad_uris.empty?
+        record.errors.add(attribute,
+                          "all elements must be valid URIs.\n"\
+                          "The following are not:\n#{bad_uris.join("\n")}")
+      end
+    end
+  end
+
   class ElementsAreEmailValidator < ActiveModel::EachValidator
     def validate_each(record, attribute, value)
       unless value.is_a?(Array) && value.all? { |elem| elem.match(/@/) }

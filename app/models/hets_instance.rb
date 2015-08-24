@@ -19,19 +19,51 @@ has a minimal Hets version of #{Hets.minimal_version_string}
     end
   end
 
-  attr_accessible :name, :uri
+  STATES = %w(free force-free busy)
+  MUTEX_KEY = :choose_hets_instance
+  FORCE_FREE_WAITING_PERIOD = 60.seconds
+
+  attr_accessible :name, :uri, :state, :queue_size
 
   before_save :set_up_state
+  before_save :set_state_updated_at
   after_create :start_update_clock
 
-  scope :active_instances, -> do
+  validate :state, inclusion: {in: STATES}
+  validate :queue_size, numericality: {greater_than_or_equal_to: 0}
+
+  scope :active, -> do
     where(up: true).where('version >= ?', Hets.minimal_version_string)
+  end
+  scope :free, -> do
+    where(state: 'free')
+  end
+  scope :force_free, -> do
+    where(state: 'force-free')
+  end
+  scope :busy, -> do
+    where(state: 'busy')
+  end
+  scope :load_balancing_order, -> do
+    order('queue_size ASC').order('state_updated_at ASC')
+  end
+
+  def self.with_instance!
+    instance = choose!
+    result = yield(instance)
+    Semaphore.exclusively(MUTEX_KEY) { instance.finish_work! }
+    result
   end
 
   def self.choose!
     raise NoRegisteredHetsInstanceError.new unless any?
-    instance = active_instances.first
-    instance or raise NoSelectableHetsInstanceError.new
+    Semaphore.exclusively(MUTEX_KEY) do
+      instance = active.free.first
+      instance ||= increment_queue! { active.force_free.load_balancing_order.first }
+      instance ||= increment_queue! { active.busy.load_balancing_order.first }
+      instance.try(:set_busy!)
+      instance or raise NoSelectableHetsInstanceError.new
+    end
   end
 
   def self.check_up_state!(hets_instance_id)
@@ -56,7 +88,45 @@ has a minimal Hets version of #{Hets.minimal_version_string}
     "#{name}(#{uri})"
   end
 
+  def finish_work!
+    reload
+    self.queue_size -= 1 if queue_size > 0
+    if queue_size > 0
+      set_busy!
+    else
+      set_free!
+    end
+    save!
+  end
+
+  def set_free!
+    self.state = 'free'
+    save!
+  end
+
+  def set_force_free!
+    if reload.state == 'busy'
+      self.state = 'force-free'
+      save!
+    end
+  end
+
+  def set_busy!
+    self.state = 'busy'
+    HetsInstanceForceFreeWorker.perform_in(FORCE_FREE_WAITING_PERIOD, id)
+    save!
+  end
+
   protected
+
+  def self.increment_queue!
+    if instance = yield
+      instance.queue_size += 1
+      instance.save!
+      instance
+    end
+  end
+
   def check_up_state
     Hets::VersionCaller.new(self).call
   end
@@ -70,6 +140,10 @@ has a minimal Hets version of #{Hets.minimal_version_string}
   def set_up_state!
     set_up_state
     save!
+  end
+
+  def set_state_updated_at
+    self.state_updated_at = Time.now if state_changed?
   end
 
   def start_update_clock

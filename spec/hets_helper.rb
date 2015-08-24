@@ -23,7 +23,8 @@ def hets_prove_matcher(request1, request2)
 
   match1[:end] == match2[:end] &&
   inner_match1[:ontology] == inner_match2[:ontology] &&
-  %i(scheme host port query fragment).all? { |m| uri1.send(m) == uri2.send(m)}
+  # We don't check for the port because the HetsInstances factory varies it.
+  %i(scheme host query fragment).all? { |m| uri1.send(m) == uri2.send(m)}
 end
 
 def hets_vcr_file(subdir, ontology_fixture)
@@ -81,15 +82,16 @@ end
 def setup_hets
   let(:hets_instance) { create_local_hets_instance }
   before do
-    stub_request(:get, 'http://localhost:8000/version').
+    stub_request(:get, %r{http://localhost:8\d{3}/version}).
       to_return(body: Hets.minimal_version_string)
     hets_instance
   end
+  after { hets_instance.finish_work! }
 end
 
 def stub_hets_for(ontology_fixture,
                   command: 'dg', with: nil, with_version: nil, method: :get)
-  stub_request(:get, 'http://localhost:8000/version').
+  stub_request(:get, %r{http://localhost:8\d{3}/version}).
     to_return(body: Hets.minimal_version_string)
   stub_request(method, hets_uri(command, with, with_version)).
     to_return(body: hets_out_body(command, ontology_fixture))

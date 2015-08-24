@@ -86,9 +86,11 @@ hets:
   # This is the path to the hets executable we use in `rake hets:*` and for the
   # process manager in production mode (god)
   executable_path: /usr/bin/hets
-  # The number of hets instances to run in parallel in production mode.
-  # Minimum: 1, Maximum: number of processors
-  instances_count: 1
+  # The URLs to the hets instances without trailing slash.
+  # The number of instances is not allowed to be greater than the number of
+  # hardware processor cores.
+  instance_urls:
+    - http://localhost:8000
   # The time between update-checks of registered hets-instances in minutes
   time_between_updates: 360
 
