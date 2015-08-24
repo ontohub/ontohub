@@ -22,10 +22,7 @@ class Proof < FakeRecord
     end
   end
 
-  TIMEOUT_RANGE = [5.seconds, 10.seconds, 30.seconds,
-                   1.minutes, 5.minutes, 10.minutes, 30.minutes,
-                   1.hours, 6.hours,
-                   1.days, 2.days, 7.days]
+  TIMEOUT_RANGE = [5.seconds, 10.seconds, 15.seconds, 30.seconds, 45.seconds]
 
   # flags
   attr_reader :prove_asynchronously

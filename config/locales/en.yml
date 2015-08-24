@@ -163,7 +163,7 @@ en:
         select_none: Select none
       timeout:
         label: Timeout
-        hint: The timeout will be split evenly across the proof obligations.
+        hint: The timeout will be used for each proof obligation individually.
         default: Default (10 seconds)
         day: day
         hour: hour
