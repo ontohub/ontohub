@@ -30,7 +30,7 @@ group :assets do
   gem 'jquery-rails', '~> 3.1.2'
   gem 'jquery-ui-rails', '~> 5.0.5'
   gem 'momentjs-rails', '~> 2.10.2'
-  gem 'd3_rails', '~> 3.5.5'
+  gem 'd3_rails', '~> 3.5.6'
   gem 'therubyracer', '~> 0.12.1'
   gem 'uglifier', '>= 1.0.3'
   gem 'handlebars_assets', '~> 0.20.1'
