@@ -22,8 +22,8 @@ group :assets do
   # sass-rails >= 4.0 is not compativle with rails 3
   gem 'sass-rails',     '~> 3.2.3'
   gem 'bootstrap-sass', '~> 3.3.3'
-  # coffee-rails > 3.2.1 is not compatible with rails 3
-  gem 'coffee-rails',   '~> 3.2.1'
+  # coffee-rails > 3.2 is not compatible with rails 3
+  gem 'coffee-rails',   '~> 3.2.2'
   gem 'compass',        '~> 1.0.3'
   gem 'font-awesome-sass', '~> 4.3.1'
   # jquery-rails > 3.1.2 is not compatible with rails 3
