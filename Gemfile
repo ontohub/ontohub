@@ -20,7 +20,7 @@ gem 'redis-semaphore', '~> 0.2.4'
 group :assets do
   gem 'jstree-rails', github: 'tristanm/jstree-rails'
   # sass-rails >= 4.0 is not compativle with rails 3
-  gem 'sass-rails',     '~> 3.2.3'
+  gem 'sass-rails',     '~> 3.2.6'
   gem 'bootstrap-sass', '~> 3.3.3'
   # coffee-rails > 3.2 is not compatible with rails 3
   gem 'coffee-rails',   '~> 3.2.2'
