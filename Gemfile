@@ -107,7 +107,7 @@ gem 'ruby-graphviz', "~> 1.2.2"
 gem "faker", "~> 1.5.0"
 
 # Git
-gem 'rugged', '~> 0.22.0'
+gem 'rugged', '~> 0.23.2'
 gem 'codemirror-rails', github: 'llwt/codemirror-rails'
 
 # API
