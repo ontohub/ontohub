@@ -1,5 +1,11 @@
 class ApplicationController < ActionController::Base
 
+  before_filter do
+    if current_user && current_user.is_admin?
+      Rack::MiniProfiler.authorize_request
+    end
+  end
+
   protect_from_forgery
   ensure_security_headers
 
