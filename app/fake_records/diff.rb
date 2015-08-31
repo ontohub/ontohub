@@ -16,13 +16,20 @@ class Diff < FakeRecord
   end
 
   def compute
-    if !@computed && @diff != :diff_too_large
-      raw_diffs = repository.git.diff(oid).split('diff --git ')[1..-1]
+    if !@computed
+      @diff = repository.git.diff(oid)
+      if @diff == :diff_too_large
+        changed_files.each do |file_change|
+          file_change.diff = @diff
+        end
+      else
+        raw_diffs = @diff.split('diff --git ')[1..-1]
 
-      changed_files.each do |file_change|
-        diff = raw_diffs.
-          select { |d| d[2..-1].start_with?(file_change.old_path) }.first
-        file_change.diff = diff_without_metadata(diff, file_change.status)
+        changed_files.each do |file_change|
+          diff = raw_diffs.
+            select { |d| d[2..-1].start_with?(file_change.old_path) }.first
+          file_change.diff = diff_without_metadata(diff, file_change.status)
+        end
       end
       @computed = true
     end
