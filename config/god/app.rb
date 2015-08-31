@@ -31,6 +31,8 @@ end
 
 HetsWorkers.configure do
   Settings.hets.instance_urls.each do |hets_url|
-    watch(URI(hets_url).port)
+    if hets_url.match(%r{\Ahttps?://(localhost|127.0.0.1|0.0.0.0|::1)})
+      watch(URI(hets_url).port)
+    end
   end
 end
