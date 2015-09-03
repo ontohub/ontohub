@@ -32,6 +32,10 @@ begin
       t.profile = 'rerun'
     end
 
+    Cucumber::Rake::Task.new(:record, 'Only runs tests recorded in selenium') do |t|
+      t.profile = 'record'
+    end
+
     desc 'Run all features'
     task :all => [:ok, :wip]
 
