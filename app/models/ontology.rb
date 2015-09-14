@@ -12,6 +12,7 @@ class Ontology < ActiveRecord::Base
   include Ontology::ClassMethodsAndScopes
   include Ontology::Distributed
   include Ontology::FileExtensions
+  include Ontology::HetsOptions
   include Ontology::Import
   include Ontology::Mappings
   include Ontology::Oops

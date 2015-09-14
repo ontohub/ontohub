@@ -23,6 +23,7 @@ module FixturesGeneration
       escaped_iri = Rack::Utils.escape_path("file://#{absolute_filepath(file)}")
       hets_iri = "#{HETS_BASE_IRI}/#{command}/#{escaped_iri}"
       hets_iri << hets_api_options
+      hets_iri << "?#{input_type(file)}"
       hets_iri << query_string
 
       FileUtils.rm_f(recorded_file(file))
@@ -41,6 +42,15 @@ module FixturesGeneration
         end
       else
         raise "HTTP method #{method} is not supported."
+      end
+    end
+
+    def input_type(file)
+      extension = File.extname(file)
+      if type = Ontology::HetsOptions::EXTENSIONS_TO_INPUT_TYPES[extension]
+        "input-type=#{type};"
+      else
+        ''
       end
     end
   end

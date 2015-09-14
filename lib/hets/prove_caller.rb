@@ -16,7 +16,10 @@ module Hets
     end
 
     def build_query_string
-      {}
+      query_string = {}
+      query_string[:'input-type'] = hets_options.options[:'input-type']
+      # FIXME Rails 4.1 introduces query_string.compact. Use it after upgrading.
+      query_string.delete_if { |_k, v| v.nil? }
     end
 
     def timeout

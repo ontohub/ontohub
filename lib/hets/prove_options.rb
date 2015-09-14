@@ -1,5 +1,9 @@
 module Hets
   class ProveOptions < HetsOptions
+    # Hets has problems finding the conjecture of TPTP if we pass the
+    # theorems-array in the prove-request.
+    SINGLE_THEOREM_INPUT_TYPES = %w(tptp)
+
     def initialize(opts = {})
       @need_to_normalize_timeout = opts.has_key?(:timeout)
       super(opts)
@@ -8,6 +12,10 @@ module Hets
     def add(**opts)
       @need_to_normalize_timeout = opts.has_key?(:timeout)
       super(**opts)
+    end
+
+    def single_theorem_input_type?
+      SINGLE_THEOREM_INPUT_TYPES.include?(options[:'input-type'])
     end
 
     protected
@@ -48,6 +56,7 @@ module Hets
 
     def prepare_theorems
       prepare_sentences(:theorems)
+      options.delete(:theorems) if single_theorem_input_type?
     end
 
     def prepare_sentences(field)

@@ -29,10 +29,8 @@ class Theorem < Sentence
   end
 
   def prove_options
-    repo = ontology.repository
-    Hets::ProveOptions.new(:'url-catalog' => repo.url_maps,
-                           :'access-token' => repo.generate_access_token,
-                           ontology: ontology,
-                           theorems: [self])
+    hets_options = ontology.hets_options
+    Hets::ProveOptions.new(**hets_options.options,
+                           ontology: ontology, theorems: [self])
   end
 end
