@@ -132,6 +132,7 @@ en:
     show:
       prove: Prove this theorem
       proof_attemps_empty: There are no proof attempts.
+      unprovable: This theorem was proven by static analysis. It is identical to an axiom.
   axiom_selection:
     manual_axiom_selection: Manual
     sine_axiom_selection: SInE
