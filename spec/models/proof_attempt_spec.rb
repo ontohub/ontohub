@@ -16,13 +16,13 @@ describe ProofAttempt do
     let(:theorem) { proof_attempt.theorem }
 
     before do
-      allow(theorem).to receive(:update_proof_status)
+      allow(theorem).to receive(:update_proof_status!)
       proof_attempt.proof_status = proven
       proof_attempt.save!
     end
 
     it 'calls update_status on the theorem' do
-      expect(theorem).to have_received(:update_proof_status)
+      expect(theorem).to have_received(:update_proof_status!)
     end
   end
 

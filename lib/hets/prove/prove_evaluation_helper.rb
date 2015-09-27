@@ -33,24 +33,33 @@ module Hets
       end
 
       def find_proof_status_from_hash(proof_info)
-        parser = Hets::Prove::SZSParser.
+        szs_parser = Hets::Prove::SZSParser.
           new(proof_info[:prover], proof_info[:prover_output])
-        szs_name = parser.call
+        szs_name = szs_parser.call
         proof_status = ProofStatus.find_by_name(szs_name)
+        proof_status ||= default_proof_status(proof_info)
+        select_proof_status_on_axioms_subset(proof_status)
+      end
 
-        if proof_status
-          proof_status
+      def default_proof_status(proof_info)
+        identifier =
+          case proof_info[:result]
+          when 'Proved'
+            ProofStatus::DEFAULT_PROVEN_STATUS
+          when 'Disproved'
+            ProofStatus::DEFAULT_DISPROVEN_STATUS
+          else
+            ProofStatus::DEFAULT_UNKNOWN_STATUS
+          end
+        ProofStatus.find(identifier)
+      end
+
+      def select_proof_status_on_axioms_subset(proof_status)
+        if proof_status.identifier == 'CSA' &&
+          proof_attempt.proper_subset_of_axioms_selected?
+          ProofStatus.find("#{proof_status.identifier}S")
         else
-          identifier =
-            case proof_info[:result]
-            when 'Proved'
-              ProofStatus::DEFAULT_PROVEN_STATUS
-            when 'Disproved'
-              ProofStatus::DEFAULT_DISPROVEN_STATUS
-            else
-              ProofStatus::DEFAULT_UNKNOWN_STATUS
-            end
-          ProofStatus.find(identifier)
+          proof_status
         end
       end
 
