@@ -47,11 +47,10 @@ module FixturesGeneration
 
     def input_type(file)
       extension = File.extname(file)
-      if type = Ontology::HetsOptions::EXTENSIONS_TO_INPUT_TYPES[extension]
-        "input-type=#{type};"
-      else
-        ''
-      end
+      type =
+        Ontology::HetsOptions::EXTENSIONS_TO_INPUT_TYPES[extension] ||
+        extension[1..-1]
+      type ? "input-type=#{type};" : ''
     end
   end
 end
