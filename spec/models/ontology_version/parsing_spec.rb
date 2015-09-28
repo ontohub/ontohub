@@ -215,4 +215,55 @@ describe 'OntologyVersion Parsing' do
       expect(ontology_version.reload.last_error).to match(nested_error_regex)
     end
   end
+
+  context 'input-type parameter' do
+    context 'owl' do
+      let(:ontology_path) { 'owl/pizza.owl' }
+      let(:ontology) { create :ontology, basepath: 'pizza' }
+      let(:ontology_version) do
+        ontology.save_file(ontology_file(ontology_path), 'message', user)
+      end
+
+      before do
+        # Clear Jobs
+        Worker.jobs.clear
+        stub_hets_for(ontology_path)
+        ontology_version
+        Worker.drain
+      end
+
+      it '- have sent a request with input-type' do
+        hets_instance = HetsInstance.choose!
+        expect(WebMock).
+          to have_requested(:get,
+                            /#{hets_instance.uri}\/dg\/.*\?.*input-type=owl.*/)
+      end
+    end
+
+    context 'p (tptp)' do
+      let(:ontology_path) { 'tptp/zfmisc_1__t92_zfmisc_1.p' }
+      let(:ontology) do
+        create :ontology,
+               basepath: 'zfmisc_1__t92_zfmisc_1', file_extension: '.p'
+      end
+      let(:ontology_version) do
+        ontology.save_file(ontology_file(ontology_path), 'message', user)
+      end
+
+      before do
+        # Clear Jobs
+        Worker.jobs.clear
+        stub_hets_for(ontology_path)
+        ontology_version
+        Worker.drain
+      end
+
+      it '- have sent a request with input-type' do
+        hets_instance = HetsInstance.choose!
+        expect(WebMock).
+          to have_requested(:get,
+                            /#{hets_instance.uri}\/dg\/.*\?.*input-type=tptp.*/)
+      end
+    end
+  end
 end
