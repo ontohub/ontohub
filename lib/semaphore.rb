@@ -7,7 +7,7 @@
 # Currently, only a mutex is implemented in this abstraction.
 class Semaphore
   def self.exclusively(lock_key, &block)
-    if Sidekiq::Testing.inline?
+    if defined?(Sidekiq::Testing) && Sidekiq::Testing.inline?
       yield
     else
       Redis::Semaphore.new(lock_key,
