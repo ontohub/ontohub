@@ -56,7 +56,7 @@ class ProofAttempt < ActiveRecord::Base
   end
 
   def update_theorem_status
-    theorem.update_proof_status(proof_status)
+    theorem.update_proof_status!
   end
 
   def associate_prover_with_ontology_version
@@ -69,6 +69,12 @@ class ProofAttempt < ActiveRecord::Base
 
   def retry_failed
     ProofExecutionWorker.perform_async(id)
+  end
+
+  def proper_subset_of_axioms_selected?
+    selected = proof_attempt_configuration.axiom_selection.axioms
+    available = theorem.ontology.axioms
+    selected.any? && selected.count < available.count
   end
 
   protected

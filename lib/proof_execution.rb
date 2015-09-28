@@ -9,11 +9,16 @@ class ProofExecution
   end
 
   def call
+    prepare_axiom_selection
     prepare_prove_options
     prove
   end
 
   protected
+
+  def prepare_axiom_selection
+    proof_attempt_configuration.axiom_selection.specific.call
+  end
 
   def prepare_prove_options
     self.prove_options = proof_attempt.proof_attempt_configuration.prove_options
@@ -21,7 +26,7 @@ class ProofExecution
   end
 
   def prove
-    proof_attempt.update_state!(:processing)
+    ProofEvaluationStateUpdater.new(proof_attempt, :processing).call
     cmd, input_io = execute_proof(prove_options)
     return if cmd == :abort
 

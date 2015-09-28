@@ -7,6 +7,10 @@ FactoryGirl.define do
     initialize_with { ProofStatus.find('CSA') }
   end
 
+  factory :proof_status_csas, class: ProofStatus do
+    initialize_with { ProofStatus.find('CSAS') }
+  end
+
   factory :proof_status_open, class: ProofStatus do
     initialize_with { ProofStatus.find(ProofStatus::DEFAULT_OPEN_STATUS) }
   end
@@ -23,6 +27,10 @@ FactoryGirl.define do
     initialize_with { ProofStatus.find(ProofStatus::DEFAULT_UNKNOWN_STATUS) }
   end
 
+  factory :proof_status_contr, class: ProofStatus do
+    initialize_with { ProofStatus.find(ProofStatus::CONTRADICTORY) }
+  end
+
   factory :proof_statuses, class: Array do
     skip_create
 
@@ -30,47 +38,42 @@ FactoryGirl.define do
       { 'identifier' => ProofStatus::DEFAULT_OPEN_STATUS,
         'name' => 'Open',
         'label' => 'primary',
-        'description' => 'A success value has never been established.',
+        'description' => 'Open description',
         'solved' => false},
       { 'identifier' => 'SUC',
         'name' => 'Success',
         'label' => 'primary',
-        'description' => 'The logical data has been processed successfully.',
+        'description' => 'Success description',
         'solved' => true},
       { 'identifier' => ProofStatus::DEFAULT_PROVEN_STATUS,
         'name' => 'Theorem',
         'label' => 'success',
-        'description' =>
-          ['All models of Ax are models of C.',
-          '- F is valid, and C is a theorem of Ax.',
-          '- Possible dataforms are Proofs of C from Ax.'].join("\n"),
+        'description' => 'Theorem description',
         'solved' => true},
       { 'identifier' => ProofStatus::DEFAULT_DISPROVEN_STATUS,
         'name' => 'NoConsequence',
         'label' => 'danger',
-        'description' =>
-          ['Some interpretations are models of Ax,',
-          'some models of Ax are models of C, and',
-          'some models of Ax are models of ~C.',
-          '- F is not valid, F is satisfiable, ~F is not valid,',
-          '~F is satisfiable, and C is not a theorem of Ax.',
-          '- Possible dataforms are pairs of models,',
-          'one Model of Ax | C and one Model of Ax | ~C.'].join("\n"),
+        'description' => 'NoConsequence description',
         'solved' => true},
       { 'identifier' => ProofStatus::DEFAULT_UNKNOWN_STATUS,
         'name' => 'Unknown',
         'label' => 'primary',
-        'description' =>
-          'Success value unknown, and no assumption has been made.',
+        'description' => 'Unknown description',
         'solved' => false},
+      { 'identifier' => ProofStatus::CONTRADICTORY,
+        'name' => 'Contradictory',
+        'label' => 'primary',
+        'description' => 'Contradictory description',
+        'solved' => true},
       { 'identifier' => 'CSA',
         'name' => 'CounterSatisfiable',
         'label' => 'danger',
-        'description' =>
-          ['Some interpretations are models of Ax, and',
-           'some models of Ax are models of ~C.',
-           '- F is not valid, ~F is satisfiable, and C is not a theorem of Ax.',
-           '- Possible dataforms are Models of Ax | ~C.'].join("\n"),
+        'description' => 'CounterSatisfiable description',
+        'solved' => true},
+      { 'identifier' => 'CSAS',
+        'name' => 'CounterSatisfiableWithSubset',
+        'label' => 'danger',
+        'description' => 'CounterSatisfiableWithSubset description',
         'solved' => true}]
 
     initialize_with do

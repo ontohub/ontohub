@@ -64,7 +64,12 @@ module NavigationHelper
 
     pages.map! do |page|
       method = page.first
-      count = ontology.send(method).count if ontology.respond_to?(method)
+      count =
+        if %i(axioms theorems).include?(page.first)
+          ontology.send(method).original.count
+        elsif ontology.respond_to?(method)
+          ontology.send(method).count
+      end
       [*page, count]
     end
 

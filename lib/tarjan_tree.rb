@@ -40,7 +40,7 @@ class TarjanTree
   # Only sentences with 4 words are the right sentences for the Tree
   # so we have to ignore the other.
   def inheritance_sentences(ontology)
-    ontology.sentences.where <<-SQL
+    ontology.sentences.original.where <<-SQL
       text NOT LIKE '%Thing%' AND
       text ~* '[^\s]+\s+[^\s]+\s+SubClassOf:+\s+[^\s]+$'
     SQL

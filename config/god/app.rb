@@ -12,7 +12,7 @@ God.pid_file_directory = File.join(RAILS_ROOT, 'tmp/pids/')
 SidekiqWorkers.configure do
   if ENV['RAILS_ENV']=='production'
     # one worker per core
-    Settings.hets.instances_count.times.each do
+    Settings.hets.instance_urls.size.times.each do
       watch 'hets', 1
     end
 
@@ -30,5 +30,9 @@ SidekiqWorkers.configure do
 end
 
 HetsWorkers.configure do
-  watch
+  Settings.hets.instance_urls.each do |hets_url|
+    if hets_url.match(%r{\Ahttps?://(localhost|127.0.0.1|0.0.0.0|::1)})
+      watch(URI(hets_url).port)
+    end
+  end
 end

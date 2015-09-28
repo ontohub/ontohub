@@ -1,0 +1,30 @@
+spec Subclass =
+  sort s
+  ops stone:s
+      liquid:s
+      petrol:s
+      beverage:s
+      beer:s
+      guiness:s
+      pilsner:s;
+
+  preds subclass : s * s;
+
+  . forall x,y,z:s . subclass(x, y) /\ subclass (y, z) => subclass(x, z) %(transitivity)%
+  . not subclass(stone, liquid) %(not stone < liquid)%
+  . subclass(petrol, liquid) %(petrol < liquid)%
+  . subclass(beverage, liquid) %(beverage < liquid)%
+  . subclass(beer, beverage) %(beer < beverage)%
+  . subclass(guiness, beer) %(guiness < beer)%
+end
+
+spec SubclassToleranceOne =
+  Subclass then
+  . subclass(beer, liquid) %(beer < liquid)% %implied
+end
+
+spec SubclassToleranceOnePointFive =
+  Subclass then
+  . subclass(pilsner, beer) %(pilsner < beer)%
+  . subclass(beer, liquid) %(beer < liquid)% %implied
+end

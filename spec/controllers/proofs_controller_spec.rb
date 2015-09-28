@@ -5,8 +5,15 @@ describe ProofsController do
   let(:theorem) { create :theorem }
   let(:ontology) { theorem.ontology }
   let(:repository) { ontology.repository }
-  let(:proof_params) { {'prover_ids' => [prover.id.to_s, ''],
-                        'axiom_selection_method' => AxiomSelection::METHODS.first.to_s} }
+  let(:proof_params) do
+    {'prover_ids' => [prover.id.to_s, ''],
+     'timeout' => '',
+     'axiom_selection_method' => 'manual_axiom_selection',
+     'axioms' => [''],
+     'sine_axiom_selection' => {'commonness_threshold'=>'0',
+                                'depth_limit'=>'-1',
+                                'tolerance'=>'1.0'}}
+  end
 
   context 'on ontology' do
     context 'signed in with write access' do
@@ -50,7 +57,7 @@ describe ProofsController do
       end
 
       context 'create with wrong prover' do
-        let(:bad_proof_params) { {'prover_ids' => ['-1', '']} }
+        let(:bad_proof_params) { proof_params.merge({'prover_ids' => ['-1', '']}) }
         before do
           allow(Proof).to receive(:new).and_call_original
           expect_any_instance_of(Proof).not_to receive(:save!)
@@ -67,7 +74,8 @@ describe ProofsController do
         it { should respond_with :found }
 
         it 'redirect to the new action again' do
-          expect(response).to redirect_to(action: :new)
+          expect(response).to redirect_to(action: :new,
+                                          params: {proof: bad_proof_params})
         end
 
         it 'instantiates a Proof object' do
@@ -158,7 +166,7 @@ describe ProofsController do
       end
 
       context 'create with wrong prover' do
-        let(:bad_proof_params) { {'prover_ids' => ['-1', '']} }
+        let(:bad_proof_params) { proof_params.merge({'prover_ids' => ['-1', '']}) }
         before do
           allow(Proof).to receive(:new).and_call_original
           expect_any_instance_of(Proof).not_to receive(:save!)
@@ -176,7 +184,8 @@ describe ProofsController do
         it { should respond_with :found }
 
         it 'redirect to the new action again' do
-          expect(response).to redirect_to(action: :new)
+          expect(response).to redirect_to(action: :new,
+                                          params: {proof: bad_proof_params})
         end
 
         it 'instantiates a Proof object' do

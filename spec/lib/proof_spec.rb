@@ -63,7 +63,7 @@ describe Proof do
 
   context 'usage for ontology_version' do
     let(:proof) { Proof.new(params) }
-    let(:theorems_count) { ontology.theorems.count }
+    let(:theorems_count) { ontology.theorems.original.count }
 
     it 'theorem? is false' do
       expect(proof.theorem?).to be(false)

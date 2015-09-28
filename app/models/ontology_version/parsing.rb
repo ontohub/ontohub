@@ -43,11 +43,7 @@ module OntologyVersion::Parsing
 
   # generate XML by passing the raw ontology to Hets
   def generate_xml(structure_only: false)
-    repo = ontology.repository
-    hets_options =
-      Hets::HetsOptions.new(:'url-catalog' => repo.url_maps,
-                            :'access-token' => repo.generate_access_token)
-    input_io = Hets.parse_via_api(ontology, hets_options,
+    input_io = Hets.parse_via_api(ontology, ontology.hets_options,
                                   structure_only: structure_only)
     [:all_is_well, input_io]
   end
@@ -70,11 +66,8 @@ module OntologyVersion::Parsing
   end
 
   def retrieve_available_provers
-    repo = ontology.repository
-    hets_options =
-      Hets::ProversOptions.new(:'url-catalog' => repo.url_maps,
-                               :'access-token' => repo.generate_access_token,
-                               ontology: ontology)
+    hets_options = Hets::ProversOptions.new(**ontology.hets_options.options,
+                                            ontology: ontology)
     provers_io = Hets.provers_via_api(ontology, hets_options)
     Hets::Provers::Importer.new(self, provers_io).import
   end

@@ -23,13 +23,13 @@ class AxiomsController < InheritedResources::Base
       if display_all?
         axioms =
           if logically_translated?
-            parent.all_axioms
+            parent.axioms
           else
             parent.translated_axioms
           end
         Kaminari.paginate_array(axioms).page(params[:page])
       else
-        super
+        Kaminari.paginate_array(parent.axioms.original).page(params[:page])
       end
   end
 

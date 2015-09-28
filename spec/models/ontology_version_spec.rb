@@ -90,9 +90,10 @@ describe OntologyVersion do
       end
 
       it 'have sent a request with url-catalog' do
+        hets_instance = HetsInstance.choose!
         expect(WebMock).
           to have_requested(:get,
-            /http:\/\/localhost:8000\/dg\/.*\?.*url-catalog=#{url_maps.join(',')}.*/)
+            /#{hets_instance.uri}\/dg\/.*\?.*url-catalog=#{url_maps.join(',')}.*/)
       end
     end
 

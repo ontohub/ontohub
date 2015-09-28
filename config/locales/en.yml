@@ -57,10 +57,10 @@ en:
     access:
       change_hint: 'Caution! When setting the repository public, all reader permissions are removed.'
       options:
-        private_r: Private readable
-        private_rw: Private readable and writable
-        public_r: Public readable
-        public_rw: Public readable and writable
+        private_r: Privately readable, not writable at all
+        private_rw: Privately readable, privately writable
+        public_r: Publicly readable, privately writable
+        public_rw: Publicly readable, publicly writable
     remote_type:
       text: A mirror will be synchronized periodically. A fork is just a one-time copy.
     un_mirror:
@@ -132,8 +132,10 @@ en:
     show:
       prove: Prove this theorem
       proof_attemps_empty: There are no proof attempts.
+      unprovable: This theorem was proven by static analysis. It is identical to an axiom.
   axiom_selection:
     manual_axiom_selection: Manual
+    sine_axiom_selection: SInE
   proofs:
     new:
       title: 'Attempt to prove  %{klass} %{resource}'
@@ -148,13 +150,21 @@ en:
         select_none: Select none
       axiom_selection:
         method: Axiom Selection Method
+        manual_axiom_selection:
+          headline: Manual Axiom Selection
+        sine_axiom_selection:
+          headline: SInE Axiom Selection
+          hints:
+            commonness_threshold: Greater values result in selecting more axioms containing uncommon symbols.
+            depth_limit: Number of SInE selection iterations. Greater values result in selecting more axioms. The value '-1' is interpreted as infinity.
+            tolerance: Greater values result in selecting more axioms.
       axioms:
         none_is_default: Selecting none will result in using all axioms.
         select_all: Select all
         select_none: Select none
       timeout:
         label: Timeout
-        hint: The timeout will be split evenly across the proof obligations.
+        hint: The timeout will be used for each proof obligation individually.
         default: Default (10 seconds)
         day: day
         hour: hour
@@ -163,6 +173,8 @@ en:
     create:
       starting_jobs: Proving jobs have been scheduled. Please come back in a few moments.
       invalid_resource: Invalid proving request.
+  proof_evaluation_state_updater:
+    failed_proof_attempts: "Failed proof attempts: %{proof_attempts}"
   proof_attempts:
     index:
       number: Number

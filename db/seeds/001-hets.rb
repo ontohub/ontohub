@@ -1,5 +1,7 @@
-Sidekiq::Testing.disable! do
-  %w(localhost:8000).each do |uri|
-    HetsInstance.create(name: uri, uri: "http://#{uri}")
+if Rails.env.production?
+  RakeHelper::Hets.create_instances
+else
+  Sidekiq::Testing.disable! do
+    RakeHelper::Hets.create_instances
   end
 end

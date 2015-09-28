@@ -5,10 +5,11 @@ class HetsWorkers < Watcher
     'hets'
   end
 
-  def start_cmd
+  def start_cmd(port)
     load_hets_settings
-    hets_opts = ' ' << hets_server_options.join(' ')
-    "exec nice #{hets_executable} -X" << hets_opts
+    options = hets_server_options.dup
+    options << "--listen=#{port}" if port
+    "exec nice #{hets_executable} --server #{options.join(' ')}"
   end
 
   def pid_file

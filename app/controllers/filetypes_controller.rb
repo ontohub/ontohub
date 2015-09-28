@@ -9,8 +9,9 @@ class FiletypesController < ApplicationController
   protected
 
   def filetype
-    @filetype ||= Hets::FiletypeCaller.new(HetsInstance.choose!).
-      call(params[:iri])
+    HetsInstance.with_instance! do |hets_instance|
+      @filetype ||= Hets::FiletypeCaller.new(hets_instance).call(params[:iri])
+    end
   end
 
   def filetype_json

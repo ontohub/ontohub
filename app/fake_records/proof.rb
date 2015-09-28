@@ -5,6 +5,14 @@
 # This class prepares the proving procedure and creates the models which are
 # presented in the UI (ProofAttempt).
 class Proof < FakeRecord
+  class AssociatedValidator < ActiveModel::EachValidator
+    def validate_each(record, attribute, value)
+      unless value.try(:valid?)
+        record.errors.add attribute, 'is not valid'
+      end
+    end
+  end
+
   class ProversValidator < ActiveModel::EachValidator
     def validate_each(record, attribute, value)
       not_provers = value.reject { |id| Prover.where(id: id).any? }
@@ -16,8 +24,7 @@ class Proof < FakeRecord
 
   TIMEOUT_RANGE = [5.seconds, 10.seconds, 30.seconds,
                    1.minutes, 5.minutes, 10.minutes, 30.minutes,
-                   1.hours, 6.hours,
-                   1.days, 2.days, 7.days]
+                   1.hours, 2.hours, 6.hours, 12.hours, 20.hours]
 
   # flags
   attr_reader :prove_asynchronously
@@ -26,7 +33,7 @@ class Proof < FakeRecord
   # prover related
   attr_reader :prover_ids, :provers
   # axiom related
-  attr_reader :axiom_selection_method, :axiom_selection, :specific_axiom_selection, :axioms
+  attr_reader :axiom_selection_method, :specific_axiom_selection, :axioms
   # timeout
   attr_reader :timeout
   # result related
@@ -37,6 +44,7 @@ class Proof < FakeRecord
   validates :timeout,
             inclusion: {in: (TIMEOUT_RANGE.first..TIMEOUT_RANGE.last)},
             if: :timeout_present?
+  validates :specific_axiom_selection, associated: true
 
   delegate :to_s, to: :proof_obligation
 
@@ -60,6 +68,10 @@ class Proof < FakeRecord
       end
     end
     prove
+  end
+
+  def axiom_selection
+    specific_axiom_selection.try(:axiom_selection)
   end
 
   def theorem?
@@ -100,6 +112,11 @@ class Proof < FakeRecord
     collection.select(&:present?).map(&:to_i) if collection
   end
 
+  def initialize_axioms(opts)
+    axiom_ids = normalize_check_box_ids(opts[:proof][:axioms])
+    @axioms = axiom_ids.map { |id| Axiom.find(id) } if axiom_ids
+  end
+
   def initialize_axiom_selection(opts)
     @axiom_selection_method = opts[:proof][:axiom_selection_method].try(:to_sym)
     build_axiom_selection(opts)
@@ -133,7 +150,9 @@ class Proof < FakeRecord
   end
 
   def build_axiom_selection(opts)
-    send("build_#{axiom_selection_method}", opts) if AxiomSelection::METHODS.include?(axiom_selection_method)
+    if AxiomSelection::METHODS.include?(axiom_selection_method)
+      send("build_#{axiom_selection_method}", opts)
+    end
   end
 
   def build_manual_axiom_selection(opts)
@@ -143,7 +162,11 @@ class Proof < FakeRecord
       specific_axiom_selection.axioms =
         axiom_ids.map { |id| Axiom.unscoped.find(id) }
     end
-    @axiom_selection = @specific_axiom_selection.axiom_selection
+  end
+
+  def build_sine_axiom_selection(opts)
+    @specific_axiom_selection =
+      SineAxiomSelection.new(opts[:proof][:sine_axiom_selection])
   end
 
   def timeout_present?

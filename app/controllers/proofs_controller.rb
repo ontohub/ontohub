@@ -14,7 +14,7 @@ class ProofsController < InheritedResources::Base
       redirect_to(redirect_chain)
     else
       flash[:alert] = t('proofs.create.invalid_resource')
-      redirect_to(action: :new)
+      redirect_to(action: :new, params: {proof: params[:proof]})
     end
   end
 

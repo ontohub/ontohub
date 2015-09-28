@@ -18,7 +18,7 @@ class Ontology
         sentence_ids = translated.pluck(:sentence_id)
         imported =
           direct_imported_ontologies.reduce([[], []]) do |arr, ontology|
-            other_split = ontology.split_translated_sentences
+            other_split = ontology.split_translated_sentences(method)
             other_translated = other_split.first
             other_translated.delete_if do |translated_sentence|
               sentence_ids.include?(translated_sentence.sentence_id)
@@ -31,7 +31,7 @@ class Ontology
             other_sentences.each { |os| arr.last << os }
             arr
           end
-        [translated + imported.first, send(method) + imported.last]
+        [translated + imported.first, send(method).original + imported.last]
       end
 
       # Find import-mappings which describe the following mapping:
@@ -126,6 +126,7 @@ class Ontology
         sentence.text       = hash['text'].to_s
         sentence.range      = hash['range']
         sentence.updated_at = timestamp
+        set_theorem_attributes(sentence, hash) if sentence.is_a?(Theorem)
 
         sep = '//'
         sentence.locid = "#{sentence.ontology.locid}#{sep}#{sentence.name}"
@@ -143,6 +144,20 @@ class Ontology
         sentence.set_display_text!
 
         sentence
+      end
+
+      private
+
+      def set_theorem_attributes(theorem, hash)
+          theorem.provable = hash['status'] == 'open'
+          if hash['status'] == 'proven'
+            status_id = ProofStatus::DEFAULT_PROVEN_STATUS
+            theorem.state = 'done'
+          else
+            status_id = ProofStatus::DEFAULT_OPEN_STATUS
+            theorem.state = 'pending'
+          end
+          theorem.proof_status = ProofStatus.find(status_id)
       end
 
     end

@@ -1,0 +1,120 @@
+Prefix: dc: <http://purl.org/dc/elements/1.1/>
+Prefix: owl: <http://www.w3.org/2002/07/owl#>
+Prefix: rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#>
+Prefix: xml: <http://www.w3.org/XML/1998/namespace>
+Prefix: xsd: <http://www.w3.org/2001/XMLSchema#>
+Prefix: rdfs: <http://www.w3.org/2000/01/rdf-schema#>
+
+
+
+Ontology: <https://ontohub.org/fois-ontology-competition/FormalCAD/features.owl>
+
+
+Datatype: xsd:string
+
+    
+Datatype: xsd:double
+
+    
+ObjectProperty: <https://ontohub.org/fois-ontology-competition/FormalCAD/features.owl#isAxisOf>
+
+    Domain: 
+        <https://ontohub.org/fois-ontology-competition/FormalCAD/features.owl#Line>
+    
+    Range: 
+        <https://ontohub.org/fois-ontology-competition/FormalCAD/features.owl#3DPart>
+    
+    InverseOf: 
+        <https://ontohub.org/fois-ontology-competition/FormalCAD/features.owl#hasAxis>
+    
+    
+ObjectProperty: <https://ontohub.org/fois-ontology-competition/FormalCAD/features.owl#constrainedAngle>
+
+    Domain: 
+        <https://ontohub.org/fois-ontology-competition/FormalCAD/features.owl#AngleConstraint>
+    
+    Range: 
+        <https://ontohub.org/fois-ontology-competition/FormalCAD/features.owl#Angle>
+    
+    
+ObjectProperty: <https://ontohub.org/fois-ontology-competition/FormalCAD/features.owl#hasRefSystem>
+
+    Domain: 
+        <https://ontohub.org/fois-ontology-competition/FormalCAD/features.owl#3DPart>
+    
+    
+ObjectProperty: <https://ontohub.org/fois-ontology-competition/FormalCAD/features.owl#hasAxis>
+
+    SubPropertyChain: 
+        <https://ontohub.org/fois-ontology-competition/FormalCAD/features.owl#hasRefSystem> o <https://ontohub.org/fois-ontology-competition/FormalCAD/features.owl#hasRefAxis>
+    
+    Domain: 
+        <https://ontohub.org/fois-ontology-competition/FormalCAD/features.owl#3DPart>
+    
+    Range: 
+        <https://ontohub.org/fois-ontology-competition/FormalCAD/features.owl#Line>
+    
+    InverseOf: 
+        <https://ontohub.org/fois-ontology-competition/FormalCAD/features.owl#isAxisOf>
+    
+    
+ObjectProperty: <https://ontohub.org/fois-ontology-competition/FormalCAD/features.owl#firstConstrainedLine>
+
+    Domain: 
+        <https://ontohub.org/fois-ontology-competition/FormalCAD/features.owl#AngleConstraint>
+    
+    Range: 
+        <https://ontohub.org/fois-ontology-competition/FormalCAD/features.owl#Line>
+    
+    
+ObjectProperty: <https://ontohub.org/fois-ontology-competition/FormalCAD/features.owl#secondConstrainedLine>
+
+    Domain: 
+        <https://ontohub.org/fois-ontology-competition/FormalCAD/features.owl#AngleConstraint>
+    
+    Range: 
+        <https://ontohub.org/fois-ontology-competition/FormalCAD/features.owl#Line>
+    
+    
+ObjectProperty: <https://ontohub.org/fois-ontology-competition/FormalCAD/features.owl#hasRefAxis>
+
+    Range: 
+        <https://ontohub.org/fois-ontology-competition/FormalCAD/features.owl#Line>
+    
+    
+DataProperty: <https://ontohub.org/fois-ontology-competition/FormalCAD/features.owl#valueOfAngle>
+
+    Domain: 
+        <https://ontohub.org/fois-ontology-competition/FormalCAD/features.owl#Angle>
+    
+    Range: 
+        xsd:double
+    
+    
+Class: <https://ontohub.org/fois-ontology-competition/FormalCAD/features.owl#2DSketchPrimitive>
+
+    
+Class: <https://ontohub.org/fois-ontology-competition/FormalCAD/features.owl#AngleConstraint>
+
+    SubClassOf: 
+        <https://ontohub.org/fois-ontology-competition/FormalCAD/features.owl#Constraint>
+    
+    
+Class: <https://ontohub.org/fois-ontology-competition/FormalCAD/features.owl#Line>
+
+    SubClassOf: 
+        <https://ontohub.org/fois-ontology-competition/FormalCAD/features.owl#2DSketchPrimitive>
+    
+    
+Class: <https://ontohub.org/fois-ontology-competition/FormalCAD/features.owl#Constraint>
+
+    
+Class: <https://ontohub.org/fois-ontology-competition/FormalCAD/features.owl#3DPart>
+
+    
+Class: <https://ontohub.org/fois-ontology-competition/FormalCAD/features.owl#Angle>
+
+    SubClassOf: 
+        <https://ontohub.org/fois-ontology-competition/FormalCAD/features.owl#2DSketchPrimitive>
+    
+    

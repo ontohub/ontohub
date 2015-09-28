@@ -3,15 +3,16 @@ module Hets
     module ProveEvaluationHelper
       def fill_proof_attempt_from_hash(proof_info)
         ontology = importer.ontology
-        if ontology.name == proof_info[:ontology_name]
+        # The prove output of Hets may contain proofs for different ontologies.
+        if correct_ontology?(ontology, proof_info)
           theorem = find_theorem_from_hash(proof_info, ontology)
-          proof_attempt.do_or_set_failed do
+          proof_attempt.do_or_set_failed(ProofEvaluationStateUpdater) do
             fill_proof_attempt_instance(proof_attempt, proof_info)
             proof_attempt.associate_prover_with_ontology_version
             create_prover_output(proof_attempt, proof_info)
             create_tactic_script(proof_attempt, proof_info)
             proof_attempt.save!
-            proof_attempt.update_state!(:done)
+            ProofEvaluationStateUpdater.new(proof_attempt, :done).call
           end
         end
       end
@@ -28,28 +29,37 @@ module Hets
       end
 
       def find_theorem_from_hash(proof_info, ontology)
-        ontology.theorems.find_by_name(proof_info[:theorem_name])
+        ontology.theorems.original.find_by_name(proof_info[:theorem_name])
       end
 
       def find_proof_status_from_hash(proof_info)
-        parser = Hets::Prove::SZSParser.
+        szs_parser = Hets::Prove::SZSParser.
           new(proof_info[:prover], proof_info[:prover_output])
-        szs_name = parser.call
+        szs_name = szs_parser.call
         proof_status = ProofStatus.find_by_name(szs_name)
+        proof_status ||= default_proof_status(proof_info)
+        select_proof_status_on_axioms_subset(proof_status)
+      end
 
-        if proof_status
-          proof_status
+      def default_proof_status(proof_info)
+        identifier =
+          case proof_info[:result]
+          when 'Proved'
+            ProofStatus::DEFAULT_PROVEN_STATUS
+          when 'Disproved'
+            ProofStatus::DEFAULT_DISPROVEN_STATUS
+          else
+            ProofStatus::DEFAULT_UNKNOWN_STATUS
+          end
+        ProofStatus.find(identifier)
+      end
+
+      def select_proof_status_on_axioms_subset(proof_status)
+        if proof_status.identifier == 'CSA' &&
+          proof_attempt.proper_subset_of_axioms_selected?
+          ProofStatus.find("#{proof_status.identifier}S")
         else
-          identifier =
-            case proof_info[:result]
-            when 'Proved'
-              ProofStatus::DEFAULT_PROVEN_STATUS
-            when 'Disproved'
-              ProofStatus::DEFAULT_DISPROVEN_STATUS
-            else
-              ProofStatus::DEFAULT_UNKNOWN_STATUS
-            end
-          ProofStatus.find(identifier)
+          proof_status
         end
       end
 
@@ -129,6 +139,12 @@ module Hets
         prover_output.proof_attempt = proof_attempt
         prover_output.content = proof_info[:prover_output]
         prover_output.save!
+      end
+
+      def correct_ontology?(ontology, proof_info)
+        ontology.name == proof_info[:ontology_name] ||
+          proof_attempt.proof_attempt_configuration.prove_options.
+            single_theorem_input_type?
       end
     end
   end

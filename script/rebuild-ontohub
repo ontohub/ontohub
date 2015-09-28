@@ -111,6 +111,11 @@ print_colored_or_not() {
 run_invoker="1"
 colored_output="1"
 
+cwd="$(pwd)"
+rails_root=$(cd "$(dirname $0)/.."; pwd)
+cd $cwd
+export GIT_HOME="${GIT_HOME:-$rails_root/tmp/git}"
+
 for i in "$@"; do
 case $i in
     -d|--download-fixtures)

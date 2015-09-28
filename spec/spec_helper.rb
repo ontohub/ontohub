@@ -60,6 +60,10 @@ def generate_cassette_name
   "specs/#{current_file_path}/#{current_full_description}"
 end
 
+def stub_hets_instance_force_free_worker
+  allow(HetsInstanceForceFreeWorker).to receive(:perform_in)
+end
+
 # Recording HTTP Requests
 VCR.configure do |c|
   c.cassette_library_dir = 'spec/fixtures/vcr'
@@ -98,6 +102,8 @@ RSpec.configure do |config|
       example.metadata[:example_group][:full_description]
     config.current_description = example.description
     config.current_file_path = example.file_path
+
+    stub_hets_instance_force_free_worker
   end
 
   config.after(:each) do

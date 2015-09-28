@@ -204,10 +204,10 @@ describe Ontology do
   end
 
   context 'when parsing', :needs_hets do
-    context 'a distributed ontology' do
-      let(:user) { create :user }
-      let(:repository) { create :repository, user: user }
+    let(:user) { create :user }
+    let(:repository) { create :repository, user: user }
 
+    context 'a distributed ontology' do
       before do
         stub_hets_for('casl/partial_order.casl')
       end
@@ -221,6 +221,76 @@ describe Ontology do
           user)
 
         expect(version.ontology.logic.name).to eq('DOL')
+      end
+    end
+
+    context 'a TPTP file with an open theorem' do
+      let(:version) do
+        path = ontology_file('tptp/Simple_Implications_Group')
+        repository.save_file(path,
+                             'Simple_Implications_Group.tptp',
+                             'parsing a TPTP file',
+                             user)
+      end
+
+      before do
+        stub_hets_for('tptp/Simple_Implications_Group.tptp')
+      end
+
+      it 'be a SingleOntology' do
+        expect(version.ontology.class).to be(SingleOntology)
+      end
+
+      it 'have logic SoftFOL' do
+        expect(version.ontology.logic.name).to eq('SoftFOL')
+      end
+
+      it 'have one Theorem' do
+        expect(version.ontology.theorems.count).to eq(1)
+      end
+
+      it 'have a provable Theorem' do
+        expect(version.ontology.theorems.first.provable).to be(true)
+      end
+
+      it 'have an open Theorem' do
+        expect(version.ontology.theorems.first.proof_status.identifier).
+          to eq(ProofStatus::DEFAULT_OPEN_STATUS)
+      end
+    end
+
+    context 'a TPTP file with a proven theorem' do
+      let(:version) do
+        path = fixture_file('ontologies/tptp/zfmisc_1__t92_zfmisc_1.p')
+        repository.save_file(path,
+                             'zfmisc_1__t92_zfmisc_1.p',
+                             'parsing a TPTP file',
+                             user)
+      end
+
+      before do
+        stub_hets_for('tptp/zfmisc_1__t92_zfmisc_1.p')
+      end
+
+      it 'be a SingleOntology' do
+        expect(version.ontology.class).to be(SingleOntology)
+      end
+
+      it 'have logic SoftFOL' do
+        expect(version.ontology.logic.name).to eq('SoftFOL')
+      end
+
+      it 'have one Theorem' do
+        expect(version.ontology.theorems.count).to eq(1)
+      end
+
+      it 'have an unprovable Theorem' do
+        expect(version.ontology.theorems.first.provable).to be(false)
+      end
+
+      it 'have a proven Theorem' do
+        expect(version.ontology.theorems.first.proof_status.identifier).
+          to eq(ProofStatus::DEFAULT_PROVEN_STATUS)
       end
     end
   end
@@ -323,31 +393,31 @@ describe Ontology do
 
     context 'sentence count' do
       it 'should be correct' do
-        expect(ontology.sentences.count).to eq(1)
+        expect(ontology.sentences.original.count).to eq(1)
       end
 
       it 'should be reflected in the corresponding field' do
-        expect(ontology.sentences_count).to eq(ontology.sentences.count)
+        expect(ontology.sentences_count).to eq(ontology.sentences.original.count)
       end
     end
 
     context 'axioms count' do
       it 'should be correct' do
-        expect(ontology.axioms.count).to eq(1)
+        expect(ontology.axioms.original.count).to eq(1)
       end
 
       it 'should be reflected in the corresponding field' do
-        expect(ontology.axioms_count).to eq(ontology.axioms.count)
+        expect(ontology.axioms_count).to eq(ontology.axioms.original.count)
       end
     end
 
     context 'theorems count' do
       it 'should be correct' do
-        expect(ontology.theorems.count).to eq(0)
+        expect(ontology.theorems.original.count).to eq(0)
       end
 
       it 'should be reflected in the corresponding field' do
-        expect(ontology.theorems_count).to eq(ontology.theorems.count)
+        expect(ontology.theorems_count).to eq(ontology.theorems.original.count)
       end
     end
   end
@@ -381,7 +451,7 @@ describe Ontology do
     end
 
     it 'should have no sentences' do
-      expect(ontology.sentences.count).to eq(0)
+      expect(ontology.sentences.original.count).to eq(0)
     end
 
     context 'first child ontology' do
@@ -392,7 +462,7 @@ describe Ontology do
       end
 
       it 'should have one sentence' do
-        expect(child.sentences.count).to eq(1)
+        expect(child.sentences.original.count).to eq(1)
       end
     end
 
@@ -476,12 +546,12 @@ describe Ontology do
 
     context 'theorem count' do
       it 'should be correct' do
-        expect(child_with_theorem.theorems.count).to eq(1)
+        expect(child_with_theorem.theorems.original.count).to eq(1)
       end
 
       it 'should be reflected in the corresponding field' do
         expect(child_with_theorem.theorems_count).
-          to eq(child_with_theorem.theorems.count)
+          to eq(child_with_theorem.theorems.original.count)
       end
     end
   end
@@ -501,13 +571,13 @@ describe Ontology do
     context 'theorems count' do
       it 'should be correct' do
         children_with_theorems.each do |child|
-          expect(child.theorems.count).to eq(1)
+          expect(child.theorems.original.count).to eq(1)
         end
       end
 
       it 'should be reflected in the corresponding field' do
         children_with_theorems.each do |child|
-          expect(child.theorems_count).to eq(child.theorems.count)
+          expect(child.theorems_count).to eq(child.theorems.original.count)
         end
       end
     end
