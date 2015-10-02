@@ -4,6 +4,9 @@ def debug_prints
   puts "dist_ontology"
   puts dist_ontology.inspect
   puts ""
+  puts "dist_ontology.mappings"
+  puts dist_ontology.mappings.inspect
+  puts ""
   puts "target_ontology"
   puts target_ontology.inspect
   puts ""
@@ -13,10 +16,16 @@ def debug_prints
   puts "mapping"
   puts mapping.inspect
   puts ""
-  puts "source"
+  puts "external repository"
+  puts external_repository.inspect
+  puts ""
+  puts "external repository.ontologies"
+  puts external_repository.ontologies.map(&:id).inspect
+  puts ""
+  puts "mapping.source"
   puts mapping.source.inspect
   puts ""
-  puts "target"
+  puts "mapping.target"
   puts mapping.target.inspect
 rescue NoMethodError
 end
