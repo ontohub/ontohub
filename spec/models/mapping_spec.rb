@@ -13,6 +13,14 @@ def debug_prints
   puts "source_ontology"
   puts source_ontology.inspect
   puts ""
+  puts "repositories changes"
+  puts Repository.all.map(&:id).inspect
+  puts Repository.all.map(&:name).inspect
+  puts Repository.all.map(&:commits).inspect
+  puts ""
+  puts "file contents"
+  puts dist_ontology.repository.get_file(dist_ontology.path).inspect
+  puts ""
   puts "mapping"
   puts mapping.inspect
   puts ""
