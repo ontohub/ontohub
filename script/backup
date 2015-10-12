@@ -10,14 +10,14 @@
 #     * the postgres database
 #
 # Usage
-#   First note: Run this as the ontohub user, *not* as root.
+#   First note: Run this as the root user, e.g. with sudo.
 #   To create a backup, run this script with the argument `create`:
-#     $ script/backup create
+#     # script/backup create
 #   Then a backup named with the current date and time is created in the
 #   backup directory (see below).
 #
 #   To restore a backup, run this script with the argument `restore <backup name>`
-#     $ script/backup restore 2015-01-01_00-00
+#     # script/backup restore 2015-01-01_00-00
 #   Then the selected backup is fully restored
 #
 # Backup directory
@@ -61,12 +61,13 @@ module Backup
     attr_reader :dry_run, :verbose, :sql_dump_as_db_user
 
     def initialize(db_name, data_root, backup_root,
-      verbose: false, dry_run: true, sql_dump_as_db_user: nil)
+      verbose: false, dry_run: true, sql_dump_as_db_user: nil, user: nil)
       @db_name = db_name
       @backup_root = Pathname.new(backup_root)
       @data_root = Pathname.new(data_root)
       @data_root_basename = @data_root.basename.to_s
       @data_dirs = DATA_DIRS.map { |dir| File.join(@data_root_basename, dir) }
+      @user = user
 
       @dry_run = dry_run
       @verbose = verbose
@@ -126,7 +127,8 @@ module Backup
     def create_sql_dump
       puts 'Creating SQL dump...'
       Dir.chdir(backup_instance_dir) do
-        exec('pg_dump', *pg_user_switch, '-Fc', db_name, '-f', SQL_DUMP_FILE)
+        exec('pg_dump', *pg_user_switch, '-Fc', db_name, '-f', SQL_DUMP_FILE,
+             user: @user)
       end
     end
 
@@ -134,7 +136,8 @@ module Backup
       puts 'Creating repository archive...'
       Dir.chdir(data_root.join('..')) do
         archive_file = backup_instance_dir.join(REPOSITORY_FILE)
-        exec('tar', verbose ? '-v' : '', '-cf', archive_file.to_s, *@data_dirs)
+        exec('tar', verbose ? '-v' : '', '-cf', archive_file.to_s, *@data_dirs,
+             user: @user)
       end
     end
 
@@ -153,7 +156,8 @@ module Backup
         exec('pg_restore', '-n', 'public',
              '-c', *pg_user_switch,
              '-d', db_name,
-             SQL_DUMP_FILE)
+             SQL_DUMP_FILE,
+             user: @user)
       end
     end
 
@@ -189,7 +193,7 @@ directories #{@data_dirs.join(' ')} to a temporary directory #{tmpdir}.
 This is used as a backup for the case of an error while restoring.
 To continue, I try the command again using sudo.
       MSG
-      exec('sudo', 'mv', *@data_dirs, tmpdir)
+      exec('mv', *@data_dirs, tmpdir, user: 'root')
     end
 
     def extract_archive
@@ -215,7 +219,7 @@ As the current user I have no access to remove the temporary
 directory #{tmpdir}.
 To continue, I try the command again using sudo.
       MSG
-      exec('sudo', 'rm', '-r', tmpdir)
+      exec('rm', '-r', tmpdir, user: 'root')
     end
 
     def enable_maintenance_mode
@@ -236,25 +240,22 @@ To continue, I try the command again using sudo.
       FileUtils.rm maintenance_file unless dry_run
     end
 
-    def exec(*args)
+    # Execute a command as the given user.
+    def exec(*args, user: nil)
       puts "[executing next command in #{Dir.getwd}]" if verbose
       out = args.join(' ')
       puts out if verbose
-      system(*args) unless dry_run
-    end
-
-    def try_as_sudo_with_fallback(*args)
-      unless exec('sudo', *args)
-        sudo_not_given_fallback(*args) # Wrong sudo password
+      if !dry_run
+        if user
+          system(['su', '-', user, '-c', escape_arguments(args)])
+        else
+          system(*args)
+        end
       end
-    rescue Exception => e
-      raise e unless e.is_a?(Interrupt) # Ctrl-C when asked for password
-      sudo_not_given_fallback(*args)
     end
 
-    def sudo_not_given_fallback(*args)
-      puts 'Super user privileges not granted. Trying as normal user.'
-      exec(*args)
+    def escape_arguments(args)
+      ([args[0]] + *args[1..-1].map { |a| %("#{a}")}).join(' ')
     end
 
     def maintenance_file
@@ -285,15 +286,17 @@ def on_development_system?(rails_root)
 end
 
 # Don't allow this to be run as the root user.
-if ENV['USER'] == 'root'
-  puts 'Running this script as the root user is disabled.'
-  puts 'Please run it as a normal user that has sudo privileges, e.g. ontohub.'
+if ENV['USER'] != 'root'
+  puts 'Running this script as a normal user is disabled.'
+  puts 'Please run it as root.'
   exit
 end
 
 # We assume, this script runs in "RAILS_ROOT/script/".
 RAILS_ROOT = Pathname.new(__FILE__).dirname.join('..')
 BACKUP_ROOT_PRODUCTION = '/local/home/ontohub/ontohub_data_backup'
+
+USER = 'ontohub'
 
 DATABASE =
   if on_development_system?(RAILS_ROOT)
@@ -311,6 +314,7 @@ BACKUP_ROOT =
 
 backup = Backup::Backup.new(DATABASE, data_root(RAILS_ROOT), BACKUP_ROOT,
   sql_dump_as_db_user: on_development_system?(RAILS_ROOT) ? 'postgres' : 'ontohub',
+  user: USER,
   dry_run: false, verbose: true)
 
 case ARGV.first
