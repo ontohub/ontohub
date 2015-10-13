@@ -701,12 +701,6 @@ is determined according to its path, which is considered as
     as:         :repository_tree,
     constraints: FilesRouterConstraint.new
 
-  get '*path',
-    controller:  :ontologies,
-    action:      :show,
-    as:          :iri,
-    constraints: IRIRouterConstraint.new
-
   root :to => 'home#index'
 
 end
