@@ -21,7 +21,7 @@ has a minimal Hets version of #{Hets.minimal_version_string}
 
   STATES = %w(free force-free busy)
   MUTEX_KEY = :choose_hets_instance
-  FORCE_FREE_WAITING_PERIOD = 60.seconds
+  FORCE_FREE_WAITING_PERIOD = 1.days
 
   attr_accessible :name, :uri, :state, :queue_size
 
