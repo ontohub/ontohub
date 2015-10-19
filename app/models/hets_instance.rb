@@ -50,7 +50,12 @@ has a minimal Hets version of #{Hets.minimal_version_string}
 
   def self.with_instance!
     instance = choose!
-    result = yield(instance)
+    begin
+      result = yield(instance)
+    rescue StandardError
+      Semaphore.exclusively(MUTEX_KEY) { instance.finish_work! }
+      raise
+    end
     Semaphore.exclusively(MUTEX_KEY) { instance.finish_work! }
     result
   end
