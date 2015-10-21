@@ -17,6 +17,11 @@
       .container
         .row.flash-messages
           = flash_messages
+        .row.flash-messages
+          .alert.alert-info
+            Do you want to test Ontohub? Visit the
+            = link_to 'Ontohub Wiki', 'http://wiki.ontohub.org/index.php/How_to_test_Ontohub'
+            for more information
         .row
           - if cover_visible?
             = render partial: '/shared/cover'
