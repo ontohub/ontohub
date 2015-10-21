@@ -402,11 +402,21 @@ Start the git daemon:
 
 If there's a new version on http://www.elasticsearch.org/download/, just replace the version number.
 
-    sudo apt-get update
-    sudo apt-get install openjdk-7-jre-headless -y
-    wget https://download.elasticsearch.org/elasticsearch/elasticsearch/elasticsearch-1.4.1.deb
-    sudo dpkg -i elasticsearch-1.4.1.deb
-    sudo service elasticsearch start
+    + apt-get update
+    + apt-get install openjdk-7-jre-headless -y
+    wget https://download.elasticsearch.org/elasticsearch/elasticsearch/elasticsearch-1.7.3.deb
+    
+Before you can start Elasticsearch you need to replace the `elasticsearch` user with the `esearch` user. Thats because there are only 8-character-accounts on our machines allowed. To do this you need to
+
+    + dpkg --unpack elasticsearch-1.7.3.deb
+    + sed -r -e '/^#?ES_(USER|GROUP)=/ { s,^#,, ; s,=.*,=esearch, }'  -i /etc/default/elasticsearch.dpkg-new
+    + sed -e '/rmdir/ s,$, || true,' -i /var/lib/dpkg/info/elasticsearch.postrm
+    + dpkg --configure elasticsearch
+    + update-rc.d elasticsearch defaults 95 10
+    
+Afterwards you can start it with
+
+    + service elasticsearch start
 
 If you want to test it, you can do
 
