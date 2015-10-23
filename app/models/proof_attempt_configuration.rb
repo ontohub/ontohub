@@ -8,8 +8,8 @@ class ProofAttemptConfiguration < ActiveRecord::Base
 
   validates :proof_attempt, presence: true
 
-  delegate :axioms, to: :axiom_selection
-  delegate :ontology, to: :proof_attempt
+  has_many :axioms, through: :axiom_selection
+  has_one :ontology, through: :proof_attempt
 
   def empty?
     [logic_mapping, prover, timeout, axioms].all?(&:blank?)
