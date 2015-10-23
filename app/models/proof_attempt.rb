@@ -43,10 +43,6 @@ class ProofAttempt < ActiveRecord::Base
     where(locid: locid).first
   end
 
-  def used_sentences
-    @used_sentences ||= used_axioms + used_theorems
-  end
-
   def set_default_proof_status
     self.proof_status ||= ProofStatus.find(ProofStatus::DEFAULT_OPEN_STATUS)
   end
