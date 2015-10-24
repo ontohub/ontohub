@@ -219,52 +219,54 @@ describe Proof do
     end
 
     context 'on save!' do
-      before do
-        allow(ProofExecutionWorker).to receive(:perform_async)
-      end
-
-      it 'with the proof attempts saved' do
-        proof.proof_attempts.each do |proof_attempt|
-          allow(proof_attempt).to receive(:save!).and_call_original
+      context 'stubbed' do
+        before do
+          allow(ProofExecutionWorker).to receive(:perform_async)
         end
-        proof.save!
-        proof.proof_attempts.each do |proof_attempt|
-          expect(proof_attempt).to have_received(:save!)
-        end
-      end
 
-      context 'ProofAttemptConfigurations' do
-        before { proof.save! }
-
-        it 'are created' do
+        it 'with the proof attempts saved' do
           proof.proof_attempts.each do |proof_attempt|
-            expect(proof_attempt.reload.proof_attempt_configuration).
-              not_to be(nil)
+            allow(proof_attempt).to receive(:save!).and_call_original
+          end
+          proof.save!
+          proof.proof_attempts.each do |proof_attempt|
+            expect(proof_attempt).to have_received(:save!)
           end
         end
 
-        it 'have the provers set' do
-          expect(proof.proof_attempts.
-                 map(&:reload).
-                 map(&:proof_attempt_configuration).
-                 map(&:prover).uniq).to match_array(provers)
-        end
+        context 'ProofAttemptConfigurations' do
+          before { proof.save! }
 
-        it 'have the timeout set' do
-          proof.proof_attempts.each do |proof_attempt|
-            expect(proof_attempt.reload.proof_attempt_configuration.timeout).
-              to eq(timeout)
+          it 'are created' do
+            proof.proof_attempts.each do |proof_attempt|
+              expect(proof_attempt.reload.proof_attempt_configuration).
+                not_to be(nil)
+            end
+          end
+
+          it 'have the provers set' do
+            expect(proof.proof_attempts.
+                   map(&:reload).
+                   map(&:proof_attempt_configuration).
+                   map(&:prover).uniq).to match_array(provers)
+          end
+
+          it 'have the timeout set' do
+            proof.proof_attempts.each do |proof_attempt|
+              expect(proof_attempt.reload.proof_attempt_configuration.timeout).
+                to eq(timeout)
+            end
           end
         end
-      end
 
-      it 'with the proof attempts saved' do
-        proof.proof_attempts.each do |proof_attempt|
-          allow(proof_attempt).to receive(:save!).and_call_original
-        end
-        proof.save!
-        proof.proof_attempts.each do |proof_attempt|
-          expect(proof_attempt).to have_received(:save!)
+        it 'with the proof attempts saved' do
+          proof.proof_attempts.each do |proof_attempt|
+            allow(proof_attempt).to receive(:save!).and_call_original
+          end
+          proof.save!
+          proof.proof_attempts.each do |proof_attempt|
+            expect(proof_attempt).to have_received(:save!)
+          end
         end
       end
     end
