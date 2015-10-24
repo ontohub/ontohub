@@ -30,9 +30,12 @@ end
 
 if ENV['COVERAGE']
   SimpleCov.start do
-    add_group "Models",      "app/models"
     add_group "Controllers", "app/controllers"
+    add_group "FakeRecords", "app/fake_records"
     add_group "Helpers",     "app/helpers"
+    add_group "Models",      "app/models"
+    add_group "Serializers", "app/serializers"
+    add_group "ViewHelpers", "app/viewhelpers"
     add_group "Lib",         "lib"
 
     add_filter AppRootFilter.new('config/')
