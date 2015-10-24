@@ -172,23 +172,49 @@ describe Proof do
     end
 
     context 'axiom selection' do
-      let(:params_modified) do
-        theorem_params.merge({proof: params[:proof].merge({
-          axioms: axioms.map(&:id)
-        })})
+      context 'SInE' do
+        let(:params_modified) do
+          theorem_params.merge({proof: params[:proof].merge({
+            axiom_selection_method: 'sine_axiom_selection',
+            sine_axiom_selection: {
+              commonness_threshold: 0,
+              depth_limit: -1,
+              tolerance: 1
+            }
+          })})
+        end
+
+        let(:proof_modified) { Proof.new(params_modified) }
+
+        before { proof_modified.save! }
+
+        it 'is of the correct class' do
+          expect(proof_modified.axiom_selection.specific.class).
+            to eq(SineAxiomSelection)
+        end
       end
-      let(:proof_modified) { Proof.new(params_modified) }
 
-      before { proof_modified.save! }
+      context 'manual' do
+        let(:params_modified) do
+          theorem_params.merge({proof: params[:proof].merge({
+            axioms: axioms.map(&:id)
+          })})
+        end
 
-      it 'is of the correct class' do
-        expect(proof_modified.axiom_selection.specific.class).
-          to eq(ManualAxiomSelection)
-      end
+        let(:proof_modified) { Proof.new(params_modified) }
 
-      it 'is correct' do
-        expect(proof_modified.axiom_selection.axioms).
-          to match_array(axioms)
+        before { proof_modified.save! }
+
+        it 'is of the correct class' do
+          expect(proof_modified.axiom_selection.specific.class).
+            to eq(ManualAxiomSelection)
+        end
+
+
+        it 'is correct' do
+          expect(proof_modified.axiom_selection.axioms).
+            to match_array(axioms)
+        end
       end
     end
 
