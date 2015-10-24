@@ -269,6 +269,47 @@ describe Proof do
           end
         end
       end
+
+      context 'with an error' do
+        before do
+          # perform_async won't be executed in Sidekiq inline mode because it
+          # directly calls Redis.
+          allow(ProofExecutionWorker).to receive(:perform_async) do |*args|
+            ProofExecutionWorker.new.perform(*args)
+          end
+        end
+
+        let(:params_modified) do
+          theorem_params.merge({proof: params[:proof].merge({
+            prover_ids: [provers.first.id.to_s, '']
+          })})
+        end
+        let(:proof_modified) { Proof.new(params_modified) }
+
+        context 'invalid JSON response' do
+          before do
+            allow(Hets).to receive(:prove_via_api).
+              and_return(StringIO.new('{"invalid_json": ]'))
+          end
+
+          it 'raises an error' do
+            expect { proof_modified.save! }.
+              to raise_error(Hets::JSONParser::ParserError)
+          end
+        end
+
+        context '"nothing to prove" response' do
+          before do
+            allow(Hets).to receive(:prove_via_api).
+              and_return(StringIO.new('nothing to prove'))
+          end
+
+          it 'raises an error' do
+            expect { proof_modified.save! }.
+              to raise_error(Hets::Errors::HetsFileError)
+          end
+        end
+      end
     end
   end
 end
