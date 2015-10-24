@@ -73,12 +73,4 @@ class ProofAttempt < ActiveRecord::Base
     available = theorem.ontology.axioms
     selected.any? && selected.count < available.count
   end
-
-  protected
-
-  def prove_options_from_configuration
-    pac = proof_attempt_configuration
-    Hets::ProveOptions.new({prover: pac.prover,
-                            timeout: pac.timeout})
-  end
 end
