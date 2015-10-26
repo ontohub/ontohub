@@ -71,6 +71,28 @@ describe HetsInstance do
                      headers: {}})
       end
 
+      context 'error on execution' do
+        let!(:hets_instance) { create :hets_instance, state: 'free' }
+
+        it 're-raises the error' do
+          expect do
+            HetsInstance.with_instance! { raise 'my_error' }
+          end.to raise_error('my_error')
+        end
+
+        it 'frees the instance' do
+          chosen = nil
+          begin
+            HetsInstance.with_instance! do |instance|
+              chosen = instance
+              raise 'my_error'
+            end
+          rescue StandardError
+            expect(chosen.state).to eq('free')
+          end
+        end
+      end
+
       context 'free, force-free and busy are available' do
         let!(:free) { create :hets_instance, state: 'free' }
         let!(:force_free) { create :hets_instance, state: 'force-free' }
