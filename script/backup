@@ -264,7 +264,7 @@ To continue, I try the command again using sudo.
     end
 
     def escape_arguments(args)
-      ([args[0]] + *args[1..-1].map { |a| %("#{a}")}).join(' ')
+      ([args[0]] + *args[1..-1].map { |a| %("#{a.gsub('"', '\"')}")}).join(' ')
     end
 
     def maintenance_file
