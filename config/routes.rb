@@ -143,7 +143,7 @@ MMT-query-string.
   # Subsites for ontologies
   ontology_subsites = %i(
     comments metadata graphs
-    projects categories tasks
+    projects tasks
   )
 
   ontology_api_subsites = %i(
@@ -536,7 +536,6 @@ is determined according to the id.
 
   resources :mappings, only: :index
 
-  resources :categories, :only => [:index, :show]
   resources :projects
   resources :tasks
   resources :license_models
@@ -619,7 +618,6 @@ is determined according to the id.
       resources :ontology_versions, :only => [:index, :show, :new, :create], :path => 'versions' do
         resource :oops_request, :only => [:show, :create]
       end
-      resources :categories
       resources :tasks
       resources :license_models
       resources :tools
