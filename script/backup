@@ -57,6 +57,9 @@ module Backup
 
     DATA_DIRS = %w(repositories git_daemon)
 
+    # Use 'sudo' on most systems
+    SUDO_BINARY = '+'
+
     attr_reader :db_name, :data_root, :backup_root, :backup_instance_dir
     attr_reader :dry_run, :verbose, :sql_dump_as_db_user
 
@@ -246,12 +249,18 @@ To continue, I try the command again using sudo.
       out = args.join(' ')
       puts out if verbose
       if !dry_run
-        if user
-          system(['su', '-', user, '-c', escape_arguments(args)])
+        if user == 'root'
+          system([sudo, *args])
+        elsif user
+          system([sudo, 'su', '-', user, '-c', escape_arguments(args)])
         else
           system(*args)
         end
       end
+    end
+
+    def sudo
+      SUDO_BINARY
     end
 
     def escape_arguments(args)
