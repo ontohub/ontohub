@@ -162,8 +162,6 @@ module NavigationHelper
     [
       ['Projects', locid_for(resource, :projects),
        :projects],
-      ['Categories', locid_for(resource, :categories),
-       :categories],
       ['Tasks', locid_for(resource, :tasks),
        :tasks],
       ['License Models', locid_for(resource, :license_models),
