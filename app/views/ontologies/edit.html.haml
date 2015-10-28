@@ -4,9 +4,6 @@
 
 = simple_form_for resource, url: resource_path(resource) do |f|
   = f.input :name, as: :string
-  = f.label :categories
-  .col-lg-10.well
-    = render partial: 'categories', locals: {hide_well: true}
   = f.input :ontology_type_id, collection: OntologyType.all
   = f.association :formality_level, collection: FormalityLevel.all, as: :radio_buttons
   = f.association :projects, collection: Project.all, as: :check_boxes
