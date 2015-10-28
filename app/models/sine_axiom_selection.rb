@@ -24,7 +24,7 @@ class SineAxiomSelection < ActiveRecord::Base
     Semaphore.exclusively(lock_key) do
       unless finished
         cleanup
-        preprocess
+        preprocess unless other_finished_sine_axiom_selections.any?
         select_axioms
         mark_as_finished!
       end
@@ -66,9 +66,8 @@ class SineAxiomSelection < ActiveRecord::Base
 
   # Number of axioms in which the symbol occurs
   def calculate_commonness(symbol)
-    ssc = SineSymbolCommonness.
-      where(symbol_id: symbol.id,
-            axiom_selection_id: axiom_selection.id).first_or_initialize
+    ssc = sine_symbol_commonnesses.
+      where(symbol_id: symbol.id).first_or_initialize
     unless ssc.commonness
       ssc.commonness = query_commonness(symbol)
       ssc.save!
@@ -88,10 +87,9 @@ class SineAxiomSelection < ActiveRecord::Base
   end
 
   def calculate_symbol_axiom_trigger(symbol, axiom)
-    ssat = SineSymbolAxiomTrigger.
+    ssat = sine_symbol_axiom_triggers.
       where(symbol_id: symbol.id,
-            axiom_id: axiom.id,
-            axiom_selection_id: axiom_selection.id).first_or_initialize
+            axiom_id: axiom.id).first_or_initialize
     unless ssat.tolerance
       ssat.tolerance = needed_tolerance(symbol, axiom)
       ssat.save!
@@ -113,6 +111,14 @@ class SineAxiomSelection < ActiveRecord::Base
     least_common_symbol(axiom).sine_symbol_commonness.commonness
   end
 
+  def other_finished_sine_axiom_selections
+    goal.proof_attempts.includes(:axiom_selection).map(&:axiom_selection).
+      select do |as|
+        as.specific.class == self.class && as.finished &&
+          as.id != axiom_selection.id
+      end.map(&:specific)
+  end
+
   def select_axioms
     @selected_axioms = triggered_axioms_by_commonness_threshold.to_a
     select_new_axioms(goal, 0)
@@ -123,7 +129,7 @@ class SineAxiomSelection < ActiveRecord::Base
     return if depth_limit_reached?(current_depth)
     new_axioms = select_axioms_by_sentence(sentence) - @selected_axioms
     @selected_axioms += new_axioms
-    new_axioms.each { |axiom| select_new_axioms(axiom, current_depth + 1) }
+    new_axioms.each { |axiom| select_new_axioms(axiom, current_depth + 2) }
   end
 
   def select_axioms_by_sentence(sentence)

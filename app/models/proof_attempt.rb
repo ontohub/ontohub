@@ -8,6 +8,7 @@ class ProofAttempt < ActiveRecord::Base
   belongs_to :proof_status
   belongs_to :prover
   belongs_to :proof_attempt_configuration
+  has_one :axiom_selection, through: :proof_attempt_configuration
   has_one :prover_output
   has_one :tactic_script
   has_many :generated_axioms, dependent: :destroy

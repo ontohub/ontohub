@@ -97,7 +97,7 @@ describe SineAxiomSelection do
     end
   end
 
-  context 'parameter influence' do
+  context 'calling SInE' do
     setup_hets
     let(:repository) { create :repository }
 
@@ -128,6 +128,33 @@ describe SineAxiomSelection do
       pac.axiom_selection = subject.axiom_selection
       subject.axiom_selection.proof_attempt_configurations = [pac]
       pac
+    end
+
+    context 'not preprocessing if already preprocessed once' do
+      let(:proof_attempt_previous) { create :proof_attempt, theorem: theorem }
+      let(:sine_axiom_selection_previous) { create :sine_axiom_selection }
+      let!(:proof_attempt_configuration_previous) do
+        pac = proof_attempt.proof_attempt_configuration
+        pac.axiom_selection = subject.axiom_selection
+        sine_axiom_selection_previous.axiom_selection.
+          proof_attempt_configurations = [pac]
+        pac
+      end
+
+      before do
+        sine_axiom_selection_previous.call
+        allow(subject).to receive(:preprocess).and_call_original
+      end
+
+      it 'not calling preprocess' do
+        subject.call
+        expect(subject).not_to have_received(:preprocess)
+      end
+
+      it 'selecting axioms anyway' do
+        subject.call
+        expect(subject.axioms).not_to be_empty
+      end
     end
 
     context 'commonness threshold' do
