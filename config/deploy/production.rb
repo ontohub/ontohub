@@ -1,3 +1,3 @@
 set :stage, :production
 
-server Settings.hostname, roles: %w{web app db}
+server "develop.ontohub.org", roles: %w{web app db}

@@ -50,7 +50,7 @@ gem 'haml-rails', '~> 0.4'
 # https://github.com/railsconfig/rails_config/pull/103
 gem 'rails_config', github: 'dtaniwaki/rails_config', ref: 'merge-array-option'
 
-#provides  correct indefinite article 
+#provides  correct indefinite article
 gem 'indefinite_article', '~> 0.2.0'
 
 # Fancy Forms
@@ -184,7 +184,9 @@ end
 group :deployment do
   gem 'capistrano', '~> 3.4.0'
   gem 'capistrano-rails', '~> 1.1.1'
-  gem 'capistrano-rvm', '~> 0.1.1'
+  gem 'capistrano3-puma'
+  gem 'capistrano-rbenv', '~> 2.0'
+
 end
 
 group :documentation do
