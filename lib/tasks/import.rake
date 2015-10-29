@@ -41,7 +41,7 @@ namespace :import do
 
   desc 'Import logic graph.'
   task :logicgraph => :environment do
-    RakeHelper.import_logicgraph(ENV['EMAIL'])
+    RakeHelper::LogicGraph.import(ENV['EMAIL'])
   end
 
   desc 'Import keywords starting with P.'
