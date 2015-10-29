@@ -15,7 +15,8 @@ require 'capistrano/deploy'
 #   https://github.com/capistrano/rails/tree/master/assets
 #   https://github.com/capistrano/rails/tree/master/migrations
 #
-require 'capistrano/rvm'
+#require 'capistrano/rvm'
+require 'capistrano/rbenv'
 require 'capistrano/rails'
 
 # Application Settings
