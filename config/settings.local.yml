@@ -1,0 +1,54 @@
+
+# yeah, redundant, error prone, not smart at all ...
+name: Ontohub
+
+footer:
+  - text: © 2012-2015 Universität Magdeburg and Universität Bremen
+  - text: About
+    href: http://wiki.ontohub.org/
+  - text: Sources
+    href: https://github.com/ontohub/ontohub
+
+paths:
+  data: /data/git
+
+hets:
+  executable_path: /usr/bin/hets-server
+  instance_urls:
+    - http://localhost:8000
+    - http://localhost:8001
+    - http://localhost:8002
+    - http://localhost:8003
+
+
+git:
+ verify_url: http://localhost:3000
+
+asynchronous_execution:
+  log_level: WARN
+
+# Current (2015) debian/ubuntu sendmail package is a horror/huge pain in the
+# ass and awefully outdated!!! NEVER use this trash package!!!
+# So as long as our own _recent_ sendmail package is installed,
+# :sendmail might be ok. But :smtp aka direct delivery is often better!
+action_mailer:
+  delivery_method: :smtp
+  default_url_options:
+    host: tc.iws.cs.ovgu.de
+  smtp_settings:
+    enable_starttls_auto: false
+    domain: tc.iws.cs.ovgu.de
+    port: 25
+
+exception_notifier:
+  enabled: false
+  email_prefix: "[ontohub ex]"
+  sender_address: webservd@ontohub.org
+  exception_recipients:
+    - ontohub-exceptions-l@ovgu.de
+
+hostname: tc.iws.cs.ovgu.de
+
+email: noreply@tc.iws.cs.ovgu.de
+
+secret_token: 943405233d66fceb7388140780ee63d8e2b9a938624ace5f8adbc43487d0fa27ae3e8f3d666e91302a8b5862aa5479d3fd8fd048a8b2db00b5ad652934b371ca
