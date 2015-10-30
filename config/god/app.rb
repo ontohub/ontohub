@@ -16,6 +16,9 @@ SidekiqWorkers.configure do
       watch 'hets', 1
     end
 
+    # one worker for hets load balancing
+    watch 'hets_load_balancing', 1
+
     # one worker for the default queue
     watch 'default', 5
 
@@ -25,7 +28,7 @@ SidekiqWorkers.configure do
     watch 'priority_push', 1
   else
     # one worker for all queues
-    watch %w(hets default sequential priority_push), 1
+    watch %w(hets hets_load_balancing default sequential priority_push), 1
   end
 end
 
