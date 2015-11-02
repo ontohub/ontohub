@@ -207,3 +207,13 @@ Then(/^I should not see the ontology$/) do
     page.should_not have_content('OntologyThree')
   end
 end
+
+Given(/^there is an ontology with a category$/) do
+  @ont_with_cat = FactoryGirl.create :ontology
+  @cat = FactoryGirl.create :category
+  @ont_with_cat.categories << @cat
+end
+
+Then(/^I should see all ontologies with a category$/) do
+  page.should have_content(@ont_with_cat.name)
+end
