@@ -120,3 +120,8 @@ Scenario: I want to search for a not existing ontology in a repository
   And I should not see ontologies from other repositories
   When I type in a ontology name I'm searching for which is not existing
   Then I should not see the ontology
+
+Scenario: I want to search for a ontology with a category
+  Given there is an ontology with a category
+  When I open the ontologies overview page
+  Then I should see all ontologies with a category
