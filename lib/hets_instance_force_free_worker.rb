@@ -1,5 +1,5 @@
 class HetsInstanceForceFreeWorker < BaseWorker
-  sidekiq_options queue: 'default'
+  sidekiq_options queue: 'hets_load_balancing'
 
   def perform(hets_instance_id)
     Semaphore.exclusively(HetsInstance::MUTEX_KEY) do
