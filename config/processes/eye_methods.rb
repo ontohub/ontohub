@@ -40,12 +40,13 @@ def hets_process(proxy, port)
     # Give the process some time for startup.
     start_grace 2.seconds
 
-    # Ensure the CPU is below 30% the last 5 times checked.
-    # check :cpu, every: 30.seconds, below: 100, times: 5
-
-    # Ensure that the used memory is below the limit
-    # at least 2 out of the last 5 times checked.
-    # check :memory, every: 30.seconds, below: 3000.megabytes, times: [2, 5]
+    # Ensure that Hets responds
+    check :http,
+      url: "http://localhost:#{port}/version",
+      pattern: /\Av0.99, \d+\z/,
+      every: 30.seconds,
+      times: 1,
+      timeout: 2.seconds
   end
 end
 
