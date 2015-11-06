@@ -89,8 +89,8 @@ gem 'acts_as_tree', '~> 2.2.0'
 gem "rest-client", '~> 1.8.0'
 
 # Background-Jobs
-gem 'sidekiq', '~> 3.4.2'
-gem 'sidetiq', '~> 0.6.3'
+gem 'sidekiq', '~> 3.5.3'
+gem 'sidetiq', github: 'PaulMest/sidetiq', ref: 'd88f9e483affcbadbd9e8b98b4a0a9518933887a'
 gem 'sidekiq-failures', '~> 0.4.5'
 gem 'sidekiq-status', '~> 0.5.4'
 gem 'sinatra', '~> 1.4.5', require: false, group: [:development, :production]
