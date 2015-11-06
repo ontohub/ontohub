@@ -177,7 +177,7 @@ end
 group :production do
   # puma is __the only exception__ for which we don't specify a version.
   gem 'puma'
-  gem 'god', '~> 0.13.4'
+  gem 'eye', '~> 0.8.pre2'
   gem 'exception_notification', '~> 4.1.0'
 end
 
