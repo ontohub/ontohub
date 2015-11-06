@@ -19,10 +19,10 @@ def sidekiq_process(proxy, name, queues, concurrency)
     # Give the process some time for startup. Booting Rails can take some time.
     start_grace 10.seconds
 
-    # Ensure the CPU is below 30% the last 5 times checked.
-    check :cpu, every: 30.seconds, below: 100, times: 5
+    # Ensure the CPU is below 100% the last 5 times checked.
+    check :cpu, every: 5.minutes, below: 100, times: 5
     # Ensure that the used memory is below the limit the last 5 times checked.
-    check :memory, every: 30.seconds, below: 300.megabytes, times: 5
+    check :memory, every: 5.minutes, below: 2048.megabytes, times: 5
   end
 end
 
