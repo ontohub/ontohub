@@ -90,6 +90,8 @@ gem "rest-client", '~> 1.8.0'
 
 # Background-Jobs
 gem 'sidekiq', '~> 3.5.3'
+# Originally, sidetiq is not compatible to celluloid 0.17.2. This fork fixes it.
+# The ref is given to ensure that no other (possibly breaking) changes are taken.
 gem 'sidetiq', github: 'PaulMest/sidetiq', ref: 'd88f9e483affcbadbd9e8b98b4a0a9518933887a'
 gem 'sidekiq-failures', '~> 0.4.5'
 gem 'sidekiq-status', '~> 0.5.4'
