@@ -83,7 +83,7 @@ gem 'kaminari', '~> 0.16.1'
 gem "strip_attributes", "~> 1.0"
 
 # For distributed ontologies
-gem 'acts_as_tree', '~> 2.2.0'
+gem 'acts_as_tree', '~> 2.3.0'
 
 # HTTP Client
 gem "rest-client", '~> 1.8.0'
