@@ -143,7 +143,7 @@ group :test do
   gem "factory_girl_rails", '~> 4.5.0'
 
   # Required for integration tests
-  gem 'capybara', '~> 2.4.4'
+  gem 'capybara', '~> 2.5.0'
   gem 'poltergeist', '~> 1.6.0'
   gem 'launchy', '~> 2.4.3'
 
