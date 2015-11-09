@@ -95,6 +95,7 @@ has a minimal Hets version of #{Hets.minimal_version_string}
 
   def finish_work!
     reload
+    Sidekiq::Status.unschedule(@force_free_job_id)
     self.queue_size -= 1 if queue_size > 0
     if queue_size > 0
       set_busy!
@@ -118,7 +119,8 @@ has a minimal Hets version of #{Hets.minimal_version_string}
 
   def set_busy!
     self.state = 'busy'
-    HetsInstanceForceFreeWorker.perform_in(FORCE_FREE_WAITING_PERIOD, id)
+    @force_free_job_id =
+      HetsInstanceForceFreeWorker.perform_in(FORCE_FREE_WAITING_PERIOD, id)
     save!
   end
 

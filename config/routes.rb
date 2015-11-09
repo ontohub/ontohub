@@ -1,4 +1,5 @@
 require 'sidekiq/web' if defined? Sidekiq
+require 'sidekiq-status/web' if defined? Sidekiq::Status
 require Rails.root.join('lib', 'router_constraints.rb')
 
 Specroutes.define(Ontohub::Application.routes) do
