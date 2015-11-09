@@ -170,7 +170,7 @@ group :development, :test do
   gem 'binding_of_caller', '~> 0.7.2'
   # i18n-tasks >= 0.9.0 is not compatible to rails 3/rdf
   gem 'i18n-tasks', '~> 0.8.3'
-  gem 'pry-byebug', '~> 3.2.0'
+  gem 'pry-byebug', '~> 3.3.0'
 
   # Recording of HTTP Requests
   gem "vcr", '~> 2.9.3', require: false
