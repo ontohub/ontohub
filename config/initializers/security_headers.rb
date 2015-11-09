@@ -6,8 +6,16 @@
   # By default, load resources only from own origin.
   # For CSS, allow styles from style elements and attributes for GWT.
   config.csp                    = {
-    default_src: "self",
+    default_src: "'self'",
     style_src:   "'self' 'unsafe-inline'",
+    script_src: "'self'",
+    frame_src: "'self'",
+    img_src: "'self'",
+    connect_src: "'self'",
+    font_src: "'self'",
+    media_src: "'self'",
+    object_src: "'self'",
+    child_src: "'self'",
     disable_chrome_extension: true,
   }
 end
