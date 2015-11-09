@@ -173,7 +173,7 @@ group :development, :test do
   gem 'pry-byebug', '~> 3.3.0'
 
   # Recording of HTTP Requests
-  gem "vcr", '~> 2.9.3', require: false
+  gem "vcr", '~> 3.0.0', require: false
   gem "webmock", '~> 1.22.3', require: false
 end
 
