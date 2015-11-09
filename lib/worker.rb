@@ -20,8 +20,11 @@ class Worker < BaseWorker
     when 'record'
       id = args.shift
       klass = clazz.constantize
-      TimeoutWorker.start_timeout_clock(id) if klass == OntologyVersion
+      if klass == OntologyVersion
+        timeout_job_id = TimeoutWorker.start_timeout_clock(id)
+      end
       klass.unscoped.find(id).send method, *args
+      Sidekiq::Status.unschedule(timeout_job_id) if timeout_job_id
     else
       raise ArgumentError, "unsupported type: #{type}"
     end

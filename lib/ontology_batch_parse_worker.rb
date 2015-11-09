@@ -22,7 +22,7 @@ class OntologyBatchParseWorker < BaseWorker
     return if versions.empty?
 
     version_id, opts = versions.head
-    TimeoutWorker.start_timeout_clock(version_id)
+    timeout_job_id = TimeoutWorker.start_timeout_clock(version_id)
 
     version = OntologyVersion.find(version_id)
 
@@ -31,6 +31,7 @@ class OntologyBatchParseWorker < BaseWorker
     end
 
     version.parse
+    Sidekiq::Status.unschedule(timeout_job_id)
   rescue ConcurrencyBalancer::AlreadyProcessingError
     done = handle_concurrency_issue
   ensure
