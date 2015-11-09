@@ -89,8 +89,10 @@ gem 'acts_as_tree', '~> 2.2.0'
 gem "rest-client", '~> 1.8.0'
 
 # Background-Jobs
-gem 'sidekiq', '~> 3.4.2'
-gem 'sidetiq', '~> 0.6.3'
+gem 'sidekiq', '~> 3.5.3'
+# Originally, sidetiq is not compatible to celluloid 0.17.2. This fork fixes it.
+# The ref is given to ensure that no other (possibly breaking) changes are taken.
+gem 'sidetiq', github: 'PaulMest/sidetiq', ref: 'd88f9e483affcbadbd9e8b98b4a0a9518933887a'
 gem 'sidekiq-failures', '~> 0.4.5'
 gem 'sidekiq-status', '~> 0.5.4'
 gem 'sinatra', '~> 1.4.5', require: false, group: [:development, :production]
@@ -177,7 +179,7 @@ end
 group :production do
   # puma is __the only exception__ for which we don't specify a version.
   gem 'puma'
-  gem 'god', '~> 0.13.4'
+  gem 'eye', '~> 0.8.pre2'
   gem 'exception_notification', '~> 4.1.0'
 end
 
