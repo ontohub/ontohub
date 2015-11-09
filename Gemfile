@@ -21,14 +21,14 @@ gem 'redis-semaphore', '~> 0.2.4'
 # in production environments by default.
 group :assets do
   gem 'jstree-rails', github: 'tristanm/jstree-rails'
-  # sass-rails >= 4.0 is not compativle with rails 3
+  # sass-rails >= 4.0 is not compativle to rails 3
   gem 'sass-rails',     '~> 3.2.6'
   gem 'bootstrap-sass', '~> 3.3.3'
-  # coffee-rails > 3.2 is not compatible with rails 3
+  # coffee-rails > 3.2 is not compatible to rails 3
   gem 'coffee-rails',   '~> 3.2.2'
   gem 'compass',        '~> 1.0.3'
   gem 'font-awesome-sass', '~> 4.4.0'
-  # jquery-rails > 3.1 is not compatible with rails 3
+  # jquery-rails > 3.1 is not compatible to rails 3
   gem 'jquery-rails', '~> 3.1.3'
   gem 'jquery-ui-rails', '~> 5.0.5'
   gem 'momentjs-rails', '~> 2.10.2'
@@ -41,7 +41,7 @@ group :assets do
   gem 'bootstrap-select-rails', '~> 1.6.3'
 end
 
-# Newer versions than 0.4 are not compatible with rails 3.2
+# Newer versions than 0.4 are not compatible to rails 3.2
 gem 'haml-rails', '~> 0.4'
 
 # Project configuration
@@ -50,11 +50,11 @@ gem 'haml-rails', '~> 0.4'
 # https://github.com/railsconfig/rails_config/pull/103
 gem 'rails_config', github: 'dtaniwaki/rails_config', ref: 'merge-array-option'
 
-#provides  correct indefinite article 
+# Provides  correct indefinite article
 gem 'indefinite_article', '~> 0.2.0'
 
 # Fancy Forms
-# simple_form >= 3.0 is not compatible with rails 3
+# simple_form >= 3.0 is not compatible to rails 3
 gem 'simple_form', '~> 2.1'
 
 # Inherited Resources
@@ -121,7 +121,7 @@ gem 'specroutes', github: '0robustus1/specroutes'
 # gem 'ancestry'
 
 # Use dagnabit to model categories
-# Newer versions than 3.0.x are not compatible with rails 3.2
+# Newer versions than 3.0.x are not compatible to rails 3.2
 gem 'dagnabit', '~> 3.0.1'
 
 # Migrate data in separate tasks
