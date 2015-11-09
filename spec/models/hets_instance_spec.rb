@@ -47,6 +47,32 @@ describe HetsInstance do
         expect { HetsInstance.choose! }.
           to raise_error(HetsInstance::NoSelectableHetsInstanceError)
       end
+
+      context 'try again re-checks up-state' do
+        before do
+          allow(HetsInstance).to receive(:choose!).and_call_original
+          allow_any_instance_of(HetsInstance).
+            to receive(:set_up_state!).and_call_original
+          expect_any_instance_of(HetsInstance).
+            to receive(:set_up_state!).exactly(HetsInstance.count).times
+          begin
+            HetsInstance.choose!
+          rescue HetsInstance::NoSelectableHetsInstanceError
+          end
+        end
+
+        it 'should have tried again' do
+          expect(HetsInstance).to have_received(:choose!).with(no_args)
+        end
+
+        it 'should have not tried a second time' do
+          expect(HetsInstance).to have_received(:choose!).with(try_again: false)
+        end
+
+        it 'should have tried twice' do
+          expect(HetsInstance).to have_received(:choose!).twice
+        end
+      end
     end
 
     context 'and there is an acceptable hets instance' do

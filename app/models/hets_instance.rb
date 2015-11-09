@@ -60,13 +60,21 @@ has a minimal Hets version of #{Hets.minimal_version_string}
     result
   end
 
-  def self.choose!
+  def self.choose!(try_again: true)
     raise NoRegisteredHetsInstanceError.new unless any?
+    instance = nil
     Semaphore.exclusively(MUTEX_KEY) do
       instance = active.free.first
       instance ||= increment_queue! { active.force_free.load_balancing_order.first }
       instance ||= increment_queue! { active.busy.load_balancing_order.first }
       instance.try(:set_busy!)
+    end
+    if instance
+      instance
+    elsif try_again
+      find_each { |hets_instance| hets_instance.send(:set_up_state!) }
+      choose!(try_again: false)
+    else
       instance or raise NoSelectableHetsInstanceError.new
     end
   end
