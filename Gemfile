@@ -131,7 +131,7 @@ gem 'data_migrate', '~> 1.2.0'
 gem 'acts_as_relation', '~> 0.1.3'
 
 # Clean the database - especially needed in the seeds
-gem 'database_cleaner', '~> 1.4.1'
+gem 'database_cleaner', '~> 1.5.1'
 
 group :test do
   gem 'mocha', '~> 1.1.0', require: false
