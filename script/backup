@@ -1,3 +1,5 @@
+#!/local/usr/ruby/shims/ruby
+# The first line is for deployment machines only. For local machines, use:
 #!/usr/bin/env ruby
 
 # You can find more extensive documentation of this script at
@@ -64,13 +66,15 @@ module Backup
     attr_reader :dry_run, :verbose, :sql_dump_as_db_user
 
     def initialize(db_name, data_root, backup_root,
-      verbose: false, dry_run: true, sql_dump_as_db_user: nil, user: nil)
+      verbose: false, dry_run: true, sql_dump_as_db_user: nil,
+      user: nil, group: nil)
       @db_name = db_name
       @backup_root = Pathname.new(backup_root)
       @data_root = Pathname.new(data_root)
       @data_root_basename = @data_root.basename.to_s
       @data_dirs = DATA_DIRS.map { |dir| File.join(@data_root_basename, dir) }
       @user = user
+      @group = group
 
       @dry_run = dry_run
       @verbose = verbose
@@ -125,13 +129,15 @@ module Backup
       puts "FileUtils.mkdir_p #{backup_instance_dir}" if verbose
       # Create directory even in dry run to let the script continue.
       FileUtils.mkdir_p(backup_instance_dir)
+      puts "FileUtils.chown #{@user} #{@group} #{backup_instance_dir}" if verbose
+      FileUtils.chown(@user, @group, backup_instance_dir)
     end
 
     def create_sql_dump
       puts 'Creating SQL dump...'
       Dir.chdir(backup_instance_dir) do
-        exec('pg_dump', *pg_user_switch, '-Fc', db_name, '-f', SQL_DUMP_FILE,
-             user: @user)
+        exec('pg_dump', *pg_user_switch, '-Fc', db_name,
+             '-f', backup_instance_dir.join(SQL_DUMP_FILE), user: @user)
       end
     end
 
@@ -245,16 +251,22 @@ To continue, I try the command again using sudo.
 
     # Execute a command as the given user.
     def exec(*args, user: nil)
-      puts "[executing next command in #{Dir.getwd}]" if verbose
+      print "[executing next command in #{Dir.getwd}" if verbose
+      print " as user #{user}" if verbose && user
+	  puts "]" if verbose
+
       out = args.join(' ')
       puts out if verbose
       if !dry_run
         if user == 'root'
-          system([sudo, *args])
+          exec_system(*[sudo, *args])
         elsif user
-          system([sudo, 'su', '-', user, '-c', escape_arguments(args)])
+          # This looks strange because of the double sudo.
+          # It is needed on our deployment machines to get the environment right.
+          exec_system(*['+', 'sudo', '-u', user, 'bash', '-c',
+                        "cd #{Dir.getwd} && #{escape_arguments(args)}"])
         else
-          system(*args)
+          exec_system(*args)
         end
       end
     end
@@ -263,8 +275,20 @@ To continue, I try the command again using sudo.
       SUDO_BINARY
     end
 
+    def exec_system(*args)
+      # puts args.join(' ') # For debugging
+      system(*args)
+    end
+
     def escape_arguments(args)
-      ([args[0]] + *args[1..-1].map { |a| %("#{a.gsub('"', '\"')}")}).join(' ')
+      rest = args[1..-1].map do |arg|
+        if arg.to_s.include?(' ')
+          %("#{arg.gsub('"', '\"')}")
+        else
+          arg
+        end
+      end
+      ([args[0]] + rest).join(' ')
     end
 
     def maintenance_file
@@ -306,6 +330,7 @@ RAILS_ROOT = Pathname.new(__FILE__).dirname.join('..')
 BACKUP_ROOT_PRODUCTION = '/local/home/ontohub/ontohub_data_backup'
 
 USER = 'ontohub'
+GROUP = 'webservd'
 
 DATABASE =
   if on_development_system?(RAILS_ROOT)
@@ -323,7 +348,7 @@ BACKUP_ROOT =
 
 backup = Backup::Backup.new(DATABASE, data_root(RAILS_ROOT), BACKUP_ROOT,
   sql_dump_as_db_user: on_development_system?(RAILS_ROOT) ? 'postgres' : 'ontohub',
-  user: USER,
+  user: USER, group: GROUP,
   dry_run: false, verbose: true)
 
 case ARGV.first
