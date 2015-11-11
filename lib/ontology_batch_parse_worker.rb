@@ -31,10 +31,10 @@ class OntologyBatchParseWorker < BaseWorker
     end
 
     version.parse
-    Sidekiq::Status.unschedule(timeout_job_id)
   rescue ConcurrencyBalancer::AlreadyProcessingError
     done = handle_concurrency_issue
   ensure
+    Sidekiq::Status.unschedule(timeout_job_id) if timeout_job_id
     self.class.perform_async_with_priority(@queue,
       versions.tail, try_count: try_count) unless versions.tail.empty? || done
   end

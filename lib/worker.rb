@@ -24,12 +24,13 @@ class Worker < BaseWorker
         timeout_job_id = TimeoutWorker.start_timeout_clock(id)
       end
       klass.unscoped.find(id).send method, *args
-      Sidekiq::Status.unschedule(timeout_job_id) if timeout_job_id
     else
       raise ArgumentError, "unsupported type: #{type}"
     end
   rescue ConcurrencyBalancer::AlreadyProcessingError
     handle_concurrency_issue
+  ensure
+    Sidekiq::Status.unschedule(timeout_job_id) if timeout_job_id
   end
 
   def handle_concurrency_issue
