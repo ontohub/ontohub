@@ -4,7 +4,6 @@ class SineFresymAxiomSelection < ActiveRecord::Base
 
   MINIMUM_SUPPORT_TYPES = %w(relative absolute)
 
-  has_many :sine_fresym_symbol_sets, dependent: :destroy
   has_many :symbols, through: :sine_fresym_symbol_sets
   has_many :sine_symbol_commonnesses, through: :symbols
 
@@ -26,14 +25,16 @@ class SineFresymAxiomSelection < ActiveRecord::Base
 
   validates_inclusion_of :minimum_support_type, in: MINIMUM_SUPPORT_TYPES
 
+  delegate :frequent_symbol_sets, :frequent_symbol_sets=, to: :axiom_selection
+
   protected
 
   def preprocess
     super
-    calculate_frequent_symbolsets
+    calculate_frequent_symbol_sets
   end
 
-  def calculate_frequent_symbolsets
+  def calculate_frequent_symbol_sets
     fpgrowth = FISMFPGrowth.new(transactions,
                                 target_type: :maximal_item_sets,
                                 minimum_support: minimum_support,
@@ -45,7 +46,7 @@ class SineFresymAxiomSelection < ActiveRecord::Base
 
   def cleanup
     super
-    sine_fresym_symbol_sets.each(&:destroy)
+    frequent_symbol_sets.each(&:destroy)
   end
 
   def transactions
@@ -61,17 +62,17 @@ class SineFresymAxiomSelection < ActiveRecord::Base
   def save_symbol_id_sets(symbol_id_sets)
     transaction do
       symbol_id_sets.each do |symbol_id_set|
-        sfs_set = SineFresymSymbolSet.new
-        sfs_set.sine_fresym_axiom_selection = self
-        sfs_set.sine_fresym_symbols =
+        fss_set = FrequentSymbolSet.new
+        fss_set.axiom_selection = axiom_selection
+        fss_set.frequent_symbols =
           symbol_id_set.map do |symbol_id|
-            sfs = SineFresymSymbol.new
-            sfs.sine_fresym_symbol_set = sfs_set
-            sfs.symbol_id = symbol_id
-            sfs.save!
-            sfs
+            fs = FrequentSymbol.new
+            fs.frequent_symbol_set = fss_set
+            fs.symbol_id = symbol_id
+            fs.save!
+            fs
           end
-        sfs_set.save!
+        fss_set.save!
       end
     end
   end
@@ -99,10 +100,10 @@ class SineFresymAxiomSelection < ActiveRecord::Base
   # Most common symbols of those frequent symbol sets
   # that include the given symbol.
   def trigger_enabled_symbols(symbol)
-    sine_fresym_symbol_sets.
-      includes(:sine_fresym_symbols).
+    frequent_symbol_sets.
+      includes(:frequent_symbols).
       includes(:sine_symbol_commonnesses).
-      where('sine_fresym_symbols.symbol_id' => symbol.id).
+      where('frequent_symbols.symbol_id' => symbol.id).
       map(&:sine_symbol_commonnesses).
       map do |sscs|
         sscs.select do |ssc|
