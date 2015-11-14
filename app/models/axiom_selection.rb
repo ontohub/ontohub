@@ -13,6 +13,9 @@ class AxiomSelection < ActiveRecord::Base
                           association_foreign_key: 'sentence_id',
                           join_table: "axioms_axiom_selections"
 
+  # Frequent symbol sets for frequent symbol set mining axiom selections:
+  has_many :frequent_symbol_sets, dependent: :destroy
+
   def initialize(*args)
     super(*args)
     self.finished = false
