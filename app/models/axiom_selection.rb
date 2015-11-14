@@ -1,7 +1,8 @@
 class AxiomSelection < ActiveRecord::Base
   METHODS = %i(manual_axiom_selection
                sine_axiom_selection
-               sine_fresym_axiom_selection)
+               sine_fresym_axiom_selection
+               frequent_symbol_set_mining_axiom_selection)
 
   acts_as_superclass
 
@@ -45,6 +46,13 @@ class AxiomSelection < ActiveRecord::Base
   # but many jobs may call it in parallel.
   def lock_key
     "#{self.class.to_s.underscore.dasherize}-#{id}"
+  end
+
+  def other_finished_axiom_selections(klass)
+    goal.proof_attempts.includes(:axiom_selection).map(&:axiom_selection).
+      select do |as|
+        as.specific.class == klass && as.finished && as.id != id
+      end.map(&:specific)
   end
 
   protected

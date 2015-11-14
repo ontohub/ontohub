@@ -49,4 +49,12 @@ FactoryGirl.define do
     minimum_support_type { 'absolute' }
     symbol_set_tolerance { 1.0 }
   end
+
+  factory :frequent_symbol_set_mining_axiom_selection do
+    depth_limit { -1 }
+    minimal_symbol_set_size { 2 }
+    minimum_support { 1 }
+    minimum_support_type { 'absolute' }
+    short_axiom_tolerance { 0 }
+  end
 end

@@ -169,6 +169,12 @@ class Proof < FakeRecord
       SineFresymAxiomSelection.new(opts[:proof][:sine_fresym_axiom_selection])
   end
 
+  def build_frequent_symbol_set_mining_axiom_selection(opts)
+    @specific_axiom_selection =
+      FrequentSymbolSetMiningAxiomSelection.new(opts[:proof][:frequent_symbol_set_mining_axiom_selection],
+                                                without_protection: true)
+  end
+
   def timeout_present?
     timeout.present?
   end

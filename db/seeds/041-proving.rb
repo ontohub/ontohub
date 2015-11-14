@@ -32,3 +32,29 @@ Proof.new({ontology_id: ontology.id,
                                           depth_limit: -1,
                                           tolerance: 1}}},
           prove_asynchronously: false).save!
+
+ontology = repository.ontologies.find_by_name('SubclassToleranceOnePointFive')
+theorem = ontology.theorems.find_by_name('beer < liquid')
+Proof.new({ontology_id: ontology.id,
+           theorem_id: theorem.id,
+           proof: {axiom_selection_method: 'sine_fresym_axiom_selection',
+                   sine_fresym_axiom_selection: {commonness_threshold: 1,
+                                                 depth_limit: -1,
+                                                 tolerance: 1,
+                                                 symbol_set_tolerance: 1,
+                                                 minimum_support: 2,
+                                                 minimum_support_type: 'absolute'}}},
+          prove_asynchronously: false).save!
+
+ontology = repository.ontologies.find_by_name('SubclassToleranceOnePointFive')
+theorem = ontology.theorems.find_by_name('beer < liquid')
+Proof.new({ontology_id: ontology.id,
+           theorem_id: theorem.id,
+           proof: {axiom_selection_method: 'frequent_symbol_set_mining_axiom_selection',
+                   frequent_symbol_set_mining_axiom_selection:
+                     {depth_limit: -1,
+                      short_axiom_tolerance: 1,
+                      minimal_symbol_set_size: 2,
+                      minimum_support: 2,
+                      minimum_support_type: 'absolute'}}},
+          prove_asynchronously: false).save!
