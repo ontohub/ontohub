@@ -31,50 +31,10 @@ class SineFresymAxiomSelection < ActiveRecord::Base
 
   def preprocess
     super
-    calculate_frequent_symbol_sets
-  end
-
-  def calculate_frequent_symbol_sets
-    fpgrowth = FISMFPGrowth.new(transactions,
-                                target_type: :maximal_item_sets,
-                                minimum_support: minimum_support,
-                                minimum_support_type: minimum_support_type_option)
-    patterns = fpgrowth.call.map { |pattern| pattern.map(&:to_i) }
-    symbol_id_sets = patterns.select { |p| p.size > 1 }
-    save_symbol_id_sets(symbol_id_sets)
-  end
-
-  def cleanup
-    super
-    frequent_symbol_sets.each(&:destroy)
-  end
-
-  def transactions
-    @transactions ||=
-      begin
-        symbol_bag = ontology.all_axioms.select(&:id).map do |axiom|
-          axiom.symbols.select(&:id).map(&:id)
-        end
-        symbol_bag << goal.symbols.select(&:id).map(&:id)
-      end
-  end
-
-  def save_symbol_id_sets(symbol_id_sets)
-    transaction do
-      symbol_id_sets.each do |symbol_id_set|
-        fss_set = FrequentSymbolSet.new
-        fss_set.axiom_selection = axiom_selection
-        fss_set.frequent_symbols =
-          symbol_id_set.map do |symbol_id|
-            fs = FrequentSymbol.new
-            fs.frequent_symbol_set = fss_set
-            fs.symbol_id = symbol_id
-            fs.save!
-            fs
-          end
-        fss_set.save!
-      end
-    end
+    FrequentSymbolSetsCalculator.new(axiom_selection,
+                                     ontology,
+                                     minimum_support,
+                                     minimum_support_type_option).call
   end
 
   def minimum_support_type_option
