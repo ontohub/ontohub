@@ -17,17 +17,20 @@ module SineAxiomSelection::ClassBody
                               only_integer: true
     validates_numericality_of :tolerance, greater_than_or_equal_to: 1
 
-    delegate :goal, :ontology, :lock_key, :mark_as_finished!, to: :axiom_selection
+    delegate :goal, :ontology, :lock_key, :mark_as_finished!,
+             :processing_time, :record_processing_time, to: :axiom_selection
   end
 
 
   def call
     Semaphore.exclusively(lock_key) do
       unless finished
-        transaction do
-          preprocess unless other_finished_sine_axiom_selections.any?
-          select_axioms
-          mark_as_finished!
+        record_processing_time do
+          transaction do
+            preprocess unless other_finished_sine_axiom_selections.any?
+            select_axioms
+            mark_as_finished!
+          end
         end
       end
     end
