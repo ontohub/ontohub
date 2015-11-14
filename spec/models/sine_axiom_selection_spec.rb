@@ -5,7 +5,8 @@ describe SineAxiomSelection do
     let(:sine_axiom_selection) { create :sine_axiom_selection }
     subject { sine_axiom_selection }
     %i(goal ontology finished lock_key mark_as_finished!
-      proof_attempt_configurations axioms).each do |method|
+      proof_attempt_configurations axioms
+      processing_time record_processing_time).each do |method|
       it method do
         expect(subject).to respond_to(method)
       end
@@ -172,6 +173,11 @@ describe SineAxiomSelection do
       it 'selecting axioms anyway' do
         subject.call
         expect(subject.axioms).not_to be_empty
+      end
+
+      it 'has a positive processing_time' do
+        subject.call
+        expect(subject.processing_time).to be > 0
       end
     end
 

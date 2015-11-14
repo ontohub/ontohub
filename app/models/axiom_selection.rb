@@ -33,6 +33,14 @@ class AxiomSelection < ActiveRecord::Base
     @goal ||= proof_attempt_configurations.first.proof_attempt.theorem
   end
 
+  def record_processing_time
+    start = Time.now
+    yield
+    finish = Time.now
+    self.processing_time = (finish - start) * 1000
+    save!
+  end
+
   # This key is used for mutex locking: The selection only has to be done once,
   # but many jobs may call it in parallel.
   def lock_key
