@@ -27,7 +27,7 @@ module SineAxiomSelection::ClassBody
       unless finished
         record_processing_time do
           transaction do
-            preprocess unless other_finished_sine_axiom_selections.any?
+            preprocess unless other_finished_axiom_selections(self.class).any?
             select_axioms
             mark_as_finished!
           end
@@ -105,14 +105,6 @@ module SineAxiomSelection::ClassBody
     least_common_symbol(axiom).sine_symbol_commonness.commonness
   end
 
-  def other_finished_sine_axiom_selections
-    goal.proof_attempts.includes(:axiom_selection).map(&:axiom_selection).
-      select do |as|
-        as.specific.class == self.class && as.finished &&
-          as.id != axiom_selection.id
-      end.map(&:specific)
-  end
-
   def select_axioms
     @selected_axioms = triggered_axioms_by_commonness_threshold.to_a
     select_new_axioms(goal, 0)
@@ -123,7 +115,7 @@ module SineAxiomSelection::ClassBody
     return if depth_limit_reached?(current_depth)
     new_axioms = select_axioms_by_sentence(sentence) - @selected_axioms
     @selected_axioms += new_axioms
-    new_axioms.each { |axiom| select_new_axioms(axiom, current_depth + 2) }
+    new_axioms.each { |axiom| select_new_axioms(axiom, current_depth + 1) }
   end
 
   def select_axioms_by_sentence(sentence)
