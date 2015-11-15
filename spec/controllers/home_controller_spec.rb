@@ -11,6 +11,7 @@ describe HomeController do
       subject{ response.headers["Content-Security-Policy-Report-Only"] }
       it{ should include "style-src 'self' 'unsafe-inline';" }
       it{ should include "script-src 'self';" }
+      it{ should include "default-src 'self';" }
     end
   end
 
