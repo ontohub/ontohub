@@ -23,8 +23,8 @@ module Hets
     end
 
     def timeout
-      timeout = hets_options.options['timeout']
-      30.seconds + 2 * timeout.to_i if timeout
+      # The HTTP timeout must be as long as Hets maximally takes.
+      HetsInstance::FORCE_FREE_WAITING_PERIOD
     end
   end
 end
