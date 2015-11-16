@@ -99,7 +99,7 @@ GEM
       sass (>= 3.3.0)
     bootstrap-select-rails (1.6.3)
     builder (3.0.4)
-    byebug (8.0.1)
+    byebug (8.2.0)
     cancan (1.6.10)
     capistrano (3.4.0)
       i18n
@@ -151,7 +151,7 @@ GEM
     coffee-script (2.4.1)
       coffee-script-source
       execjs
-    coffee-script-source (1.9.1.1)
+    coffee-script-source (1.10.0)
     colorize (0.7.7)
     compass (1.0.3)
       chunky_png (~> 1.2)
@@ -353,8 +353,8 @@ GEM
       mini_portile (~> 0.6.0)
     options (2.3.2)
     orm_adapter (0.5.0)
-    pg (0.18.3)
-    poltergeist (1.7.0)
+    pg (0.18.4)
+    poltergeist (1.8.0)
       capybara (~> 2.1)
       cliver (~> 0.3.1)
       multi_json (~> 1.0)
@@ -428,8 +428,8 @@ GEM
       rdf (~> 1.1, >= 1.1.6)
       rdf-rdfa (~> 1.1, >= 1.1.4.1)
       rdf-xsd (~> 1.1)
-    rdf-xsd (1.1.5)
-      rdf (~> 1.1, >= 1.1.9)
+    rdf-xsd (1.99.0)
+      rdf (~> 1.99)
     rdoc (3.12.2)
       json (~> 1.4)
     redcarpet (3.3.3)
@@ -467,7 +467,6 @@ GEM
       rspec-core (~> 2.99.0)
       rspec-expectations (~> 2.99.0)
       rspec-mocks (~> 2.99.0)
-    rspec-support (3.3.0)
     ruby-graphviz (1.2.2)
     ruby-prof (0.15.8)
     rubydns (0.8.5)
@@ -537,7 +536,7 @@ GEM
     tilt (1.4.1)
     timers (4.1.1)
       hitimes
-    tins (1.6.0)
+    tins (1.7.0)
     treetop (1.4.15)
       polyglot
       polyglot (>= 0.3.1)
@@ -621,7 +620,7 @@ DEPENDENCIES
   nokogiri (~> 1.6.6.2)
   ontology-united!
   pg (~> 0.18.1)
-  poltergeist (~> 1.7.0)
+  poltergeist (~> 1.8.0)
   progress_bar (~> 1.0.2)
   pry-byebug (~> 3.3.0)
   pry-rails (~> 0.3.2)
