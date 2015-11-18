@@ -403,18 +403,27 @@ Start the git daemon:
 If there's a new version on http://www.elasticsearch.org/download/, just replace the version number.
 
     + apt-get update
-    + apt-get install openjdk-7-jre-headless -y
-    wget https://download.elasticsearch.org/elasticsearch/elasticsearch/elasticsearch-1.7.3.deb
+    + apt-get install openjdk-8-jre-headless -y
+    wget https://download.elasticsearch.org/elasticsearch/release/org/elasticsearch/distribution/deb/elasticsearch/2.0.0/elasticsearch-2.0.0.deb
+    
+Before updating Elasticsearch to a new version it's recommended to get rid of the legacy version with `+ apt-get purge elasticsearch`.
+
+The new version (`2.0.0`) appears to be a bit buggy with the start/stop service, because there's no `/etc/default/elasticsearch` at a new installation so you need to `echo 'ES_USER=esearch\nES_GROUP=esearch' | \ + tee /etc/default/elasticsearch`.
     
 Before you can start Elasticsearch you need to replace the `elasticsearch` user with the `esearch` user. Thats because there are only 8-character-accounts on our machines allowed. To do this you need to
 
-    + dpkg --unpack elasticsearch-1.7.3.deb
+    + dpkg --unpack elasticsearch-2.0.0.deb
     + sed -r -e '/^#?ES_(USER|GROUP)=/ { s,^#,, ; s,=.*,=esearch, }'  -i /etc/default/elasticsearch.dpkg-new
     + sed -e '/rmdir/ s,$, || true,' -i /var/lib/dpkg/info/elasticsearch.postrm
     + dpkg --configure elasticsearch
     + update-rc.d elasticsearch defaults 95 10
     
-Afterwards you can start it with
+To have the permissions for `/etc/elasticsearch` with the `esearch` user you need to 
+
+    + find /etc/elasticsearch -type d -exec chmod 0755 {} +
+    + find /etc/elasticsearch -type f -exec chmod 0644 {} +
+    
+Afterwards, if everything goes well, you can start it with
 
     + service elasticsearch start
 
