@@ -57,7 +57,6 @@ module SineAxiomSelection::ClassBody
     ontology.symbols.each { |symbol| calculate_commonness(symbol) }
   end
 
-  # Number of axioms in which the symbol occurs
   def calculate_commonness(symbol)
     ssc = sine_symbol_commonnesses.
       where(symbol_id: symbol.id).first_or_initialize
