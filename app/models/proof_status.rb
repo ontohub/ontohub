@@ -17,24 +17,16 @@ class ProofStatus < ActiveRecord::Base
                   :solved,
                   :locid
 
+  alias_attribute :to_s, :identifier
+  alias_attribute :to_param, :identifier
+  alias_attribute :solved?, :solved
+
   validates_presence_of :label
 
   before_create :generate_locid
 
   def self.find_with_locid(locid, _iri = nil)
     where(locid: locid).first
-  end
-
-  def to_s
-    identifier
-  end
-
-  def to_param
-    identifier
-  end
-
-  def solved?
-    solved
   end
 
   protected

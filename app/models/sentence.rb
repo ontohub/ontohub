@@ -10,6 +10,8 @@ class Sentence < ActiveRecord::Base
 
   attr_accessible :locid
 
+  alias_attribute :to_s, :name
+
   delegate :repository, to: :ontology
 
   def self.find_with_locid(locid, _iri = nil)
@@ -38,9 +40,5 @@ class Sentence < ActiveRecord::Base
     else
       []
     end
-  end
-
-  def to_s
-    name
   end
 end

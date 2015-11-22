@@ -37,14 +37,10 @@ class ProofAttempt < ActiveRecord::Base
 
   scope :latest, order('number DESC')
 
-  delegate :ontology, to: :theorem
+  has_one :ontology, through: :theorem
 
   def self.find_with_locid(locid, _iri = nil)
     where(locid: locid).first
-  end
-
-  def used_sentences
-    @used_sentences ||= used_axioms + used_theorems
   end
 
   def set_default_proof_status
@@ -76,13 +72,5 @@ class ProofAttempt < ActiveRecord::Base
     selected = proof_attempt_configuration.axiom_selection.axioms
     available = theorem.ontology.axioms
     selected.any? && selected.count < available.count
-  end
-
-  protected
-
-  def prove_options_from_configuration
-    pac = proof_attempt_configuration
-    Hets::ProveOptions.new({prover: pac.prover,
-                            timeout: pac.timeout})
   end
 end
