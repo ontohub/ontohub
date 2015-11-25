@@ -34,6 +34,14 @@ module Hets
         regex_parse_status(/\n# SZS status (\w+)/)
       end
 
+      def parse_status_spass
+        if match = generic_parse_status
+          match
+        elsif output.match(/^SPASS beiseite: Ran out of time.$/)
+          'ResourceOut'
+        end
+      end
+
       def regex_parse_status(regex)
         match = output.match(regex)
         match[1] if match
