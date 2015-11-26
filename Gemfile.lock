@@ -31,6 +31,13 @@ GIT
       activesupport (>= 3.0)
 
 GIT
+  remote: git://github.com/eugenk/fism_fpgrowth.git
+  revision: 2582c368e4ddc75290ace59cbfb2c89bf7db6556
+  tag: 0.1.0
+  specs:
+    fism_fpgrowth (0.1.0)
+
+GIT
   remote: git://github.com/llwt/codemirror-rails.git
   revision: df5231e3053773e37b27f8181738c7080cd1c3cd
   specs:
@@ -598,6 +605,7 @@ DEPENDENCIES
   eye (~> 0.8.pre2)
   factory_girl_rails (~> 4.5.0)
   faker (~> 1.5.0)
+  fism_fpgrowth!
   font-awesome-sass (~> 4.4.0)
   foreigner (~> 1.7.2)
   haml-rails (~> 0.4)

@@ -107,6 +107,9 @@ gem 'elasticsearch-extensions', '~> 0.0.15'
 # Graph visualization
 gem 'ruby-graphviz', "~> 1.2.2"
 
+# Frequent Item Set Mining library
+gem 'fism_fpgrowth', github: 'eugenk/fism_fpgrowth', tag: '0.1.0'
+
 # Fake-inputs for tests and seeds
 gem "faker", "~> 1.5.0"
 
