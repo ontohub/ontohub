@@ -23,7 +23,12 @@ module Hets
       end
 
       def parse_status_darwin
-        regex_parse_status(/\n\nSZS status (\w+) for/)
+        status = regex_parse_status(/\n\nSZS status (\w+)/)
+        if status == 'Timeout'
+          'ResourceOut'
+        else
+          status
+        end
       end
 
       def parse_status_darwin_non_fd
