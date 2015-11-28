@@ -1,0 +1,375 @@
+
+--------------------------SPASS-START-----------------------------
+Input Problem:
+1[0:Inp] ||  -> arrow(skc15)*.
+2[0:Inp] ||  -> arrow(skc14)*.
+3[0:Inp] ||  -> arrow(skc13)*.
+4[0:Inp] ||  -> arrow(skc12)*.
+5[0:Inp] ||  -> arrow(skc11)*.
+6[0:Inp] ||  -> arrow(skc10)*.
+7[0:Inp] ||  -> arrow(skc9)*.
+8[0:Inp] ||  -> arrow(skc16)*.
+9[0:Inp] ||  -> bool(skc17)*.
+10[0:Inp] ||  -> bool(x_True)*.
+11[0:Inp] ||  -> equal(o__eEq__(skc15,skc15),x_True)**.
+12[0:Inp] ||  -> commSquare(skc15,skc14,skc13,skc12)*.
+13[0:Inp] ||  -> equal(o__eEq__(skc14,skc14),x_True)**.
+14[0:Inp] ||  -> equal(o__eEq__(skc13,skc13),x_True)**.
+15[0:Inp] ||  -> commSquare(skc11,skc12,skc10,skc9)*.
+16[0:Inp] ||  -> equal(o__eEq__(skc12,skc12),x_True)**.
+17[0:Inp] ||  -> equal(o__eEq__(skc11,skc11),x_True)**.
+18[0:Inp] ||  -> equal(o__eEq__(skc10,skc10),x_True)**.
+19[0:Inp] ||  -> equal(o__eEq__(skc9,skc9),x_True)**.
+20[0:Inp] || arrow(U) bool(U)* -> .
+21[0:Inp] || commSquare(U,V,W,X)* -> arrow(U).
+22[0:Inp] || commSquare(U,V,W,X)* -> arrow(V).
+23[0:Inp] || commSquare(U,V,W,X)* -> arrow(W).
+24[0:Inp] || commSquare(U,V,W,X)* -> arrow(X).
+25[0:Inp] || commSquare(o__comp__(skc15,skc11),skc14,o__comp__(skc13,skc10),skc9)* -> .
+26[0:Inp] || arrow(U) arrow(V) -> arrow(o__comp__(U,V))*.
+27[0:Inp] || arrow(U) arrow(V) -> bool(o__eEq__(U,V))*.
+28[0:Inp] || arrow(U) arrow(V) -> equal(o__eEq__(U,V),o__eEq__(V,U))*.
+29[0:Inp] || arrow(U) equal(o__eEq__(U,V),x_True)** arrow(V) -> equal(U,V).
+30[0:Inp] || arrow(U) equal(o__eEq__(U,V),x_True)** arrow(V) -> equal(o__eEq__(U,U),x_True)**.
+31[0:Inp] || arrow(U) arrow(V) arrow(W) -> equal(o__comp__(o__comp__(U,V),W),o__comp__(U,o__comp__(V,W)))**.
+32[0:Inp] || arrow(U) equal(o__eEq__(o__comp__(U,V),o__comp__(U,V)),x_True)** arrow(V) -> equal(o__eEq__(V,V),x_True).
+33[0:Inp] || arrow(U) equal(o__eEq__(o__comp__(U,V),o__comp__(U,V)),x_True)** arrow(V) -> equal(o__eEq__(U,U),x_True).
+34[0:Inp] || equal(o__eEq__(o__comp__(U,V),o__comp__(W,X)),x_True)** arrow(U) equal(o__eEq__(U,U),x_True)** equal(o__eEq__(W,W),x_True)** arrow(W) arrow(X) equal(o__eEq__(X,X),x_True)** equal(o__eEq__(V,V),x_True)** arrow(V) -> commSquare(U,W,X,V).
+35[0:Inp] || commSquare(U,V,W,X) arrow(U) equal(o__eEq__(U,U),x_True)** equal(o__eEq__(V,V),x_True)** arrow(V) arrow(W) equal(o__eEq__(W,W),x_True)** equal(o__eEq__(X,X),x_True)** arrow(X) -> equal(o__eEq__(o__comp__(U,X),o__comp__(V,W)),x_True)**.
+36[0:Inp] || arrow(U) equal(o__eEq__(U,U),x_True) equal(o__eEq__(o__comp__(U,V),o__comp__(U,V)),x_True) equal(o__eEq__(o__comp__(V,W),o__comp__(V,W)),x_True) equal(o__eEq__(V,V),x_True) arrow(V) arrow(W) equal(o__eEq__(W,W),x_True) -> equal(o__eEq__(o__comp__(o__comp__(U,V),W),o__comp__(o__comp__(U,V),W)),x_True)**.
+ This is a first-order Horn problem containing equality.
+ This is a problem that contains sort information.
+ All equations are many sorted.
+ The conjecture is ground.
+ Axiom clauses: 19 Conjecture clauses: 17
+ Inferences: IEmS=1 ISoR=1 IEqR=1 ISpR=1 ISpL=1 IORe=1 
+ Reductions: RFRew=1 RBRew=1 RFMRR=1 RBMRR=1 RObv=1 RUnC=1 RTaut=1 RSST=1 RSSi=1 RFSub=1 RBSub=1 RAED=1 RCon=1 
+ Extras    : Input Saturation, Dynamic Selection, No Splitting, Full Reduction,  Ratio: 5, FuncWeight: 1, VarWeight: 1
+ Precedence: o__eEq__ > o__comp__ > bool > arrow > commSquare > skc17 > skc16 > skc15 > skc14 > skc13 > skc12 > skc11 > skc10 > skc9 > skc8 > skc7 > skc6 > skc5 > skc4 > skc3 > skc2 > skc1 > skc0 > x_True
+ Ordering  : KBO
+Processed Problem:
+
+Worked Off Clauses:
+
+Usable Clauses:
+10[0:Inp] ||  -> bool(x_True)*.
+9[0:Inp] ||  -> bool(skc17)*.
+8[0:Inp] ||  -> arrow(skc16)*.
+7[0:Inp] ||  -> arrow(skc9)*.
+6[0:Inp] ||  -> arrow(skc10)*.
+5[0:Inp] ||  -> arrow(skc11)*.
+4[0:Inp] ||  -> arrow(skc12)*.
+3[0:Inp] ||  -> arrow(skc13)*.
+2[0:Inp] ||  -> arrow(skc14)*.
+1[0:Inp] ||  -> arrow(skc15)*.
+50[0:Res:7.0,20.0] bool(skc9) ||  -> .
+75[0:Res:6.0,20.0] bool(skc10) ||  -> .
+15[0:Inp] ||  -> commSquare(skc11,skc12,skc10,skc9)*.
+12[0:Inp] ||  -> commSquare(skc15,skc14,skc13,skc12)*.
+19[0:Inp] ||  -> equal(o__eEq__(skc9,skc9),x_True)**.
+18[0:Inp] ||  -> equal(o__eEq__(skc10,skc10),x_True)**.
+17[0:Inp] ||  -> equal(o__eEq__(skc11,skc11),x_True)**.
+16[0:Inp] ||  -> equal(o__eEq__(skc12,skc12),x_True)**.
+14[0:Inp] ||  -> equal(o__eEq__(skc13,skc13),x_True)**.
+13[0:Inp] ||  -> equal(o__eEq__(skc14,skc14),x_True)**.
+11[0:Inp] ||  -> equal(o__eEq__(skc15,skc15),x_True)**.
+20[0:Inp] bool(U) arrow(U) ||  -> .
+49[0:Res:7.0,27.0] arrow(U) ||  -> bool(o__eEq__(skc9,U))*.
+74[0:Res:6.0,27.0] arrow(U) ||  -> bool(o__eEq__(skc10,U))*.
+48[0:Res:7.0,26.0] arrow(U) ||  -> arrow(o__comp__(skc9,U))*.
+73[0:Res:6.0,26.0] arrow(U) ||  -> arrow(o__comp__(skc10,U))*.
+64[0:Res:7.0,27.1] arrow(U) ||  -> bool(o__eEq__(U,skc9))*.
+89[0:Res:6.0,27.1] arrow(U) ||  -> bool(o__eEq__(U,skc10))*.
+63[0:Res:7.0,26.1] arrow(U) ||  -> arrow(o__comp__(U,skc9))*.
+88[0:Res:6.0,26.1] arrow(U) ||  -> arrow(o__comp__(U,skc10))*.
+24[0:Inp] || commSquare(U,V,W,X)* -> arrow(X).
+23[0:Inp] || commSquare(U,V,W,X)* -> arrow(W).
+22[0:Inp] || commSquare(U,V,W,X)* -> arrow(V).
+21[0:Inp] || commSquare(U,V,W,X)* -> arrow(U).
+25[0:Inp] || commSquare(o__comp__(skc15,skc11),skc14,o__comp__(skc13,skc10),skc9)* -> .
+27[0:Inp] arrow(U) arrow(V) ||  -> bool(o__eEq__(V,U))*.
+26[0:Inp] arrow(U) arrow(V) ||  -> arrow(o__comp__(V,U))*.
+47[0:Res:7.0,28.0] arrow(U) ||  -> equal(o__eEq__(skc9,U),o__eEq__(U,skc9))*.
+72[0:Res:6.0,28.0] arrow(U) ||  -> equal(o__eEq__(skc10,U),o__eEq__(U,skc10))*.
+46[0:Res:7.0,29.0] arrow(U) || equal(o__eEq__(skc9,U),x_True)** -> equal(skc9,U).
+71[0:Res:6.0,29.0] arrow(U) || equal(o__eEq__(skc10,U),x_True)** -> equal(skc10,U).
+61[0:Res:7.0,29.1] arrow(U) || equal(o__eEq__(U,skc9),x_True)** -> equal(U,skc9).
+86[0:Res:6.0,29.1] arrow(U) || equal(o__eEq__(U,skc10),x_True)** -> equal(U,skc10).
+28[0:Inp] arrow(U) arrow(V) ||  -> equal(o__eEq__(V,U),o__eEq__(U,V))*.
+60[0:Res:7.0,30.1] arrow(U) || equal(o__eEq__(U,skc9),x_True)** -> equal(o__eEq__(U,U),x_True)**.
+85[0:Res:6.0,30.1] arrow(U) || equal(o__eEq__(U,skc10),x_True)** -> equal(o__eEq__(U,U),x_True)**.
+29[0:Inp] arrow(U) arrow(V) || equal(o__eEq__(V,U),x_True)** -> equal(V,U).
+30[0:Inp] arrow(U) arrow(V) || equal(o__eEq__(V,U),x_True)** -> equal(o__eEq__(V,V),x_True)**.
+44[0:Res:7.0,31.0] arrow(U) arrow(V) ||  -> equal(o__comp__(o__comp__(skc9,V),U),o__comp__(skc9,o__comp__(V,U)))**.
+69[0:Res:6.0,31.0] arrow(U) arrow(V) ||  -> equal(o__comp__(o__comp__(skc10,V),U),o__comp__(skc10,o__comp__(V,U)))**.
+59[0:Res:7.0,31.1] arrow(U) arrow(V) ||  -> equal(o__comp__(o__comp__(V,skc9),U),o__comp__(V,o__comp__(skc9,U)))**.
+84[0:Res:6.0,31.1] arrow(U) arrow(V) ||  -> equal(o__comp__(o__comp__(V,skc10),U),o__comp__(V,o__comp__(skc10,U)))**.
+54[0:Res:7.0,31.2] arrow(U) arrow(V) ||  -> equal(o__comp__(o__comp__(V,U),skc9),o__comp__(V,o__comp__(U,skc9)))**.
+79[0:Res:6.0,31.2] arrow(U) arrow(V) ||  -> equal(o__comp__(o__comp__(V,U),skc10),o__comp__(V,o__comp__(U,skc10)))**.
+43[0:Res:7.0,32.0] arrow(U) || equal(o__eEq__(o__comp__(skc9,U),o__comp__(skc9,U)),x_True)** -> equal(o__eEq__(U,U),x_True).
+68[0:Res:6.0,32.0] arrow(U) || equal(o__eEq__(o__comp__(skc10,U),o__comp__(skc10,U)),x_True)** -> equal(o__eEq__(U,U),x_True).
+57[0:Res:7.0,33.1] arrow(U) || equal(o__eEq__(o__comp__(U,skc9),o__comp__(U,skc9)),x_True)** -> equal(o__eEq__(U,U),x_True).
+82[0:Res:6.0,33.1] arrow(U) || equal(o__eEq__(o__comp__(U,skc10),o__comp__(U,skc10)),x_True)** -> equal(o__eEq__(U,U),x_True).
+31[0:Inp] arrow(U) arrow(V) arrow(W) ||  -> equal(o__comp__(o__comp__(W,V),U),o__comp__(W,o__comp__(V,U)))**.
+32[0:Inp] arrow(U) arrow(V) || equal(o__eEq__(o__comp__(V,U),o__comp__(V,U)),x_True)** -> equal(o__eEq__(U,U),x_True).
+33[0:Inp] arrow(U) arrow(V) || equal(o__eEq__(o__comp__(V,U),o__comp__(V,U)),x_True)** -> equal(o__eEq__(V,V),x_True).
+37[0:MRR:35.0,35.1,35.2,35.3,21.1,22.1,23.1,24.1] || equal(o__eEq__(U,U),x_True)** equal(o__eEq__(V,V),x_True)** equal(o__eEq__(W,W),x_True)** equal(o__eEq__(X,X),x_True)** commSquare(X,U,W,V) -> equal(o__eEq__(o__comp__(X,V),o__comp__(U,W)),x_True)**.
+65[0:Res:6.0,39.0] arrow(U) arrow(V) || equal(o__eEq__(o__comp__(V,U),o__comp__(V,U)),x_True) equal(o__eEq__(o__comp__(skc10,V),o__comp__(skc10,V)),x_True) -> equal(o__eEq__(o__comp__(skc10,o__comp__(V,U)),o__comp__(skc10,o__comp__(V,U))),x_True)**.
+40[0:Res:7.0,39.0] arrow(U) arrow(V) || equal(o__eEq__(o__comp__(V,U),o__comp__(V,U)),x_True) equal(o__eEq__(o__comp__(skc9,V),o__comp__(skc9,V)),x_True) -> equal(o__eEq__(o__comp__(skc9,o__comp__(V,U)),o__comp__(skc9,o__comp__(V,U))),x_True)**.
+80[0:Res:6.0,39.1] arrow(U) arrow(V) || equal(o__eEq__(o__comp__(V,skc10),o__comp__(V,skc10)),x_True) equal(o__eEq__(o__comp__(skc10,U),o__comp__(skc10,U)),x_True) -> equal(o__eEq__(o__comp__(V,o__comp__(skc10,U)),o__comp__(V,o__comp__(skc10,U))),x_True)**.
+55[0:Res:7.0,39.1] arrow(U) arrow(V) || equal(o__eEq__(o__comp__(V,skc9),o__comp__(V,skc9)),x_True) equal(o__eEq__(o__comp__(skc9,U),o__comp__(skc9,U)),x_True) -> equal(o__eEq__(o__comp__(V,o__comp__(skc9,U)),o__comp__(V,o__comp__(skc9,U))),x_True)**.
+77[0:Res:6.0,39.2] arrow(U) arrow(V) || equal(o__eEq__(o__comp__(V,U),o__comp__(V,U)),x_True) equal(o__eEq__(o__comp__(U,skc10),o__comp__(U,skc10)),x_True) -> equal(o__eEq__(o__comp__(V,o__comp__(U,skc10)),o__comp__(V,o__comp__(U,skc10))),x_True)**.
+52[0:Res:7.0,39.2] arrow(U) arrow(V) || equal(o__eEq__(o__comp__(V,U),o__comp__(V,U)),x_True) equal(o__eEq__(o__comp__(U,skc9),o__comp__(U,skc9)),x_True) -> equal(o__eEq__(o__comp__(V,o__comp__(U,skc9)),o__comp__(V,o__comp__(U,skc9))),x_True)**.
+39[0:Obv:38.7] arrow(U) arrow(V) arrow(W) || equal(o__eEq__(o__comp__(W,V),o__comp__(W,V)),x_True) equal(o__eEq__(o__comp__(V,U),o__comp__(V,U)),x_True) -> equal(o__eEq__(o__comp__(W,o__comp__(V,U)),o__comp__(W,o__comp__(V,U))),x_True)**.
+97[0:Obv:96.4] arrow(U) arrow(V) arrow(W) || equal(o__eEq__(W,W),x_True)** equal(o__eEq__(U,U),x_True)** equal(o__eEq__(V,V),x_True)** equal(o__eEq__(o__comp__(skc10,U),o__comp__(W,V)),x_True)** -> commSquare(skc10,W,V,U).
+105[0:Obv:104.4] arrow(U) arrow(V) arrow(W) || equal(o__eEq__(W,W),x_True)** equal(o__eEq__(U,U),x_True)** equal(o__eEq__(V,V),x_True)** equal(o__eEq__(o__comp__(skc9,U),o__comp__(W,V)),x_True)** -> commSquare(skc9,W,V,U).
+91[0:Obv:90.7] arrow(U) arrow(V) arrow(W) || equal(o__eEq__(U,U),x_True)** equal(o__eEq__(V,V),x_True)** equal(o__eEq__(W,W),x_True)** equal(o__eEq__(o__comp__(W,U),o__comp__(skc10,V)),x_True)** -> commSquare(W,skc10,V,U).
+99[0:Obv:98.7] arrow(U) arrow(V) arrow(W) || equal(o__eEq__(U,U),x_True)** equal(o__eEq__(V,V),x_True)** equal(o__eEq__(W,W),x_True)** equal(o__eEq__(o__comp__(W,U),o__comp__(skc9,V)),x_True)** -> commSquare(W,skc9,V,U).
+93[0:Obv:92.5] arrow(U) arrow(V) arrow(W) || equal(o__eEq__(V,V),x_True)** equal(o__eEq__(U,U),x_True)** equal(o__eEq__(W,W),x_True)** equal(o__eEq__(o__comp__(W,U),o__comp__(V,skc10)),x_True)** -> commSquare(W,V,skc10,U).
+101[0:Obv:100.5] arrow(U) arrow(V) arrow(W) || equal(o__eEq__(V,V),x_True)** equal(o__eEq__(U,U),x_True)** equal(o__eEq__(W,W),x_True)** equal(o__eEq__(o__comp__(W,U),o__comp__(V,skc9)),x_True)** -> commSquare(W,V,skc9,U).
+95[0:Obv:94.6] arrow(U) arrow(V) arrow(W) || equal(o__eEq__(V,V),x_True)** equal(o__eEq__(U,U),x_True)** equal(o__eEq__(W,W),x_True)** equal(o__eEq__(o__comp__(W,skc10),o__comp__(V,U)),x_True)** -> commSquare(W,V,U,skc10).
+103[0:Obv:102.6] arrow(U) arrow(V) arrow(W) || equal(o__eEq__(V,V),x_True)** equal(o__eEq__(U,U),x_True)** equal(o__eEq__(W,W),x_True)** equal(o__eEq__(o__comp__(W,skc9),o__comp__(V,U)),x_True)** -> commSquare(W,V,U,skc9).
+34[0:Inp] arrow(U) arrow(V) arrow(W) arrow(X) || equal(o__eEq__(W,W),x_True)** equal(o__eEq__(U,U),x_True)** equal(o__eEq__(V,V),x_True)** equal(o__eEq__(X,X),x_True)** equal(o__eEq__(o__comp__(X,U),o__comp__(W,V)),x_True)** -> commSquare(X,W,V,U).
+	Given clause: 10[0:Inp] ||  -> bool(x_True)*.
+	Given clause: 9[0:Inp] ||  -> bool(skc17)*.
+	Given clause: 8[0:Inp] ||  -> arrow(skc16)*.
+	Given clause: 7[0:Inp] ||  -> arrow(skc9)*.
+	Given clause: 6[0:Inp] ||  -> arrow(skc10)*.
+	Given clause: 5[0:Inp] ||  -> arrow(skc11)*.
+	Given clause: 4[0:Inp] ||  -> arrow(skc12)*.
+	Given clause: 3[0:Inp] ||  -> arrow(skc13)*.
+	Given clause: 2[0:Inp] ||  -> arrow(skc14)*.
+	Given clause: 1[0:Inp] ||  -> arrow(skc15)*.
+	Given clause: 50[0:Res:7.0,20.0] bool(skc9) ||  -> .
+	Given clause: 75[0:Res:6.0,20.0] bool(skc10) ||  -> .
+	Given clause: 15[0:Inp] ||  -> commSquare(skc11,skc12,skc10,skc9)*.
+	Given clause: 12[0:Inp] ||  -> commSquare(skc15,skc14,skc13,skc12)*.
+	Given clause: 19[0:Inp] ||  -> equal(o__eEq__(skc9,skc9),x_True)**.
+	Given clause: 18[0:Inp] ||  -> equal(o__eEq__(skc10,skc10),x_True)**.
+	Given clause: 17[0:Inp] ||  -> equal(o__eEq__(skc11,skc11),x_True)**.
+	Given clause: 16[0:Inp] ||  -> equal(o__eEq__(skc12,skc12),x_True)**.
+	Given clause: 14[0:Inp] ||  -> equal(o__eEq__(skc13,skc13),x_True)**.
+	Given clause: 13[0:Inp] ||  -> equal(o__eEq__(skc14,skc14),x_True)**.
+	Given clause: 11[0:Inp] ||  -> equal(o__eEq__(skc15,skc15),x_True)**.
+	Given clause: 20[0:Inp] bool(U) arrow(U) ||  -> .
+	Given clause: 49[0:Res:7.0,27.0] arrow(U) ||  -> bool(o__eEq__(skc9,U))*.
+	Given clause: 74[0:Res:6.0,27.0] arrow(U) ||  -> bool(o__eEq__(skc10,U))*.
+	Given clause: 24[0:Inp] || commSquare(U,V,W,X)* -> arrow(X).
+	Given clause: 48[0:Res:7.0,26.0] arrow(U) ||  -> arrow(o__comp__(skc9,U))*.
+	Given clause: 73[0:Res:6.0,26.0] arrow(U) ||  -> arrow(o__comp__(skc10,U))*.
+	Given clause: 64[0:Res:7.0,27.1] arrow(U) ||  -> bool(o__eEq__(U,skc9))*.
+	Given clause: 89[0:Res:6.0,27.1] arrow(U) ||  -> bool(o__eEq__(U,skc10))*.
+	Given clause: 23[0:Inp] || commSquare(U,V,W,X)* -> arrow(W).
+	Given clause: 63[0:Res:7.0,26.1] arrow(U) ||  -> arrow(o__comp__(U,skc9))*.
+	Given clause: 88[0:Res:6.0,26.1] arrow(U) ||  -> arrow(o__comp__(U,skc10))*.
+	Given clause: 22[0:Inp] || commSquare(U,V,W,X)* -> arrow(V).
+	Given clause: 21[0:Inp] || commSquare(U,V,W,X)* -> arrow(U).
+	Given clause: 25[0:Inp] || commSquare(o__comp__(skc15,skc11),skc14,o__comp__(skc13,skc10),skc9)* -> .
+	Given clause: 47[0:Res:7.0,28.0] arrow(U) ||  -> equal(o__eEq__(skc9,U),o__eEq__(U,skc9))*.
+	Given clause: 72[0:Res:6.0,28.0] arrow(U) ||  -> equal(o__eEq__(skc10,U),o__eEq__(U,skc10))*.
+	Given clause: 27[0:Inp] arrow(U) arrow(V) ||  -> bool(o__eEq__(V,U))*.
+	Given clause: 26[0:Inp] arrow(U) arrow(V) ||  -> arrow(o__comp__(V,U))*.
+	Given clause: 28[0:Inp] arrow(U) arrow(V) ||  -> equal(o__eEq__(V,U),o__eEq__(U,V))*.
+	Given clause: 46[0:Res:7.0,29.0] arrow(U) || equal(o__eEq__(skc9,U),x_True)** -> equal(skc9,U).
+	Given clause: 71[0:Res:6.0,29.0] arrow(U) || equal(o__eEq__(skc10,U),x_True)** -> equal(skc10,U).
+	Given clause: 61[0:Res:7.0,29.1] arrow(U) || equal(o__eEq__(U,skc9),x_True)** -> equal(U,skc9).
+	Given clause: 86[0:Res:6.0,29.1] arrow(U) || equal(o__eEq__(U,skc10),x_True)** -> equal(U,skc10).
+	Given clause: 29[0:Inp] arrow(U) arrow(V) || equal(o__eEq__(V,U),x_True)** -> equal(V,U).
+	Given clause: 60[0:Res:7.0,30.1] arrow(U) || equal(o__eEq__(U,skc9),x_True)**+ -> equal(o__eEq__(U,U),x_True)**.
+	Given clause: 85[0:Res:6.0,30.1] arrow(U) || equal(o__eEq__(U,skc10),x_True)**+ -> equal(o__eEq__(U,U),x_True)**.
+	Given clause: 322[0:Obv:318.0] arrow(U) || equal(o__eEq__(skc9,U),x_True)**+ -> equal(o__eEq__(U,U),x_True)**.
+	Given clause: 331[0:Obv:327.0] arrow(U) || equal(o__eEq__(skc10,U),x_True)**+ -> equal(o__eEq__(U,U),x_True)**.
+	Given clause: 30[0:Inp] arrow(U) arrow(V) || equal(o__eEq__(V,U),x_True)**+ -> equal(o__eEq__(V,V),x_True)**.
+	Given clause: 44[0:Res:7.0,31.0] arrow(U) arrow(V) ||  -> equal(o__comp__(o__comp__(skc9,V),U),o__comp__(skc9,o__comp__(V,U)))**.
+	Given clause: 383[0:SSi:381.2,381.0,48.0,7.1] arrow(U) ||  -> arrow(o__comp__(skc9,o__comp__(U,skc9)))*.
+	Given clause: 384[0:SSi:382.2,382.0,48.0,6.1] arrow(U) ||  -> arrow(o__comp__(skc9,o__comp__(U,skc10)))*.
+	Given clause: 388[0:SSi:387.2,387.0,48.0,7.1] arrow(U) ||  -> arrow(o__comp__(skc9,o__comp__(skc9,o__comp__(U,skc9))))*.
+	Given clause: 31[0:Inp] arrow(U) arrow(V) arrow(W) ||  -> equal(o__comp__(o__comp__(W,V),U),o__comp__(W,o__comp__(V,U)))**.
+	Given clause: 390[0:SSi:389.2,389.0,48.0,6.1] arrow(U) ||  -> arrow(o__comp__(skc9,o__comp__(skc9,o__comp__(U,skc10))))*.
+	Given clause: 386[0:SSi:385.2,48.1] arrow(U) arrow(V) ||  -> arrow(o__comp__(skc9,o__comp__(U,V)))*.
+	Given clause: 403[0:SSi:399.3,399.0,26.0,6.2] arrow(U) arrow(V) ||  -> arrow(o__comp__(V,o__comp__(U,skc10)))*.
+	Given clause: 404[0:SSi:396.3,396.0,26.0,7.2] arrow(U) arrow(V) ||  -> arrow(o__comp__(V,o__comp__(U,skc9)))*.
+	Given clause: 32[0:Inp] arrow(U) arrow(V) || equal(o__eEq__(o__comp__(V,U),o__comp__(V,U)),x_True)** -> equal(o__eEq__(U,U),x_True).
+	Given clause: 392[0:SSi:391.2,391.0,48.0,7.1] arrow(U) ||  -> arrow(o__comp__(skc9,o__comp__(skc9,o__comp__(skc9,o__comp__(U,skc9)))))*.
+	Given clause: 416[0:SSi:414.2,414.0,48.0,6.1] arrow(U) ||  -> arrow(o__comp__(skc9,o__comp__(skc9,o__comp__(skc9,o__comp__(U,skc10)))))*.
+	Given clause: 405[0:SSi:400.3,400.0,26.0,6.2] arrow(U) arrow(V) ||  -> arrow(o__comp__(skc9,o__comp__(V,o__comp__(U,skc10))))*.
+	Given clause: 406[0:SSi:397.3,397.0,26.0,7.2] arrow(U) arrow(V) ||  -> arrow(o__comp__(skc9,o__comp__(V,o__comp__(U,skc9))))*.
+	Given clause: 33[0:Inp] arrow(U) arrow(V) || equal(o__eEq__(o__comp__(V,U),o__comp__(V,U)),x_True)** -> equal(o__eEq__(V,V),x_True).
+	Given clause: 421[0:SSi:420.1,48.1] arrow(U) arrow(V) ||  -> arrow(o__comp__(skc9,o__comp__(skc9,o__comp__(U,V))))*.
+	Given clause: 428[0:SSi:424.2,424.0,48.0,6.1] arrow(U) arrow(V) ||  -> arrow(o__comp__(V,o__comp__(skc9,o__comp__(U,skc10))))*.
+	Given clause: 434[0:SSi:430.2,430.0,48.0,7.1] arrow(U) arrow(V) ||  -> arrow(o__comp__(V,o__comp__(skc9,o__comp__(U,skc9))))*.
+	Given clause: 452[0:SSi:450.2,450.0,48.0,7.1] arrow(U) ||  -> arrow(o__comp__(skc9,o__comp__(skc9,o__comp__(skc9,o__comp__(skc9,o__comp__(U,skc9))))))*.
+	Given clause: 37[0:MRR:35.0,35.1,35.2,35.3,21.1,22.1,23.1,24.1] || equal(o__eEq__(U,U),x_True)**+ equal(o__eEq__(V,V),x_True)** equal(o__eEq__(W,W),x_True)** equal(o__eEq__(X,X),x_True)** commSquare(X,U,W,V) -> equal(o__eEq__(o__comp__(X,V),o__comp__(U,W)),x_True)**.
+	Given clause: 456[0:SSi:454.2,454.0,48.0,6.1] arrow(U) ||  -> arrow(o__comp__(skc9,o__comp__(skc9,o__comp__(skc9,o__comp__(skc9,o__comp__(U,skc10))))))*.
+	Given clause: 408[0:SSi:407.3,26.2] arrow(U) arrow(V) arrow(W) ||  -> arrow(o__comp__(V,o__comp__(U,W)))*.
+	Given clause: 409[0:SSi:398.3,398.0,26.0,7.2] arrow(U) arrow(V) ||  -> arrow(o__comp__(skc9,o__comp__(skc9,o__comp__(V,o__comp__(U,skc9)))))*.
+	Given clause: 417[0:SSi:415.3,415.0,26.0,6.2] arrow(U) arrow(V) ||  -> arrow(o__comp__(skc9,o__comp__(skc9,o__comp__(V,o__comp__(U,skc10)))))*.
+	Given clause: 39[0:Obv:38.7] arrow(U) arrow(V) arrow(W) || equal(o__eEq__(o__comp__(W,V),o__comp__(W,V)),x_True) equal(o__eEq__(o__comp__(V,U),o__comp__(V,U)),x_True) -> equal(o__eEq__(o__comp__(W,o__comp__(V,U)),o__comp__(W,o__comp__(V,U))),x_True)**.
+	Given clause: 462[0:SSi:458.2,458.0,48.0,6.1] arrow(U) arrow(V) ||  -> arrow(o__comp__(skc9,o__comp__(V,o__comp__(skc9,o__comp__(U,skc10)))))*.
+	Given clause: 468[0:SSi:464.2,464.0,48.0,7.1] arrow(U) arrow(V) ||  -> arrow(o__comp__(skc9,o__comp__(V,o__comp__(skc9,o__comp__(U,skc9)))))*.
+	Given clause: 487[0:SSi:486.1,48.1] arrow(U) arrow(V) ||  -> arrow(o__comp__(skc9,o__comp__(skc9,o__comp__(skc9,o__comp__(U,V)))))*.
+	Given clause: 494[0:SSi:490.2,490.0,48.0,6.1] arrow(U) arrow(V) ||  -> arrow(o__comp__(V,o__comp__(skc9,o__comp__(skc9,o__comp__(U,skc10)))))*.
+	Given clause: 34[0:Inp] arrow(U) arrow(V) arrow(W) arrow(X) || equal(o__eEq__(W,W),x_True)** equal(o__eEq__(U,U),x_True)** equal(o__eEq__(V,V),x_True)** equal(o__eEq__(X,X),x_True)** equal(o__eEq__(o__comp__(X,U),o__comp__(W,V)),x_True)**+ -> commSquare(X,W,V,U).
+	Given clause: 500[0:SSi:496.2,496.0,48.0,7.1] arrow(U) arrow(V) ||  -> arrow(o__comp__(V,o__comp__(skc9,o__comp__(skc9,o__comp__(U,skc9)))))*.
+	Given clause: 504[0:SSi:502.2,502.0,48.0,7.1] arrow(U) ||  -> arrow(o__comp__(skc9,o__comp__(skc9,o__comp__(skc9,o__comp__(skc9,o__comp__(skc9,o__comp__(U,skc9)))))))*.
+	Given clause: 530[0:SSi:528.2,528.0,48.0,6.1] arrow(U) ||  -> arrow(o__comp__(skc9,o__comp__(skc9,o__comp__(skc9,o__comp__(skc9,o__comp__(skc9,o__comp__(U,skc10)))))))*.
+	Given clause: 69[0:Res:6.0,31.0] arrow(U) arrow(V) ||  -> equal(o__comp__(o__comp__(skc10,V),U),o__comp__(skc10,o__comp__(V,U)))**.
+	Given clause: 59[0:Res:7.0,31.1] arrow(U) arrow(V) ||  -> equal(o__comp__(o__comp__(V,skc9),U),o__comp__(V,o__comp__(skc9,U)))**.
+	Given clause: 700[0:SSi:653.2,653.0,73.0,7.1] arrow(U) ||  -> arrow(o__comp__(skc10,o__comp__(U,skc9)))*.
+	Given clause: 794[0:SSi:755.2,755.0,26.0,7.0,6.2] arrow(U) ||  -> arrow(o__comp__(U,o__comp__(skc9,skc10)))*.
+	Given clause: 701[0:SSi:654.2,654.0,73.0,7.1] arrow(U) ||  -> arrow(o__comp__(skc9,o__comp__(skc10,o__comp__(U,skc9))))*.
+	Given clause: 795[0:SSi:756.2,756.0,26.0,7.0,6.2] arrow(U) ||  -> arrow(o__comp__(skc9,o__comp__(U,o__comp__(skc9,skc10))))*.
+	Given clause: 84[0:Res:6.0,31.1] arrow(U) arrow(V) ||  -> equal(o__comp__(o__comp__(V,skc10),U),o__comp__(V,o__comp__(skc10,U)))**.
+	Given clause: 919[0:SSi:862.2,862.0,26.0,6.0,7.2] arrow(U) ||  -> arrow(o__comp__(U,o__comp__(skc10,skc9)))*.
+	Given clause: 836[0:SSi:832.2,832.0,48.0,7.1] arrow(U) ||  -> arrow(o__comp__(skc10,o__comp__(skc9,o__comp__(U,skc9))))*.
+	Given clause: 837[0:SSi:834.2,834.0,73.0,7.1] arrow(U) ||  -> arrow(o__comp__(skc10,o__comp__(skc10,o__comp__(U,skc9))))*.
+	Given clause: 838[0:SSi:835.2,835.0,26.0,7.0,7.2] arrow(U) ||  -> arrow(o__comp__(skc10,o__comp__(U,o__comp__(skc9,skc9))))*.
+	Given clause: 54[0:Res:7.0,31.2] arrow(U) arrow(V) ||  -> equal(o__comp__(o__comp__(V,U),skc9),o__comp__(V,o__comp__(U,skc9)))**.
+	Given clause: 920[0:SSi:863.2,863.0,26.0,6.0,7.2] arrow(U) ||  -> arrow(o__comp__(skc9,o__comp__(U,o__comp__(skc10,skc9))))*.
+	Given clause: 921[0:SSi:874.2,874.0,26.0,6.0,7.2] arrow(U) ||  -> arrow(o__comp__(skc10,o__comp__(U,o__comp__(skc10,skc9))))*.
+	Given clause: 703[0:SSi:702.2,73.1] arrow(U) arrow(V) ||  -> arrow(o__comp__(skc10,o__comp__(U,V)))*.
+	Given clause: 797[0:SSi:796.2,26.0,7.2] arrow(U) arrow(V) ||  -> arrow(o__comp__(U,o__comp__(skc9,V)))*.
+	Given clause: 79[0:Res:6.0,31.2] arrow(U) arrow(V) ||  -> equal(o__comp__(o__comp__(V,U),skc10),o__comp__(V,o__comp__(U,skc10)))**.
+	Given clause: 923[0:SSi:922.2,26.0,6.2] arrow(U) arrow(V) ||  -> arrow(o__comp__(U,o__comp__(skc10,V)))*.
+	Given clause: 704[0:SSi:655.2,655.0,73.0,7.1] arrow(U) ||  -> arrow(o__comp__(skc9,o__comp__(skc9,o__comp__(skc10,o__comp__(U,skc9)))))*.
+	Given clause: 798[0:SSi:757.2,757.0,26.0,7.0,6.2] arrow(U) ||  -> arrow(o__comp__(skc9,o__comp__(skc9,o__comp__(U,o__comp__(skc9,skc10)))))*.
+	Given clause: 848[0:SSi:847.2,847.0,26.0,7.0,7.2] arrow(U) ||  -> arrow(o__comp__(skc9,o__comp__(skc10,o__comp__(U,o__comp__(skc9,skc9)))))*.
+	Given clause: 377[0:Obv:365.1] arrow(U) arrow(V) || equal(o__eEq__(U,V),x_True)**+ -> equal(o__eEq__(V,V),x_True)**.
+	Given clause: 849[0:SSi:846.2,846.0,73.0,7.1] arrow(U) ||  -> arrow(o__comp__(skc9,o__comp__(skc10,o__comp__(skc10,o__comp__(U,skc9)))))*.
+	Given clause: 850[0:SSi:844.2,844.0,48.0,7.1] arrow(U) ||  -> arrow(o__comp__(skc9,o__comp__(skc10,o__comp__(skc9,o__comp__(U,skc9)))))*.
+	Given clause: 924[0:SSi:875.2,875.0,26.0,6.0,7.2] arrow(U) ||  -> arrow(o__comp__(skc9,o__comp__(skc10,o__comp__(U,o__comp__(skc10,skc9)))))*.
+	Given clause: 925[0:SSi:864.2,864.0,26.0,6.0,7.2] arrow(U) ||  -> arrow(o__comp__(skc9,o__comp__(skc9,o__comp__(U,o__comp__(skc10,skc9)))))*.
+	Given clause: 43[0:Res:7.0,32.0] arrow(U) || equal(o__eEq__(o__comp__(skc9,U),o__comp__(skc9,U)),x_True)** -> equal(o__eEq__(U,U),x_True).
+	Given clause: 970[0:SSi:969.2,969.0,26.0,6.0,7.2] arrow(U) ||  -> arrow(o__comp__(skc10,o__comp__(skc9,o__comp__(U,o__comp__(skc10,skc9)))))*.
+	Given clause: 971[0:SSi:968.2,968.0,26.0,7.0,7.2] arrow(U) ||  -> arrow(o__comp__(skc10,o__comp__(skc9,o__comp__(U,o__comp__(skc9,skc9)))))*.
+	Given clause: 972[0:SSi:967.2,967.0,73.0,7.1] arrow(U) ||  -> arrow(o__comp__(skc10,o__comp__(skc9,o__comp__(skc10,o__comp__(U,skc9)))))*.
+	Given clause: 973[0:SSi:965.2,965.0,48.0,7.1] arrow(U) ||  -> arrow(o__comp__(skc10,o__comp__(skc9,o__comp__(skc9,o__comp__(U,skc9)))))*.
+	Given clause: 68[0:Res:6.0,32.0] arrow(U) || equal(o__eEq__(o__comp__(skc10,U),o__comp__(skc10,U)),x_True)** -> equal(o__eEq__(U,U),x_True).
+	Given clause: 980[0:SSi:979.2,979.0,26.0,6.0,7.2] arrow(U) ||  -> arrow(o__comp__(skc10,o__comp__(skc10,o__comp__(U,o__comp__(skc10,skc9)))))*.
+	Given clause: 981[0:SSi:978.2,978.0,26.0,7.0,7.2] arrow(U) ||  -> arrow(o__comp__(skc10,o__comp__(skc10,o__comp__(U,o__comp__(skc9,skc9)))))*.
+	Given clause: 982[0:SSi:977.2,977.0,73.0,7.1] arrow(U) ||  -> arrow(o__comp__(skc10,o__comp__(skc10,o__comp__(skc10,o__comp__(U,skc9)))))*.
+	Given clause: 983[0:SSi:975.2,975.0,48.0,7.1] arrow(U) ||  -> arrow(o__comp__(skc10,o__comp__(skc10,o__comp__(skc9,o__comp__(U,skc9)))))*.
+	Given clause: 57[0:Res:7.0,33.1] arrow(U) || equal(o__eEq__(o__comp__(U,skc9),o__comp__(U,skc9)),x_True)** -> equal(o__eEq__(U,U),x_True).
+	Given clause: 990[0:SSi:989.2,989.0,26.0,6.1,48.0,7.2] arrow(U) ||  -> arrow(o__comp__(skc10,o__comp__(U,o__comp__(skc10,o__comp__(skc9,skc9)))))*.
+	Given clause: 991[0:SSi:988.2,988.0,26.0,7.1,48.0,7.2] arrow(U) ||  -> arrow(o__comp__(skc10,o__comp__(U,o__comp__(skc9,o__comp__(skc9,skc9)))))*.
+	Given clause: 1055[0:SSi:1054.2,1054.0,26.0,6.1,73.0,7.2] arrow(U) ||  -> arrow(o__comp__(skc10,o__comp__(U,o__comp__(skc10,o__comp__(skc10,skc9)))))*.
+	Given clause: 1056[0:SSi:1053.2,1053.0,26.0,7.1,73.0,7.2] arrow(U) ||  -> arrow(o__comp__(skc10,o__comp__(U,o__comp__(skc9,o__comp__(skc10,skc9)))))*.
+	Given clause: 82[0:Res:6.0,33.1] arrow(U) || equal(o__eEq__(o__comp__(U,skc10),o__comp__(U,skc10)),x_True)** -> equal(o__eEq__(U,U),x_True).
+	Given clause: 706[0:SSi:705.1,73.1] arrow(U) arrow(V) ||  -> arrow(o__comp__(skc9,o__comp__(skc10,o__comp__(U,V))))*.
+	Given clause: 707[0:SSi:662.2,662.0,73.0,7.1] arrow(U) arrow(V) ||  -> arrow(o__comp__(V,o__comp__(skc10,o__comp__(U,skc9))))*.
+	Given clause: 800[0:SSi:799.1,26.0,7.2] arrow(U) arrow(V) ||  -> arrow(o__comp__(skc9,o__comp__(U,o__comp__(skc9,V))))*.
+	Given clause: 801[0:SSi:764.2,764.0,26.0,7.0,6.2] arrow(U) arrow(V) ||  -> arrow(o__comp__(V,o__comp__(U,o__comp__(skc9,skc10))))*.
+	Given clause: 413[0:SSi:412.4,26.2] arrow(U) arrow(V) arrow(W) arrow(X) ||  -> equal(o__comp__(o__comp__(V,o__comp__(U,X)),W),o__comp__(o__comp__(V,U),o__comp__(X,W)))**.
+	Given clause: 839[0:SSi:833.3,833.0,26.0,7.2] arrow(U) arrow(V) ||  -> arrow(o__comp__(skc10,o__comp__(V,o__comp__(U,skc9))))*.
+	Given clause: 927[0:SSi:926.1,26.0,6.2] arrow(U) arrow(V) ||  -> arrow(o__comp__(skc9,o__comp__(U,o__comp__(skc10,V))))*.
+	Given clause: 928[0:SSi:871.2,871.0,26.0,6.0,7.2] arrow(U) arrow(V) ||  -> arrow(o__comp__(V,o__comp__(U,o__comp__(skc10,skc9))))*.
+	Given clause: 1065[0:SSi:1064.1,26.0,6.2] arrow(U) arrow(V) ||  -> arrow(o__comp__(skc10,o__comp__(U,o__comp__(skc10,V))))*.
+	Given clause: 1623[0:Rew:1622.4,413.4] arrow(U) arrow(V) arrow(W) arrow(X) ||  -> equal(o__comp__(o__comp__(V,o__comp__(U,X)),W),o__comp__(V,o__comp__(U,o__comp__(X,W))))**.
+	Given clause: 1067[0:SSi:1066.1,26.0,7.2] arrow(U) arrow(V) ||  -> arrow(o__comp__(skc10,o__comp__(U,o__comp__(skc9,V))))*.
+	Given clause: 1069[0:SSi:1068.1,73.1] arrow(U) arrow(V) ||  -> arrow(o__comp__(skc10,o__comp__(skc10,o__comp__(U,V))))*.
+	Given clause: 1071[0:SSi:1070.1,48.1] arrow(U) arrow(V) ||  -> arrow(o__comp__(skc10,o__comp__(skc9,o__comp__(U,V))))*.
+	Given clause: 708[0:SSi:656.2,656.0,73.0,7.1] arrow(U) ||  -> arrow(o__comp__(skc9,o__comp__(skc9,o__comp__(skc9,o__comp__(skc10,o__comp__(U,skc9))))))*.
+	Given clause: 448[0:SSi:447.3,26.2] arrow(U) arrow(V) arrow(W) || equal(o__eEq__(o__comp__(V,o__comp__(U,W)),o__comp__(V,o__comp__(U,W))),x_True)** -> equal(o__eEq__(W,W),x_True).
+	Given clause: 802[0:SSi:758.2,758.0,26.0,7.0,6.2] arrow(U) ||  -> arrow(o__comp__(skc9,o__comp__(skc9,o__comp__(skc9,o__comp__(U,o__comp__(skc9,skc10))))))*.
+	Given clause: 929[0:SSi:865.2,865.0,26.0,6.0,7.2] arrow(U) ||  -> arrow(o__comp__(skc9,o__comp__(skc9,o__comp__(skc9,o__comp__(U,o__comp__(skc10,skc9))))))*.
+	Given clause: 1143[0:SSi:1140.2,1140.0,26.0,6.0,7.2] arrow(U) ||  -> arrow(o__comp__(skc9,o__comp__(skc9,o__comp__(skc10,o__comp__(U,o__comp__(skc10,skc9))))))*.
+	Given clause: 1144[0:SSi:1138.2,1138.0,73.0,7.1] arrow(U) ||  -> arrow(o__comp__(skc9,o__comp__(skc9,o__comp__(skc10,o__comp__(skc10,o__comp__(U,skc9))))))*.
+	Given clause: 482[0:SSi:481.3,26.2] arrow(U) arrow(V) arrow(W) || equal(o__eEq__(o__comp__(V,o__comp__(U,W)),o__comp__(V,o__comp__(U,W))),x_True)** -> equal(o__eEq__(o__comp__(V,U),o__comp__(V,U)),x_True).
+	Given clause: 1155[0:SSi:1154.2,1154.0,26.0,6.1,48.0,7.2] arrow(U) ||  -> arrow(o__comp__(skc9,o__comp__(skc10,o__comp__(U,o__comp__(skc10,o__comp__(skc9,skc9))))))*.
+	Given clause: 1156[0:SSi:1153.2,1153.0,26.0,7.1,48.0,7.2] arrow(U) ||  -> arrow(o__comp__(skc9,o__comp__(skc10,o__comp__(U,o__comp__(skc9,o__comp__(skc9,skc9))))))*.
+	Given clause: 1157[0:SSi:1152.2,1152.0,73.0,48.1,7.1] arrow(U) ||  -> arrow(o__comp__(skc9,o__comp__(skc10,o__comp__(skc10,o__comp__(U,o__comp__(skc9,skc9))))))*.
+	Given clause: 1158[0:SSi:1150.2,1150.0,48.0,48.1,7.1] arrow(U) ||  -> arrow(o__comp__(skc9,o__comp__(skc10,o__comp__(skc9,o__comp__(U,o__comp__(skc9,skc9))))))*.
+	Given clause: 519[0:Obv:514.0] || equal(o__eEq__(U,U),x_True)**+ equal(o__eEq__(V,V),x_True)** equal(o__eEq__(W,W),x_True)** commSquare(W,skc15,V,U) -> equal(o__eEq__(o__comp__(W,U),o__comp__(skc15,V)),x_True)**.
+	Given clause: 1195[0:SSi:1192.2,1192.0,26.0,6.0,7.2] arrow(U) ||  -> arrow(o__comp__(skc9,o__comp__(skc10,o__comp__(skc10,o__comp__(U,o__comp__(skc10,skc9))))))*.
+	Given clause: 1196[0:SSi:1190.2,1190.0,73.0,7.1] arrow(U) ||  -> arrow(o__comp__(skc9,o__comp__(skc10,o__comp__(skc10,o__comp__(skc10,o__comp__(U,skc9))))))*.
+	Given clause: 1204[0:SSi:1201.2,1201.0,26.0,6.0,7.2] arrow(U) ||  -> arrow(o__comp__(skc9,o__comp__(skc10,o__comp__(skc9,o__comp__(U,o__comp__(skc10,skc9))))))*.
+	Given clause: 1205[0:SSi:1199.2,1199.0,73.0,7.1] arrow(U) ||  -> arrow(o__comp__(skc9,o__comp__(skc10,o__comp__(skc9,o__comp__(skc10,o__comp__(U,skc9))))))*.
+	Given clause: 520[0:Obv:513.0] || equal(o__eEq__(U,U),x_True)**+ equal(o__eEq__(V,V),x_True)** equal(o__eEq__(W,W),x_True)** commSquare(W,skc14,V,U) -> equal(o__eEq__(o__comp__(W,U),o__comp__(skc14,V)),x_True)**.
+	Given clause: 1211[0:SSi:1210.2,1210.0,26.0,6.1,73.0,7.2] arrow(U) ||  -> arrow(o__comp__(skc9,o__comp__(skc10,o__comp__(U,o__comp__(skc10,o__comp__(skc10,skc9))))))*.
+	Given clause: 1212[0:SSi:1209.2,1209.0,26.0,7.1,73.0,7.2] arrow(U) ||  -> arrow(o__comp__(skc9,o__comp__(skc10,o__comp__(U,o__comp__(skc9,o__comp__(skc10,skc9))))))*.
+	Given clause: 1229[0:SSi:1228.2,1228.0,26.0,6.1,73.0,7.2] arrow(U) ||  -> arrow(o__comp__(skc10,o__comp__(skc9,o__comp__(U,o__comp__(skc10,o__comp__(skc10,skc9))))))*.
+	Given clause: 1230[0:SSi:1227.2,1227.0,26.0,7.1,73.0,7.2] arrow(U) ||  -> arrow(o__comp__(skc10,o__comp__(skc9,o__comp__(U,o__comp__(skc9,o__comp__(skc10,skc9))))))*.
+	Given clause: 521[0:Obv:512.0] || equal(o__eEq__(U,U),x_True)**+ equal(o__eEq__(V,V),x_True)** equal(o__eEq__(W,W),x_True)** commSquare(W,skc13,V,U) -> equal(o__eEq__(o__comp__(W,U),o__comp__(skc13,V)),x_True)**.
+	Given clause: 1231[0:SSi:1226.2,1226.0,73.0,73.1,7.1] arrow(U) ||  -> arrow(o__comp__(skc10,o__comp__(skc9,o__comp__(skc10,o__comp__(U,o__comp__(skc10,skc9))))))*.
+	Given clause: 1232[0:SSi:1224.2,1224.0,48.0,73.1,7.1] arrow(U) ||  -> arrow(o__comp__(skc10,o__comp__(skc9,o__comp__(skc9,o__comp__(U,o__comp__(skc10,skc9))))))*.
+	Given clause: 1239[0:SSi:1238.2,1238.0,26.0,6.1,48.0,7.2] arrow(U) ||  -> arrow(o__comp__(skc10,o__comp__(skc9,o__comp__(U,o__comp__(skc10,o__comp__(skc9,skc9))))))*.
+	Given clause: 1240[0:SSi:1237.2,1237.0,26.0,7.1,48.0,7.2] arrow(U) ||  -> arrow(o__comp__(skc10,o__comp__(skc9,o__comp__(U,o__comp__(skc9,o__comp__(skc9,skc9))))))*.
+	Given clause: 522[0:Obv:511.0] || equal(o__eEq__(U,U),x_True)**+ equal(o__eEq__(V,V),x_True)** equal(o__eEq__(W,W),x_True)** commSquare(W,skc12,V,U) -> equal(o__eEq__(o__comp__(W,U),o__comp__(skc12,V)),x_True)**.
+	Given clause: 1241[0:SSi:1236.2,1236.0,73.0,48.1,7.1] arrow(U) ||  -> arrow(o__comp__(skc10,o__comp__(skc9,o__comp__(skc10,o__comp__(U,o__comp__(skc9,skc9))))))*.
+	Given clause: 1242[0:SSi:1234.2,1234.0,48.0,48.1,7.1] arrow(U) ||  -> arrow(o__comp__(skc10,o__comp__(skc9,o__comp__(skc9,o__comp__(U,o__comp__(skc9,skc9))))))*.
+	Given clause: 1251[0:SSi:1246.2,1246.0,73.0,7.1] arrow(U) ||  -> arrow(o__comp__(skc10,o__comp__(skc9,o__comp__(skc10,o__comp__(skc10,o__comp__(U,skc9))))))*.
+	Given clause: 1259[0:SSi:1254.2,1254.0,73.0,7.1] arrow(U) ||  -> arrow(o__comp__(skc10,o__comp__(skc9,o__comp__(skc9,o__comp__(skc10,o__comp__(U,skc9))))))*.
+	Given clause: 523[0:Obv:510.0] || equal(o__eEq__(U,U),x_True)**+ equal(o__eEq__(V,V),x_True)** equal(o__eEq__(W,W),x_True)** commSquare(W,skc11,V,U) -> equal(o__eEq__(o__comp__(W,U),o__comp__(skc11,V)),x_True)**.
+	Given clause: 1270[0:SSi:1269.2,1269.0,26.0,6.1,73.0,7.2] arrow(U) ||  -> arrow(o__comp__(skc10,o__comp__(skc10,o__comp__(U,o__comp__(skc10,o__comp__(skc10,skc9))))))*.
+	Given clause: 1271[0:SSi:1268.2,1268.0,26.0,7.1,73.0,7.2] arrow(U) ||  -> arrow(o__comp__(skc10,o__comp__(skc10,o__comp__(U,o__comp__(skc9,o__comp__(skc10,skc9))))))*.
+	Given clause: 1272[0:SSi:1267.2,1267.0,73.0,73.1,7.1] arrow(U) ||  -> arrow(o__comp__(skc10,o__comp__(skc10,o__comp__(skc10,o__comp__(U,o__comp__(skc10,skc9))))))*.
+	Given clause: 1273[0:SSi:1265.2,1265.0,48.0,73.1,7.1] arrow(U) ||  -> arrow(o__comp__(skc10,o__comp__(skc10,o__comp__(skc9,o__comp__(U,o__comp__(skc10,skc9))))))*.
+	Given clause: 524[0:Obv:508.0] || equal(o__eEq__(U,U),x_True)**+ equal(o__eEq__(V,V),x_True)** equal(o__eEq__(W,W),x_True)** commSquare(W,skc10,V,U) -> equal(o__eEq__(o__comp__(W,U),o__comp__(skc10,V)),x_True)**.
+	Given clause: 1280[0:SSi:1279.2,1279.0,26.0,6.1,48.0,7.2] arrow(U) ||  -> arrow(o__comp__(skc10,o__comp__(skc10,o__comp__(U,o__comp__(skc10,o__comp__(skc9,skc9))))))*.
+	Given clause: 1281[0:SSi:1278.2,1278.0,26.0,7.1,48.0,7.2] arrow(U) ||  -> arrow(o__comp__(skc10,o__comp__(skc10,o__comp__(U,o__comp__(skc9,o__comp__(skc9,skc9))))))*.
+	Given clause: 1282[0:SSi:1277.2,1277.0,73.0,48.1,7.1] arrow(U) ||  -> arrow(o__comp__(skc10,o__comp__(skc10,o__comp__(skc10,o__comp__(U,o__comp__(skc9,skc9))))))*.
+	Given clause: 1283[0:SSi:1275.2,1275.0,48.0,48.1,7.1] arrow(U) ||  -> arrow(o__comp__(skc10,o__comp__(skc10,o__comp__(skc9,o__comp__(U,o__comp__(skc9,skc9))))))*.
+	Given clause: 525[0:Obv:506.0] || equal(o__eEq__(U,U),x_True)**+ equal(o__eEq__(V,V),x_True)** equal(o__eEq__(W,W),x_True)** commSquare(W,skc9,V,U) -> equal(o__eEq__(o__comp__(W,U),o__comp__(skc9,V)),x_True)**.
+	Given clause: 1292[0:SSi:1287.2,1287.0,73.0,7.1] arrow(U) ||  -> arrow(o__comp__(skc10,o__comp__(skc10,o__comp__(skc10,o__comp__(skc10,o__comp__(U,skc9))))))*.
+	Given clause: 1300[0:SSi:1295.2,1295.0,73.0,7.1] arrow(U) ||  -> arrow(o__comp__(skc10,o__comp__(skc10,o__comp__(skc9,o__comp__(skc10,o__comp__(U,skc9))))))*.
+	Given clause: 710[0:SSi:709.1,73.1] arrow(U) arrow(V) ||  -> arrow(o__comp__(skc9,o__comp__(skc9,o__comp__(skc10,o__comp__(U,V)))))*.
+	Given clause: 711[0:SSi:663.2,663.0,73.0,7.1] arrow(U) arrow(V) ||  -> arrow(o__comp__(skc9,o__comp__(V,o__comp__(skc10,o__comp__(U,skc9)))))*.
+	Given clause: 634[0:SSi:633.2,26.2] arrow(U) arrow(V) arrow(W) || equal(o__eEq__(o__comp__(W,V),o__comp__(W,V)),x_True) equal(o__eEq__(o__comp__(V,U),o__comp__(V,U)),x_True) -> commSquare(W,W,o__comp__(V,U),o__comp__(V,U))*.
+	Given clause: 712[0:SSi:660.2,660.0,73.0,7.1] arrow(U) arrow(V) ||  -> arrow(o__comp__(V,o__comp__(skc9,o__comp__(skc10,o__comp__(U,skc9)))))*.
+	Given clause: 804[0:SSi:803.1,26.0,7.2] arrow(U) arrow(V) ||  -> arrow(o__comp__(skc9,o__comp__(skc9,o__comp__(U,o__comp__(skc9,V)))))*.
+	Given clause: 805[0:SSi:765.2,765.0,26.0,7.0,6.2] arrow(U) arrow(V) ||  -> arrow(o__comp__(skc9,o__comp__(V,o__comp__(U,o__comp__(skc9,skc10)))))*.
+	Given clause: 806[0:SSi:762.2,762.0,26.0,7.0,6.2] arrow(U) arrow(V) ||  -> arrow(o__comp__(V,o__comp__(skc9,o__comp__(U,o__comp__(skc9,skc10)))))*.
+	Given clause: 80[0:Res:6.0,39.1] arrow(U) arrow(V) || equal(o__eEq__(o__comp__(V,skc10),o__comp__(V,skc10)),x_True) equal(o__eEq__(o__comp__(skc10,U),o__comp__(skc10,U)),x_True) -> equal(o__eEq__(o__comp__(V,o__comp__(skc10,U)),o__comp__(V,o__comp__(skc10,U))),x_True)**.
+	Given clause: 851[0:SSi:845.3,845.0,26.0,7.2] arrow(U) arrow(V) ||  -> arrow(o__comp__(skc9,o__comp__(skc10,o__comp__(V,o__comp__(U,skc9)))))*.
+	Given clause: 931[0:SSi:930.1,26.0,6.2] arrow(U) arrow(V) ||  -> arrow(o__comp__(skc9,o__comp__(skc9,o__comp__(U,o__comp__(skc10,V)))))*.
+	Given clause: 932[0:SSi:872.2,872.0,26.0,6.0,7.2] arrow(U) arrow(V) ||  -> arrow(o__comp__(skc9,o__comp__(V,o__comp__(U,o__comp__(skc10,skc9)))))*.
+	Given clause: 933[0:SSi:869.2,869.0,26.0,6.0,7.2] arrow(U) arrow(V) ||  -> arrow(o__comp__(V,o__comp__(skc9,o__comp__(U,o__comp__(skc10,skc9)))))*.
+	Given clause: 55[0:Res:7.0,39.1] arrow(U) arrow(V) || equal(o__eEq__(o__comp__(V,skc9),o__comp__(V,skc9)),x_True) equal(o__eEq__(o__comp__(skc9,U),o__comp__(skc9,U)),x_True) -> equal(o__eEq__(o__comp__(V,o__comp__(skc9,U)),o__comp__(V,o__comp__(skc9,U))),x_True)**.
+	Given clause: 974[0:SSi:966.3,966.0,26.0,7.2] arrow(U) arrow(V) ||  -> arrow(o__comp__(skc10,o__comp__(skc9,o__comp__(V,o__comp__(U,skc9)))))*.
+	Given clause: 984[0:SSi:976.3,976.0,26.0,7.2] arrow(U) arrow(V) ||  -> arrow(o__comp__(skc10,o__comp__(skc10,o__comp__(V,o__comp__(U,skc9)))))*.
+	Given clause: 992[0:SSi:986.3,986.0,26.0,48.1,7.2] arrow(U) arrow(V) ||  -> arrow(o__comp__(skc10,o__comp__(V,o__comp__(U,o__comp__(skc9,skc9)))))*.
+	Given clause: 1057[0:SSi:1051.3,1051.0,26.0,73.1,7.2] arrow(U) arrow(V) ||  -> arrow(o__comp__(skc10,o__comp__(V,o__comp__(U,o__comp__(skc10,skc9)))))*.
+	Given clause: 65[0:Res:6.0,39.0] arrow(U) arrow(V) || equal(o__eEq__(o__comp__(V,U),o__comp__(V,U)),x_True) equal(o__eEq__(o__comp__(skc10,V),o__comp__(skc10,V)),x_True) -> equal(o__eEq__(o__comp__(skc10,o__comp__(V,U)),o__comp__(skc10,o__comp__(V,U))),x_True)**.
+	Given clause: 1363[0:SSi:1362.1,26.0,6.2] arrow(U) arrow(V) ||  -> arrow(o__comp__(skc9,o__comp__(skc10,o__comp__(U,o__comp__(skc10,V)))))*.
+	Given clause: 1365[0:SSi:1364.1,26.0,7.2] arrow(U) arrow(V) ||  -> arrow(o__comp__(skc9,o__comp__(skc10,o__comp__(U,o__comp__(skc9,V)))))*.
+	Given clause: 1367[0:SSi:1366.1,73.1] arrow(U) arrow(V) ||  -> arrow(o__comp__(skc9,o__comp__(skc10,o__comp__(skc10,o__comp__(U,V)))))*.
+	Given clause: 1369[0:SSi:1368.1,48.1] arrow(U) arrow(V) ||  -> arrow(o__comp__(skc9,o__comp__(skc10,o__comp__(skc9,o__comp__(U,V)))))*.
+	Given clause: 40[0:Res:7.0,39.0] arrow(U) arrow(V) || equal(o__eEq__(o__comp__(V,U),o__comp__(V,U)),x_True) equal(o__eEq__(o__comp__(skc9,V),o__comp__(skc9,V)),x_True) -> equal(o__eEq__(o__comp__(skc9,o__comp__(V,U)),o__comp__(skc9,o__comp__(V,U))),x_True)**.
+	Given clause: 1384[0:SSi:1376.2,1376.0,26.0,6.0,7.2] arrow(U) arrow(V) ||  -> arrow(o__comp__(V,o__comp__(skc10,o__comp__(U,o__comp__(skc10,skc9)))))*.
+	Given clause: 1385[0:SSi:1374.2,1374.0,73.0,7.1] arrow(U) arrow(V) ||  -> arrow(o__comp__(V,o__comp__(skc10,o__comp__(skc10,o__comp__(U,skc9)))))*.
+	Given clause: 1723[0:SSi:1714.2,1714.0,73.0,7.1] arrow(U) arrow(V) ||  -> arrow(o__comp__(skc10,o__comp__(V,o__comp__(skc10,o__comp__(U,skc9)))))*.
+	Given clause: 1938[0:SSi:1935.3,1935.2,6.2,26.0] arrow(U) arrow(V) ||  -> arrow(o__comp__(skc10,o__comp__(skc10,o__comp__(V,o__comp__(U,skc10)))))*.
+	Given clause: 77[0:Res:6.0,39.2] arrow(U) arrow(V) || equal(o__eEq__(o__comp__(V,U),o__comp__(V,U)),x_True) equal(o__eEq__(o__comp__(U,skc10),o__comp__(U,skc10)),x_True) -> equal(o__eEq__(o__comp__(V,o__comp__(U,skc10)),o__comp__(V,o__comp__(U,skc10))),x_True)**.
+	Given clause: 1940[0:SSi:1939.1,26.0,6.2] arrow(U) arrow(V) ||  -> arrow(o__comp__(skc10,o__comp__(skc10,o__comp__(U,o__comp__(skc10,V)))))*.
+	Given clause: 1942[0:SSi:1941.1,26.0,7.2] arrow(U) arrow(V) ||  -> arrow(o__comp__(skc10,o__comp__(skc10,o__comp__(U,o__comp__(skc9,V)))))*.
+	Given clause: 1944[0:SSi:1943.1,73.1] arrow(U) arrow(V) ||  -> arrow(o__comp__(skc10,o__comp__(skc10,o__comp__(skc10,o__comp__(U,V)))))*.
+	Given clause: 1946[0:SSi:1945.1,48.1] arrow(U) arrow(V) ||  -> arrow(o__comp__(skc10,o__comp__(skc10,o__comp__(skc9,o__comp__(U,V)))))*.
+	Given clause: 52[0:Res:7.0,39.2] arrow(U) arrow(V) || equal(o__eEq__(o__comp__(V,U),o__comp__(V,U)),x_True) equal(o__eEq__(o__comp__(U,skc9),o__comp__(U,skc9)),x_True) -> equal(o__eEq__(o__comp__(V,o__comp__(U,skc9)),o__comp__(V,o__comp__(U,skc9))),x_True)**.
+	Given clause: 1960[0:SSi:1959.1,26.0,6.2] arrow(U) arrow(V) ||  -> arrow(o__comp__(skc10,o__comp__(skc9,o__comp__(U,o__comp__(skc10,V)))))*.
+	Given clause: 1962[0:SSi:1961.1,26.0,7.2] arrow(U) arrow(V) ||  -> arrow(o__comp__(skc10,o__comp__(skc9,o__comp__(U,o__comp__(skc9,V)))))*.
+	Given clause: 1964[0:SSi:1963.1,73.1] arrow(U) arrow(V) ||  -> arrow(o__comp__(skc10,o__comp__(skc9,o__comp__(skc10,o__comp__(U,V)))))*.
+	Given clause: 1966[0:SSi:1965.1,48.1] arrow(U) arrow(V) ||  -> arrow(o__comp__(skc10,o__comp__(skc9,o__comp__(skc9,o__comp__(U,V)))))*.
+	Given clause: 97[0:Obv:96.4] arrow(U) arrow(V) arrow(W) || equal(o__eEq__(W,W),x_True)** equal(o__eEq__(U,U),x_True)** equal(o__eEq__(V,V),x_True)** equal(o__eEq__(o__comp__(skc10,U),o__comp__(W,V)),x_True)**+ -> commSquare(skc10,W,V,U).
+	Given clause: 715[0:SSi:657.2,657.0,73.0,7.1] arrow(U) ||  -> arrow(o__comp__(skc9,o__comp__(skc9,o__comp__(skc9,o__comp__(skc9,o__comp__(skc10,o__comp__(U,skc9)))))))*.
+	Given clause: 809[0:SSi:759.2,759.0,26.0,7.0,6.2] arrow(U) ||  -> arrow(o__comp__(skc9,o__comp__(skc9,o__comp__(skc9,o__comp__(skc9,o__comp__(U,o__comp__(skc9,skc10)))))))*.
+	Given clause: 936[0:SSi:866.2,866.0,26.0,6.0,7.2] arrow(U) ||  -> arrow(o__comp__(skc9,o__comp__(skc9,o__comp__(skc9,o__comp__(skc9,o__comp__(U,o__comp__(skc10,skc9)))))))*.
+	Given clause: 1979[0:SSi:1975.2,1975.0,26.0,6.0,7.2] arrow(U) ||  -> arrow(o__comp__(skc9,o__comp__(skc9,o__comp__(skc9,o__comp__(skc10,o__comp__(U,o__comp__(skc10,skc9)))))))*.
+	Given clause: 105[0:Obv:104.4] arrow(U) arrow(V) arrow(W) || equal(o__eEq__(W,W),x_True)** equal(o__eEq__(U,U),x_True)** equal(o__eEq__(V,V),x_True)** equal(o__eEq__(o__comp__(skc9,U),o__comp__(W,V)),x_True)**+ -> commSquare(skc9,W,V,U).
+	Given clause: 1980[0:SSi:1973.2,1973.0,73.0,7.1] arrow(U) ||  -> arrow(o__comp__(skc9,o__comp__(skc9,o__comp__(skc9,o__comp__(skc10,o__comp__(skc10,o__comp__(U,skc9)))))))*.
+	Given clause: 2053[0:SSi:2051.2,2051.0,26.0,6.1,73.0,7.2] arrow(U) ||  -> arrow(o__comp__(skc9,o__comp__(skc9,o__comp__(skc10,o__comp__(U,o__comp__(skc10,o__comp__(skc10,skc9)))))))*.
+	Given clause: 2054[0:SSi:2050.2,2050.0,26.0,7.1,73.0,7.2] arrow(U) ||  -> arrow(o__comp__(skc9,o__comp__(skc9,o__comp__(skc10,o__comp__(U,o__comp__(skc9,o__comp__(skc10,skc9)))))))*.
+	Given clause: 2055[0:SSi:2049.2,2049.0,73.0,73.1,7.1] arrow(U) ||  -> arrow(o__comp__(skc9,o__comp__(skc9,o__comp__(skc10,o__comp__(skc10,o__comp__(U,o__comp__(skc10,skc9)))))))*.
+	Given clause: 91[0:Obv:90.7] arrow(U) arrow(V) arrow(W) || equal(o__eEq__(U,U),x_True)** equal(o__eEq__(V,V),x_True)** equal(o__eEq__(W,W),x_True)** equal(o__eEq__(o__comp__(W,U),o__comp__(skc10,V)),x_True)**+ -> commSquare(W,skc10,V,U).
+SPASS V 3.7 
+SPASS beiseite: Ran out of time.
+Problem: Read from stdin. 
+SPASS derived 2209 clauses, backtracked 0 clauses, performed 0 splits and kept 899 clauses.
+SPASS allocated 60229 KBytes.
+SPASS spent	0:00:01.01 on the problem.
+		0:00:00.01 for the input.
+		0:00:00.01 for the FLOTTER CNF translation.
+		0:00:00.04 for inferences.
+		0:00:00.00 for the backtracking.
+		0:00:00.93 for the reduction.
+
+--------------------------SPASS-STOP------------------------------
