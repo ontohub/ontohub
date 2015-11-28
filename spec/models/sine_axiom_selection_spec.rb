@@ -97,41 +97,6 @@ describe SineAxiomSelection do
     end
   end
 
-  context 'Methods' do
-    setup_hets
-    let(:ontology_fixture_file) { %w(prove/Subclass casl) }
-    let(:ontology_filepath) { ontology_fixture_file.join('.') }
-    before { stub_hets_for(ontology_filepath) }
-
-    let(:sine_axiom_selection) do
-      create :sine_axiom_selection,
-        :with_auxiliary_objects,
-        ontology_fixture_file: ontology_fixture_file
-    end
-    subject { sine_axiom_selection }
-
-    context 'cleanup' do
-      [SineSymbolCommonness, SineSymbolAxiomTrigger].each do |klass|
-        it "remove all #{klass} objects" do
-          subject.call
-          subject.send(:cleanup)
-          expect(klass.count).to eq(0)
-        end
-      end
-    end
-
-    context 'destroy' do
-      before do
-        allow(subject).to receive(:cleanup)
-      end
-
-      it 'calls cleanup' do
-        subject.destroy
-        expect(subject).to have_received(:cleanup)
-      end
-    end
-  end
-
   context 'calling SInE' do
     setup_hets
     let(:ontology_fixture_file) { %w(prove/Subclass casl) }
