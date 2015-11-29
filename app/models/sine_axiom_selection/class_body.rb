@@ -25,13 +25,25 @@ module SineAxiomSelection::ClassBody
   def call
     Semaphore.exclusively(lock_key) do
       unless finished
-        record_processing_time do
-          transaction do
-            preprocess unless other_finished_axiom_selections(self.class).any?
-            select_axioms
-            mark_as_finished!
+        begin
+          Timeout::timeout(2.minutes) do
+            record_processing_time do
+              transaction do
+                preprocess unless other_finished_axiom_selections(self.class).any?
+                select_axioms
+                mark_as_finished!
+              end
+            end
           end
+        rescue Timeout::Error
+          axiom_selection.processing_time = -1
+          mark_as_finished!
+          save!
+          axiom_selection.save!
+          raise
         end
+      else
+        raise 'previous execution expired' if processing_time == -1
       end
     end
   end
