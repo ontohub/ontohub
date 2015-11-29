@@ -23,13 +23,25 @@ class FrequentSymbolSetMiningAxiomSelection < ActiveRecord::Base
   def call
     Semaphore.exclusively(lock_key) do
       unless finished
-        record_processing_time do
-          transaction do
-            preprocess unless other_finished_axiom_selections(self.class).any?
-            select_axioms
-            mark_as_finished!
+        begin
+          record_processing_time do
+            Timeout::timeout(2.minutes) do
+              transaction do
+                preprocess unless other_finished_axiom_selections(self.class).any?
+                select_axioms
+                mark_as_finished!
+              end
+            end
           end
+        rescue Timeout::Error
+          processing_time = -1
+          axiom_selection.mark_as_finished!
+          save!
+          axiom_selection.save!
+          raise
         end
+      else
+        raise 'previous execution expired' if processing_time == -1
       end
     end
   end
