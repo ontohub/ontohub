@@ -68,7 +68,7 @@ gem 'active_model_serializers', '~> 0.9.3'
 gem 'json-stream', '~> 0.2.1'
 
 # XML Parser
-gem 'nokogiri', '~> 1.6.6.2'
+gem 'nokogiri', '~> 1.6.7'
 
 # Authentication
 gem 'devise', '~> 3.5.2'
