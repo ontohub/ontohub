@@ -267,3 +267,5 @@ en:
     labels:
       proof:
         axioms: Manual Axiom Selection
+  info:
+    javascript_warning: JavaScript is deactivated in your browser. Some features are only accessible with active JavaScript.
