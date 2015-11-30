@@ -108,7 +108,7 @@ gem 'elasticsearch-extensions', '~> 0.0.15'
 gem 'ruby-graphviz', "~> 1.2.2"
 
 # Fake-inputs for tests and seeds
-gem "faker", "~> 1.5.0"
+gem "faker", "~> 1.6.1"
 
 # Git
 gem 'rugged', '~> 0.23.2'
