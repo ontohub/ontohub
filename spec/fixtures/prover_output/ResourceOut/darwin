@@ -1,0 +1,38 @@
+Darwin 1.4.4
+
+Finite Domain: setting initial domain size to 1.
+Finite Domain: using non-ground splitting in preprocessing.
+
+Parsing /var/folders/h0/h5fs6h4n4wg1qpj05yd205dc0000gn/T/_commSquareMinushorizontalMinusglueing69766.tptp ...
+Calling /usr/local/bin/eprover for clausification ...
+
+
+
+Proving  ...
+
+
+Statistics:
+Close                                   :      445
+Assert                                  :    20474
+Split                                   :      451
+Resolve                                 :    36693
+Subsume                                 :     6359
+Compact                                 :        0
+Productivity Filtered                   :        0
+Assert Candidates                       :    64223
+Split Candidates                        :    30456
+Jumps                                   :        0
+Debug                                   :        0
+Global Debug                            :        0
+Global Debug2                           :        0
+Maximum Context Size                    :      272
+Incomplete Branches                     :        0
+Restarts                                :        3
+Bound                                   :        4
+Lemmas                                  :      433
+
+CPU  Time (s)                           :      1.0
+Memory    (MB)                          :        4
+
+SZS status Timeout
+SZS status User for /var/folders/h0/h5fs6h4n4wg1qpj05yd205dc0000gn/T/_commSquareMinushorizontalMinusglueing69766.tptp

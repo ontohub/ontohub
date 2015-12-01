@@ -2,7 +2,7 @@ require_relative 'direct_hets_generator.rb'
 
 module FixturesGeneration
   class ProverOutputGenerator < DirectHetsGenerator
-    NODES = %w(CounterSatisfiable Theorem)
+    NODES = %w(CounterSatisfiable Theorem ResourceOut)
     PROVERS = %w(SPASS darwin darwin-non-fd eprover)
     protected
 
@@ -22,7 +22,7 @@ module FixturesGeneration
     end
 
     def files
-      %w(spec/fixtures/ontologies/prove/Simple_Implications.casl)
+      %w(spec/fixtures/ontologies/prove/prover_output_generator.casl)
     end
 
     def subdir

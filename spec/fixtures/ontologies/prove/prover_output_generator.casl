@@ -1,0 +1,70 @@
+spec Group =
+  sort s
+  ops 0:s;
+      -__ :s->s;
+      __+__ :s*s->s, assoc
+  forall x,y:s
+  . x+(-x) = 0
+  . x+0=x %(leftunit)%
+  . 0+x=x %(rightunit)% %implied
+  . 0+0=0 %(zero_plus)% %implied
+end
+
+spec Theorem =
+  sort s
+  ops 0:s
+  forall x,y:s . x = x %implied
+end
+
+spec CounterSatisfiable =
+  sort s
+  ops 0:s;
+      1:s
+  forall x:s . x = 0
+  . not( 1 = 0 ) %implied
+end
+
+
+
+spec Category =
+  sort Bool, Arrow
+  op True : Bool
+
+  op __eEq__ : Arrow * Arrow -> Bool, comm
+  forall f, g : Arrow
+  . f eEq g = True => f eEq f = True
+  . f eEq g = True => f = g
+
+  op __comp__ : Arrow * Arrow -> Arrow, assoc
+  forall f, g : Arrow
+  . (f comp g) eEq (f comp g) = True => f eEq f = True /\ g eEq g = True
+
+  forall f, g, h : Arrow
+  . (f eEq f = True) /\ (g eEq g = True) /\ (h eEq h = True) =>
+    ( (f comp g) eEq (f comp g) = True /\
+      (g comp h) eEq (g comp h) = True => (f comp g comp h) eEq (f comp g comp h) = True )
+end
+
+spec ResourceOut =
+  Category then
+
+  pred CommSquare : Arrow * Arrow * Arrow * Arrow
+  %[ * - f ->  *  ]%
+  %[ g         g' ]%
+  %[ * - f'->  *  ]%
+  forall f, g, f', g' : Arrow
+  . (f eEq f = True) /\ (g eEq g = True) /\ (f' eEq f' = True) /\ (g' eEq g' = True) =>
+    ( CommSquare(f, g, f', g') <=> (f comp g') eEq (g comp f') = True ) %(CommSquareAx)%
+
+then %implies
+  %[Horizontal glueing of commutative squares]%
+
+  %[ * -f -> *  -h -> *   ]%
+  %[ g       g'       g'' ]%
+  %[ * -f'-> *  -h'-> *   ]%
+
+  forall f, g, f', g', h, h', g'' : Arrow
+  . (f eEq f = True) /\ (g eEq g = True) /\ (f' eEq f' = True) /\ (g' eEq g' = True) /\ (h eEq h = True) /\ (h' eEq h' = True) /\ (g'' eEq g'' = True) =>
+    ( CommSquare(f, g, f', g') /\ CommSquare(h, g', h', g'') =>
+      CommSquare(f comp h, g, f' comp h', g'') ) %(CommSquare-horizontal-glueing)% %implied
+end

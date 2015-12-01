@@ -1,0 +1,37 @@
+Darwin 1.4.4
+
+
+Parsing /var/folders/h0/h5fs6h4n4wg1qpj05yd205dc0000gn/T/_commSquareMinushorizontalMinusglueing69766.tptp ...
+Calling /usr/local/bin/eprover for clausification ...
+
+
+Horn problem: ignoring negative assert candidates.
+
+Proving  ...
+
+
+Statistics:
+Close                                   :        0
+Assert                                  :      481
+Split                                   :        0
+Resolve                                 :        0
+Subsume                                 :       42
+Compact                                 :        0
+Productivity Filtered                   :        0
+Assert Candidates                       :    17783
+Split Candidates                        :        0
+Jumps                                   :        0
+Debug                                   :        0
+Global Debug                            :        0
+Global Debug2                           :        0
+Maximum Context Size                    :      227
+Incomplete Branches                     :        1
+Restarts                                :        1
+Bound                                   :        3
+Lemmas                                  :        0
+
+CPU  Time (s)                           :      1.0
+Memory    (MB)                          :       11
+
+SZS status Timeout
+SZS status User for /var/folders/h0/h5fs6h4n4wg1qpj05yd205dc0000gn/T/_commSquareMinushorizontalMinusglueing69766.tptp

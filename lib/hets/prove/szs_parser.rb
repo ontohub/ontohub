@@ -23,7 +23,12 @@ module Hets
       end
 
       def parse_status_darwin
-        regex_parse_status(/\n\nSZS status (\w+) for/)
+        status = regex_parse_status(/\n\nSZS status (\w+)/)
+        if status == 'Timeout'
+          'ResourceOut'
+        else
+          status
+        end
       end
 
       def parse_status_darwin_non_fd
@@ -32,6 +37,14 @@ module Hets
 
       def parse_status_eprover
         regex_parse_status(/\n# SZS status (\w+)/)
+      end
+
+      def parse_status_spass
+        if match = generic_parse_status
+          match
+        elsif output.match(/^SPASS beiseite: Ran out of time.$/)
+          'ResourceOut'
+        end
       end
 
       def regex_parse_status(regex)
