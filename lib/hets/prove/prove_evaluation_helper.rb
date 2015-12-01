@@ -34,7 +34,7 @@ module Hets
 
       def find_proof_status_from_hash(proof_info)
         szs_parser = Hets::Prove::SZSParser.
-          new(proof_info[:prover], proof_info[:prover_output])
+          new(proof_info[:used_prover_identifier], proof_info[:prover_output])
         szs_name = szs_parser.call
         proof_status = ProofStatus.find_by_name(szs_name)
         proof_status ||= default_proof_status(proof_info)
