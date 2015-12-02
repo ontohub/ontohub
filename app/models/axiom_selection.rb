@@ -56,8 +56,6 @@ class AxiomSelection < ActiveRecord::Base
       end.map(&:specific)
   end
 
-  protected
-
   def mark_as_finished!
     self.finished = true
     save!
