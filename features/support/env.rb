@@ -12,7 +12,7 @@ require 'vcr'
 
 Capybara.current_driver = :poltergeist
 Capybara.javascript_driver = :poltergeist
-Capybara.default_wait_time = 5
+Capybara.default_max_wait_time = 5
 
 class Cucumber::Rails::World
   require Rails.root.join('spec', 'support', 'common_helper_methods.rb')
@@ -34,7 +34,7 @@ class Cucumber::Rails::World
     while page.evaluate_script("jQuery.active").to_i > 0
       counter += 1
       sleep(0.1)
-      if counter >= 10 * Capybara.default_wait_time
+      if counter >= 10 * Capybara.default_max_wait_time
         raise "AJAX request took longer than 5 seconds."
       end
     end
