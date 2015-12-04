@@ -14,5 +14,10 @@ module Hets
     rescue UnfollowableResponseError => error
       handle_possible_hets_error(error)
     end
+
+    def timeout
+      # The HTTP timeout must be as long as Hets maximally takes.
+      HetsInstance::FORCE_FREE_WAITING_PERIOD
+    end
   end
 end
