@@ -259,8 +259,9 @@ To continue, I try the command again using sudo.
         if user == 'root'
           exec_system(*[sudo, *args])
         elsif user
-          # This looks strange because of the double sudo.
+          # This looks strange because of the combination of + and sudo.
           # It is needed on our deployment machines to get the environment right.
+          # On other machines, remove the call of +.
           exec_system(*['+', 'sudo', '-u', user, 'bash', '-c',
                         "cd #{Dir.getwd} && #{escape_arguments(args)}"])
         else
