@@ -200,7 +200,7 @@ directories #{@data_dirs.join(' ')} to a temporary directory #{tmpdir}.
 This is used as a backup for the case of an error while restoring.
 To continue, I try the command again using sudo.
       MSG
-      exec('mv', *@data_dirs, tmpdir, user: 'root')
+      exec('mv', *@data_dirs, tmpdir, user: 'root') unless dry_run
     end
 
     def extract_archive
