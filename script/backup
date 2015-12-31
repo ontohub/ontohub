@@ -23,8 +23,6 @@
 #   Then the selected backup is fully restored
 #
 # Backup directory
-#   For development machines, the backup directory is:
-#     <rails root>/tmp/backup/
 #   And for production machines, the backup directory is:
 #     /home/ontohub/ontohub_data_backup
 #
@@ -306,16 +304,7 @@ To continue, I try the command again using sudo.
 end
 
 def data_root(rails_root)
-  if on_development_system?(rails_root)
-    File.realpath(rails_root.join('data'))
-  else
-    ENV['DATA_ROOT'] ||'/data/git'
-  end
-end
-
-def on_development_system?(rails_root)
-  data_path = rails_root.join('data')
-  File.exist?(data_path) && !File.symlink?(data_path)
+  ENV['DATA_ROOT'] ||'/data/git'
 end
 
 # Don't allow this to be run as the root user.
@@ -332,22 +321,12 @@ BACKUP_ROOT_PRODUCTION = '/local/home/ontohub/ontohub_data_backup'
 USER = 'ontohub'
 GROUP = 'webservd'
 
-DATABASE =
-  if on_development_system?(RAILS_ROOT)
-    'ontohub_development'
-  else
-    'ontohub'
-  end
+DATABASE = 'ontohub'
 
-BACKUP_ROOT =
-  if on_development_system?(RAILS_ROOT)
-    RAILS_ROOT.join('tmp', 'backup')
-  else
-    File.realpath(BACKUP_ROOT_PRODUCTION)
-  end
+BACKUP_ROOT = File.realpath(BACKUP_ROOT_PRODUCTION)
 
 backup = Backup::Backup.new(DATABASE, data_root(RAILS_ROOT), BACKUP_ROOT,
-  sql_dump_as_db_user: on_development_system?(RAILS_ROOT) ? 'postgres' : 'ontohub',
+  sql_dump_as_db_user: 'ontohub',
   user: USER, group: GROUP,
   dry_run: false, verbose: true)
 
