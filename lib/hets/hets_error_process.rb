@@ -1,6 +1,6 @@
 module Hets
   class HetsErrorProcess
-    HETS_ERROR_CODES = %w(400, 422, 500)
+    HETS_ERROR_CODES = %w(400 422 500)
     HETS_ERROR_MESSAGE_REGEXP = /\A[*]{3}\s*Error:\s*/
 
     attr_reader :error, :response
