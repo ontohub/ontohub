@@ -1,10 +1,10 @@
 module PaginationHelper
 
-  def pagination(collection=nil, &block)
+  def pagination(collection=nil, **options, &block)
     # call the collection-method if no collection is given
     collection ||= send :collection
 
-    pages = paginate(collection)
+    pages = paginate(collection, **options)
 
     html = ''
     html << pages
