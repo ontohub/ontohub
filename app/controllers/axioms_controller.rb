@@ -27,9 +27,9 @@ class AxiomsController < InheritedResources::Base
           else
             parent.translated_axioms
           end
-        Kaminari.paginate_array(axioms).page(params[:page])
+        Kaminari.paginate_array(axioms).page(params[:page]).per(params[:per_page])
       else
-        Kaminari.paginate_array(parent.axioms.original).page(params[:page])
+        Kaminari.paginate_array(parent.axioms.original).page(params[:page]).per(params[:per_page])
       end
   end
 
