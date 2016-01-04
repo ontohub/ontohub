@@ -117,9 +117,6 @@ gem 'codemirror-rails', github: 'llwt/codemirror-rails'
 # API
 gem 'specroutes', github: '0robustus1/specroutes'
 
-# Ancestry enabling tree structure in category model
-# gem 'ancestry'
-
 # Use dagnabit to model categories
 # Newer versions than 3.0.x are not compatible to rails 3.2
 gem 'dagnabit', '~> 3.0.1'
