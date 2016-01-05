@@ -120,7 +120,7 @@ class SineAxiomSelection < ActiveRecord::Base
     return if depth_limit_reached?(current_depth)
     new_axioms = select_axioms_by_sentence(sentence) - @selected_axioms
     @selected_axioms += new_axioms
-    new_axioms.each { |axiom| select_new_axioms(axiom, current_depth + 2) }
+    new_axioms.each { |axiom| select_new_axioms(axiom, current_depth + 1) }
   end
 
   def select_axioms_by_sentence(sentence)
