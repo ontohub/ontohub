@@ -77,10 +77,10 @@ module Repository::Importing
   end
 
   def update_database_after_fetch(range)
-    suspended_save_ontologies \
-      start_oid:  range.current,
-      stop_oid:   range.previous,
-      walk_order: :reverse
+    OntologySaver.new(self).
+      suspended_save_ontologies(start_oid: range.current,
+                                stop_oid: range.previous,
+                                walk_order: :reverse)
   end
 
   module ClassMethods
