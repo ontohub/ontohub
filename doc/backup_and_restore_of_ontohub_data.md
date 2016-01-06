@@ -6,7 +6,7 @@ It is tailored to the productive deployments of ontohub.org and cannot be used w
 # Backing up
 To create a backup, simply run as `admin` user
 ```shell
-script/backup create
++ su - -c '~ontohub/webapp/script/backup create'
 ```
 
 What happens is:
@@ -19,7 +19,7 @@ What happens is:
 # Restoring
 To restore a previously created backup, run as `admin` user
 ```shell
-script/backup restore 2014-12-06_20-06-37
++ su - -c '~ontohub/webapp/script/backup restore 2014-12-06_20-06-37'
 ```
 (use your own backup name - it is a folder from the above-mentioned backup directory)
 
