@@ -73,6 +73,14 @@ class OntologySaver
 
   protected
 
+  def already_updated_in_commit?(commit_oid, ontology_version_options)
+    basepath = File.basepath(ontology_version_options.filepath)
+    file_extension = File.extname(ontology_version_options.filepath)
+    repository.ontology_versions.where(commit_oid: commit_oid,
+                                       basepath: basepath,
+                                       file_extension: file_extension).any?
+  end
+
   def find_or_create_ontology(ontology_version_options)
     ontology = find_existing_ontology(ontology_version_options)
 
