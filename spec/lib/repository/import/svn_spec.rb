@@ -35,7 +35,7 @@ describe "svn import" do
 
   before do
     commit(work_dir, commit_count, '')
-    Worker.drain
+    RepositoryFetchingWorker.drain
   end
 
 
@@ -52,7 +52,7 @@ describe "svn import" do
   end
 
   context 'synchronizing without new commits' do
-    let!(:result) { repository.remote_send :pull }
+    let!(:result) { repository.fetch(:pull) }
 
     it 'unchanged HEAD' do
       expect(result.current).to eq(result.previous)
@@ -62,7 +62,7 @@ describe "svn import" do
 
   context 'adding commits to svn' do
     before { commit(work_dir, commit_count, 'new_') }
-    let!(:result) { repository.remote_send :pull }
+    let!(:result) { repository.fetch(:pull) }
 
     it 'get the new commits' do
       expect(repository.walk_commits.size).to eq(commit_count * 2)

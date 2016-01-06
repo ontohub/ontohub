@@ -44,11 +44,11 @@ module Repository::Importing
   def async_remote(method)
     raise "object is #{state}" if locked?
     update_state! 'pending'
-    async :remote_send, method, remote_type
+    RepositoryFetchingWorker.perform_async(id, method, remote_type)
   end
 
   # executes a pull/clone job
-  def remote_send(method, remote_type = nil)
+  def fetch(method, remote_type = nil)
     # build arguments
     args    = []
     args   << source_address if method == 'clone'
