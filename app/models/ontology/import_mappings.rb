@@ -11,8 +11,8 @@ class Ontology
         import_mappings_from_other_repositories.present?
       end
 
-      def imported_by
-        import_mappings.map(&:source)
+      def mapping_targets
+        source_mappings.map(&:target)
       end
 
       def imported_ontologies

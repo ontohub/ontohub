@@ -7,17 +7,19 @@ class OntologySaver
     self.repository = repository
   end
 
-  def save_ontology(commit_oid, ontology_version_options)
-    # we expect that this method is only called, when the ontology is 'present'
-    return unless Ontology.file_extensions.include?(
-      File.extname(ontology_version_options.filepath))
-
+  def save_ontology(commit_oid, ontology_version_options, changed_files: [])
+    # We expect that this method is only called, when we can expect an ontology
+    # in this file.
+    file_extension = File.extname(ontology_version_options.filepath)
+    return unless Ontology.file_extensions.include?(file_extension)
+    return if already_updated_in_commit?(commit_oid, ontology_version_options)
     ontology = find_or_create_ontology(ontology_version_options)
 
     return unless repository.master_file?(ontology, ontology_version_options)
     return if ontology.versions.find_by_commit_oid(commit_oid)
 
-    version = create_version(ontology, commit_oid, ontology_version_options)
+    version = create_version(ontology, commit_oid, ontology_version_options,
+                             changed_files)
     ontology.present = true
     ontology.save!
 
@@ -31,7 +33,8 @@ class OntologySaver
     repository.walk_commits(options) { |commit|
       commits_count += 1
       current_file_count = 0
-      repository.git.changed_files(commit.oid).each { |f|
+      changed_files = repository.git.changed_files(commit.oid)
+      changed_files.each { |f|
         current_file_count += 1
         if f.added? || f.modified?
           mark_ontology_as_having_file(f.path, has_file: true)
@@ -40,7 +43,8 @@ class OntologySaver
             options.delete(:user),
             fast_parse: repository.has_changed?(f.path, commit.oid),
             do_not_parse: true)
-          versions << save_ontology(commit.oid, ontology_version_options)
+          versions << save_ontology(commit.oid, ontology_version_options,
+                                    changed_files: changed_files)
         elsif f.renamed?
           ontology_version_options = OntologyVersionOptions.new(
             f.path,
@@ -48,7 +52,8 @@ class OntologySaver
             fast_parse: repository.has_changed?(f.path, commit.oid),
             do_not_parse: true,
             previous_filepath: f.delta.old_file[:path])
-          versions << save_ontology(commit.oid, ontology_version_options)
+          versions << save_ontology(commit.oid, ontology_version_options,
+                                    changed_files: changed_files)
         elsif f.deleted?
           mark_ontology_as_having_file(f.path, has_file: false)
         end
@@ -119,7 +124,7 @@ class OntologySaver
     is_distributed ? DistributedOntology : SingleOntology
   end
 
-  def create_version(ontology, commit_oid, ontology_version_options)
+  def create_version(ontology, commit_oid, ontology_version_options, changed_files)
     version = ontology.versions.build(
       { commit_oid: commit_oid,
         user: ontology_version_options.user,
@@ -130,6 +135,7 @@ class OntologySaver
         fast_parse: ontology_version_options.fast_parse },
       { without_protection: true })
     version.do_not_parse! if ontology_version_options.do_not_parse
+    version.files_to_parse_afterwards = files_to_parse(ontology, changed_files)
     version.save!
     ontology.ontology_version = version
     ontology.save!
@@ -159,7 +165,7 @@ class OntologySaver
 
   # Files that import the current one must be parsed as well.
   def files_to_parse(ontology, changed_files)
-    ontology.imported_by.map(&:path) - [*changed_files, ontology.path]
+    ontology.mapping_targets.map(&:path) - [*changed_files, ontology.path]
   end
 
   def generate_locid(basepath)
