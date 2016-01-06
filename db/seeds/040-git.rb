@@ -20,6 +20,8 @@ ontologies = %w[
   casl/test1.casl
   casl/test2.casl
   clif/cat.clif
+  clif/hierarchical_import1.clif
+  clif/hierarchical_import2.clif
   owl/generations.owl
   owl/pizza.owl
   prove/Subclass.casl
