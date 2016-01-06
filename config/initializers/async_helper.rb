@@ -1,15 +1,4 @@
 class ActiveRecord::Base
-
-  # Creates a async_<methodname> method that
-  # enqueues the corresponding method call.
-  def self.async_method(*methods)
-    methods.each do |method|
-      define_method "async_#{method}" do |*args|
-        async method, *args
-      end
-    end
-  end
-
   def self.async(method, *args)
     async_in 'class', 1, method.to_s, *args
   end
@@ -29,5 +18,4 @@ class ActiveRecord::Base
       'args'      => [type, self.to_s, *args],
       'at'        => (at < 1_000_000_000 ? Time.now + at : at).to_f
   end
-
 end
