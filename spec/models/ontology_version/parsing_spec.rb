@@ -11,6 +11,98 @@ describe 'OntologyVersion Parsing' do
     stub_hets_for('owl/pizza.owl')
   end
 
+  context 'import hierarchy', sidekiq: :inline do
+    before do
+      stub_hets_for('clif/Px.clif')
+      stub_hets_for('clif/Qy.clif')
+    end
+
+    let(:fixture) { ontology_file('clif/Px.clif') }
+    let(:other_fixture) { ontology_file('clif/Qy.clif') }
+    let(:repository) { create :repository }
+
+    # We do not care about the content of the clif file. Only the later on added
+    # mappings are important.
+    let!(:ontology) do
+      repository.save_file(fixture, 'base.clif', 'add base', user).ontology
+    end
+    let!(:ontology_initial_commit_oid) { ontology.current_version.commit_oid }
+    let!(:importing_ontology1) do
+      repository.save_file(fixture, 'importing1.clif', 'add import1', user).ontology
+    end
+    let!(:importing_ontology2) do
+      repository.save_file(fixture, 'importing2.clif', 'add import2', user).ontology
+    end
+    let!(:viewing_ontology) do
+      repository.save_file(fixture, 'viewing.clif', 'add viewing', user).ontology
+    end
+    let!(:unrelated_ontology) do
+      repository.save_file(fixture, 'unrelated.clif', 'add unrelated', user).ontology
+    end
+    let!(:import_mapping1) do
+      create :import_mapping, source: ontology, target: importing_ontology1
+    end
+    let!(:import_mapping2) do
+      create :import_mapping, source: importing_ontology1, target: importing_ontology2
+    end
+    let!(:view_mapping) do
+      create :import_mapping, source: ontology, target: viewing_ontology
+    end
+
+    before do
+      ontology.save_file(other_fixture, 'changing the base', user)
+    end
+
+    it 'changing the commit oid of the base ontology' do
+      expect(ontology.reload.current_version.commit_oid).
+        to_not eq(ontology_initial_commit_oid)
+    end
+
+    context 'directly importing ontology' do
+      it 'adding a version' do
+        expect(importing_ontology1.reload.versions.count).to eq(2)
+      end
+
+      it 'has the same version as the base ontology' do
+        expect(importing_ontology1.reload.current_version.commit_oid).
+          to eq(ontology.reload.current_version.commit_oid)
+      end
+    end
+
+    context 'distantly importing ontology' do
+      it 'adding a version' do
+        expect(importing_ontology2.reload.versions.count).to eq(2)
+      end
+
+      it 'has the same version as the base ontology' do
+        expect(importing_ontology2.reload.current_version.commit_oid).
+          to eq(ontology.reload.current_version.commit_oid)
+      end
+    end
+
+    context 'directly viewing ontology' do
+      it 'adding a version' do
+        expect(viewing_ontology.reload.versions.count).to eq(2)
+      end
+
+      it 'has the same version as the base ontology' do
+        expect(viewing_ontology.reload.current_version.commit_oid).
+          to eq(ontology.reload.current_version.commit_oid)
+      end
+    end
+
+    context 'unrelated ontology' do
+      it 'not adding a version' do
+        expect(unrelated_ontology.reload.versions.count).to eq(1)
+      end
+
+      it 'has a different version than the base ontology' do
+        expect(unrelated_ontology.reload.current_version.commit_oid).
+          to_not eq(ontology.reload.current_version.commit_oid)
+      end
+    end
+  end
+
   context 'in subdirectory' do
     let(:ontology) { create :ontology, basepath: 'subdir/pizza' }
     let(:qualified_locid) do
