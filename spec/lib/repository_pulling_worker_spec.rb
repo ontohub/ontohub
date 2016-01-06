@@ -1,20 +1,20 @@
 require 'spec_helper'
 
-describe SidetiqWorker do
+describe RepositoryPullingWorker do
   subject! { create :repository_with_empty_remote }
-  before{ Worker.clear }
+  before { RepositoryFetchingWorker.clear }
 
   shared_examples 'perform' do |state, minutes, created_jobs_count|
-    describe "state #{state}, imported " << (minutes ? "#{minutes} minutes ago" : "never before") do
+    context "state #{state}, imported " << (minutes ? "#{minutes} minutes ago" : "never before") do
       before do
         subject.update_attributes!(
           {state: state.to_s, imported_at: (minutes ? minutes.minutes.ago : nil)},
           {without_protection: true}
         )
-        SidetiqWorker.new.perform
+        RepositoryPullingWorker.new.perform
       end
       it("should create #{created_jobs_count} jobs") do
-        expect(created_jobs_count).to eq(Worker.jobs.count)
+        expect(RepositoryFetchingWorker.jobs.count).to eq(created_jobs_count)
       end
     end
   end

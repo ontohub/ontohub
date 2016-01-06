@@ -19,7 +19,7 @@ module Repository::Importing
     include StateUpdater
 
     before_validation :clean_and_initialize_record
-    after_create ->() { async_remote :clone }, if: :source_address?
+    after_create ->() { call_remote :clone }, if: :source_address?
   end
 
   def mirror?
@@ -41,7 +41,7 @@ module Repository::Importing
   end
 
   # enqueues a pull/clone job
-  def async_remote(method)
+  def call_remote(method)
     raise "object is #{state}" if locked?
     update_state! 'pending'
     RepositoryFetchingWorker.perform_async(id, method, remote_type)
