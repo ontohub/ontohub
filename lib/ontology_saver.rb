@@ -157,6 +157,11 @@ class OntologySaver
     end
   end
 
+  # Files that import the current one must be parsed as well.
+  def files_to_parse(ontology, changed_files)
+    ontology.imported_by.map(&:path) - [*changed_files, ontology.path]
+  end
+
   def generate_locid(basepath)
     "/#{repository.path}/#{basepath}"
   end
