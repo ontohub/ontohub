@@ -7,6 +7,7 @@ module OntologyVersion::Parsing
 
     after_create :async_parse, :if => :commit_oid?
     attr_accessor :fast_parse
+    attr_accessor :files_to_parse_afterwards
   end
 
   def do_not_parse!
@@ -18,14 +19,15 @@ module OntologyVersion::Parsing
       update_state! :pending
 
       if @fast_parse
-        async :parse_fast
+        async :parse_fast, files_to_parse_afterwards
       else
-        async :parse_full
+        async :parse_full, files_to_parse_afterwards
       end
     end
   end
 
-  def parse(refresh_cache: false, structure_only: self.fast_parse)
+  def parse(refresh_cache: false, structure_only: self.fast_parse,
+            files_to_parse_afterwards: [])
     update_state! :processing
 
     do_or_set_failed do
@@ -39,6 +41,13 @@ module OntologyVersion::Parsing
 
       update_state! :done
     end
+
+    files_to_parse_afterwards.each do |path|
+      ontology_version_options = OntologyVersionOptions.new(path, self.user,
+                                                            do_not_parse: false)
+      version = OntologySaver.new(repository).
+        save_ontology(commit_oid, ontology_version_options)
+    end
   end
 
   # generate XML by passing the raw ontology to Hets
@@ -48,12 +57,12 @@ module OntologyVersion::Parsing
     [:all_is_well, input_io]
   end
 
-  def parse_full
-    parse(structure_only: false)
+  def parse_full(files_to_parse_afterwards = [])
+    parse(structure_only: false, files_to_parse_afterwards: files_to_parse_afterwards)
   end
 
-  def parse_fast
-    parse(structure_only: true)
+  def parse_fast(files_to_parse_afterwards = [])
+    parse(structure_only: true, files_to_parse_afterwards: files_to_parse_afterwards)
   end
 
   def retrieve_available_provers_for_self_and_children
