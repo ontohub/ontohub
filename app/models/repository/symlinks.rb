@@ -23,9 +23,8 @@ module Repository::Symlinks
   def create_hooks_symlink
     hooks_symlink_name = local_path.join("hooks")
     hooks_symlink_name.rmtree
-    hooks_symlink_name.make_symlink(Rails.root.join('git','hooks').
-      # replace capistrano-style release with 'current'-symlink
-      sub(%r{/releases/\d+/}, '/current/'))
+    hooks_symlink_name.
+      make_symlink(cleanup_release(Rails.root.join('git','hooks')))
   end
 
   def symlinks_update
@@ -42,10 +41,15 @@ module Repository::Symlinks
   def create_cloning_symlink(category)
     symlink_path(category).join('..').mkpath
     remove_cloning_symlink(category)
-    symlink_path(category).make_symlink(local_path)
+    symlink_path(category).make_symlink(cleanup_release(local_path))
   end
 
   def remove_cloning_symlink(category)
     symlink_path(category).unlink if symlink_path(category).exist?
+  end
+
+  # Replace capistrano-style release with 'current'-symlink.
+  def cleanup_release(path)
+    PathsInitializer.cleanup_release(path)
   end
 end
