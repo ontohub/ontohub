@@ -15,6 +15,14 @@ module Repository::Symlinks
 
   protected
 
+  def create_hooks_symlink
+    hooks_symlink_name = local_path.join("hooks")
+    hooks_symlink_name.rmtree
+    hooks_symlink_name.make_symlink(Rails.root.join('git','hooks').
+      # replace capistrano-style release with 'current'-symlink
+      sub(%r{/releases/\d+/}, '/current/'))
+  end
+
   def symlink_update
     Ontohub::Application.config.git_daemon_path.mkpath
     symlink_remove
