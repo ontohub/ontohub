@@ -7,7 +7,7 @@ describe 'OntologyVersion Parsing' do
 
   before do
     # Clear Jobs
-    Worker.jobs.clear
+    OntologyParsingWorker.jobs.clear
     stub_hets_for('owl/pizza.owl')
   end
 
@@ -117,7 +117,7 @@ describe 'OntologyVersion Parsing' do
     end
 
     it 'should use the locid-ref for calling the parse-caller' do
-      expect { Worker.drain }.to throw_symbol(:iri, qualified_locid)
+      expect { OntologyParsingWorker.drain }.to throw_symbol(:iri, qualified_locid)
     end
   end
 
@@ -128,7 +128,7 @@ describe 'OntologyVersion Parsing' do
       # Run Job
       # binding.pry
       ontology_version
-      Worker.drain
+      OntologyParsingWorker.drain
     end
 
     it 'should be done' do
@@ -154,7 +154,7 @@ describe 'OntologyVersion Parsing' do
 
     before do
       ontology_version
-      Worker.drain
+      OntologyParsingWorker.drain
     end
 
     it 'have sent a request with url-catalog' do
@@ -169,7 +169,7 @@ describe 'OntologyVersion Parsing' do
     before do
       allow(Hets).to receive(:parse_via_api).and_raise(Sidekiq::Shutdown)
       ontology_version
-      expect { Worker.drain }.to raise_error(Sidekiq::Shutdown)
+      expect { OntologyParsingWorker.drain }.to raise_error(Sidekiq::Shutdown)
     end
 
     it 'should reset status to pending' do
@@ -182,7 +182,7 @@ describe 'OntologyVersion Parsing' do
       allow(Hets).to receive(:parse_via_api).
         and_raise(Hets::HetsError, "serious error")
       ontology_version
-      expect { Worker.drain }.to raise_error(Hets::HetsError)
+      expect { OntologyParsingWorker.drain }.to raise_error(Hets::HetsError)
     end
 
     it 'should set status to failed' do
@@ -199,7 +199,7 @@ describe 'OntologyVersion Parsing' do
         and_raise(Hets::HetsError, "first error")
       allow_any_instance_of(OntologyVersion).to receive(:after_failed).and_raise('second exception')
       ontology_version
-      expect { Worker.drain }.to raise_error(RuntimeError)
+      expect { OntologyParsingWorker.drain }.to raise_error(RuntimeError)
     end
 
     it 'should set status to failed on ontology' do

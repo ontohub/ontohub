@@ -56,7 +56,7 @@ ARGV.each do |dir|
       ov.save!
 
       if redis
-        ov.async :parse
+        OntologyParsingWorker.perform_async(ov.id, :parse_full)
       else
         ov.parse
       end

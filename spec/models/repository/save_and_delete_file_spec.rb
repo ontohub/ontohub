@@ -103,7 +103,7 @@ describe 'Repository saving a file' do
     context 'that already exists' do
       it 'create a job' do
         expect { repository.save_file(file_path, target_path, message, user) }.
-          to change { Worker.jobs.count }.by(1)
+          to change { OntologyParsingWorker.jobs.count }.by(1)
       end
     end
   end

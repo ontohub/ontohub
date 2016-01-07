@@ -19,9 +19,11 @@ module OntologyVersion::Parsing
       update_state! :pending
 
       if @fast_parse
-        async :parse_fast, files_to_parse_afterwards
+        OntologyParsingWorker.perform_async(id, :parse_fast,
+                                            files_to_parse_afterwards)
       else
-        async :parse_full, files_to_parse_afterwards
+        OntologyParsingWorker.perform_async(id, :parse_full,
+                                            files_to_parse_afterwards)
       end
     end
   end
