@@ -77,8 +77,10 @@ paths:
   data: data
   # git repositories (names of repositories are numbers/ids)
   git_repositories: # nil - then data/repositories is used
-  # named symlinks to the git repositories
+  # named symlinks to the git repositories for git_daemon (only public)
   git_daemon:  # nil - then data/git_daemon is used
+  # named symlinks to the git repositories for git-ssh (all repositories)
+  git_ssh:  # nil - then data/git_ssh is used
   # cache for files that needed to be checked out from the git repositories
   commits: # nil - then data/commits is used
 

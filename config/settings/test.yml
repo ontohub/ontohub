@@ -9,4 +9,5 @@ paths:
   data: tmp/data
   git_repositories: tmp/data/git
   git_daemon: tmp/data/git_daemon
+  git_ssh: tmp/data/git_ssh
   commits: tmp/data/commits

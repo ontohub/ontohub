@@ -1,6 +1,7 @@
 module PathsInitializer
   DEFAULT_PATHS = {git_repositories: 'repositories',
                    git_deamon: 'git_daemon',
+                   git_ssh: 'git_ssh',
                    commits: 'commits'}
   class << self
     def expand(path)
@@ -22,6 +23,7 @@ module PathsInitializer
       config.data_root = nil
       config.git_root = nil
       config.git_daemon_path = nil
+      config.git_ssh_path = nil
       config.commits_path = nil
     end
 
@@ -31,6 +33,7 @@ module PathsInitializer
       config.data_root = prepare(Settings.paths.data)
       config.git_root = prepare(Settings.paths.git_repositories, DEFAULT_PATHS[:git_repositories])
       config.git_daemon_path = prepare(Settings.paths.git_daemon, DEFAULT_PATHS[:git_daemon])
+      config.git_ssh_path = prepare(Settings.paths.git_ssh, DEFAULT_PATHS[:git_ssh])
       config.commits_path = prepare(Settings.paths.commits, DEFAULT_PATHS[:commits])
     end
   end

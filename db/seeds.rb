@@ -19,6 +19,7 @@ Sidekiq::Testing.inline!
 # Purge data directory
 FileUtils.rm_rf(Dir.glob(Ontohub::Application.config.git_root.join('*')))
 FileUtils.rm_rf(Dir.glob(Ontohub::Application.config.git_daemon_path.join('*')))
+FileUtils.rm_rf(Dir.glob(Ontohub::Application.config.git_ssh_path.join('*')))
 FileUtils.rm_rf(Dir.glob(Ontohub::Application.config.commits_path.join('*')))
 
 # Include every .rb file inside db/seeds directory.

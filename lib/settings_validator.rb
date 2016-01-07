@@ -74,7 +74,7 @@ class SettingsValidator
     key = key_portions.join('.')
     if 'fqdn' == key
       "The FQDN could not be determined. Please set the hostname in #{CONFIG_YML_FILES}"
-    elsif %w(data_root git_root git_daemon_path commits_path).include?(key)
+    elsif %w(data_root git_root git_daemon_path git_ssh_path commits_path).include?(key)
       'Please check the paths keys in the settings -'
     else
       # other possible values: %w(consider_all_requests_local secret_token log_level)

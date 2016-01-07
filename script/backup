@@ -8,7 +8,7 @@
 # Description
 #   This backup script creates and restores backups of ontohub data. It includes:
 #     * bare git repositories (data/repositories)
-#     * named symlinks to git repositories (data/git_daemon)
+#     * named symlinks to git repositories (data/git_daemon and data/git_ssh)
 #     * the postgres database
 #
 # Usage
@@ -55,7 +55,7 @@ module Backup
     SQL_DUMP_FILE = 'ontohub_sql_dump.postgresql'
     REPOSITORY_FILE = 'ontohub_repositories.tar.gz'
 
-    DATA_DIRS = %w(repositories git_daemon)
+    DATA_DIRS = %w(repositories git_daemon git_ssh)
 
     # Use 'sudo' on most systems
     SUDO_BINARY = '+'
