@@ -1,7 +1,7 @@
 #
 # Generates a symlink for exposing the repositories via git daemon
 #
-module Repository::Symlink
+module Repository::Symlinks
   extend ActiveSupport::Concern
 
   included do
