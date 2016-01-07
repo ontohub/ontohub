@@ -61,6 +61,6 @@ class Repo
     r.user = User.first
     r.url_maps = @url_maps
     r.save!
-    r.async :convert_to_local!
+    RepositoryCeonversionWorker.perform_async(r.id)
   end
 end
