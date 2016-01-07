@@ -5,12 +5,17 @@ module Repository::Symlinks
   extend ActiveSupport::Concern
 
   included do
-    after_save     :symlink_update, if: :path_changed?
-    before_destroy :symlink_remove
+    after_save     :symlinks_update, if: :path_changed?
+    before_destroy :symlinks_remove
   end
 
-  def symlink_name
-    Ontohub::Application.config.git_daemon_path.join("#{path}.git")
+  SUPPORTED_LINK_CATEGORIES = %i(git_daemon git_ssh)
+
+  def symlink_path(category)
+    unless SUPPORTED_LINK_CATEGORIES.include?(category)
+      raise "Unsupported symlink category: #{category.inspect}"
+    end
+    Ontohub::Application.config.send(:"#{category}_path").join("#{path}.git")
   end
 
   protected
@@ -23,14 +28,24 @@ module Repository::Symlinks
       sub(%r{/releases/\d+/}, '/current/'))
   end
 
-  def symlink_update
-    Ontohub::Application.config.git_daemon_path.mkpath
-    symlink_remove
-    symlink_name.make_symlink local_path
+  def symlinks_update
+    create_cloning_symlink(:git_daemon) if public_r? || public_rw?
+    create_cloning_symlink(:git_ssh)
   end
 
-  def symlink_remove
-    symlink_name.unlink if symlink_name.exist?
+  def symlinks_remove
+    SUPPORTED_LINK_CATEGORIES.each do |category|
+      remove_cloning_symlink(category)
+    end
   end
 
+  def create_cloning_symlink(category)
+    symlink_path(category).join('..').mkpath
+    remove_cloning_symlink(category)
+    symlink_path(category).make_symlink(local_path)
+  end
+
+  def remove_cloning_symlink(category)
+    symlink_path(category).unlink if symlink_path(category).exist?
+  end
 end
