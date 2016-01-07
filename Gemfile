@@ -68,7 +68,7 @@ gem 'active_model_serializers', '~> 0.9.3'
 gem 'json-stream', '~> 0.2.1'
 
 # XML Parser
-gem 'nokogiri', '~> 1.6.6.2'
+gem 'nokogiri', '~> 1.6.7'
 
 # Authentication
 gem 'devise', '~> 3.5.2'
@@ -108,7 +108,7 @@ gem 'elasticsearch-extensions', '~> 0.0.15'
 gem 'ruby-graphviz', "~> 1.2.2"
 
 # Fake-inputs for tests and seeds
-gem "faker", "~> 1.5.0"
+gem "faker", "~> 1.6.1"
 
 # Git
 gem 'rugged', '~> 0.23.2'
@@ -116,9 +116,6 @@ gem 'codemirror-rails', github: 'llwt/codemirror-rails'
 
 # API
 gem 'specroutes', github: '0robustus1/specroutes'
-
-# Ancestry enabling tree structure in category model
-# gem 'ancestry'
 
 # Use dagnabit to model categories
 # Newer versions than 3.0.x are not compatible to rails 3.2
@@ -180,7 +177,7 @@ end
 group :production do
   # puma is __the only exception__ for which we don't specify a version.
   gem 'puma'
-  gem 'eye', '~> 0.8.pre2'
+  gem 'eye', '~> 0.8'
   gem 'exception_notification', '~> 4.1.0'
 end
 
