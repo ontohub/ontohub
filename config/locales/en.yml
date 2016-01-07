@@ -38,6 +38,12 @@ en:
       clone_list_prefix: There is also a complete list of
       clone_list_link: repository clone-urls
   repository:
+    clone:
+      header: Clone with %{clone_type}
+      text: You can clone the repository with %{git} (read-only) or %{ssh_git} (read-write, ssh-key required).
+      git: git
+      ssh_git: ssh-git
+    upload_ssh_key: Upload an SSH key.
     delete: Delete Repository
     delete_error: "Can't delete repository: It contains %{oms} that is imported by another repository."
     deleted: Deleted
