@@ -10,13 +10,13 @@ module Repository::Symlink
   end
 
   def symlink_name
-    Ontohub::Application.config.symlink_path.join("#{path}.git")
+    Ontohub::Application.config.git_daemon_path.join("#{path}.git")
   end
 
   protected
 
   def symlink_update
-    Ontohub::Application.config.symlink_path.mkpath
+    Ontohub::Application.config.git_daemon_path.mkpath
     symlink_remove
     symlink_name.make_symlink local_path
   end

@@ -8,5 +8,5 @@ action_mailer:
 paths:
   data: tmp/data
   git_repositories: tmp/data/git
-  symlinks: tmp/data/git_daemon
+  git_daemon: tmp/data/git_daemon
   commits: tmp/data/commits

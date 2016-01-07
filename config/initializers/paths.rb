@@ -1,6 +1,6 @@
 module PathsInitializer
   DEFAULT_PATHS = {git_repositories: 'repositories',
-                   symlinks: 'git_daemon',
+                   git_deamon: 'git_daemon',
                    commits: 'commits'}
   class << self
     def expand(path)
@@ -21,7 +21,7 @@ module PathsInitializer
     def empty_initialization(config)
       config.data_root = nil
       config.git_root = nil
-      config.symlink_path = nil
+      config.git_daemon_path = nil
       config.commits_path = nil
     end
 
@@ -30,7 +30,7 @@ module PathsInitializer
     def perform_initialization(config)
       config.data_root = prepare(Settings.paths.data)
       config.git_root = prepare(Settings.paths.git_repositories, DEFAULT_PATHS[:git_repositories])
-      config.symlink_path = prepare(Settings.paths.symlinks, DEFAULT_PATHS[:symlinks])
+      config.git_daemon_path = prepare(Settings.paths.git_daemon, DEFAULT_PATHS[:git_daemon])
       config.commits_path = prepare(Settings.paths.commits, DEFAULT_PATHS[:commits])
     end
   end
