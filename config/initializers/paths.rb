@@ -1,6 +1,6 @@
 module PathsInitializer
   DEFAULT_PATHS = {git_repositories: 'repositories',
-                   git_deamon: 'git_daemon',
+                   git_daemon: 'git_daemon',
                    git_ssh: 'git_ssh',
                    commits: 'commits'}
   class << self
