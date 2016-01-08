@@ -110,12 +110,12 @@ class Ontology < ActiveRecord::Base
   end
 
   def can_be_deleted_alone?
-    !is_imported_from_other_file? &&
+    !source_mappings_from_other_files.any? &&
       children.all?(&:can_be_deleted_alone?)
   end
 
   def can_be_deleted_with_whole_repository?
-    !is_imported_from_other_repository?
+    !source_mappings_from_other_repositories.any?
   end
 
   def contains_logic_translations?
