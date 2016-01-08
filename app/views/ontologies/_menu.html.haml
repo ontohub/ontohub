@@ -18,7 +18,7 @@
         - if resource.can_be_deleted?
           = modal_button(t('ontology.delete'), btn_class: 'btn-default')
         - else
-          .btn.btn-default.tooltip-btn{ disabled: true, data: { toggle: "tooltip", :'original-title' => t('ontology.delete_error', oms: Settings.OMS), container: 'body' } }
+          .btn.btn-default.tooltip-btn{ disabled: true, data: { toggle: "tooltip", :'original-title' => t('ontology.delete_error', oms_with_article: Settings.OMS.with_indefinite_article, oms: Settings.OMS), container: 'body' } }
             %span.allow-tooltips
               Delete
       - if Settings.format_selection
