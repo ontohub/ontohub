@@ -34,13 +34,11 @@ module RepositoriesHelper
   end
 
   def access_options
-    t('repository.access.options').select do |k,v|
-      if @repository.mirror?
-        k.to_s.split('_')[1] == 'r'
-      else
-        true
-      end
-    end.invert
+    t('repository.access.options').invert
+  end
+
+  def access_options_mirror
+    t('repository.access.options_mirror').invert
   end
 
   def repository_modal_body

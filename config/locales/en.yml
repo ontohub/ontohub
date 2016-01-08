@@ -63,10 +63,12 @@ en:
     access:
       change_hint: 'Caution! When setting the repository public, all reader permissions are removed.'
       options:
-        private_r: Privately readable, not writable at all
         private_rw: Privately readable, privately writable
         public_r: Publicly readable, privately writable
         public_rw: Publicly readable, publicly writable
+      options_mirror:
+        private_r: Privately readable, not writable at all
+        public_r: Publicly readable, not writable at all
     remote_type:
       text: A mirror will be synchronized periodically. A fork is just a one-time copy.
     un_mirror:
