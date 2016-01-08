@@ -1,16 +1,21 @@
 $ ->
   if $('#repository_form').length > 0
-    mirror_option        = (o)     -> o.value.search(/_rw/) == -1
-    to_mirror_option     = (value) -> value.split("_")[0] + "_r"
-    to_non_mirror_option = (value) -> value
 
-    input_access_el    = $('#repository_form #repository_access')[0]
-    source_address_el  = $('#repository_form #repository_source_address')
-    options_all        = input_access_el.options
-    options_non_mirror = _.clone(options_all)
-    options_mirror     = _.filter(options_all, mirror_option)
+    to_mirror_option = (previous_option) ->
+      previous_option.split("_")[0] + "_r"
 
-    type_el = $($('#repository_form #remote_type')[0])
+    to_non_mirror_option = (previous_option) ->
+      if previous_option.split('_')[0] == 'public'
+        previous_option
+      else
+        'private_rw'
+
+    input_access_el    = $('#repository_access')[0]
+    source_address_el  = $('#repository_source_address')
+    options_non_mirror = _.clone($('#access_options_non_mirror')[0].options)
+    options_mirror     = _.clone($('#access_options_mirror')[0].options)
+
+    type_el = $($('#remote_type')[0])
 
     # If options are not set one by one, the select box wont change.
     set_options = (options, converter, last_value) ->
