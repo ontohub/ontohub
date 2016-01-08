@@ -30,18 +30,14 @@ class Ontology
 
       protected
 
-      def import_mappings
-        Mapping.where(source_id: id)
-      end
-
       def import_mappings_from_other_files
-        import_mappings.reject do |l|
+        source_mappings.reject do |l|
           l.target.repository == repository && l.target.path == path
         end
       end
 
       def import_mappings_from_other_repositories
-        import_mappings.select { |l| l.target.repository != repository }
+        source_mappings.select { |l| l.target.repository != repository }
       end
     end
   end
