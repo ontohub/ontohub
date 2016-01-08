@@ -98,7 +98,7 @@ describe Ontology do
     end
 
     context 'a single ontology in a distributed ontology' do
-      let(:distributed_ontology) { create :linked_distributed_ontology }
+      let(:distributed_ontology) { create :distributed_ontology, :with_children }
       let(:ontology) { distributed_ontology.children.first }
 
       before do
@@ -125,7 +125,7 @@ describe Ontology do
     end
 
     context 'a distributed ontology' do
-      let (:ontology) { create :linked_distributed_ontology }
+      let (:ontology) { create :distributed_ontology, :with_children }
 
       before do
         stub = ->(_u, _t, _m, &block) { block.call('0'*40) }
@@ -147,7 +147,7 @@ describe Ontology do
       end
     end
 
-    context 'an imported ontology' do
+    context 'an imported ontology (meaning any kind of mapping)' do
       let(:parent_ontology) { create :distributed_ontology, :with_children }
       let(:ontology) { parent_ontology.children.first }
       let(:sibling_ontology) { parent_ontology.children.last }
@@ -159,7 +159,7 @@ describe Ontology do
 
       context 'imported by an onology in a different repository' do
         let(:importing) { create :ontology }
-        before { create :import_mapping, target: importing, source: ontology }
+        before { create :mapping, target: importing, source: ontology }
 
         it 'should not be allowed' do
           expect { ontology.destroy_with_parent(user) }.
@@ -169,7 +169,7 @@ describe Ontology do
 
       context 'with sibling imported by an onology in a different repository' do
         let(:importing) { create :ontology }
-        before { create :import_mapping, target: importing, source: sibling_ontology }
+        before { create :mapping, target: importing, source: sibling_ontology }
 
         it 'should not be allowed' do
           expect { ontology.destroy_with_parent(user) }.
@@ -179,7 +179,7 @@ describe Ontology do
 
       context 'imported by an onology in the same repository but another file' do
         let(:importing) { create :ontology, repository: ontology.repository }
-        before { create :import_mapping, target: importing, source: ontology }
+        before { create :mapping, target: importing, source: ontology }
 
         it 'should not be allowed' do
           expect { ontology.destroy_with_parent(user) }.
@@ -189,7 +189,7 @@ describe Ontology do
 
       context 'imported by an onology in the same file' do
         let(:importing) { sibling_ontology }
-        before { create :import_mapping, target: importing, source: ontology }
+        before { create :mapping, target: importing, source: ontology }
 
         it 'should be allowed' do
           expect { ontology.destroy_with_parent(user) }.to_not raise_error
