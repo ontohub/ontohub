@@ -118,6 +118,21 @@ FactoryGirl.define do
         end
       end
 
+      trait :with_children do
+        after(:build) do |ontology|
+          ontology.children << FactoryGirl.build(:ontology,
+            parent: ontology,
+            repository: ontology.repository,
+            basepath: ontology.basepath,
+            file_extension: ontology.file_extension)
+          ontology.children << FactoryGirl.build(:ontology,
+            parent: ontology,
+            repository: ontology.repository,
+            basepath: ontology.basepath,
+            file_extension: ontology.file_extension)
+        end
+      end
+
       trait :with_versioned_children do
         after(:build) do |ontology|
           version = ontology.versions.build({
