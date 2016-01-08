@@ -1,7 +1,8 @@
 module Repository::Access
   extend ActiveSupport::Concern
 
-  OPTIONS = %w[public_r public_rw private_r private_rw]
+  OPTIONS = %w[public_r public_rw private_rw]
+  OPTIONS_MIRROR = %w[public_r private_r]
   DEFAULT_OPTION = OPTIONS[0]
 
   def self.as_read_only(access)
