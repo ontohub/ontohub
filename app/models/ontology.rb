@@ -110,7 +110,8 @@ class Ontology < ActiveRecord::Base
   end
 
   def can_be_deleted_alone?
-    !is_imported_from_other_file?
+    !is_imported_from_other_file? &&
+      children.all?(&:can_be_deleted_alone?)
   end
 
   def can_be_deleted_with_whole_repository?

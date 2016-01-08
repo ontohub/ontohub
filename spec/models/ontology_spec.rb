@@ -167,6 +167,16 @@ describe Ontology do
         end
       end
 
+      context 'with sibling imported by an onology in a different repository' do
+        let(:importing) { create :ontology }
+        before { create :import_mapping, target: importing, source: sibling_ontology }
+
+        it 'should not be allowed' do
+          expect { ontology.destroy_with_parent(user) }.
+            to raise_error(Ontology::DeleteError)
+        end
+      end
+
       context 'imported by an onology in the same repository but another file' do
         let(:importing) { create :ontology, repository: ontology.repository }
         before { create :import_mapping, target: importing, source: ontology }
