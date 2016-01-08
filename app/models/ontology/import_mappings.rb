@@ -6,10 +6,6 @@ class Ontology
     extend ActiveSupport::Concern
 
     included do
-      def is_imported?
-        import_mappings.present?
-      end
-
       def is_imported_from_other_repository?
         import_mappings_from_other_repositories.present?
       end
