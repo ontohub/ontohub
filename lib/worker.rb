@@ -3,6 +3,8 @@ require 'sidekiq/worker'
 # Worker for Sidekiq
 class Worker < BaseWorker
   sidekiq_options queue: 'hets'
+  sidekiq_options retry: 3
+  sidekiq_options backtrace: true
 
   # Because of the JSON-Parsing the hash which contains
   # the try_count will contain the try_count key
@@ -40,14 +42,6 @@ class Worker < BaseWorker
       self.class.perform_async(*@args, try_count: @try_count+1)
     end
   end
-
-  # This method definition is required by sidekiq
-  def self.get_sidekiq_options
-    {
-      'backtrace' => true
-    }
-  end
-
 end
 
 class SequentialWorker < Worker
