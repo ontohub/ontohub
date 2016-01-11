@@ -41,7 +41,8 @@ describe GitRepository do
         FileUtils.rm_r(path)
         FileUtils.mv(bare_git.path, path)
         Sidekiq::Testing.fake! do
-          repository.suspended_save_ontologies(walk_order: Rugged::SORT_REVERSE)
+          OntologySaver.new(repository).
+            suspended_save_ontologies(walk_order: Rugged::SORT_REVERSE)
         end
       end
 
