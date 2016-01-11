@@ -30,6 +30,10 @@ module Repository::Importing
     remote_type == 'fork'
   end
 
+  def remote?
+    REMOTE_TYPES.include?(remote_type)
+  end
+
   def convert_to_local!
     self.remote_type = 'fork'
     save!
