@@ -3,12 +3,13 @@ module State
   TERMINAL_STATES = %w(failed no_result done)
 
   STATE_LABEL = {
-     pending: 'label-warning',
-     fetching: 'label-primary',
-     processing: 'label-primary',
-     done: 'label-success',
-     failed: 'label-danger',
-     }
+    failed: 'label-danger',
+    no_result: 'label-warning',
+    pending: 'label-warning',
+    fetching: 'label-primary',
+    processing: 'label-primary',
+    done: 'label-success',
+  }
 
   def self.terminal?(state)
     TERMINAL_STATES.include?(state)
