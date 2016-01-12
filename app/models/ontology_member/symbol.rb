@@ -12,8 +12,9 @@ module OntologyMember
     has_and_belongs_to_many :oops_responses
 
     # associations for SineAxiomSelection
-    has_one :sine_symbol_commonness, class_name: SineSymbolCommonness
-    has_many :sine_symbol_axiom_triggers
+    has_one :sine_symbol_commonness, class_name: SineSymbolCommonness,
+            dependent: :destroy
+    has_many :sine_symbol_axiom_triggers, dependent: :destroy
 
     attr_accessible :locid
     attr_accessible :label, :comment
