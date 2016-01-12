@@ -30,7 +30,7 @@ module StateHelper
     resource = resource.is_a?(Ontology) ? resource.current_version : resource
 
     html_opts = {
-      class: "evaluation-state",
+      class: "evaluation-state label #{State::STATE_LABEL[resource.state.to_sym]}",
       data: {
         klass: resource.class.to_s,
         id: resource.id,
