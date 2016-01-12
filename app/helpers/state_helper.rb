@@ -44,9 +44,9 @@ module StateHelper
   end
 
   def state(resource)
-    html = content_tag(:span, resource.state)
+    html = content_tag(:span, t("states.#{resource.state}"))
 
-    unless State::TERMINAL_STATES.include?(resource.state)
+    unless State::IDLE_STATES.include?(resource.state)
       html << " " << image_tag('spinner-16x16.gif', class: 'spinner')
     end
 

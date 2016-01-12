@@ -12,6 +12,14 @@ en:
     The threshold level is: %{minimal_count}.
   wait: 'Please wait …'
   state: 'Evaluation State'
+  states:
+    not_started_yet: not started yet
+    failed: failed
+    no_result: no result
+    pending: pending
+    fetching: fetching
+    processing: processing
+    done: done
   relation_list:
     team_user:
       placeholder: Add users to your team

@@ -1,6 +1,7 @@
 module State
   STATES = %w(not_started_yet failed no_result pending fetching processing done)
   TERMINAL_STATES = %w(failed no_result done)
+  IDLE_STATES = TERMINAL_STATES + %w(not_started_yet)
 
   STATE_LABEL = {
     not_started_yet: 'label-default',
