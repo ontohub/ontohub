@@ -15,7 +15,7 @@ class Api::V1::CombinationsController < Api::V1::Base
     else
       response.status = 400
       render json: {status: response.message,
-                    error: errors_str}
+                    errors: [errors_str]}
     end
   end
 
