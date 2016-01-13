@@ -1,5 +1,7 @@
 require Rails.root.join('spec', 'support', 'json_schema_matcher.rb')
 
+SCHEMA_BASE_URL = "https://raw.githubusercontent.com/ontohub/ontohub-api-json/develop/"
+
 def controllers_locid_for(resource, *args, &block)
   request.env['action_controller.instance'].
     send(:locid_for, resource, *args, &block)
@@ -68,7 +70,16 @@ def stub_hets_instance_url_for_pipeline_generator
 end
 
 def schema_for(name)
-  "https://masterthesis.rightsrestricted.com/ontohub/#{name}.json"
+  # We use the develop branch to allow unmerged pull requests to be considered.
+  "#{SCHEMA_BASE_URL}#{name}.json"
+end
+
+def schema_for_command(command, method = :get, response_code = nil)
+  if response_code
+    "#{SCHEMA_BASE_URL}#{command}/#{method.to_s.upcase}/#{response_code}.json"
+  else
+    "#{SCHEMA_BASE_URL}#{command}/#{method.to_s.upcase}/request.json"
+  end
 end
 
 # includes the convenience-method `define_ontology('name')`

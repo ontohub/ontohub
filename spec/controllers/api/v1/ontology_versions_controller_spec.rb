@@ -8,7 +8,7 @@ describe Api::V1::OntologyVersionsController do
   context 'on GET to index' do
     context 'requesting json representation', api_specification: true do
       let(:ontology_versions_schema) do
-        schema_for('ontology/commands/ontology_versions')
+        schema_for_command('ontology/ontology_versions', :get, 200)
       end
 
       before do

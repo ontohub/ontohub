@@ -7,7 +7,7 @@ describe Api::V1::ChildrenController do
   context 'on GET to index' do
     context 'requesting json representation', api_specification: true do
       let(:children_schema) do
-        schema_for('ontology/commands/children')
+        schema_for_command('ontology/children', :get, 200)
       end
 
       before do

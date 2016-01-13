@@ -8,7 +8,7 @@ describe Api::V1::SymbolsController do
   context 'on GET to index' do
     context 'requesting json representation', api_specification: true do
       let(:symbols_schema) do
-        schema_for('ontology/commands/symbols')
+        schema_for_command('ontology/symbols', :get, 200)
       end
 
       before do
