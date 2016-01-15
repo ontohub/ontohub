@@ -75,7 +75,7 @@ Style/BlockEndNewline:
   Description: 'Put end statement of multiline block on its own line.'
   Enabled: true
 
-Style/Blocks:
+Style/BlockDelimiters:
   Description: >-
                 Avoid using {...} for multi-line blocks (multiline chaining is
                 always ugly).
@@ -183,8 +183,20 @@ Style/EmptyLinesAroundAccessModifier:
   Description: "Keep blank lines around access modifiers."
   Enabled: false
 
-Style/EmptyLinesAroundBody:
-  Description: "Keeps track of empty lines around expression bodies."
+Style/EmptyLinesAroundBlockBody:
+  Description: "Keeps track of empty lines around block bodies."
+  Enabled: true
+
+Style/EmptyLinesAroundClassBody:
+  Description: "Keeps track of empty lines around class bodies."
+  Enabled: true
+
+Style/EmptyLinesAroundModuleBody:
+  Description: "Keeps track of empty lines around module bodies."
+  Enabled: true
+
+Style/EmptyLinesAroundMethodBody:
+  Description: "Keeps track of empty lines around method bodies."
   Enabled: true
 
 Style/EmptyLiteral:
@@ -447,7 +459,7 @@ Style/SingleLineMethods:
   Description: 'Avoid single-line methods.'
   Enabled: true
 
-Style/SingleSpaceBeforeFirstArg:
+Style/SpaceBeforeFirstArg:
   Description: >-
                  Checks that exactly one space is used between a method name
                  and the first argument for method calls without parentheses.
@@ -541,7 +553,6 @@ Style/SpecialGlobalVars:
 Style/StringLiterals:
   Description: 'Checks if uses of quotes match the configured preference.'
   Enabled: true
-  Style: 'single_quotes'
   EnforcedStyle: single_quotes
 
 Style/Tab:
@@ -552,9 +563,14 @@ Style/TrailingBlankLines:
   Description: 'Checks trailing blank lines and final newline.'
   Enabled: true
 
-Style/TrailingComma:
+Style/TrailingCommaInArguments:
   EnforcedStyleForMultiline: comma
-  Description: 'Checks for trailing comma in parameter lists and literals.'
+  Description: 'Checks for trailing comma in argument lists.'
+  Enabled: true
+
+Style/TrailingCommaInLiteral:
+  EnforcedStyleForMultiline: comma
+  Description: 'Checks for trailing comma in array and hash literals.'
   Enabled: true
 
 Style/TrailingWhitespace:
@@ -577,10 +593,6 @@ Style/UnneededCapitalW:
 
 Style/UnneededPercentQ:
   Description: 'Checks for %q/%Q when single quotes or double quotes would do.'
-  Enabled: true
-
-Style/UnneededPercentX:
-  Description: 'Checks for %x when `` would do.'
   Enabled: true
 
 Style/VariableInterpolation:
@@ -760,12 +772,6 @@ Lint/ShadowingOuterLocalVariable:
                  for block arguments or block local variables.
   Enabled: true
 
-Lint/SpaceBeforeFirstArg:
-  Description: >-
-                 Put a space between a method name and the first argument
-                 in a method call without parentheses.
-  Enabled: true
-
 Lint/StringConversionInInterpolation:
   Description: 'Checks for Object#to_s usage in string interpolation.'
   Enabled: true
@@ -815,10 +821,6 @@ Lint/Void:
 Rails/ActionFilter:
   Description: 'Enforces consistent use of action filter methods.'
   Enabled: false
-
-Rails/DefaultScope:
-  Description: 'Checks if the argument passed to default_scope is a block.'
-  Enabled: true
 
 Rails/Delegate:
   Description: 'Prefer delegate method for delegations.'
