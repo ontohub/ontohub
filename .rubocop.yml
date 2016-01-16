@@ -4,6 +4,7 @@ AllCops:
     - 'spec/**/*'
     - 'features/**/*'
     - 'script/**/*'
+  TargetRubyVersion: 2.1
 
 # These are all the cops that are enabled in the default configuration.
 
@@ -203,6 +204,7 @@ Style/EmptyLiteral:
 
 Style/Encoding:
   Description: 'Use UTF-8 as the source file encoding.'
+  EnforcedStyle: when_needed
   Enabled: true
 
 Style/EndBlock:
