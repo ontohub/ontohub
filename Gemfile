@@ -163,6 +163,7 @@ group :test do
 
   # Code Coverage Analysis
   gem 'simplecov', '~> 0.12.0', require: false
+  gem 'coveralls', '~> 0.8.15', require: false
 
   # So we can validate against json-schemas
   gem 'json-schema', '~> 2.6.0'
