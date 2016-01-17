@@ -2,7 +2,7 @@ source 'https://rubygems.org'
 
 gem 'rails', '~> 3.2.22'
 gem 'rack-protection', '~> 1.5.3'
-gem 'secure_headers', '~> 2.4.3'
+gem 'secure_headers', '~> 2.5.1'
 
 gem 'rack-mini-profiler', require: false
 
