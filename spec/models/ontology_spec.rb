@@ -98,7 +98,9 @@ describe Ontology do
     end
 
     context 'a single ontology in a distributed ontology' do
-      let(:distributed_ontology) { create :distributed_ontology, :with_children }
+      let(:distributed_ontology) do
+        create :distributed_ontology, :with_children
+      end
       let(:ontology) { distributed_ontology.children.first }
 
       before do
@@ -125,7 +127,7 @@ describe Ontology do
     end
 
     context 'a distributed ontology' do
-      let (:ontology) { create :distributed_ontology, :with_children }
+      let(:ontology) { create :distributed_ontology, :with_children }
 
       before do
         stub = ->(_u, _t, _m, &block) { block.call('0'*40) }

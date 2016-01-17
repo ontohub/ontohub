@@ -119,17 +119,17 @@ FactoryGirl.define do
       end
 
       trait :with_children do
-        after(:build) do |ontology|
-          ontology.children << FactoryGirl.build(:ontology,
-            parent: ontology,
-            repository: ontology.repository,
-            basepath: ontology.basepath,
-            file_extension: ontology.file_extension)
-          ontology.children << FactoryGirl.build(:ontology,
-            parent: ontology,
-            repository: ontology.repository,
-            basepath: ontology.basepath,
-            file_extension: ontology.file_extension)
+        after(:build) do |built_ontology|
+          built_ontology.children << FactoryGirl.build(:ontology,
+            parent: built_ontology,
+            repository: built_ontology.repository,
+            basepath: built_ontology.basepath,
+            file_extension: built_ontology.file_extension)
+          built_ontology.children << FactoryGirl.build(:ontology,
+            parent: built_ontology,
+            repository: built_ontology.repository,
+            basepath: built_ontology.basepath,
+            file_extension: built_ontology.file_extension)
         end
       end
 
