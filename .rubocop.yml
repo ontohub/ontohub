@@ -160,6 +160,7 @@ Style/Documentation:
 
 Style/DotPosition:
   Description: 'Checks the position of the dot in multi-line method calls.'
+  EnforcedStyle: trailing
   Enabled: true
 
 Style/DoubleNegation:
@@ -331,6 +332,10 @@ Style/MultilineTernaryOperator:
   Description: >-
                  Avoid multi-line ?: (the ternary operator);
                  use if/unless instead.
+  Enabled: true
+
+Style/MultilineMethodCallIndentation:
+  EnforcedStyle: indented
   Enabled: true
 
 Style/NegatedIf:

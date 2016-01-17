@@ -1,3 +1,3 @@
 #!/bin/bash
 
-rubocop --rails $@
+rubocop --display-cop-names --rails $@
