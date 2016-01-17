@@ -24,19 +24,14 @@ module Repository::Validations
     validates :remote_type, presence: true, if: :source_address?
     validates_with RemoteTypeValidator
 
-    validates_with RemoteAccessValidator
     validates :access,
       presence: true,
-      inclusion: {in: Repository::Access::OPTIONS}
-  end
-
-  class RemoteAccessValidator < ActiveModel::Validator
-    def validate(record)
-      if record.mirror? && (record.private_rw? || record.public_rw?)
-        record.errors[:access] =
-          'Error! Write access is not allowed for a mirrored repositry.'
-      end
-    end
+      inclusion: {in: Repository::Access::OPTIONS},
+      unless: :mirror?
+    validates :access,
+      presence: true,
+      inclusion: {in: Repository::Access::OPTIONS_MIRROR},
+      if: :mirror?
   end
 
   class UnreservedValidator < ActiveModel::Validator
@@ -118,9 +113,10 @@ module Repository::Validations
 
   class SourceTypeValidator < ActiveModel::Validator
     def validate(record)
-      if record.mirror? && !record.source_type.present?
+      if record.remote? && !record.source_type.present?
         record.errors[:source_address] = 'not a valid remote repository '\
-          "or not accessible (types supported: #{SOURCE_TYPES.join(', ')})"
+          'or not accessible '\
+          "(types supported: #{Repository::SOURCE_TYPES.join(', ')})"
         record.errors[:source_type] = 'not present'
       end
     end

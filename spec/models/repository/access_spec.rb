@@ -7,8 +7,6 @@ describe 'Repository Access' do
       access: 'public_r' }
     let!(:repository_pub_rw)  { create :repository, user: user,
       access: 'public_rw' }
-    let!(:repository_priv_r)  { create :repository, user: user,
-      access: 'private_r' }
     let!(:repository_priv_rw) { create :repository, user: user,
       access: 'private_rw' }
 

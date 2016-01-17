@@ -172,10 +172,10 @@ describe Ability do
     end
   end
 
-  context 'Private read-only Repository' do
-    let(:editor){ create :user } # editor
-    let(:reader){ create :user } # reader
-    let(:item){   create(:repository, access: 'private_r', user: owner) }
+  context 'Private Repository' do
+    let(:editor) { create :user } # editor
+    let(:reader) { create :user } # reader
+    let(:item) { create(:repository, access: 'private_rw', user: owner) }
 
     before do
       create(:permission, subject: editor, role: 'editor', item: item)
@@ -192,29 +192,39 @@ describe Ability do
       end
     end
 
-    context 'reader, editor, owner' do
+    context 'reader' do
       it 'not be allowed: to write' do
-        [reader, editor, owner].each do |role|
-          Ability.new(role, nil).should_not be_able_to(:write, item)
+        expect(Ability.new(reader, nil)).to_not be_able_to(:write, item)
+      end
+
+      it 'be allowed: to read' do
+        expect(Ability.new(reader, nil)).to be_able_to(:show, item)
+      end
+    end
+
+    context 'editor, owner' do
+      it 'be allowed: to write' do
+        [editor, owner].each do |role|
+          expect(Ability.new(role, nil)).to be_able_to(:write, item)
         end
       end
 
       it 'be allowed: to read' do
-        [reader, editor, owner].each do |role|
-          Ability.new(role, nil).should be_able_to(:show, item)
+        [editor, owner].each do |role|
+          expect(Ability.new(role, nil)).to be_able_to(:show, item)
         end
       end
     end
 
     context 'update:' do
-      it 'reader, editor should be allowed' do
+      it 'reader, editor should not be allowed' do
         [reader, editor].each do |role|
-          Ability.new(role, nil).should_not be_able_to(:update, item)
+          expect(Ability.new(role, nil)).to_not be_able_to(:update, item)
         end
       end
 
-      it 'owner should not be allowed' do
-        Ability.new(owner, nil).should be_able_to(:update, item)
+      it 'owner should be allowed' do
+        expect(Ability.new(owner, nil)).to be_able_to(:update, item)
       end
     end
   end
