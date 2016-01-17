@@ -117,7 +117,8 @@ describe 'OntologyVersion Parsing' do
     end
 
     it 'should use the locid-ref for calling the parse-caller' do
-      expect { OntologyParsingWorker.drain }.to throw_symbol(:iri, qualified_locid)
+      expect { OntologyParsingWorker.drain }.
+        to throw_symbol(:iri, qualified_locid)
     end
   end
 

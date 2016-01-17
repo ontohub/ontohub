@@ -7,4 +7,3 @@ class RepositoryFetchingWorker < BaseWorker
     Repository.find(repository_id).fetch(method, remote_type)
   end
 end
-

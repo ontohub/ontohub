@@ -7,4 +7,3 @@ class RepositoryConversionWorker < BaseWorker
     Repository.find(repository_id).convert_to_local!
   end
 end
-

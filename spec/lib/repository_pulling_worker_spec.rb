@@ -5,11 +5,13 @@ describe RepositoryPullingWorker do
   before { RepositoryFetchingWorker.clear }
 
   shared_examples 'perform' do |state, minutes, created_jobs_count|
-    context "state #{state}, imported " << (minutes ? "#{minutes} minutes ago" : "never before") do
+    context("state #{state}, imported " +
+            (minutes ? "#{minutes} minutes ago" : 'never before')) do
       before do
         subject.update_attributes!(
-          {state: state.to_s, imported_at: (minutes ? minutes.minutes.ago : nil)},
-          {without_protection: true}
+          {state: state.to_s,
+           imported_at: (minutes ? minutes.minutes.ago : nil)},
+           without_protection: true,
         )
         RepositoryPullingWorker.new.perform
       end
