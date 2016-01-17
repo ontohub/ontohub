@@ -2,7 +2,7 @@ require 'spec_helper'
 
 describe 'Axiom Selection: Proof Status', :http_interaction do
   setup_hets
-  stub_fqdn_and_port_for_pipeline_generator
+  setup_pipeline_generator
   let(:generator) do
     FixturesGeneration::PipelineGenerator.new
   end
