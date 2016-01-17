@@ -334,6 +334,10 @@ Style/MultilineTernaryOperator:
                  use if/unless instead.
   Enabled: true
 
+Style/MultilineMethodCallIndentation:
+  EnforcedStyle: indented
+  Enabled: true
+
 Style/NegatedIf:
   Description: >-
                  Favor unless over if for negative conditions
