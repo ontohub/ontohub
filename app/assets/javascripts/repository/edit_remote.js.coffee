@@ -34,28 +34,28 @@ $ ->
       else
         set_options(options_non_mirror, to_non_mirror_option, last_value)
 
+    is_mirror_active = ->
+      is_mirror_selected() && is_source_address_set()
+
     is_mirror_selected = ->
       remote_type_mirror_el.is(':checked')
 
     is_source_address_set = ->
       source_address_el.val().trim().length > 0
 
-    was_mirror_selected = is_mirror_selected()
+    was_mirror_active = is_mirror_selected()
 
     was_source_address_set = is_source_address_set()
-
-    reset_mirror_selected = ->
-      was_mirror_selected = is_mirror_selected()
 
     reset_was_source_address_set = ->
       was_source_address_set = is_source_address_set()
 
     change_options = (event) ->
-      if !was_mirror_selected && is_mirror_selected()
+      if !was_mirror_active && is_mirror_active()
         modify_access_list 'mirror'
-      else if was_mirror_selected && !is_mirror_selected()
+      else if was_mirror_active && !is_mirror_active()
         modify_access_list 'non_mirror'
-      else if !was_mirror_selected && !is_mirror_selected()
+      else if !was_mirror_active && !is_mirror_active()
         modify_access_list 'non_mirror'
 
     change_type_display = (event) ->
@@ -73,6 +73,7 @@ $ ->
 
     source_address_el.on('input', change_type_display)
     source_address_el.on('input', reset_was_source_address_set)
+    source_address_el.on('input', change_options)
     _.each(remote_type_els, (el) ->
       $(el).on('click', change_options)
     )
