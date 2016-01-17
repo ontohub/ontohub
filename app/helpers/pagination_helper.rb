@@ -1,6 +1,6 @@
 module PaginationHelper
 
-  def pagination(collection=nil, **options, &block)
+  def pagination(collection = nil, **options, &block)
     # call the collection-method if no collection is given
     collection ||= send :collection
 
@@ -27,7 +27,9 @@ module PaginationHelper
     query_string_parts.reject! { |p| p.first == 'per_page' } if per_page
 
     query_string_parts << ['page', page] if page
-    query_string_parts << ['per_page', per_page] if per_page && per_page != :default
+    if per_page && per_page != :default
+      query_string_parts << ['per_page', per_page]
+    end
 
     query_string_parts.map! { |p| p.join('=') }
     query_string = query_string_parts.join('&')
@@ -48,8 +50,6 @@ module PaginationHelper
     per_page =
       if match = kaminari_url.match(/[\?&]per_page=(\d+)/)
         match[1]
-      else
-        nil
       end
     [page, per_page]
   end
