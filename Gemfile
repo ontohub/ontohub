@@ -23,7 +23,8 @@ group :assets do
   gem 'jstree-rails', github: 'tristanm/jstree-rails'
   # sass-rails >= 4.0 is not compativle to rails 3
   gem 'sass-rails',     '~> 3.2.6'
-  gem 'bootstrap-sass', '~> 3.3.3'
+  # bootstrap-sass >= 3.3.6 is not compatible to rails 3
+  gem 'bootstrap-sass', '~> 3.3.5.1'
   # coffee-rails > 3.2 is not compatible to rails 3
   gem 'coffee-rails',   '~> 3.2.2'
   gem 'compass',        '~> 1.0.3'
