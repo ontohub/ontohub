@@ -147,7 +147,7 @@ group :test do
 
   gem 'cucumber-rails', '~> 1.4', require: false
   # Code Coverage Analysis
-  gem 'simplecov', '~> 0.10.0', require: false
+  gem 'simplecov', '~> 0.11.0', require: false
 
   # So we can validate against json-schemas
   gem 'json-schema', '~> 2.6.0'
