@@ -227,10 +227,10 @@ describe 'OntologyVersion Parsing' do
 
       before do
         # Clear Jobs
-        Worker.jobs.clear
+        OntologyParsingWorker.jobs.clear
         stub_hets_for(ontology_path)
         ontology_version
-        Worker.drain
+        OntologyParsingWorker.drain
       end
 
       it '- have sent a request with input-type' do
@@ -253,10 +253,10 @@ describe 'OntologyVersion Parsing' do
 
       before do
         # Clear Jobs
-        Worker.jobs.clear
+        OntologyParsingWorker.jobs.clear
         stub_hets_for(ontology_path)
         ontology_version
-        Worker.drain
+        OntologyParsingWorker.drain
       end
 
       it '- have sent a request with input-type' do
