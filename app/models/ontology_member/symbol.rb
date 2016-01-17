@@ -13,7 +13,7 @@ module OntologyMember
 
     # associations for SineAxiomSelection
     has_one :sine_symbol_commonness, class_name: SineSymbolCommonness,
-            dependent: :destroy
+                                     dependent: :destroy
     has_many :sine_symbol_axiom_triggers, dependent: :destroy
 
     attr_accessible :locid
