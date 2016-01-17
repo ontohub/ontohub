@@ -66,10 +66,11 @@ class Ontology
 
         sep = '//'
         locid_portion = hash['name'] || hash['linkid']
-        mapping.locid = "#{mapping.ontology.locid}#{sep}#{locid_portion}"
 
         mapping.save!
-
+        LocId.first_or_create!(
+                       locid: "#{mapping.ontology.locid}#{sep}#{locid_portion}",
+                       assorted_object: mapping)
         mapping_version = MappingVersion.create(mapping: mapping,
                                                 source: source.current_version,
                                                 target: target.current_version)

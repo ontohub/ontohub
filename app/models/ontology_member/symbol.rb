@@ -16,13 +16,15 @@ module OntologyMember
                                      dependent: :destroy
     has_many :sine_symbol_axiom_triggers, dependent: :destroy
 
-    attr_accessible :locid
+    has_many :loc_ids, as: :assorted_object
+
+
     attr_accessible :label, :comment
 
     scope :kind, ->(kind) { where kind:  kind }
 
     def self.find_with_locid(locid, _iri = nil)
-      where(locid: locid).first
+      result = LocId.where(locid: locid).first.try(:assorted_object)
     end
 
     def self.groups_by_kind

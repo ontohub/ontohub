@@ -109,12 +109,11 @@ class OntologySaver
 
     ontology.basepath = File.basepath(filepath)
     ontology.file_extension = File.extname(filepath)
-    ontology.locid = locid
     ontology.name = filepath.split('/')[-1].split(".")[0].capitalize
     ontology.repository = repository
     ontology.present = true
     ontology.save!
-
+    LocId.first_or_create!(locid: locid, assorted_object: ontology)
     ontology
   end
 

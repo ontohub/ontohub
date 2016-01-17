@@ -1,4 +1,4 @@
-class ProverOutput < ActiveRecord::Base
+class ProverOutput < OntohubBaseModel
   belongs_to :proof_attempt
   has_one :ontology, through: :proof_attempt
   has_one :theorem, through: :proof_attempt
@@ -9,11 +9,8 @@ class ProverOutput < ActiveRecord::Base
 
   protected
 
-  def self.find_with_locid(locid, _iri = nil)
-    where(locid: locid).first
-  end
-
   def generate_locid
-    self.locid = "#{proof_attempt.locid}//prover-output"
+    LocId.first_or_create!(locid: "#{proof_attempt.locid}//prover-output",
+                          assorted_object: self)
   end
 end
