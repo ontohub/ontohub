@@ -150,7 +150,7 @@ group :test do
   gem 'simplecov', '~> 0.10.0', require: false
 
   # So we can validate against json-schemas
-  gem 'json-schema', '~> 2.5.0'
+  gem 'json-schema', '~> 2.6.0'
 
   # Writing test ontologies
   gem 'ontology-united', github: '0robustus1/ontology-united'
