@@ -1,5 +1,4 @@
 module PaginationHelper
-
   def pagination(collection = nil, **options, &block)
     # call the collection-method if no collection is given
     collection ||= send :collection
@@ -23,15 +22,8 @@ module PaginationHelper
       split(/;|&/).
       map { |p| p.split('=') }
 
-    query_string_parts.reject! { |p| p.first == 'page' } if page
-    query_string_parts.reject! { |p| p.first == 'per_page' } if per_page
-
-    query_string_parts << ['page', page] if page
-    if per_page && per_page != :default
-      query_string_parts << ['per_page', per_page]
-    end
-
-    query_string = query_string_parts.map { |p| p.join('=') }.join('&')
+    query_string_parts = replace_page_params(query_string_parts, page, per_page)
+    query_string = build_query_string(query_string_parts)
 
     [request.env['REQUEST_PATH'], query_string].compact.join('?')
   end
@@ -49,5 +41,24 @@ module PaginationHelper
         match[1]
       end
     [page || 1, per_page]
+  end
+
+  private
+
+  def replace_page_params(page, per_page)
+    query_string_parts.reject! { |p| p.first == 'page' } if page
+    query_string_parts.reject! { |p| p.first == 'per_page' } if per_page
+
+    query_string_parts << ['page', page] if page
+    if per_page && per_page != :default
+      query_string_parts << ['per_page', per_page]
+    end
+
+    query_string_parts
+  end
+
+  def build_query_string(query_string_parts)
+    query_string = query_string_parts.map { |p| p.join('=') }.join('&')
+    query_string if query_string.present?
   end
 end
