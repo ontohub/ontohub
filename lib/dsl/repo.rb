@@ -61,6 +61,6 @@ class Repo
     r.user = User.first
     r.url_maps = @url_maps
     r.save!
-    RepositoryCeonversionWorker.perform_async(r.id)
+    RepositoryConversionWorker.perform_async(r.id)
   end
 end
