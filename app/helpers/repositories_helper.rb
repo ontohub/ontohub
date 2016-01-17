@@ -12,8 +12,8 @@ module RepositoriesHelper
 #   end.join(', ')
 # end
 
-  def clone_method_link(method)
-    link_to method, "##{method}", class: 'clone_method_link', data: {clone: method}
+  def clone_method_link(method, text)
+    link_to(text, "##{method}", class: 'clone_method_link', data: {clone: method})
   end
 
   def clone_type

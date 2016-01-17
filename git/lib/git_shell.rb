@@ -9,7 +9,7 @@ class GitShell
     @key_id     = key_id
     @command    = command
     # Here, Settings has added values from the PathsInitializer
-    @repos_path = Settings.symlink_path
+    @repos_path = Settings.git_ssh_path
   end
 
   def exec

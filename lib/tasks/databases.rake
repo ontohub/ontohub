@@ -62,7 +62,8 @@ end
 
 def cleanup_git_folders
   FileUtils.rm_rf(Dir.glob(Ontohub::Application.config.git_root.join('*')))
-  FileUtils.rm_rf(Dir.glob(Ontohub::Application.config.symlink_path.join('*')))
+  FileUtils.rm_rf(Dir.glob(Ontohub::Application.config.git_daemon_path.join('*')))
+  FileUtils.rm_rf(Dir.glob(Ontohub::Application.config.git_ssh_path.join('*')))
   FileUtils.rm_rf(Dir.glob(Ontohub::Application.config.commits_path.join('*')))
 end
 
