@@ -5,7 +5,7 @@
 - if can?(:write, parent.repository) && @ontology.theorems.provable.any?
   = link_to t('theorems.index.prove'), [*resource_chain, :proofs, :new], class: 'btn btn-primary'
 
-= pagination do
+= pagination(build_links_from_request: true) do
   %table.sentences
     %thead
       %tr

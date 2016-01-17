@@ -3,7 +3,7 @@
 = ontology_nav parent, :symbols
 
 - unless parent.owl?
-  = pagination do
+  = pagination(build_links_from_request: true) do
     - unless collection.blank?
       = render partial: 'list'
     - else
@@ -25,7 +25,7 @@
           = render partial: 'treeview'
 
   .symbols-detail
-    = pagination do
+    = pagination(build_links_from_request: true) do
       - unless collection.blank?
         = render partial: 'list'
       - else
