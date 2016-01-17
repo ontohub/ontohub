@@ -1,4 +1,4 @@
-class ProofAttempt < ActiveRecord::Base
+class ProofAttempt < OntohubBaseModel
   include Numbering
   include StateUpdater
 
@@ -21,7 +21,6 @@ class ProofAttempt < ActiveRecord::Base
                           association_foreign_key: 'sentence_id',
                           join_table: 'used_axioms_proof_attempts'
 
-  attr_accessible :locid
   attr_accessible :time_taken,
                   :number,
                   :state,
@@ -39,9 +38,6 @@ class ProofAttempt < ActiveRecord::Base
 
   has_one :ontology, through: :theorem
 
-  def self.find_with_locid(locid, _iri = nil)
-    where(locid: locid).first
-  end
 
   def set_default_proof_status
     self.proof_status ||= ProofStatus.find(ProofStatus::DEFAULT_OPEN_STATUS)

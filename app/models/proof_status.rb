@@ -1,4 +1,4 @@
-class ProofStatus < ActiveRecord::Base
+class ProofStatus < OntohubBaseModel
   include ProofStatus::CreationFromOntology
 
   DEFAULT_OPEN_STATUS = 'OPN'
@@ -25,13 +25,13 @@ class ProofStatus < ActiveRecord::Base
 
   before_create :generate_locid
 
-  def self.find_with_locid(locid, _iri = nil)
-    where(locid: locid).first
-  end
+
 
   protected
 
   def generate_locid
-    self.locid = "/proof-statuses/#{identifier}"
+    LocId.first_or_create!(locid: "/proof-statuses/#{identifier}",
+                          assorted_object: self
+                          )
   end
 end

@@ -1,4 +1,4 @@
-class Ontology < ActiveRecord::Base
+class Ontology < OntohubBaseModel
 
   # Ontohub Library Includes
   include Commentable

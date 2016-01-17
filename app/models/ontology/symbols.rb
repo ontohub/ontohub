@@ -43,7 +43,6 @@ class Ontology
           else
             e.name
           end
-        e.locid = "#{e.ontology.locid}#{sep}#{locid_portion}"
 
         if e.range.to_s.include?(':')
           # remove path from range
@@ -53,6 +52,9 @@ class Ontology
 
         e.ontology.symbols << e if e.id.nil?
         e.save!
+        LocId.first_or_create!(
+                       locid: "#{e.ontology.locid}#{sep}#{locid_portion}",
+                       assorted_object: e)
         e
       end
     end
