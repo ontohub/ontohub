@@ -17,7 +17,7 @@ describe "git import" do
       remote_type: 'mirror')
   end
 
-  before { Worker.drain }
+  before { RepositoryFetchingWorker.drain }
 
   it 'detect that it is not an svn repo' do
     expect(GitRepository.is_svn_repository?(remote_repo.path)).to be_falsy
@@ -62,7 +62,7 @@ describe "git import" do
         remote_repo.commit_file(userinfo, "(#{m})", "file-#{m}.clif", "add #{m}")
       end
     end
-    let!(:result) { repository.remote_send :pull }
+    let!(:result) { repository.fetch(:pull) }
 
     context 'get the new changes' do
       let!(:head_oid_post) { remote_repo.head_oid }

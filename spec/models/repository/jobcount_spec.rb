@@ -20,7 +20,7 @@ describe 'Repository saving (worker job count)' do
 
       repository.save_file(tmpfile.path, path, message, user)
     end
-    expect(Worker.jobs.count).to eq(1)
+    expect(OntologyParsingWorker.jobs.count).to eq(1)
   end
 
   it 'should not get increased on saving second inroot1 file' do
@@ -31,7 +31,7 @@ describe 'Repository saving (worker job count)' do
 
       repository.save_file(tmpfile.path, path, message, user)
     end
-    expect(Worker.jobs.count).to eq(1)
+    expect(OntologyParsingWorker.jobs.count).to eq(1)
   end
 
   it 'should get increased on saving inroot2 file after two inroot1 files' do
@@ -42,6 +42,6 @@ describe 'Repository saving (worker job count)' do
 
       repository.save_file(tmpfile.path, path, message, user)
     end
-    expect(Worker.jobs.count).to eq(2)
+    expect(OntologyParsingWorker.jobs.count).to eq(2)
   end
 end
