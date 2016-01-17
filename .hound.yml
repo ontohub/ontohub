@@ -1,3 +1,17 @@
 ShowCopNames: true
 
-inherit_from: .rubocop.yml
+ruby:
+  enabled: true
+  config_file: .rubocop.yml
+
+haml:
+  enabled: true
+  config_file: .haml-lint.yml
+
+coffeescript:
+  enabled: true
+  config_file: .coffeescript-style.json
+
+javascript:
+  enabled: true
+  config_file: .javascript-style.json
