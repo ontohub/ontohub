@@ -12,7 +12,7 @@ gem 'pg', '~> 0.18.1'
 gem 'foreigner', '~> 1.7.2'
 
 gem 'rdf', '~> 1.99.0'
-gem 'rdf-rdfxml', '~> 1.1.3'
+gem 'rdf-rdfxml', '~> 1.99.0'
 gem 'rdf-n3', '~> 1.99.0'
 
 gem 'redis-semaphore', '~> 0.2.4'
