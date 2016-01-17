@@ -31,8 +31,7 @@ module PaginationHelper
       query_string_parts << ['per_page', per_page]
     end
 
-    query_string_parts.map! { |p| p.join('=') }
-    query_string = query_string_parts.join('&')
+    query_string = query_string_parts.map { |p| p.join('=') }.join('&')
 
     [request.env['REQUEST_PATH'], query_string].compact.join('?')
   end
@@ -42,15 +41,13 @@ module PaginationHelper
   # This method extracts the page number and page size from the generated url.
   def params_from_kaminari_url(kaminari_url)
     page =
-      if match = kaminari_url.match(/[\?&]page=(\d+)/)
+      if (match = kaminari_url.match(/[\?&]page=(\d+)/)) ? match[1] : 1
         match[1]
-      else
-        1
       end
     per_page =
       if match = kaminari_url.match(/[\?&]per_page=(\d+)/)
         match[1]
       end
-    [page, per_page]
+    [page || 1, per_page]
   end
 end
