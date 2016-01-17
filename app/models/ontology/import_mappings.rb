@@ -1,16 +1,11 @@
 class Ontology
+  # An ontology being imported into is in this context not only a Mapping with
+  # kind 'import' but any kind of mapping. Otherwise the target ontology's view,
+  # alignment, etc. is invalid.
   module ImportMappings
     extend ActiveSupport::Concern
 
     included do
-      def is_imported?
-        import_mappings.present?
-      end
-
-      def is_imported_from_other_repository?
-        import_mappings_from_other_repositories.present?
-      end
-
       def mapping_targets
         source_mappings.map(&:target)
       end
@@ -25,14 +20,14 @@ class Ontology
         Ontology.where(id: ontology_ids)
       end
 
-      protected
-
-      def import_mappings
-        Mapping.where(source_id: id, kind: 'import')
+      def source_mappings_from_other_files
+        source_mappings.reject do |l|
+          l.target.repository == repository && l.target.path == path
+        end
       end
 
-      def import_mappings_from_other_repositories
-        import_mappings.select { |l| l.target.repository != repository }
+      def source_mappings_from_other_repositories
+        source_mappings.select { |l| l.target.repository != repository }
       end
     end
   end

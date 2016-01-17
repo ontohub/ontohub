@@ -73,13 +73,14 @@ class OntologiesController < InheritedResources::Base
   end
 
   def destroy
-    if resource.is_imported?
-      flash[:error] = "Can't delete #{Settings.OMS.with_indefinite_article}
-      that is imported by another one."
-      redirect_to resource_chain
-    else
+    if resource.can_be_deleted?
       resource.destroy_with_parent(current_user)
       destroy!
+    else
+      flash[:error] = t('ontology.delete_error',
+                        oms_with_article: Settings.OMS.with_indefinite_article,
+                        oms: Settings.OMS)
+      redirect_to resource_chain
     end
   end
 
