@@ -34,7 +34,7 @@ class ProofStatus
 
         return nil unless label_sentence
 
-        match = label_sentence.text.match(/#hasLabel[^#]+#(?<label>\w+)/)
+        match = label_sentence.text.match(/hasLabel.*(\s|#)(?<label>\w+)/)
         match[:label]
       end
 

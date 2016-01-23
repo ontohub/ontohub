@@ -21,7 +21,7 @@
 
     <owl:ObjectProperty rdf:about="#hasLabel">
         <rdf:type rdf:resource="&owl;FunctionalProperty"/>
-        <rdfs:range rdf:resource="#Label"/>
+        <rdfs:range rdf:resource="&SZS;Label"/>
     </owl:ObjectProperty>
 
 
