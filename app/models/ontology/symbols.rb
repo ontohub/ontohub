@@ -52,9 +52,11 @@ class Ontology
 
         e.ontology.symbols << e if e.id.nil?
         e.save!
-        LocId.first_or_create!(
+
+        LocId.where(
                        locid: "#{e.ontology.locid}#{sep}#{locid_portion}",
-                       assorted_object: e)
+                       assorted_object_id: e.id,
+                       assorted_object_type: e.class,).first_or_create!
         e
       end
     end

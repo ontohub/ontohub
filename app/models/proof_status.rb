@@ -30,8 +30,8 @@ class ProofStatus < OntohubBaseModel
   protected
 
   def generate_locid
-    LocId.first_or_create!(locid: "/proof-statuses/#{identifier}",
-                          assorted_object: self
-                          )
+    LocId.where(locid: "/proof-statuses/#{identifier}",
+                assorted_object_id: self.id,
+                assorted_object_type: self.class,).first_or_create!
   end
 end
