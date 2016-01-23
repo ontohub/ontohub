@@ -14,6 +14,6 @@ class OntohubBaseModel < ActiveRecord::Base
  end
 
  def locid
-   LocId.where(assorted_object_id: self.id, assorted_object_type: Ontology).first.locid
+   LocId.where(assorted_object_id: self.id, assorted_object_type: Ontology).first.try(:locid)
  end
 end
