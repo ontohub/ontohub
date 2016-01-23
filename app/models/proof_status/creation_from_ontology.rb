@@ -53,7 +53,7 @@ class ProofStatus
 
       def solved?(status)
         status == SOLVED_STATUS ||
-        szs_ontology.superclass_of?(SOLVED_STATUS, status)
+          szs_ontology.superclass_of?(SOLVED_STATUS, status)
       end
 
       protected
