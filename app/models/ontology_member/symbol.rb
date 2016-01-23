@@ -37,5 +37,8 @@ module OntologyMember
     def to_s
       display_name || name
     end
+    def locid
+      LocId.where(assorted_object_id: self.id, assorted_object_type: self.class).first.try(:locid)
+    end
   end
 end
