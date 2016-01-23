@@ -91,8 +91,8 @@ class OntologySaver
 
     if !ontology
       basepath = File.basepath(ontology_version_options.filepath)
-      locid = generate_locid(basepath)
-      ontology = create_ontology(ontology_version_options.filepath, locid)
+
+      ontology = create_ontology(ontology_version_options.filepath, basepath)
     end
 
     ontology
@@ -104,16 +104,17 @@ class OntologySaver
       without_parent.first
   end
 
-  def create_ontology(filepath, locid)
+  def create_ontology(filepath, basepath)
     ontology = corresponding_ontology_klass(filepath).new
-
+    locid = generate_locid(basepath, ontology)
     ontology.basepath = File.basepath(filepath)
     ontology.file_extension = File.extname(filepath)
     ontology.name = filepath.split('/')[-1].split(".")[0].capitalize
     ontology.repository = repository
     ontology.present = true
+    locid.save
     ontology.save!
-    LocId.first_or_create!(locid: locid, assorted_object: ontology)
+
     ontology
   end
 
@@ -167,7 +168,8 @@ class OntologySaver
     ontology.mapping_targets.map(&:path) - [*changed_files, ontology.path]
   end
 
-  def generate_locid(basepath)
-    "/#{repository.path}/#{basepath}"
+  def generate_locid(basepath, ontology)
+    locid = "/#{repository.path}/#{basepath}"
+    LocId.new(locid: locid, assorted_object: ontology)
   end
 end

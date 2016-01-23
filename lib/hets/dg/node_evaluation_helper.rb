@@ -42,7 +42,6 @@ module Hets
         ontology = parent_ontology.children.find_with_locid(child_locid)
         if ontology.nil?
           options = {
-            locid: child_locid,
             name: internal_iri,
             basepath: parent_ontology.basepath,
             file_extension: parent_ontology.file_extension,
@@ -50,6 +49,7 @@ module Hets
             present: true,
           }
           ontology = SingleOntology.create!(options, without_protection: true)
+          LocId.create(locid: child_locid, assorted_object: ontology)
           parent_ontology.children << ontology
         end
 
