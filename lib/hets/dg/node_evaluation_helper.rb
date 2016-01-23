@@ -49,7 +49,9 @@ module Hets
             present: true,
           }
           ontology = SingleOntology.create!(options, without_protection: true)
-          LocId.create(locid: child_locid, assorted_object: ontology)
+          LocId.where(locid: child_locid,
+                      assorted_object_id: ontology.id,
+                      assorted_object_type: ontology.class).first_or_create!
           parent_ontology.children << ontology
         end
 
