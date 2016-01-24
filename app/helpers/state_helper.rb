@@ -30,7 +30,8 @@ module StateHelper
     resource = resource.is_a?(Ontology) ? resource.current_version : resource
 
     html_opts = {
-      class: "evaluation-state",
+      class:
+        "evaluation-state label #{State::STATE_LABEL[resource.state.to_sym]}",
       data: {
         klass: resource.class.to_s,
         id: resource.id,
@@ -44,9 +45,9 @@ module StateHelper
   end
 
   def state(resource)
-    html = content_tag(:span, resource.state)
+    html = content_tag(:span, t("states.#{resource.state}"))
 
-    unless State::TERMINAL_STATES.include?(resource.state)
+    unless State::IDLE_STATES.include?(resource.state)
       html << " " << image_tag('spinner-16x16.gif', class: 'spinner')
     end
 

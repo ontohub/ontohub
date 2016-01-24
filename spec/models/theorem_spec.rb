@@ -50,12 +50,6 @@ describe Theorem do
         end
       end
     end
-
-    context 'state' do
-      it "is 'pending'" do
-        expect(theorem.state).to eq('pending')
-      end
-    end
   end
 
   context 'update_proof_status!' do

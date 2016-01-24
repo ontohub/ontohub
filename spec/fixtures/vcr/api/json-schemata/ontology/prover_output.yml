@@ -2,7 +2,7 @@
 http_interactions:
 - request:
     method: get
-    uri: https://masterthesis.rightsrestricted.com/ontohub/prover_output.json
+    uri: https://raw.githubusercontent.com/ontohub/ontohub-api-json/develop/prover_output.json
     body:
       encoding: US-ASCII
       string: ''
@@ -18,63 +18,107 @@ http_interactions:
       code: 200
       message: OK
     headers:
-      Server:
-      - nginx/1.6.2
-      Date:
-      - Sat, 04 Apr 2015 19:37:03 GMT
-      Content-Type:
-      - application/json
-      Content-Length:
-      - '760'
-      Last-Modified:
-      - Wed, 01 Apr 2015 09:31:10 GMT
-      Connection:
-      - keep-alive
-      Etag:
-      - '"551bbade-2f8"'
+      Content-Security-Policy:
+      - default-src 'none'
+      X-Xss-Protection:
+      - 1; mode=block
+      X-Frame-Options:
+      - deny
+      X-Content-Type-Options:
+      - nosniff
       Strict-Transport-Security:
       - max-age=31536000
-      X-Frame-Options:
-      - DENY
+      Etag:
+      - '"ac064a261ccafb6c0e83455a8b09c2a85e606942"'
+      Content-Type:
+      - text/plain; charset=utf-8
+      Cache-Control:
+      - max-age=300
+      X-Github-Request-Id:
+      - B91F1221:377A:2FD826:56964E91
+      Content-Length:
+      - '369'
       Accept-Ranges:
       - bytes
+      Date:
+      - Wed, 13 Jan 2016 13:18:09 GMT
+      Via:
+      - 1.1 varnish
+      Connection:
+      - keep-alive
+      X-Served-By:
+      - cache-lcy1134-LCY
+      X-Cache:
+      - MISS
+      X-Cache-Hits:
+      - '0'
+      Vary:
+      - Authorization,Accept-Encoding
+      Access-Control-Allow-Origin:
+      - "*"
+      X-Fastly-Request-Id:
+      - 9f10bdc1bd75866fdca9da71cd8f31a38848df37
+      Expires:
+      - Wed, 13 Jan 2016 13:23:09 GMT
+      Source-Age:
+      - '0'
     body:
       encoding: UTF-8
       string: |
         {
-          "id": "https://masterthesis.rightsrestricted.com/ontohub/prover_output.json#",
+          "id": "https://raw.githubusercontent.com/ontohub/ontohub-api-json/develop/prover_output.json#",
           "$schema": "http://json-schema.org/draft-04/schema#",
           "title": "Prover Output",
           "description": "The prover output for a specific proof attempt",
           "type": "object",
-          "properties": {
-            "iri": {
-              "description": "The unique identifier for the prover output",
-              "type": "string",
-              "format": "uri"
+          "oneOf": [
+            {
+              "properties": {
+                "iri": { "$ref": "generic/definitions.json#/definitions/iri" },
+                "prover": {
+                  "description": "The name of the prover",
+                  "type": "string"
+                },
+                "content": {
+                  "description": "The actual prover output",
+                  "type": "string"
+                },
+                "proof_attempt": { "$ref": "references.json#/definitions/proof_attempt" }
+              },
+              "required": [
+                "iri",
+                "prover",
+                "content",
+                "proof_attempt"
+              ]
             },
-            "prover": {
-              "description": "The name of the prover",
-              "type": "string"
-            },
-            "content": {
-              "description": "The actual prover output",
-              "type": "string"
-            },
-            "proof_attempt": { "$ref": "references.json#/definitions/proof_attempt" }
-          },
-          "required": [
-            "iri",
-            "prover",
-            "content",
-            "proof_attempt"
+            {
+              "properties": {
+                "iri": { "$ref": "generic/definitions.json#/definitions/iri" },
+                "prover": {
+                  "description": "The name of the prover",
+                  "type": "string"
+                },
+                "content": {
+                  "description": "The actual prover output",
+                  "type": "string"
+                },
+                "_links": { "$ref": "generic/definitions.json#/definitions/_links" }
+              },
+              "required": [
+                "iri",
+                "prover",
+                "content",
+                "_links"
+              ]
+            }
           ]
         }
     http_version: 
-  recorded_at: Sat, 04 Apr 2015 19:37:03 GMT
+  recorded_at: Wed, 13 Jan 2016 13:18:09 GMT
 - request:
     method: get
-    uri: https://masterthesis.rightsrestricted.com/ontohub/references.json
+    uri: https://raw.githubusercontent.com/ontohub/ontohub-api-json/develop/generic/definitions.json
     body:
       encoding: US-ASCII
       string: ''
@@ -90,31 +134,189 @@ http_interactions:
       code: 200
       message: OK
     headers:
-      Server:
-      - nginx/1.6.2
-      Date:
-      - Sat, 04 Apr 2015 19:37:03 GMT
-      Content-Type:
-      - application/json
-      Content-Length:
-      - '6367'
-      Last-Modified:
-      - Thu, 02 Apr 2015 10:02:57 GMT
-      Connection:
-      - keep-alive
-      Etag:
-      - '"551d13d1-18df"'
+      Content-Security-Policy:
+      - default-src 'none'
+      X-Xss-Protection:
+      - 1; mode=block
+      X-Frame-Options:
+      - deny
+      X-Content-Type-Options:
+      - nosniff
       Strict-Transport-Security:
       - max-age=31536000
-      X-Frame-Options:
-      - DENY
+      Etag:
+      - '"05f33ad940ee1376f5482f623d6f455d035ce811"'
+      Content-Type:
+      - text/plain; charset=utf-8
+      Cache-Control:
+      - max-age=300
+      X-Github-Request-Id:
+      - B91F121B:3780:3BE0D8:56964E7E
+      Content-Length:
+      - '947'
       Accept-Ranges:
       - bytes
+      Date:
+      - Wed, 13 Jan 2016 13:18:09 GMT
+      Via:
+      - 1.1 varnish
+      Connection:
+      - keep-alive
+      X-Served-By:
+      - cache-lcy1130-LCY
+      X-Cache:
+      - HIT
+      X-Cache-Hits:
+      - '2'
+      Vary:
+      - Authorization,Accept-Encoding
+      Access-Control-Allow-Origin:
+      - "*"
+      X-Fastly-Request-Id:
+      - 609d267deeba7fa3e65e88313b5ea4eb071477ab
+      Expires:
+      - Wed, 13 Jan 2016 13:23:09 GMT
+      Source-Age:
+      - '19'
     body:
       encoding: UTF-8
       string: |
         {
-          "id": "https://masterthesis.rightsrestricted.com/ontohub/references.json#",
+          "id": "https://raw.githubusercontent.com/ontohub/ontohub-api-json/develop/generic/definitions.json#",
+          "$schema": "http://json-schema.org/draft-04/schema#",
+          "definitions": {
+            "iri": {
+              "description": "The IRI of a resource",
+              "type": "string",
+              "format": "iri",
+              "pattern": "^https?://([^.]+[.][^.]+)+/.+$"
+            },
+            "_links": {
+              "description": "A _links-element corresponding to the HAL standard for hypermedia information, adopted from https://github.com/DaveJS/dave.schema.json/blob/master/hal-schema.json",
+              "type": "object",
+              "additionalProperties": {
+                "oneOf": [
+                  {
+                    "id": "https://raw.githubusercontent.com/ontohub/ontohub-api-json/develop/generic/definitions.json#hal-member",
+                    "type": "object",
+                    "properties": {
+                      "href": {
+                        "description": "IRI of a resource",
+                        "type": "string",
+                        "format": "iri"
+                      },
+                      "type": {
+                        "type": "string",
+                        "pattern": "^(application|audio|example|image|message|model|multipart|text|video)\\/[a-zA-Z0-9!#\\$&\\.\\+-\\^_]{1,127}$",
+                        "format": "mime",
+                        "description": "Hints to the media type of a target resource"
+                      },
+                      "name": {
+                        "type": "string"
+                      },
+                      "hreflang": {
+                        "type": "string",
+                        "pattern": "^([a-zA-Z]{2,3}(-[a-zA-Z]{3}(-[a-zA-Z]{3}){0,2})?(-[a-zA-Z]{4})?(-([a-zA-Z]{2}|[0-9]{3}))?(-([a-zA-Z0-9]{5,8}|[0-9][a-zA-Z0-9]{3}))*([0-9A-WY-Za-wy-z](-[a-zA-Z0-9]{2,8}){1,})*(x-[a-zA-Z0-9]{2,8})?)|(x-[a-zA-Z0-9]{2,8})|(en-GB-oed)|(i-ami)|(i-bnn)|(i-default)|(i-enochian)|(i-hak)|(i-klingon)|(i-lux)|(i-mingo)|(i-navajo)|(i-pwn)|(i-tao)|(i-tay)|(i-tsu)|(sgn-BE-FR)|(sgn-BE-NL)|(sgn-CH-DE)|(art-lojban)|(cel-gaulish)|(no-bok)|(no-nyn)|(zh-guoyu)|(zh-hakka)|(zh-min)|(zh-min-nan)|(zh-xiang)$",
+                        "description": "Language indication of the target resource"
+                      }
+                    },
+                    "additionalProperties": false,
+                    "required": [
+                      "href"
+                    ]
+                  },
+                  {
+                    "type": "array",
+                    "items": [
+                      {
+                        "$ref": "https://raw.githubusercontent.com/ontohub/ontohub-api-json/develop/generic/definitions.json#hal-member"
+                      }
+                    ],
+                    "uniqueItems": true,
+                    "additionalProperties": false
+                  }
+                ]
+              }
+            },
+            "errors": {
+              "description": "Information on the specific errors that occured",
+              "type": "array",
+              "items": {
+                "description": "Information on one of the specific errors that occured",
+                "type": "string"
+              }
+            }
+          }
+        }
+    http_version: 
+  recorded_at: Wed, 13 Jan 2016 13:18:09 GMT
+- request:
+    method: get
+    uri: https://raw.githubusercontent.com/ontohub/ontohub-api-json/develop/references.json
+    body:
+      encoding: US-ASCII
+      string: ''
+    headers:
+      Accept-Encoding:
+      - gzip;q=1.0,deflate;q=0.6,identity;q=0.3
+      Accept:
+      - "*/*"
+      User-Agent:
+      - Ruby
+  response:
+    status:
+      code: 200
+      message: OK
+    headers:
+      Content-Security-Policy:
+      - default-src 'none'
+      X-Xss-Protection:
+      - 1; mode=block
+      X-Frame-Options:
+      - deny
+      X-Content-Type-Options:
+      - nosniff
+      Strict-Transport-Security:
+      - max-age=31536000
+      Etag:
+      - '"54fd49ca226b4b028f96117e95333e615b0d1f7b"'
+      Content-Type:
+      - text/plain; charset=utf-8
+      Cache-Control:
+      - max-age=300
+      X-Github-Request-Id:
+      - B91F121C:3780:3BE1EC:56964E7F
+      Content-Length:
+      - '659'
+      Accept-Ranges:
+      - bytes
+      Date:
+      - Wed, 13 Jan 2016 13:18:09 GMT
+      Via:
+      - 1.1 varnish
+      Connection:
+      - keep-alive
+      X-Served-By:
+      - cache-lcy1124-LCY
+      X-Cache:
+      - HIT
+      X-Cache-Hits:
+      - '2'
+      Vary:
+      - Authorization,Accept-Encoding
+      Access-Control-Allow-Origin:
+      - "*"
+      X-Fastly-Request-Id:
+      - 5685855f15bb11d95a473a51e90779ea45e08d6b
+      Expires:
+      - Wed, 13 Jan 2016 13:23:09 GMT
+      Source-Age:
+      - '19'
+    body:
+      encoding: UTF-8
+      string: |
+        {
+          "id": "https://raw.githubusercontent.com/ontohub/ontohub-api-json/develop/references.json#",
           "$schema": "http://json-schema.org/draft-04/schema#",
           "definitions": {
             "repository": {
@@ -125,11 +327,7 @@ http_interactions:
                   "description": "The name of the repository",
                   "type": "string"
                 },
-                "iri": {
-                  "description": "The unique identifier of the repository",
-                  "type": "string",
-                  "format": "uri"
-                }
+                "iri": { "$ref": "generic/definitions.json#/definitions/iri" }
               }
             },
             "logic": {
@@ -140,11 +338,7 @@ http_interactions:
                   "description": "The name of the logic",
                   "type": "string"
                 },
-                "iri": {
-                  "description": "The unique identifier of the logic",
-                  "type": "string",
-                  "format": "uri"
-                }
+                "iri": { "$ref": "generic/definitions.json#/definitions/iri" }
               }
             },
             "ontology": {
@@ -155,11 +349,7 @@ http_interactions:
                   "description": "The name of the ontology",
                   "type": "string"
                 },
-                "iri": {
-                  "description": "The unique identifier of the ontology",
-                  "type": "string",
-                  "format": "uri"
-                }
+                "iri": { "$ref": "generic/definitions.json#/definitions/iri" }
               }
             },
             "license_model": {
@@ -170,11 +360,7 @@ http_interactions:
                   "description": "The name of the license model",
                   "type": "string"
                 },
-                "iri": {
-                  "description": "The unique identifier of the license model",
-                  "type": "string",
-                  "format": "uri"
-                }
+                "iri": { "$ref": "generic/definitions.json#/definitions/iri" }
               }
             },
             "formality_level": {
@@ -185,11 +371,7 @@ http_interactions:
                   "description": "The name of the formality level",
                   "type": "string"
                 },
-                "iri": {
-                  "description": "The unique identifier of the formality level",
-                  "type": "string",
-                  "format": "uri"
-                }
+                "iri": { "$ref": "generic/definitions.json#/definitions/iri" }
               }
             },
             "ontology_type": {
@@ -200,11 +382,7 @@ http_interactions:
                   "description": "The name of the ontology type",
                   "type": "string"
                 },
-                "iri": {
-                  "description": "The unique identifier of the ontology type",
-                  "type": "string",
-                  "format": "uri"
-                }
+                "iri": { "$ref": "generic/definitions.json#/definitions/iri" }
               }
             },
             "ontology_version": {
@@ -215,22 +393,14 @@ http_interactions:
                   "description": "The version number of the version of the ontology",
                   "type": "integer"
                 },
-                "iri": {
-                  "description": "The unique identifier of the ontology-version",
-                  "type": "string",
-                  "format": "uri"
-                }
+                "iri": { "$ref": "generic/definitions.json#/definitions/iri" }
               }
             },
             "logic_mapping": {
               "description": "Reference to a mapping between logics",
               "type": "object",
               "properties": {
-                "iri": {
-                  "description": "The unique identifier of the logic mapping",
-                  "type": "string",
-                  "format": "uri"
-                }
+                "iri": { "$ref": "generic/definitions.json#/definitions/iri" }
               }
             },
             "mapping": {
@@ -241,11 +411,7 @@ http_interactions:
                   "description": "The name of the mapping",
                   "type": "string"
                 },
-                "iri": {
-                  "description": "The unique identifier of the mapping",
-                  "type": "string",
-                  "format": "uri"
-                }
+                "iri": { "$ref": "generic/definitions.json#/definitions/iri" }
               }
             },
             "sentence": {
@@ -256,11 +422,7 @@ http_interactions:
                   "description": "The name of the sentence",
                   "type": "string"
                 },
-                "iri": {
-                  "description": "The unique identifier of the sentence",
-                  "type": "string",
-                  "format": "uri"
-                }
+                "iri": { "$ref": "generic/definitions.json#/definitions/iri" }
               }
             },
             "symbol": {
@@ -271,11 +433,7 @@ http_interactions:
                   "description": "The name of the symbol",
                   "type": "string"
                 },
-                "iri": {
-                  "description": "The unique identifier of the symbol",
-                  "type": "string",
-                  "format": "uri"
-                }
+                "iri": { "$ref": "generic/definitions.json#/definitions/iri" }
               }
             },
             "theorem": {
@@ -286,37 +444,24 @@ http_interactions:
                   "description": "The name of the theorem",
                   "type": "string"
                 },
-                "iri": {
-                  "description": "The unique identifier of the theorem",
-                  "type": "string",
-                  "format": "uri"
-                }
+                "iri": { "$ref": "generic/definitions.json#/definitions/iri" }
               }
             },
             "proof_attempt": {
               "description": "Reference to a proof attempt",
               "type": "object",
               "properties": {
-                "iri": {
-                  "description": "The unique identifier of the proof attempt",
-                  "type": "string",
-                  "format": "uri"
-                },
                 "number": {
                   "description": "The number of the proof attempt relative to its theorem",
                   "type": "integer"
-                }
+                },
+                "iri": { "$ref": "generic/definitions.json#/definitions/iri" }
               }
             },
             "proof_status": {
               "description": "Reference to a proof status",
               "type": "object",
               "properties": {
-                "iri": {
-                  "description": "The unique identifier of the proof status",
-                  "type": "string",
-                  "format": "uri"
-                },
                 "identifier": {
                   "description": "The identifier of the proof status",
                   "type": "string"
@@ -324,33 +469,51 @@ http_interactions:
                 "name": {
                   "description": "The name of the proof status (human-readable)",
                   "type": "string"
-                }
+                },
+                "iri": { "$ref": "generic/definitions.json#/definitions/iri" }
               }
             },
             "prover_output": {
               "description": "Reference to a prover output",
               "type": "object",
               "properties": {
-                "iri": {
-                  "description": "The unique identifier of the prover output",
-                  "type": "string",
-                  "format": "uri"
-                }
+                "iri": { "$ref": "generic/definitions.json#/definitions/iri" }
               }
             },
             "proof_attempt_configuration": {
               "description": "Reference to a proof attempt configuration",
               "type": "object",
               "properties": {
-                "iri": {
-                  "description": "The unique identifier of the proof attempt configuration",
-                  "type": "string",
-                  "format": "uri"
+                "iri": { "$ref": "generic/definitions.json#/definitions/iri" }
+              }
+            },
+            "comment": {
+              "description": "Reference to comment",
+              "type": "object",
+              "properties": {
+                "iri": { "$ref": "generic/definitions.json#/definitions/iri" }
+              }
+            },
+            "review": {
+              "description": "Reference to a review",
+              "type": "object",
+              "properties": {
+                "iri": { "$ref": "generic/definitions.json#/definitions/iri" }
+              }
+            },
+            "task": {
+              "description": "Reference to a task",
+              "type": "object",
+              "properties": {
+                "iri": { "$ref": "generic/definitions.json#/definitions/iri" },
+                "name": {
+                  "description": "The name of the task",
+                  "type": "string"
                 }
               }
             }
           }
         }
     http_version: 
-  recorded_at: Sat, 04 Apr 2015 19:37:03 GMT
-recorded_with: VCR 2.9.3
+  recorded_at: Wed, 13 Jan 2016 13:18:09 GMT
+recorded_with: VCR 3.0.0

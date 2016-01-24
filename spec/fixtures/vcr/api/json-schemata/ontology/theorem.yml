@@ -2,7 +2,7 @@
 http_interactions:
 - request:
     method: get
-    uri: https://masterthesis.rightsrestricted.com/ontohub/theorem.json
+    uri: https://raw.githubusercontent.com/ontohub/ontohub-api-json/develop/theorem.json
     body:
       encoding: US-ASCII
       string: ''
@@ -18,65 +18,111 @@ http_interactions:
       code: 200
       message: OK
     headers:
-      Server:
-      - nginx/1.6.2
-      Date:
-      - Sat, 04 Apr 2015 19:35:18 GMT
-      Content-Type:
-      - application/json
-      Content-Length:
-      - '1379'
-      Last-Modified:
-      - Thu, 02 Apr 2015 10:03:34 GMT
-      Connection:
-      - keep-alive
-      Etag:
-      - '"551d13f6-563"'
+      Content-Security-Policy:
+      - default-src 'none'
+      X-Xss-Protection:
+      - 1; mode=block
+      X-Frame-Options:
+      - deny
+      X-Content-Type-Options:
+      - nosniff
       Strict-Transport-Security:
       - max-age=31536000
-      X-Frame-Options:
-      - DENY
+      Etag:
+      - '"aaf74a4383a6a6aa3f3a84e71b478332444619e6"'
+      Content-Type:
+      - text/plain; charset=utf-8
+      Cache-Control:
+      - max-age=300
+      X-Github-Request-Id:
+      - 17EB2B14:59C7:42E93E:56964E36
+      Content-Length:
+      - '551'
       Accept-Ranges:
       - bytes
+      Date:
+      - Wed, 13 Jan 2016 13:16:39 GMT
+      Via:
+      - 1.1 varnish
+      Connection:
+      - keep-alive
+      X-Served-By:
+      - cache-ams4147-AMS
+      X-Cache:
+      - MISS
+      X-Cache-Hits:
+      - '0'
+      Vary:
+      - Authorization,Accept-Encoding
+      Access-Control-Allow-Origin:
+      - "*"
+      X-Fastly-Request-Id:
+      - 3d94f561edc766722f248777ca6bc84a0790942e
+      Expires:
+      - Wed, 13 Jan 2016 13:21:39 GMT
+      Source-Age:
+      - '0'
     body:
       encoding: ASCII-8BIT
       string: !binary |-
-        ewogICJpZCI6ICJodHRwczovL21hc3RlcnRoZXNpcy5yaWdodHNyZXN0cmlj
-        dGVkLmNvbS9vbnRvaHViL3RoZW9yZW0uanNvbiMiLAogICIkc2NoZW1hIjog
-        Imh0dHA6Ly9qc29uLXNjaGVtYS5vcmcvZHJhZnQtMDQvc2NoZW1hIyIsCiAg
-        InRpdGxlIjogIlRoZW9yZW0iLAogICJkZXNjcmlwdGlvbiI6ICJBIHRoZW9y
-        ZW0gaW5zaWRlIG9mIGFuIG9udG9sb2d5IiwKICAidHlwZSI6ICJvYmplY3Qi
-        LAogICJwcm9wZXJ0aWVzIjogewogICAgImlyaSI6IHsKICAgICAgImRlc2Ny
-        aXB0aW9uIjogIlRoZSB1bmlxdWUgaWRlbnRpZmllciBmb3IgdGhlIHRoZW9y
-        ZW0iLAogICAgICAidHlwZSI6ICJzdHJpbmciLAogICAgICAiZm9ybWF0Ijog
-        InVyaSIKICAgIH0sCiAgICAibmFtZSI6IHsKICAgICAgImRlc2NyaXB0aW9u
-        IjogIlRoZSBuYW1lIG9mIHRoZSB0aGVvcmVtIOKAlCB1c3VhbGx5IGF1dG8t
-        Z2VuZXJhdGVkLiIsCiAgICAgICJ0eXBlIjogInN0cmluZyIKICAgIH0sCiAg
-        ICAiZGVmaW5pdGlvbiI6IHsKICAgICAgImRlc2NyaXB0aW9uIjogIlRoZSBk
-        ZWZpbml0aW9uIG9mIHRoZSB0aGVvcmVtIiwKICAgICAgInR5cGUiOiAic3Ry
-        aW5nIgogICAgfSwKICAgICJldmFsdWF0aW9uX3N0YXRlIjogewogICAgICAi
-        ZGVzY3JpcHRpb24iOiAiVGhlIGN1cnJlbnQgc3RhdGUgb2YgdGhlIHByb29m
-        IGV2YWx1YXRpb24iLAogICAgICAidHlwZSI6ICJzdHJpbmciLAogICAgICAi
-        ZW51bSI6IFsgImRvbmUiLCAiZmFpbGVkIiwgInBlbmRpbmciLCAicHJvY2Vz
-        c2luZyIgXQogICAgfSwKICAgICJwcm9vZl9zdGF0dXMiOiB7ICIkcmVmIjog
-        InJlZmVyZW5jZXMuanNvbiMvZGVmaW5pdGlvbnMvcHJvb2Zfc3RhdHVzIiB9
-        LAogICAgIm9udG9sb2d5IjogeyAiJHJlZiI6ICJyZWZlcmVuY2VzLmpzb24j
-        L2RlZmluaXRpb25zL29udG9sb2d5IiB9LAogICAgInN5bWJvbHMiOiB7CiAg
-        ICAgICJkZXNjcmlwdGlvbiI6ICJSZWZlcmVuY2UgdG8gYWxsIHN5bWJvbHMg
-        dXNlZCBpbiB0aGlzIHRoZW9yZW0iLAogICAgICAidHlwZSI6ICJzdHJpbmci
-        LAogICAgICAiZm9ybWF0IjogInVyaSIKICAgIH0sCiAgICAicHJvb2ZfYXR0
-        ZW1wdHMiOiB7CiAgICAgICJkZXNjcmlwdGlvbiI6ICJSZWZlcmVuY2UgdG8g
-        YWxsIHByb29mIGF0dGVtcHRzIGZvciB0aGlzIHRoZW9yZW0iLAogICAgICAi
-        dHlwZSI6ICJzdHJpbmciLAogICAgICAiZm9ybWF0IjogInVyaSIKICAgIH0K
-        ICB9LAogICJyZXF1aXJlZCI6IFsKICAgICJpcmkiLAogICAgIm5hbWUiLAog
-        ICAgImRlZmluaXRpb24iLAogICAgImV2YWx1YXRpb25fc3RhdGUiLAogICAg
-        InByb29mX3N0YXR1cyIsCiAgICAib250b2xvZ3kiLAogICAgInN5bWJvbHMi
-        LAogICAgInByb29mX2F0dGVtcHRzIgogIF0KfQo=
+        ewogICJpZCI6ICJodHRwczovL3Jhdy5naXRodWJ1c2VyY29udGVudC5jb20v
+        b250b2h1Yi9vbnRvaHViLWFwaS1qc29uL2RldmVsb3AvdGhlb3JlbS5qc29u
+        IyIsCiAgIiRzY2hlbWEiOiAiaHR0cDovL2pzb24tc2NoZW1hLm9yZy9kcmFm
+        dC0wNC9zY2hlbWEjIiwKICAidGl0bGUiOiAiVGhlb3JlbSIsCiAgImRlc2Ny
+        aXB0aW9uIjogIkEgdGhlb3JlbSBpbnNpZGUgb2YgYW4gb250b2xvZ3kiLAog
+        ICJ0eXBlIjogIm9iamVjdCIsCiAgIm9uZU9mIjogWwogICAgewogICAgICAi
+        cHJvcGVydGllcyI6IHsKICAgICAgICAiaXJpIjogeyAiJHJlZiI6ICJnZW5l
+        cmljL2RlZmluaXRpb25zLmpzb24jL2RlZmluaXRpb25zL2lyaSIgfSwKICAg
+        ICAgICAibmFtZSI6IHsKICAgICAgICAgICJkZXNjcmlwdGlvbiI6ICJUaGUg
+        bmFtZSBvZiB0aGUgdGhlb3JlbSDigJQgdXN1YWxseSBhdXRvLWdlbmVyYXRl
+        ZC4iLAogICAgICAgICAgInR5cGUiOiAic3RyaW5nIgogICAgICAgIH0sCiAg
+        ICAgICAgImRlZmluaXRpb24iOiB7CiAgICAgICAgICAiZGVzY3JpcHRpb24i
+        OiAiVGhlIGRlZmluaXRpb24gb2YgdGhlIHRoZW9yZW0iLAogICAgICAgICAg
+        InR5cGUiOiAic3RyaW5nIgogICAgICAgIH0sCiAgICAgICAgImV2YWx1YXRp
+        b25fc3RhdGUiOiB7CiAgICAgICAgICAiZGVzY3JpcHRpb24iOiAiVGhlIGN1
+        cnJlbnQgc3RhdGUgb2YgdGhlIHByb29mIGV2YWx1YXRpb24iLAogICAgICAg
+        ICAgInR5cGUiOiAic3RyaW5nIiwKICAgICAgICAgICJlbnVtIjogWyAibm90
+        X3N0YXJ0ZWRfeWV0IiwgImZhaWxlZCIsICJub19yZXN1bHQiLCAicGVuZGlu
+        ZyIsICJwcm9jZXNzaW5nIiwgImRvbmUiIF0KICAgICAgICB9LAogICAgICAg
+        ICJwcm9vZl9zdGF0dXMiOiB7ICIkcmVmIjogInJlZmVyZW5jZXMuanNvbiMv
+        ZGVmaW5pdGlvbnMvcHJvb2Zfc3RhdHVzIiB9LAogICAgICAgICJvbnRvbG9n
+        eSI6IHsgIiRyZWYiOiAicmVmZXJlbmNlcy5qc29uIy9kZWZpbml0aW9ucy9v
+        bnRvbG9neSIgfSwKICAgICAgICAic3ltYm9scyI6IHsKICAgICAgICAgICJk
+        ZXNjcmlwdGlvbiI6ICJSZWZlcmVuY2UgdG8gYWxsIHN5bWJvbHMgdXNlZCBp
+        biB0aGlzIHRoZW9yZW0iLAogICAgICAgICAgIiRyZWYiOiAiZ2VuZXJpYy9k
+        ZWZpbml0aW9ucy5qc29uIy9kZWZpbml0aW9ucy9pcmkiCiAgICAgICAgfSwK
+        ICAgICAgICAicHJvb2ZfYXR0ZW1wdHMiOiB7CiAgICAgICAgICAiZGVzY3Jp
+        cHRpb24iOiAiUmVmZXJlbmNlIHRvIGFsbCBwcm9vZiBhdHRlbXB0cyBmb3Ig
+        dGhpcyB0aGVvcmVtIiwKICAgICAgICAgICIkcmVmIjogImdlbmVyaWMvZGVm
+        aW5pdGlvbnMuanNvbiMvZGVmaW5pdGlvbnMvaXJpIgogICAgICAgIH0KICAg
+        ICAgfSwKICAgICAgInJlcXVpcmVkIjogWwogICAgICAgICJpcmkiLAogICAg
+        ICAgICJuYW1lIiwKICAgICAgICAiZGVmaW5pdGlvbiIsCiAgICAgICAgImV2
+        YWx1YXRpb25fc3RhdGUiLAogICAgICAgICJwcm9vZl9zdGF0dXMiLAogICAg
+        ICAgICJvbnRvbG9neSIsCiAgICAgICAgInN5bWJvbHMiLAogICAgICAgICJw
+        cm9vZl9hdHRlbXB0cyIKICAgICAgXQogICAgfSwKICAgIHsKICAgICAgInBy
+        b3BlcnRpZXMiOiB7CiAgICAgICAgImlyaSI6IHsgIiRyZWYiOiAiZ2VuZXJp
+        Yy9kZWZpbml0aW9ucy5qc29uIy9kZWZpbml0aW9ucy9pcmkiIH0sCiAgICAg
+        ICAgIm5hbWUiOiB7CiAgICAgICAgICAiZGVzY3JpcHRpb24iOiAiVGhlIG5h
+        bWUgb2YgdGhlIHRoZW9yZW0g4oCUIHVzdWFsbHkgYXV0by1nZW5lcmF0ZWQu
+        IiwKICAgICAgICAgICJ0eXBlIjogInN0cmluZyIKICAgICAgICB9LAogICAg
+        ICAgICJkZWZpbml0aW9uIjogewogICAgICAgICAgImRlc2NyaXB0aW9uIjog
+        IlRoZSBkZWZpbml0aW9uIG9mIHRoZSB0aGVvcmVtIiwKICAgICAgICAgICJ0
+        eXBlIjogInN0cmluZyIKICAgICAgICB9LAogICAgICAgICJldmFsdWF0aW9u
+        X3N0YXRlIjogewogICAgICAgICAgImRlc2NyaXB0aW9uIjogIlRoZSBjdXJy
+        ZW50IHN0YXRlIG9mIHRoZSBwcm9vZiBldmFsdWF0aW9uIiwKICAgICAgICAg
+        ICJ0eXBlIjogInN0cmluZyIsCiAgICAgICAgICAiZW51bSI6IFsgImRvbmUi
+        LCAiZmFpbGVkIiwgInBlbmRpbmciLCAicHJvY2Vzc2luZyIgXQogICAgICAg
+        IH0sCiAgICAgICAgIl9saW5rcyI6IHsgIiRyZWYiOiAiZ2VuZXJpYy9kZWZp
+        bml0aW9ucy5qc29uIy9kZWZpbml0aW9ucy9fbGlua3MiIH0KICAgICAgfSwK
+        ICAgICAgInJlcXVpcmVkIjogWwogICAgICAgICJpcmkiLAogICAgICAgICJu
+        YW1lIiwKICAgICAgICAiZGVmaW5pdGlvbiIsCiAgICAgICAgImV2YWx1YXRp
+        b25fc3RhdGUiLAogICAgICAgICJfbGlua3MiCiAgICAgIF0KICAgIH0KICBd
+        Cn0K
     http_version: 
-  recorded_at: Sat, 04 Apr 2015 19:35:18 GMT
+  recorded_at: Wed, 13 Jan 2016 13:16:39 GMT
 - request:
     method: get
-    uri: https://masterthesis.rightsrestricted.com/ontohub/references.json
+    uri: https://raw.githubusercontent.com/ontohub/ontohub-api-json/develop/generic/definitions.json
     body:
       encoding: US-ASCII
       string: ''
@@ -92,31 +138,189 @@ http_interactions:
       code: 200
       message: OK
     headers:
-      Server:
-      - nginx/1.6.2
-      Date:
-      - Sat, 04 Apr 2015 19:35:18 GMT
-      Content-Type:
-      - application/json
-      Content-Length:
-      - '6367'
-      Last-Modified:
-      - Thu, 02 Apr 2015 10:02:57 GMT
-      Connection:
-      - keep-alive
-      Etag:
-      - '"551d13d1-18df"'
+      Content-Security-Policy:
+      - default-src 'none'
+      X-Xss-Protection:
+      - 1; mode=block
+      X-Frame-Options:
+      - deny
+      X-Content-Type-Options:
+      - nosniff
       Strict-Transport-Security:
       - max-age=31536000
-      X-Frame-Options:
-      - DENY
+      Etag:
+      - '"05f33ad940ee1376f5482f623d6f455d035ce811"'
+      Content-Type:
+      - text/plain; charset=utf-8
+      Cache-Control:
+      - max-age=300
+      X-Github-Request-Id:
+      - 17EB2B23:2C5B:3A6A7C:56964E23
+      Content-Length:
+      - '947'
       Accept-Ranges:
       - bytes
+      Date:
+      - Wed, 13 Jan 2016 13:16:39 GMT
+      Via:
+      - 1.1 varnish
+      Connection:
+      - keep-alive
+      X-Served-By:
+      - cache-ams4144-AMS
+      X-Cache:
+      - HIT
+      X-Cache-Hits:
+      - '1'
+      Vary:
+      - Authorization,Accept-Encoding
+      Access-Control-Allow-Origin:
+      - "*"
+      X-Fastly-Request-Id:
+      - 9f8c39af67839d211025030e33cb310086e776c7
+      Expires:
+      - Wed, 13 Jan 2016 13:21:39 GMT
+      Source-Age:
+      - '19'
     body:
       encoding: UTF-8
       string: |
         {
-          "id": "https://masterthesis.rightsrestricted.com/ontohub/references.json#",
+          "id": "https://raw.githubusercontent.com/ontohub/ontohub-api-json/develop/generic/definitions.json#",
+          "$schema": "http://json-schema.org/draft-04/schema#",
+          "definitions": {
+            "iri": {
+              "description": "The IRI of a resource",
+              "type": "string",
+              "format": "iri",
+              "pattern": "^https?://([^.]+[.][^.]+)+/.+$"
+            },
+            "_links": {
+              "description": "A _links-element corresponding to the HAL standard for hypermedia information, adopted from https://github.com/DaveJS/dave.schema.json/blob/master/hal-schema.json",
+              "type": "object",
+              "additionalProperties": {
+                "oneOf": [
+                  {
+                    "id": "https://raw.githubusercontent.com/ontohub/ontohub-api-json/develop/generic/definitions.json#hal-member",
+                    "type": "object",
+                    "properties": {
+                      "href": {
+                        "description": "IRI of a resource",
+                        "type": "string",
+                        "format": "iri"
+                      },
+                      "type": {
+                        "type": "string",
+                        "pattern": "^(application|audio|example|image|message|model|multipart|text|video)\\/[a-zA-Z0-9!#\\$&\\.\\+-\\^_]{1,127}$",
+                        "format": "mime",
+                        "description": "Hints to the media type of a target resource"
+                      },
+                      "name": {
+                        "type": "string"
+                      },
+                      "hreflang": {
+                        "type": "string",
+                        "pattern": "^([a-zA-Z]{2,3}(-[a-zA-Z]{3}(-[a-zA-Z]{3}){0,2})?(-[a-zA-Z]{4})?(-([a-zA-Z]{2}|[0-9]{3}))?(-([a-zA-Z0-9]{5,8}|[0-9][a-zA-Z0-9]{3}))*([0-9A-WY-Za-wy-z](-[a-zA-Z0-9]{2,8}){1,})*(x-[a-zA-Z0-9]{2,8})?)|(x-[a-zA-Z0-9]{2,8})|(en-GB-oed)|(i-ami)|(i-bnn)|(i-default)|(i-enochian)|(i-hak)|(i-klingon)|(i-lux)|(i-mingo)|(i-navajo)|(i-pwn)|(i-tao)|(i-tay)|(i-tsu)|(sgn-BE-FR)|(sgn-BE-NL)|(sgn-CH-DE)|(art-lojban)|(cel-gaulish)|(no-bok)|(no-nyn)|(zh-guoyu)|(zh-hakka)|(zh-min)|(zh-min-nan)|(zh-xiang)$",
+                        "description": "Language indication of the target resource"
+                      }
+                    },
+                    "additionalProperties": false,
+                    "required": [
+                      "href"
+                    ]
+                  },
+                  {
+                    "type": "array",
+                    "items": [
+                      {
+                        "$ref": "https://raw.githubusercontent.com/ontohub/ontohub-api-json/develop/generic/definitions.json#hal-member"
+                      }
+                    ],
+                    "uniqueItems": true,
+                    "additionalProperties": false
+                  }
+                ]
+              }
+            },
+            "errors": {
+              "description": "Information on the specific errors that occured",
+              "type": "array",
+              "items": {
+                "description": "Information on one of the specific errors that occured",
+                "type": "string"
+              }
+            }
+          }
+        }
+    http_version: 
+  recorded_at: Wed, 13 Jan 2016 13:16:39 GMT
+- request:
+    method: get
+    uri: https://raw.githubusercontent.com/ontohub/ontohub-api-json/develop/references.json
+    body:
+      encoding: US-ASCII
+      string: ''
+    headers:
+      Accept-Encoding:
+      - gzip;q=1.0,deflate;q=0.6,identity;q=0.3
+      Accept:
+      - "*/*"
+      User-Agent:
+      - Ruby
+  response:
+    status:
+      code: 200
+      message: OK
+    headers:
+      Content-Security-Policy:
+      - default-src 'none'
+      X-Xss-Protection:
+      - 1; mode=block
+      X-Frame-Options:
+      - deny
+      X-Content-Type-Options:
+      - nosniff
+      Strict-Transport-Security:
+      - max-age=31536000
+      Etag:
+      - '"54fd49ca226b4b028f96117e95333e615b0d1f7b"'
+      Content-Type:
+      - text/plain; charset=utf-8
+      Cache-Control:
+      - max-age=300
+      X-Github-Request-Id:
+      - 17EB2B25:2C57:252DA3:56964E24
+      Content-Length:
+      - '659'
+      Accept-Ranges:
+      - bytes
+      Date:
+      - Wed, 13 Jan 2016 13:16:39 GMT
+      Via:
+      - 1.1 varnish
+      Connection:
+      - keep-alive
+      X-Served-By:
+      - cache-ams4141-AMS
+      X-Cache:
+      - HIT
+      X-Cache-Hits:
+      - '1'
+      Vary:
+      - Authorization,Accept-Encoding
+      Access-Control-Allow-Origin:
+      - "*"
+      X-Fastly-Request-Id:
+      - 4d45107c0d4e4358fe8334020f1da8df79f0e6c4
+      Expires:
+      - Wed, 13 Jan 2016 13:21:39 GMT
+      Source-Age:
+      - '19'
+    body:
+      encoding: UTF-8
+      string: |
+        {
+          "id": "https://raw.githubusercontent.com/ontohub/ontohub-api-json/develop/references.json#",
           "$schema": "http://json-schema.org/draft-04/schema#",
           "definitions": {
             "repository": {
@@ -127,11 +331,7 @@ http_interactions:
                   "description": "The name of the repository",
                   "type": "string"
                 },
-                "iri": {
-                  "description": "The unique identifier of the repository",
-                  "type": "string",
-                  "format": "uri"
-                }
+                "iri": { "$ref": "generic/definitions.json#/definitions/iri" }
               }
             },
             "logic": {
@@ -142,11 +342,7 @@ http_interactions:
                   "description": "The name of the logic",
                   "type": "string"
                 },
-                "iri": {
-                  "description": "The unique identifier of the logic",
-                  "type": "string",
-                  "format": "uri"
-                }
+                "iri": { "$ref": "generic/definitions.json#/definitions/iri" }
               }
             },
             "ontology": {
@@ -157,11 +353,7 @@ http_interactions:
                   "description": "The name of the ontology",
                   "type": "string"
                 },
-                "iri": {
-                  "description": "The unique identifier of the ontology",
-                  "type": "string",
-                  "format": "uri"
-                }
+                "iri": { "$ref": "generic/definitions.json#/definitions/iri" }
               }
             },
             "license_model": {
@@ -172,11 +364,7 @@ http_interactions:
                   "description": "The name of the license model",
                   "type": "string"
                 },
-                "iri": {
-                  "description": "The unique identifier of the license model",
-                  "type": "string",
-                  "format": "uri"
-                }
+                "iri": { "$ref": "generic/definitions.json#/definitions/iri" }
               }
             },
             "formality_level": {
@@ -187,11 +375,7 @@ http_interactions:
                   "description": "The name of the formality level",
                   "type": "string"
                 },
-                "iri": {
-                  "description": "The unique identifier of the formality level",
-                  "type": "string",
-                  "format": "uri"
-                }
+                "iri": { "$ref": "generic/definitions.json#/definitions/iri" }
               }
             },
             "ontology_type": {
@@ -202,11 +386,7 @@ http_interactions:
                   "description": "The name of the ontology type",
                   "type": "string"
                 },
-                "iri": {
-                  "description": "The unique identifier of the ontology type",
-                  "type": "string",
-                  "format": "uri"
-                }
+                "iri": { "$ref": "generic/definitions.json#/definitions/iri" }
               }
             },
             "ontology_version": {
@@ -217,22 +397,14 @@ http_interactions:
                   "description": "The version number of the version of the ontology",
                   "type": "integer"
                 },
-                "iri": {
-                  "description": "The unique identifier of the ontology-version",
-                  "type": "string",
-                  "format": "uri"
-                }
+                "iri": { "$ref": "generic/definitions.json#/definitions/iri" }
               }
             },
             "logic_mapping": {
               "description": "Reference to a mapping between logics",
               "type": "object",
               "properties": {
-                "iri": {
-                  "description": "The unique identifier of the logic mapping",
-                  "type": "string",
-                  "format": "uri"
-                }
+                "iri": { "$ref": "generic/definitions.json#/definitions/iri" }
               }
             },
             "mapping": {
@@ -243,11 +415,7 @@ http_interactions:
                   "description": "The name of the mapping",
                   "type": "string"
                 },
-                "iri": {
-                  "description": "The unique identifier of the mapping",
-                  "type": "string",
-                  "format": "uri"
-                }
+                "iri": { "$ref": "generic/definitions.json#/definitions/iri" }
               }
             },
             "sentence": {
@@ -258,11 +426,7 @@ http_interactions:
                   "description": "The name of the sentence",
                   "type": "string"
                 },
-                "iri": {
-                  "description": "The unique identifier of the sentence",
-                  "type": "string",
-                  "format": "uri"
-                }
+                "iri": { "$ref": "generic/definitions.json#/definitions/iri" }
               }
             },
             "symbol": {
@@ -273,11 +437,7 @@ http_interactions:
                   "description": "The name of the symbol",
                   "type": "string"
                 },
-                "iri": {
-                  "description": "The unique identifier of the symbol",
-                  "type": "string",
-                  "format": "uri"
-                }
+                "iri": { "$ref": "generic/definitions.json#/definitions/iri" }
               }
             },
             "theorem": {
@@ -288,37 +448,24 @@ http_interactions:
                   "description": "The name of the theorem",
                   "type": "string"
                 },
-                "iri": {
-                  "description": "The unique identifier of the theorem",
-                  "type": "string",
-                  "format": "uri"
-                }
+                "iri": { "$ref": "generic/definitions.json#/definitions/iri" }
               }
             },
             "proof_attempt": {
               "description": "Reference to a proof attempt",
               "type": "object",
               "properties": {
-                "iri": {
-                  "description": "The unique identifier of the proof attempt",
-                  "type": "string",
-                  "format": "uri"
-                },
                 "number": {
                   "description": "The number of the proof attempt relative to its theorem",
                   "type": "integer"
-                }
+                },
+                "iri": { "$ref": "generic/definitions.json#/definitions/iri" }
               }
             },
             "proof_status": {
               "description": "Reference to a proof status",
               "type": "object",
               "properties": {
-                "iri": {
-                  "description": "The unique identifier of the proof status",
-                  "type": "string",
-                  "format": "uri"
-                },
                 "identifier": {
                   "description": "The identifier of the proof status",
                   "type": "string"
@@ -326,33 +473,51 @@ http_interactions:
                 "name": {
                   "description": "The name of the proof status (human-readable)",
                   "type": "string"
-                }
+                },
+                "iri": { "$ref": "generic/definitions.json#/definitions/iri" }
               }
             },
             "prover_output": {
               "description": "Reference to a prover output",
               "type": "object",
               "properties": {
-                "iri": {
-                  "description": "The unique identifier of the prover output",
-                  "type": "string",
-                  "format": "uri"
-                }
+                "iri": { "$ref": "generic/definitions.json#/definitions/iri" }
               }
             },
             "proof_attempt_configuration": {
               "description": "Reference to a proof attempt configuration",
               "type": "object",
               "properties": {
-                "iri": {
-                  "description": "The unique identifier of the proof attempt configuration",
-                  "type": "string",
-                  "format": "uri"
+                "iri": { "$ref": "generic/definitions.json#/definitions/iri" }
+              }
+            },
+            "comment": {
+              "description": "Reference to comment",
+              "type": "object",
+              "properties": {
+                "iri": { "$ref": "generic/definitions.json#/definitions/iri" }
+              }
+            },
+            "review": {
+              "description": "Reference to a review",
+              "type": "object",
+              "properties": {
+                "iri": { "$ref": "generic/definitions.json#/definitions/iri" }
+              }
+            },
+            "task": {
+              "description": "Reference to a task",
+              "type": "object",
+              "properties": {
+                "iri": { "$ref": "generic/definitions.json#/definitions/iri" },
+                "name": {
+                  "description": "The name of the task",
+                  "type": "string"
                 }
               }
             }
           }
         }
     http_version: 
-  recorded_at: Sat, 04 Apr 2015 19:35:18 GMT
-recorded_with: VCR 2.9.3
+  recorded_at: Wed, 13 Jan 2016 13:16:39 GMT
+recorded_with: VCR 3.0.0

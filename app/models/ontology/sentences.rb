@@ -155,7 +155,7 @@ class Ontology
             theorem.state = 'done'
           else
             status_id = ProofStatus::DEFAULT_OPEN_STATUS
-            theorem.state = 'pending'
+            theorem.state = 'not_started_yet'
           end
           theorem.proof_status = ProofStatus.find(status_id)
       end

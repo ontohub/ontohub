@@ -17,6 +17,7 @@ Capybara.default_max_wait_time = 5
 class Cucumber::Rails::World
   require Rails.root.join('spec', 'support', 'common_helper_methods.rb')
   require Rails.root.join('spec', 'support', 'scenario_progress_formatter.rb')
+  require Rails.root.join('spec', 'support', 'shared_helper.rb')
 
   def locid_for(resource, *commands, **query_components)
     iri = "#{resource.locid}"

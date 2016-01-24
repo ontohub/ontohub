@@ -3,7 +3,7 @@ FactoryGirl.define do
     name { generate :sentence_name }
     text { Faker::Lorem.sentence }
     proof_status { create :proof_status_open }
-    state { 'pending' }
+    state { 'not_started_yet' }
 
     theorem.after(:build) do |theorem|
       if !theorem.ontology

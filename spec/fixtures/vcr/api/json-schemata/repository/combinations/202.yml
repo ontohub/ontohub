@@ -2,7 +2,7 @@
 http_interactions:
 - request:
     method: get
-    uri: https://raw.githubusercontent.com/ontohub/ontohub-api-json/develop/repository.json
+    uri: https://raw.githubusercontent.com/ontohub/ontohub-api-json/develop/generic/202.json
     body:
       encoding: US-ASCII
       string: ''
@@ -29,25 +29,25 @@ http_interactions:
       Strict-Transport-Security:
       - max-age=31536000
       Etag:
-      - '"e022919a70fd58ca97bf15128171904517fd27fe"'
+      - '"e1e23d8fd8c3a9988d78d8154742c853c538c5a1"'
       Content-Type:
       - text/plain; charset=utf-8
       Cache-Control:
       - max-age=300
       X-Github-Request-Id:
-      - B91F121E:0F83:26312A:56964D49
+      - 17EB2B26:2C59:34E346:56964F7C
       Content-Length:
-      - '583'
+      - '374'
       Accept-Ranges:
       - bytes
       Date:
-      - Wed, 13 Jan 2016 13:12:41 GMT
+      - Wed, 13 Jan 2016 13:22:04 GMT
       Via:
       - 1.1 varnish
       Connection:
       - keep-alive
       X-Served-By:
-      - cache-lcy1123-LCY
+      - cache-ams4144-AMS
       X-Cache:
       - MISS
       X-Cache-Hits:
@@ -57,74 +57,38 @@ http_interactions:
       Access-Control-Allow-Origin:
       - "*"
       X-Fastly-Request-Id:
-      - 1a42b7ef6656e206971c81a952bdff0660decbf7
+      - 3132d2cc5ceeff78eae2c401db3780598e1e866c
       Expires:
-      - Wed, 13 Jan 2016 13:17:41 GMT
+      - Wed, 13 Jan 2016 13:27:04 GMT
       Source-Age:
       - '0'
     body:
       encoding: UTF-8
       string: |
         {
-          "id": "https://raw.githubusercontent.com/ontohub/ontohub-api-json/develop/repository.json#",
+          "id": "https://raw.githubusercontent.com/ontohub/ontohub-api-json/develop/generic/202.json#",
           "$schema": "http://json-schema.org/draft-04/schema#",
-          "title": "Repository",
-          "description": "A repository inside of Ontohub",
+          "title": "202 (Accepted)",
+          "description": "This is a generic 202 (Accepted) response",
           "type": "object",
           "properties": {
-            "iri": { "$ref": "generic/definitions.json#/definitions/iri" },
-            "name": {
-              "description": "The name of the repository",
+            "status": {
+              "description": "The human-readable description of the 202 status.",
+              "type": "string",
+              "enum": [ "Accepted" ]
+            },
+            "location": {
+              "description": "Reference to the intermediately created resource. Mirrors the location-Header of the response.",
               "type": "string"
             },
-            "path": {
-              "description": "The name of the directory that represents the repository",
-              "type": "string"
-            },
-            "description": {
-              "description": "A description of the repository",
-              "type": "string"
-            },
-            "remote_origin": {
-              "description": "True if the repository was created from a remote origin.",
-              "type": "boolean"
-            },
-            "source": {
-              "oneOf": [
-                {
-                  "description": "Source of the repository, only present if remote_origin is true",
-                  "type": "object",
-                  "properties": {
-                    "type": {
-                      "description": "Currently either mirror or fork",
-                      "type": "string",
-                      "enum": [ "mirror", "fork" ]
-                    },
-                    "source_type": {
-                      "description": "The type of the source. Currently either git or svn",
-                      "type": "string",
-                      "enum": [ "git", "svn" ]
-                    },
-                    "state": {
-                      "description": "State of the mirroring",
-                      "type": "string",
-                      "enum": [ "pending", "fetching", "processing",  "done", "failed" ]
-                    },
-                    "address": {
-                      "description": "URI/URL/IRI of the source",
-                      "type": "string",
-                      "format": "uri"
-                    }
-                  }
-                },
-                { "type": "null" }
-              ]
-            },
-            "_links": { "$ref": "generic/definitions.json#/definitions/_links" }
-          }
+            "_links": { "$ref": "definitions.json#/definitions/_links" }
+          },
+          "required": [
+            "status", "location"
+          ]
         }
     http_version: 
-  recorded_at: Wed, 13 Jan 2016 13:12:42 GMT
+  recorded_at: Wed, 13 Jan 2016 13:22:04 GMT
 - request:
     method: get
     uri: https://raw.githubusercontent.com/ontohub/ontohub-api-json/develop/generic/definitions.json
@@ -160,33 +124,33 @@ http_interactions:
       Cache-Control:
       - max-age=300
       X-Github-Request-Id:
-      - B91F121B:0F86:38DAC6:56964D41
+      - 17EB2B23:2C5C:4019BD:56964F7C
       Content-Length:
       - '947'
       Accept-Ranges:
       - bytes
       Date:
-      - Wed, 13 Jan 2016 13:12:42 GMT
+      - Wed, 13 Jan 2016 13:22:04 GMT
       Via:
       - 1.1 varnish
       Connection:
       - keep-alive
       X-Served-By:
-      - cache-lcy1120-LCY
+      - cache-ams4144-AMS
       X-Cache:
-      - HIT
+      - MISS
       X-Cache-Hits:
-      - '1'
+      - '0'
       Vary:
       - Authorization,Accept-Encoding
       Access-Control-Allow-Origin:
       - "*"
       X-Fastly-Request-Id:
-      - b2f8a36dbef27ca6780a2cb461b1d3604bd2ba33
+      - d4dbb31c52891a25c199693e2d058521084cbdad
       Expires:
-      - Wed, 13 Jan 2016 13:17:42 GMT
+      - Wed, 13 Jan 2016 13:27:04 GMT
       Source-Age:
-      - '8'
+      - '0'
     body:
       encoding: UTF-8
       string: |
@@ -258,5 +222,5 @@ http_interactions:
           }
         }
     http_version: 
-  recorded_at: Wed, 13 Jan 2016 13:12:42 GMT
+  recorded_at: Wed, 13 Jan 2016 13:22:04 GMT
 recorded_with: VCR 3.0.0

@@ -8,7 +8,7 @@ describe Api::V1::MappingsController do
   context 'on GET to index' do
     context 'requesting json representation', api_specification: true do
       let(:mappings_schema) do
-        schema_for('ontology/commands/mappings')
+        schema_for_command('ontology/mappings', :get, 200)
       end
 
       before do
