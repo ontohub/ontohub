@@ -7,10 +7,10 @@ class ProofAttempt < ActiveRecord::Base
   belongs_to :theorem, foreign_key: 'sentence_id'
   belongs_to :proof_status
   belongs_to :prover
-  belongs_to :proof_attempt_configuration
+  belongs_to :proof_attempt_configuration, dependent: :destroy
   has_one :axiom_selection, through: :proof_attempt_configuration
   has_one :prover_output
-  has_one :tactic_script
+  has_one :tactic_script, dependent: :destroy
   has_many :generated_axioms, dependent: :destroy
   has_and_belongs_to_many :used_axioms,
                           class_name: 'Axiom',
