@@ -16,6 +16,18 @@ What happens is:
 * Also, a `ontohub_sql_dump.postgresql` file is created, which is a compressed PostgreSQL dump.
 * It deactivates the maintenance mode (by deleting the `data/maintenance.txt`).
 
+## Timed backup
+
+To create a daily backup at 03:00, add the following line to `admin`'s crontab:
+```
+* 3 * * * + su - -c '~ontohub/webapp/script/backup create'
+```
+
+# Pruning of old backups
+When a new backup is created, an old one might be deleted.
+This happens if there are at least 30 backups and the oldest of them dates back at least 365 days.
+Then, only the ones are deleted that exceed this age threshold such that there will be 30 backups again.
+
 # Restoring
 To restore a previously created backup, run as `admin` user
 ```shell
