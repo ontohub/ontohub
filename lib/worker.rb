@@ -3,6 +3,8 @@ require 'sidekiq/worker'
 # Worker for Sidekiq
 class Worker < BaseWorker
   sidekiq_options queue: 'hets'
+  sidekiq_options retry: 3
+  sidekiq_options backtrace: true
 
   # Because of the JSON-Parsing the hash which contains
   # the try_count will contain the try_count key
@@ -20,13 +22,17 @@ class Worker < BaseWorker
     when 'record'
       id = args.shift
       klass = clazz.constantize
-      TimeoutWorker.start_timeout_clock(id) if klass == OntologyVersion
+      if klass == OntologyVersion
+        timeout_job_id = TimeoutWorker.start_timeout_clock(id)
+      end
       klass.unscoped.find(id).send method, *args
     else
       raise ArgumentError, "unsupported type: #{type}"
     end
   rescue ConcurrencyBalancer::AlreadyProcessingError
     handle_concurrency_issue
+  ensure
+    Sidekiq::Status.unschedule(timeout_job_id) if timeout_job_id
   end
 
   def handle_concurrency_issue
@@ -36,30 +42,4 @@ class Worker < BaseWorker
       self.class.perform_async(*@args, try_count: @try_count+1)
     end
   end
-
-  # This method definition is required by sidekiq
-  def self.get_sidekiq_options
-    {
-      'backtrace' => true
-    }
-  end
-
-end
-
-class SequentialWorker < Worker
-  sidekiq_options queue: 'sequential'
-
-  def perform(*args, try_count: 1)
-    establish_arguments(args, try_count: try_count)
-    ConcurrencyBalancer.sequential_lock do
-      execute_perform(try_count, *args)
-    end
-  rescue ConcurrencyBalancer::AlreadyLockedError
-    handle_concurrency_issue
-  end
-
-  def handle_concurrency_issue
-    SequentialWorker.perform_async(*@args, try_count: @try_count+1)
-  end
-
 end

@@ -18,7 +18,7 @@
         - if resource.can_be_deleted?
           = modal_button(t('ontology.delete'), btn_class: 'btn-default')
         - else
-          .btn.btn-default.tooltip-btn{ disabled: true, data: { toggle: "tooltip", :'original-title' => t('ontology.delete_error', oms: Settings.OMS), container: 'body' } }
+          .btn.btn-default.tooltip-btn{ disabled: true, data: { toggle: "tooltip", :'original-title' => t('ontology.delete_error', oms_with_article: Settings.OMS.with_indefinite_article, oms: Settings.OMS), container: 'body' } }
             %span.allow-tooltips
               Delete
       - if Settings.format_selection
@@ -29,4 +29,4 @@
           %ul.dropdown-menu{role: 'menu'}
             - %w(xml json).each do |f|
               %li= link_to f.upcase, format: f
-= modal_body("header_text", t('ontology.delete_confirm.text', name: resource, parent_text: resource.parent.present? ? t('ontology.delete_confirm.parent') : '', children_text: resource.children.present? ? t('ontology.delete_confirm.children') : '', path: resource.path), resource_chain, t('ontology.delete'))
+= modal_body(t('ontology.delete_confirm.header_text', oms: Settings.OMS), t('ontology.delete_confirm.text', name: resource, parent_text: resource.parent.present? ? t('ontology.delete_confirm.parent') : '', children_text: resource.children.present? ? t('ontology.delete_confirm.children') : '', path: resource.path), resource_chain, t('ontology.delete'))

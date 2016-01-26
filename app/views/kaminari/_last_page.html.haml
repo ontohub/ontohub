@@ -1,3 +1,8 @@
 - unless current_page.last?
-  %li.last.next/
-  = link_to_unless current_page.last?, raw(t 'views.pagination.last'), url, {:remote => remote}
+  %li.last.next
+    - if current_page.instance_variable_get(:@options)[:build_links_from_request]
+      -# use request url for page creation
+      = link_to_unless current_page.last?, raw(t 'views.pagination.last'), build_link_from_request(url), {:remote => remote}
+    - else
+      -# use default kaminari behavior
+      = link_to_unless current_page.last?, raw(t 'views.pagination.last'), url, {:remote => remote}

@@ -112,11 +112,6 @@ class Proof < FakeRecord
     collection.select(&:present?).map(&:to_i) if collection
   end
 
-  def initialize_axioms(opts)
-    axiom_ids = normalize_check_box_ids(opts[:proof][:axioms])
-    @axioms = axiom_ids.map { |id| Axiom.find(id) } if axiom_ids
-  end
-
   def initialize_axiom_selection(opts)
     @axiom_selection_method = opts[:proof][:axiom_selection_method].try(:to_sym)
     build_axiom_selection(opts)

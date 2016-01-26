@@ -9,7 +9,7 @@ describe Repository do
 
     before {
       ontology.versions.last.send :update_state!, :failed
-      Worker.jobs.clear
+      OntologyParsingWorker.jobs.clear
 
       repository.ontologies.retry_failed
       repository.reload
@@ -17,7 +17,7 @@ describe Repository do
       ontology.reload
     }
 
-    it { Worker.jobs.size.should == 1 }
+    it { OntologyParsingWorker.jobs.size.should == 1 }
     it { ontology.state.should == 'pending' }
   end
 

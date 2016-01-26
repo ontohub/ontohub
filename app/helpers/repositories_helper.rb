@@ -12,8 +12,8 @@ module RepositoriesHelper
 #   end.join(', ')
 # end
 
-  def clone_method_link(method)
-    link_to method, "##{method}", class: 'clone_method_link', data: {clone: method}
+  def clone_method_link(method, text)
+    link_to(text, "##{method}", class: 'clone_method_link', data: {clone: method})
   end
 
   def clone_type
@@ -34,13 +34,11 @@ module RepositoriesHelper
   end
 
   def access_options
-    t('repository.access.options').select do |k,v|
-      if @repository.mirror?
-        k.to_s.split('_')[1] == 'r'
-      else
-        true
-      end
-    end.invert
+    t('repository.access.options').invert
+  end
+
+  def access_options_mirror
+    t('repository.access.options_mirror').invert
   end
 
   def repository_modal_body

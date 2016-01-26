@@ -1,14 +1,17 @@
 module State
-  STATES = %w(failed no_result pending fetching processing done)
+  STATES = %w(not_started_yet failed no_result pending fetching processing done)
   TERMINAL_STATES = %w(failed no_result done)
+  IDLE_STATES = TERMINAL_STATES + %w(not_started_yet)
 
   STATE_LABEL = {
-     pending: 'label-warning',
-     fetching: 'label-primary',
-     processing: 'label-primary',
-     done: 'label-success',
-     failed: 'label-danger',
-     }
+    not_started_yet: 'label-default',
+    failed: 'label-danger',
+    no_result: 'label-warning',
+    pending: 'label-warning',
+    fetching: 'label-primary',
+    processing: 'label-primary',
+    done: 'label-success',
+  }
 
   def self.terminal?(state)
     TERMINAL_STATES.include?(state)

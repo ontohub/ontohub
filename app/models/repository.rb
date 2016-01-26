@@ -7,7 +7,7 @@ class Repository < ActiveRecord::Base
   include Repository::Importing
   include Repository::Ontologies
   include Repository::Scopes
-  include Repository::Symlink
+  include Repository::Symlinks
   include Repository::Validations
 
   DEFAULT_CLONE_TYPE = 'git'

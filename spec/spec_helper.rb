@@ -13,8 +13,6 @@ require 'vcr'
 require 'webmock/rspec'
 
 WebMock.disable_net_connect!(allow_localhost: true)
-elasticsearch_port = ENV['ELASTIC_TEST_PORT'].present? ? ENV['ELASTIC_TEST_PORT'] : '9250'
-Elasticsearch::Model.client = Elasticsearch::Client.new host: "localhost:#{elasticsearch_port}"
 
 # Requires supporting ruby files with custom matchers and macros, etc,
 # in spec/support/ and its subdirectories.
@@ -32,6 +30,7 @@ end
 
 require Rails.root.join('spec', 'support', 'common_helper_methods.rb')
 require Rails.root.join('spec', 'support', 'documentation_progress_formatter.rb')
+require Rails.root.join('spec', 'support', 'shared_helper.rb')
 
 def stub_cp_keys
   allow(AuthorizedKeysManager).to receive(:copy_authorized_keys_to_git_home)
@@ -58,21 +57,6 @@ end
 
 def stub_hets_instance_force_free_worker
   allow(HetsInstanceForceFreeWorker).to receive(:perform_in)
-end
-
-# Recording HTTP Requests
-VCR.configure do |c|
-  c.cassette_library_dir = 'spec/fixtures/vcr'
-  c.hook_into :webmock
-  c.ignore_localhost = true
-  c.ignore_request do |request|
-    # ignore elasticsearch requests
-    URI(request.uri).host == 'localhost' &&
-    URI(request.uri).port == elasticsearch_port.to_i
-  end
-  c.register_request_matcher :hets_prove_uri do |request1, request2|
-    hets_prove_matcher(request1, request2)
-  end
 end
 
 RSpec.configure do |config|

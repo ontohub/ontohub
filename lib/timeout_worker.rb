@@ -2,8 +2,6 @@ class TimeoutWorker < BaseWorker
   class Error < ::StandardError; end
   class TimeOutNotSetError < Error; end
 
-  RESCHEDULE_TIME = 30 # minutes
-
   sidekiq_options queue: 'default'
 
   def self.start_timeout_clock(ontology_version_id, hours_offset=nil)

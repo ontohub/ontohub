@@ -5,7 +5,7 @@ FactoryGirl.define do
 
     trait :with_extra_options do
       after(:build) do |tactic_script|
-        extra_options = [1,2].map { build :tactic_script_extra_options }
+        extra_options = [1,2].map { build :tactic_script_extra_option }
         tactic_script.extra_options = extra_options
       end
 

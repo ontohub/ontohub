@@ -63,7 +63,7 @@ Then(/^a location\-header to an action$/) do
 end
 
 Then(/^the body should be valid for a (\d+) combination-response/) do |status|
-  schema = schema_for("repository/combinations/POST/response/#{status}")
+  schema = schema_for("generic/#{status}")
   VCR.use_cassette "api/json-schemata/repository/combinations/#{status}" do
     expect(last_response.body).to match_json_schema(schema)
   end

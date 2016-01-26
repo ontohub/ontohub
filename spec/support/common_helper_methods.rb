@@ -1,5 +1,7 @@
 require Rails.root.join('spec', 'support', 'json_schema_matcher.rb')
 
+SCHEMA_BASE_URL = "https://raw.githubusercontent.com/ontohub/ontohub-api-json/develop/"
+
 def controllers_locid_for(resource, *args, &block)
   request.env['action_controller.instance'].
     send(:locid_for, resource, *args, &block)
@@ -45,6 +47,11 @@ def version_for_file(repository, path)
   version = repository.save_file path, basename, "#{basename} added", dummy_user
 end
 
+def setup_pipeline_generator
+  stub_fqdn_and_port_for_pipeline_generator
+  stub_hets_instance_url_for_pipeline_generator
+end
+
 def stub_fqdn_and_port_for_pipeline_generator
   before do
     fqdn = FixturesGeneration::PipelineGenerator::RAILS_SERVER_TEST_FQDN
@@ -55,8 +62,24 @@ def stub_fqdn_and_port_for_pipeline_generator
   end
 end
 
+def stub_hets_instance_url_for_pipeline_generator
+  before do
+    allow_any_instance_of(HetsInstance).to receive(:uri).
+      and_return('http://localhost:8000')
+  end
+end
+
 def schema_for(name)
-  "https://masterthesis.rightsrestricted.com/ontohub/#{name}.json"
+  # We use the develop branch to allow unmerged pull requests to be considered.
+  "#{SCHEMA_BASE_URL}#{name}.json"
+end
+
+def schema_for_command(command, method = :get, response_code = nil)
+  if response_code
+    "#{SCHEMA_BASE_URL}#{command}/#{method.to_s.upcase}/#{response_code}.json"
+  else
+    "#{SCHEMA_BASE_URL}#{command}/#{method.to_s.upcase}/request.json"
+  end
 end
 
 # includes the convenience-method `define_ontology('name')`

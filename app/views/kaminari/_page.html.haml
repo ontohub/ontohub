@@ -1,2 +1,7 @@
 %li{ :class => page.current? ? 'active' : nil }
-  = link_to page, url, :remote => remote, :rel => (page.next? ? 'next' : (page.prev? ? 'prev' : nil))
+  - if current_page.instance_variable_get(:@options)[:build_links_from_request]
+    -# use request url for page creation
+    = link_to page, build_link_from_request(url), :remote => remote, :rel => (page.next? ? 'next' : (page.prev? ? 'prev' : nil))
+  - else
+    -# use default kaminari behavior
+    = link_to page, url, :remote => remote, :rel => (page.next? ? 'next' : (page.prev? ? 'prev' : nil))

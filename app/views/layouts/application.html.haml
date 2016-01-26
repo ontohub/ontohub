@@ -18,6 +18,9 @@
         .row.flash-messages
           = flash_messages
         .row.flash-messages
+          %noscript
+            .alert.alert-danger
+              = I18n.t('info.javascript_warning')
           .alert.alert-info
             Do you want to support the development of Ontohub by testing? Visit
             = link_to 'test.ontohub.org', 'http://test.ontohub.org'

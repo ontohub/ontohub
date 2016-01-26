@@ -34,7 +34,7 @@ class ProofStatus
 
         return nil unless label_sentence
 
-        match = label_sentence.text.match(/#hasLabel[^#]+#(?<label>\w+)/)
+        match = label_sentence.text.match(/hasLabel.*(\s|#)(?<label>\w+)/)
         match[:label]
       end
 
@@ -53,7 +53,7 @@ class ProofStatus
 
       def solved?(status)
         status == SOLVED_STATUS ||
-        szs_ontology.superclass_of?(SOLVED_STATUS, status)
+          szs_ontology.superclass_of?(SOLVED_STATUS, status)
       end
 
       protected

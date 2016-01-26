@@ -1,0 +1,33 @@
+# Parsed axioms                        : 15
+# SZS output end Derivation.
+fof(c_0_136, axiom, (?[X5]:arrow(X5)), c_0_14).
+fof(c_0_134, axiom, (bool(x_True)), c_0_109).
+fof(c_0_109, axiom, (bool(x_True)), c_0_13).
+fof(c_0_108, axiom, (?[X5]:bool(X5)), c_0_12).
+fof(c_0_107, axiom, (![X1]:![X2]:((arrow(X1)&arrow(X2))=>bool(o__eEq__(X1,X2)))), c_0_11).
+fof(c_0_87, axiom, (![X6]:![X7]:![X12]:(((arrow(X6)&arrow(X7))&arrow(X12))=>(((o__eEq__(X6,X6)=x_True&o__eEq__(X7,X7)=x_True)&o__eEq__(X12,X12)=x_True)=>((o__eEq__(o__comp__(X6,X7),o__comp__(X6,X7))=x_True&o__eEq__(o__comp__(X7,X12),o__comp__(X7,X12))=x_True)=>o__eEq__(o__comp__(o__comp__(X6,X7),X12),o__comp__(o__comp__(X6,X7),X12))=x_True)))), c_0_9).
+fof(c_0_70, axiom, (![X6]:![X7]:((arrow(X6)&arrow(X7))=>(o__eEq__(o__comp__(X6,X7),o__comp__(X6,X7))=x_True=>(o__eEq__(X6,X6)=x_True&o__eEq__(X7,X7)=x_True)))), c_0_8).
+fof(c_0_68, axiom, (![X10]:![X5]:((arrow(X10)&arrow(X5))=>o__eEq__(X10,X5)=o__eEq__(X5,X10))), c_0_7).
+fof(c_0_67, axiom, (![X6]:![X7]:((arrow(X6)&arrow(X7))=>(o__eEq__(X6,X7)=x_True=>o__eEq__(X6,X6)=x_True))), c_0_6).
+fof(c_0_58, axiom, (![X10]:![X5]:![X11]:(((arrow(X10)&arrow(X5))&arrow(X11))=>o__comp__(o__comp__(X10,X5),X11)=o__comp__(X10,o__comp__(X5,X11)))), c_0_5).
+fof(c_0_50, axiom, (![X1]:![X2]:((arrow(X1)&arrow(X2))=>arrow(o__comp__(X1,X2)))), c_0_4).
+fof(c_0_38, axiom, (![X6]:![X7]:((arrow(X6)&arrow(X7))=>(o__eEq__(X6,X7)=x_True=>X6=X7))), c_0_3).
+fof(c_0_16, axiom, (![X6]:![X7]:![X8]:![X9]:((((arrow(X6)&arrow(X7))&arrow(X8))&arrow(X9))=>((((o__eEq__(X6,X6)=x_True&o__eEq__(X7,X7)=x_True)&o__eEq__(X8,X8)=x_True)&o__eEq__(X9,X9)=x_True)=>(commSquare(X6,X7,X8,X9)<=>o__eEq__(o__comp__(X6,X9),o__comp__(X7,X8))=x_True)))), c_0_1).
+fof(c_0_15, axiom, (![X13]:![X3]:![X4]:![X14]:(commSquare(X13,X3,X4,X14)=>(((arrow(X13)&arrow(X3))&arrow(X4))&arrow(X14)))), c_0_0).
+fof(c_0_14, axiom, (?[X5]:arrow(X5)), file('/var/folders/h0/h5fs6h4n4wg1qpj05yd205dc0000gn/T/_commSquareMinushorizontalMinusglueing69766.tptp', ga_non_empty_sort_arrow)).
+fof(c_0_13, axiom, (bool(x_True)), file('/var/folders/h0/h5fs6h4n4wg1qpj05yd205dc0000gn/T/_commSquareMinushorizontalMinusglueing69766.tptp', declaration2)).
+fof(c_0_12, axiom, (?[X5]:bool(X5)), file('/var/folders/h0/h5fs6h4n4wg1qpj05yd205dc0000gn/T/_commSquareMinushorizontalMinusglueing69766.tptp', ga_non_empty_sort_bool)).
+fof(c_0_11, axiom, (![X1]:![X2]:((arrow(X1)&arrow(X2))=>bool(o__eEq__(X1,X2)))), file('/var/folders/h0/h5fs6h4n4wg1qpj05yd205dc0000gn/T/_commSquareMinushorizontalMinusglueing69766.tptp', declaration1)).
+fof(c_0_10, axiom, (![X3]:![X4]:((arrow(X3)&bool(X4))=>~(X3=X4))), file('/var/folders/h0/h5fs6h4n4wg1qpj05yd205dc0000gn/T/_commSquareMinushorizontalMinusglueing69766.tptp', disjoint_sorts_arrow_bool)).
+fof(c_0_9, axiom, (![X6]:![X7]:![X12]:(((arrow(X6)&arrow(X7))&arrow(X12))=>(((o__eEq__(X6,X6)=x_True&o__eEq__(X7,X7)=x_True)&o__eEq__(X12,X12)=x_True)=>((o__eEq__(o__comp__(X6,X7),o__comp__(X6,X7))=x_True&o__eEq__(o__comp__(X7,X12),o__comp__(X7,X12))=x_True)=>o__eEq__(o__comp__(o__comp__(X6,X7),X12),o__comp__(o__comp__(X6,X7),X12))=x_True)))), file('/var/folders/h0/h5fs6h4n4wg1qpj05yd205dc0000gn/T/_commSquareMinushorizontalMinusglueing69766.tptp', ax6)).
+fof(c_0_8, axiom, (![X6]:![X7]:((arrow(X6)&arrow(X7))=>(o__eEq__(o__comp__(X6,X7),o__comp__(X6,X7))=x_True=>(o__eEq__(X6,X6)=x_True&o__eEq__(X7,X7)=x_True)))), file('/var/folders/h0/h5fs6h4n4wg1qpj05yd205dc0000gn/T/_commSquareMinushorizontalMinusglueing69766.tptp', ax5)).
+fof(c_0_7, axiom, (![X10]:![X5]:((arrow(X10)&arrow(X5))=>o__eEq__(X10,X5)=o__eEq__(X5,X10))), file('/var/folders/h0/h5fs6h4n4wg1qpj05yd205dc0000gn/T/_commSquareMinushorizontalMinusglueing69766.tptp', ga_comm___eEq__)).
+fof(c_0_6, axiom, (![X6]:![X7]:((arrow(X6)&arrow(X7))=>(o__eEq__(X6,X7)=x_True=>o__eEq__(X6,X6)=x_True))), file('/var/folders/h0/h5fs6h4n4wg1qpj05yd205dc0000gn/T/_commSquareMinushorizontalMinusglueing69766.tptp', ax2)).
+fof(c_0_5, axiom, (![X10]:![X5]:![X11]:(((arrow(X10)&arrow(X5))&arrow(X11))=>o__comp__(o__comp__(X10,X5),X11)=o__comp__(X10,o__comp__(X5,X11)))), file('/var/folders/h0/h5fs6h4n4wg1qpj05yd205dc0000gn/T/_commSquareMinushorizontalMinusglueing69766.tptp', ga_assoc___comp__)).
+fof(c_0_4, axiom, (![X1]:![X2]:((arrow(X1)&arrow(X2))=>arrow(o__comp__(X1,X2)))), file('/var/folders/h0/h5fs6h4n4wg1qpj05yd205dc0000gn/T/_commSquareMinushorizontalMinusglueing69766.tptp', declaration0)).
+fof(c_0_3, axiom, (![X6]:![X7]:((arrow(X6)&arrow(X7))=>(o__eEq__(X6,X7)=x_True=>X6=X7))), file('/var/folders/h0/h5fs6h4n4wg1qpj05yd205dc0000gn/T/_commSquareMinushorizontalMinusglueing69766.tptp', ax3)).
+fof(c_0_1, axiom, (![X6]:![X7]:![X8]:![X9]:((((arrow(X6)&arrow(X7))&arrow(X8))&arrow(X9))=>((((o__eEq__(X6,X6)=x_True&o__eEq__(X7,X7)=x_True)&o__eEq__(X8,X8)=x_True)&o__eEq__(X9,X9)=x_True)=>(commSquare(X6,X7,X8,X9)<=>o__eEq__(o__comp__(X6,X9),o__comp__(X7,X8))=x_True)))), file('/var/folders/h0/h5fs6h4n4wg1qpj05yd205dc0000gn/T/_commSquareMinushorizontalMinusglueing69766.tptp', commSquareAx)).
+fof(c_0_0, axiom, (![X13]:![X3]:![X4]:![X14]:(commSquare(X13,X3,X4,X14)=>(((arrow(X13)&arrow(X3))&arrow(X4))&arrow(X14)))), file('/var/folders/h0/h5fs6h4n4wg1qpj05yd205dc0000gn/T/_commSquareMinushorizontalMinusglueing69766.tptp', arg_restriction_commSquare)).
+# SZS output start Derivation.
+# SZS status ResourceOut
+# Scanning for AC axioms

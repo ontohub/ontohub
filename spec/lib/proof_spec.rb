@@ -172,73 +172,142 @@ describe Proof do
     end
 
     context 'axiom selection' do
-      let(:params_modified) do
-        theorem_params.merge({proof: params[:proof].merge({
-          axioms: axioms.map(&:id)
-        })})
+      context 'SInE' do
+        let(:params_modified) do
+          theorem_params.merge({proof: params[:proof].merge({
+            axiom_selection_method: 'sine_axiom_selection',
+            sine_axiom_selection: {
+              commonness_threshold: 0,
+              depth_limit: -1,
+              tolerance: 1
+            }
+          })})
+        end
+
+        let(:proof_modified) { Proof.new(params_modified) }
+
+        before { proof_modified.save! }
+
+        it 'is of the correct class' do
+          expect(proof_modified.axiom_selection.specific.class).
+            to eq(SineAxiomSelection)
+        end
       end
-      let(:proof_modified) { Proof.new(params_modified) }
 
-      before { proof_modified.save! }
+      context 'manual' do
+        let(:params_modified) do
+          theorem_params.merge({proof: params[:proof].merge({
+            axioms: axioms.map(&:id)
+          })})
+        end
 
-      it 'is of the correct class' do
-        expect(proof_modified.axiom_selection.specific.class).
-          to eq(ManualAxiomSelection)
-      end
+        let(:proof_modified) { Proof.new(params_modified) }
 
-      it 'is correct' do
-        expect(proof_modified.axiom_selection.axioms).
-          to match_array(axioms)
+        before { proof_modified.save! }
+
+        it 'is of the correct class' do
+          expect(proof_modified.axiom_selection.specific.class).
+            to eq(ManualAxiomSelection)
+        end
+
+
+        it 'is correct' do
+          expect(proof_modified.axiom_selection.axioms).
+            to match_array(axioms)
+        end
       end
     end
 
     context 'on save!' do
-      before do
-        allow(ProofExecutionWorker).to receive(:perform_async)
-      end
-
-      it 'with the proof attempts saved' do
-        proof.proof_attempts.each do |proof_attempt|
-          allow(proof_attempt).to receive(:save!).and_call_original
+      context 'stubbed' do
+        before do
+          allow(ProofExecutionWorker).to receive(:perform_async)
         end
-        proof.save!
-        proof.proof_attempts.each do |proof_attempt|
-          expect(proof_attempt).to have_received(:save!)
-        end
-      end
 
-      context 'ProofAttemptConfigurations' do
-        before { proof.save! }
-
-        it 'are created' do
+        it 'with the proof attempts saved' do
           proof.proof_attempts.each do |proof_attempt|
-            expect(proof_attempt.reload.proof_attempt_configuration).
-              not_to be(nil)
+            allow(proof_attempt).to receive(:save!).and_call_original
+          end
+          proof.save!
+          proof.proof_attempts.each do |proof_attempt|
+            expect(proof_attempt).to have_received(:save!)
           end
         end
 
-        it 'have the provers set' do
-          expect(proof.proof_attempts.
-                 map(&:reload).
-                 map(&:proof_attempt_configuration).
-                 map(&:prover).uniq).to match_array(provers)
+        context 'ProofAttemptConfigurations' do
+          before { proof.save! }
+
+          it 'are created' do
+            proof.proof_attempts.each do |proof_attempt|
+              expect(proof_attempt.reload.proof_attempt_configuration).
+                not_to be(nil)
+            end
+          end
+
+          it 'have the provers set' do
+            expect(proof.proof_attempts.
+                   map(&:reload).
+                   map(&:proof_attempt_configuration).
+                   map(&:prover).uniq).to match_array(provers)
+          end
+
+          it 'have the timeout set' do
+            proof.proof_attempts.each do |proof_attempt|
+              expect(proof_attempt.reload.proof_attempt_configuration.timeout).
+                to eq(timeout)
+            end
+          end
         end
 
-        it 'have the timeout set' do
+        it 'with the proof attempts saved' do
           proof.proof_attempts.each do |proof_attempt|
-            expect(proof_attempt.reload.proof_attempt_configuration.timeout).
-              to eq(timeout)
+            allow(proof_attempt).to receive(:save!).and_call_original
+          end
+          proof.save!
+          proof.proof_attempts.each do |proof_attempt|
+            expect(proof_attempt).to have_received(:save!)
           end
         end
       end
 
-      it 'with the proof attempts saved' do
-        proof.proof_attempts.each do |proof_attempt|
-          allow(proof_attempt).to receive(:save!).and_call_original
+      context 'with an error' do
+        before do
+          # perform_async won't be executed in Sidekiq inline mode because it
+          # directly calls Redis.
+          allow(ProofExecutionWorker).to receive(:perform_async) do |*args|
+            ProofExecutionWorker.new.perform(*args)
+          end
         end
-        proof.save!
-        proof.proof_attempts.each do |proof_attempt|
-          expect(proof_attempt).to have_received(:save!)
+
+        let(:params_modified) do
+          theorem_params.merge({proof: params[:proof].merge({
+            prover_ids: [provers.first.id.to_s, '']
+          })})
+        end
+        let(:proof_modified) { Proof.new(params_modified) }
+
+        context 'invalid JSON response' do
+          before do
+            allow(Hets).to receive(:prove_via_api).
+              and_return(StringIO.new('{"invalid_json": ]'))
+          end
+
+          it 'raises an error' do
+            expect { proof_modified.save! }.
+              to raise_error(Hets::JSONParser::ParserError)
+          end
+        end
+
+        context '"nothing to prove" response' do
+          before do
+            allow(Hets).to receive(:prove_via_api).
+              and_return(StringIO.new('nothing to prove'))
+          end
+
+          it 'raises an error' do
+            expect { proof_modified.save! }.
+              to raise_error(Hets::Errors::HetsFileError)
+          end
         end
       end
     end

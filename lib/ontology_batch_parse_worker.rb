@@ -22,7 +22,7 @@ class OntologyBatchParseWorker < BaseWorker
     return if versions.empty?
 
     version_id, opts = versions.head
-    TimeoutWorker.start_timeout_clock(version_id)
+    timeout_job_id = TimeoutWorker.start_timeout_clock(version_id)
 
     version = OntologyVersion.find(version_id)
 
@@ -34,6 +34,7 @@ class OntologyBatchParseWorker < BaseWorker
   rescue ConcurrencyBalancer::AlreadyProcessingError
     done = handle_concurrency_issue
   ensure
+    Sidekiq::Status.unschedule(timeout_job_id) if timeout_job_id
     self.class.perform_async_with_priority(@queue,
       versions.tail, try_count: try_count) unless versions.tail.empty? || done
   end
@@ -47,24 +48,4 @@ class OntologyBatchParseWorker < BaseWorker
     end
     true
   end
-
-end
-
-class SequentialOntologyBatchParseWorker < OntologyBatchParseWorker
-  sidekiq_options queue: 'sequential'
-
-  def perform(*args, try_count: 1)
-    establish_arguments(args, try_count: try_count)
-    ConcurrencyBalancer.sequential_lock do
-      execute_perform(try_count, args.first)
-    end
-  rescue ConcurrencyBalancer::AlreadyLockedError
-    handle_concurrency_issue
-  end
-
-  def handle_concurrency_issue
-    SequentialOntologyBatchParseWorker.
-      perform_async(*@args, try_count: @try_count + 1)
-  end
-
 end

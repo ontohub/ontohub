@@ -19,7 +19,7 @@ module Repository::Importing
     include StateUpdater
 
     before_validation :clean_and_initialize_record
-    after_create ->() { async_remote :clone }, if: :source_address?
+    after_create ->() { call_remote :clone }, if: :source_address?
   end
 
   def mirror?
@@ -28,6 +28,10 @@ module Repository::Importing
 
   def fork?
     remote_type == 'fork'
+  end
+
+  def remote?
+    REMOTE_TYPES.include?(remote_type)
   end
 
   def convert_to_local!
@@ -41,14 +45,14 @@ module Repository::Importing
   end
 
   # enqueues a pull/clone job
-  def async_remote(method)
+  def call_remote(method)
     raise "object is #{state}" if locked?
     update_state! 'pending'
-    async :remote_send, method, remote_type
+    RepositoryFetchingWorker.perform_async(id, method, remote_type)
   end
 
   # executes a pull/clone job
-  def remote_send(method, remote_type = nil)
+  def fetch(method, remote_type = nil)
     # build arguments
     args    = []
     args   << source_address if method == 'clone'
@@ -77,10 +81,10 @@ module Repository::Importing
   end
 
   def update_database_after_fetch(range)
-    suspended_save_ontologies \
-      start_oid:  range.current,
-      stop_oid:   range.previous,
-      walk_order: :reverse
+    OntologySaver.new(self).
+      suspended_save_ontologies(start_oid: range.current,
+                                stop_oid: range.previous,
+                                walk_order: :reverse)
   end
 
   module ClassMethods

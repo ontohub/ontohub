@@ -14,7 +14,7 @@
     = link_to "Click here #{t('.to_display_all_axioms')}", locid_for(parent, :axioms, all: true)
 
 
-= pagination do
+= pagination(build_links_from_request: true) do
   %table.axioms
     %thead
       %tr

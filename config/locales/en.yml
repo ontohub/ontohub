@@ -12,6 +12,14 @@ en:
     The threshold level is: %{minimal_count}.
   wait: 'Please wait …'
   state: 'Evaluation State'
+  states:
+    not_started_yet: not started yet
+    failed: failed
+    no_result: no result
+    pending: pending
+    fetching: fetching
+    processing: processing
+    done: done
   relation_list:
     team_user:
       placeholder: Add users to your team
@@ -38,6 +46,12 @@ en:
       clone_list_prefix: There is also a complete list of
       clone_list_link: repository clone-urls
   repository:
+    clone:
+      header: Clone with %{clone_type}
+      text: You can clone the repository with %{git} (read-only) or %{ssh_git} (read-write, ssh-key required).
+      git: git
+      ssh_git: ssh-git
+    upload_ssh_key: Upload an SSH key.
     delete: Delete Repository
     delete_error: "Can't delete repository: It contains %{oms} that is imported by another repository."
     deleted: Deleted
@@ -57,12 +71,16 @@ en:
     access:
       change_hint: 'Caution! When setting the repository public, all reader permissions are removed.'
       options:
-        private_r: Privately readable, not writable at all
         private_rw: Privately readable, privately writable
         public_r: Publicly readable, privately writable
         public_rw: Publicly readable, publicly writable
+      options_mirror:
+        private_r: Privately readable, not writable at all
+        public_r: Publicly readable, not writable at all
     remote_type:
-      text: A mirror will be synchronized periodically. A fork is just a one-time copy.
+      text:
+        Changing this value may change the access as well.
+        A mirror will be synchronized periodically. A fork is just a one-time copy.
     un_mirror:
       label: Un-mirror
       text: If you un-mirror this repository, it won't get synchronized with the remote reposoitory any more. There is no possibility to synchronize it ever again.
@@ -81,8 +99,9 @@ en:
       info: The defining file %{path} of this %{oms} was deleted. However, you can check the
       last_file_version: last version of that file
     delete: Delete
-    delete_error: Can't delete an %{oms} that's imported by another one.
+    delete_error: Can't delete %{oms_with_article} that (contains a child that) is imported by another %{oms}.
     delete_confirm:
+      header_text: Are you sure about deleting the %{oms}?
       text: "Really delete the ontology %{name}?\n\nThe %{parent_text}%{children_text}defining file %{path} will be deleted as well."
       parent: 'parent ontology including its children and the '
       children: 'subontologies and the '
@@ -267,3 +286,5 @@ en:
     labels:
       proof:
         axioms: Manual Axiom Selection
+  info:
+    javascript_warning: JavaScript is deactivated in your browser. Some features are only accessible with active JavaScript.

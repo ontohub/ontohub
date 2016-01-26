@@ -2,7 +2,7 @@
 http_interactions:
 - request:
     method: get
-    uri: https://masterthesis.rightsrestricted.com/ontohub/repository.json
+    uri: https://raw.githubusercontent.com/ontohub/ontohub-api-json/develop/repository.json
     body:
       encoding: US-ASCII
       string: ''
@@ -18,41 +18,61 @@ http_interactions:
       code: 200
       message: OK
     headers:
-      Server:
-      - nginx/1.6.2
-      Date:
-      - Sat, 04 Apr 2015 19:37:20 GMT
-      Content-Type:
-      - application/json
-      Content-Length:
-      - '1840'
-      Last-Modified:
-      - Wed, 01 Apr 2015 09:38:39 GMT
-      Connection:
-      - keep-alive
-      Etag:
-      - '"551bbc9f-730"'
+      Content-Security-Policy:
+      - default-src 'none'
+      X-Xss-Protection:
+      - 1; mode=block
+      X-Frame-Options:
+      - deny
+      X-Content-Type-Options:
+      - nosniff
       Strict-Transport-Security:
       - max-age=31536000
-      X-Frame-Options:
-      - DENY
+      Etag:
+      - '"e022919a70fd58ca97bf15128171904517fd27fe"'
+      Content-Type:
+      - text/plain; charset=utf-8
+      Cache-Control:
+      - max-age=300
+      X-Github-Request-Id:
+      - B91F121E:0F83:26312A:56964D49
+      Content-Length:
+      - '583'
       Accept-Ranges:
       - bytes
+      Date:
+      - Wed, 13 Jan 2016 13:12:41 GMT
+      Via:
+      - 1.1 varnish
+      Connection:
+      - keep-alive
+      X-Served-By:
+      - cache-lcy1123-LCY
+      X-Cache:
+      - MISS
+      X-Cache-Hits:
+      - '0'
+      Vary:
+      - Authorization,Accept-Encoding
+      Access-Control-Allow-Origin:
+      - "*"
+      X-Fastly-Request-Id:
+      - 1a42b7ef6656e206971c81a952bdff0660decbf7
+      Expires:
+      - Wed, 13 Jan 2016 13:17:41 GMT
+      Source-Age:
+      - '0'
     body:
       encoding: UTF-8
       string: |
         {
-          "id": "https://masterthesis.rightsrestricted.com/ontohub/repository.json#",
+          "id": "https://raw.githubusercontent.com/ontohub/ontohub-api-json/develop/repository.json#",
           "$schema": "http://json-schema.org/draft-04/schema#",
           "title": "Repository",
           "description": "A repository inside of Ontohub",
           "type": "object",
           "properties": {
-            "iri": {
-              "description": "The unique identifier for a repository",
-              "type": "string",
-              "format": "uri"
-            },
+            "iri": { "$ref": "generic/definitions.json#/definitions/iri" },
             "name": {
               "description": "The name of the repository",
               "type": "string"
@@ -99,9 +119,144 @@ http_interactions:
                 },
                 { "type": "null" }
               ]
+            },
+            "_links": { "$ref": "generic/definitions.json#/definitions/_links" }
+          }
+        }
+    http_version: 
+  recorded_at: Wed, 13 Jan 2016 13:12:42 GMT
+- request:
+    method: get
+    uri: https://raw.githubusercontent.com/ontohub/ontohub-api-json/develop/generic/definitions.json
+    body:
+      encoding: US-ASCII
+      string: ''
+    headers:
+      Accept-Encoding:
+      - gzip;q=1.0,deflate;q=0.6,identity;q=0.3
+      Accept:
+      - "*/*"
+      User-Agent:
+      - Ruby
+  response:
+    status:
+      code: 200
+      message: OK
+    headers:
+      Content-Security-Policy:
+      - default-src 'none'
+      X-Xss-Protection:
+      - 1; mode=block
+      X-Frame-Options:
+      - deny
+      X-Content-Type-Options:
+      - nosniff
+      Strict-Transport-Security:
+      - max-age=31536000
+      Etag:
+      - '"05f33ad940ee1376f5482f623d6f455d035ce811"'
+      Content-Type:
+      - text/plain; charset=utf-8
+      Cache-Control:
+      - max-age=300
+      X-Github-Request-Id:
+      - B91F121B:0F86:38DAC6:56964D41
+      Content-Length:
+      - '947'
+      Accept-Ranges:
+      - bytes
+      Date:
+      - Wed, 13 Jan 2016 13:12:42 GMT
+      Via:
+      - 1.1 varnish
+      Connection:
+      - keep-alive
+      X-Served-By:
+      - cache-lcy1120-LCY
+      X-Cache:
+      - HIT
+      X-Cache-Hits:
+      - '1'
+      Vary:
+      - Authorization,Accept-Encoding
+      Access-Control-Allow-Origin:
+      - "*"
+      X-Fastly-Request-Id:
+      - b2f8a36dbef27ca6780a2cb461b1d3604bd2ba33
+      Expires:
+      - Wed, 13 Jan 2016 13:17:42 GMT
+      Source-Age:
+      - '8'
+    body:
+      encoding: UTF-8
+      string: |
+        {
+          "id": "https://raw.githubusercontent.com/ontohub/ontohub-api-json/develop/generic/definitions.json#",
+          "$schema": "http://json-schema.org/draft-04/schema#",
+          "definitions": {
+            "iri": {
+              "description": "The IRI of a resource",
+              "type": "string",
+              "format": "iri",
+              "pattern": "^https?://([^.]+[.][^.]+)+/.+$"
+            },
+            "_links": {
+              "description": "A _links-element corresponding to the HAL standard for hypermedia information, adopted from https://github.com/DaveJS/dave.schema.json/blob/master/hal-schema.json",
+              "type": "object",
+              "additionalProperties": {
+                "oneOf": [
+                  {
+                    "id": "https://raw.githubusercontent.com/ontohub/ontohub-api-json/develop/generic/definitions.json#hal-member",
+                    "type": "object",
+                    "properties": {
+                      "href": {
+                        "description": "IRI of a resource",
+                        "type": "string",
+                        "format": "iri"
+                      },
+                      "type": {
+                        "type": "string",
+                        "pattern": "^(application|audio|example|image|message|model|multipart|text|video)\\/[a-zA-Z0-9!#\\$&\\.\\+-\\^_]{1,127}$",
+                        "format": "mime",
+                        "description": "Hints to the media type of a target resource"
+                      },
+                      "name": {
+                        "type": "string"
+                      },
+                      "hreflang": {
+                        "type": "string",
+                        "pattern": "^([a-zA-Z]{2,3}(-[a-zA-Z]{3}(-[a-zA-Z]{3}){0,2})?(-[a-zA-Z]{4})?(-([a-zA-Z]{2}|[0-9]{3}))?(-([a-zA-Z0-9]{5,8}|[0-9][a-zA-Z0-9]{3}))*([0-9A-WY-Za-wy-z](-[a-zA-Z0-9]{2,8}){1,})*(x-[a-zA-Z0-9]{2,8})?)|(x-[a-zA-Z0-9]{2,8})|(en-GB-oed)|(i-ami)|(i-bnn)|(i-default)|(i-enochian)|(i-hak)|(i-klingon)|(i-lux)|(i-mingo)|(i-navajo)|(i-pwn)|(i-tao)|(i-tay)|(i-tsu)|(sgn-BE-FR)|(sgn-BE-NL)|(sgn-CH-DE)|(art-lojban)|(cel-gaulish)|(no-bok)|(no-nyn)|(zh-guoyu)|(zh-hakka)|(zh-min)|(zh-min-nan)|(zh-xiang)$",
+                        "description": "Language indication of the target resource"
+                      }
+                    },
+                    "additionalProperties": false,
+                    "required": [
+                      "href"
+                    ]
+                  },
+                  {
+                    "type": "array",
+                    "items": [
+                      {
+                        "$ref": "https://raw.githubusercontent.com/ontohub/ontohub-api-json/develop/generic/definitions.json#hal-member"
+                      }
+                    ],
+                    "uniqueItems": true,
+                    "additionalProperties": false
+                  }
+                ]
+              }
+            },
+            "errors": {
+              "description": "Information on the specific errors that occured",
+              "type": "array",
+              "items": {
+                "description": "Information on one of the specific errors that occured",
+                "type": "string"
+              }
             }
           }
         }
     http_version: 
-  recorded_at: Sat, 04 Apr 2015 19:37:20 GMT
-recorded_with: VCR 2.9.3
+  recorded_at: Wed, 13 Jan 2016 13:12:42 GMT
+recorded_with: VCR 3.0.0

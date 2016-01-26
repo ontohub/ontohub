@@ -8,6 +8,8 @@ class SineAxiomSelection < ActiveRecord::Base
   acts_as :axiom_selection
 
   attr_accessible :commonness_threshold, :depth_limit, :tolerance
+  has_many :sine_symbol_commonnesses, dependent: :destroy
+  has_many :sine_symbol_axiom_triggers, dependent: :destroy
 
   validates_numericality_of :commonness_threshold,
                             greater_than_or_equal_to: 0,
@@ -23,10 +25,11 @@ class SineAxiomSelection < ActiveRecord::Base
   def call
     Semaphore.exclusively(lock_key) do
       unless finished
-        cleanup
-        preprocess unless other_finished_sine_axiom_selections.any?
-        select_axioms
-        mark_as_finished!
+        transaction do
+          preprocess unless other_finished_sine_axiom_selections.any?
+          select_axioms
+          mark_as_finished!
+        end
       end
     end
   end
@@ -43,17 +46,7 @@ class SineAxiomSelection < ActiveRecord::Base
     SineSymbolAxiomTrigger.where(axiom_selection_id: axiom_selection)
   end
 
-  def destroy
-    cleanup
-    super
-  end
-
   protected
-
-  def cleanup
-    sine_symbol_commonnesses.each(&:destroy)
-    sine_symbol_axiom_triggers.each(&:destroy)
-  end
 
   def preprocess
     calculate_commonness_table
@@ -129,7 +122,7 @@ class SineAxiomSelection < ActiveRecord::Base
     return if depth_limit_reached?(current_depth)
     new_axioms = select_axioms_by_sentence(sentence) - @selected_axioms
     @selected_axioms += new_axioms
-    new_axioms.each { |axiom| select_new_axioms(axiom, current_depth + 2) }
+    new_axioms.each { |axiom| select_new_axioms(axiom, current_depth + 1) }
   end
 
   def select_axioms_by_sentence(sentence)

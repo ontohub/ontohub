@@ -1,0 +1,3 @@
+(cl-text http://localhost:3000/default/hierarchical_import1
+  (cl-imports http://localhost:3000/default/cat)
+)

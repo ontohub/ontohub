@@ -4,8 +4,4 @@ class SineSymbolAxiomTrigger < ActiveRecord::Base
   belongs_to :axiom_selection
 
   attr_accessible :tolerance
-
-  def axiom
-    Axiom.unscoped.find(axiom_id)
-  end
 end

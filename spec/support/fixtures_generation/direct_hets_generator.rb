@@ -24,7 +24,7 @@ module FixturesGeneration
       hets_iri = "#{HETS_BASE_IRI}/#{command}/#{escaped_iri}"
       hets_iri << hets_api_options
       hets_iri << "?#{input_type(file)}"
-      hets_iri << query_string
+      hets_iri << ";#{query_string}" if query_string
 
       FileUtils.rm_f(recorded_file(file))
       VCR.use_cassette(cassette_path_in_fixtures(file)) do
@@ -47,11 +47,10 @@ module FixturesGeneration
 
     def input_type(file)
       extension = File.extname(file)
-      if type = Ontology::HetsOptions::EXTENSIONS_TO_INPUT_TYPES[extension]
-        "input-type=#{type};"
-      else
-        ''
-      end
+      type =
+        Ontology::HetsOptions::EXTENSIONS_TO_INPUT_TYPES[extension] ||
+        extension[1..-1]
+      type ? "input-type=#{type}" : ''
     end
   end
 end
