@@ -26,6 +26,42 @@ describe HetsInstance do
     end
   end
 
+  context 'when a hets instance is not reachable' do
+    before do
+        stub_request(:get, %r{http://localhost:8\d{3}/version}).
+          to_return(status: 200,
+                    body: "v#{general_version}, #{specific_version}",
+                    headers: {})
+        # require creation of the object
+        hets_instance
+    end
+
+    context 'because of an unreachable host' do
+      before do
+        allow_any_instance_of(UriFetcher::GetCaller).
+          to receive(:make_http_request).and_raise(Errno::EHOSTUNREACH)
+
+        HetsInstance.check_up_state!(hets_instance.id)
+      end
+
+      it 'the up value is false' do
+        expect(hets_instance.reload.up).to be(false)
+      end
+    end
+
+    context 'because of a timeout' do
+      before do
+        allow_any_instance_of(UriFetcher::GetCaller).
+          to receive(:make_http_request).and_raise(Net::ReadTimeout)
+        HetsInstance.check_up_state!(hets_instance.id)
+      end
+
+      it 'the up value is false' do
+        expect(hets_instance.reload.up).to be(false)
+      end
+    end
+  end
+
   context 'when choosing a hets instance' do
     context 'and there is no hets instance recorded' do
       it 'should raise the appropriate error' do
