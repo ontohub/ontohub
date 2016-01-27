@@ -32,7 +32,13 @@ module UriFetcher
     def fetch
       check_redirections_count
       result = nil
-      make_http_request(URI(uri)) { |r| result = handle_response(r) }
+      begin
+        make_http_request(URI(uri)) { |r| result = handle_response(r) }
+      rescue Net::ReadTimeout => e
+        raise TimeoutError, e.message
+      rescue Errno::EHOSTUNREACH => e
+        raise HostUnreachableError, e.message
+      end
       result
     end
 
