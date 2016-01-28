@@ -24,6 +24,9 @@ class Semaphore
   protected
 
   def self.redis
-    Sidekiq.redis { |connection| connection }.redis
+    return @redis if @redis
+    redis_namespace = Sidekiq.redis { |connection| connection }
+    @redis = Redis::Namespace.new("#{redis_namespace.namespace}:semaphore",
+                                   redis: redis_namespace.redis)
   end
 end
