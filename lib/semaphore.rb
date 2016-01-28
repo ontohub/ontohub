@@ -11,22 +11,24 @@
 #
 # It takes a block containing the critical path.
 class Semaphore
-  def self.exclusively(lock_key, expiration: nil)
-    if defined?(Sidekiq::Testing) && Sidekiq::Testing.inline?
-      yield
-    else
-      Redis::Semaphore.new(lock_key,
-                           redis: redis,
-                           expiration: expiration).lock { yield }
+  class << self
+    def exclusively(lock_key, expiration: nil)
+      if defined?(Sidekiq::Testing) && Sidekiq::Testing.inline?
+        yield
+      else
+        Redis::Semaphore.new(lock_key,
+                             redis: redis,
+                             expiration: expiration).lock { yield }
+      end
     end
-  end
 
-  protected
+    protected
 
-  def self.redis
-    return @redis if @redis
-    redis_namespace = Sidekiq.redis { |connection| connection }
-    @redis = Redis::Namespace.new("#{redis_namespace.namespace}:semaphore",
-                                   redis: redis_namespace.redis)
+    def redis
+      return @redis if @redis
+      redis_namespace = Sidekiq.redis { |connection| connection }
+      @redis = Redis::Namespace.new("#{redis_namespace.namespace}:semaphore",
+                                     redis: redis_namespace.redis)
+    end
   end
 end
