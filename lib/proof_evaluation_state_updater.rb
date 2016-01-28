@@ -20,11 +20,11 @@ class ProofEvaluationStateUpdater
       theorem_message = nil
       theorem_state = State.
         most_successful(theorem.proof_attempts.select(:state).map(&:state))
-        if theorem_state == 'failed'
-          theorem_message =
-            I18n.t('proof_evaluation_state_updater.failed_proof_attempts',
-                   proof_attempts: failed_proof_attempts.map(&:number).join(', '))
-        end
+      if theorem_state == 'failed'
+        theorem_message =
+          I18n.t('proof_evaluation_state_updater.failed_proof_attempts',
+                 proof_attempts: failed_proof_attempts.map(&:number).join(', '))
+      end
       theorem.update_state!(theorem_state, theorem_message)
     end
   end

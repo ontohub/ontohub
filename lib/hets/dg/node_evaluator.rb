@@ -184,7 +184,7 @@ module Hets
 
       def import(current_element)
         location = current_element['location']
-        source_iri = location ? location : internal_iri
+        source_iri = location || internal_iri
         begin
           commit_oid = ExternalRepository.add_to_repository(
             internal_iri,
