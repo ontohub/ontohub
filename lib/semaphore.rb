@@ -5,14 +5,19 @@
 # It is based on Redis::Semaphore and can be extended to allow multiple
 # processes to enter the critical path.
 # Currently, only a mutex is implemented in this abstraction.
+#
+# Expiration is given in seconds. Can be nil. If set, the Semaphore will unlock
+# after `expiration` seconds.
+#
+# It takes a block containing the critical path.
 class Semaphore
-  def self.exclusively(lock_key, &block)
+  def self.exclusively(lock_key, expiration: nil)
     if defined?(Sidekiq::Testing) && Sidekiq::Testing.inline?
       yield
     else
       Redis::Semaphore.new(lock_key,
                            redis: redis,
-                           expiration: 120).lock { yield }
+                           expiration: expiration).lock { yield }
     end
   end
 

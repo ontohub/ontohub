@@ -1,4 +1,6 @@
 class ProofEvaluationStateUpdater
+  MUTEX_EXPIRATION = 2.minutes
+
   attr_reader :proof_attempt, :state, :message, :theorem
 
   def initialize(proof_attempt, state, message = nil)
@@ -14,7 +16,7 @@ class ProofEvaluationStateUpdater
   end
 
   def update_theorem_state
-    Semaphore.exclusively(theorem.locid) do
+    Semaphore.exclusively(theorem.locid, expiration: MUTEX_EXPIRATION) do
       theorem_message = nil
       theorem_state = State.
         most_successful(theorem.proof_attempts.select(:state).map(&:state))

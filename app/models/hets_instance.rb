@@ -21,6 +21,7 @@ has a minimal Hets version of #{Hets.minimal_version_string}
 
   STATES = %w(free force-free busy)
   MUTEX_KEY = :choose_hets_instance
+  MUTEX_EXPIRATION = 2.minutes
   FORCE_FREE_WAITING_PERIOD = 1.days
 
   attr_accessible :name, :uri, :state, :queue_size
@@ -53,17 +54,17 @@ has a minimal Hets version of #{Hets.minimal_version_string}
     begin
       result = yield(instance)
     rescue StandardError
-      Semaphore.exclusively(MUTEX_KEY) { instance.finish_work! }
+      exclusively { instance.finish_work! }
       raise
     end
-    Semaphore.exclusively(MUTEX_KEY) { instance.finish_work! }
+    exclusively { instance.finish_work! }
     result
   end
 
   def self.choose!(try_again: true)
     raise NoRegisteredHetsInstanceError.new unless any?
     instance = nil
-    Semaphore.exclusively(MUTEX_KEY) do
+    exclusively do
       instance = active.free.first
       instance ||= increment_queue! { active.force_free.load_balancing_order.first }
       instance ||= increment_queue! { active.busy.load_balancing_order.first }
@@ -133,6 +134,10 @@ has a minimal Hets version of #{Hets.minimal_version_string}
   end
 
   protected
+
+  def self.exclusively
+    Semaphore.exclusively(MUTEX_KEY, expiration: MUTEX_EXPIRATION) { yield }
+  end
 
   def self.increment_queue!
     if instance = yield
