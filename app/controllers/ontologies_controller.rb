@@ -16,12 +16,12 @@ class OntologiesController < InheritedResources::Base
   def index
     if in_repository?
       @search_response = paginate_for(parent.ontologies)
-      @count = end_of_association_chain.total_count
+      @count = end_of_association_chain.accessible_by(current_user).total_count
       @repository_id = parent.id
       render :index_repository
     else
       @search_response = paginate_for(Ontology.scoped)
-      @count = resource_class.count
+      @count = resource_class.accessible_by(current_user).count
       render :index_global
     end
   end
