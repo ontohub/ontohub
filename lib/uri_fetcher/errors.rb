@@ -2,6 +2,8 @@ module UriFetcher
   module Errors
     class Error < StandardError; end
     class ArgumentError < ::ArgumentError; end
+    class TimeoutError < Error; end
+    class HostUnreachableError < Error; end
 
     class UnfollowableResponseError < Error
       DEFAULT_MSG = "can't follow the response, and response not useable"
