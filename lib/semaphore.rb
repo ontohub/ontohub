@@ -72,10 +72,8 @@ class Semaphore
                            redis: redis(LOCK_ACTION_NAMESPACE))
     end
 
-    def redis(sema_namespace = 'semaphore')
-      sidekiq_redis = Sidekiq.redis { |connection| connection }
-      full_namespace = "#{sidekiq_redis.namespace}:#{sema_namespace}"
-      Redis::Namespace.new(full_namespace, redis: sidekiq_redis.redis)
+    def redis(sema_namespace)
+      Ontohub.redis(namespace: sema_namespace)
     end
 
     def sidekiq_inline?
