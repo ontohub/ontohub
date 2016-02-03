@@ -11,8 +11,8 @@
 #
 # It takes a block containing the critical path.
 class Semaphore
-  SEMAPHORES_NAMESPACE = self.to_s.downcase
-  LOCK_ACTION_NAMESPACE = "#{self.to_s.downcase}_lock_action"
+  SEMAPHORES_NAMESPACE = "#{Settings.redis.namespace}:#{self.to_s.downcase}"
+  LOCK_ACTION_NAMESPACE = "#{SEMAPHORES_NAMESPACE}_lock_action"
   LOCK_ACTION_KEY = "lock_action"
   # We expect actions on a semaphore to perfom in milliseconds.
   # This value should be much more than enough.
