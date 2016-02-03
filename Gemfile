@@ -16,6 +16,8 @@ gem 'rdf-rdfxml', '~> 1.99.0'
 gem 'rdf-n3', '~> 1.99.0'
 
 gem 'redis-semaphore', '~> 0.3.1'
+# Used for testing our locking mechanism Semaphore:
+gem 'fork_break', '~> 0.1.4'
 
 # Gems used only for assets and not required
 # in production environments by default.
