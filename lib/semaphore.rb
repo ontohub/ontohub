@@ -27,7 +27,7 @@ class Semaphore
       end
     end
 
-    def locked?(lock_key, expiration: nil)
+    def locked?(lock_key)
       token = nil
       perform_action_on_semaphore do
         # Because of https://github.com/dv/redis-semaphore/issues/40, we need a
@@ -43,7 +43,7 @@ class Semaphore
 
     protected
 
-    def perform_exclusively(lock_key, expiration: expiration)
+    def perform_exclusively(lock_key, expiration: nil)
       sema = retrieve_semaphore(lock_key, expiration: expiration)
       perform_action_on_semaphore { sema.lock }
       result = yield
