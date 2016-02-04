@@ -18,6 +18,21 @@ class Semaphore
   # This value should be much more than enough.
   LOCK_ACTION_EXPIRATION = 10.seconds
 
+  delegate :locked?, to: :@sema
+
+  def initialize(lock_key, expiration: nil)
+    @sema = self.class.
+      send(:retrieve_semaphore, lock_key, expiration: expiration)
+  end
+
+  def lock
+    self.class.send(:perform_action_on_semaphore) { @sema.lock }
+  end
+
+  def unlock
+    self.class.send(:perform_action_on_semaphore) { @sema.unlock }
+  end
+
   class << self
     def exclusively(lock_key, expiration: nil, &block)
       if sidekiq_inline?
