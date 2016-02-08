@@ -324,6 +324,9 @@ GROUP = 'webservd'
 
 DATABASE = 'ontohub'
 
+unless File.exist?(BACKUP_ROOT_PRODUCTION)
+  FileUtils.mkdir_p(BACKUP_ROOT_PRODUCTION)
+end
 BACKUP_ROOT = File.realpath(BACKUP_ROOT_PRODUCTION)
 
 backup = Backup::Backup.new(DATABASE, data_root(RAILS_ROOT), BACKUP_ROOT,
