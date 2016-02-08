@@ -328,6 +328,9 @@ unless File.exist?(BACKUP_ROOT_PRODUCTION)
   FileUtils.mkdir_p(BACKUP_ROOT_PRODUCTION)
 end
 BACKUP_ROOT = File.realpath(BACKUP_ROOT_PRODUCTION)
+unless File.directory?(BACKUP_ROOT)
+  $stderr.puts "Target path is not a directory: #{BACKUP_ROOT}"
+end
 
 backup = Backup::Backup.new(DATABASE, data_root(RAILS_ROOT), BACKUP_ROOT,
   sql_dump_as_db_user: 'ontohub',
