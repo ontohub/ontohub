@@ -11,7 +11,7 @@ To create a backup, simply run as `admin` user
 
 What happens is:
 * It activates the maintenance mode, which deactivates the Ontohub instance (by creating the file `data/maintenance.txt`). This way, the data gets frozen and the backup will have a consistent state.
-* It creates a folder like `2014-12-06_20-06-37` in `~ontohub/ontohub_data_backup` on a production machine.
+* It creates a folder like `2014-12-06_20-06-37` in `/data/ontohub_data_backup` on a production machine.
 * In this folder, there is a `ontohub_repositories.tar.gz` created with the repository data inside.
 * Also, a `ontohub_sql_dump.postgresql` file is created, which is a compressed PostgreSQL dump.
 * It deactivates the maintenance mode (by deleting the `data/maintenance.txt`).

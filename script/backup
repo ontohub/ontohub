@@ -23,8 +23,8 @@
 #   Then the selected backup is fully restored
 #
 # Backup directory
-#   And for production machines, the backup directory is:
-#     /home/ontohub/ontohub_data_backup
+#   For production machines, the backup directory is:
+#     /data/ontohub_data_backup
 #
 # Super user privileges
 #   To create and restore, we need root privileges. Otherwise file modes are not
@@ -317,7 +317,7 @@ end
 
 # We assume, this script runs in "RAILS_ROOT/script/".
 RAILS_ROOT = Pathname.new(__FILE__).dirname.join('..')
-BACKUP_ROOT_PRODUCTION = '/local/home/ontohub/ontohub_data_backup'
+BACKUP_ROOT_PRODUCTION = '/data/ontohub_data_backup'
 
 USER = 'ontohub'
 GROUP = 'webservd'
