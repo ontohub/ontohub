@@ -43,6 +43,14 @@ require 'fileutils'
 require 'pathname'
 require 'open3'
 
+EXIT_CODES = {
+  backup_missing: 1,
+  maintenance_already_enabled: 2,
+  wrong_user: 3,
+  target_not_a_directory: 4,
+  bad_arguments: 5,
+}
+
 module Backup
   class Backup
     # Amount of backups that have to be there at least
@@ -153,7 +161,7 @@ module Backup
       unless Dir.exists?(backup_instance_dir)
         $stderr.puts (
           "Error: Backup '#{backup_name}' does not exist in #{backup_root}.")
-        exit
+        exit EXIT_CODES[:backup_missing]
       end
     end
 
@@ -235,7 +243,7 @@ To continue, I try the command again using sudo.
         $stderr.puts 'Maintenance mode was already enabled.'
         $stderr.puts "Please check the file #{maintenance_file}"
         $stderr.puts 'Aborting.'
-        exit
+        exit EXIT_CODES[:maintenance_already_enabled]
       end
       puts "FileUtils.touch #{maintenance_file}" if verbose
       FileUtils.touch maintenance_file unless dry_run
@@ -312,7 +320,7 @@ end
 if ENV['USER'] != 'root'
   puts 'Running this script as a normal user is disabled.'
   puts 'Please run it as root.'
-  exit
+  exit EXIT_CODES[:wrong_user]
 end
 
 # We assume, this script runs in "RAILS_ROOT/script/".
@@ -330,6 +338,7 @@ end
 BACKUP_ROOT = File.realpath(BACKUP_ROOT_PRODUCTION)
 unless File.directory?(BACKUP_ROOT)
   $stderr.puts "Target path is not a directory: #{BACKUP_ROOT}"
+  exit EXIT_CODES[:target_not_a_directory]
 end
 
 backup = Backup::Backup.new(DATABASE, data_root(RAILS_ROOT), BACKUP_ROOT,
@@ -345,7 +354,7 @@ when 'restore'
     $stderr.puts(
       'To restore a backup, you need to specify one with the arguments')
     $stderr.puts('"restore backup_name"')
-    exit
+    exit EXIT_CODES[:bad_arguments]
   end
   backup_name = ARGV[1]
   backup.restore(backup_name)
@@ -354,5 +363,5 @@ when 'prune'
 else
   $stderr.puts 'unknown or missing parameter'
   $stderr.puts 'use parameter "create" or "restore <backup_name>" or "prune"'
-  exit
+  exit EXIT_CODES[:bad_arguments]
 end
