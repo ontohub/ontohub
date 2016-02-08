@@ -5,6 +5,9 @@ email: noreply@example.com
 action_mailer:
   delivery_method: :test
 
+redis:
+  namespace: 'test:ontohub'
+
 paths:
   data: tmp/data
   git_repositories: tmp/data/git
