@@ -34,12 +34,7 @@ class Ontology
         sep = '//'
         locid_portion =
           if e.name.include?('://')
-            if e.label
-              e.label
-            else
-              portion = e.name.end_with?('>') ? e.name[0..-2] : e.name
-              portion = portion.split('#', 2).last
-            end
+            Rack::Utils.escape_path(e.name)
           else
             e.name
           end
