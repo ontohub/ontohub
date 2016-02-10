@@ -106,14 +106,14 @@ class OntologySaver
 
   def create_ontology(filepath, basepath)
     ontology = corresponding_ontology_klass(filepath).new
-    locid = generate_locid(basepath, ontology)
     ontology.basepath = File.basepath(filepath)
     ontology.file_extension = File.extname(filepath)
     ontology.name = filepath.split('/')[-1].split(".")[0].capitalize
     ontology.repository = repository
     ontology.present = true
-    locid.save
     ontology.save!
+    locid = generate_locid(basepath, ontology)
+    locid.save
 
     ontology
   end
@@ -170,6 +170,6 @@ class OntologySaver
 
   def generate_locid(basepath, ontology)
     locid = "/#{repository.path}/#{basepath}"
-    LocId.new(locid: locid, assorted_object: ontology)
+    LocId.new(locid: locid, assorted_object_id: ontology.id, assorted_object_type: ontology.type)
   end
 end
