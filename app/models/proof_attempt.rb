@@ -30,7 +30,7 @@ class ProofAttempt < OntohubBaseModel
   validates :state, inclusion: {in: State::STATES}
   validates :theorem, presence: true
 
-  before_create :generate_locid
+  after_create :generate_locid
   before_save :set_default_proof_status
   after_save :update_theorem_status
 
@@ -44,8 +44,11 @@ class ProofAttempt < OntohubBaseModel
   end
 
   def generate_locid
-    self.locid =
-      "#{theorem.locid}//#{self.class.to_s.underscore.dasherize}-#{number}"
+    LocId.create(
+      locid: "#{theorem.locid}//#{self.class.to_s.underscore.dasherize}-#{number}",
+      assorted_object_id: self.id,
+      assorted_object_type: self.class.name)
+
   end
 
   def update_theorem_status
