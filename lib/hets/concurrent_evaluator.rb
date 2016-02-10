@@ -5,14 +5,23 @@ module Hets
   # want to register specific callbacks.  See Hets::DG::NodeEvaluator for the
   # actual evaluator.
   class ConcurrentEvaluator < BaseEvaluator
+    class Error < ::StandardError; end
+    class AlreadyEvaluatingError < Error; end
+
+    CHECK_MUTEX_KEY = "#{self}-evaluating_check"
+    CHECK_MUTEX_EXPIRATION = 10.seconds
+
+    EVALUATION_MUTEX_KEY_PREFIX = "#{self}-evaluating:"
+    EVALUATION_MUTEX_EXPIRATION = HetsInstance::FORCE_FREE_WAITING_PERIOD
+
     delegate :semaphore_stack, to: :importer
     delegate :ontologies_count, to: :importer
 
     def process(node_type, order, *args)
       super(node_type, order, *args)
-    rescue Exception => e
+    rescue Exception
       cancel_concurrency_handling_on_error
-      raise e
+      raise
     end
 
     protected
@@ -22,8 +31,12 @@ module Hets
     # handling manually. A block-approach is just not
     # feasible.
     def initiate_concurrency_handling(lock_key)
-      semaphore = Semaphore.new(lock_key)
-      semaphore.lock
+      key = evaluation_key(lock_key)
+      semaphore = Semaphore.new(key, expiration: EVALUATION_MUTEX_EXPIRATION)
+      Semaphore.exclusively(CHECK_MUTEX_KEY, expiration: CHECK_MUTEX_EXPIRATION) do
+        raise AlreadyEvaluatingError if Semaphore.locked?(key)
+        semaphore.lock
+      end
       semaphore_stack.last.try(:unlock)
       semaphore_stack << semaphore
     end
@@ -34,6 +47,10 @@ module Hets
 
     def cancel_concurrency_handling_on_error
       semaphore_stack.reverse_each(&:unlock)
+    end
+
+    def evaluation_key(lock_key)
+      "#{EVALUATION_MUTEX_KEY_PREFIX}#{lock_key}"
     end
   end
 end

@@ -40,6 +40,8 @@ describe GitRepository do
         path = repository.local_path
         FileUtils.rm_r(path)
         FileUtils.mv(bare_git.path, path)
+        OntologyParsingWorker.clear
+        OntologyParsingPriorityWorker.clear
         Sidekiq::Testing.fake! do
           OntologySaver.new(repository).
             suspended_save_ontologies(walk_order: Rugged::SORT_REVERSE)
@@ -47,27 +49,36 @@ describe GitRepository do
       end
 
       context 'a "small" push' do
-        it 'shall receive priority' do
-          job = OntologyBatchParseWorker.jobs.first
-          expect(job['queue']).to eq('priority_push')
+        it 'shall receive high priority' do
+          expect(OntologyParsingPriorityWorker.jobs.count).to eq(1)
+        end
+
+        it 'shall not receive normal priority' do
+          expect(OntologyParsingWorker.jobs.count).to eq(0)
         end
       end
 
       context 'a "big" push' do
         let(:bare_git) { create :git_repository_big_push }
 
-        it 'shall not receive priority' do
-          job = OntologyBatchParseWorker.jobs.first
-          expect(job['queue']).to_not eq('priority_push')
+        it 'shall receive normal priority' do
+          expect(OntologyParsingWorker.jobs.count).to eq(Ontology.count)
+        end
+
+        it 'shall not receive high priority' do
+          expect(OntologyParsingPriorityWorker.jobs.count).to eq(0)
         end
       end
 
       context 'a push with a "big" commit' do
         let(:bare_git) { create :git_repository_big_commit }
 
-        it 'shall not receive priority' do
-          job = OntologyBatchParseWorker.jobs.first
-          expect(job['queue']).to_not eq('priority_push')
+        it 'shall receive normal priority' do
+          expect(OntologyParsingWorker.jobs.count).to eq(Ontology.count)
+        end
+
+        it 'shall not receive high priority' do
+          expect(OntologyParsingPriorityWorker.jobs.count).to eq(0)
         end
       end
     end

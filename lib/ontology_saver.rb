@@ -154,10 +154,13 @@ class OntologySaver
     grouped_versions = versions.compact.group_by(&:path)
     grouped_versions.each do |k,versions|
       optioned_versions = versions.map do |version|
-        [version.id, { fast_parse: version.fast_parse }]
+        [version.id, {fast_parse: version.fast_parse}, 1]
       end
-      OntologyBatchParseWorker.
-        perform_async_with_priority(priority_mode, optioned_versions)
+      if priority_mode
+        OntologyParsingPriorityWorker.perform_async(optioned_versions)
+      else
+        OntologyParsingWorker.perform_async(optioned_versions)
+      end
     end
   end
 
