@@ -26,10 +26,12 @@ class Semaphore
   end
 
   def lock
+    return if self.class.send(:sidekiq_inline?)
     self.class.send(:perform_action_on_semaphore) { @sema.lock }
   end
 
   def unlock
+    return if self.class.send(:sidekiq_inline?)
     self.class.send(:perform_action_on_semaphore) { @sema.unlock }
   end
 
