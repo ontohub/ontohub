@@ -5,7 +5,7 @@ class ProverOutput < OntohubBaseModel
   has_one :prover, through: :proof_attempt
   attr_accessible :content, :locid
 
-  before_create :generate_locid
+  after_create :generate_locid
 
   protected
 
