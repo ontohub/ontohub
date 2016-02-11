@@ -1,4 +1,4 @@
-class OntohubBaseModel < ActiveRecord::Base
+class LocIdBaseModel < ActiveRecord::Base
  @abstract_class = true
  has_many :loc_ids, as: :assorted_object
  before_destroy :destroy_locid

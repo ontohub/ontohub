@@ -1,4 +1,4 @@
-class ProofStatus < OntohubBaseModel
+class ProofStatus < LocIdBaseModel
   include ProofStatus::CreationFromOntology
 
   DEFAULT_OPEN_STATUS = 'OPN'

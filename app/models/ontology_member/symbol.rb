@@ -1,7 +1,7 @@
 # This model is namespaced in the module OntologyMember because the class
 # Symbol is already taken by ruby.
 module OntologyMember
-  class Symbol < OntohubBaseModel
+  class Symbol < LocIdBaseModel
     include Metadatable
     include Symbol::Searching
     include Symbol::Readability

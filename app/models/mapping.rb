@@ -1,4 +1,4 @@
-class Mapping < OntohubBaseModel
+class Mapping < LocIdBaseModel
   include Permissionable
   include Metadatable
 

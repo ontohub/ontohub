@@ -1,4 +1,4 @@
-class ProofAttempt < OntohubBaseModel
+class ProofAttempt < LocIdBaseModel
   include Numbering
   include StateUpdater
 
