@@ -1,4 +1,4 @@
-class ProverOutput < OntohubBaseModel
+class ProverOutput < LocIdBaseModel
   belongs_to :proof_attempt
   has_one :ontology, through: :proof_attempt
   has_one :theorem, through: :proof_attempt

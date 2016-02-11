@@ -1,4 +1,4 @@
-class Ontology < OntohubBaseModel
+class Ontology < LocIdBaseModel
   # Ontohub Library Includes
   include Commentable
   include Metadatable

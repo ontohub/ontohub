@@ -1,4 +1,4 @@
-class Sentence < OntohubBaseModel
+class Sentence < LocIdBaseModel
   include Metadatable
   include Readability
 
