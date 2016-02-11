@@ -33,7 +33,7 @@ module PaginationHelper
   # This method extracts the page number and page size from the generated url.
   def params_from_kaminari_url(kaminari_url)
     page =
-      if (match = kaminari_url.match(/[\?&]page=(\d+)/)) ? match[1] : 1
+      if match = kaminari_url.match(/[\?&]page=(\d+)/)
         match[1]
       end
     per_page =
@@ -45,7 +45,7 @@ module PaginationHelper
 
   private
 
-  def replace_page_params(page, per_page)
+  def replace_page_params(query_string_parts, page, per_page)
     query_string_parts.reject! { |p| p.first == 'page' } if page
     query_string_parts.reject! { |p| p.first == 'per_page' } if per_page
 
