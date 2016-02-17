@@ -17,6 +17,6 @@ namespace :elasticsearch do
     end
     Elasticsearch::Extensions::Test::Cluster.start timeout: timeout
 
-    loop {}
+    sleep
   end
 end
