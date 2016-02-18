@@ -18,9 +18,13 @@ class SymbolsController < InheritedResources::Base
     if ontology && (ontology.is?('OWL2') || ontology.is?('OWL'))
       begin
         symbols = ontology.symbol_groups
-        extra_notes = ontology.symbol_groups.where('id NOT IN (SELECT DISTINCT(parent_id) FROM e_edges UNION SELECT DISTINCT(child_id) FROM e_edges)')
+        request = <<-SQL
+          id NOT IN (SELECT DISTINCT(parent_id) FROM e_edges
+           UNION SELECT DISTINCT(child_id) FROM e_edges)
+        SQL
+        extra_notes = ontology.symbol_groups.where(request)
         @nodes = SymbolGroup.roots_of(*symbols)
-        @nodes = @nodes + extra_notes
+        @nodes += extra_notes
       rescue
         @nodes = []
       end

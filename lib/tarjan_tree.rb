@@ -63,7 +63,7 @@ class TarjanTree
     end
     symbols.each do |symbol|
       name = group_name_for([symbol])
-      SymbolGroup.create!(ontology:ontology, symbols: [symbol], name: name)
+      SymbolGroup.create!(ontology: ontology, symbols: [symbol], name: name)
     end
   end
 
