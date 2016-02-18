@@ -17,5 +17,4 @@ class RepositoryUpdateWorker < BaseWorker
                                 stop_oid: oldrev,
                                 walk_order: :reverse)
   end
-
 end
