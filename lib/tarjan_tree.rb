@@ -1,13 +1,14 @@
 # Class for using the Tarjan algorithm to remove cycles in the symbol trees.
 class TarjanTree
   include TSort
-  attr_accessor :hashed_symbols, :subclasses, :ontology, :symbols, :subclass_sym
+  attr_accessor :hashed_symbols, :subclasses, :ontology, :symbols
+  attr_accessor :subclass_symbols
 
   def initialize(ontology)
     self.ontology = ontology
     self.hashed_symbols = Hash.new
     self.symbols = ontology.symbols
-    self.subclass_sym = []
+    self.subclass_symbols = []
     self.subclasses = inheritance_sentences(ontology)
   end
 
@@ -16,12 +17,12 @@ class TarjanTree
       c1, c2 = s.hierarchical_class_names
       child = ontology.symbols.where('name = ? OR iri = ?', c1, c1).first!
       parent = ontology.symbols.where('name = ? OR iri = ?', c2, c2).first!
-      subclass_sym << child
-      subclass_sym << parent
+      subclass_symbols << child
+      subclass_symbols << parent
       hashed_symbols[parent.id] ||= []
       hashed_symbols[parent.id] << child.id
     end
-    subclass_sym.uniq!
+    subclass_symbols.uniq!
     create_tree(ontology)
   end
 
@@ -55,11 +56,14 @@ class TarjanTree
   end
 
   def create_groups(ontology)
-    symbols = self.symbols - subclass_sym
+    symbols = self.symbols - subclass_symbols
     strongly_connected_components.each do |symbol_ids|
-      syms = OntologyMember::Symbol.find(symbol_ids)
+      connected_symbols = OntologyMember::Symbol.find(symbol_ids)
       name = group_name_for(syms)
-      SymbolGroup.create!(ontology: ontology, symbols: syms, name: name)
+      SymbolGroup.create!(ontology: ontology,
+                          symbols: connected_symbols,
+                          name: name,
+                         )
     end
     symbols.each do |symbol|
       name = group_name_for([symbol])

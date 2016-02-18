@@ -22,9 +22,9 @@ class SymbolsController < InheritedResources::Base
           id NOT IN (SELECT DISTINCT(parent_id) FROM e_edges
            UNION SELECT DISTINCT(child_id) FROM e_edges)
         SQL
-        extra_notes = ontology.symbol_groups.where(request)
+        roots_without_children = ontology.symbol_groups.where(request)
         @nodes = SymbolGroup.roots_of(*symbols)
-        @nodes += extra_notes
+        @nodes += roots_without_children
       rescue
         @nodes = []
       end
