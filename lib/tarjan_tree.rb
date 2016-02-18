@@ -59,7 +59,7 @@ class TarjanTree
     symbols = self.symbols - subclass_symbols
     strongly_connected_components.each do |symbol_ids|
       connected_symbols = OntologyMember::Symbol.find(symbol_ids)
-      name = group_name_for(syms)
+      name = group_name_for(connected_symbols)
       SymbolGroup.create!(ontology: ontology,
                           symbols: connected_symbols,
                           name: name,
