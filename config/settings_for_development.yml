@@ -6,7 +6,13 @@ paths:
   # Hets environment. The first matching item in the lists is used.
   hets:
     executable:
+      - /usr/bin/hets-server
+      - /usr/local/bin/hets-server
+      - /opt/local/bin/hets-server
+      - /usr/local/opt/hets/bin/hets-server
+      - /usr/local/opt/hets/bin/hets-bin-server
       - /usr/bin/hets
+      - /usr/local/bin/hets
       - ~/dev/hets/hets
       - /opt/local/bin/hets
       - ~/code/hets/hets
