@@ -2,13 +2,6 @@ class Ontology
   module Symbols
     extend ActiveSupport::Concern
 
-    included do
-      has_many :symbols,
-        autosave: false,
-        class_name: 'OntologyMember::Symbol',
-        extend:   Methods
-    end
-
     module Methods
       def update_or_create_from_hash(hash, timestamp = Time.now)
         raise ArgumentError, 'No hash given.' unless hash.is_a? Hash
@@ -58,7 +51,9 @@ class Ontology
           e.range = e.range.split(':', 2).last
         end
 
+        e.ontology.symbols << e if e.id.nil?
         e.save!
+        e
       end
     end
 
