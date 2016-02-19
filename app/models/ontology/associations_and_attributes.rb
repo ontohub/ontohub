@@ -16,6 +16,11 @@ module Ontology::AssociationsAndAttributes
       class_name: 'Mapping', foreign_key: 'target_id', dependent: :destroy
     has_many :tools
 
+    has_many :symbols,
+      autosave: false,
+      class_name: 'OntologyMember::Symbol',
+      extend:   Ontology::Symbols::Methods
+
     has_many :sentences,
       autosave: false,
       extend: Ontology::Sentences::Methods
