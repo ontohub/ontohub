@@ -1,0 +1,41 @@
+Prefix: : <http://ontohub.org/sandbox/cycle#>
+Prefix: dc: <http://purl.org/dc/elements/1.1/>
+Prefix: owl: <http://www.w3.org/2002/07/owl#>
+Prefix: rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#>
+Prefix: xml: <http://www.w3.org/XML/1998/namespace>
+Prefix: xsd: <http://www.w3.org/2001/XMLSchema#>
+Prefix: rdfs: <http://www.w3.org/2000/01/rdf-schema#>
+
+
+
+Ontology: <http://ontohub.org/sandbox/cycle_with_class_out_of_inheritance.owl>
+
+
+Class: B3
+
+    SubClassOf:
+        B1
+
+
+Class: B2
+
+    SubClassOf:
+        B3
+
+
+Class: B1
+
+    SubClassOf:
+        B2,
+        A
+
+
+Class: A
+
+
+Class: D
+
+Class: C
+
+    SubClassOf:
+        B2
