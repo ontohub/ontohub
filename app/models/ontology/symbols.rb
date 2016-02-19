@@ -58,7 +58,9 @@ class Ontology
           e.range = e.range.split(':', 2).last
         end
 
+        e.ontology.symbols << e if e.id.nil?
         e.save!
+        e
       end
     end
 
