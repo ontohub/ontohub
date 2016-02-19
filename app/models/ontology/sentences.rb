@@ -149,15 +149,15 @@ class Ontology
       private
 
       def set_theorem_attributes(theorem, hash)
-          theorem.provable = hash['status'] == 'open'
-          if hash['status'] == 'proven'
-            status_id = ProofStatus::DEFAULT_PROVEN_STATUS
-            theorem.state = 'done'
-          else
-            status_id = ProofStatus::DEFAULT_OPEN_STATUS
-            theorem.state = 'not_started_yet'
-          end
-          theorem.proof_status = ProofStatus.find(status_id)
+        theorem.provable = hash['status'] == 'open'
+        if hash['status'] == 'proven'
+          status_id = ProofStatus::DEFAULT_PROVEN_STATUS
+          theorem.state = 'done'
+        else
+          status_id = ProofStatus::DEFAULT_OPEN_STATUS
+          theorem.state = 'not_started_yet'
+        end
+        theorem.proof_status = ProofStatus.find(status_id)
       end
 
     end
