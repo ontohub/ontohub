@@ -21,7 +21,9 @@ Eye.application :ontohub do
   FileUtils.mkdir_p(env['PID_DIR'])
 
   group :sidekiq do
-    sidekiq_process self, :"sidekiq-hets", 'hets', hets_queue_thread_count
+    # Use a second queue for migration jobs which is checked less frequently.
+    sidekiq_process self, :"sidekiq-hets", ['hets,5', 'hets-migration,1'],
+                    hets_queue_thread_count
 
     # one worker for hets load balancing
     sidekiq_process self, :'sidekiq-hets-load-balancing', 'hets_load_balancing', 1
