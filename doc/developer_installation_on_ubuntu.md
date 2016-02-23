@@ -33,10 +33,11 @@ to install a ruby version, first install ruby-build with
 ```
 git clone https://github.com/sstephenson/ruby-build.git ~/.rbenv/plugins/ruby-build
 ```
-and then use
+
+The file `.ruby-version` contains the ruby version, e.g. 2.1.7, which you should install with this command
 
 ```
-rbenv install 2.1.3p242
+rbenv install 2.1.7
 ```
 ### rbenv aliases
 
