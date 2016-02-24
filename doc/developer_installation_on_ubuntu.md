@@ -76,6 +76,7 @@ As the postgres user you have to create two databases
 - `sudo su -l postgres`
 - `createdb ontohub_development`
 - `createdb ontohub_test`
+
 When you type in
 - `psql` 
 you should be connected to the database (`\q` lets you quit).
