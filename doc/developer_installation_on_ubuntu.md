@@ -72,8 +72,11 @@ After this we should create the config directory for postgres:
 
 - `initdb /usr/local/var/postgres -E utf8`
 
-Now when you use
+As the postgres user you have to create two databases
 - `sudo su -l postgres`
+- `createdb ontohub_development`
+- `createdb ontohub_test`
+When you type in
 - `psql` 
 you should be connected to the database (`\q` lets you quit).
 
