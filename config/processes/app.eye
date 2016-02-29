@@ -6,6 +6,11 @@ Eye.config do
   logger "#{Rails.root}/log/eye.log"
 end
 
+def hets_queue_thread_count
+  # One thread per configured hets instance, minus one for the sequential queue.
+  [1, Settings.hets.instance_urls.size - 1].max
+end
+
 Eye.application :ontohub do
   working_dir Rails.root.to_s
   env 'RAILS_ENV' => Rails.env
@@ -15,21 +20,17 @@ Eye.application :ontohub do
   FileUtils.mkdir_p(env['PID_DIR'])
 
   group :sidekiq do
-    # one worker per configured hets instance
-    Settings.hets.instance_urls.each_with_index do |_url, index|
-      sidekiq_process self, :"sidekiq-hets-#{index}", 'hets', 1
-    end
+    # prioritize queues:
+    # priority_push 5x as high as hets, which is 5x as high as hets-migration
+    sidekiq_process self, :"sidekiq-hets",
+                    ['priority_push,25', 'hets,5', 'hets-migration,1'],
+                    hets_queue_thread_count
 
-    # one worker for hets load balancing
-    sidekiq_process self, :'sidekiq-hets-load-balancing', 'hets_load_balancing', 1
-
-    # one worker for the default queue
-    sidekiq_process self, :'sidekiq-default', 'default', 5
+    # one multithreaded worker for the default queue and hets_load_balancing
+    sidekiq_process self, :'sidekiq-default', ['default', 'hets_load_balancing'], 5
 
     # one worker for the sequential queue
     sidekiq_process self, :'sidekiq-sequential', 'sequential', 1
-
-    sidekiq_process self, :'sidekiq-priority_push', 'priority_push', 1
   end
 
   group :hets do
