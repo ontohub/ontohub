@@ -7,7 +7,6 @@ class ApplicationController < ActionController::Base
   end
 
   protect_from_forgery
-  ensure_security_headers
 
   include Pagination
   include PathHelpers

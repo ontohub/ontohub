@@ -2,7 +2,7 @@ source 'https://rubygems.org'
 
 gem 'rails', '~> 3.2.22'
 gem 'rack-protection', '~> 1.5.3'
-gem 'secure_headers', '~> 2.5.1'
+gem 'secure_headers', '~> 3.0.3'
 
 gem 'rack-mini-profiler', require: false
 
@@ -145,7 +145,11 @@ group :test do
   gem 'poltergeist', '~> 1.8.0'
   gem 'launchy', '~> 2.4.3'
 
-  gem 'cucumber-rails', '~> 1.4', require: false
+  gem 'cucumber-rails', '~> 1.4.2', require: false
+  # Versions >= 2.0 are not supported by our formatter.
+  # This is a dependency of cucumber-rails. We need to limit the version to 1.x
+  gem 'cucumber', '~> 1.3', require: false
+
   # Code Coverage Analysis
   gem 'simplecov', '~> 0.11.0', require: false
 
