@@ -25,13 +25,12 @@ class ProofStatus < LocIdBaseModel
 
   before_create :generate_locid
 
-
-
   protected
 
   def generate_locid
     LocId.where(locid: "/proof-statuses/#{identifier}",
-                assorted_object_id: self.id,
-                assorted_object_type: self.class,).first_or_create!
+                assorted_object_id: id,
+                assorted_object_type: self.class,
+               ).first_or_create!
   end
 end

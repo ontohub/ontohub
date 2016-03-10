@@ -18,13 +18,12 @@ module OntologyMember
 
     has_many :loc_ids, as: :assorted_object
 
-
     attr_accessible :label, :comment
 
     scope :kind, ->(kind) { where kind:  kind }
 
     def self.find_with_locid(locid, _iri = nil)
-      result = LocId.where(locid: locid).first.try(:assorted_object)
+      LocId.where(locid: locid).first.try(:assorted_object)
     end
 
     def self.groups_by_kind
@@ -37,8 +36,11 @@ module OntologyMember
     def to_s
       display_name || name
     end
+
     def locid
-      LocId.where(assorted_object_id: self.id, assorted_object_type: self.class).first.try(:locid)
+      LocId.where(assorted_object_id: id,
+                  assorted_object_type: self.class,
+                 ).first.try(:locid)
     end
   end
 end

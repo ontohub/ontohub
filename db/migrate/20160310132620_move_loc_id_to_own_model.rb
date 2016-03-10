@@ -6,13 +6,15 @@ class MoveLocIdToOwnModel < MigrationWithData
                ProofAttempt,
                ProofStatus,
                ProverOutput,
-               Sentence
+               Sentence,
               ]
     klasses.each do |klass|
       klass.find_each do |object|
         if klass == ProofStatus
-          binding.pry
-          attrs = select_attributes(object, :locid, search_column: :identifier, search_value: object.identifier)
+          attrs = select_attributes(object, :locid,
+                                    search_column: :identifier,
+                                    search_value: object.identifier
+                                   )
         else
           attrs = select_attributes(object, :locid)
         end

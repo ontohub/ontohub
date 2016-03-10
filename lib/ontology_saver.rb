@@ -170,6 +170,9 @@ class OntologySaver
 
   def generate_locid(basepath, ontology)
     locid = "/#{repository.path}/#{basepath}"
-    LocId.new(locid: locid, assorted_object_id: ontology.id, assorted_object_type: ontology.type)
+    LocId.new(locid: locid,
+              assorted_object_id: ontology.id,
+              assorted_object_type: ontology.type,
+             )
   end
 end
