@@ -44,11 +44,11 @@ class ProofAttempt < LocIdBaseModel
   end
 
   def generate_locid
+    klass = self.class.to_s.underscore.dasherize
     LocId.create(
-      locid: "#{theorem.locid}//#{self.class.to_s.underscore.dasherize}-#{number}",
-      assorted_object_id: self.id,
+      locid: "#{theorem.locid}//#{klass}-#{number}",
+      assorted_object_id: id,
       assorted_object_type: self.class.name)
-
   end
 
   def update_theorem_status

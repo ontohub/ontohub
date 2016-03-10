@@ -5,15 +5,14 @@ class MoveLocIdToOwnModel < MigrationWithData
                Ontology,
                ProofAttempt,
                ProverOutput,
-               Sentence
+               Sentence,
               ]
     klasses.each do |klass|
       klass.find_each do |object|
         attrs = select_attributes(object, :locid)
         LocId.where(locid: attrs[:locid],
                     assorted_object_id: object.id,
-                    assorted_object_type: object.class,
-                   ).first_or_create
+                    assorted_object_type: object.class).first_or_create
       end
     end
     %i( mappings

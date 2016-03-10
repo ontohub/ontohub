@@ -49,9 +49,10 @@ class Ontology
         e.save!
 
         LocId.where(
-                       locid: "#{e.ontology.locid}#{sep}#{locid_portion}",
-                       assorted_object_id: e.id,
-                       assorted_object_type: e.class,).first_or_create!
+                    locid: "#{e.ontology.locid}#{sep}#{locid_portion}",
+                    assorted_object_id: e.id,
+                    assorted_object_type: e.class,
+                   ).first_or_create!
         e
       end
     end
