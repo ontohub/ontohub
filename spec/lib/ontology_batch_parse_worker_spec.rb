@@ -8,7 +8,7 @@ describe OntologyBatchParseWorker do
   let(:balancer) { ConcurrencyBalancer.new }
 
   context 'using the sequential queue' do
-    let(:ontology) { create :single_unparsed_ontology, locid: '/test/sequential_parse' }
+    let(:ontology) { create :single_unparsed_ontology}
     let(:version) { ontology.versions.last }
 
     before do

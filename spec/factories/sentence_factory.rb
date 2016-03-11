@@ -9,7 +9,10 @@ FactoryGirl.define do
     text { Faker::Lorem.sentence }
 
     after(:build) do |sentence|
-      sentence.locid = "#{sentence.ontology.locid}//#{sentence.name}"
+      LocId.create(
+                    locid: "#{sentence.ontology.locid}//#{sentence.name}",
+                    assorted_object: sentence
+                  )
     end
 
     trait :of_meta_ontology do

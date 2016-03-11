@@ -5,7 +5,10 @@ FactoryGirl.define do
     text { Faker::Lorem.sentence }
 
     after(:build) do |axiom|
-      axiom.locid = "#{axiom.ontology.locid}//#{axiom.name}"
+      LocId.create(
+                    locid: "#{axiom.ontology.locid}//#{axiom.name}",
+                    assorted_object: axiom
+                  )
     end
   end
 end

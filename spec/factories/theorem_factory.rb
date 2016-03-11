@@ -10,7 +10,10 @@ FactoryGirl.define do
         parent_onto = create :distributed_ontology, :with_versioned_children
         theorem.ontology = parent_onto.children.first
       end
-      theorem.locid = "#{theorem.ontology.locid}//#{theorem.name}"
+      LocId.create(
+                    locid: "#{theorem.ontology.locid}//#{theorem.name}",
+                    assorted_object: theorem
+                  )
     end
   end
 end
