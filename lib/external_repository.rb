@@ -13,7 +13,7 @@ class ExternalRepository
       }
       ontology = SingleOntology.create!(options, without_protection: true)
       LocId.where(locid: determine_locid(internal_iri),
-                  assorted_object_id: ontology.id
+                  assorted_object_id: ontology.id,
                   assorted_object_type: ontology.type
                  )
     end
