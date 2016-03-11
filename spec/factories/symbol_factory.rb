@@ -22,7 +22,10 @@ FactoryGirl.define do
     name { FactoryGirl.generate :name }
 
     after(:build) do |symbol|
-      symbol.locid = "#{symbol.ontology.locid}//#{symbol.name}"
+      LocId.create(
+                    locid: "#{symbol.ontology.locid}//#{symbol.name}",
+                    assorted_object: symbol
+                  )
     end
 
     factory :symbol_owl2 do

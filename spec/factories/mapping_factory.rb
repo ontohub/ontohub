@@ -10,7 +10,10 @@ FactoryGirl.define do
     association :ontology
 
     after(:build) do |mapping|
-      mapping.locid = "#{mapping.ontology.locid}//#{mapping.name}"
+      LocId.create(
+                    locid: "#{mapping.ontology.locid}//#{mapping.name}",
+                    assorted_object: mapping,
+                  )
     end
 
     factory :import_mapping do

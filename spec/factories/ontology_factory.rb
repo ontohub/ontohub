@@ -17,13 +17,17 @@ FactoryGirl.define do
     logic { FactoryGirl.create :logic }
     state { 'pending' }
 
-    ontology.after(:build) do |ontology|
-      ontology.locid =
-        if ontology.parent
-          "#{ontology.parent.locid}//#{ontology.name}"
-        else
-          "/#{ontology.repository.path}/#{ontology.name}"
-        end
+    ontology.after(:create) do |ontology|
+      if ontology.parent
+        locid = "#{ontology.parent.locid}//#{ontology.name}"
+      else
+        locid = "/#{ontology.repository.path}/#{ontology.name}"
+      end
+      LocId.where(
+                    locid: locid,
+                    assorted_object_id: ontology.id,
+                    assorted_object_type: ontology.class,
+                  ).first_or_create
     end
 
     factory :done_ontology do
@@ -44,6 +48,16 @@ FactoryGirl.define do
       ontology.after(:create) do |ontology|
         ontology.ontology_version = ontology.versions.last
         ontology.save!
+        if ontology.parent
+          locid = "#{ontology.parent.locid}//#{ontology.name}"
+        else
+          locid = "/#{ontology.repository.path}/#{ontology.name}"
+        end
+        LocId.where(
+                      locid: locid,
+                      assorted_object_id: ontology.id,
+                      assorted_object_type: ontology.class,
+                    ).first_or_create
       end
     end
 
@@ -70,6 +84,18 @@ FactoryGirl.define do
 
         version.do_not_parse!
       end
+      after(:create) do |ontology|
+        if ontology.parent
+          locid = "#{ontology.parent.locid}//#{ontology.name}"
+        else
+          locid = "/#{ontology.repository.path}/#{ontology.name}"
+        end
+        LocId.where(
+                      locid: locid,
+                      assorted_object_id: ontology.id,
+                      assorted_object_type: ontology.class,
+                    ).first_or_create
+      end
     end
 
     factory :single_unparsed_ontology do |ontology|
@@ -84,6 +110,18 @@ FactoryGirl.define do
         version.fast_parse = true
         version.do_not_parse!
       end
+      ontology.after(:create) do |ontology|
+        if ontology.parent
+          locid = "#{ontology.parent.locid}//#{ontology.name}"
+        else
+          locid = "/#{ontology.repository.path}/#{ontology.name}"
+        end
+        LocId.where(
+                      locid: locid,
+                      assorted_object_id: ontology.id,
+                      assorted_object_type: ontology.class,
+                    ).first_or_create
+      end
     end
 
     factory :single_ontology, class: SingleOntology do
@@ -92,8 +130,12 @@ FactoryGirl.define do
     factory :distributed_ontology, class: DistributedOntology do
       logic { nil }
 
-      after(:build) do |ontology|
-        ontology.locid = "/#{ontology.repository.path}/#{ontology.name}"
+      after(:create) do |ontology|
+        LocId.where(
+                      locid: "/#{ontology.repository.path}/#{ontology.name}",
+                      assorted_object_id: ontology.id,
+                      assorted_object_type: ontology.class,
+                    ).first_or_create
       end
 
       # Should always be fully linked, so every child should
@@ -192,6 +234,5 @@ FactoryGirl.define do
         end
       end
     end
-
   end
 end
