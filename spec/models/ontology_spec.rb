@@ -467,6 +467,10 @@ describe Ontology do
       parse_ontology(user, ontology, 'casl/test2.casl')
     end
 
+    it "should have state 'done'" do
+      expect(ontology.state).to eq('done')
+    end
+
     it 'should create all single ontologies' do
       expect(SingleOntology.count).to eq(4)
     end
