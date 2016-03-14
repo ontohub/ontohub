@@ -8,11 +8,12 @@ FactoryGirl.define do
     name { FactoryGirl.generate :sentence_name }
     text { Faker::Lorem.sentence }
 
-    after(:build) do |sentence|
-      LocId.create(
+    after(:create) do |sentence|
+      LocId.where(
                     locid: "#{sentence.ontology.locid}//#{sentence.name}",
-                    assorted_object: sentence
-                  )
+                    assorted_object_id: sentence,
+                    assorted_object_type: sentence.class,
+                  ).first_or_create
     end
 
     trait :of_meta_ontology do

@@ -26,7 +26,7 @@ FactoryGirl.define do
       LocId.where(
                     locid: locid,
                     assorted_object_id: ontology.id,
-                    assorted_object_type: ontology.class,
+                    assorted_object_type: SingleOntology,
                   ).first_or_create
     end
 
@@ -56,7 +56,7 @@ FactoryGirl.define do
         LocId.where(
                       locid: locid,
                       assorted_object_id: ontology.id,
-                      assorted_object_type: ontology.class,
+                      assorted_object_type: SingleOntology,
                     ).first_or_create
       end
     end
@@ -93,7 +93,7 @@ FactoryGirl.define do
         LocId.where(
                       locid: locid,
                       assorted_object_id: ontology.id,
-                      assorted_object_type: ontology.class,
+                      assorted_object_type: SingleOntology,
                     ).first_or_create
       end
     end
@@ -119,12 +119,25 @@ FactoryGirl.define do
         LocId.where(
                       locid: locid,
                       assorted_object_id: ontology.id,
-                      assorted_object_type: ontology.class,
+                      assorted_object_type: SingleOntology,
                     ).first_or_create
       end
     end
 
     factory :single_ontology, class: SingleOntology do
+      after(:create) do |ontology|
+        if ontology.parent
+          locid = "#{ontology.parent.locid}//#{ontology.name}"
+        else
+          locid = "/#{ontology.repository.path}/#{ontology.name}"
+        end
+        LocId.where(
+                      locid: locid,
+                      assorted_object_id: ontology.id,
+                      assorted_object_type: SingleOntology,
+                    ).first_or_create
+      end
+
     end
 
     factory :distributed_ontology, class: DistributedOntology do
@@ -134,7 +147,7 @@ FactoryGirl.define do
         LocId.where(
                       locid: "/#{ontology.repository.path}/#{ontology.name}",
                       assorted_object_id: ontology.id,
-                      assorted_object_type: ontology.class,
+                      assorted_object_type: DistributedOntology,
                     ).first_or_create
       end
 
@@ -158,6 +171,13 @@ FactoryGirl.define do
 
           ontology.children.push(child_one, child_two)
         end
+        ontology.after(:create) do |ontology|
+          LocId.where(
+                        locid: "/#{ontology.repository.path}/#{ontology.name}",
+                        assorted_object_id: ontology.id,
+                        assorted_object_type: DistributedOntology,
+                      ).first_or_create
+        end
       end
 
       trait :with_children do
@@ -172,6 +192,13 @@ FactoryGirl.define do
             repository: built_ontology.repository,
             basepath: built_ontology.basepath,
             file_extension: built_ontology.file_extension)
+        end
+        after(:create) do |ontology|
+          LocId.where(
+                        locid: "/#{ontology.repository.path}/#{ontology.name}",
+                        assorted_object_id: ontology.id,
+                        assorted_object_type: DistributedOntology,
+                      ).first_or_create
         end
       end
 
@@ -205,6 +232,13 @@ FactoryGirl.define do
 
           ontology.children.push(child_one, child_two)
         end
+        after(:create) do |ontology|
+          LocId.where(
+                        locid: "/#{ontology.repository.path}/#{ontology.name}",
+                        assorted_object_id: ontology.id,
+                        assorted_object_type: DistributedOntology,
+                      ).first_or_create
+        end
       end
 
       factory :heterogeneous_ontology do |ontology|
@@ -220,6 +254,13 @@ FactoryGirl.define do
             parent: ontology,
             repository: ontology.repository)
         end
+        after(:create) do |ontology|
+          LocId.where(
+                        locid: "/#{ontology.repository.path}/#{ontology.name}",
+                        assorted_object_id: ontology.id,
+                        assorted_object_type: DistributedOntology,
+                      ).first_or_create
+        end
       end
 
       factory :homogeneous_ontology do |ontology|
@@ -231,6 +272,13 @@ FactoryGirl.define do
           ontology.children << FactoryGirl.create(:ontology,
             logic: logic_one,
             repository: ontology.repository)
+        end
+        after(:create) do |ontology|
+          LocId.where(
+                        locid: "/#{ontology.repository.path}/#{ontology.name}",
+                        assorted_object_id: ontology.id,
+                        assorted_object_type: DistributedOntology,
+                      ).first_or_create
         end
       end
     end

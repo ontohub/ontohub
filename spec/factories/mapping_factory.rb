@@ -9,11 +9,12 @@ FactoryGirl.define do
     kind { 'view' }
     association :ontology
 
-    after(:build) do |mapping|
-      LocId.create(
+    after(:create) do |mapping|
+      LocId.where(
                     locid: "#{mapping.ontology.locid}//#{mapping.name}",
-                    assorted_object: mapping,
-                  )
+                    assorted_object_id: mapping.id,
+                    assorted_object_type: mapping.class,
+                  ).first_or_create
     end
 
     factory :import_mapping do
