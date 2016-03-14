@@ -4,11 +4,12 @@ FactoryGirl.define do
     name { FactoryGirl.generate :sentence_name }
     text { Faker::Lorem.sentence }
 
-    after(:build) do |axiom|
-      LocId.create(
+    after(:create) do |axiom|
+      LocId.where(
                     locid: "#{axiom.ontology.locid}//#{axiom.name}",
-                    assorted_object: axiom
-                  )
+                    assorted_object_id: axiom.id,
+                    assorted_object_type: axiom.class
+                  ).first_or_create
     end
   end
 end

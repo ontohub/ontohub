@@ -78,8 +78,15 @@ FactoryGirl.define do
 
     initialize_with do
       statuses.map do |status|
-        ProofStatus.where(identifier: status['identifier']).any? ||
-          ProofStatus.create(status)
+        if ProofStatus.where(identifier: status['identifier']).any?
+          pr_status = ProofStatus.where(identifier: status['identifier']).first
+        else
+          pr_status = ProofStatus.create(status)
+        end
+        LocId.where(locid: "/proof-statuses/#{pr_status.identifier}",
+                    assorted_object_id: pr_status.id,
+                    assorted_object_type: pr_status.class,
+                   ).first_or_create!
       end
     end
   end
