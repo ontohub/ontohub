@@ -45,11 +45,10 @@ module OntologyVersion::States
   protected
 
   def after_update_state
-    ontology.state = state.to_s
+    ontology.state = state
     ontology.save!
     if ontology.distributed?
-      ontology.children.update_all state: ontology.state
+      ontology.children.update_all(state: ontology.state)
     end
   end
-
 end

@@ -41,7 +41,11 @@ module OntologyVersion::Parsing
       ontology.import_version(self, self.user, input_io)
       retrieve_available_provers_for_self_and_children
 
-      update_state! :done
+      update_state!(:done)
+      ontology.children.each do |child|
+        child.versions.where(commit_oid: commit_oid).first.update_state!(:done)
+        child.versions.where(commit_oid: commit_oid).first.save!
+      end
     end
 
     files_to_parse_afterwards.each do |path|

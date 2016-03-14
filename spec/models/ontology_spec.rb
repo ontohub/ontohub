@@ -505,12 +505,11 @@ describe Ontology do
 
     context 'all child ontologies' do
       it 'should have the same state as the parent' do
-        ontology.children.each do |child|
+        ontology.reload.children.each do |child|
           expect(child.state).to eq(ontology.state)
         end
       end
     end
-
   end
 
   context 'Import another distributed Ontology' do
