@@ -1,5 +1,5 @@
 class OntologyParsingWorker < Worker
-  sidekiq_options retry: 3, queue: 'hets'
+  sidekiq_options retry: false, queue: 'hets'
 
   # parse_mode can be 'parse_fast' or 'parse_full'
   # *args only holds the array files_to_parse_afterwards

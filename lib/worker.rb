@@ -3,7 +3,7 @@ require 'sidekiq/worker'
 # Worker for Sidekiq
 class Worker < BaseWorker
   sidekiq_options queue: 'hets'
-  sidekiq_options retry: 3
+  sidekiq_options retry: false
   sidekiq_options backtrace: true
 
   # Because of the JSON-Parsing the hash which contains
