@@ -71,7 +71,8 @@ module OntologyVersion::Parsing
     retrieve_available_provers
     if ontology.distributed?
       ontology.children.each do |child|
-        child.versions.find_by_commit_oid(commit_oid).retrieve_available_provers
+        child.versions.find_by_commit_oid(commit_oid).
+          try(:retrieve_available_provers)
       end
     end
   end
