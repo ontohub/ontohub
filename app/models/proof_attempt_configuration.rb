@@ -3,6 +3,7 @@ class ProofAttemptConfiguration < ActiveRecord::Base
   belongs_to :prover
   belongs_to :axiom_selection
   has_one :proof_attempt, dependent: :destroy
+  has_one :theorem, through: :proof_attempt
   # timeout in seconds
   attr_accessible :timeout
 
