@@ -67,15 +67,31 @@ def hets_out_body_provers(ontology_fixture)
 end
 
 
-def parse_ontology_hets_out(user, ontology, io)
-  evaluator = Hets::DG::Importer.new(user, ontology, io: io)
-  evaluator.import
+def parse_ontology_hets_out(user, ontology, io, provers_io)
+  current_version = ontology.current_version
+  allow(Hets).to receive(:parse_via_api).and_return(io)
+  allow(Hets).to receive(:provers_via_api) do
+    provers_io.rewind
+    provers_io
+  end
+  allow(current_version).to receive(:ontology).and_return(ontology)
+  allow(ontology).to receive(:import_version) do
+    evaluator = Hets::DG::Importer.new(user, ontology, io: io,
+                                       version: ontology.current_version)
+    evaluator.import
+  end
+
+  current_version.parse
   io.close unless io.closed?
+  provers_io.close unless provers_io.closed?
+
+  allow(Hets).to receive(:parse_via_api).and_call_original
 end
 
-def parse_ontology(user, ontology, ontology_fixture)
+def parse_ontology(user, ontology, ontology_fixture, provers_io = nil)
   io = StringIO.new(hets_out_body_ontology(ontology_fixture))
-  parse_ontology_hets_out(user, ontology, io)
+  provers_io = StringIO.new(hets_out_body_provers(ontology_fixture))
+  parse_ontology_hets_out(user, ontology, io, provers_io)
 end
 
 
