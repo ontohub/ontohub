@@ -17,6 +17,8 @@ class OntologyVersion < ActiveRecord::Base
   belongs_to :user
   belongs_to :ontology, :counter_cache => :versions_count
   belongs_to :commit
+  has_one :repository, through: :ontology
+  has_many :theorems, through: :ontology
 
   # Provers that can be used for proving goals in this ontology.
   has_and_belongs_to_many :provers
@@ -29,8 +31,6 @@ class OntologyVersion < ActiveRecord::Base
   scope :latest, order('id DESC')
   scope :done, state('done')
   scope :failed, state('failed')
-
-  delegate :repository, :theorems, to: :ontology
 
   acts_as_tree
 
