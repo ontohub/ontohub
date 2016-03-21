@@ -12,9 +12,10 @@ FactoryGirl.define do
     after(:create) do |mapping|
       LocId.where(
                     locid: "#{mapping.ontology.locid}//#{mapping.name}",
-                    assorted_object_id: mapping.id,
-                    assorted_object_type: mapping.class,
-                  ).first_or_create
+                  ).first_or_create!(
+                  assorted_object_id: mapping.id,
+                  assorted_object_type: 'Mapping',
+                  )
     end
 
     factory :import_mapping do
