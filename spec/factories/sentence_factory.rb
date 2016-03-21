@@ -11,9 +11,10 @@ FactoryGirl.define do
     after(:create) do |sentence|
       LocId.where(
                     locid: "#{sentence.ontology.locid}//#{sentence.name}",
-                    assorted_object_id: sentence,
-                    assorted_object_type: sentence.class,
-                  ).first_or_create
+                  ).first_or_create!(
+                  assorted_object_id: sentence,
+                  assorted_object_type: 'Sentence',
+                  )
     end
 
     trait :of_meta_ontology do

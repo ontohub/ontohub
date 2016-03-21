@@ -84,9 +84,10 @@ FactoryGirl.define do
           pr_status = ProofStatus.create(status)
         end
         LocId.where(locid: "/proof-statuses/#{pr_status.identifier}",
-                    assorted_object_id: pr_status.id,
-                    assorted_object_type: pr_status.class,
-                   ).first_or_create!
+                   ).first_or_create!(
+                   assorted_object_id: pr_status.id,
+                   assorted_object_type: 'ProofStatus',
+                   )
       end
     end
   end

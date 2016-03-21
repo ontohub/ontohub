@@ -24,9 +24,10 @@ FactoryGirl.define do
     after(:create) do |symbol|
       LocId.where(
                     locid: "#{symbol.ontology.locid}//#{symbol.name}",
-                    assorted_object_id: symbol.id,
-                    assorted_object_type: symbol.class,
-                  ).first_or_create
+                  ).first_or_create!(
+                  assorted_object_id: symbol.id,
+                  assorted_object_type: 'Sentence',
+                  )
     end
 
     factory :symbol_owl2 do
@@ -36,9 +37,10 @@ FactoryGirl.define do
       after(:create) do |symbol|
         LocId.where(
                       locid: "#{symbol.ontology.locid}//#{symbol.name}",
-                      assorted_object_id: symbol.id,
-                      assorted_object_type: symbol.class,
-                    ).first_or_create
+                    ).first_or_create!(
+                    assorted_object_id: symbol.id,
+                    assorted_object_type: 'Sentence',
+                    )
       end
     end
 
@@ -49,9 +51,10 @@ FactoryGirl.define do
         e.ontology.save
         LocId.where(
                       locid: "#{e.ontology.locid}//#{e.name}",
-                      assorted_object_id: e,
-                      assorted_object_type: e.class,
-                    ).first_or_create
+                    ).first_or_create!(
+                    assorted_object_id: e,
+                    assorted_object_type: 'Sentence',
+                    )
       end
     end
   end
