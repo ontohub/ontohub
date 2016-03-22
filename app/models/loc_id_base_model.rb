@@ -15,20 +15,20 @@ class LocIdBaseModel < ActiveRecord::Base
  end
 
  def destroy_locid
-     LocId.where(assorted_object_id: self.id, assorted_object_type: self.class).first.destroy
+   LocId.where(assorted_object_id: self.id, assorted_object_type: self.class.to_s).first.destroy
  end
 
  def locid
-   LocId.where(assorted_object_id: self.id, assorted_object_type: self.class).first.try(:locid)
+   LocId.where(assorted_object_id: self.id, assorted_object_type: self.class.to_s).first.try(:locid)
  end
 
  def locid=(string)
-   locid = LocId.where(assorted_object_id: self.id, assorted_object_type: self.class).first
+   locid = LocId.where(assorted_object_id: self.id, assorted_object_type: self.class.to_s).first
    if locid
      locid.update_attributes(locid: string)
    else
      LocId.create(assorted_object_id: self.id,
-                  assorted_object_type: self.class,
+                  assorted_object_type: self.class.to_s,
                   locid: string,
                  )
    end
