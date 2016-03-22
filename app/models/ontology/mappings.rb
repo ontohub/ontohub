@@ -71,7 +71,7 @@ class Ontology
         LocId.where(
                     locid: "#{mapping.ontology.locid}#{sep}#{locid_portion}",
                     assorted_object_id: mapping.id,
-                    assorted_object_type: mapping.class,
+                    assorted_object_type: mapping.class.to_s,
                    ).first_or_create!
         mapping_version = MappingVersion.create(mapping: mapping,
                                                 source: source.current_version,

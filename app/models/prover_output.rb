@@ -12,7 +12,7 @@ class ProverOutput < LocIdBaseModel
   def generate_locid
     LocId.where(locid: "#{proof_attempt.locid}//prover-output",
                 assorted_object_id: id,
-                assorted_object_type: self.class,
+                assorted_object_type: self.class.to_s,
                ).first_or_create!
   end
 end

@@ -51,7 +51,7 @@ class Ontology
         LocId.where(
                     locid: "#{e.ontology.locid}#{sep}#{locid_portion}",
                     assorted_object_id: e.id,
-                    assorted_object_type: e.class,
+                    assorted_object_type: e.class.to_s,
                    ).first_or_create!
         e
       end

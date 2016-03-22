@@ -134,7 +134,7 @@ class Ontology
         LocId.where(
                     locid: "#{sentence.ontology.locid}#{sep}#{sentence.name}",
                     assorted_object_id: sentence.id,
-                    assorted_object_type: sentence.class,
+                    assorted_object_type: sentence.class.to_s,
                    ).first_or_create!
         execute_sql(
           "DELETE FROM sentences_symbols WHERE sentence_id=#{sentence.id}")
