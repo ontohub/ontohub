@@ -39,7 +39,7 @@ module OntologyMember
 
     def locid
       LocId.where(assorted_object_id: id,
-                  assorted_object_type: self.class,
+                  assorted_object_type: self.class.to_s,
                  ).first.try(:locid)
     end
   end
