@@ -26,7 +26,7 @@ FactoryGirl.define do
                     locid: "#{symbol.ontology.locid}//#{symbol.name}",
                   ).first_or_create!(
                   assorted_object_id: symbol.id,
-                  assorted_object_type: 'Sentence',
+                  assorted_object_type: symbol.class.to_s,
                   )
     end
 
@@ -39,21 +39,22 @@ FactoryGirl.define do
                       locid: "#{symbol.ontology.locid}//#{symbol.name}",
                     ).first_or_create!(
                     assorted_object_id: symbol.id,
-                    assorted_object_type: 'Sentence',
+                    assorted_object_type: symbol.class.to_s,
                     )
       end
     end
 
     factory :symbol_with_ontology_version do
-      after(:create) do |e|
-        version = FactoryGirl.build(:ontology_version, ontology: e.ontology)
-        e.ontology.versions << version
-        e.ontology.save
+      after(:create) do |symbol|
+        version =
+          FactoryGirl.build(:ontology_version, ontology: symbol.ontology)
+        symbol.ontology.versions << version
+        symbol.ontology.save
         LocId.where(
-                      locid: "#{e.ontology.locid}//#{e.name}",
+                      locid: "#{symbol.ontology.locid}//#{symbol.name}",
                     ).first_or_create!(
-                    assorted_object_id: e,
-                    assorted_object_type: 'Sentence',
+                    assorted_object_id: symbol,
+                    assorted_object_type: symbol.class.to_s,
                     )
       end
     end

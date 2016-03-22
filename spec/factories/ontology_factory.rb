@@ -27,7 +27,7 @@ FactoryGirl.define do
                     locid: locid
                   ).first_or_create!(
                   assorted_object_id: ontology.id,
-                  assorted_object_type: 'SingleOntology',
+                  assorted_object_type: ontology.class.to_s,
                   )
     end
 
@@ -58,7 +58,7 @@ FactoryGirl.define do
                       locid: locid
                     ).first_or_create!(
                     assorted_object_id: ontology.id,
-                    assorted_object_type: 'SingleOntology',
+                    assorted_object_type: ontology.class.to_s,
                     )
       end
     end
@@ -96,7 +96,7 @@ FactoryGirl.define do
                       locid: locid
                     ).first_or_create!(
                     assorted_object_id: ontology.id,
-                    assorted_object_type: 'SingleOntology',
+                    assorted_object_type: ontology.class.to_s,
                     )
       end
     end
@@ -123,7 +123,7 @@ FactoryGirl.define do
                       locid: locid
                     ).first_or_create!(
                     assorted_object_id: ontology.id,
-                    assorted_object_type: "SingleOntology",
+                    assorted_object_type: ontology.class.to_s,
                     )
       end
     end
@@ -139,7 +139,7 @@ FactoryGirl.define do
                       locid: locid
                     ).first_or_create!(
                     assorted_object_id: ontology.id,
-                    assorted_object_type: 'SingleOntology',
+                    assorted_object_type: ontology.class.to_s,
                     )
       end
 
@@ -153,7 +153,7 @@ FactoryGirl.define do
                       locid: "/#{ontology.repository.path}/#{ontology.name}",
                     ).first_or_create!(
                     assorted_object_id: ontology.id,
-                    assorted_object_type: 'DistributedOntology',
+                    assorted_object_type: ontology.class.to_s,
                     )
       end
 
@@ -182,7 +182,7 @@ FactoryGirl.define do
                         locid: "/#{ontology.repository.path}/#{ontology.name}"
                       ).first_or_create!(
                       assorted_object_id: ontology.id,
-                      assorted_object_type: 'DistributedOntology',
+                      assorted_object_type: ontology.class.to_s,
                       )
         end
       end
@@ -205,7 +205,7 @@ FactoryGirl.define do
                         locid: "/#{ontology.repository.path}/#{ontology.name}"
                       ).first_or_create!(
                       assorted_object_id: ontology.id,
-                      assorted_object_type: 'DistributedOntology',
+                      assorted_object_type: ontology.class.to_s,
                       )
         end
       end
@@ -245,7 +245,7 @@ FactoryGirl.define do
                         locid: "/#{ontology.repository.path}/#{ontology.name}"
                       ).first_or_create!(
                       assorted_object_id: ontology.id,
-                      assorted_object_type: 'DistributedOntology',
+                      assorted_object_type: ontology.class.to_s,
                       )
         end
       end
@@ -268,7 +268,7 @@ FactoryGirl.define do
                         locid: "/#{ontology.repository.path}/#{ontology.name}"
                       ).first_or_create!(
                       assorted_object_id: ontology.id,
-                      assorted_object_type: 'DistributedOntology',
+                      assorted_object_type: ontology.class.to_s,
                       )
         end
       end
@@ -288,7 +288,7 @@ FactoryGirl.define do
                         locid: "/#{ontology.repository.path}/#{ontology.name}"
                       ).first_or_create!(
                       assorted_object_id: ontology.id,
-                      assorted_object_type: 'DistributedOntology',
+                      assorted_object_type: ontology.class.to_s,
                       )
         end
       end

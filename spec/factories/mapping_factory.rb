@@ -14,7 +14,7 @@ FactoryGirl.define do
                     locid: "#{mapping.ontology.locid}//#{mapping.name}",
                   ).first_or_create!(
                   assorted_object_id: mapping.id,
-                  assorted_object_type: 'Mapping',
+                  assorted_object_type: mapping.class.to_s,
                   )
     end
 
