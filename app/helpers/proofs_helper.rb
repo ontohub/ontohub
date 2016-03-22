@@ -9,6 +9,18 @@ module ProofsHelper
     t("proofs.new.klass.#{resource.proof_obligation.class.to_s.underscore}")
   end
 
+  def proving_single_theorem?
+    resource.theorem?
+  end
+
+  def theorems
+    if resource.theorem?
+      [resource.proof_obligation]
+    else
+      resource.proof_obligation.theorems
+    end
+  end
+
   def checked_axiom_selection_method
     resource.axiom_selection_method || AxiomSelection::METHODS.first
   end

@@ -157,7 +157,10 @@ en:
     sine_axiom_selection: SInE
   proofs:
     new:
-      title: 'Attempt to prove  %{klass} %{resource}'
+      title: 'Attempt to prove %{klass} %{resource}'
+      theorems_definitions: Definitions
+      theorem_definition: Definition
+      configuration: Proving Configuration
       send: 'Prove'
       klass:
         theorem: 'theorem'
