@@ -19,7 +19,7 @@
     = link_to t('theorems.show.prove'), [*resource_chain, theorem, :proofs, :new], class: 'btn btn-primary'
   %div
     - if collection.empty?
-      = t('theorems.show.proof_attemps_empty')
+      = t('theorems.show.proof_attempts_empty')
     - else
       %table
         %thead
