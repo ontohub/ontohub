@@ -9,6 +9,10 @@
 - unless State::TERMINAL_STATES.include?(theorem.state)
   = render partial: '/shared/state', locals: {resource: theorem}
 
+%h4
+  = t('proof_attempts.theorem_definition', theorem: theorem)
+%p= theorem.text
+
 - if theorem.provable
   %h4 Proof Attempts
   - if can?(:write, parent.repository)

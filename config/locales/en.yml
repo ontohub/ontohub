@@ -241,6 +241,7 @@ en:
         text: "Time limit: %{time_limit}"
       extra_options:
         headline: "Extra options:"
+    theorem_definition: Definition of %{theorem}
   prover_outputs:
     show:
       head_html: "Prover Output for %{theorem}'s %{proof_attempt_text}"

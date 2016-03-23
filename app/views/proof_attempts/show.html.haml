@@ -9,5 +9,9 @@
 
 = render partial: '/shared/state', locals: {resource: resource}
 
+%h4
+  = t('proof_attempts.theorem_definition', theorem: resource.theorem)
+%p= theorem.text
+
 = render partial: 'configuration', locals: {configuration: resource.proof_attempt_configuration}
 = render partial: 'result', locals: {resource: resource}
