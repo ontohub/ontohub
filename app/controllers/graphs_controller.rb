@@ -22,14 +22,31 @@ class GraphsController < InheritedResources::Base
 
   def graph_data
     {
-      nodes: nodes,
+      nodes: populate_with(nodes, :iri),
       edges: edges,
-      center: parent,
+      center: populate_with(parent, :iri),
       node_url: nodes.any? ? url_for(graph_resource_chain) : nil,
       edge_url: edges.any? ? url_for(edges.first.class) : nil,
       edge_type: GraphDataFetcher.mapping_for(parent.class),
       nodes_aggregate: nodes_aggregate,
     }
+  end
+
+  def populate_with(items, *attributes)
+    if items.is_a?(ActiveRecord::Relation)
+      items.map { |item| populate_with(item, *attributes) }
+    else
+      original_item = items
+      item = items.as_json.dup
+      attributes.each do |attribute|
+        if original_item.respond_to?(attribute) && !item.key?(attribute.to_s)
+          item = item.merge(attribute.to_s => original_item.send(attribute))
+        else
+          item
+        end
+      end
+      item
+    end
   end
 
   def nodes_aggregate

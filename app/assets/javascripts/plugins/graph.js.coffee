@@ -152,7 +152,7 @@ displayGraph = (data) ->
       payload =
         node_url: node_url
         node: node
-        url: "#{node_url}/#{node.info.id}/"
+        url: node.info.iri
       template = templateName(edge_type, 'node')
       if template
         d3.select("div#d3_context").html('')
