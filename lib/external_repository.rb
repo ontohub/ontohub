@@ -15,7 +15,8 @@ class ExternalRepository
       LocId.where(locid: determine_locid(internal_iri),
                   assorted_object_id: ontology.id,
                   assorted_object_type: ontology.type
-                 )
+                 ).first_or_create!
+      ontology
     end
 
     def repository
