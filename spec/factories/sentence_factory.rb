@@ -12,7 +12,7 @@ FactoryGirl.define do
       LocId.where(
                     locid: "#{sentence.ontology.locid}//#{sentence.name}",
                   ).first_or_create!(
-                  assorted_object_id: sentence,
+                  assorted_object_id: sentence.id,
                   assorted_object_type: sentence.class.to_s,
                   )
     end
