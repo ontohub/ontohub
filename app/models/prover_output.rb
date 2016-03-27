@@ -5,14 +5,7 @@ class ProverOutput < LocIdBaseModel
   has_one :prover, through: :proof_attempt
   attr_accessible :content, :locid
 
-  after_create :generate_locid
-
-  protected
-
-  def generate_locid
-    LocId.where(locid: "#{proof_attempt.locid}//prover-output",
-                assorted_object_id: id,
-                assorted_object_type: self.class.to_s,
-               ).first_or_create!
+  def generate_locid_string
+    "#{proof_attempt.locid}//prover-output"
   end
 end
