@@ -34,4 +34,9 @@ class Sentence < LocIdBaseModel
       []
     end
   end
+
+  def generate_locid_string
+    sep = '//'
+    "#{ontology.locid}#{sep}#{name}"
+  end
 end
