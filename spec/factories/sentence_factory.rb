@@ -8,15 +8,6 @@ FactoryGirl.define do
     name { FactoryGirl.generate :sentence_name }
     text { Faker::Lorem.sentence }
 
-    after(:create) do |sentence|
-      LocId.where(
-                    locid: "#{sentence.ontology.locid}//#{sentence.name}",
-                  ).first_or_create!(
-                  assorted_object_id: sentence.id,
-                  assorted_object_type: sentence.class.to_s,
-                  )
-    end
-
     trait :of_meta_ontology do
       text { 'Class: <https://github.com/ontohub/OOR_Ontohub_API/blob/master/Domain_fields.owl#Accounting_and_taxation>       SubClassOf: <https://github.com/ontohub/OOR_Ontohub_API/blob/master/Domain_fields.owl#Business_and_administration>' }
     end

@@ -12,13 +12,5 @@ FactoryGirl.define do
       end
 
     end
-    theorem.after(:create) do |theorem|
-      LocId.where(
-                    locid: "#{theorem.ontology.locid}//#{theorem.name}",
-                  ).first_or_create!(
-                  assorted_object_id: theorem.id,
-                  assorted_object_type: theorem.class.to_s,
-                  )
-    end
   end
 end
