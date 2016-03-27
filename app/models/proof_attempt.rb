@@ -30,7 +30,6 @@ class ProofAttempt < LocIdBaseModel
   validates :state, inclusion: {in: State::STATES}
   validates :theorem, presence: true
 
-  after_create :generate_locid
   before_save :set_default_proof_status
   after_save :update_theorem_status
 
@@ -43,12 +42,10 @@ class ProofAttempt < LocIdBaseModel
     self.proof_status ||= ProofStatus.find(ProofStatus::DEFAULT_OPEN_STATUS)
   end
 
-  def generate_locid
+  def generate_locid_string
+    sep = '//'
     klass = self.class.to_s.underscore.dasherize
-    LocId.create(
-      locid: "#{theorem.locid}//#{klass}-#{number}",
-      assorted_object_id: id,
-      assorted_object_type: self.class.name)
+    "#{theorem.locid}#{sep}#{klass}-#{number}"
   end
 
   def update_theorem_status
