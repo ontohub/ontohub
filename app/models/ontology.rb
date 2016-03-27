@@ -61,7 +61,9 @@ class Ontology < LocIdBaseModel
   end
 
   def generate_locid_string
-    if parent.nil?
+    if externally_generated_locid
+      externally_generated_locid
+    elsif parent.nil?
       # Distributed or parentless ontology
       "/#{repository.path}/#{basepath}"
     else
