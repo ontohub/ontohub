@@ -39,6 +39,9 @@ module Ontology::AssociationsAndAttributes
     has_and_belongs_to_many :projects
     has_and_belongs_to_many :tasks
 
+    # Only used for locid generation.
+    attr_accessor :externally_generated_locid
+
     attr_accessible :name, :description, :acronym, :documentation,
                     :has_file,
                     :logic_id,
