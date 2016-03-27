@@ -42,5 +42,16 @@ module OntologyMember
                   assorted_object_type: self.class.to_s,
                  ).first.try(:locid)
     end
+
+    def generate_locid_string
+      sep = '//'
+      locid_portion =
+        if name.include?('://')
+          Rack::Utils.escape_path(name)
+        else
+          name
+        end
+      "#{ontology.locid}#{sep}#{locid_portion}"
+    end
   end
 end

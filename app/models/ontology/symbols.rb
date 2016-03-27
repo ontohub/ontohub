@@ -31,14 +31,6 @@ class Ontology
         e.iri = hash['iri']
         e.label = hash['label']
 
-        sep = '//'
-        locid_portion =
-          if e.name.include?('://')
-            Rack::Utils.escape_path(e.name)
-          else
-            e.name
-          end
-
         if e.range.to_s.include?(':')
           # remove path from range
           # Examples/Reichel:28.9 -> 28.9
@@ -47,12 +39,6 @@ class Ontology
 
         e.ontology.symbols << e if e.id.nil?
         e.save!
-
-        LocId.where(
-                    locid: "#{e.ontology.locid}#{sep}#{locid_portion}",
-                    assorted_object_id: e.id,
-                    assorted_object_type: e.class.to_s,
-                   ).first_or_create!
         e
       end
     end
