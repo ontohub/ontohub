@@ -48,12 +48,9 @@ module Hets
             repository_id: parent_ontology.repository_id,
             present: true,
           }
-          ontology = SingleOntology.create!(options, without_protection: true)
-          LocId.where(locid: child_locid,
-                      assorted_object_id: ontology.id,
-                      assorted_object_type: ontology.class.to_s).
-            first_or_create!
+          ontology = SingleOntology.new(options, without_protection: true)
           parent_ontology.children << ontology
+          ontology.save!
         end
 
         version = ontology.versions.build
