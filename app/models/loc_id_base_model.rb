@@ -26,15 +26,14 @@ class LocIdBaseModel < ActiveRecord::Base
     if locid = query_locid.first
       locid.update_attributes(locid: string)
     else
-      LocId.create(assorted_object_id: self.id,
+      LocId.create(assorted_object_id: id,
                    assorted_object_type: self.class.to_s,
-                   locid: string,
-                  )
+                   locid: string)
     end
   end
 
   def query_locid
-    LocId.where(assorted_object_id: self.id,
+    LocId.where(assorted_object_id: id,
                 assorted_object_type: normalized_class.to_s)
   end
 
