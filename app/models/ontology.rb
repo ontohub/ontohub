@@ -60,6 +60,10 @@ class Ontology < LocIdBaseModel
     end
   end
 
+  def generate_locid_string
+    "/#{repository.path}/#{basepath}"
+  end
+
   def locid_for_child(child_name)
     child_name = child_name[1..-2] if child_name[0] == '<'
     child_name.include?('://') ? child_name : "#{locid}//#{child_name}"

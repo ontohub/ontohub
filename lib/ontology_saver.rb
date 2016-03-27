@@ -112,8 +112,6 @@ class OntologySaver
     ontology.repository = repository
     ontology.present = true
     ontology.save!
-    locid = generate_locid(basepath, ontology)
-    locid.save
 
     ontology
   end
@@ -166,13 +164,5 @@ class OntologySaver
   # Files that import the current one must be parsed as well.
   def files_to_parse(ontology, changed_files)
     ontology.mapping_targets.map(&:path) - [*changed_files, ontology.path]
-  end
-
-  def generate_locid(basepath, ontology)
-    locid = "/#{repository.path}/#{basepath}"
-    LocId.new(locid: locid,
-              assorted_object_id: ontology.id,
-              assorted_object_type: ontology.type,
-             )
   end
 end
