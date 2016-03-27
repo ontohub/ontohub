@@ -17,20 +17,6 @@ FactoryGirl.define do
     logic { FactoryGirl.create :logic }
     state { 'pending' }
 
-    after(:create) do |ontology|
-      if ontology.parent
-        locid = "#{ontology.parent.locid}//#{ontology.name}"
-      else
-        locid = "/#{ontology.repository.path}/#{ontology.name}"
-      end
-       LocId.where(
-                    locid: locid
-                  ).first_or_create!(
-                  assorted_object_id: ontology.id,
-                  assorted_object_type: ontology.class.to_s,
-                  )
-    end
-
     factory :done_ontology do
       state { 'done' }
 
@@ -49,17 +35,6 @@ FactoryGirl.define do
       ontology.after(:create) do |ontology|
         ontology.ontology_version = ontology.versions.last
         ontology.save!
-        if ontology.parent
-          locid = "#{ontology.parent.locid}//#{ontology.name}"
-        else
-          locid = "/#{ontology.repository.path}/#{ontology.name}"
-        end
-         LocId.where(
-                      locid: locid
-                    ).first_or_create!(
-                    assorted_object_id: ontology.id,
-                    assorted_object_type: ontology.class.to_s,
-                    )
       end
     end
 
@@ -86,19 +61,6 @@ FactoryGirl.define do
 
         version.do_not_parse!
       end
-      after(:create) do |ontology|
-        if ontology.parent
-          locid = "#{ontology.parent.locid}//#{ontology.name}"
-        else
-          locid = "/#{ontology.repository.path}/#{ontology.name}"
-        end
-         LocId.where(
-                      locid: locid
-                    ).first_or_create!(
-                    assorted_object_id: ontology.id,
-                    assorted_object_type: ontology.class.to_s,
-                    )
-      end
     end
 
     factory :single_unparsed_ontology do |ontology|
@@ -113,49 +75,13 @@ FactoryGirl.define do
         version.fast_parse = true
         version.do_not_parse!
       end
-      ontology.after(:create) do |ontology|
-        if ontology.parent
-          locid = "#{ontology.parent.locid}//#{ontology.name}"
-        else
-          locid = "/#{ontology.repository.path}/#{ontology.name}"
-        end
-         LocId.where(
-                      locid: locid
-                    ).first_or_create!(
-                    assorted_object_id: ontology.id,
-                    assorted_object_type: ontology.class.to_s,
-                    )
-      end
     end
 
     factory :single_ontology, class: SingleOntology do
-      after(:create) do |ontology|
-        if ontology.parent
-          locid = "#{ontology.parent.locid}//#{ontology.name}"
-        else
-          locid = "/#{ontology.repository.path}/#{ontology.name}"
-        end
-         ontology.locid = LocId.where(
-                      locid: locid
-                    ).first_or_create!(
-                    assorted_object_id: ontology.id,
-                    assorted_object_type: ontology.class.to_s,
-                    )
-      end
-
     end
 
     factory :distributed_ontology, class: DistributedOntology do
       logic { nil }
-
-      after(:create) do |ontology|
-        LocId.where(
-                      locid: "/#{ontology.repository.path}/#{ontology.name}",
-                    ).first_or_create!(
-                    assorted_object_id: ontology.id,
-                    assorted_object_type: ontology.class.to_s,
-                    )
-      end
 
       # Should always be fully linked, so every child should
       # have a linked (defined by the DO) pointing or sourcing
@@ -177,14 +103,6 @@ FactoryGirl.define do
 
           ontology.children.push(child_one, child_two)
         end
-        ontology.after(:create) do |ontology|
-           LocId.where(
-                        locid: "/#{ontology.repository.path}/#{ontology.name}"
-                      ).first_or_create!(
-                      assorted_object_id: ontology.id,
-                      assorted_object_type: ontology.class.to_s,
-                      )
-        end
       end
 
       trait :with_children do
@@ -199,14 +117,6 @@ FactoryGirl.define do
             repository: built_ontology.repository,
             basepath: built_ontology.basepath,
             file_extension: built_ontology.file_extension)
-        end
-        after(:create) do |ontology|
-           LocId.where(
-                        locid: "/#{ontology.repository.path}/#{ontology.name}"
-                      ).first_or_create!(
-                      assorted_object_id: ontology.id,
-                      assorted_object_type: ontology.class.to_s,
-                      )
         end
       end
 
@@ -240,14 +150,6 @@ FactoryGirl.define do
 
           ontology.children.push(child_one, child_two)
         end
-        after(:create) do |ontology|
-           LocId.where(
-                        locid: "/#{ontology.repository.path}/#{ontology.name}"
-                      ).first_or_create!(
-                      assorted_object_id: ontology.id,
-                      assorted_object_type: ontology.class.to_s,
-                      )
-        end
       end
 
       factory :heterogeneous_ontology do |ontology|
@@ -263,14 +165,6 @@ FactoryGirl.define do
             parent: ontology,
             repository: ontology.repository)
         end
-        after(:create) do |ontology|
-           LocId.where(
-                        locid: "/#{ontology.repository.path}/#{ontology.name}"
-                      ).first_or_create!(
-                      assorted_object_id: ontology.id,
-                      assorted_object_type: ontology.class.to_s,
-                      )
-        end
       end
 
       factory :homogeneous_ontology do |ontology|
@@ -282,14 +176,6 @@ FactoryGirl.define do
           ontology.children << FactoryGirl.create(:ontology,
             logic: logic_one,
             repository: ontology.repository)
-        end
-        after(:create) do |ontology|
-           LocId.where(
-                        locid: "/#{ontology.repository.path}/#{ontology.name}"
-                      ).first_or_create!(
-                      assorted_object_id: ontology.id,
-                      assorted_object_type: ontology.class.to_s,
-                      )
         end
       end
     end
