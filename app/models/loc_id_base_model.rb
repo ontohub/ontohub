@@ -1,6 +1,7 @@
 class LocIdBaseModel < ActiveRecord::Base
   @abstract_class = true
   has_many :loc_ids, as: :assorted_object
+  after_create :create_locid
   before_destroy :destroy_locid
 
   def self.find_with_locid(locid, _iri = nil)
@@ -12,6 +13,18 @@ class LocIdBaseModel < ActiveRecord::Base
       end
     end
     result
+  end
+
+  def create_locid
+    LocId.where(locid: generate_locid_string,
+                assorted_object_id: id,
+                assorted_object_type: self.class.to_s,
+               ).first_or_create!
+  end
+
+  # To be overwritten in the subclasses.
+  def generate_locid_string
+    nil
   end
 
   def destroy_locid
