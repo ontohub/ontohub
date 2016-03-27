@@ -12,6 +12,10 @@ class Mapping < LocIdBaseModel
 
   CONS_STATUSES = %w( inconsistent none cCons mcons mono def )
 
+  # Only used for locid generation.
+  # Is set during parsing.
+  attr_accessor :linkid
+
   belongs_to :ontology
   belongs_to :source, class_name: 'Ontology'
   belongs_to :target, class_name: 'Ontology'
@@ -81,5 +85,10 @@ class Mapping < LocIdBaseModel
     else
       "#{symbol_mappings.first}"
     end
+  end
+
+  def generate_locid_string
+    sep = '//'
+    "#{ontology.locid}#{sep}#{name || linkid}"
   end
 end
