@@ -23,14 +23,7 @@ class ProofStatus < LocIdBaseModel
 
   validates_presence_of :label
 
-  before_create :generate_locid
-
-  protected
-
-  def generate_locid
-    LocId.where(locid: "/proof-statuses/#{identifier}",
-                assorted_object_id: id,
-                assorted_object_type: self.class.to_s,
-               ).first_or_create!
+  def generate_locid_string
+    "/proof-statuses/#{identifier}"
   end
 end
