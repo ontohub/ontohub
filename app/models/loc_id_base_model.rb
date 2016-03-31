@@ -18,7 +18,7 @@ class LocIdBaseModel < ActiveRecord::Base
   def create_locid
     LocId.where(locid: generate_locid_string,
                 assorted_object_id: id,
-                assorted_object_type: self.class.to_s,
+                assorted_object_type: normalized_class.to_s,
                ).first_or_create!
   end
 
@@ -40,7 +40,7 @@ class LocIdBaseModel < ActiveRecord::Base
       locid.update_attributes(locid: string)
     else
       LocId.create(assorted_object_id: id,
-                   assorted_object_type: self.class.to_s,
+                   assorted_object_type: normalized_class.to_s,
                    locid: string)
     end
   end
