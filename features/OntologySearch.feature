@@ -125,3 +125,17 @@ Scenario: I want to search for a ontology with a category
   Given there is an ontology with a category
   When I open the ontologies overview page
   Then I should see all ontologies with a category
+
+Scenario: I want to search for a ontology I have access to
+  Given I am logged in as the owner of a private repository
+  And a there is a ontology in this repository
+  When I open the ontologies overview page
+  And I search for this ontology
+  Then I should see the ontology in this repo
+
+Scenario: I want to search for a ontology I don't have access to
+  Given I am not logged in as the owner of a private repository
+  And a there is a ontology in this repository
+  When I open the ontologies overview page
+  And I search for this ontology
+  Then I shouldnt see the ontology in this repo

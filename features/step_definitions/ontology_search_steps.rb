@@ -217,3 +217,34 @@ end
 Then(/^I should see all ontologies with a category$/) do
   page.should have_content(@ont_with_cat.name)
 end
+
+Given(/^I am logged in as the owner of a private repository$/) do
+  @repo = FactoryGirl.create :private_repository
+  @user = @repo.permissions.first.subject
+  login_as @user, :scope => :user
+end
+
+Given(/^I am not logged in as the owner of a private repository$/) do
+  @repo = FactoryGirl.create :private_repository
+  @user = FactoryGirl.create :user
+  login_as @user, :scope => :user
+end
+
+Given(/^a there is a ontology in this repository$/) do
+  @ontology = FactoryGirl.create :ontology, repository: @repo
+  @repo.ontologies << @ontology
+end
+
+Then(/^I should see the ontology in this repo$/) do
+  page.should have_content(@ontology.name)
+end
+
+Then(/^I shouldnt see the ontology in this repo$/) do
+  page.should_not have_content(@ontology.name)
+end
+
+When(/^I search for this ontology$/) do
+  within '#search_form_div' do
+    fill_in 'query', with: @ontology.name
+  end
+end
