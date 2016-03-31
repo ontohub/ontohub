@@ -23,4 +23,22 @@ describe OntologyVersion do
       expect(ontology_version.url).to match(version_url_regex)
     end
   end
+
+  context 'scopes' do
+    context 'accessible by' do
+      let(:repository) { create :repository, access: 'private_rw' }
+      let!(:ontology) { create :ontology, repository: repository }
+      let(:editor) { create :user }
+      let!(:permission) { create(:permission, subject: editor, role: 'editor',
+        item: repository) }
+
+      it 'editor' do
+        expect(OntologyVersion.accessible_by(editor).all.map(&:id)).to include(ontology.current_version.id)
+      end
+
+      it 'user' do
+        expect(OntologyVersion.accessible_by(user).all.map(&:id)).not_to include(ontology.current_version.id)
+      end
+    end
+  end
 end
