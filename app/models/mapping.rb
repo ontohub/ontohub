@@ -89,6 +89,7 @@ class Mapping < LocIdBaseModel
 
   def generate_locid_string
     sep = '//'
-    "#{ontology.locid}#{sep}#{name || linkid}"
+    mapping_portion = name || linkid
+    "#{ontology.locid}#{sep}#{mapping_portion}"
   end
 end
