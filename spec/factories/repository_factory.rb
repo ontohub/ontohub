@@ -43,5 +43,14 @@ FactoryGirl.define do
       remote_type { 'mirror' }
       source_type { 'git' }
     end
+
+    factory :private_repository do |repository|
+      repository.after(:build) do |repository|
+        repository.access = 'private_rw'
+        editor = create :user
+        permission = create :permission, subject: editor,
+          role: 'owner', item: repository
+      end
+    end
   end
 end
