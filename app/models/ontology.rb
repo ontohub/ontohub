@@ -1,5 +1,4 @@
 class Ontology < ActiveRecord::Base
-
   # Ontohub Library Includes
   include Commentable
   include Metadatable
@@ -24,6 +23,7 @@ class Ontology < ActiveRecord::Base
   include Ontology::Symbols
   include Ontology::Validations
   include Ontology::Versions
+  include ::AccessScopesForRepositoryAssociations
 
   # Multiple Class Features
   include Aggregatable

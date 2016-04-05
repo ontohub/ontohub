@@ -8,6 +8,7 @@ class OntologyVersion < ActiveRecord::Base
   include OntologyVersion::Proving
   include OntologyVersion::OopsRequests
   include IRIUrlBuilder::Includeable
+  include ::AccessScopesForRepositoryAssociations
 
   include Rails.application.routes.url_helpers
   include ActionDispatch::Routing::UrlFor

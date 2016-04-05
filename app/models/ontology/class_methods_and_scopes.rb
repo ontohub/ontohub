@@ -72,24 +72,6 @@ module Ontology::ClassMethodsAndScopes
     scope :state, ->(*states) do
       where state: states.map(&:to_s)
     end
-
-    # access scopes
-    scope :pub, -> do
-      joins(:repository).
-        # simulating scope: repository.active
-        where('repositories.is_destroying = ?', false).
-        where("repositories.access NOT LIKE 'private%'")
-    end
-    scope :accessible_by, ->(user) do
-      if user
-        joins(:repository).
-          # simulating scope: repository.active
-          where('repositories.is_destroying = ?', false).
-          where(Repository::ACCESSIBLE_BY_SQL_QUERY, user, user)
-      else
-        pub
-      end
-    end
   end
 
   module ClassMethods
