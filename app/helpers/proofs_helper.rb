@@ -29,21 +29,22 @@ module ProofsHelper
     resource.specific_axiom_selection.try(field) || default_value
   end
 
-  def proof_timeout_label(value)
-    if value >= 1.days
-      normalized_value = value / 1.days
-      label = t('proofs.new.timeout.day')
-      "#{normalized_value} #{label.pluralize(normalized_value)}"
-    elsif value >= 1.hours
-      normalized_value = value / 1.hours
-      label = t('proofs.new.timeout.hour')
-      "#{normalized_value} #{label.pluralize(normalized_value)}"
-    elsif value >= 1.minutes
-      normalized_value = value / 1.minutes
-      label = t('proofs.new.timeout.minute')
-      "#{normalized_value} #{label.pluralize(normalized_value)}"
+  def proof_timeout_label(seconds)
+    unit = proof_timeout_label_unit(seconds)
+    normalized_timeout = seconds / 1.send(unit)
+    label = t("proofs.new.timeout.#{unit}")
+    "#{normalized_timeout} #{label.pluralize(normalized_timeout)}"
+  end
+
+  def proof_timeout_label_unit(seconds)
+    if seconds >= 1.day
+      :day
+    elsif seconds >= 1.hour
+      :hour
+    elsif seconds >= 1.minute
+      :minute
     else
-      "#{value} #{t('proofs.new.timeout.second').pluralize(value)}"
+      :second
     end
   end
 end
