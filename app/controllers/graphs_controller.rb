@@ -41,8 +41,6 @@ class GraphsController < InheritedResources::Base
     attributes.each do |attribute|
       if original_item.respond_to?(attribute) && !item.key?(attribute.to_s)
         item = item.merge(attribute.to_s => original_item.send(attribute))
-      else
-        item
       end
     end
     item
