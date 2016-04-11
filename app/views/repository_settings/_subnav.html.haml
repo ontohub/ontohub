@@ -11,7 +11,7 @@
         = modal_button(t('repository.delete'), btn_class: 'btn-danger')
         = repository_modal_body
       - else
-        .btn.btn-danger.tooltip-btn{ disabled: true, data: { toggle: 'tooltip', :'original-title' => t('repository.delete_error'), container: 'body' } }
+        .btn.btn-danger.has-tooltip{disabled: true, data: {toggle: 'tooltip', :'original-title' => t('repository.delete_error'), container: 'body'}}
           %span.allow-tooltips
             = t('repository.delete')
   %nav

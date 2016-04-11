@@ -1,7 +1,10 @@
 #manual_axiom_selection.columnized-items
   %hr
   %h4= t('proofs.new.axiom_selection.manual_axiom_selection.headline')
-  = f.input :axioms, collection: ontology.all_axioms, as: :check_boxes, hint: t('proofs.new.axioms.none_is_default')
+  = f.input :axioms, hint: t('proofs.new.axioms.none_is_default') do
+    = f.collection_check_boxes :axioms, ontology.all_axioms, :id, :to_s, item_wrapper_tag: nil do |b|
+      - b.label(class: 'checkbox has-tooltip', data: {toggle: 'tooltip', placement: 'top'}, title: b.object.text) do
+        - b.check_box + b.text
   .col-lg-2
   .col-lg-10.select_checkboxes_buttons
     = link_to t('proofs.new.axioms.select_all'), '#', class: 'btn btn-xs btn-default', data: {select: '#manual_axiom_selection :checkbox', select_target: 'all'}

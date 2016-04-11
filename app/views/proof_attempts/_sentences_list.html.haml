@@ -4,6 +4,6 @@
       - if sentence.is_a?(GeneratedAxiom)
         %li= sentence
       - else
-        %li= link_to sentence, locid_for(sentence)
+        %li.has-tooltip{data: {toggle: 'tooltip', placement: 'top'}, title: sentence.text}= link_to sentence, locid_for(sentence)
 - else
   = t('proof_attempts.show.no_sentences')

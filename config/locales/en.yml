@@ -150,14 +150,17 @@ en:
       proof_status: Proof Status
     show:
       prove: Prove this theorem
-      proof_attemps_empty: There are no proof attempts.
+      proof_attempts_empty: There are no proof attempts.
       unprovable: This theorem was proven by static analysis. It is identical to an axiom.
   axiom_selection:
     manual_axiom_selection: Manual
     sine_axiom_selection: SInE
   proofs:
     new:
-      title: 'Attempt to prove  %{klass} %{resource}'
+      title: 'Attempt to prove %{klass} %{resource}'
+      theorems_definitions: Definitions
+      theorem_definition: Definition
+      configuration: Proving Configuration
       send: 'Prove'
       klass:
         theorem: 'theorem'
@@ -238,6 +241,7 @@ en:
         text: "Time limit: %{time_limit}"
       extra_options:
         headline: "Extra options:"
+    theorem_definition: Definition of %{theorem}
   prover_outputs:
     show:
       head_html: "Prover Output for %{theorem}'s %{proof_attempt_text}"
