@@ -15,7 +15,8 @@ class OntologySearch
     search_in_repository
     search_with_params
     if in_repository || params[:query].present?
-      @search_response = Ontology.search(@search_query).records.accessible_by(@user)
+      @search_response = Ontology.search(@search_query).records.
+        accessible_by(@user)
     else
       @search_response = Ontology.scoped.accessible_by(@user)
     end
