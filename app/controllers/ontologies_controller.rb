@@ -20,7 +20,8 @@ class OntologiesController < InheritedResources::Base
       @repository_id = parent.id
       render :index_repository
     else
-      @search_response = paginate_for(Ontology.scoped.accessible_by(current_user))
+      @search_response = paginate_for(Ontology.scoped.
+        accessible_by(current_user))
       @count = resource_class.accessible_by(current_user).count
       render :index_global
     end
