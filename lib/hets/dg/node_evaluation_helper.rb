@@ -4,7 +4,7 @@ module Hets
       def clean_ontology(ontology)
         ontology.symbols.destroy_all
         ontology.all_sentences.destroy_all
-        ontology.symbols_count  = 0
+        ontology.symbols_count = 0
         ontology.sentences_count = 0
         ontology.axioms_count = 0
         ontology.theorems_count = 0
