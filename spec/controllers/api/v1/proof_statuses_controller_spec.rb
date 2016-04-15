@@ -24,7 +24,6 @@ describe Api::V1::ProofStatusesController do
       before do
         get :show,
           id: proof_status.to_param,
-          locid: proof_status.locid,
           format: :json
       end
 

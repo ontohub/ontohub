@@ -462,7 +462,7 @@ Will return a representation of the formality level.
     BODY
   end
 
-  specified_get '/proof-statuses' => 'api/v1/proof_statuses#index',
+  specified_get '/proof_statuses' => 'api/v1/proof_statuses#index',
     as: :proof_statuses do
       accept 'application/json'
 
@@ -472,17 +472,13 @@ Will return a representation of the proof statuses index.
       BODY
     end
 
-  specified_get '*locid' => 'api/v1/proof_statuses#show',
-    as: :proof_status_iri,
-    constraints: [
-      LocIdRouterConstraint.new(ProofStatus, element: :id),
-    ] do
+  specified_get '/proof_statuses/:id' => 'api/v1/proof_statuses#show',
+                as: :proof_status do
       accept 'application/json'
 
-      doc title: 'loc/id reference to a proof status',
+      doc title: 'reference to a proof status',
           body: <<-BODY
-Will return a representation of the proof status. The proof status
-is determined according to the *locid.
+Will return a representation of the proof status.
       BODY
     end
   #
