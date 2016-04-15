@@ -181,6 +181,8 @@ group :development, :test do
   # i18n-tasks >= 0.9.0 is not compatible to rails 3/rdf
   gem 'i18n-tasks', '~> 0.8.3'
   gem 'pry-byebug', '~> 3.4.0'
+  gem 'pry-stack_explorer', '~> 0.4.9.2'
+  gem 'awesome_print', '~> 1.6.1'
 
   # Recording of HTTP Requests
   gem "vcr", '~> 3.0.0', require: false
