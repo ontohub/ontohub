@@ -4,7 +4,7 @@ class ProofStatusSerializer < ApplicationSerializer
                :identifier,
                :name
     def iri
-      qualified_locid_for(object)
+      url_for(object)
     end
   end
 

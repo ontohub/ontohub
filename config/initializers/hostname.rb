@@ -38,3 +38,7 @@ end
 
 Ontohub::Application.config.fqdn = Hostname.fqdn
 Ontohub::Application.config.port = Hostname.port
+Ontohub::Application.routes.default_url_options[:host] = Hostname.fqdn
+if Hostname.port
+  Ontohub::Application.routes.default_url_options[:host] << ":#{Hostname.port}"
+end
