@@ -15,7 +15,7 @@ class RepositoryFile < FakeRecord
 
   # only for new/edit
   attr_reader :message, :target_directory, :target_filename
-  attr_reader :temp_file, :remote_file_iri
+  attr_reader :temp_file, :remote_file_iri, :direct_input
   validates :message, presence: true
   validates :temp_file, presence: true, unless: :remote_file_iri?
   validates :remote_file_iri, presence: true, unless: :temp_file?

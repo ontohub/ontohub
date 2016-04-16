@@ -39,6 +39,7 @@ form_hooks = ->
     if valid_locality type
       $("#group-file_upload_#{type}").show()
       $("#group-file_upload_#{reverse_locality type}").hide()
+      // TODO: Add javascript handler for direct input
 
 remote_iri_hook = ->
   $(remote_file_input).on 'keyup', (e) ->
