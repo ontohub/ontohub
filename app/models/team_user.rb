@@ -16,10 +16,6 @@ class TeamUser < ActiveRecord::Base
 
   delegate :team_users, :to => :team
 
-  def team_users
-    self.class.where(:team_id => team_id)
-  end
-
   protected
 
   def set_admin_if_first_member
