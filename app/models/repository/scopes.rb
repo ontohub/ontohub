@@ -2,7 +2,7 @@ module Repository::Scopes
   extend ActiveSupport::Concern
 
   included do
-    ACCESSIBLE_BY_SQL_QUERY = <<SQL
+    ACCESSIBLE_BY_SQL_QUERY = <<SQL.freeze
 repositories.access NOT LIKE 'private%'
 OR repositories.id IN (SELECT item_id
           FROM permissions
