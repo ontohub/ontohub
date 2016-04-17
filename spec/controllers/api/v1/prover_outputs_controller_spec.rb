@@ -1,7 +1,7 @@
 require 'spec_helper'
 
 describe Api::V1::ProverOutputsController do
-  let(:proof_attempt) { create :proof_attempt }
+  let(:proof_attempt) { create :proof_attempt, :proven }
   let(:prover_output) { proof_attempt.prover_output }
   let(:theorem) { proof_attempt.theorem }
   let(:ontology) { theorem.ontology }
