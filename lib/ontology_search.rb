@@ -2,9 +2,10 @@ class OntologySearch
 
   attr_reader :params, :in_repository
 
-  def initialize(params, in_repository)
+  def initialize(params, in_repository, current_user)
     @params = params
     @in_repository = in_repository
+    @user = current_user
   end
 
   def search_response
@@ -14,9 +15,10 @@ class OntologySearch
     search_in_repository
     search_with_params
     if in_repository || params[:query].present?
-      @search_response = Ontology.search(@search_query).records
+      @search_response = Ontology.search(@search_query).records.
+        accessible_by(@user)
     else
-      @search_response = Ontology.scoped
+      @search_response = Ontology.scoped.accessible_by(@user)
     end
     refine_search_response
     @search_response

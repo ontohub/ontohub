@@ -7,7 +7,7 @@ When(/^I open the ontologies overview page$/) do
 end
 
 Then(/^I should see all available ontologies$/) do
-  page.should have_content(@ontology.name)
+  expect(page).to have_content(@ontology.name)
 end
 
 Given(/^the ontology I want to search for$/) do
@@ -22,11 +22,11 @@ When(/^I fill in the search form$/) do
 end
 
 Then(/^I should see the ontology$/) do
-  page.should have_content(@name)
+  expect(page).to have_content(@name)
 end
 
 Then(/^I shouldnt see the ontology$/) do
-  page.should_not have_content("{#@ontology.name}" + 'Foobar')
+  expect(page).not_to have_content("{#@ontology.name}" + 'Foobar')
 end
 
 Given(/^there is an ontology with a '([^']+)'$/) do |filterable|
@@ -58,8 +58,8 @@ When(/^I select the project I search for$/) do
 end
 
 Then(/^I should see all ontologies with that '[^']+'$/) do
-  page.should have_content(@ontology.name)
-  page.should have_content(@filterable.name)
+  expect(page).to have_content(@ontology.name)
+  expect(page).to have_content(@filterable.name)
 end
 
 Given(/^there is an ontology with all filters given$/) do
@@ -84,12 +84,12 @@ When(/^I select the all filters I search for$/) do
 end
 
 Then(/^I should see all ontologies with that features$/) do
-  page.should have_content(@ontology.name)
-  page.should have_content(@ontology_type.name)
-  page.should have_content(@project.name)
-  page.should have_content(@formality_level.name)
-  page.should have_content(@license_model.name)
-  page.should have_content(@task.name)
+  expect(page).to have_content(@ontology.name)
+  expect(page).to have_content(@ontology_type.name)
+  expect(page).to have_content(@project.name)
+  expect(page).to have_content(@formality_level.name)
+  expect(page).to have_content(@license_model.name)
+  expect(page).to have_content(@task.name)
 end
 
 Given(/^there is an ontology with a type which is in a project$/) do
@@ -107,12 +107,12 @@ When(/^I select the type and project I search for$/) do
 end
 
 Then(/^I should see all ontologies with that two features$/) do
-  page.should have_content(@ontology_type.name)
-  page.should have_content(@project.name)
+  expect(page).to have_content(@ontology_type.name)
+  expect(page).to have_content(@project.name)
 end
 
 Then(/^I should see all ontologies with that name$/) do
-  page.should have_content(@ontology.name)
+  expect(page).to have_content(@ontology.name)
 end
 
 Given(/^there are at least two repositories$/) do
@@ -144,12 +144,12 @@ When(/^I select the ontologies tab$/) do
 end
 
 Then(/^I should see all ontologies in that repository$/) do
-  page.should have_content(@ontology_one.name)
+  expect(page).to have_content(@ontology_one.name)
 end
 
 Then(/^I should not see ontologies from other repositories$/) do
-  page.should_not have_content(@ontology_two.name)
-  page.should_not have_content(@repository_two.name)
+  expect(page).not_to have_content(@ontology_two.name)
+  expect(page).not_to have_content(@repository_two.name)
 end
 
 Given(/^there are at least two ontologies with ontology types$/) do
@@ -161,12 +161,12 @@ Given(/^there are at least two ontologies with ontology types$/) do
 end
 
 Then(/^I should see all ontologies in that repository with that type$/) do
-  page.should have_content(@ontology_one.name)
-  page.should have_content(@ontology_type.name)
+  expect(page).to have_content(@ontology_one.name)
+  expect(page).to have_content(@ontology_type.name)
 end
 
 Then(/^I should not see ontologies from other repositories with that type$/) do
-  page.should_not have_content(@ontology_two.name)
+  expect(page).not_to have_content(@ontology_two.name)
 end
 
 Given(/^there are at least two ontologies with ontology tpyes and projects$/) do
@@ -181,13 +181,13 @@ Given(/^there are at least two ontologies with ontology tpyes and projects$/) do
 end
 
 Then(/^I should see all ontologies in that repository with that type, in that project$/) do
-  page.should have_content(@ontology_one.name)
-  page.should have_content(@ontology_type.name)
-  page.should have_content(@project.name)
+  expect(page).to have_content(@ontology_one.name)
+  expect(page).to have_content(@ontology_type.name)
+  expect(page).to have_content(@project.name)
 end
 
 Then(/^I should not see ontologies from other repositories with that type, in that project$/) do
-  page.should_not have_content(@ontology_two.name)
+  expect(page).not_to have_content(@ontology_two.name)
 end
 
 When(/^I type in a ontology name I'm searching for which is in the repository$/) do
@@ -204,7 +204,7 @@ end
 
 Then(/^I should not see the ontology$/) do
   within '#search_response' do
-    page.should_not have_content('OntologyThree')
+    expect(page).not_to have_content('OntologyThree')
   end
 end
 
@@ -215,5 +215,36 @@ Given(/^there is an ontology with a category$/) do
 end
 
 Then(/^I should see all ontologies with a category$/) do
-  page.should have_content(@ont_with_cat.name)
+  expect(page).to have_content(@ont_with_cat.name)
+end
+
+Given(/^I am logged in as the owner of a private repository$/) do
+  @repo = FactoryGirl.create :private_repository
+  @user = @repo.permissions.first.subject
+  login_as @user, :scope => :user
+end
+
+Given(/^I am not logged in as the owner of a private repository$/) do
+  @repo = FactoryGirl.create :private_repository
+  @user = FactoryGirl.create :user
+  login_as @user, :scope => :user
+end
+
+Given(/^there is an ontology in this repository$/) do
+  @ontology = FactoryGirl.create :ontology, repository: @repo
+  @repo.ontologies << @ontology
+end
+
+Then(/^I should see the ontology in this repository$/) do
+  expect(page).to have_content(@ontology.name)
+end
+
+Then(/^I shouldn't see the ontology in this repository$/) do
+  expect(page).not_to have_content(@ontology.name)
+end
+
+When(/^I search for this ontology$/) do
+  within '#search_form_div' do
+    fill_in 'query', with: @ontology.name
+  end
 end

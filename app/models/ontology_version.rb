@@ -8,6 +8,7 @@ class OntologyVersion < ActiveRecord::Base
   include OntologyVersion::Proving
   include OntologyVersion::OopsRequests
   include IRIUrlBuilder::Includeable
+  include ::AccessScopesForRepositoryAssociations
 
   include Rails.application.routes.url_helpers
   include ActionDispatch::Routing::UrlFor
@@ -16,6 +17,8 @@ class OntologyVersion < ActiveRecord::Base
 
   belongs_to :user
   belongs_to :ontology, :counter_cache => :versions_count
+  has_one :repository, through: :ontology
+  has_many :theorems, through: :ontology
   belongs_to :commit
   has_one :repository, through: :ontology
   has_many :theorems, through: :ontology

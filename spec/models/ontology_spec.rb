@@ -752,4 +752,22 @@ describe Ontology do
       end
     end
   end
+
+  context 'scopes' do
+    context 'accessible by' do
+      let(:repository) { create :repository, access: 'private_rw' }
+      let!(:ontology) { create :ontology, repository: repository }
+      let(:editor) { create :user }
+      let!(:permission) { create(:permission, subject: editor, role: 'editor',
+        item: repository) }
+
+      it 'editor' do
+        expect(Ontology.accessible_by(editor).all.map(&:id)).to include(ontology.id)
+      end
+
+      it 'user' do
+        expect(Ontology.accessible_by(user).all.map(&:id)).not_to include(ontology.id)
+      end
+    end
+  end
 end

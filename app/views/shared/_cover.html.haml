@@ -17,9 +17,9 @@
       .numbers
         %p
           With
-          = Ontology.count
+          = Ontology.accessible_by(current_user).count
           ontologies and
-          = Repository.count
+          = Repository.accessible_by(current_user).count
           repositories, continuously growing!
 
       %p
