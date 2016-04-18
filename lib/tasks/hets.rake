@@ -69,21 +69,12 @@ namespace :hets do
   end
 
   def hets_binary
-    # Find first executable from those specified in settings_for_development.yml
-    settings_for_development['paths']['hets']['executable'].
-      map { |path| File.expand_path path }.
-      find { |path| File.executable?(path) }
+    Settings.hets.executable_path
   end
 
   def hets_server_options
     load_environment_light_with_hets
     Settings.hets.server_options
-  end
-
-  def settings_for_development
-    @settings_for_development ||=
-      YAML.load_file(Rails.root.join('config',
-                                     'settings_for_development.yml').to_s)
   end
 
   def load_environment_light_with_hets
