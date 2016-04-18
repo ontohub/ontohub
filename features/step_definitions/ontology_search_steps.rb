@@ -230,16 +230,16 @@ Given(/^I am not logged in as the owner of a private repository$/) do
   login_as @user, :scope => :user
 end
 
-Given(/^a there is a ontology in this repository$/) do
+Given(/^there is an ontology in this repository$/) do
   @ontology = FactoryGirl.create :ontology, repository: @repo
   @repo.ontologies << @ontology
 end
 
-Then(/^I should see the ontology in this repo$/) do
+Then(/^I should see the ontology in this repository$/) do
   page.should have_content(@ontology.name)
 end
 
-Then(/^I shouldnt see the ontology in this repo$/) do
+Then(/^I shouldn't see the ontology in this repository$/) do
   page.should_not have_content(@ontology.name)
 end
 
