@@ -45,8 +45,8 @@ FactoryGirl.define do
     end
 
     factory :private_repository do |repository|
+      access { 'private_rw' }
       repository.after(:build) do |repository|
-        repository.access = 'private_rw'
         editor = create :user
         permission = create :permission, subject: editor,
           role: 'owner', item: repository
