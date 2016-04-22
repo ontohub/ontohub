@@ -17,8 +17,7 @@ class LocIdBaseModel < ActiveRecord::Base
   def create_locid
     LocId.where(locid: generate_locid_string,
                 specific_id: id,
-                specific_type: normalized_class.to_s,
-               ).first_or_create!
+                specific_type: normalized_class.to_s).first_or_create!
   end
 
   # To be overwritten in the subclasses.
