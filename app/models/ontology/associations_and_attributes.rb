@@ -57,5 +57,4 @@ module Ontology::AssociationsAndAttributes
                     :task_ids,
                     :project_ids
   end
-
 end
