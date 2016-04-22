@@ -37,12 +37,6 @@ module OntologyMember
       display_name || name
     end
 
-    def locid
-      LocId.where(specific_id: id,
-                  specific_type: self.class.to_s,
-                 ).first.try(:locid)
-    end
-
     def generate_locid_string
       sep = '//'
       locid_portion =

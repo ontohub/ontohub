@@ -92,7 +92,7 @@ class OntologySaver
     if !ontology
       basepath = File.basepath(ontology_version_options.filepath)
 
-      ontology = create_ontology(ontology_version_options.filepath, basepath)
+      ontology = create_ontology(ontology_version_options.filepath)
     end
 
     ontology
@@ -104,7 +104,7 @@ class OntologySaver
       without_parent.first
   end
 
-  def create_ontology(filepath, basepath)
+  def create_ontology(filepath)
     ontology = corresponding_ontology_klass(filepath).new
     ontology.basepath = File.basepath(filepath)
     ontology.file_extension = File.extname(filepath)

@@ -4,7 +4,7 @@ class LocIdBaseModel < ActiveRecord::Base
   after_create :create_locid
   before_destroy :destroy_locid
 
-  def self.find_with_locid(locid, _iri = nil)
+  def self.find_with_locid(locid, iri = nil)
     result = LocId.where(locid: locid).first.try(:specific)
     if table_name == 'ontologies'
       if result.nil? && iri
