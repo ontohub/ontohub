@@ -1,6 +1,5 @@
 class LocIdBaseModel < ActiveRecord::Base
   @abstract_class = true
-  has_many :loc_ids, as: :specific
   after_create :create_locid
   before_destroy :destroy_locid
 

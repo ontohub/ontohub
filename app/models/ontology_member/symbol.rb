@@ -16,8 +16,6 @@ module OntologyMember
                                      dependent: :destroy
     has_many :sine_symbol_axiom_triggers, dependent: :destroy
 
-    has_many :loc_ids, as: :specific
-
     attr_accessible :label, :comment
 
     scope :kind, ->(kind) { where kind:  kind }
