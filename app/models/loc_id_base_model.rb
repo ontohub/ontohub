@@ -28,7 +28,9 @@ class LocIdBaseModel < ActiveRecord::Base
   end
 
   def destroy_locid
-    query_locid.first.destroy
+    # When reanalysing an ontology in the migrations (because of duplicates),
+    # the locid can already be nil.
+    query_locid.first.try(:destroy)
   end
 
   def locid
