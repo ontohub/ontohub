@@ -11,8 +11,8 @@ class MoveLocIdToOwnModel < MigrationWithData
       klass.find_each do |object|
         attrs = select_attributes(object, :locid)
         LocId.where(locid: attrs[:locid],
-                    assorted_object_id: object.id,
-                    assorted_object_type: object.class.to_s).first_or_create
+                    specific_id: object.id,
+                    specific_type: object.class.to_s).first_or_create
       end
     end
     %i( mappings
@@ -37,8 +37,9 @@ class MoveLocIdToOwnModel < MigrationWithData
         add_column table, :locid
       end
     LocId.find_each do |object|
-      attrs = select_attributes(object, :locid, assorted_object)
-      update_attributes!(attrs[assorted_object], locid: attrs[:locid])
+      attrs = select_attributes(object, :locid, :specific_id, :specific_type)
+      specific = attrs[:specific_type].constantize.find(attrs[:specific_id])
+      update_attributes!(specific, locid: attrs[:locid])
     end
   end
 end

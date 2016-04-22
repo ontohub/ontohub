@@ -2,8 +2,8 @@ class CreateLocIds < ActiveRecord::Migration
   def up
     create_table :loc_ids do |t|
       t.string :locid, null: false
-      t.integer :assorted_object_id, null: false
-      t.string :assorted_object_type, null: false
+      t.integer :specific_id, null: false
+      t.string :specific_type, null: false
 
       t.timestamps
     end

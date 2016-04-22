@@ -76,7 +76,7 @@ module Ontology::ClassMethodsAndScopes
 
   module ClassMethods
     def find_with_locid(locid, iri = nil)
-      ontology = ::LocId.where(locid: locid).first.try(:assorted_object)
+      ontology = ::LocId.where(locid: locid).first.try(:specific)
 
       if ontology.nil? && iri
         ontology = AlternativeIri.where('iri LIKE ?', '%' << iri).
@@ -90,7 +90,7 @@ module Ontology::ClassMethodsAndScopes
       locid = iri_to_locid(iri)
       ontology = ::LocId.where(
                                'locid LIKE ?', '%' << locid
-                              ).first.try(:assorted_object)
+                              ).first.try(:specific)
       if ontology.nil?
         ontology = AlternativeIri.where('iri LIKE ?', '%' << iri).
           first.try(:ontology)
