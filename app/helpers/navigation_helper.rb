@@ -21,7 +21,7 @@ module NavigationHelper
     content_page = ontology.distributed? ? :children : :symbols
     @top_level_pages = [
       ['Content', locid_for(resource, content_page),
-       :symbols],
+       content_page.to_sym],
       ['Comments', locid_for(resource, :comments),
        :comments],
       ['Metadata', locid_for(resource, :metadata),
