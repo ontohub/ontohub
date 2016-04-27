@@ -8,6 +8,9 @@ FactoryGirl.define do
     name { FactoryGirl.generate :mapping_name }
     kind { 'view' }
     association :ontology
+    after(:build) do |mapping|
+      mapping.versions << FactoryGirl.build(:mapping_version, mapping: mapping)
+    end
 
     factory :import_mapping do
       kind 'import'

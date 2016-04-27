@@ -11,10 +11,10 @@ When(/^I visit the ontology via the loc\/id$/) do
   visit @ontology.locid
 end
 
-Then(/^i should get a response with a status of (\d+)$/) do |code|
+Then(/^I should get a response with a status of (\d+)$/) do |code|
   expect(page.status_code).to eq(code)
 end
 
-Then(/^i should have an API\-command matching '([^']+)'$/) do |command|
+Then(/^I should have an API\-command matching '([^']+)'$/) do |command|
   expect(current_path).to include("///#{command}")
 end
