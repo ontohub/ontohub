@@ -58,19 +58,22 @@ class LocIdRouterConstraint < RouterConstraint
       unescape_uri(request.original_fullpath)
     # retrieves the hierarchy and member portions of loc/id's
     hierarchy_member = path.split('?', 2).first.split('///', 2).first
-    element = @find_in_klass.find_with_locid(hierarchy_member)
-    ontology = element.respond_to?(:ontology) ? element.ontology : element
+    element = LocIdBaseModel.find_with_locid(hierarchy_member)
+    ontology =
+      if element.is_a?(@find_in_klass)
+        if element.is_a?(Ontology)
+          element
+        else
+          element.ontology
+        end
+      end
     result = !ontology.nil?
 
     if result
       proof_attempt = element.proof_attempt if @map[:proof_attempt]
       theorem = element.theorem if @map[:theorem]
-      path_params =
-        if ontology.respond_to?(:repository)
-          {repository_id: ontology.repository.to_param}
-        else
-          {}
-        end
+
+      path_params = {repository_id: ontology.repository.to_param}
       path_params[@map[:proof_attempt]] = proof_attempt.id if @map[:proof_attempt]
       path_params[@map[:theorem]] = theorem.id if @map[:theorem]
       path_params[@map[:ontology]] = ontology.id if @map[:ontology]
