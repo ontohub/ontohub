@@ -97,3 +97,6 @@ WebMock.allow_net_connect!(:net_http_connect_on_start => true)
 
 include Warden::Test::Helpers
 Warden.test_mode!
+
+Test::Unit::AutoRunner.need_auto_run = false if defined?(Test::Unit::AutoRunner)
+Test::Unit.run = true if defined?(Test::Unit) && Test::Unit.respond_to?(:run=)
