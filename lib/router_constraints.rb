@@ -47,6 +47,8 @@ class FilesRouterConstraint < RouterConstraint
 end
 
 class LocIdRouterConstraint < RouterConstraint
+  ELEMENTS_CACHE_CLEARING_INTERVAL = 1.minute
+  @elements_cache_clear_at = Time.now + ELEMENTS_CACHE_CLEARING_INTERVAL
   @elements_cache = {}
 
   def initialize(find_in_klass, **map)
@@ -66,6 +68,7 @@ class LocIdRouterConstraint < RouterConstraint
 
     if element.is_a?(@find_in_klass)
       elements_cache.delete(hierarchy_member)
+      clear_elements_cache if elements_cache_clearing_scheduled?
       assign_path_parameters(request, element)
 
       true
@@ -79,6 +82,19 @@ class LocIdRouterConstraint < RouterConstraint
 
   def elements_cache
     self.class.instance_variable_get(:@elements_cache)
+  end
+
+  # To keep the memory footprint low in case of unproper removal of cached
+  # elements, we clear the cache periodically. This prevents memory leaks.
+  def clear_elements_cache
+    next_clearing = Time.now + ELEMENTS_CACHE_CLEARING_INTERVAL
+    self.class.instance_variable_set(:@elements_cache_clear_at, next_clearing)
+
+    self.class.instance_variable_set(:@elements_cache, {})
+  end
+
+  def elements_cache_clearing_scheduled?
+    Time.now > self.class.instance_variable_get(:@elements_cache_clear_at)
   end
 
   def assign_path_parameters(request, element)
