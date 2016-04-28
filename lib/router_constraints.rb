@@ -47,6 +47,8 @@ class FilesRouterConstraint < RouterConstraint
 end
 
 class LocIdRouterConstraint < RouterConstraint
+  @elements_cache = {}
+
   def initialize(find_in_klass, **map)
     @find_in_klass = find_in_klass
     @map = map
@@ -58,31 +60,40 @@ class LocIdRouterConstraint < RouterConstraint
       unescape_uri(request.original_fullpath)
     # retrieves the hierarchy and member portions of loc/id's
     hierarchy_member = path.split('?', 2).first.split('///', 2).first
-    element = LocIdBaseModel.find_with_locid(hierarchy_member)
-    ontology =
-      if element.is_a?(@find_in_klass)
-        if element.is_a?(Ontology)
-          element
-        else
-          element.ontology
-        end
+    element =
+      elements_cache[hierarchy_member] ||
+      LocIdBaseModel.find_with_locid(hierarchy_member)
+
+    if element.is_a?(@find_in_klass)
+      elements_cache.delete(hierarchy_member)
+      assign_path_parameters(request, element)
+
+      true
+    else
+      if !elements_cache.key?(hierarchy_member) && element
+        elements_cache[hierarchy_member] = element
       end
-    result = !ontology.nil?
-
-    if result
-      proof_attempt = element.proof_attempt if @map[:proof_attempt]
-      theorem = element.theorem if @map[:theorem]
-
-      path_params = {repository_id: ontology.repository.to_param}
-      path_params[@map[:proof_attempt]] = proof_attempt.id if @map[:proof_attempt]
-      path_params[@map[:theorem]] = theorem.id if @map[:theorem]
-      path_params[@map[:ontology]] = ontology.id if @map[:ontology]
-      path_params[@map[:element]] = element.id if @map[:element]
-
-      add_path_parameters(request, path_params)
+      false
     end
+  end
 
-    return result
+  def elements_cache
+    self.class.instance_variable_get(:@elements_cache)
+  end
+
+  def assign_path_parameters(request, element)
+    ontology = element.is_a?(Ontology) ? element : element.ontology
+
+    proof_attempt = element.proof_attempt if @map[:proof_attempt]
+    theorem = element.theorem if @map[:theorem]
+
+    path_params = {repository_id: ontology.repository.to_param}
+    path_params[@map[:proof_attempt]] = proof_attempt.id if @map[:proof_attempt]
+    path_params[@map[:theorem]] = theorem.id if @map[:theorem]
+    path_params[@map[:ontology]] = ontology.id if @map[:ontology]
+    path_params[@map[:element]] = element.id if @map[:element]
+
+    add_path_parameters(request, path_params)
   end
 end
 
