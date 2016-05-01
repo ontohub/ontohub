@@ -147,7 +147,11 @@ has a minimal Hets version of #{Hets.minimal_version_string}
   end
 
   def set_up_state
-    version = check_up_state
+    begin
+      version = check_up_state
+    rescue
+      version = nil
+    end
     self.up = !! version
     self.version = version if up
   end
