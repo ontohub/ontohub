@@ -3,6 +3,14 @@ Given(/^there is a distributed ontology$/) do
   @ontology = @distributed_ontology
 end
 
+Given(/^there is a ontology file$/) do
+  repository = @ontology.repository
+  user = repository.permissions.first.subject
+  Tempfile.create('testfile') do |f|
+    repository.save_file_only(f.path, @ontology.path, 'add ontology file', user)
+  end
+end
+
 When(/^i visit the versions tab of a child ontology$/) do
   @ontology = @distributed_ontology.children.first
 
