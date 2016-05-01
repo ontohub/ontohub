@@ -69,7 +69,7 @@ has a minimal Hets version of #{Hets.minimal_version_string}
       instance ||= increment_queue! { active.busy.load_balancing_order.first }
       instance.try(:set_busy!)
     end
-    if instance
+    if instance && instance.send(:check_up_state)
       instance
     elsif try_again
       find_each { |hets_instance| hets_instance.send(:set_up_state!) }
@@ -143,15 +143,15 @@ has a minimal Hets version of #{Hets.minimal_version_string}
   end
 
   def check_up_state
-    Hets::VersionCaller.new(self).call
+    begin
+      Hets::VersionCaller.new(self).call
+    rescue Errno::ECONNREFUSED, Errno::ETIMEDOUT, Errno::ECONNRESET
+      nil
+    end
   end
 
   def set_up_state
-    begin
-      version = check_up_state
-    rescue
-      version = nil
-    end
+    version = check_up_state
     self.up = !! version
     self.version = version if up
   end
