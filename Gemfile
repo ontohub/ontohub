@@ -158,6 +158,8 @@ group :test do
 
   # Writing test ontologies
   gem 'ontology-united', github: '0robustus1/ontology-united'
+
+  gem 'test-unit', '~> 3.0'
 end
 
 group :development do
