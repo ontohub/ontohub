@@ -3,7 +3,7 @@ Given(/^there is a distributed ontology$/) do
   @ontology = @distributed_ontology
 end
 
-Given(/^there is a ontology file$/) do
+Given(/^there is an ontology file$/) do
   repository = @ontology.repository
   user = repository.permissions.first.subject
   Tempfile.create('testfile') do |f|

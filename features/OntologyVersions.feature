@@ -18,7 +18,7 @@ Scenario: Displaying an edit button on the latest ontology if it is failed with 
   And I am logged in
   And there is an ontology with a "failed" version
   And I have permissions to edit the ontology
-  And there is a ontology file
+  And there is an ontology file
   When I visit the versions tab of the ontology
   And I should see a "Edit" button for the latest version
   And I should see a "View" button for every other version
