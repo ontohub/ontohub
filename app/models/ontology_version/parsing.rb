@@ -18,6 +18,10 @@ module OntologyVersion::Parsing
     if !@deactivate_parsing
       update_state! :pending
 
+      Sidekiq::RetrySet.new.each do |job|
+        job.kill if job.args.first == id
+      end
+
       if @fast_parse
         OntologyParsingWorker.perform_async(id, :parse_fast,
                                             files_to_parse_afterwards)
