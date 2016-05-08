@@ -25,7 +25,7 @@ has a minimal Hets version of #{Hets.minimal_version_string}
 
   attr_accessible :name, :uri, :state, :queue_size
 
-  before_save :set_up_state, unless: Proc.new { |h| h.changed_attributes.key?("up") }
+  before_save :set_up_state, unless: ->() { changed_attributes.key?("up") }
   before_save :set_state_updated_at
   after_create :start_update_clock
 
@@ -143,11 +143,9 @@ has a minimal Hets version of #{Hets.minimal_version_string}
   end
 
   def check_up_state
-    begin
-      Hets::VersionCaller.new(self).call
-    rescue Errno::ECONNREFUSED, Errno::ETIMEDOUT, Errno::ECONNRESET
-      nil
-    end
+    Hets::VersionCaller.new(self).call
+  rescue Errno::ECONNREFUSED, Errno::ETIMEDOUT, Errno::ECONNRESET
+    nil
   end
 
   def set_up_state

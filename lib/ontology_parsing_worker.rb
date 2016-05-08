@@ -1,5 +1,5 @@
 class OntologyParsingWorker < Worker
-  sidekiq_options retry: 1, queue: 'hets'
+  sidekiq_options retry: false, queue: 'hets'
 
   sidekiq_retry_in do
     1.hour
@@ -11,15 +11,10 @@ class OntologyParsingWorker < Worker
     # We need to wait a second for the SQL query to finish.
     # Otherwise there is no OntologyVersion with id=ontology_version_id.
     # FIXME This needs to be handled properly.
-    begin
-      sleep 1 unless defined?(Sidekiq::Testing) && Sidekiq::Testing.inline?
-      super('record', 'OntologyVersion', parse_mode, ontology_version_id, *args,
-            try_count: 1)
-    rescue HetsInstance::NoSelectableHetsInstanceError => e
-      raise e
-    rescue Exception => e
-      # Dont retry
-      raise Sidekiq::Retries::Fail.new(e)
-    end
+    sleep 1 unless defined?(Sidekiq::Testing) && Sidekiq::Testing.inline?
+    super('record', 'OntologyVersion', parse_mode, ontology_version_id, *args,
+          try_count: 1)
+  rescue HetsInstance::NoSelectableHetsInstanceError => e
+    raise Sidekiq::Retries::Retry.new(e)
   end
 end
