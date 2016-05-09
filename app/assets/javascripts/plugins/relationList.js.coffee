@@ -65,7 +65,7 @@ $.widget "ui.relationList",
           type = @type.toLowerCase()  if type is "input"
           switch type
             when "checkbox"
-              @checked = value is "1"
+              @checked = value == 1
             when "select"
               $(this).val value
 
