@@ -5,7 +5,7 @@ module Repository::Symlinks
   extend ActiveSupport::Concern
 
   included do
-    after_save     :symlinks_update, if: :path_changed?
+    after_save     :symlinks_update, if: :symlink_update?
     before_destroy :symlinks_remove
   end
 
@@ -20,6 +20,10 @@ module Repository::Symlinks
 
   protected
 
+  def symlink_update?
+    access_changed? || path_changed?
+  end
+
   def create_hooks_symlink
     hooks_symlink_name = local_path.join("hooks")
     hooks_symlink_name.rmtree
@@ -28,7 +32,11 @@ module Repository::Symlinks
   end
 
   def symlinks_update
-    create_cloning_symlink(:git_daemon) if public_r? || public_rw?
+    if public_r? || public_rw?
+      create_cloning_symlink(:git_daemon)
+    else
+      remove_cloning_symlink(:git_daemon)
+    end
     create_cloning_symlink(:git_ssh)
   end
 

@@ -23,6 +23,21 @@ describe Repository::Symlinks do
 
     include_examples('symlink_creation', :git_daemon)
     include_examples('symlink_creation', :git_ssh)
+
+    context 'made private' do
+      before do
+        repository.access = 'private_rw'
+        repository.save!
+      end
+
+      it 'deletes the git_daemon symlink' do
+        expect(repository.symlink_path(:git_daemon).exist?).to be(false)
+      end
+
+      it 'keeps the git_ssh symlink' do
+        expect(repository.symlink_path(:git_ssh).exist?).to be(true)
+      end
+    end
   end
 
   context 'private repository' do
@@ -35,6 +50,17 @@ describe Repository::Symlinks do
 
       it "symlink for git_daemon not created" do
         expect(repository.symlink_path(category).exist?).to be(false)
+      end
+
+      context 'made public' do
+        before do
+          repository.access = 'public_r'
+          repository.save!
+        end
+
+        it 'creates the symlink' do
+          expect(repository.symlink_path(category).exist?).to be(true)
+        end
       end
 
       context 'repository destroy' do

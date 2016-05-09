@@ -45,10 +45,9 @@ module Repository::Access
 
   private
 
-  def clear_readers
+  def handle_access_change
     if access_changed? && (access_was == 'private_r' || access_was == 'private_rw')
       permissions.where(role: 'reader').destroy_all
     end
   end
-
 end

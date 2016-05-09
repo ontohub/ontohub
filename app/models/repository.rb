@@ -18,7 +18,7 @@ class Repository < ActiveRecord::Base
   attr_accessor :user
 
   before_validation :set_path
-  after_save :clear_readers
+  after_save :handle_access_change
 
   scope :latest, order('updated_at DESC')
 
