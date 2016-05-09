@@ -9,8 +9,14 @@ class Admin::UsersController < InheritedResources::Base
   with_role :admin
 
   def update
-    update! do
-      params[:back_url].blank? ? collection_url : params[:back_url]
+    update! do |format|
+      format.html do
+        resource.skip_reconfirmation!
+        resource.update_attributes({email: params["user"]["email"],
+          name: params["user"]["name"],
+          admin: params["user"]["admin"] == "1"}, without_protection: true)
+        redirect_to(params[:back_url].blank? ? collection_url : params[:back_url])
+      end
     end
   end
 
