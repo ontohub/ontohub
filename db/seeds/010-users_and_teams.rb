@@ -13,8 +13,10 @@
 
 # Create Team.
 @team = Team.create! \
-  name:       'Lorem Ipsum',
-  admin_user: @user
+  name:       'Lorem Ipsum'
+
+@team.admin_user = @user
+@team.save!
 
 # Create some other users.
 %w(Bob Alice Carol Dave Ted).each_with_index do |name, i|
