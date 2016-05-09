@@ -14,8 +14,14 @@ module GitRepository::Committing
       &block)
   end
 
-  # change a single file and commit the change
   def commit_file(userinfo, file_contents, target_path, message, &block)
+    Semaphore.exclusively("action:#{repo}") do
+      commit_file_without_lock(userinfo, file_contents, target_path, message, &block)
+    end
+  end
+
+  # change a single file and commit the change
+  def commit_file_without_lock(userinfo, file_contents, target_path, message, &block)
     # throw exception if path is below a file
     if points_through_file?(target_path)
       raise GitRepository::PathBelowFileException
