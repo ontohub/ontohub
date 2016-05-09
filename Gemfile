@@ -132,6 +132,10 @@ gem 'acts_as_relation', '~> 0.1.3'
 # Clean the database - especially needed in the seeds
 gem 'database_cleaner', '~> 1.5.1'
 
+
+# For unknown reasons, activesupport-3.2.22.2 requires test-unit, even in
+# production mode.
+gem 'test-unit', '~> 3.0'
 group :test do
   gem 'mocha', '~> 1.1.0', require: false
   gem 'shoulda', '~> 3.5.0'
@@ -159,8 +163,6 @@ group :test do
 
   # Writing test ontologies
   gem 'ontology-united', github: '0robustus1/ontology-united'
-
-  gem 'test-unit', '~> 3.0'
 end
 
 group :development do
