@@ -5,11 +5,9 @@ class LocIdBaseModel < ActiveRecord::Base
 
   def self.find_with_locid(locid, iri = nil)
     result = LocId.where(locid: locid).first.try(:specific)
-    if table_name == 'ontologies'
-      if result.nil? && iri
-        result = AlternativeIri.where('iri LIKE ?', '%' << iri).
-          first.try(:ontology)
-      end
+    if table_name == 'ontologies' && result.nil? && iri
+      result = AlternativeIri.where('iri LIKE ?', '%' << iri).
+        first.try(:ontology)
     end
     result
   end
