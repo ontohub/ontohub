@@ -25,7 +25,7 @@ has a minimal Hets version of #{Hets.minimal_version_string}
 
   attr_accessible :name, :uri, :state, :queue_size
 
-  before_save :set_up_state
+  before_save :set_up_state, unless: ->() { changed_attributes.key?("up") }
   before_save :set_state_updated_at
   after_create :start_update_clock
 
@@ -69,7 +69,7 @@ has a minimal Hets version of #{Hets.minimal_version_string}
       instance ||= increment_queue! { active.busy.load_balancing_order.first }
       instance.try(:set_busy!)
     end
-    if instance
+    if instance && instance.send(:check_up_state)
       instance
     elsif try_again
       find_each { |hets_instance| hets_instance.send(:set_up_state!) }
@@ -144,6 +144,8 @@ has a minimal Hets version of #{Hets.minimal_version_string}
 
   def check_up_state
     Hets::VersionCaller.new(self).call
+  rescue Errno::ECONNREFUSED, Errno::ETIMEDOUT, Errno::ECONNRESET
+    nil
   end
 
   def set_up_state

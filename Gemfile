@@ -95,6 +95,7 @@ gem 'sidekiq', '~> 3.5.3'
 # The ref is given to ensure that no other (possibly breaking) changes are taken.
 gem 'sidetiq', github: 'PaulMest/sidetiq', ref: 'd88f9e483affcbadbd9e8b98b4a0a9518933887a'
 gem 'sidekiq-failures', '~> 0.4.5'
+gem 'sidekiq-retries', '~> 0.4.0'
 gem 'sidekiq-status', '~> 0.6.0'
 gem 'sinatra', '~> 1.4.5', require: false, group: [:development, :production]
 

@@ -494,6 +494,8 @@ GEM
       redis-namespace (~> 1.5, >= 1.5.2)
     sidekiq-failures (0.4.5)
       sidekiq (>= 2.16.0)
+    sidekiq-retries (0.4.0)
+      sidekiq (>= 3.2.4)
     sidekiq-status (0.6.0)
       sidekiq (>= 2.7)
     sigar (0.7.3)
@@ -649,6 +651,7 @@ DEPENDENCIES
   shoulda_routing_macros (~> 0.1.2)
   sidekiq (~> 3.5.3)
   sidekiq-failures (~> 0.4.5)
+  sidekiq-retries (~> 0.4.0)
   sidekiq-status (~> 0.6.0)
   sidetiq!
   simple_form (~> 2.1)
@@ -665,4 +668,4 @@ DEPENDENCIES
   yard (~> 0.8.7.6)
 
 BUNDLED WITH
-   1.11.2
+   1.12.1

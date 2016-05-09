@@ -1,6 +1,10 @@
 class OntologyParsingWorker < Worker
   sidekiq_options retry: false, queue: 'hets'
 
+  sidekiq_retry_in do
+    1.hour
+  end
+
   # parse_mode can be 'parse_fast' or 'parse_full'
   # *args only holds the array files_to_parse_afterwards
   def perform(ontology_version_id, parse_mode, *args)
@@ -10,5 +14,7 @@ class OntologyParsingWorker < Worker
     sleep 1 unless defined?(Sidekiq::Testing) && Sidekiq::Testing.inline?
     super('record', 'OntologyVersion', parse_mode, ontology_version_id, *args,
           try_count: 1)
+  rescue HetsInstance::NoSelectableHetsInstanceError => e
+    raise Sidekiq::Retries::Retry.new(e)
   end
 end
