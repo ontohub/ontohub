@@ -26,6 +26,12 @@ class GitUpdate
   end
 
   def exec
+    Semaphore.exclusively("action:#{@repo_name}") do
+      exec_without_lock
+    end
+  end
+
+  def exec_without_lock
     # If its push over ssh
     # we need to check user persmission per branch first
     if ssh?
