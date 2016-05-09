@@ -78,6 +78,10 @@ class OntologyVersion < ActiveRecord::Base
 
   alias_method :versioned_locid, :locid
 
+  def latest_version?
+    ontology.versions.last == self
+  end
+
   protected
 
   def raw_file_size_maximum

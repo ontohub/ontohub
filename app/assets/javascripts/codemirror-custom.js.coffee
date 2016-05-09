@@ -95,4 +95,6 @@ $ ->
     editorPreventFocus()
     btn_edit.unbind("click").click enableEditing
 
+    if window.location.hash == '#edit'
+      enableEditing($.Event("click"))
   return
