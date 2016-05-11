@@ -1,10 +1,10 @@
 require 'optparse'
 
-RAILS_ROOT = File.expand_path('../..', __FILE__)
-SIDEKIQ_EXECUTABLE = File.join(RAILS_ROOT, 'bin/sidekiq')
+RAILS_ROOT = File.expand_path('../..', __FILE__).freeze
+SIDEKIQ_EXECUTABLE = File.join(RAILS_ROOT, 'bin/sidekiq').freeze
 SIDEKIQ_BASE_ARGUMENTS = %W(#{SIDEKIQ_EXECUTABLE}
                             --environment #{ENV['RAILS_ENV'] || 'production'}
-                            --timeout 15)
+                            --timeout 15).freeze
 
 # Parse options
 def parse_options(filename)
