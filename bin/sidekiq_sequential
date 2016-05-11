@@ -1,0 +1,11 @@
+#!/usr/bin/env ruby
+
+require_relative 'sidekiq_wrapper_base.rb'
+
+def arguments
+  %W(--queue sequential
+     --concurrency 1)
+end
+
+options = parse_options(File.basename(__FILE__))
+run_process(options, arguments, File.basename(__FILE__))

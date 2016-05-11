@@ -1,0 +1,19 @@
+#!/usr/bin/env ruby
+
+require_relative '../lib/environment_light.rb'
+require_relative 'sidekiq_wrapper_base.rb'
+
+def hets_queue_thread_count
+  # One thread per configured hets instance, minus one for the sequential queue.
+  [1, Settings.hets.instance_urls.size - 1].max
+end
+
+def arguments
+  %W(--queue prioirty_push,25
+     --queue hets-5
+     --queue hets-migration,1
+     --concurrency #{hets_queue_thread_count})
+end
+
+options = parse_options(File.basename(__FILE__))
+run_process(options, arguments, File.basename(__FILE__))
