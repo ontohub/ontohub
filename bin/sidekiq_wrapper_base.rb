@@ -16,7 +16,7 @@ def parse_options(filename)
       options[:workdir] = w
     end
   end.parse!
-  raise OptionParser::MissingArgument, '--workdir' if options[:workdir].nil?
+  options[:workdir] ||= Dir.pwd
   options
 end
 
