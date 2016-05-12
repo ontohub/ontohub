@@ -5,16 +5,19 @@ require_relative '../lib/environment_light.rb'
 
 RAILS_ROOT = File.expand_path('../..', __FILE__).freeze
 SIDEKIQ_EXECUTABLE = File.join(RAILS_ROOT, 'bin/sidekiq').freeze
-SIDEKIQ_BASE_ARGUMENTS =
-  %W(#{SIDEKIQ_EXECUTABLE}
-     --environment #{ENV['RAILS_ENV'] || 'production'}).freeze
 
 # Parse options
 def parse_options
-  options = {workdir: Dir.pwd,
+  options = {environment: 'production',
+             workdir: Dir.pwd,
              timeout: 15}
   OptionParser.new do |opts|
     opts.banner = "Usage: #{File.basename(__FILE__)} [options]"
+
+    opts.on('-eMANDATORY', '--environment=MANDATORY',
+            "Set Rails environment (default: #{options[:environment]})") do |e|
+      options[:environment] = e
+    end
 
     opts.on('-wMANDATORY', '--workdir=MANDATORY',
             'Set work directory (default: CWD)') do |w|
@@ -31,7 +34,8 @@ def parse_options
 end
 
 def run_process(options, arguments, name)
-  Process.spawn(*SIDEKIQ_BASE_ARGUMENTS, *arguments,
+  Process.spawn(SIDEKIQ_EXECUTABLE, *arguments,
+                '--environment', options[:environment],
                 '--timeout', options[:timeout].to_s,
                 '--pidfile', "#{File.join(options[:workdir], name)}.pid",
                 '--logfile', "#{File.join(options[:workdir], name)}.log")
