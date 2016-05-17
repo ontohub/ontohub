@@ -143,7 +143,7 @@ group :test do
   gem 'rspec-activemodel-mocks', '~> 1.0.1'
   # rspec-its >= 1.1 depends on rspec 3
   gem 'rspec-its', '~> 1.0.1'
-  gem "factory_girl_rails", '~> 4.5.0'
+  gem "factory_girl_rails", '~> 4.7.0'
 
   # Required for integration tests
   gem 'capybara', '~> 2.5.0'
