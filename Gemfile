@@ -36,6 +36,7 @@ group :assets do
   gem 'd3_rails', '~> 3.5.6'
   gem 'therubyracer', '~> 0.12.1'
   gem 'uglifier', '>= 1.0.3'
+  # handlebars_assets >= 0.23.0 is not compatible to rails 3
   gem 'handlebars_assets', '~> 0.22.0'
   gem 'hamlbars', '~> 2.1.1'
   gem 'underscore-rails', '~> 1.8.2'
@@ -60,6 +61,7 @@ gem 'simple_form', '~> 2.1'
 
 # Inherited Resources
 gem 'inherited_resources', '~> 1.4.1'
+# has_scope => 0.7.0 dies not support Rails 3.2 and 4.0
 gem 'has_scope', '~> 0.6.0.rc'
 
 # JSON views
@@ -72,6 +74,7 @@ gem 'json-stream', '~> 0.2.1'
 gem 'nokogiri', '~> 1.6.7'
 
 # Authentication
+# devise => 4.0.0 does not support Rails 3.2 and Rails 4.0
 gem 'devise', '~> 3.5.2'
 
 # Authorization
