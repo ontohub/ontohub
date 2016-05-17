@@ -15,7 +15,7 @@ gem 'rdf', '~> 1.99.0'
 gem 'rdf-rdfxml', '~> 1.99.0'
 gem 'rdf-n3', '~> 1.99.0'
 
-gem 'redis-semaphore', '~> 0.2.4'
+gem 'redis-semaphore', '~> 0.3.1'
 
 # Gems used only for assets and not required
 # in production environments by default.
