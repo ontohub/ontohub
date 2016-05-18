@@ -82,7 +82,7 @@ module Hets
       rescue ActiveRecord::RecordNotUnique => e
         if e.message.include?(LOCID_UNIQUE_ERROR)
           raise Hets::SyntaxError,
-            I18n.t('ontology.parsing.errors.duplicate_name.many',
+            I18n.t('ontology.parsing.errors.duplicate_name_many',
                    name: current_element['name'],
                    range: current_element['range'],
                    class: 'symbol',
@@ -105,7 +105,7 @@ module Hets
       rescue ActiveRecord::RecordNotUnique => e
         if e.message.include?(LOCID_UNIQUE_ERROR)
           raise Hets::SyntaxError,
-            I18n.t('ontology.parsing.errors.duplicate_name.many',
+            I18n.t('ontology.parsing.errors.duplicate_name_many',
                    name: current_element['name'],
                    range: current_element['range'],
                    class: 'axiom',
@@ -129,7 +129,7 @@ module Hets
       rescue ActiveRecord::RecordNotUnique => e
         if e.message.include?(LOCID_UNIQUE_ERROR)
           raise Hets::SyntaxError,
-            I18n.t('ontology.parsing.errors.duplicate_name.many',
+            I18n.t('ontology.parsing.errors.duplicate_name_many',
                    name: current_element['name'],
                    range: current_element['range'],
                    class: 'axiom',
@@ -152,7 +152,7 @@ module Hets
       rescue ActiveRecord::RecordNotUnique => e
         if e.message.include?(LOCID_UNIQUE_ERROR)
           raise Hets::SyntaxError,
-                I18n.t('ontology.parsing.errors.duplicate_name.many',
+                I18n.t('ontology.parsing.errors.duplicate_name_many',
                        name: current_element['name'],
                        range: current_element['range'],
                        class: 'theorem',
@@ -173,7 +173,7 @@ module Hets
       rescue ActiveRecord::RecordNotUnique => e
         if e.message.include?(LOCID_UNIQUE_ERROR)
           raise Hets::SyntaxError,
-            I18n.t('ontology.parsing.errors.duplicate_name.one',
+            I18n.t('ontology.parsing.errors.duplicate_name_one',
                    name: current_element['name'],
                    range: current_element['range'],
                    class: Mapping.to_s,
