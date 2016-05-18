@@ -2,7 +2,8 @@ module Hets
   module DG
     class NodeEvaluator < ConcurrentEvaluator
       LOCID_UNIQUE_ERROR =
-        %(duplicate key value violates unique constraint "index_loc_ids_on_locid")
+        (%(duplicate key value violates unique constraint )\
+         %("index_loc_ids_on_locid")).freeze
       include NodeEvaluationHelper
 
       attr_accessor :current_element
