@@ -1,5 +1,6 @@
 module Hets
   module Errors
+    class SyntaxError < ::StandardError; end
     class NotAHetsError < ::StandardError; end
     class HetsError < ::StandardError; end
 

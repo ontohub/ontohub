@@ -1,4 +1,4 @@
-(cl-text CatSentence
+(cl-text Cat
   (P x)
   (and (P x) (Q y))
   (or (Cat x) (Mat y))

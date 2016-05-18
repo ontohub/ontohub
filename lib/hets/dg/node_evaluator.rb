@@ -1,6 +1,8 @@
 module Hets
   module DG
     class NodeEvaluator < ConcurrentEvaluator
+      LOCID_UNIQUE_ERROR =
+        %(duplicate key value violates unique constraint "index_loc_ids_on_locid")
       include NodeEvaluationHelper
 
       attr_accessor :current_element
@@ -77,6 +79,18 @@ module Hets
 
           logic_callback.symbol(current_element, symbol)
         end
+      rescue ActiveRecord::RecordNotUnique => e
+        if e.message.include?(LOCID_UNIQUE_ERROR)
+          raise Hets::SyntaxError,
+            I18n.t('ontology.parsing.errors.duplicate_name.many',
+                   name: current_element['name'],
+                   range: current_element['range'],
+                   class: 'symbol',
+                   type1: 'axiom',
+                   type2: 'theorem')
+        else
+          raise e
+        end
       end
 
       def axiom(current_element)
@@ -87,6 +101,18 @@ module Hets
           ontology.sentences_count += 1
 
           logic_callback.axiom(current_element, axiom)
+        end
+      rescue ActiveRecord::RecordNotUnique => e
+        if e.message.include?(LOCID_UNIQUE_ERROR)
+          raise Hets::SyntaxError,
+            I18n.t('ontology.parsing.errors.duplicate_name.many',
+                   name: current_element['name'],
+                   range: current_element['range'],
+                   class: 'axiom',
+                   type1: 'symbol',
+                   type2: 'theorem')
+        else
+          raise e
         end
       end
 
@@ -100,6 +126,18 @@ module Hets
 
           logic_callback.axiom(current_element, axiom)
         end
+      rescue ActiveRecord::RecordNotUnique => e
+        if e.message.include?(LOCID_UNIQUE_ERROR)
+          raise Hets::SyntaxError,
+            I18n.t('ontology.parsing.errors.duplicate_name.many',
+                   name: current_element['name'],
+                   range: current_element['range'],
+                   class: 'axiom',
+                   type1: 'symbol',
+                   type2: 'theorem')
+        else
+          raise e
+        end
       end
 
       def theorem(current_element)
@@ -111,6 +149,18 @@ module Hets
 
           logic_callback.theorem(current_element, theorem)
         end
+      rescue ActiveRecord::RecordNotUnique => e
+        if e.message.include?(LOCID_UNIQUE_ERROR)
+          raise Hets::SyntaxError,
+                I18n.t('ontology.parsing.errors.duplicate_name.many',
+                       name: current_element['name'],
+                       range: current_element['range'],
+                       class: 'theorem',
+                       type1: 'axiom',
+                       type2: 'symbol')
+        else
+          raise e
+        end
       end
 
       def mapping(current_element)
@@ -119,6 +169,17 @@ module Hets
           mapping = parent_ontology.mappings.update_or_create_from_hash(
             current_element, user, importer.now)
           logic_callback.mapping(current_element, mapping)
+        end
+      rescue ActiveRecord::RecordNotUnique => e
+        if e.message.include?(LOCID_UNIQUE_ERROR)
+          raise Hets::SyntaxError,
+            I18n.t('ontology.parsing.errors.duplicate_name.one',
+                   name: current_element['name'],
+                   range: current_element['range'],
+                   class: Mapping.to_s,
+                   type_with_article: 'a child ontology')
+        else
+          raise e
         end
       end
 
