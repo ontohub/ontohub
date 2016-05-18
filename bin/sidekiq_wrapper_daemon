@@ -1,0 +1,8 @@
+#!/usr/bin/env ruby
+
+require 'daemons'
+
+RAILS_ROOT = File.expand_path('../..', __FILE__).freeze
+Daemons.run(File.join(RAILS_ROOT, 'bin/sidekiq_wrapper'),
+            dir_mode: :normal,
+            dir: File.join(RAILS_ROOT, 'tmp/pids'))

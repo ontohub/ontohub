@@ -3,7 +3,7 @@
 require 'optparse'
 require_relative '../lib/environment_light.rb'
 
-RAILS_ROOT = File.expand_path('../..', __FILE__).freeze
+RAILS_ROOT ||= File.expand_path('../..', __FILE__).freeze
 SIDEKIQ_EXECUTABLE = File.join(RAILS_ROOT, 'bin/sidekiq').freeze
 
 # Parse options
@@ -35,6 +35,7 @@ end
 
 def run_process(options, arguments, name)
   Process.spawn(SIDEKIQ_EXECUTABLE, *arguments,
+                '--require', RAILS_ROOT,
                 '--environment', options[:environment],
                 '--timeout', options[:timeout].to_s,
                 '--pidfile', "#{File.join(options[:workdir], name)}.pid",
