@@ -35,6 +35,8 @@ ontologies.each do |path|
   begin
     version.parse
   rescue Hets::SyntaxError
+    # Suppress this error in the seeds. We want to have erroneous ontologies in
+    # the basic data.
   end
   if version
     version.ontology.update_attribute :description, Faker::Lorem.paragraph
