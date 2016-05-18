@@ -14,17 +14,17 @@ def parse_options
   OptionParser.new do |opts|
     opts.banner = "Usage: #{File.basename(__FILE__)} [options]"
 
-    opts.on('-eMANDATORY', '--environment=MANDATORY',
+    opts.on('-eMANDATORY', '--environment=Rails env',
             "Set Rails environment (default: #{options[:environment]})") do |e|
       options[:environment] = e
     end
 
-    opts.on('-wMANDATORY', '--workdir=MANDATORY',
+    opts.on('-wMANDATORY', '--workdir=directory',
             'Set work directory (default: CWD)') do |w|
       options[:workdir] = w
     end
 
-    opts.on('-tMANDATORY', '--timeout=MANDATORY',
+    opts.on('-tMANDATORY', '--timeout=seconds',
             'Set timeout in seconds until sidekiq jobs are killed at '\
             "sidekiq shutdown (default: #{options[:timeout]})") do |t|
       options[:timeout] = t
