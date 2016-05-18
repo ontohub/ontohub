@@ -49,15 +49,15 @@ end
 options = parse_options
 pids = {}
 processes =
-  {hets: %W(--queue prioirty_push,25
-            --queue hets,5
-            --queue hets-migration,1
-            --concurrency #{hets_queue_thread_count}),
-   sequential: %W(--queue sequential
-                  --concurrency 1),
-   default: %w(--queue default
-               --queue hets_load_balancing
-               --concurrency 5)}
+  {:'sidekiq-hets' => %W(--queue prioirty_push,25
+                         --queue hets,5
+                         --queue hets-migration,1
+                         --concurrency #{hets_queue_thread_count}),
+   :'sidekiq-sequential' => %w(--queue sequential
+                               --concurrency 1),
+   :'sidekiq-default' => %w(--queue default
+                            --queue hets_load_balancing
+                            --concurrency 5)}
 
 # USR1: terminate in the near future
 # USR2: reopen logs
@@ -65,14 +65,14 @@ processes =
 %w(USR1 USR2 TERM).each do |signal|
   Signal.trap(signal) do
     pids.each do |name, pid|
-      $stdout.puts "Sending #{signal} to sidekiq-#{name}..."
+      $stdout.puts "Sending #{signal} to #{name}..."
       Process.kill(signal, pid)
     end
   end
 end
 
 processes.each do |name, arguments|
-  pids[name] = run_process(options, arguments, "sidekiq-#{name}")
+  pids[name] = run_process(options, arguments, "#{name}")
 end
 pids.each do |name, pid|
   Process.wait(pid)
