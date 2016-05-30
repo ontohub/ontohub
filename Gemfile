@@ -15,7 +15,7 @@ gem 'rdf', '~> 1.99.0'
 gem 'rdf-rdfxml', '~> 1.99.0'
 gem 'rdf-n3', '~> 1.99.0'
 
-gem 'redis-semaphore', '~> 0.2.4'
+gem 'redis-semaphore', '~> 0.3.1'
 
 # Gems used only for assets and not required
 # in production environments by default.
@@ -28,7 +28,7 @@ group :assets do
   # coffee-rails > 3.2 is not compatible to rails 3
   gem 'coffee-rails',   '~> 3.2.2'
   gem 'compass',        '~> 1.0.3'
-  gem 'font-awesome-sass', '~> 4.5.0'
+  gem 'font-awesome-sass', '~> 4.6.2'
   # jquery-rails > 3.1 is not compatible to rails 3
   gem 'jquery-rails', '~> 3.1.3'
   gem 'jquery-ui-rails', '~> 5.0.5'
@@ -36,6 +36,7 @@ group :assets do
   gem 'd3_rails', '~> 3.5.6'
   gem 'therubyracer', '~> 0.12.1'
   gem 'uglifier', '>= 1.0.3'
+  # handlebars_assets >= 0.23.0 is not compatible to rails 3
   gem 'handlebars_assets', '~> 0.22.0'
   gem 'hamlbars', '~> 2.1.1'
   gem 'underscore-rails', '~> 1.8.2'
@@ -60,6 +61,7 @@ gem 'simple_form', '~> 2.1'
 
 # Inherited Resources
 gem 'inherited_resources', '~> 1.4.1'
+# has_scope => 0.7.0 dies not support Rails 3.2 and 4.0
 gem 'has_scope', '~> 0.6.0.rc'
 
 # JSON views
@@ -72,6 +74,7 @@ gem 'json-stream', '~> 0.2.1'
 gem 'nokogiri', '~> 1.6.7'
 
 # Authentication
+# devise => 4.0.0 does not support Rails 3.2 and Rails 4.0
 gem 'devise', '~> 3.5.2'
 
 # Authorization
@@ -113,7 +116,7 @@ gem 'ruby-graphviz', "~> 1.2.2"
 gem "faker", "~> 1.6.1"
 
 # Git
-gem 'rugged', '~> 0.23.2'
+gem 'rugged', '~> 0.24.0'
 gem 'codemirror-rails', github: 'llwt/codemirror-rails'
 
 # API
@@ -143,11 +146,11 @@ group :test do
   gem 'rspec-activemodel-mocks', '~> 1.0.1'
   # rspec-its >= 1.1 depends on rspec 3
   gem 'rspec-its', '~> 1.0.1'
-  gem "factory_girl_rails", '~> 4.5.0'
+  gem "factory_girl_rails", '~> 4.7.0'
 
   # Required for integration tests
   gem 'capybara', '~> 2.5.0'
-  gem 'poltergeist', '~> 1.8.0'
+  gem 'poltergeist', '~> 1.9.0'
   gem 'launchy', '~> 2.4.3'
 
   gem 'cucumber-rails', '~> 1.4.2', require: false
@@ -177,11 +180,11 @@ group :development, :test do
   gem 'binding_of_caller', '~> 0.7.2'
   # i18n-tasks >= 0.9.0 is not compatible to rails 3/rdf
   gem 'i18n-tasks', '~> 0.8.3'
-  gem 'pry-byebug', '~> 3.3.0'
+  gem 'pry-byebug', '~> 3.4.0'
 
   # Recording of HTTP Requests
   gem "vcr", '~> 3.0.0', require: false
-  gem "webmock", '~> 1.22.3', require: false
+  gem "webmock", '~> 2.0.2'
 end
 
 group :production do
@@ -192,7 +195,7 @@ group :production do
 end
 
 group :deployment do
-  gem 'capistrano', '~> 3.4.0'
+  gem 'capistrano', '~> 3.5.0'
   gem 'capistrano-rails', '~> 1.1.1'
   gem 'capistrano-rvm', '~> 0.1.1'
 end

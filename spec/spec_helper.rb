@@ -8,7 +8,6 @@ require 'rspec/rails'
 require 'rspec/autorun'
 require Rails.root.join('config', 'database_cleaner.rb')
 require 'addressable/template'
-require 'webmock'
 require 'vcr'
 require 'webmock/rspec'
 
