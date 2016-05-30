@@ -8,10 +8,10 @@ module Hets
     class Error < ::StandardError; end
     class AlreadyEvaluatingError < Error; end
 
-    CHECK_MUTEX_KEY = "#{self}-evaluating_check"
+    CHECK_MUTEX_KEY = "#{self}-evaluating_check".freeze
     CHECK_MUTEX_EXPIRATION = 10.seconds
 
-    EVALUATION_MUTEX_KEY_PREFIX = "#{self}-evaluating:"
+    EVALUATION_MUTEX_KEY_PREFIX = "#{self}-evaluating:".freeze
     EVALUATION_MUTEX_EXPIRATION = HetsInstance::FORCE_FREE_WAITING_PERIOD
 
     delegate :semaphore_stack, to: :importer
@@ -33,7 +33,8 @@ module Hets
     def initiate_concurrency_handling(lock_key)
       key = evaluation_key(lock_key)
       semaphore = Semaphore.new(key, expiration: EVALUATION_MUTEX_EXPIRATION)
-      Semaphore.exclusively(CHECK_MUTEX_KEY, expiration: CHECK_MUTEX_EXPIRATION) do
+      Semaphore.exclusively(CHECK_MUTEX_KEY,
+                            expiration: CHECK_MUTEX_EXPIRATION) do
         raise AlreadyEvaluatingError if Semaphore.locked?(key)
         semaphore.lock
       end

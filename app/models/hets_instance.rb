@@ -49,39 +49,58 @@ has a minimal Hets version of #{Hets.minimal_version_string}
     order('queue_size ASC').order('state_updated_at ASC')
   end
 
-  def self.with_instance!
-    instance = choose!
-    begin
-      result = yield(instance)
-    rescue StandardError
+  class << self
+    def with_instance!
+      instance = choose!
+      begin
+        result = yield(instance)
+      rescue StandardError
+        exclusively { instance.finish_work! }
+        raise
+      end
       exclusively { instance.finish_work! }
-      raise
+      result
     end
-    exclusively { instance.finish_work! }
-    result
-  end
 
-  def self.choose!(try_again: true)
-    raise NoRegisteredHetsInstanceError.new unless any?
-    instance = nil
-    exclusively do
+    def choose!(try_again: true)
+      raise NoRegisteredHetsInstanceError.new unless any?
+      instance = exclusively { choose_set_instance }
+      if instance && instance.send(:check_up_state)
+        instance
+      elsif try_again
+        find_each { |hets_instance| hets_instance.send(:set_up_state!) }
+        choose!(try_again: false)
+      else
+        instance || raise(NoSelectableHetsInstanceError.new)
+      end
+    end
+
+    def check_up_state!(hets_instance_id)
+      find(hets_instance_id).send(:set_up_state!)
+    end
+
+    protected
+
+    def exclusively
+      ::Semaphore.exclusively(MUTEX_KEY, expiration: MUTEX_EXPIRATION) { yield }
+    end
+
+    def increment_queue!
+      if instance = yield
+        instance.queue_size += 1
+        instance.save!
+        instance
+      end
+    end
+
+    def choose_set_instance
       instance = active.free.first
-      instance ||= increment_queue! { active.force_free.load_balancing_order.first }
+      instance ||=
+        increment_queue! { active.force_free.load_balancing_order.first }
       instance ||= increment_queue! { active.busy.load_balancing_order.first }
       instance.try(:set_busy!)
-    end
-    if instance && instance.send(:check_up_state)
       instance
-    elsif try_again
-      find_each { |hets_instance| hets_instance.send(:set_up_state!) }
-      choose!(try_again: false)
-    else
-      instance or raise NoSelectableHetsInstanceError.new
     end
-  end
-
-  def self.check_up_state!(hets_instance_id)
-    find(hets_instance_id).send(:set_up_state!)
   end
 
   # will result in 0.99 for <v0.99, something or other>
@@ -134,18 +153,6 @@ has a minimal Hets version of #{Hets.minimal_version_string}
   end
 
   protected
-
-  def self.exclusively
-    ::Semaphore.exclusively(MUTEX_KEY, expiration: MUTEX_EXPIRATION) { yield }
-  end
-
-  def self.increment_queue!
-    if instance = yield
-      instance.queue_size += 1
-      instance.save!
-      instance
-    end
-  end
 
   def check_up_state
     Hets::VersionCaller.new(self).call

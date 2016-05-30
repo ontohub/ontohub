@@ -1,5 +1,5 @@
 class SequentialOntologyParsingWorker < OntologyParsingWorker
-  MUTEX_KEY = "#{self}-evaluating"
+  MUTEX_KEY = "#{self}-evaluating".freeze
   MUTEX_EXPIRATION = HetsInstance::FORCE_FREE_WAITING_PERIOD
 
   sidekiq_options queue: 'sequential'

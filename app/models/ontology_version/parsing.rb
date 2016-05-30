@@ -26,7 +26,7 @@ module OntologyVersion::Parsing
         perform_async([[id,
                         {fast_parse: @fast_parse,
                          files_to_parse_afterwards: files_to_parse_afterwards},
-                         1]])
+                        1]])
     end
   end
 
