@@ -1,6 +1,6 @@
-Feature: Destroying and recreating a Repository
+Feature: Repository
 
-Scenario: Destroying and recreating a Repository
+Scenario: Destroying and Recreating a Repository
   When I create a Repository with name "test"
   And I upload an ontology with a Theorem
   And I attempt to prove the Theorem
