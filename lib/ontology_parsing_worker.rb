@@ -15,7 +15,7 @@ class OntologyParsingWorker < BaseWorker
     return if version_with_options_queue.empty?
     initialize_data(version_with_options_queue)
 
-    timeout_job_id = TimeoutWorker.start_timeout_clock(@version_id)
+    timeout_job_id = ::TimeoutWorker.start_timeout_clock(@version_id)
     parse_version
   rescue Hets::ConcurrentEvaluator::AlreadyEvaluatingError
     @concurrency_issue_handled = handle_concurrency_issue

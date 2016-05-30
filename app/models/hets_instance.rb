@@ -136,7 +136,7 @@ has a minimal Hets version of #{Hets.minimal_version_string}
   protected
 
   def self.exclusively
-    Semaphore.exclusively(MUTEX_KEY, expiration: MUTEX_EXPIRATION) { yield }
+    ::Semaphore.exclusively(MUTEX_KEY, expiration: MUTEX_EXPIRATION) { yield }
   end
 
   def self.increment_queue!
