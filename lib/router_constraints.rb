@@ -104,8 +104,8 @@ class LocIdRouterConstraint < RouterConstraint
     theorem = element.theorem if @map[:theorem]
 
     path_params = {repository_id: ontology.repository.to_param}
-    %i(proof_attempt theorem ontology element).each do |param|
-      path_params[@map[param]] = eval(param.to_s).id if @map[param]
+    %i(proof_attempt theorem ontology element).each do |p|
+      path_params[@map[p]] = binding.local_variable_get(p).id if @map[p]
     end
 
     add_path_parameters(request, path_params)
