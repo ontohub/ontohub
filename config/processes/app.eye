@@ -13,7 +13,7 @@ Eye.application :ontohub do
   env 'PID_DIR' => File.join(RAILS_ROOT, 'tmp/pids')
 
   {git: File.join(env['PID_DIR'], 'git.pid'),
-   hets: File.join(env['PID_DIR'], 'git.pid'),
+   hets: File.join(env['PID_DIR'], 'hets.pid'),
    puma: File.join(env['PID_DIR'], 'puma.pid'),
    sidekiq: File.join(SIDEKIQ_BASE, 'master.pid')}.each do |service, pidfile|
     process service do
