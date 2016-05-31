@@ -3,11 +3,6 @@ RAILS_ENV = ENV['RAILS_ENV'] || 'production'
 SVCADM = '/usr/sbin/svcadm'
 
 SIDEKIQ_BASE = '/var/sidekiq'
-SERVICES_PIDS = {git: File.join(env['PID_DIR'], 'git.pid'),
-                 hets: File.join(env['PID_DIR'], 'git.pid'),
-                 puma: File.join(env['PID_DIR'], 'puma.pid'),
-                 sidekiq: File.join(SIDEKIQ_BASE, 'master.pid')}
-
 Eye.config do
   logger "#{RAILS_ROOT}/log/eye.log"
 end
@@ -17,7 +12,10 @@ Eye.application :ontohub do
   env 'RAILS_ENV' => RAILS_ENV
   env 'PID_DIR' => File.join(RAILS_ROOT, 'tmp/pids')
 
-  SERVICES_PIDS.each do |service, pidfile|
+  {git: File.join(env['PID_DIR'], 'git.pid'),
+   hets: File.join(env['PID_DIR'], 'git.pid'),
+   puma: File.join(env['PID_DIR'], 'puma.pid'),
+   sidekiq: File.join(SIDEKIQ_BASE, 'master.pid')}.each do |service, pidfile|
     process service do
       daemonize false
       pid_file pidfile
