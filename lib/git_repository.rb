@@ -14,6 +14,8 @@ class GitRepository
   include GitRepository::Committing
   include GitRepository::History
 
+  LOCK_NAMESPACE = 'git'.freeze
+
   attr_reader :repo
 
   delegate :path, :empty?, to: :repo

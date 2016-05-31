@@ -15,7 +15,7 @@ module GitRepository::Committing
   end
 
   def commit_file(userinfo, file_contents, target_path, message, &block)
-    Semaphore.exclusively("action:#{repo}") do
+    Semaphore.exclusively("#{GitRepository::LOCK_NAMESPACE}:#{repo}") do
       commit_file_without_lock(userinfo,
                                file_contents,
                                target_path,
