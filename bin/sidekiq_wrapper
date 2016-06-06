@@ -42,6 +42,33 @@ def run_process(options, arguments, name)
                 '--logfile', "#{File.join(options[:workdir], name)}.log")
 end
 
+def wait_for_process(wait_threads, name, pid, pids)
+  wait_threads << Thread.new do
+    _pid, status = Process.wait2(pid)
+    stop_all_processes(name, pid, pids)
+  end
+end
+
+def send_signal(signal, pid)
+  Process.kill(signal, pid)
+rescue Errno::ESRCH
+  $stderr.puts "Process #{pid} was already terminated."
+end
+
+$stopped_all = false
+def stop_all_processes(name_dead, pid_dead, pids)
+  unless $stopped_all
+    pids.each do |name, pid|
+      unless pid == pid_dead
+        $stderr.puts "Stopping #{name} because one sidekiq process"\
+                     "(#{name_dead}) exited..."
+        send_signal('TERM', pid)
+      end
+    end
+  end
+  $stopped_all = true
+end
+
 def hets_queue_thread_count
   # One thread per configured hets instance, minus one for the sequential queue.
   [1, Settings.hets.instance_urls.size - 1].max
@@ -67,7 +94,7 @@ processes =
   Signal.trap(signal) do
     pids.each do |name, pid|
       $stdout.puts "Sending #{signal} to #{name}..."
-      Process.kill(signal, pid)
+      send_signal(signal, pid)
     end
   end
 end
@@ -75,6 +102,7 @@ end
 processes.each do |name, arguments|
   pids[name] = run_process(options, arguments, "#{name}")
 end
-pids.each do |name, pid|
-  Process.wait(pid)
-end
+
+wait_threads = []
+pids.each { |name, pid| wait_for_process(wait_threads, name, pid, pids) }
+wait_threads.each(&:join)
