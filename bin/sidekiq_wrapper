@@ -42,9 +42,10 @@ def run_process(options, arguments, name)
                 '--logfile', "#{File.join(options[:workdir], name)}.log")
 end
 
-def wait_for_process(wait_threads, name, pid, pids)
+def wait_for_process(statuses, wait_threads, name, pid, pids)
   wait_threads << Thread.new do
     _pid, status = Process.wait2(pid)
+    statuses << status
     stop_all_processes(name, pid, pids)
   end
 end
@@ -52,7 +53,7 @@ end
 def send_signal(signal, pid)
   Process.kill(signal, pid)
 rescue Errno::ESRCH
-  $stderr.puts "Process #{pid} was already terminated."
+  $stderr.puts "Could not send signal: Process #{pid} was already terminated."
 end
 
 $stopped_all = false
@@ -67,6 +68,14 @@ def stop_all_processes(name_dead, pid_dead, pids)
     end
   end
   $stopped_all = true
+end
+
+def exit_with_status(statuses)
+  if statuses.all? { |status| status.exited? && status.success? }
+    exit 0
+  else
+    exit 1
+  end
 end
 
 def hets_queue_thread_count
@@ -104,5 +113,10 @@ processes.each do |name, arguments|
 end
 
 wait_threads = []
-pids.each { |name, pid| wait_for_process(wait_threads, name, pid, pids) }
+statuses = []
+pids.each do |name, pid|
+  wait_for_process(statuses, wait_threads, name, pid, pids)
+end
 wait_threads.each(&:join)
+
+exit_with_status(statuses)
