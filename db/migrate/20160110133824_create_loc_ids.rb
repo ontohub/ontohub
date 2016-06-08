@@ -1,5 +1,5 @@
 class CreateLocIds < ActiveRecord::Migration
-  def up
+  def change
     create_table :loc_ids do |t|
       t.text :locid, null: false
       t.integer :specific_id, null: false
