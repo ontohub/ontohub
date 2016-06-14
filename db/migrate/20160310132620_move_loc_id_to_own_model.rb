@@ -5,8 +5,9 @@ class MoveLocIdToOwnModel < MigrationWithData
              Ontology,
              ProofAttempt,
              ProverOutput,
-             Sentence].freeze
-  TABLES = CLASSES.map(&:table_name).freeze
+             Theorem,
+             Axiom].freeze
+  TABLES = CLASSES.map(&:table_name).uniq.freeze
 
   def up
     duplicate_locid_objects = []
