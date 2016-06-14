@@ -26,4 +26,14 @@ module OntologyVersionHelper
             btn_url(ontology_version) + anchor,
             class: 'btn btn-xs btn-default'
   end
+
+  def pusher_info(ontology_version)
+    if ontology_version.pusher
+      fancy_link(ontology_version.pusher)
+    elsif ontology_version.commit.pusher_name.present?
+      ontology_version.commit.pusher_name
+    else
+      '-'
+    end
+  end
 end
