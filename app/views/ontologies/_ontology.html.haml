@@ -13,7 +13,7 @@
       %li= link_to pluralize(ontology.sentences_count, 'Sentence'), [ontology, :sentences]
     
     - else
-      - if admin? || ontology.ontology_version.user == current_user
+      - if admin? || ontology.ontology_version.pusher == current_user
         %li= ontology.state
       - else
         %li= ontology.active_version.state

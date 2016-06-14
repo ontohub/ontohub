@@ -54,7 +54,6 @@ module Hets
         end
 
         version = ontology.versions.build
-        version.user = user
         version.basepath = ontology.basepath
         version.parent = parent_version
         version.commit_oid = parent_version.try(:commit_oid)

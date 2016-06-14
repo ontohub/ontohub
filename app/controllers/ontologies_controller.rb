@@ -45,7 +45,7 @@ class OntologiesController < InheritedResources::Base
 
   def create
     @version = build_resource.versions.first
-    @version.user = current_user
+    @version.pusher = current_user
     super
     resource.category_ids = user_selected_categories
   end

@@ -4,7 +4,6 @@ class User < ActiveRecord::Base
   include User::Authentication
 
   has_many :comments
-  has_many :ontology_versions
   has_many :team_users
   has_many :teams, :through => :team_users
   has_many :metadata
@@ -17,6 +16,7 @@ class User < ActiveRecord::Base
            class_name: Commit.to_s, foreign_key: 'committer_id'
   has_many :pushed_commits,
            class_name: Commit.to_s, foreign_key: 'pusher_id'
+  has_many :ontology_versions, through: :pushed_commits
 
   attr_accessible :email, :name, :first_name, :admin, :password, :as => :admin
 

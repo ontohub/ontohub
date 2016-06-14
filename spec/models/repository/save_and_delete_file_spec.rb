@@ -51,7 +51,7 @@ describe 'Repository saving a file' do
 
       it 'create a new ontology with only one version belonging to the right user' do
         v = repository.ontologies.first.versions.first
-        expect(v.user).to eq(user)
+        expect(v.pusher).to eq(user)
       end
 
       it 'should have the ontology marked as having a file' do

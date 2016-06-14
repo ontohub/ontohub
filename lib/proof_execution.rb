@@ -31,7 +31,7 @@ class ProofExecution
     return if cmd == :abort
 
     ontology.import_proof(ontology_version,
-                          ontology_version.user,
+                          ontology_version.pusher,
                           proof_attempt,
                           input_io)
   end
