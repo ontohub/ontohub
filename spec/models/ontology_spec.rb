@@ -696,20 +696,27 @@ describe Ontology do
     let!(:owner) { create(:user) }
     let!(:ontology) { create(:ontology) }
     let!(:failed_version) do
-      create(:ontology_version,
-        state: 'failed', user: owner, ontology: ontology)
+      version = create(:ontology_version, state: 'failed', ontology: ontology)
+      commit = version.commit
+      commit.pusher = owner
+      commit.save!
+      version
     end
 
     let!(:current_ontology) { create(:ontology) }
     let!(:current_ontology_version) do
-      create(:ontology_version,
-        state: 'done', user: owner, ontology: current_ontology)
+      version = create(:ontology_version,
+                       state: 'done', ontology: current_ontology)
+      commit = version.commit
+      commit.pusher = owner
+      commit.save!
+      version
     end
     before do
-      create(:ontology_version,
-                         state: 'done',
-                         user: owner,
-                         ontology: ontology)
+      version = create(:ontology_version, state: 'done', ontology: ontology)
+      commit = version.commit
+      commit.pusher = owner
+      commit.save!
       ontology.ontology_version = failed_version
       ontology.state = 'failed'
       ontology.save
