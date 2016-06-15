@@ -64,14 +64,8 @@ class AddAssociationFromCommitToUser < MigrationWithData
                                 :pusher_id, :commit_oid,
                                 :author_name, :author_email,
                                 :committer_name, :committer_email)
-      ontology_version =
-        OntologyVersion.where(commit_oid: attrs[:commit_oid]).first
-      update_columns(ontology_version, user_id: attrs[:pusher_id])
-
-      author_info = "#{attrs[:author_name]} <#{attrs[:author_email]}>"
-      committer_info = "#{attrs[:committer_name]} <#{attrs[:committer_email]}>"
-      update_columns(commit,
-                     author_name: author_info, committer_name: committer_info)
+      down_ontology_version(attrs)
+      down_commit(attrs)
     end
   end
 
@@ -87,14 +81,27 @@ class AddAssociationFromCommitToUser < MigrationWithData
   end
 
   def data(author_info, committer_info)
-      data = {author_name: author_info[:name],
-              author_email: author_info[:email],
-              committer_name: committer_info[:name],
-              committer_email: committer_info[:email]}
-      data[:author_id] =
-        User.where(email: data[:author_email]).select(:id).first.try(:id)
-      data[:committer_id] =
-        User.where(email: data[:committer_email]).select(:id).first.try(:id)
-      data
+    data = {author_name: author_info[:name],
+            author_email: author_info[:email],
+            committer_name: committer_info[:name],
+            committer_email: committer_info[:email]}
+    data[:author_id] =
+      User.where(email: data[:author_email]).select(:id).first.try(:id)
+    data[:committer_id] =
+      User.where(email: data[:committer_email]).select(:id).first.try(:id)
+    data
+  end
+
+  def down_ontology_version(attrs)
+    ontology_version =
+      OntologyVersion.where(commit_oid: attrs[:commit_oid]).first
+    update_columns(ontology_version, user_id: attrs[:pusher_id])
+  end
+
+  def down_commit(attrs)
+    author_info = "#{attrs[:author_name]} <#{attrs[:author_email]}>"
+    committer_info = "#{attrs[:committer_name]} <#{attrs[:committer_email]}>"
+    update_columns(commit,
+                   author_name: author_info, committer_name: committer_info)
   end
 end

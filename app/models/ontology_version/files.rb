@@ -21,7 +21,7 @@ module OntologyVersion::Files
       else
         @raw_file
       end
-    repository.save_file(tmp_file, self.path, "message", pusher)
+    repository.save_file(tmp_file, path, 'message', pusher)
   end
 
   def tmp_dir
