@@ -48,13 +48,7 @@ class AddAssociationFromCommitToUser < MigrationWithData
   protected
 
   def up_data
-    OntologyVersion.find_each do |ontology_version|
-      attrs = select_attributes(ontology_version, :user_id, :commit_oid, :name)
-      commit = Commit.where(commit_oid: attrs[:commit_oid]).first
-      update_columns(commit,
-                     pusher_id: attrs[:user_id], pusher_name: attrs[:name])
-    end
-
+    up_ontology_version
     up_split_name_and_email
   end
 
@@ -66,6 +60,16 @@ class AddAssociationFromCommitToUser < MigrationWithData
                                 :committer_name, :committer_email)
       down_ontology_version(attrs)
       down_commit(attrs)
+    end
+  end
+
+  def up_ontology_version
+    OntologyVersion.find_each do |ontology_version|
+      attrs = select_attributes(ontology_version, :user_id, :commit_oid)
+      user_name = select_attributes_class(User, attrs[:id], :name)[:name]
+      commit = Commit.where(commit_oid: attrs[:commit_oid]).first
+      update_columns(commit,
+                     pusher_id: attrs[:user_id], pusher_name: user_name)
     end
   end
 
