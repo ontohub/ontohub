@@ -13,15 +13,13 @@ class Commit < ActiveRecord::Base
   belongs_to :repository
 
   def fill_commit_instance!
-    commit = repository.git.repo.lookup(commit_oid)
-
-    data = commit.author
+    data = repository.git.commit_author(commit_oid)
     self.author_name = data[:name]
     self.author_email = data[:email]
     self.author_date = data[:time]
     self.author = User.where(email: author_email).first
 
-    data = commit.committer
+    data = repository.git.commit_committer(commit_oid)
     self.committer_name = data[:name]
     self.committer_email = data[:email]
     self.commit_date = data[:time]

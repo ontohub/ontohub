@@ -2,7 +2,8 @@ require 'spec_helper'
 
 describe User do
   context 'associations' do
-    %i(comments ontology_versions team_users teams permissions keys).
+    %i(comments ontology_versions team_users teams permissions keys
+       authored_commits committed_commits pushed_commits).
       each do |association|
       it { should have_many(association) }
     end
@@ -78,6 +79,57 @@ describe User do
     it 'destroy not destroy all admins' do
       expect { admins.each(&:destroy) }.
         to raise_error(Permission::PowerVaccuumError)
+    end
+  end
+
+  context 'considering commits' do
+    let(:author) { create :user }
+    let(:committer) { create :user }
+    let(:pusher) { create :user }
+    let!(:commit) do
+      create :commit, author: author, committer: committer, pusher: pusher
+    end
+
+    context 'the author' do
+      it 'has correct authored_commits' do
+        expect(author.authored_commits).to match_array([commit])
+      end
+
+      it 'has correct committed_commits' do
+        expect(author.committed_commits).to match_array([])
+      end
+
+      it 'has correct pushed_commits' do
+        expect(author.pushed_commits).to match_array([])
+      end
+    end
+
+    context 'the committer' do
+      it 'has correct authored_commits' do
+        expect(committer.authored_commits).to match_array([])
+      end
+
+      it 'has correct committed_commits' do
+        expect(committer.committed_commits).to match_array([commit])
+      end
+
+      it 'has correct pushed_commits' do
+        expect(committer.pushed_commits).to match_array([])
+      end
+    end
+
+    context 'the pusher' do
+      it 'has correct authored_commits' do
+        expect(pusher.authored_commits).to match_array([])
+      end
+
+      it 'has correct committed_commits' do
+        expect(pusher.committed_commits).to match_array([])
+      end
+
+      it 'has correct pushed_commits' do
+        expect(pusher.pushed_commits).to match_array([commit])
+      end
     end
   end
 end
