@@ -1,14 +1,12 @@
 class CreateMissingCommits < MigrationWithData
   def self.up
-    OntologyVersion.find_each do |ontology_version|
-      if ontology_version.commit.nil?
-        commit = Commit.where(repository_id: ontology_version.repository.id,
-                              commit_oid: ontology_version.commit_oid).
-          first_or_create!
-        fill_in_commit_data(commit, ontology_version)
-        ontology_version.commit = commit
-        ontology_version.save!
-      end
+    OntologyVersion.where(commit_id: nil).find_each do |ontology_version|
+      commit = Commit.where(repository_id: ontology_version.repository.id,
+                            commit_oid: ontology_version.commit_oid).
+        first_or_create!
+      fill_in_commit_data(commit, ontology_version)
+      ontology_version.commit = commit
+      ontology_version.save!
     end
   end
 
