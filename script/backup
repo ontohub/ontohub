@@ -151,7 +151,7 @@ module Backup
       puts 'Creating repository archive...'
       Dir.chdir(data_root.join('..')) do
         archive_file = backup_instance_dir.join(REPOSITORY_FILE)
-        exec('tar', verbose ? '-v' : '', '-cf', archive_file.to_s, *@data_dirs,
+        exec('tar', verbose ? '-v' : '', '-czf', archive_file.to_s, *@data_dirs,
              user: @user)
       end
     end
