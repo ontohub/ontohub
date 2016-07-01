@@ -10,12 +10,13 @@ describe Repository do
     before do
       stub_hets_for('clif/cat1.clif', with: 'cat', with_version: 1)
       stub_hets_for('clif/cat2.clif', with: 'cat', with_version: 2)
+      stub_hets_for('clif/cat1.clif', with: 'cat', with_version: 3)
       stub_hets_for('clif/Px.clif', with: 'Px')
     end
 
     it 'should create a bulk job on a queue' do
       expect { repository.fetch('clone') }.
-        to change(OntologyBatchParseWorker.jobs, :size)
+        to change { OntologyParsingWorker.jobs.size }.from(0).to(2)
     end
 
     it 'should run the ontology import on the cloned repository', process_jobs_synchronously: true do

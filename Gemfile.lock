@@ -213,7 +213,7 @@ GEM
       elasticsearch-transport (= 1.0.17)
     elasticsearch-api (1.0.17)
       multi_json
-    elasticsearch-extensions (0.0.20)
+    elasticsearch-extensions (0.0.21)
       ansi
       ruby-prof
     elasticsearch-model (0.1.9)
@@ -254,6 +254,9 @@ GEM
       sass (>= 3.2)
     foreigner (1.7.4)
       activerecord (>= 3.0.0)
+    fork (1.0.1)
+    fork_break (0.1.4)
+      fork (= 1.0.1)
     formatador (0.2.5)
     gherkin (2.12.2)
       multi_json (~> 1.3)
@@ -612,6 +615,7 @@ DEPENDENCIES
   faker (~> 1.6.1)
   font-awesome-sass (~> 4.6.2)
   foreigner (~> 1.7.2)
+  fork_break (~> 0.1.4)
   haml-rails (~> 0.4)
   hamlbars (~> 2.1.1)
   handlebars_assets (~> 0.22.0)

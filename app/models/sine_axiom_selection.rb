@@ -5,6 +5,8 @@
 # Deduction, Wroclaw, Poland, July 31 - August 5, 2011. Proceedings,
 # pages 299–314, 2011.
 class SineAxiomSelection < ActiveRecord::Base
+  MUTEX_EXPIRATION = 2.hours
+
   acts_as :axiom_selection
 
   attr_accessible :commonness_threshold, :depth_limit, :tolerance
@@ -23,7 +25,7 @@ class SineAxiomSelection < ActiveRecord::Base
   delegate :goal, :ontology, :lock_key, :mark_as_finished!, to: :axiom_selection
 
   def call
-    Semaphore.exclusively(lock_key) do
+    Semaphore.exclusively(lock_key, expiration: MUTEX_EXPIRATION) do
       unless finished
         transaction do
           preprocess unless other_finished_sine_axiom_selections.any?

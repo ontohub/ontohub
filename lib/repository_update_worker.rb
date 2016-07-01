@@ -1,5 +1,5 @@
 # Worker for Sidekiq
-class RepositoryUpdateWorker < Worker
+class RepositoryUpdateWorker < BaseWorker
   sidekiq_options queue: 'hets'
 
   # This worker does not play a direct role

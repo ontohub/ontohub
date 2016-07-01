@@ -4,7 +4,7 @@ module Hets
       attr_accessor :version, :path
       attr_accessor :ontology, :user, :ontologies_count
       attr_accessor :parser, :callback
-      attr_accessor :concurrency, :dgnode_stack, :ontology_aliases
+      attr_accessor :semaphore_stack, :ontology_aliases
       attr_accessor :versions, :now, :dgnode_count
       attr_accessor :io
 
@@ -41,20 +41,11 @@ module Hets
         versions.map(&:ontology)
       end
 
-      def next_dgnode_stack_id
-        dgnode_stack.length
-      end
-
-      def dgnode_stack_id
-        next_dgnode_stack_id - 1
-      end
-
       private
       def initialize_handling
         self.parser = Parser.new(io || path)
-        self.concurrency = ConcurrencyBalancer.new
         self.versions = Array(version)
-        self.dgnode_stack = []
+        self.semaphore_stack = []
         self.ontology_aliases = {}
         self.now = Time.now
       end
