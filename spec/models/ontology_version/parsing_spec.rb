@@ -191,6 +191,24 @@ describe 'OntologyVersion Parsing' do
     end
   end
 
+  context 'with syntax error caused by using the same name for '\
+    'a symbol and a sentence' do
+    let(:path) { 'casl/sentence_and_symbol_with_same_name.casl' }
+    let(:repository) { create :repository, user: user }
+    let(:ontology_version) { add_fixture_file(repository, path) }
+
+    before do
+      stub_hets_for(path)
+      create :logic, name: 'DOL'
+    end
+
+    it 'raises a Hets::SyntaxError' do
+      expect do
+        ontology_version.parse_full
+      end.to raise_error(Hets::SyntaxError, /\Ws1\W/)
+    end
+  end
+
   context 'on failed to update state' do
     let(:ontology) { create :ontology, basepath: 'pizza' }
     let(:ontology_version) { ontology.save_file(ontology_file('owl/pizza.owl'), 'message', user) }

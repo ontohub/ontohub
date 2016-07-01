@@ -1,4 +1,4 @@
-class Mapping < ActiveRecord::Base
+class Mapping < LocIdBaseModel
   include Permissionable
   include Metadatable
 
@@ -11,6 +11,10 @@ class Mapping < ActiveRecord::Base
   }
 
   CONS_STATUSES = %w( inconsistent none cCons mcons mono def )
+
+  # Only used for locid generation.
+  # Is set during parsing.
+  attr_accessor :linkid
 
   belongs_to :ontology
   belongs_to :source, class_name: 'Ontology'
@@ -28,15 +32,11 @@ class Mapping < ActiveRecord::Base
         end
       end
 
-  attr_accessible :locid
   attr_accessible :iri, :source, :target, :kind, :theorem, :proven, :local,
                   :inclusion, :logic_mapping, :parent, :ontology_id, :source_id,
                   :target_id, :versions_attributes, :versions, :name
   accepts_nested_attributes_for :versions
 
-  def self.find_with_locid(locid, _iri = nil)
-    where(locid: locid).first
-  end
 
   def self.with_ontology_reference(ontology_id)
     Mapping.where('ontology_id = ? OR source_id = ? OR target_id = ?',
@@ -85,5 +85,11 @@ class Mapping < ActiveRecord::Base
     else
       "#{symbol_mappings.first}"
     end
+  end
+
+  def generate_locid_string
+    sep = '//'
+    mapping_portion = name || linkid
+    "#{ontology.locid}#{sep}#{mapping_portion}"
   end
 end

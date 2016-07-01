@@ -1,19 +1,11 @@
-class ProverOutput < ActiveRecord::Base
+class ProverOutput < LocIdBaseModel
   belongs_to :proof_attempt
   has_one :ontology, through: :proof_attempt
   has_one :theorem, through: :proof_attempt
   has_one :prover, through: :proof_attempt
   attr_accessible :content, :locid
 
-  before_create :generate_locid
-
-  protected
-
-  def self.find_with_locid(locid, _iri = nil)
-    where(locid: locid).first
-  end
-
-  def generate_locid
-    self.locid = "#{proof_attempt.locid}//prover-output"
+  def generate_locid_string
+    "#{proof_attempt.locid}//prover-output"
   end
 end

@@ -1,4 +1,4 @@
-class Ontology < ActiveRecord::Base
+class Ontology < LocIdBaseModel
   # Ontohub Library Includes
   include Commentable
   include Metadatable
@@ -57,6 +57,18 @@ class Ontology < ActiveRecord::Base
       capitalized_name = filename.split(/[_ ]/).map(&:capitalize).join(' ')
     else
       name
+    end
+  end
+
+  def generate_locid_string
+    if externally_generated_locid
+      externally_generated_locid
+    elsif parent.nil?
+      # Distributed or parentless ontology
+      "/#{repository.path}/#{basepath}"
+    else
+      # Child ontology
+      parent.locid_for_child(name)
     end
   end
 

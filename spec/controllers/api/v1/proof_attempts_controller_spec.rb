@@ -1,7 +1,7 @@
 require 'spec_helper'
 
 describe Api::V1::ProofAttemptsController do
-  let(:proof_attempt) { create :proof_attempt }
+  let(:proof_attempt) { create :proof_attempt, :proven, :with_tactic_script }
   let(:theorem) { proof_attempt.theorem }
   let(:ontology) { theorem.ontology }
   let(:repository) { ontology.repository }

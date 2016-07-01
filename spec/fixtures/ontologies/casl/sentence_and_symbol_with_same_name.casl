@@ -1,0 +1,6 @@
+spec sp =
+  sort s
+  . forall x:s. x=x %(s1)%
+then
+  sort s1
+end

@@ -14,14 +14,26 @@ FactoryGirl.define do
           build :proof_attempt_configuration,
                 proof_attempt: proof_attempt
       end
-      proof_attempt.tactic_script =
-        build :tactic_script, proof_attempt: proof_attempt
-      create :prover_output, proof_attempt: proof_attempt
     end
 
-    after(:create) do |proof_attempt|
-      proof_attempt.prover_output.save!
-      proof_attempt.tactic_script.save!
+    trait :with_tactic_script do
+      after(:build) do |proof_attempt|
+        proof_attempt.tactic_script =
+          build :tactic_script, proof_attempt: proof_attempt
+      end
+      after(:create) do |proof_attempt|
+        proof_attempt.tactic_script.save!
+      end
+    end
+
+    trait :proven do
+      association :proof_status, factory: :proof_status_proven
+      after(:build) do |proof_attempt|
+        create :prover_output, proof_attempt: proof_attempt
+      end
+      after(:create) do |proof_attempt|
+        proof_attempt.prover_output.save!
+      end
     end
   end
 end

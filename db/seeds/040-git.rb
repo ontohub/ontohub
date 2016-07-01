@@ -17,6 +17,7 @@ Repository.first.permissions.create! \
 ontologies = %w[
   owl/Domain_Fields_Core.owl
   casl/partial_order.casl
+  casl/sentence_and_symbol_with_same_name.casl
   casl/test1.casl
   casl/test2.casl
   clif/cat.clif
@@ -31,7 +32,12 @@ ontologies.each do |path|
   basename = File.basename(path)
 
   version = repository.save_file path, basename, "#{basename} added", @user, do_not_parse: true
-  version.parse
+  begin
+    version.parse
+  rescue Hets::SyntaxError
+    # Suppress this error in the seeds. We want to have erroneous ontologies in
+    # the basic data.
+  end
   if version
     version.ontology.update_attribute :description, Faker::Lorem.paragraph
   end

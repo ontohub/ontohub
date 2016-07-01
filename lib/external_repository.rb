@@ -6,13 +6,14 @@ class ExternalRepository
     def create_ontology(internal_iri, name: internal_iri)
       options = {
         name: name,
-        locid: determine_locid(internal_iri),
         basepath: determine_path(internal_iri, :basepath),
         file_extension: determine_path(internal_iri, :extension),
         repository_id: repository.id,
         present: true,
+        externally_generated_locid: determine_locid(internal_iri),
       }
-      SingleOntology.create!(options, without_protection: true)
+      ontology = SingleOntology.create!(options, without_protection: true)
+      ontology
     end
 
     def repository

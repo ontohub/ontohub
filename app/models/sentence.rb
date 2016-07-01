@@ -1,4 +1,4 @@
-class Sentence < ActiveRecord::Base
+class Sentence < LocIdBaseModel
   include Metadatable
   include Readability
 
@@ -9,13 +9,7 @@ class Sentence < ActiveRecord::Base
 
   scope :original, where(imported: false)
 
-  attr_accessible :locid
-
   alias_attribute :to_s, :name
-
-  def self.find_with_locid(locid, _iri = nil)
-    where(locid: locid).first
-  end
 
   def hierarchical_class_names
     match = self.text.match(%r{
@@ -39,5 +33,10 @@ class Sentence < ActiveRecord::Base
     else
       []
     end
+  end
+
+  def generate_locid_string
+    sep = '//'
+    "#{ontology.locid}#{sep}#{name}"
   end
 end

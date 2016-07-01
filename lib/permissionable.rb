@@ -64,7 +64,7 @@ module Permissionable
   end
 
   def add_permission
-    permissions.where(subject_id: user, subject_type: user.class).
+    permissions.where(subject_id: user, subject_type: user.class.to_s).
       first_or_create!(subject: user, role: 'owner')
   end
 

@@ -91,8 +91,8 @@ class OntologySaver
 
     if !ontology
       basepath = File.basepath(ontology_version_options.filepath)
-      locid = generate_locid(basepath)
-      ontology = create_ontology(ontology_version_options.filepath, locid)
+
+      ontology = create_ontology(ontology_version_options.filepath)
     end
 
     ontology
@@ -104,12 +104,10 @@ class OntologySaver
       without_parent.first
   end
 
-  def create_ontology(filepath, locid)
+  def create_ontology(filepath)
     ontology = corresponding_ontology_klass(filepath).new
-
     ontology.basepath = File.basepath(filepath)
     ontology.file_extension = File.extname(filepath)
-    ontology.locid = locid
     ontology.name = filepath.split('/')[-1].split(".")[0].capitalize
     ontology.repository = repository
     ontology.present = true
@@ -166,9 +164,5 @@ class OntologySaver
   # Files that import the current one must be parsed as well.
   def files_to_parse(ontology, changed_files)
     ontology.mapping_targets.map(&:path) - [*changed_files, ontology.path]
-  end
-
-  def generate_locid(basepath)
-    "/#{repository.path}/#{basepath}"
   end
 end

@@ -17,15 +17,6 @@ FactoryGirl.define do
     logic { FactoryGirl.create :logic }
     state { 'pending' }
 
-    ontology.after(:build) do |ontology|
-      ontology.locid =
-        if ontology.parent
-          "#{ontology.parent.locid}//#{ontology.name}"
-        else
-          "/#{ontology.repository.path}/#{ontology.name}"
-        end
-    end
-
     factory :done_ontology do
       state { 'done' }
 
@@ -91,10 +82,6 @@ FactoryGirl.define do
 
     factory :distributed_ontology, class: DistributedOntology do
       logic { nil }
-
-      after(:build) do |ontology|
-        ontology.locid = "/#{ontology.repository.path}/#{ontology.name}"
-      end
 
       # Should always be fully linked, so every child should
       # have a linked (defined by the DO) pointing or sourcing
@@ -192,6 +179,5 @@ FactoryGirl.define do
         end
       end
     end
-
   end
 end

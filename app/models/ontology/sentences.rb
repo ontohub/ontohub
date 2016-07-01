@@ -128,11 +128,7 @@ class Ontology
         sentence.updated_at = timestamp
         set_theorem_attributes(sentence, hash) if sentence.is_a?(Theorem)
 
-        sep = '//'
-        sentence.locid = "#{sentence.ontology.locid}#{sep}#{sentence.name}"
-
         sentence.save!
-
         execute_sql(
           "DELETE FROM sentences_symbols WHERE sentence_id=#{sentence.id}")
         execute_sql(
