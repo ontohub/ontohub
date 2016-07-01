@@ -93,6 +93,9 @@ end
 # See https://github.com/cucumber/cucumber-rails/blob/master/features/choose_javascript_database_strategy.feature
 Cucumber::Rails::Database.javascript_strategy = :transaction
 
+# We need to establish the basic entries in the database
+FactoryGirl.create :proof_statuses
+
 WebMock.allow_net_connect!(:net_http_connect_on_start => true)
 
 include Warden::Test::Helpers

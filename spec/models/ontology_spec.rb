@@ -546,28 +546,33 @@ describe Ontology do
   context 'Import Ontology with an error occurring while parsing' do
     let(:user) { create :user }
     let(:ontology) { create :single_ontology }
+    let(:ontology_file) { 'casl/test1.casl' }
     let(:error_text) { 'An error occurred' }
 
     before do
       # Stub ontology_end because this is always run after the iri
       # has been locked by the ConcurrencyBalancer.
+      class IntendedBySpecError < ::StandardError; end
       allow_any_instance_of(Hets::DG::NodeEvaluator).
-        to receive(:ontology_end).and_raise(error_text)
+        to receive(:ontology_end).and_raise(IntendedBySpecError, error_text)
     end
 
     it 'should propagate the error' do
-      expect { parse_ontology(user, ontology, 'casl/test1.casl') }.
-        to raise_error(Exception, error_text)
+      expect { parse_ontology(user, ontology, ontology_file) }.
+        to raise_error(IntendedBySpecError, error_text)
     end
 
     it 'should be possible to parse it again (no AlreadyProcessingError)' do
       begin
-        parse_ontology(user, ontology, 'casl/test1.casl')
-      rescue Exception => e
+        parse_ontology(user, ontology, ontology_file)
+      rescue IntendedBySpecError => e
         allow_any_instance_of(Hets::DG::NodeEvaluator).
           to receive(:ontology_end).and_call_original
 
-        expect { parse_ontology(user, ontology, 'casl/test1.casl') }.
+        # Reload the ontology from the database because Sidekiq always fetches
+        # a fresh object.
+        ontology.reload
+        expect { parse_ontology(user, ontology, ontology_file) }.
           not_to raise_error
       end
     end

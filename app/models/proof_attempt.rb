@@ -1,4 +1,4 @@
-class ProofAttempt < ActiveRecord::Base
+class ProofAttempt < LocIdBaseModel
   include Numbering
   include StateUpdater
 
@@ -9,7 +9,7 @@ class ProofAttempt < ActiveRecord::Base
   belongs_to :prover
   belongs_to :proof_attempt_configuration, dependent: :destroy
   has_one :axiom_selection, through: :proof_attempt_configuration
-  has_one :prover_output
+  has_one :prover_output, dependent: :destroy
   has_one :tactic_script, dependent: :destroy
   has_many :generated_axioms, dependent: :destroy
   has_and_belongs_to_many :used_axioms,
@@ -21,7 +21,6 @@ class ProofAttempt < ActiveRecord::Base
                           association_foreign_key: 'sentence_id',
                           join_table: 'used_axioms_proof_attempts'
 
-  attr_accessible :locid
   attr_accessible :time_taken,
                   :number,
                   :state,
@@ -31,7 +30,6 @@ class ProofAttempt < ActiveRecord::Base
   validates :state, inclusion: {in: State::STATES}
   validates :theorem, presence: true
 
-  before_create :generate_locid
   before_save :set_default_proof_status
   after_save :update_theorem_status
 
@@ -39,17 +37,15 @@ class ProofAttempt < ActiveRecord::Base
 
   has_one :ontology, through: :theorem
 
-  def self.find_with_locid(locid, _iri = nil)
-    where(locid: locid).first
-  end
 
   def set_default_proof_status
     self.proof_status ||= ProofStatus.find(ProofStatus::DEFAULT_OPEN_STATUS)
   end
 
-  def generate_locid
-    self.locid =
-      "#{theorem.locid}//#{self.class.to_s.underscore.dasherize}-#{number}"
+  def generate_locid_string
+    sep = '//'
+    klass = self.class.to_s.underscore.dasherize
+    "#{theorem.locid}#{sep}#{klass}-#{number}"
   end
 
   def update_theorem_status

@@ -105,6 +105,10 @@ en:
       text: "Really delete the ontology %{name}?\n\nThe %{parent_text}%{children_text}defining file %{path} will be deleted as well."
       parent: 'parent ontology including its children and the '
       children: 'subontologies and the '
+    parsing:
+      errors:
+        duplicate_name_many: "The name \"%{name}\" of the %{class} is ambiguous.\nIt is already used for either a %{type1} or a %{type2}.\nThe %{class} \"%{name}\" is located at %{range}."
+        duplicate_name_one: "The name \"%{name}\" of the %{class} is ambiguous.\nIt is already used as %{type_with_article}.\nThe %{class} \"%{name}\" is located at %{range}."
   permission:
     delete_header: Are you sure you want to delete the permission?
     delete_desc: If you remove this %{role} permission, %{subject} won't be able to access the %{class} %{item} according to it.

@@ -4,7 +4,7 @@ module Hets
       def clean_ontology(ontology)
         ontology.symbols.destroy_all
         ontology.all_sentences.destroy_all
-        ontology.symbols_count  = 0
+        ontology.symbols_count = 0
         ontology.sentences_count = 0
         ontology.axioms_count = 0
         ontology.theorems_count = 0
@@ -42,15 +42,15 @@ module Hets
         ontology = parent_ontology.children.find_with_locid(child_locid)
         if ontology.nil?
           options = {
-            locid: child_locid,
             name: internal_iri,
             basepath: parent_ontology.basepath,
             file_extension: parent_ontology.file_extension,
             repository_id: parent_ontology.repository_id,
             present: true,
           }
-          ontology = SingleOntology.create!(options, without_protection: true)
+          ontology = SingleOntology.new(options, without_protection: true)
           parent_ontology.children << ontology
+          ontology.save!
         end
 
         version = ontology.versions.build

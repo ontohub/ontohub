@@ -47,6 +47,10 @@ class FilesRouterConstraint < RouterConstraint
 end
 
 class LocIdRouterConstraint < RouterConstraint
+  ELEMENTS_CACHE_CLEARING_INTERVAL = 1.minute
+  @elements_cache_clear_at = Time.now + ELEMENTS_CACHE_CLEARING_INTERVAL
+  @elements_cache = {}
+
   def initialize(find_in_klass, **map)
     @find_in_klass = find_in_klass
     @map = map
@@ -58,28 +62,53 @@ class LocIdRouterConstraint < RouterConstraint
       unescape_uri(request.original_fullpath)
     # retrieves the hierarchy and member portions of loc/id's
     hierarchy_member = path.split('?', 2).first.split('///', 2).first
-    element = @find_in_klass.find_with_locid(hierarchy_member)
-    ontology = element.respond_to?(:ontology) ? element.ontology : element
-    result = !ontology.nil?
+    element =
+      elements_cache[hierarchy_member] ||
+      LocIdBaseModel.find_with_locid(hierarchy_member)
 
-    if result
-      proof_attempt = element.proof_attempt if @map[:proof_attempt]
-      theorem = element.theorem if @map[:theorem]
-      path_params =
-        if ontology.respond_to?(:repository)
-          {repository_id: ontology.repository.to_param}
-        else
-          {}
-        end
-      path_params[@map[:proof_attempt]] = proof_attempt.id if @map[:proof_attempt]
-      path_params[@map[:theorem]] = theorem.id if @map[:theorem]
-      path_params[@map[:ontology]] = ontology.id if @map[:ontology]
-      path_params[@map[:element]] = element.id if @map[:element]
+    if element.is_a?(@find_in_klass)
+      elements_cache.delete(hierarchy_member)
+      clear_elements_cache if elements_cache_clearing_scheduled?
+      assign_path_parameters(request, element)
 
-      add_path_parameters(request, path_params)
+      true
+    else
+      if !elements_cache.key?(hierarchy_member) && element
+        elements_cache[hierarchy_member] = element
+      end
+      false
+    end
+  end
+
+  def elements_cache
+    self.class.instance_variable_get(:@elements_cache)
+  end
+
+  # To keep the memory footprint low in case of unproper removal of cached
+  # elements, we clear the cache periodically. This prevents memory leaks.
+  def clear_elements_cache
+    next_clearing = Time.now + ELEMENTS_CACHE_CLEARING_INTERVAL
+    self.class.instance_variable_set(:@elements_cache_clear_at, next_clearing)
+
+    self.class.instance_variable_set(:@elements_cache, {})
+  end
+
+  def elements_cache_clearing_scheduled?
+    Time.now > self.class.instance_variable_get(:@elements_cache_clear_at)
+  end
+
+  def assign_path_parameters(request, element)
+    ontology = element.is_a?(Ontology) ? element : element.ontology
+
+    proof_attempt = element.proof_attempt if @map[:proof_attempt]
+    theorem = element.theorem if @map[:theorem]
+
+    path_params = {repository_id: ontology.repository.to_param}
+    %i(proof_attempt theorem ontology element).each do |p|
+      path_params[@map[p]] = binding.local_variable_get(p).id if @map[p]
     end
 
-    return result
+    add_path_parameters(request, path_params)
   end
 end
 

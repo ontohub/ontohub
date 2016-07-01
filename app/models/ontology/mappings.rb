@@ -62,14 +62,10 @@ class Ontology
           local:         mapping_type.include?('Local'),
           inclusion:     mapping_type.include?('Inc'),
         }
+        mapping.linkid = hash['linkid']
         mapping.updated_at = timestamp
 
-        sep = '//'
-        locid_portion = hash['name'] || hash['linkid']
-        mapping.locid = "#{mapping.ontology.locid}#{sep}#{locid_portion}"
-
         mapping.save!
-
         mapping_version = MappingVersion.create(mapping: mapping,
                                                 source: source.current_version,
                                                 target: target.current_version)

@@ -25,9 +25,11 @@ module FixturesGeneration
       vcr_options = {}
       vcr_options[:match_requests_on] = [:method, matcher] if matcher
       with_vcr(cassette, vcr_options) do
-        block.call
+        ActiveRecord::Base.transaction do
+          block.call
+        end
       end
-    rescue Exception
+    rescue Hets::Errors::HetsError
       vcr_options[:record] = :all
       with_vcr(cassette, vcr_options) do
         with_running_hets do

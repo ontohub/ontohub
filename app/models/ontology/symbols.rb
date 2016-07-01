@@ -31,20 +31,6 @@ class Ontology
         e.iri = hash['iri']
         e.label = hash['label']
 
-        sep = '//'
-        locid_portion =
-          if e.name.include?('://')
-            if e.label
-              e.label
-            else
-              portion = e.name.end_with?('>') ? e.name[0..-2] : e.name
-              portion = portion.split('#', 2).last
-            end
-          else
-            e.name
-          end
-        e.locid = "#{e.ontology.locid}#{sep}#{locid_portion}"
-
         if e.range.to_s.include?(':')
           # remove path from range
           # Examples/Reichel:28.9 -> 28.9

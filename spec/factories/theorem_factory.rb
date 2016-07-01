@@ -10,7 +10,7 @@ FactoryGirl.define do
         parent_onto = create :distributed_ontology, :with_versioned_children
         theorem.ontology = parent_onto.children.first
       end
-      theorem.locid = "#{theorem.ontology.locid}//#{theorem.name}"
+
     end
   end
 end

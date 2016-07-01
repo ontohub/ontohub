@@ -86,6 +86,7 @@ def parse_ontology_hets_out(user, ontology, io, provers_io)
   provers_io.close unless provers_io.closed?
 
   allow(Hets).to receive(:parse_via_api).and_call_original
+  allow(Hets).to receive(:provers_via_api).and_call_original
 end
 
 def parse_ontology(user, ontology, ontology_fixture, provers_io = nil)

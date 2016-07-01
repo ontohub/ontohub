@@ -1,7 +1,7 @@
 # This model is namespaced in the module OntologyMember because the class
 # Symbol is already taken by ruby.
 module OntologyMember
-  class Symbol < ActiveRecord::Base
+  class Symbol < LocIdBaseModel
     include Metadatable
     include Symbol::Searching
     include Symbol::Readability
@@ -16,13 +16,12 @@ module OntologyMember
                                      dependent: :destroy
     has_many :sine_symbol_axiom_triggers, dependent: :destroy
 
-    attr_accessible :locid
     attr_accessible :label, :comment
 
     scope :kind, ->(kind) { where kind:  kind }
 
     def self.find_with_locid(locid, _iri = nil)
-      where(locid: locid).first
+      LocId.where(locid: locid).first.try(:specific)
     end
 
     def self.groups_by_kind
@@ -34,6 +33,17 @@ module OntologyMember
 
     def to_s
       display_name || name
+    end
+
+    def generate_locid_string
+      sep = '//'
+      locid_portion =
+        if name.include?('://')
+          Rack::Utils.escape_path(name)
+        else
+          name
+        end
+      "#{ontology.locid}#{sep}#{locid_portion}"
     end
   end
 end

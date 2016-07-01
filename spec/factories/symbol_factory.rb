@@ -21,20 +21,17 @@ FactoryGirl.define do
     kind { FactoryGirl.generate :symbol_kind }
     name { FactoryGirl.generate :name }
 
-    after(:build) do |symbol|
-      symbol.locid = "#{symbol.ontology.locid}//#{symbol.name}"
-    end
-
     factory :symbol_owl2 do
       text { FactoryGirl.generate :symbol_owl2_text }
       name { FactoryGirl.generate :symbol_owl2_name }
     end
 
     factory :symbol_with_ontology_version do
-      after(:create) do |e|
-        version = FactoryGirl.build(:ontology_version, ontology: e.ontology)
-        e.ontology.versions << version
-        e.ontology.save
+      after(:create) do |symbol|
+        version =
+          FactoryGirl.build(:ontology_version, ontology: symbol.ontology)
+        symbol.ontology.versions << version
+        symbol.ontology.save
       end
     end
   end

@@ -19,19 +19,23 @@ module Ontology::AssociationsAndAttributes
     has_many :symbols,
       autosave: false,
       class_name: 'OntologyMember::Symbol',
-      extend:   Ontology::Symbols::Methods
+      extend:   Ontology::Symbols::Methods,
+      dependent: :destroy
 
     has_many :sentences,
       autosave: false,
-      extend: Ontology::Sentences::Methods
+      extend: Ontology::Sentences::Methods,
+      dependent: :destroy
 
     has_many :axioms,
       autosave: false,
-      extend: Ontology::Sentences::Methods
+      extend: Ontology::Sentences::Methods,
+      dependent: :destroy
 
     has_many :theorems,
       autosave: false,
-      extend: Ontology::Sentences::Methods
+      extend: Ontology::Sentences::Methods,
+      dependent: :destroy
 
     has_many :actions, as: :resource
 
@@ -39,7 +43,9 @@ module Ontology::AssociationsAndAttributes
     has_and_belongs_to_many :projects
     has_and_belongs_to_many :tasks
 
-    attr_accessible :locid
+    # Only used for locid generation.
+    attr_accessor :externally_generated_locid
+
     attr_accessible :name, :description, :acronym, :documentation,
                     :has_file,
                     :logic_id,
