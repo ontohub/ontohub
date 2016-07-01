@@ -22,18 +22,17 @@ module OntologyVersion::Parsing
         job.kill if job.args.first == id
       end
 
-      if @fast_parse
-        OntologyParsingWorker.perform_async(id, :parse_fast,
-                                            files_to_parse_afterwards)
-      else
-        OntologyParsingWorker.perform_async(id, :parse_full,
-                                            files_to_parse_afterwards)
-      end
+      OntologyParsingWorker.
+        perform_async([[id,
+                        {fast_parse: @fast_parse,
+                         files_to_parse_afterwards: files_to_parse_afterwards},
+                        1]])
     end
   end
 
   def parse(refresh_cache: false, structure_only: self.fast_parse,
-            files_to_parse_afterwards: [])
+            files_to_parse_afterwards: self.files_to_parse_afterwards)
+    files_to_parse_afterwards ||= []
     update_state! :processing
 
     do_or_set_failed do

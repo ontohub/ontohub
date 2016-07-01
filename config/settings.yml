@@ -84,6 +84,10 @@ paths:
   # cache for files that needed to be checked out from the git repositories
   commits: # nil - then data/commits is used
 
+redis:
+  url: redis://127.0.0.1:6379
+  namespace: ontohub
+
 hets:
   # This is the path to the hets executable we use in `rake hets:*` and for the
   # process manager in production mode (god)

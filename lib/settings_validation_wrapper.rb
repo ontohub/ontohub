@@ -59,6 +59,8 @@ class SettingsValidationWrapper
                 yml__git__fallbacks__committer_name
                 yml__git__fallbacks__committer_email
                 yml__hets__instance_urls
+                yml__redis__url
+                yml__redis__namespace
                 yml__allowed_iri_schemes
                 yml__external_repository_name
                 yml__formality_levels

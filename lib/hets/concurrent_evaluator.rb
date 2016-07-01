@@ -5,18 +5,23 @@ module Hets
   # want to register specific callbacks.  See Hets::DG::NodeEvaluator for the
   # actual evaluator.
   class ConcurrentEvaluator < BaseEvaluator
-    concurrency_delegates = [
-      :concurrency, :dgnode_stack,
-      :dgnode_stack_id, :next_dgnode_stack_id,
-    ]
-    delegate *concurrency_delegates, to: :importer
+    class Error < ::StandardError; end
+    class AlreadyEvaluatingError < Error; end
+
+    CHECK_MUTEX_KEY = "#{self}-evaluating_check".freeze
+    CHECK_MUTEX_EXPIRATION = 10.seconds
+
+    EVALUATION_MUTEX_KEY_PREFIX = "#{self}-evaluating:".freeze
+    EVALUATION_MUTEX_EXPIRATION = HetsInstance::FORCE_FREE_WAITING_PERIOD
+
+    delegate :semaphore_stack, to: :importer
     delegate :ontologies_count, to: :importer
 
     def process(node_type, order, *args)
       super(node_type, order, *args)
-    rescue Exception => e
+    rescue Exception
       cancel_concurrency_handling_on_error
-      raise e
+      raise
     end
 
     protected
@@ -25,22 +30,28 @@ module Hets
     # we will need to initialize and finish concurrency
     # handling manually. A block-approach is just not
     # feasible.
-    def initiate_concurrency_handling(ontohub_iri)
-      concurrency.mark_as_processing_or_complain(ontohub_iri,
-        unlock_this_iri: dgnode_stack[dgnode_stack_id])
-      dgnode_stack << ontohub_iri
+    def initiate_concurrency_handling(lock_key)
+      key = evaluation_key(lock_key)
+      semaphore = Semaphore.new(key, expiration: EVALUATION_MUTEX_EXPIRATION)
+      Semaphore.exclusively(CHECK_MUTEX_KEY,
+                            expiration: CHECK_MUTEX_EXPIRATION) do
+        raise AlreadyEvaluatingError if Semaphore.locked?(key)
+        semaphore.lock
+      end
+      semaphore_stack.last.try(:unlock)
+      semaphore_stack << semaphore
     end
 
     def finish_concurrency_handling
-      all_dgnodes_parsed = next_dgnode_stack_id == importer.dgnode_count
-      concurrency.mark_as_finished_processing(dgnode_stack.last) if all_dgnodes_parsed
+      semaphore_stack.last.unlock
     end
 
     def cancel_concurrency_handling_on_error
-      dgnode_stack.reverse_each do |dgnode|
-        concurrency.unmark_as_processing_on_error(dgnode)
-      end
+      semaphore_stack.reverse_each(&:unlock)
     end
 
+    def evaluation_key(lock_key)
+      "#{EVALUATION_MUTEX_KEY_PREFIX}#{lock_key}"
+    end
   end
 end

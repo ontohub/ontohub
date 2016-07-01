@@ -2,7 +2,7 @@ require 'spec_helper'
 
 describe AccessTokenDeletionWorker do
   before do
-    Worker.clear
+    AccessTokenDeletionWorker.clear
     [-2, -1, 1].map { |h| h.hours.from_now }.each do |expiration|
       create :access_token, expiration: expiration
     end
