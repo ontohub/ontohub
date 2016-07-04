@@ -31,7 +31,6 @@ class AddAssociationFromCommitToUser < MigrationWithData
     remove_index :commits, :committer_id
     remove_index :commits, :pusher_id
 
-    # We emphasize "null: true" because there may be no user
     remove_column :commits, :author_id
     remove_column :commits, :committer_id
     remove_column :commits, :pusher_id
