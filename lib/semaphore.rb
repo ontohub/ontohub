@@ -28,12 +28,12 @@ class Semaphore
 
   def lock
     return if self.class.send(:sidekiq_inline?)
-    self.class.send(:perform_action_on_semaphore) { @sema.lock }
+    self.class.send(:perform_action_on_semaphore, :lock) { @sema.lock }
   end
 
   def unlock
     return if self.class.send(:sidekiq_inline?)
-    self.class.send(:perform_action_on_semaphore) { @sema.unlock }
+    self.class.send(:perform_action_on_semaphore, :unlock) { @sema.unlock }
   end
 
   class << self
@@ -47,14 +47,16 @@ class Semaphore
 
     def locked?(lock_key)
       token = nil
-      perform_action_on_semaphore do
-        # Because of https://github.com/dv/redis-semaphore/issues/40, we need a
-        # complex check if a lock is set. After redis-semaphore#40 is fixed,
-        # this might be replaced by the use of my_redis_semaphore.locked?
-        sema = retrieve_semaphore(lock_key, expiration: LOCK_ACTION_EXPIRATION)
-        # lock(0) returns `"0"` if it was free and `false` if it was locked
-        token = sema.lock(0)
-        sema.unlock if token
+      perform_action_on_semaphore(:lock) do
+        perform_action_on_semaphore(:unlock) do
+          # Because of https://github.com/dv/redis-semaphore/issues/40, we need a
+          # complex check if a lock is set. After redis-semaphore#40 is fixed,
+          # this might be replaced by the use of my_redis_semaphore.locked?
+          sema = retrieve_semaphore(lock_key, expiration: LOCK_ACTION_EXPIRATION)
+          # lock(0) returns `"0"` if it was free and `false` if it was locked
+          token = sema.lock(0)
+          sema.unlock if token
+        end
       end
       !token
     end
@@ -63,16 +65,16 @@ class Semaphore
 
     def perform_exclusively(lock_key, expiration: nil)
       sema = retrieve_semaphore(lock_key, expiration: expiration)
-      perform_action_on_semaphore { sema.lock }
+      perform_action_on_semaphore(:lock) { sema.lock }
       result = yield
-      perform_action_on_semaphore { sema.unlock }
+      perform_action_on_semaphore(:unlock) { sema.unlock }
       result
     ensure
       sema.try(:unlock)
     end
 
-    def perform_action_on_semaphore
-      retrieve_semaphore_for_lock_action.lock do
+    def perform_action_on_semaphore(type)
+      retrieve_semaphore_for_lock_action(type).lock do
         yield
       end
     end
@@ -84,8 +86,8 @@ class Semaphore
     end
 
     # ONLY use this for very fast actions that operate on a semaphore.
-    def retrieve_semaphore_for_lock_action
-      Redis::Semaphore.new(LOCK_ACTION_KEY,
+    def retrieve_semaphore_for_lock_action(type)
+      Redis::Semaphore.new("#{LOCK_ACTION_KEY}:#{type}",
                            expiration: LOCK_ACTION_EXPIRATION,
                            redis: redis(LOCK_ACTION_NAMESPACE))
     end
