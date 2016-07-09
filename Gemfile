@@ -15,7 +15,9 @@ gem 'rdf', '~> 1.99.0'
 gem 'rdf-rdfxml', '~> 1.99.0'
 gem 'rdf-n3', '~> 1.99.0'
 
-gem 'redis-semaphore', '~> 0.3.1'
+# As soon as the pull request https://github.com/dv/redis-semaphore/pull/46 is
+# merged and a new release is out, use the upstream gem again.
+gem 'redis-semaphore', github: 'eugenk/redis-semaphore', ref: '45-recognize_the_lock_state_of_multiple_semaphores_using_the_same_key'
 # Used for testing our locking mechanism Semaphore:
 gem 'fork_break', '~> 0.1.4'
 

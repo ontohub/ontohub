@@ -13,11 +13,6 @@
 class Semaphore
   SEMAPHORES_NAMESPACE =
     "#{Settings.redis.namespace}:#{self.to_s.downcase}".freeze
-  LOCK_ACTION_NAMESPACE = "#{SEMAPHORES_NAMESPACE}_lock_action".freeze
-  LOCK_ACTION_KEY = 'lock_action'.freeze
-  # We expect actions on a semaphore to perfom in milliseconds.
-  # This value should be much more than enough.
-  LOCK_ACTION_EXPIRATION = 10.seconds
 
   delegate :locked?, to: :@sema
 
@@ -28,12 +23,12 @@ class Semaphore
 
   def lock
     return if self.class.send(:sidekiq_inline?)
-    self.class.send(:perform_action_on_semaphore) { @sema.lock }
+    @sema.lock
   end
 
   def unlock
     return if self.class.send(:sidekiq_inline?)
-    self.class.send(:perform_action_on_semaphore) { @sema.unlock }
+    @sema.unlock
   end
 
   class << self
@@ -46,48 +41,25 @@ class Semaphore
     end
 
     def locked?(lock_key)
-      token = nil
-      perform_action_on_semaphore do
-        # Because of https://github.com/dv/redis-semaphore/issues/40, we need a
-        # complex check if a lock is set. After redis-semaphore#40 is fixed,
-        # this might be replaced by the use of my_redis_semaphore.locked?
-        sema = retrieve_semaphore(lock_key, expiration: LOCK_ACTION_EXPIRATION)
-        # lock(0) returns `"0"` if it was free and `false` if it was locked
-        token = sema.lock(0)
-        sema.unlock if token
-      end
-      !token
+      retrieve_semaphore(lock_key).locked?
     end
 
     protected
 
     def perform_exclusively(lock_key, expiration: nil)
       sema = retrieve_semaphore(lock_key, expiration: expiration)
-      perform_action_on_semaphore { sema.lock }
+      sema.lock
       result = yield
-      perform_action_on_semaphore { sema.unlock }
+      sema.unlock
       result
     ensure
       sema.try(:unlock)
-    end
-
-    def perform_action_on_semaphore
-      retrieve_semaphore_for_lock_action.lock do
-        yield
-      end
     end
 
     def retrieve_semaphore(lock_key, expiration: nil)
       Redis::Semaphore.new(lock_key,
                            expiration: expiration,
                            redis: redis(SEMAPHORES_NAMESPACE))
-    end
-
-    # ONLY use this for very fast actions that operate on a semaphore.
-    def retrieve_semaphore_for_lock_action
-      Redis::Semaphore.new(LOCK_ACTION_KEY,
-                           expiration: LOCK_ACTION_EXPIRATION,
-                           redis: redis(LOCK_ACTION_NAMESPACE))
     end
 
     def redis(sema_namespace)
