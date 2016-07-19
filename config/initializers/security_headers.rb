@@ -17,7 +17,8 @@
   config.csp = {
     default_src: %w('self'),
     style_src:   %w('self' 'unsafe-inline'),
-    script_src: %w('self'),
+    script_src: %w('self' 'unsafe-eval'),
+    child_src: %w('self'),
     img_src: %w('self'),
     connect_src: %w('self'),
     font_src: %w('self'),

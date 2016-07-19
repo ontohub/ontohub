@@ -1,6 +1,12 @@
 class ApplicationController < ActionController::Base
   protect_from_forgery
 
+  before_filter do
+    if current_user && current_user.admin
+      Rack::MiniProfiler.authorize_request
+    end
+  end
+
   include Pagination
   include PathHelpers
   include ApplicationHelper
