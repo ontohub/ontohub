@@ -3,8 +3,9 @@ class TranslatedSentence < ActiveRecord::Base
   belongs_to :audience, class_name: Ontology.to_s
   belongs_to :sentence
   belongs_to :symbol_mapping
-  has_one :name, through: :sentence
-  has_one :locid, through: :sentence
+
+  delegate :name, to: :sentence
+  delegate :locid, to: :sentence
 
   attr_accessible :audience, :ontology, :sentence, :symbol_mapping
   attr_accessible :translated_text
