@@ -50,7 +50,7 @@ class LocIdBaseModel < ActiveRecord::Base
     # Sometimes the objects are "Ontology" and sometimes a subclass.
     if [DistributedOntology, SingleOntology].include?(self.class)
       Ontology
-    elsif [Axiom, Theorem].include?(self.class)
+    elsif Sentence.descendants.include?(self.class)
       Sentence
     else
       self.class
