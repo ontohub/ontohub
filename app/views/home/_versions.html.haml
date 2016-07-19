@@ -17,7 +17,7 @@
   %ol.ontology-list
     %li.ontology-list-item
       = fancy_link version.ontology
-      - if version.user
+      - if version.pusher
         by
-        = fancy_link version.user
+        = fancy_link version.pusher
       = timestamp version

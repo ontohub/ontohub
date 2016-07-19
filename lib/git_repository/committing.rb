@@ -1,4 +1,4 @@
-module GitRepository::Commit
+module GitRepository::Committing
   # depends on GitRepository
   extend ActiveSupport::Concern
 

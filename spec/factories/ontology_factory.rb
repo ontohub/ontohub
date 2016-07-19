@@ -21,15 +21,13 @@ FactoryGirl.define do
       state { 'done' }
 
       ontology.after(:build) do |ontology|
-        version = ontology.versions.build({
-            commit_oid: '0'*40,
-            user: nil,
-            state: 'done',
-            basepath: ontology.basepath,
-            file_extension: ontology.file_extension
-          }, without_protection: true)
-
+        version = build :ontology_version,
+                        ontology: ontology,
+                        basepath: ontology.basepath,
+                        file_extension: ontology.file_extension,
+                        state: 'done'
         version.do_not_parse!
+        ontology.versions << version
       end
 
       ontology.after(:create) do |ontology|
@@ -39,41 +37,35 @@ FactoryGirl.define do
     end
 
     ontology.after(:build) do |ontology|
-      version = ontology.versions.build({
-          commit_oid: '0'*40,
-          user: nil,
-          basepath: ontology.basepath,
-          file_extension: ontology.file_extension
-        }, without_protection: true)
-
+      version = build :ontology_version,
+                      ontology: ontology,
+                      basepath: ontology.basepath,
+                      file_extension: ontology.file_extension
       version.do_not_parse!
+      ontology.versions << version
     end
 
     trait :with_version do
       after(:build) do |ontology|
-        version = ontology.versions.build({
-          commit_oid: '0'*40,
-          user: nil,
-          basepath: ontology.basepath,
-          file_extension: ontology.file_extension,
-          state: 'pending'
-        }, without_protection: true)
-
+        version = build :ontology_version,
+                        ontology: ontology,
+                        basepath: ontology.basepath,
+                        file_extension: ontology.file_extension,
+                        state: 'pending'
         version.do_not_parse!
+        ontology.versions << version
       end
     end
 
     factory :single_unparsed_ontology do |ontology|
       ontology.after(:build) do |ontology|
-        version = ontology.versions.build({
-            commit_oid: '0'*40,
-            user: nil,
-            basepath: ontology.basepath,
-            file_extension: ontology.file_extension
-          }, without_protection: true)
-
+        version = build :ontology_version,
+                        ontology: ontology,
+                        basepath: ontology.basepath,
+                        file_extension: ontology.file_extension
         version.fast_parse = true
         version.do_not_parse!
+        ontology.versions << version
       end
     end
 
@@ -122,15 +114,13 @@ FactoryGirl.define do
 
       trait :with_versioned_children do
         after(:build) do |ontology|
-          version = ontology.versions.build({
-              commit_oid: '0'*40,
-              user: nil,
-              basepath: ontology.basepath,
-              file_extension: ontology.file_extension
-            }, without_protection: true)
-
+          version = build :ontology_version,
+                          ontology: ontology,
+                          basepath: ontology.basepath,
+                          file_extension: ontology.file_extension
           version.fast_parse = true
           version.do_not_parse!
+          ontology.versions << version
 
           logic = FactoryGirl.create(:logic)
           child_one = FactoryGirl.build(:ontology, :with_version,

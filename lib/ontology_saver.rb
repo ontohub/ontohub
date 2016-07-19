@@ -125,8 +125,8 @@ class OntologySaver
   def create_version(ontology, commit_oid, ontology_version_options, changed_files)
     version = ontology.versions.build(
       { commit_oid: commit_oid,
-        user: ontology_version_options.user,
-        commit: repository.commit_for!(commit_oid),
+        commit: repository.commit_for!(commit_oid,
+                                       ontology_version_options.pusher),
         # We can't use the ontology's filepath bacause it might have changed
         basepath: File.basepath(ontology_version_options.filepath),
         file_extension: File.extname(ontology_version_options.filepath),

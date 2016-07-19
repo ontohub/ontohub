@@ -4,13 +4,19 @@ class User < ActiveRecord::Base
   include User::Authentication
 
   has_many :comments
-  has_many :ontology_versions
   has_many :team_users
   has_many :teams, :through => :team_users
   has_many :metadata
   has_many :permissions, :as => :subject
   has_many :keys
   has_many :api_keys
+  has_many :authored_commits,
+           class_name: Commit.to_s, foreign_key: 'author_id'
+  has_many :committed_commits,
+           class_name: Commit.to_s, foreign_key: 'committer_id'
+  has_many :pushed_commits,
+           class_name: Commit.to_s, foreign_key: 'pusher_id'
+  has_many :ontology_versions, through: :pushed_commits
 
   attr_accessible :email, :name, :first_name, :admin, :password, :as => :admin
 
@@ -24,7 +30,10 @@ class User < ActiveRecord::Base
     where("name ILIKE ? OR email ILIKE ?", "%" << query << "%", query)
   }
 
+  after_save :change_pusher_name, if: :name_changed?
+
   before_destroy :check_remaining_admins
+  before_destroy :remove_associations_from_commits
 
   validates_length_of :name, :in => 3..32
 
@@ -100,4 +109,27 @@ class User < ActiveRecord::Base
     end
   end
 
+  def remove_associations_from_commits
+    authored_commits.find_each do |commit|
+      commit.author = nil
+      commit.save!
+    end
+
+    committed_commits.find_each do |commit|
+      commit.committer = nil
+      commit.save!
+    end
+
+    pushed_commits.find_each do |commit|
+      commit.pusher = nil
+      commit.save!
+    end
+  end
+
+  def change_pusher_name
+    pushed_commits.find_each do |commit|
+      commit.pusher_name = name
+      commit.save!
+    end
+  end
 end

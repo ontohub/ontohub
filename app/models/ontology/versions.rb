@@ -48,7 +48,7 @@ module Ontology::Versions
 
     def non_current_active_version?(user=nil)
       real_process_state = active_version != self.ontology_version
-      if user && (user.admin || ontology_version.try(:user) == user)
+      if user && (user.admin || ontology_version.try(:pusher) == user)
         real_process_state
       else
         false

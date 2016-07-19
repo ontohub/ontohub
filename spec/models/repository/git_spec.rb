@@ -5,7 +5,7 @@ describe Repository do
 
   let(:repository) { create :repository_with_remote, remote_type: 'mirror' }
 
-  context 'when ontohub clones a remote repository' do
+  context 'cloning a remote repository' do
 
     before do
       stub_hets_for('clif/cat1.clif', with: 'cat', with_version: 1)

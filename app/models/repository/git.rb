@@ -36,7 +36,7 @@ module Repository::Git
 
   def delete_file(filepath, user, message = nil, &block)
     commit_oid = git.delete_file(user_info(user), filepath, &block)
-    commit_for!(commit_oid).commit_oid
+    commit_for!(commit_oid, user).commit_oid
     OntologySaver.new(self).
       mark_ontology_as_having_file(filepath, has_file: false)
   end
@@ -59,14 +59,16 @@ module Repository::Git
     git.add_file(user_info(user), tmp_file, filepath, message) do |commit_oid|
       commit = commit_oid
     end
-    commit_for!(commit)
+    commit_for!(commit, user)
     touch
     commit
   end
 
-  def commit_for!(commit_oid)
-    instance = Commit.where(repository_id: self, commit_oid: commit_oid).
-      first_or_initialize
+  def commit_for!(commit_oid, pusher)
+    instance = Commit.where(repository_id: self,
+                            commit_oid: commit_oid,
+                            pusher_id: pusher.try(:id),
+                            pusher_name: pusher.try(:name)).first_or_initialize
     instance.fill_commit_instance! unless instance.persisted?
     instance
   end
