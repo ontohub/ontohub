@@ -19,6 +19,13 @@ quiet
 # IMPORTANT wrt. MRI ruby - saves rsources!
 preload_app!
 
+# Invoke rolling restart of workers to keep memory down
+before_fork do
+  require 'puma_worker_killer'
+
+  PumaWorkerKiller.enable_rolling_restart
+end
+
 # let's make sure, that ppl with the same GID as the running puma process
 # are really able to control puma (the group needs write access). See option
 # --control and --control-url above.
