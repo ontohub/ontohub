@@ -42,10 +42,11 @@ def add_fixture_file(repository, relative_file)
   version_for_file(repository, path)
 end
 
-def version_for_file(repository, path)
+def version_for_file(repository, path, target_path = nil)
   dummy_user = FactoryGirl.create :user
-  basename = File.basename(path)
-  version = repository.save_file path, basename, "#{basename} added", dummy_user
+  target_path ||= File.basename(path)
+  version = repository.save_file(path, target_path, "#{target_path} added",
+                                 dummy_user)
 end
 
 def setup_pipeline_generator

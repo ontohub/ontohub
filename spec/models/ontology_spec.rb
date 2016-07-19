@@ -200,6 +200,69 @@ describe Ontology do
     end
   end
 
+  context 'changing structure' do
+    before do
+      stub_hets_for('casl/test2.casl')
+    end
+
+    let(:repository) { create :repository }
+    let(:target_path) { 'test2.casl' }
+    let(:ontology_version) do
+      version_for_file(repository, ontology_file('casl/test2.casl'),
+                       target_path)
+    end
+    let(:ontology) { ontology_version.ontology }
+
+    before { ontology_version.parse_full }
+
+    it 'has the correct children' do
+      expect(ontology.children.map(&:name)).
+        to match_array(%w(sp sp1 sp__E1 sp__T))
+    end
+
+    it 'the old child is "present"' do
+      expect(Ontology.find_by_name('sp1').present).to be(true)
+    end
+
+    context 'after renaming' do
+      before do
+        stub_hets_for('casl/test2_child_renamed.casl')
+        version_for_file(repository,
+                         ontology_file('casl/test2_child_renamed.casl'),
+                         target_path).parse_full
+        ontology.reload
+      end
+
+      it 'has the correct children' do
+        expect(ontology.children.map(&:name)).
+          to match_array(%w(sp sp1_renamed sp__E1 sp__T))
+      end
+
+      it 'the old child is not "present"' do
+        expect(Ontology.unscoped.find_by_name('sp1').present).to be(false)
+      end
+    end
+
+    context 'after deleting' do
+      before do
+        stub_hets_for('casl/test2_child_deleted.casl')
+        version_for_file(repository,
+                         ontology_file('casl/test2_child_deleted.casl'),
+                         target_path).parse_full
+        ontology.reload
+      end
+
+      it 'has the correct children' do
+        expect(ontology.children.map(&:name)).
+          to match_array(%w(sp sp__E1 sp__T))
+      end
+
+      it 'the old child is not "present"' do
+        expect(Ontology.unscoped.find_by_name('sp1').present).to be(false)
+      end
+    end
+  end
+
   context 'when parsing a non-ontology-file', :needs_hets do
     let(:repository) { create :repository }
     let(:version) { add_fixture_file(repository, 'xml/catalog-v001.xml') }

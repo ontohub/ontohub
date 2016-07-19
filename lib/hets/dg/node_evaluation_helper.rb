@@ -149,6 +149,16 @@ module Hets
           Logic.reset_counters(logic_id, :ontologies)
         end
       end
+
+      def set_all_children_inactive_except(present_ontologies)
+        return if parent_ontology.nil?
+        parent_ontology.children.each do |child|
+          unless present_ontologies.include?(child.name)
+            child.present = false
+            child.save!
+          end
+        end
+      end
     end
   end
 end
