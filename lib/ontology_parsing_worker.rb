@@ -40,7 +40,7 @@ class OntologyParsingWorker < BaseWorker
 
   def parse_version
     # We need to wait a second for the SQL query to finish.
-    # Otherwise there is no OntologyVersion with id=ontology_version_id.
+    # Otherwise there is no OntologyVersion with id=@version_id.
     # FIXME This needs to be handled properly.
     sleep 0.1 unless defined?(Sidekiq::Testing) && Sidekiq::Testing.inline?
     version = OntologyVersion.find(@version_id)
