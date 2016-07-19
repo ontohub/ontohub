@@ -31,6 +31,14 @@ GIT
       activesupport (>= 3.0)
 
 GIT
+  remote: git://github.com/eugenk/redis-semaphore.git
+  revision: 02bf7af7257d5df14a3b3add7cbf584208d53aca
+  ref: 45-recognize_the_lock_state_of_multiple_semaphores_using_the_same_key
+  specs:
+    redis-semaphore (0.3.1)
+      redis
+
+GIT
   remote: git://github.com/llwt/codemirror-rails.git
   revision: df5231e3053773e37b27f8181738c7080cd1c3cd
   specs:
@@ -449,8 +457,6 @@ GEM
     redis (3.3.0)
     redis-namespace (1.5.2)
       redis (~> 3.0, >= 3.0.4)
-    redis-semaphore (0.3.1)
-      redis
     ref (2.0.0)
     responders (1.0.0)
       railties (>= 3.2, < 5)
@@ -654,7 +660,7 @@ DEPENDENCIES
   rdf-n3 (~> 1.99.0)
   rdf-rdfxml (~> 1.99.0)
   redcarpet (~> 3.3.2)
-  redis-semaphore (~> 0.3.1)
+  redis-semaphore!
   rest-client (~> 1.8.0)
   rspec-activemodel-mocks (~> 1.0.1)
   rspec-its (~> 1.0.1)
