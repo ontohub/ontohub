@@ -15,7 +15,10 @@ describe UsersController do
   context 'with data' do
     before do
       create :comment, user: user
-      create :ontology_version_with_file, user: user
+      ontology_version = create :ontology_version_with_file
+      commit = ontology_version.commit
+      commit.pusher = user
+      commit.save!
     end
     context 'on GET to show' do
       before { get :show, id: user.to_param }

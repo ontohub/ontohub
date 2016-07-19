@@ -3,17 +3,16 @@
 class GitRepository
   require 'git_repository/config'
 
-  include \
-    Config,
-    Cloning,
-    Files,
-    GetCommit,
-    GetObject,
-    GetDiff,
-    GetFolderContents,
-    GetInfoList,
-    Commit,
-    History
+  include GitRepository::Config
+  include GitRepository::Cloning
+  include GitRepository::Files
+  include GitRepository::GetCommit
+  include GitRepository::GetObject
+  include GitRepository::GetDiff
+  include GitRepository::GetFolderContents
+  include GitRepository::GetInfoList
+  include GitRepository::Committing
+  include GitRepository::History
 
   attr_reader :repo
 

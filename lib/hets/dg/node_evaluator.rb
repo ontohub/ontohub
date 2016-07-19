@@ -191,7 +191,6 @@ module Hets
             "add reference #{Settings.OMS}: #{internal_iri} from #{source_iri}",
             user, location: source_iri)
           version = ontology.versions.build
-          version.user = user
           version.do_not_parse!
           version.commit_oid = commit_oid
           version.state = 'done'

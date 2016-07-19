@@ -1,11 +1,13 @@
 require 'spec_helper'
 
 describe OntologyVersion do
-  it { should belong_to :user }
   it { should belong_to :ontology }
+  it { should belong_to :commit }
+  it { should have_one :author }
+  it { should have_one :committer }
+  it { should have_one :pusher }
 
   it { should have_db_index([:ontology_id, :number]) }
-  it { should have_db_index(:user_id) }
   it { should have_db_index(:commit_oid) }
   it { should have_db_index(:checksum) }
 

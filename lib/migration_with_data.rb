@@ -12,6 +12,13 @@ class MigrationWithData < ActiveRecord::Migration
     Hash[keys.zip(attributes)]
   end
 
+  def select_attributes_class(klass, search_value, *keys, search_column: :id)
+    attributes = keys.map do |key|
+      klass.where(search_column => search_value).pluck(key).first
+    end
+    Hash[keys.zip(attributes)]
+  end
+
   # create_unsafe skips callbacks and validations.
   def create_unsafe(record)
     klass = record.class

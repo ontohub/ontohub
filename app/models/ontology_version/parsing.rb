@@ -41,7 +41,7 @@ module OntologyVersion::Parsing
       return if cmd == :abort
 
       # Import version
-      ontology.import_version(self, self.user, input_io)
+      ontology.import_version(self, pusher, input_io)
       retrieve_available_provers_for_self_and_children
 
       update_state!(:done)
@@ -52,7 +52,7 @@ module OntologyVersion::Parsing
     end
 
     files_to_parse_afterwards.each do |path|
-      ontology_version_options = OntologyVersionOptions.new(path, self.user,
+      ontology_version_options = OntologyVersionOptions.new(path, pusher,
                                                             do_not_parse: false)
       version = OntologySaver.new(repository).
         save_ontology(commit_oid, ontology_version_options)

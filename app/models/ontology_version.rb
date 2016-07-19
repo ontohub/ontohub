@@ -15,13 +15,16 @@ class OntologyVersion < ActiveRecord::Base
 
   numbering_parent_column 'ontology_id'
 
-  belongs_to :user
   belongs_to :ontology, :counter_cache => :versions_count
   has_one :repository, through: :ontology
   has_many :theorems, through: :ontology
-  belongs_to :commit
   has_one :repository, through: :ontology
   has_many :theorems, through: :ontology
+
+  belongs_to :commit
+  has_one :author, through: :commit
+  has_one :committer, through: :commit
+  has_one :pusher, through: :commit
 
   # Provers that can be used for proving goals in this ontology.
   has_and_belongs_to_many :provers
