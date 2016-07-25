@@ -120,11 +120,17 @@ FactoryGirl.define do
 
           logic = FactoryGirl.create(:logic)
           child_one = FactoryGirl.build(:ontology, :with_version,
+            parent: ontology,
+            basepath: ontology.basepath,
+            file_extension: ontology.file_extension,
             logic: logic,
             repository: ontology.repository)
           child_one.versions.first.parent = version
 
           child_two = FactoryGirl.build(:ontology, :with_version,
+            parent: ontology,
+            basepath: ontology.basepath,
+            file_extension: ontology.file_extension,
             logic: logic,
             repository: ontology.repository)
           child_two.versions.first.parent = version
@@ -133,8 +139,6 @@ FactoryGirl.define do
                             source: child_one,
                             target: child_two,
                             ontology: ontology)
-
-          ontology.children.push(child_one, child_two)
         end
       end
 

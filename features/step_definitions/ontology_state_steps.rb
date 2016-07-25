@@ -1,5 +1,6 @@
-Given(/^There is an ontology$/) do
+Given(/^There is an ontology$/i) do
   @ontology = FactoryGirl.create :ontology
+  @ontology_version = @ontology.current_version
 end
 
 Given(/^there is an ontology with a "([^"]+)" version$/) do |state|
