@@ -2,6 +2,11 @@ module Ontology::AssociationsAndAttributes
   extend ActiveSupport::Concern
 
   included do
+    acts_as_tree
+    # Add the scope "present: true" to the children association by acts_as_tree.
+    Ontology.reflect_on_association(:children).
+      options[:conditions] = {present: true}
+
     belongs_to :language
     belongs_to :logic, counter_cache: true
     belongs_to :ontology_type
