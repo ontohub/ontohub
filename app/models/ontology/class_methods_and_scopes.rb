@@ -72,6 +72,10 @@ module Ontology::ClassMethodsAndScopes
     scope :state, ->(*states) do
       where state: states.map(&:to_s)
     end
+
+    scope :present, ->() do
+      where(present: true)
+    end
   end
 
   module ClassMethods
