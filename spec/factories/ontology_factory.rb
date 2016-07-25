@@ -16,6 +16,7 @@ FactoryGirl.define do
     description { Faker::Lorem.paragraph }
     logic { FactoryGirl.create :logic }
     state { 'pending' }
+    present { true }
 
     factory :done_ontology do
       state { 'done' }
