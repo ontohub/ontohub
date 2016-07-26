@@ -8,8 +8,8 @@
     secure: true,
     httponly: false,
     samesite: {
-      strict: true
-    }
+      strict: true,
+    },
   }
 
   # By default, load resources only from own origin.
