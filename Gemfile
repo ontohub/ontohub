@@ -196,6 +196,7 @@ group :production do
   gem 'puma'
   gem 'eye', '~> 0.8'
   gem 'puma_worker_killer', '~> 0.0.6'
+  # exception_notification >= 4.2.0 is not compatible to rails 3
   gem 'exception_notification', '~> 4.1.0'
 end
 
