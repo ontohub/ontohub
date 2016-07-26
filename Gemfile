@@ -152,7 +152,7 @@ group :test do
 
   # Required for integration tests
   gem 'capybara', '~> 2.5.0'
-  gem 'poltergeist', '~> 1.9.0'
+  gem 'poltergeist', '~> 1.10.0'
   gem 'launchy', '~> 2.4.3'
 
   gem 'cucumber-rails', '~> 1.4.2', require: false
