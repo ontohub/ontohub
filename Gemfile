@@ -2,7 +2,7 @@ source 'https://rubygems.org'
 
 gem 'rails', '~> 3.2.22'
 gem 'rack-protection', '~> 1.5.3'
-gem 'secure_headers', '~> 3.0.3'
+gem 'secure_headers', '~> 3.4.0'
 
 gem 'pry-rails', '~> 0.3.2'
 
