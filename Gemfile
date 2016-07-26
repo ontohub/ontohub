@@ -206,6 +206,6 @@ group :deployment do
 end
 
 group :documentation do
-  gem 'yard', '~> 0.8.7.6'
+  gem 'yard', '~> 0.9.5'
   gem 'redcarpet', '~> 3.3.2'
 end
