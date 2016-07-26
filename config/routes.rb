@@ -185,6 +185,32 @@ Will provide a subsite of a specific ontology.
       end
   end
 
+  specified_get '/:repository_id/*locid///edit' => 'ontologies#edit',
+    as: :ontology_edit,
+    constraints: [
+      LocIdRouterConstraint.new(Ontology, ontology: :id),
+    ] do
+      accept 'text/html'
+
+      doc title: 'Ontology edit command',
+          body: <<-BODY
+Will provide a site to the ontology command.
+      BODY
+    end
+
+  specified_put '/:repository_id/*locid' => 'ontologies#update',
+    as: :ontology_update,
+    constraints: [
+      LocIdRouterConstraint.new(Ontology, ontology: :id),
+    ] do
+      accept 'text/html'
+
+      doc title: 'Ontology update command',
+          body: <<-BODY
+Will provide a site to the ontology command.
+      BODY
+    end
+
   specified_get "/:repository_id/*locid///sentences" => "api/v1/sentences#index",
     as: :"ontology_iri_sentences",
     constraints: [
