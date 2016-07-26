@@ -1,5 +1,5 @@
 %%tr
   %td= link_to child.to_s, [child.repository, child]
-  %td= link_to child.symbols_count.to_s, locid_for(child, :symbols)
-  %td= link_to child.axioms_count.to_s, locid_for(child, :axioms)
-  %td= link_to child.theorems_count.to_s, locid_for(child, :theorems)
+  %td= link_to child.symbols_count.to_s, url_for([child, :symbols])
+  %td= link_to child.axioms_count.to_s, url_for([child, :axioms])
+  %td= link_to child.theorems_count.to_s, url_for([child, :theorems])

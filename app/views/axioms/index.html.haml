@@ -6,12 +6,12 @@
   %p.display_all
     = t('.display_all_axioms')
     %br/
-    = link_to "Click here #{t('.to_display_only_self_defined_axioms')}", locid_for(parent, :axioms)
+    = link_to "Click here #{t('.to_display_only_self_defined_axioms')}", url_for([parent, :axioms])
 - else
   %p.display_subset
     = t('.display_only_self_defined_axioms')
     %br/
-    = link_to "Click here #{t('.to_display_all_axioms')}", locid_for(parent, :axioms, all: true)
+    = link_to "Click here #{t('.to_display_all_axioms')}", url_for([parent, :axioms, all: true])
 
 
 = pagination(build_links_from_request: true) do

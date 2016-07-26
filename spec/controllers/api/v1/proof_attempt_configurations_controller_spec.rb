@@ -13,7 +13,8 @@ describe Api::V1::ProofAttemptConfigurationsController do
             repository_id: repository.to_param,
             proof_attempt_id: proof_attempt.to_param,
             id: pa_configuration.to_param,
-            locid: controllers_locid_for(proof_attempt, :'proof-attempt-configuration', :selected_axioms),
+            locid: url_for([proof_attempt,
+                            :'proof-attempt-configuration', :selected_axioms]),
             format: :json
       end
 
@@ -32,7 +33,8 @@ describe Api::V1::ProofAttemptConfigurationsController do
             repository_id: repository.to_param,
             proof_attempt_id: proof_attempt.to_param,
             id: pa_configuration.to_param,
-            locid: controllers_locid_for(proof_attempt, :'proof-attempt-configuration', :selected_theorems),
+            locid: url_for([proof_attempt,
+                            :'proof-attempt-configuration', :selected_theorems]),
             format: :json
       end
 
@@ -55,7 +57,7 @@ describe Api::V1::ProofAttemptConfigurationsController do
             repository_id: repository.to_param,
             proof_attempt_id: proof_attempt.to_param,
             id: pa_configuration.to_param,
-            locid: controllers_locid_for(proof_attempt, :'proof-attempt-configuration'),
+            locid: url_for([proof_attempt, :'proof-attempt-configuration']),
             format: :json
       end
 

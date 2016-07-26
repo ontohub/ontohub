@@ -8,7 +8,7 @@
       = render partial: 'item', locals: {title: t('proof_attempts.result.used_prover.headline'), body: resource.prover}
 
     .prover-output
-      = render partial: 'item', locals: {title: t('proof_attempts.result.prover_output.headline'), body: link_to(t('proof_attempts.result.prover_output.link_text'), locid_for(resource.prover_output))}
+      = render partial: 'item', locals: {title: t('proof_attempts.result.prover_output.headline'), body: link_to(t('proof_attempts.result.prover_output.link_text'), url_for(resource.prover_output))}
 
     - if resource.tactic_script
       .tactic-script

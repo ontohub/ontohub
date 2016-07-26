@@ -10,11 +10,11 @@ Given(/^there is an ontology with a "([^"]+)" version$/) do |state|
 end
 
 Given(/^I visit the detail page of the ontology$/) do
-  visit locid_for(@ontology, :ontology_versions)
+  visit polymorphic_path([@ontology, :ontology_versions])
 end
 
 Given(/^I visit the sub-page "([^"]+)" of the ontology$/) do |subpage|
-  visit locid_for(@ontology, subpage.to_sym)
+  visit polymorphic_path([@ontology, subpage.to_sym])
 end
 
 When(/^we change the state of the ontology to: (\w+)$/) do |state|

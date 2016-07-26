@@ -35,7 +35,7 @@ describe ProofAttemptsController do
       end
 
       it 'redirect to the root path' do
-        expect(response).to redirect_to(controllers_locid_for(proof_attempt))
+        expect(response).to redirect_to(url_for(proof_attempt))
       end
 
       it 'not set the flash' do

@@ -1,5 +1,5 @@
 %table.symbols
-  - if @show_name_column 
+  - if @show_name_column
     %thead
       %tr
         %th{style:"border:0"}
@@ -14,16 +14,16 @@
               = oops_icons symbol.oops_responses
         - if @show_name_column
           %td= symbol.text
-          %td= link_to symbol.name, locid_for(symbol)
+          %td= link_to symbol.name, url_for(symbol)
         - else
           - if symbol.display_name
-            %td= link_to symbol.display_name, locid_for(symbol)
-          - else 
+            %td= link_to symbol.display_name, url_for(symbol)
+          - else
             %td= name_highlighter(symbol)
-      
+
       - if symbol.oops_responses.any?
         %tr{:style => "display:none"}
-        %tr.pitfall{:style => "display:none"} 
+        %tr.pitfall{:style => "display:none"}
           %td
           %td{colspan:2, style:"box-shadow:inset 0 0 5px grey"}
             %dl.oops-responses

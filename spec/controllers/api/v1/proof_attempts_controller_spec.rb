@@ -13,7 +13,7 @@ describe Api::V1::ProofAttemptsController do
             repository_id: repository.to_param,
             ontology_id: ontology.to_param,
             theorem_id: theorem.to_param,
-            locid: controllers_locid_for(theorem, :proof_attempts),
+            locid: url_for([theorem, :proof_attempts]),
             format: :json
       end
 
@@ -33,7 +33,7 @@ describe Api::V1::ProofAttemptsController do
             ontology_id: ontology.to_param,
             theorem_id: theorem.to_param,
             id: proof_attempt.to_param,
-            locid: controllers_locid_for(proof_attempt, :used_axioms),
+            locid: url_for([proof_attempt, :used_axioms]),
             format: :json
       end
 
@@ -53,7 +53,7 @@ describe Api::V1::ProofAttemptsController do
             ontology_id: ontology.to_param,
             theorem_id: theorem.to_param,
             id: proof_attempt.to_param,
-            locid: controllers_locid_for(proof_attempt, :used_theorems),
+            locid: url_for([proof_attempt, :used_theorems]),
             format: :json
       end
 
@@ -73,7 +73,7 @@ describe Api::V1::ProofAttemptsController do
             ontology_id: ontology.to_param,
             theorem_id: theorem.to_param,
             id: proof_attempt.to_param,
-            locid: controllers_locid_for(proof_attempt, :generated_axioms),
+            locid: url_for([proof_attempt, :generated_axioms]),
             format: :json
       end
 

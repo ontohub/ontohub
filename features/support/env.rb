@@ -19,13 +19,6 @@ class Cucumber::Rails::World
   require Rails.root.join('spec', 'support', 'scenario_progress_formatter.rb')
   require Rails.root.join('spec', 'support', 'shared_helper.rb')
 
-  def locid_for(resource, *commands, **query_components)
-    iri = "#{resource.locid}"
-    iri << "///#{commands.join('///')}" if commands.any?
-    iri << "?#{query_components.to_query}" if query_components.any?
-    iri
-  end
-
   # Capybara is smart enough to wait for ajax when not finding elements.
   # In some situations the element is already existent, but has not been updated
   # yet. This is where you need to manually use wait_for_ajax.

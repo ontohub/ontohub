@@ -20,17 +20,17 @@ module NavigationHelper
 
     content_page = ontology.distributed? ? :children : :symbols
     @top_level_pages = [
-      ['Content', locid_for(resource, content_page),
+      ['Content', url_for([resource, content_page]),
        content_page.to_sym],
-      ['Comments', locid_for(resource, :comments),
+      ['Comments', url_for([resource, :comments]),
        :comments],
-      ['Metadata', locid_for(resource, :metadata),
+      ['Metadata', url_for([resource, :metadata]),
        :metadata],
-      ['Versions', locid_for(resource, :ontology_versions),
+      ['Versions', url_for([resource, :ontology_versions]),
        :ontology_versions],
-      ['Graphs', locid_for(resource, :graphs),
+      ['Graphs', url_for([resource, :graphs]),
        :graphs],
-      ['Mappings', locid_for(resource, :mappings),
+      ['Mappings', url_for([resource, :mappings]),
        :mappings],
     ]
 
@@ -54,10 +54,10 @@ module NavigationHelper
     pages = []
 
     if ontology.distributed?
-      pages << [:children,  locid_for(resource_chain.last, :children)]
+      pages << [:children, url_for([resource_chain.last, :children])]
     else
-      pages << [:axioms, locid_for(resource_chain.last, :axioms)]
-      pages << [:theorems, locid_for(resource_chain.last, :theorems)]
+      pages << [:axioms, url_for([resource_chain.last, :axioms])]
+      pages << [:theorems, url_for([resource_chain.last, :theorems])]
     end
 
     actions = []
@@ -160,13 +160,13 @@ module NavigationHelper
   def ontology_nav_metadata
     resource = resource_chain.last
     [
-      ['Projects', locid_for(resource, :projects),
+      ['Projects', url_for([resource, :projects]),
        :projects],
-      ['Tasks', locid_for(resource, :tasks),
+      ['Tasks', url_for([resource, :tasks]),
        :tasks],
-      ['License Models', locid_for(resource, :license_models),
+      ['License Models', url_for([resource, :license_models]),
        :license_models],
-      ['Formality Levels', locid_for(resource, :formality_levels),
+      ['Formality Levels', url_for([resource, :formality_levels]),
        :formality_levels],
     ]
   end
