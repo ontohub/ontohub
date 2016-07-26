@@ -188,7 +188,7 @@ group :development, :test do
 
   # Recording of HTTP Requests
   gem "vcr", '~> 3.0.0', require: false
-  gem "webmock", '~> 2.0.2'
+  gem "webmock", '~> 2.1.0'
 end
 
 group :production do
