@@ -16,7 +16,7 @@
 - if theorem.provable
   %h4 Proof Attempts
   - if can?(:write, parent.repository)
-    = link_to t('theorems.show.prove'), [*resource_chain, theorem, :proofs, :new], class: 'btn btn-primary'
+    = link_to t('theorems.show.prove'), url_for([theorem, :prove]), class: 'btn btn-primary'
   %div
     - if collection.empty?
       = t('theorems.show.proof_attempts_empty')

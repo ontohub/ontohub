@@ -1,8 +1,8 @@
 module ProofsHelper
-  def form_url_chain
-    chain = resource_chain
-    chain << resource.proof_obligation if resource.theorem?
-    chain << :proofs
+  def url_prove_form
+    destination = resource.proof_obligation
+    destination = destination.ontology if destination.is_a?(OntologyVersion)
+    url_for([destination, :prove])
   end
 
   def klass
