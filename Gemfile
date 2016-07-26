@@ -10,7 +10,7 @@ gem 'pg', '~> 0.18.1'
 gem 'foreigner', '~> 1.7.2'
 
 gem 'rdf', '~> 2.0.2'
-gem 'rdf-rdfxml', '~> 1.99.0'
+gem 'rdf-rdfxml', '~> 2.0.0'
 gem 'rdf-n3', '~> 1.99.0'
 
 # As soon as the pull request https://github.com/dv/redis-semaphore/pull/46 is
