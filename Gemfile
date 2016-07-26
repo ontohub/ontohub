@@ -67,6 +67,7 @@ gem 'inherited_resources', '~> 1.4.1'
 gem 'has_scope', '~> 0.6.0.rc'
 
 # JSON views
+# active_model_serializers >= 0.10.0 is not compatible to rails 3
 gem 'active_model_serializers', '~> 0.9.3'
 
 # JSON Parser
