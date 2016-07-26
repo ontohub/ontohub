@@ -83,7 +83,7 @@ gem 'devise', '~> 3.5.2'
 gem 'cancan', '~> 1.6.7'
 
 # Pagination
-gem 'kaminari', '~> 0.16.1'
+gem 'kaminari', '~> 0.17.0'
 
 # Strip spaces in attributes
 gem "strip_attributes", "~> 1.0"
