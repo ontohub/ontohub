@@ -3,7 +3,7 @@ require_relative 'base_generator.rb'
 module FixturesGeneration
   class DirectHetsGenerator < BaseGenerator
     HETS_API_OPTIONS = '/auto'
-    HETS_BASE_IRI = 'http://localhost:8000'
+    HETS_BASE_IRI = "http://localhost:#{HETS_SERVER_PORT}"
 
     def call
       if outdated_cassettes.any?
