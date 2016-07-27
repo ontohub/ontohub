@@ -92,6 +92,10 @@ hets:
   # This is the path to the hets executable we use in `rake hets:*` and for the
   # process manager in production mode (god)
   executable_path: /usr/bin/hets
+  # The port to use in the testing framework to generate fixture files.
+  # This is not used in the "production" and "development" environments, but
+  # only in the "test" environment.
+  testing_port: 8010
   # The URLs to the hets instances without trailing slash.
   # The number of instances is not allowed to be greater than the number of
   # hardware processor cores.
