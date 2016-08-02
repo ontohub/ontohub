@@ -10,7 +10,7 @@
   = pluralize(collection.count, "#{Settings.OMS} mapping")
   currently available
 
-= pagination do
+= pagination(build_links_from_request: true) do
   -if @ontology
     .row.center-row
       .col-md-2
