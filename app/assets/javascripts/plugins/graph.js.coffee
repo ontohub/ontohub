@@ -163,6 +163,7 @@ displayGraph = (data) ->
       payload =
         edge_url: edge_url
         edge: edge
+        url: edge.info.iri
       template = templateName(edge_type, 'edge')
       if template
         d3.select("div#d3_context").html('')
