@@ -169,7 +169,7 @@ function prepareHets {
 	Log.info 'Setting up hets ...'
 	integer HPORT
 	(( HPORT=EPORT + 2 ))
-	print "hets:\n  port: ${HPORT}\n  executable_path: /usr/bin/hets-server" \
+	print "hets:\n  testing_port: ${HPORT}\n  executable_path: /usr/bin/hets-server" \
 		>${WORKSPACE}/config/settings.local.yml
 	return 0
 
