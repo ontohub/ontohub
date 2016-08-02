@@ -7,10 +7,10 @@
   %h2= @page_title = 'Mappings'
 
 %p
-  = pluralize(collection.count, "#{Settings.OMS} mapping")
+  = pluralize(@mappings.count, "#{Settings.OMS} mapping")
   currently available
 
-= pagination do
+= pagination(build_links_from_request: true) do
   -if @ontology
     .row.center-row
       .col-md-2
@@ -23,7 +23,7 @@
         %h4 Target
       .col-md-2
         %h4 Target-Symbol
-    - hash = sort_mapping_list(@mappings)
+    - hash = sort_mapping_list(collection)
     - hash.each do |key, array|
       .row.center-row
         .col-md-2

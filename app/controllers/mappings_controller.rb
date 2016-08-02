@@ -45,12 +45,14 @@ class MappingsController < InheritedResources::Base
   private
 
   def collection
-    if params[:ontology_id]
-      collection = Mapping.with_ontology_reference(params[:ontology_id])
-    else
-      collection = super
+    unless @mappings
+      if params[:ontology_id]
+        @mappings = Mapping.with_ontology_reference(params[:ontology_id])
+      else
+        @mappings = Mapping.unscoped
+      end
     end
-    @mappings = collection = collection.
+    collection = @mappings.
         joins(source: :logic).order('logics.name DESC')
     paginate_for(collection.select { |m| restrict_by_permission(m) })
   end
