@@ -241,6 +241,25 @@ describe Ontology do
       it 'the old child is not "present"' do
         expect(Ontology.unscoped.find_by_name('sp1').present).to be(false)
       end
+
+      context 'and restoring again' do
+        before do
+          stub_hets_for('casl/test2.casl')
+          version_for_file(repository,
+                           ontology_file('casl/test2.casl'),
+                           target_path).parse_full
+          ontology.reload
+        end
+
+        it 'has the correct children' do
+          expect(ontology.children.map(&:name)).
+            to match_array(%w(sp sp1 sp__E1 sp__T))
+        end
+
+        it 'the old child is not "present"' do
+          expect(Ontology.unscoped.find_by_name('sp1').present).to be(true)
+        end
+      end
     end
 
     context 'after deleting' do
@@ -259,6 +278,25 @@ describe Ontology do
 
       it 'the old child is not "present"' do
         expect(Ontology.unscoped.find_by_name('sp1').present).to be(false)
+      end
+
+      context 'and restoring again' do
+        before do
+          stub_hets_for('casl/test2.casl')
+          version_for_file(repository,
+                           ontology_file('casl/test2.casl'),
+                           target_path).parse_full
+          ontology.reload
+        end
+
+        it 'has the correct children' do
+          expect(ontology.children.map(&:name)).
+            to match_array(%w(sp sp1 sp__E1 sp__T))
+        end
+
+        it 'the old child is not "present"' do
+          expect(Ontology.unscoped.find_by_name('sp1').present).to be(true)
+        end
       end
     end
   end
