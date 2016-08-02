@@ -39,7 +39,7 @@ module Hets
         child_locid = parent_ontology.locid_for_child(internal_iri)
 
         # find or create child-ontology by IRI
-        ontology = parent_ontology.children.find_with_locid(child_locid)
+        ontology = parent_ontology.all_children.find_with_locid(child_locid)
         if ontology.nil?
           options = {
             name: internal_iri,
