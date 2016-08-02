@@ -36,7 +36,7 @@ When(/^I create a combination via the API of these ontologies$/) do
   request "/#{@repository.path}///combinations",\
     method: :post,
     input: {
-      nodes: @ontologies.map { |o| locid_for(o) }
+      nodes: @ontologies.map { |o| url_for(o) }
     }.to_json
 end
 

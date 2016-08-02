@@ -3,7 +3,7 @@
 = ontology_nav ontology, :theorems
 
 %h3
-  = link_to theorem, locid_for(theorem)
+  = link_to theorem, url_for(theorem)
   = render partial: 'theorems/proof_status', locals: {proof_status: theorem.proof_status}
 
 - unless State::TERMINAL_STATES.include?(theorem.state)

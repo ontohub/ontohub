@@ -28,7 +28,7 @@ Given(/^I visit my subject's locid$/) do
 end
 
 Given(/^I visit my subject's (\S+) command$/) do |command|
-  visit locid_for(@subject, command)
+  visit polymorphic_path([@subject, command])
 end
 
 Then(/^the page title should include "(\S+)"$/) do |text|

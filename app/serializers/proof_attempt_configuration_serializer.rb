@@ -3,7 +3,7 @@ class ProofAttemptConfigurationSerializer < ApplicationSerializer
     attributes :iri
 
     def iri
-      qualified_locid_for(object.proof_attempt, :'proof-attempt-configuration')
+      url_for([object.proof_attempt, :'proof-attempt-configuration'])
     end
   end
 
@@ -37,10 +37,12 @@ class ProofAttemptConfigurationSerializer < ApplicationSerializer
   end
 
   def selected_axioms
-    qualified_locid_for(object.proof_attempt, :'proof-attempt-configuration', :selected_axioms)
+    url_for([object.proof_attempt,
+             :'proof-attempt-configuration', :selected_axioms])
   end
 
   def selected_theorems
-    qualified_locid_for(object.proof_attempt, :'proof-attempt-configuration', :selected_theorems)
+    url_for([object.proof_attempt,
+             :'proof-attempt-configuration', :selected_theorems])
   end
 end

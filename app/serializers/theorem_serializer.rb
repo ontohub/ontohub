@@ -4,7 +4,7 @@ class TheoremSerializer < ApplicationSerializer
     attributes :name
 
     def iri
-      qualified_locid_for(object)
+      url_for(object)
     end
   end
 
@@ -31,10 +31,10 @@ class TheoremSerializer < ApplicationSerializer
   end
 
   def symbols
-    qualified_locid_for(object, :symbols)
+    url_for([object, :symbols])
   end
 
   def proof_attempts
-    qualified_locid_for(object, :proof_attempts)
+    url_for([object, :proof_attempts])
   end
 end

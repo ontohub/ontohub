@@ -4,7 +4,7 @@ class OntologyMember::SymbolSerializer < ApplicationSerializer
     attributes :name
 
     def iri
-      qualified_locid_for(object)
+      url_for(object)
     end
   end
 
@@ -22,6 +22,6 @@ class OntologyMember::SymbolSerializer < ApplicationSerializer
   end
 
   def sentences
-    qualified_locid_for(object, :sentences)
+    url_for([object, :sentences])
   end
 end

@@ -3,7 +3,7 @@
 = ontology_nav ontology, :theorems
 
 %h3
-  = t('prover_outputs.show.head_html', theorem: link_to(resource.theorem, locid_for(resource.theorem, :proof_attempts)), proof_attempt_text: link_to(t('prover_outputs.show.head_attempt_html', number: resource.proof_attempt.number), locid_for(resource.proof_attempt)))
+  = t('prover_outputs.show.head_html', theorem: link_to(resource.theorem, url_for([resource.theorem, :proof_attempts])), proof_attempt_text: link_to(t('prover_outputs.show.head_attempt_html', number: resource.proof_attempt.number), url_for([resource.proof_attempt])))
 
 %h4= t('prover_outputs.show.prover')
 = resource.prover

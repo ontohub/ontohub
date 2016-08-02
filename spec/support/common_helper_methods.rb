@@ -3,9 +3,9 @@ require Rails.root.join('spec', 'support', 'json_schema_matcher.rb')
 # We use the develop branch to allow unmerged pull requests to be considered.
 SCHEMA_BASE_URL = "https://raw.githubusercontent.com/ontohub/ontohub-api-json/develop/"
 
-def controllers_locid_for(resource, *args, &block)
+def url_for(resource, *args, &block)
   request.env['action_controller.instance'].
-    send(:locid_for, resource, *args, &block)
+    send(:url_for, *[resource, *args], &block)
 end
 
 def fixture_file(path)

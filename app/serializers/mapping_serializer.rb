@@ -4,7 +4,7 @@ class MappingSerializer < ApplicationSerializer
     attributes :name
 
     def iri
-      qualified_locid_for(object)
+      url_for(object)
     end
   end
 

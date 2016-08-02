@@ -7,7 +7,7 @@ class ProofAttemptsController < InheritedResources::Base
   def retry_failed
     check_write_permissions
     resource.retry_failed
-    redirect_to locid_for(resource)
+    redirect_to url_for(resource)
   end
 
   protected
