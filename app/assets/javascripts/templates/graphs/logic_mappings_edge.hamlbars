@@ -1,7 +1,7 @@
 %ul#edge_info
   %li
     %span Logic Mapping:
-    %a{href: '{{edge_url}}/{{edge.info.id}}'}
+    %a{href: '{{url}}'}
       {{edge.source.info.name}} → {{edge.target.info.name}}
   %li
     %span exactness:
