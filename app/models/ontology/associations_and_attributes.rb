@@ -6,6 +6,7 @@ module Ontology::AssociationsAndAttributes
     # Add the scope "present: true" to the children association by acts_as_tree.
     Ontology.reflect_on_association(:children).
       options[:conditions] = {present: true}
+    has_many :all_children, class_name: Ontology.to_s, foreign_key: 'parent_id'
 
     belongs_to :language
     belongs_to :logic, counter_cache: true

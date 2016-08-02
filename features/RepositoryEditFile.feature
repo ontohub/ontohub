@@ -15,3 +15,10 @@ Scenario: View the Ontologies of the file (DistributedOntology with deleted chil
   And Children of the ontology have been deleted
   When I visit the file view of the ontology
   Then I should see all the file's ontologies
+
+Scenario: View the Ontologies of the file (DistributedOntology with restored children)
+  Given I have uploaded a distributed ontology
+  And Children of the ontology have been deleted
+  And Children of the ontology have been restored
+  When I visit the file view of the ontology
+  Then I should see all the file's ontologies

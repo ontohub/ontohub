@@ -25,7 +25,17 @@ Given(/^Children of the ontology have been deleted$/i) do
   @deleted_child.save!
 
   build_version_for(@ontology).save!
-  @ontology.children.reject { |c| c == @deleted_child }.each do |child|
+  @ontology.children.each do |child|
+    build_version_for(child).save!
+  end
+end
+
+Given(/^Children of the ontology have been restored$/i) do
+  @deleted_child.present =true
+  @deleted_child.save!
+
+  build_version_for(@ontology).save!
+  @ontology.children.each do |child|
     build_version_for(child).save!
   end
 end

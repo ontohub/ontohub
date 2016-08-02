@@ -152,7 +152,7 @@ module Hets
 
       def set_all_children_inactive_except(present_ontologies)
         return if parent_ontology.nil?
-        parent_ontology.children.each do |child|
+        parent_ontology.all_children.each do |child|
           unless present_ontologies.include?(child.name)
             child.present = false
             child.save!
