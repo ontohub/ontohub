@@ -8,6 +8,7 @@ module FixturesGeneration
   # * subdir: the subdirectory of the generated fixtures
   class BaseGenerator
     HETS_PATH = Settings.hets.executable_path
+    HETS_SERVER_PORT = Settings.hets.testing_port
     HETS_SERVER_ARGS =
       YAML.load(File.open('config/hets.yml'))['hets']['server_options']
 
@@ -30,8 +31,8 @@ module FixturesGeneration
 
     def with_running_hets(&block)
       with_running('hets',
-                   "#{HETS_PATH} --server #{HETS_SERVER_ARGS.join(' ')}",
-                   8000, 1, &block)
+                   "#{HETS_PATH} --server --listen=#{HETS_SERVER_PORT} #{HETS_SERVER_ARGS.join(' ')}",
+                   HETS_SERVER_PORT, 1, &block)
     end
 
     protected
