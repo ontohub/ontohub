@@ -58,6 +58,7 @@ class SettingsValidationWrapper
                 yml__git__push_priority__changed_files_per_commit
                 yml__git__fallbacks__committer_name
                 yml__git__fallbacks__committer_email
+                yml__hets__testing_port
                 yml__hets__instance_urls
                 yml__redis__url
                 yml__redis__namespace
@@ -94,6 +95,7 @@ class SettingsValidationWrapper
               yml__git__push_priority__commits
               yml__git__push_priority__changed_files_per_commit
               yml__access_token__expiration_minutes
+              yml__hets__testing_port
               yml__hets__time_between_updates
               yml__hets__version_minimum_revision)
 
@@ -207,6 +209,9 @@ class SettingsValidationWrapper
               if: :in_production?
   end
 
+  validates :yml__hets__testing_port,
+            numericality: {greater_than_or_equal_to: 0,
+                           less_than_or_equal_to: 65_535}
   validates :yml__hets__time_between_updates,
             numericality: {greater_than_or_equal_to: 1}
 
