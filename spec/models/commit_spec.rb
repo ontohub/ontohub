@@ -34,7 +34,7 @@ describe Commit do
         end
 
         it "saves the #{field}_name" do
-          expect(subject.send("#{field}_name")).to eq(pusher.name)
+          expect(subject.send("#{field}_name").sub(/\.$/, '')).to eq(pusher.name.sub(/\.$/, ''))
         end
       end
 
