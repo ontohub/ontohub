@@ -4,7 +4,7 @@ class OntologySerializer < ApplicationSerializer
     attributes :name
 
     def iri
-      qualified_locid_for(object)
+      url_for(object)
     end
   end
 
@@ -39,18 +39,18 @@ class OntologySerializer < ApplicationSerializer
   end
 
   def ontology_versions
-    qualified_locid_for(object, :ontology_versions)
+    url_for([object, :ontology_versions])
   end
 
   def symbols
-    qualified_locid_for(object, :symbols)
+    url_for([object, :symbols])
   end
 
   def sentences
-    qualified_locid_for(object, :sentences)
+    url_for([object, :sentences])
   end
 
   def mappings
-    qualified_locid_for(object, :mappings)
+    url_for([object, :mappings])
   end
 end

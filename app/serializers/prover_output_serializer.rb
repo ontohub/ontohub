@@ -3,7 +3,7 @@ class ProverOutputSerializer < ApplicationSerializer
     attributes :iri
 
     def iri
-      qualified_locid_for(object)
+      url_for(object)
     end
   end
 

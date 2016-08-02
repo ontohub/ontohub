@@ -35,7 +35,7 @@ module StateHelper
       data: {
         klass: resource.class.to_s,
         id: resource.id,
-        uri: locid_for(resource),
+        uri: url_for(resource),
         state: resource.state,
       }
     }
@@ -56,7 +56,7 @@ module StateHelper
 
       link = ' ('
       link << link_to('error',
-        locid_for(resource, :ontology_versions),
+        url_for([resource, :ontology_versions]),
         :'data-original-title' => version.last_error,
         class: 'help'
       )

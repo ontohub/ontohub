@@ -4,7 +4,7 @@
 
 %h3
   = t('proof_attempts.show.headline')
-  = link_to resource.theorem, locid_for(resource.theorem, :proof_attempts)
+  = link_to resource.theorem, url_for([resource.theorem, :proof_attempts])
   = render partial: 'theorems/proof_status', locals: {proof_status: resource.proof_status}
 
 = render partial: '/shared/state', locals: {resource: resource}

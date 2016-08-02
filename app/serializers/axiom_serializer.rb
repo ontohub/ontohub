@@ -4,7 +4,7 @@ class AxiomSerializer < ApplicationSerializer
     attributes :name
 
     def iri
-      qualified_locid_for(object)
+      url_for(object)
     end
   end
 
@@ -18,7 +18,7 @@ class AxiomSerializer < ApplicationSerializer
   end
 
   def symbols
-    qualified_locid_for(object, :symbols)
+    url_for([object, :symbols])
   end
 
   def definition

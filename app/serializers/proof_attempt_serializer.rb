@@ -4,7 +4,7 @@ class ProofAttemptSerializer < ApplicationSerializer
     attributes :number
 
     def iri
-      qualified_locid_for(object)
+      url_for(object)
     end
   end
 
@@ -36,14 +36,14 @@ class ProofAttemptSerializer < ApplicationSerializer
   end
 
   def used_axioms
-    qualified_locid_for(object, :used_axioms)
+    url_for([object, :used_axioms])
   end
 
   def generated_axioms
-    qualified_locid_for(object, :generated_axioms)
+    url_for([object, :generated_axioms])
   end
 
   def used_theorems
-    qualified_locid_for(object, :used_theorems)
+    url_for([object, :used_theorems])
   end
 end
