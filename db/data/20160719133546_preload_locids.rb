@@ -1,8 +1,6 @@
 class PreloadLocids < ActiveRecord::Migration
-  CLASSES = [Axiom, Theorem].freeze
-
   def self.up
-    LocId.where(specific_type: CLASSES.map(&:to_s)).find_each do |object|
+    LocId.where(specific_type: Sentence.descendants.map(&:to_s)).find_each do |object|
       object.specific_type = Sentence.to_s
       object.save
     end
