@@ -49,7 +49,7 @@ class MappingsController < InheritedResources::Base
       if params[:ontology_id]
         @mappings = Mapping.with_ontology_reference(params[:ontology_id])
       else
-        @mappings = super
+        @mappings = Mapping.unscoped
       end
     end
     collection = @mappings.
