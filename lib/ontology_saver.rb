@@ -13,17 +13,19 @@ class OntologySaver
     file_extension = File.extname(ontology_version_options.filepath)
     return unless Ontology.file_extensions.include?(file_extension)
     return if already_updated_in_commit?(commit_oid, ontology_version_options)
-    ontology = find_or_create_ontology(ontology_version_options)
+    ActiveRecord::Base.transaction do
+      ontology = find_or_create_ontology(ontology_version_options)
 
-    return unless repository.master_file?(ontology, ontology_version_options)
-    return if ontology.versions.find_by_commit_oid(commit_oid)
+      return unless repository.master_file?(ontology, ontology_version_options)
+      return if ontology.versions.find_by_commit_oid(commit_oid)
 
-    version = create_version(ontology, commit_oid, ontology_version_options,
-                             changed_files)
-    ontology.present = true
-    ontology.save!
+      version = create_version(ontology, commit_oid, ontology_version_options,
+                               changed_files)
+      ontology.present = true
+      ontology.save!
 
-    version
+      version
+    end
   end
 
   def suspended_save_ontologies(options={})

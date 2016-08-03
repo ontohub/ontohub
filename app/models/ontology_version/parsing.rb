@@ -18,15 +18,17 @@ module OntologyVersion::Parsing
     if !@deactivate_parsing || ontology.parent.nil?
       update_state! :pending
 
-      Sidekiq::RetrySet.new.each do |job|
-        job.kill if job.args.first == id
-      end
+      after_transaction do
+        Sidekiq::RetrySet.new.each do |job|
+          job.kill if job.args.first == id
+        end
 
-      OntologyParsingWorker.
-        perform_async([[id,
-                        {fast_parse: @fast_parse,
-                         files_to_parse_afterwards: files_to_parse_afterwards},
-                        1]])
+        OntologyParsingWorker.
+          perform_async([[id,
+                          {fast_parse: @fast_parse,
+                           files_to_parse_afterwards: files_to_parse_afterwards},
+                          1]])
+      end
     end
   end
 
