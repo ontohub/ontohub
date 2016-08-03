@@ -5,7 +5,7 @@ module OntologyVersion::Parsing
   included do
     @queue = 'hets'
 
-    after_create :async_parse, :if => :commit_oid?
+    after_create :async_parse
     attr_accessor :fast_parse
     attr_accessor :files_to_parse_afterwards
   end
@@ -15,7 +15,7 @@ module OntologyVersion::Parsing
   end
 
   def async_parse(*args)
-    if !@deactivate_parsing
+    if !@deactivate_parsing || ontology.parent.nil?
       update_state! :pending
 
       Sidekiq::RetrySet.new.each do |job|
