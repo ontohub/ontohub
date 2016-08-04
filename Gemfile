@@ -2,16 +2,16 @@ source 'https://rubygems.org'
 
 gem 'rails', '~> 3.2.22'
 gem 'rack-protection', '~> 1.5.3'
-gem 'secure_headers', '~> 3.0.3'
+gem 'secure_headers', '~> 3.4.0'
 
 gem 'pry-rails', '~> 0.3.2'
 
 gem 'pg', '~> 0.18.1'
 gem 'foreigner', '~> 1.7.2'
 
-gem 'rdf', '~> 1.99.0'
-gem 'rdf-rdfxml', '~> 1.99.0'
-gem 'rdf-n3', '~> 1.99.0'
+gem 'rdf', '~> 2.0.2'
+gem 'rdf-n3', '~> 2.0.0'
+gem 'rdf-rdfxml', '~> 2.0.0'
 
 # As soon as the pull request https://github.com/dv/redis-semaphore/pull/46 is
 # merged and a new release is out, use the upstream gem again.
@@ -35,7 +35,7 @@ group :assets do
   gem 'jquery-rails', '~> 3.1.3'
   gem 'jquery-ui-rails', '~> 5.0.5'
   gem 'momentjs-rails', '~> 2.11.0'
-  gem 'd3_rails', '~> 3.5.6'
+  gem 'd3_rails', '~> 4.1.1'
   gem 'therubyracer', '~> 0.12.1'
   gem 'uglifier', '>= 1.0.3'
   # handlebars_assets >= 0.23.0 is not compatible to rails 3
@@ -67,6 +67,7 @@ gem 'inherited_resources', '~> 1.4.1'
 gem 'has_scope', '~> 0.6.0.rc'
 
 # JSON views
+# active_model_serializers >= 0.10.0 is not compatible to rails 3
 gem 'active_model_serializers', '~> 0.9.3'
 
 # JSON Parser
@@ -83,7 +84,7 @@ gem 'devise', '~> 3.5.2'
 gem 'cancan', '~> 1.6.7'
 
 # Pagination
-gem 'kaminari', '~> 0.16.1'
+gem 'kaminari', '~> 0.17.0'
 
 # Strip spaces in attributes
 gem "strip_attributes", "~> 1.0"
@@ -92,7 +93,7 @@ gem "strip_attributes", "~> 1.0"
 gem 'acts_as_tree', '~> 2.4.0'
 
 # HTTP Client
-gem "rest-client", '~> 1.8.0'
+gem "rest-client", '~> 2.0.0'
 
 # Background-Jobs
 gem 'sidekiq', '~> 3.5.3'
@@ -106,10 +107,10 @@ gem 'sinatra', '~> 1.4.5', require: false, group: [:development, :production]
 
 # Search engine
 gem 'progress_bar', '~> 1.0.2'
+gem 'elasticsearch', '~> 2.0.0'
+gem 'elasticsearch-extensions', '~> 0.0.15'
 gem 'elasticsearch-model', '~> 0.1.4'
 gem 'elasticsearch-rails', '~> 0.1.4'
-gem 'elasticsearch', '~> 1.0.4'
-gem 'elasticsearch-extensions', '~> 0.0.15'
 
 # Graph visualization
 gem 'ruby-graphviz', "~> 1.2.2"
@@ -152,7 +153,7 @@ group :test do
 
   # Required for integration tests
   gem 'capybara', '~> 2.5.0'
-  gem 'poltergeist', '~> 1.9.0'
+  gem 'poltergeist', '~> 1.10.0'
   gem 'launchy', '~> 2.4.3'
 
   gem 'cucumber-rails', '~> 1.4.2', require: false
@@ -161,7 +162,7 @@ group :test do
   gem 'cucumber', '~> 1.3', require: false
 
   # Code Coverage Analysis
-  gem 'simplecov', '~> 0.11.0', require: false
+  gem 'simplecov', '~> 0.12.0', require: false
 
   # So we can validate against json-schemas
   gem 'json-schema', '~> 2.6.0'
@@ -188,7 +189,7 @@ group :development, :test do
 
   # Recording of HTTP Requests
   gem "vcr", '~> 3.0.0', require: false
-  gem "webmock", '~> 2.0.2'
+  gem "webmock", '~> 2.1.0'
 end
 
 group :production do
@@ -196,6 +197,7 @@ group :production do
   gem 'puma'
   gem 'eye', '~> 0.8'
   gem 'puma_worker_killer', '~> 0.0.6'
+  # exception_notification >= 4.2.0 is not compatible to rails 3
   gem 'exception_notification', '~> 4.1.0'
 end
 
@@ -206,6 +208,6 @@ group :deployment do
 end
 
 group :documentation do
-  gem 'yard', '~> 0.8.7.6'
+  gem 'yard', '~> 0.9.5'
   gem 'redcarpet', '~> 3.3.2'
 end
