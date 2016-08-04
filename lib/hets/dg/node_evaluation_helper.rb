@@ -51,7 +51,7 @@ module Hets
           parent_ontology.children << ontology
         end
         ontology.present = true
-        ontology.save!
+        ontology.save! if ontology.changed? || !ontology.persisted?
 
         version = ontology.versions.build
         version.basepath = ontology.basepath
