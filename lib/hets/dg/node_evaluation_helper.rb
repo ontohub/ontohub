@@ -46,12 +46,12 @@ module Hets
             basepath: parent_ontology.basepath,
             file_extension: parent_ontology.file_extension,
             repository_id: parent_ontology.repository_id,
-            present: true,
           }
           ontology = SingleOntology.new(options, without_protection: true)
           parent_ontology.children << ontology
-          ontology.save!
         end
+        ontology.present = true
+        ontology.save!
 
         version = ontology.versions.build
         version.basepath = ontology.basepath
