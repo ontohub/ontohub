@@ -8,6 +8,7 @@ gem 'pry-rails', '~> 0.3.2'
 
 gem 'pg', '~> 0.18.1'
 gem 'foreigner', '~> 1.7.2'
+gem 'ar_after_transaction', '~> 0.4.0'
 
 gem 'rdf', '~> 2.0.2'
 gem 'rdf-n3', '~> 2.0.0'

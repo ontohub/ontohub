@@ -93,6 +93,8 @@ GEM
     airbrussh (1.1.0)
       sshkit (>= 1.6.1, != 1.7.0)
     ansi (1.5.0)
+    ar_after_transaction (0.4.0)
+      activerecord
     arel (3.0.3)
     autoprefixer-rails (6.3.7)
       execjs
@@ -598,6 +600,7 @@ DEPENDENCIES
   active_model_serializers (~> 0.9.3)
   acts_as_relation (~> 0.1.3)
   acts_as_tree (~> 2.4.0)
+  ar_after_transaction (~> 0.4.0)
   awesome_print (~> 1.6.1)
   better_errors (~> 2.1.1)
   binding_of_caller (~> 0.7.2)

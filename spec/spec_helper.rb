@@ -71,6 +71,7 @@ RSpec.configure do |config|
   config.tty ||= ENV["SPEC_OPTS"].include?('--color') if ENV["SPEC_OPTS"]
 
   config.before(:suite) do
+    ActiveRecord::Base.normally_open_transactions = 1
     FactoryGirl.create :proof_statuses
   end
 
