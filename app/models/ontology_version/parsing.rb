@@ -21,12 +21,7 @@ module OntologyVersion::Parsing
       # Import version
       ontology.import_version(self, pusher, input_io)
       retrieve_available_provers_for_self_and_children
-
-      update_state!(:done)
-      ontology.children.each do |child|
-        child.versions.where(commit_oid: commit_oid).first.update_state!(:done)
-        child.versions.where(commit_oid: commit_oid).first.save!
-      end
+      update_states_for_self_and_children(:done)
     end
 
     files_to_parse_afterwards.each do |path|
@@ -66,5 +61,13 @@ module OntologyVersion::Parsing
                                             ontology: ontology)
     provers_io = Hets.provers_via_api(ontology, hets_options)
     Hets::Provers::Importer.new(self, provers_io).import
+  end
+
+  def update_states_for_self_and_children(state)
+    update_state!(state)
+    ontology.children.each do |child|
+      child.versions.where(commit_oid: commit_oid).first.update_state!(state)
+      child.versions.where(commit_oid: commit_oid).first.save!
+    end
   end
 end
