@@ -6,7 +6,7 @@ class LocIdBaseModel < ActiveRecord::Base
   # There is no polymorphic has_one
   has_many :loc_ids, as: :specific
 
-  default_scope { includes(:loc_ids) }
+  default_scope { joins(:loc_ids) }
 
   def self.find_with_locid(locid, iri = nil)
     result = LocId.where(locid: locid).first.try(:specific)
