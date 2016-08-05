@@ -255,7 +255,7 @@ describe Ontology do
           path,
           'partial_order.casl',
           'parsing a distributed ontology',
-          user)
+          user).reload
 
         expect(version.ontology.logic.name).to eq('DOL')
       end
@@ -267,7 +267,7 @@ describe Ontology do
         repository.save_file(path,
                              'Simple_Implications_Group.tptp',
                              'parsing a TPTP file',
-                             user)
+                             user).reload
       end
 
       before do
@@ -302,7 +302,7 @@ describe Ontology do
         repository.save_file(path,
                              'zfmisc_1__t92_zfmisc_1.p',
                              'parsing a TPTP file',
-                             user)
+                             user).reload
       end
 
       before do
