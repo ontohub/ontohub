@@ -150,7 +150,6 @@ class OntologySaver
         file_extension: File.extname(ontology_version_options.filepath),
         fast_parse: ontology_version_options.fast_parse },
       { without_protection: true })
-    version.do_not_parse! if ontology_version_options.do_not_parse
     version.files_to_parse_afterwards = files_to_parse(ontology, changed_files)
     version.save!
     ontology.ontology_version = version

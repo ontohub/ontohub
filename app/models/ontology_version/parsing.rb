@@ -30,8 +30,7 @@ module OntologyVersion::Parsing
     end
 
     files_to_parse_afterwards.each do |path|
-      ontology_version_options = OntologyVersionOptions.new(path, pusher,
-                                                            do_not_parse: false)
+      ontology_version_options = OntologyVersionOptions.new(path, pusher)
       version = OntologySaver.new(repository).
         save_ontology(commit_oid, ontology_version_options)
     end
