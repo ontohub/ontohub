@@ -1,9 +1,7 @@
 class PreloadLocids < ActiveRecord::Migration
   def self.up
-    LocId.where(specific_type: Sentence.descendants.map(&:to_s)).find_each do |object|
-      object.specific_type = Sentence.to_s
-      object.save
-    end
+    LocId.where(specific_type: Sentence.descendants.map(&:to_s)).
+      update_all(specific_type: Sentence.to_s)
   end
 
   def self.down
