@@ -23,6 +23,8 @@ class OntologySaver
     ontology.present = true
     ontology.save!
 
+    async_parse_version(version) unless ontology_version_options.do_not_parse
+
     version
   end
 
@@ -74,6 +76,22 @@ class OntologySaver
       onto.has_file = has_file
       onto.save
     end
+  end
+
+  def async_parse_version(version)
+    return if version.nil?
+    version.update_state! :pending
+
+    Sidekiq::RetrySet.new.each do |job|
+      job.kill if job.args.first == version.id
+    end
+
+    OntologyParsingWorker.
+      perform_async([[version.id,
+                      {fast_parse: version.fast_parse,
+                       files_to_parse_afterwards: version.
+                         files_to_parse_afterwards},
+                      1]])
   end
 
   protected
