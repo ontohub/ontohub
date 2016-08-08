@@ -3,6 +3,11 @@ class LocIdBaseModel < ActiveRecord::Base
   after_create :create_locid
   before_destroy :destroy_locid
 
+  # There is no polymorphic has_one
+  has_many :loc_ids, as: :specific
+
+  default_scope { joins(:loc_ids) }
+
   def self.find_with_locid(locid, iri = nil)
     result = LocId.where(locid: locid).first.try(:specific)
     if table_name == 'ontologies' && result.nil? && iri
@@ -26,15 +31,15 @@ class LocIdBaseModel < ActiveRecord::Base
   def destroy_locid
     # When reanalysing an ontology in the migrations (because of duplicates),
     # the locid can already be nil.
-    query_locid.first.try(:destroy)
+    loc_ids.first.try(:destroy)
   end
 
   def locid
-    query_locid.first.try(:locid)
+    loc_ids.first.try(:locid)
   end
 
   def locid=(string)
-    if locid = query_locid.first
+    if locid = loc_ids.first
       locid.update_attributes(locid: string)
     else
       LocId.create(specific_id: id,
@@ -43,15 +48,12 @@ class LocIdBaseModel < ActiveRecord::Base
     end
   end
 
-  def query_locid
-    LocId.where(specific_id: id,
-                specific_type: normalized_class.to_s)
-  end
-
   def normalized_class
     # Sometimes the objects are "Ontology" and sometimes a subclass.
     if [DistributedOntology, SingleOntology].include?(self.class)
       Ontology
+    elsif Sentence.descendants.include?(self.class)
+      Sentence
     else
       self.class
     end
