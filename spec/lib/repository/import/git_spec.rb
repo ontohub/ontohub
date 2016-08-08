@@ -1,6 +1,6 @@
 require 'spec_helper'
 
-describe "git import" do
+describe "git import", :example_uses_transaction do
   let(:user){ create :user }
   let(:userinfo){ {email: user[:email], name: user[:name]} }
 

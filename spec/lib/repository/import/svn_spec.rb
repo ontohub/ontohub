@@ -15,7 +15,7 @@ def commit(work_dir, count, prefix)
   end
 end
 
-describe "svn import" do
+describe "svn import", :example_uses_transaction do
   let!(:svn_repo_paths) { create :svn_repository }
   let(:bare_url) { "file://#{svn_repo_paths.first}" }
   let(:work_dir) { svn_repo_paths.last }
