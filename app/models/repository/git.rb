@@ -41,14 +41,14 @@ module Repository::Git
       mark_ontology_as_having_file(filepath, has_file: false)
   end
 
-  def save_file(tmp_file, filepath, message, user, do_not_parse: false)
+  def save_file(tmp_file, filepath, message, user, do_parse: true)
     version = nil
 
     git.add_file(user_info(user), tmp_file, filepath, message) do |commit_oid|
       ontology_version_options = OntologyVersionOptions.new(
-        filepath, user, do_not_parse: do_not_parse)
+        filepath, user)
       version = OntologySaver.new(self).
-        save_ontology(commit_oid, ontology_version_options)
+        save_ontology(commit_oid, ontology_version_options, do_parse: do_parse)
     end
     touch
     version

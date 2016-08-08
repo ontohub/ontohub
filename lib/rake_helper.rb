@@ -114,7 +114,7 @@ module RakeHelper
         end
       end
       version = meta_repository.
-        save_file(filepath, basename, "Add #{basename}.", user, do_not_parse: true)
+        save_file(filepath, basename, "Add #{basename}.", user, do_parse: false)
       version.parse
       version.ontology
     end
