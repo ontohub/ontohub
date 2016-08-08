@@ -1,6 +1,6 @@
 require 'spec_helper'
 
-describe 'git mv', :process_jobs_synchronously do
+describe 'git mv', :process_jobs_synchronously, :example_uses_transaction do
   setup_hets
 
   let(:userinfo) do

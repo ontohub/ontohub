@@ -26,7 +26,6 @@ FactoryGirl.define do
                         basepath: ontology.basepath,
                         file_extension: ontology.file_extension,
                         state: 'done'
-        version.do_not_parse!
         ontology.versions << version
       end
 
@@ -41,7 +40,6 @@ FactoryGirl.define do
                       ontology: ontology,
                       basepath: ontology.basepath,
                       file_extension: ontology.file_extension
-      version.do_not_parse!
       ontology.versions << version
     end
 
@@ -52,7 +50,6 @@ FactoryGirl.define do
                         basepath: ontology.basepath,
                         file_extension: ontology.file_extension,
                         state: 'pending'
-        version.do_not_parse!
         ontology.versions << version
       end
     end
@@ -64,7 +61,6 @@ FactoryGirl.define do
                         basepath: ontology.basepath,
                         file_extension: ontology.file_extension
         version.fast_parse = true
-        version.do_not_parse!
         ontology.versions << version
       end
     end
@@ -119,7 +115,6 @@ FactoryGirl.define do
                           basepath: ontology.basepath,
                           file_extension: ontology.file_extension
           version.fast_parse = true
-          version.do_not_parse!
           ontology.versions << version
 
           logic = FactoryGirl.create(:logic)

@@ -31,9 +31,9 @@ ontologies.each do |path|
   path = File.join(Rails.root, 'spec', 'fixtures', 'ontologies', path)
   basename = File.basename(path)
 
-  version = repository.save_file path, basename, "#{basename} added", @user, do_not_parse: true
+  version = nil
   begin
-    version.parse
+    version = repository.save_file path, basename, "#{basename} added", @user
   rescue Hets::SyntaxError
     # Suppress this error in the seeds. We want to have erroneous ontologies in
     # the basic data.

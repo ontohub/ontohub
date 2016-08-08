@@ -19,7 +19,7 @@ module Repository::Importing
     include StateUpdater
 
     before_validation :clean_and_initialize_record
-    after_create ->() { call_remote :clone }, if: :source_address?
+    after_commit ->() { call_remote :clone }, on: :create, if: :source_address?
   end
 
   def mirror?

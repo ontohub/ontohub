@@ -17,7 +17,6 @@ FactoryGirl.define do
       version.commit ||= build :commit,
                                repository: version.ontology.repository,
                                commit_oid: version.commit_oid
-      version.do_not_parse!
     end
 
   end

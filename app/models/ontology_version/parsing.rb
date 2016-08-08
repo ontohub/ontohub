@@ -1,33 +1,11 @@
 module OntologyVersion::Parsing
-
   extend ActiveSupport::Concern
 
   included do
     @queue = 'hets'
 
-    after_create :async_parse, :if => :commit_oid?
     attr_accessor :fast_parse
     attr_accessor :files_to_parse_afterwards
-  end
-
-  def do_not_parse!
-    @deactivate_parsing = true
-  end
-
-  def async_parse(*args)
-    if !@deactivate_parsing
-      update_state! :pending
-
-      Sidekiq::RetrySet.new.each do |job|
-        job.kill if job.args.first == id
-      end
-
-      OntologyParsingWorker.
-        perform_async([[id,
-                        {fast_parse: @fast_parse,
-                         files_to_parse_afterwards: files_to_parse_afterwards},
-                        1]])
-    end
   end
 
   def parse(refresh_cache: false, structure_only: self.fast_parse,
@@ -43,17 +21,11 @@ module OntologyVersion::Parsing
       # Import version
       ontology.import_version(self, pusher, input_io)
       retrieve_available_provers_for_self_and_children
-
-      update_state!(:done)
-      ontology.children.each do |child|
-        child.versions.where(commit_oid: commit_oid).first.update_state!(:done)
-        child.versions.where(commit_oid: commit_oid).first.save!
-      end
+      update_states_for_self_and_children(:done)
     end
 
     files_to_parse_afterwards.each do |path|
-      ontology_version_options = OntologyVersionOptions.new(path, pusher,
-                                                            do_not_parse: false)
+      ontology_version_options = OntologyVersionOptions.new(path, pusher)
       version = OntologySaver.new(repository).
         save_ontology(commit_oid, ontology_version_options)
     end
@@ -89,5 +61,13 @@ module OntologyVersion::Parsing
                                             ontology: ontology)
     provers_io = Hets.provers_via_api(ontology, hets_options)
     Hets::Provers::Importer.new(self, provers_io).import
+  end
+
+  def update_states_for_self_and_children(state)
+    update_state!(state)
+    ontology.children.each do |child|
+      child.versions.where(commit_oid: commit_oid).first.update_state!(state)
+      child.versions.where(commit_oid: commit_oid).first.save!
+    end
   end
 end

@@ -20,7 +20,8 @@ class MoveLocIdToOwnModelData < ActiveRecord::Migration
     ontologies_to_parse.uniq.each do |ontology|
       # The ontologies need to be parsed asynchronously because the HTTP server
       # does not respond during the migration.
-      ontology.try(:current_version).try(:async_parse)
+      OntologySaver.new(ontology.repository).
+        async_parse_version(ontology.current_version)
     end
   end
 

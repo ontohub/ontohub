@@ -13,8 +13,6 @@ The following files relate to the import of ontologies:
 `app/models/ontology_version/parsing.rb`
 
 The method `parse` is defined to call **hets** and parse the corresponding xml-output.
-`async_parse` calls the same method and performs the same actions but does so asynchronously
-via a sidekiq-worker.
 
 ## Hets system call
 
