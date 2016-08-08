@@ -37,6 +37,14 @@ module DatabaseCleanerConfig
         config.original_hostname = Settings.hostname
       end
 
+      config.before(:each, :example_uses_transaction) do
+        DatabaseCleaner.strategy = NO_TRANSACTION_STRATEGY
+      end
+
+      config.after(:each, :example_uses_transaction) do
+        DatabaseCleaner.strategy = STRATEGY
+      end
+
       config.before(:each, :http_interaction) do
         DatabaseCleaner.strategy = NO_TRANSACTION_STRATEGY
         Settings.hostname =

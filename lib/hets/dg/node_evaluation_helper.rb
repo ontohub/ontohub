@@ -59,8 +59,6 @@ module Hets
         version.commit_oid = parent_version.try(:commit_oid)
         version.commit = parent_version.try(:commit)
         version.file_extension = ontology.file_extension
-        # This version will not exist if the parsing fails
-        version.do_not_parse!
 
         importer.versions << version
 
@@ -114,7 +112,9 @@ module Hets
         else
           importer.ontologies_count += 1
           if parent_ontology.distributed?
-            assign_distributed_ontology_logic(parent_ontology)
+            unless parent_ontology.changed_attributes.keys.include?('logic_id')
+              assign_distributed_ontology_logic(parent_ontology)
+            end
 
             ontology = procure_child_ontology(iri)
           else

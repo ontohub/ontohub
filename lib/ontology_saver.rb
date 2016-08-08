@@ -7,7 +7,8 @@ class OntologySaver
     self.repository = repository
   end
 
-  def save_ontology(commit_oid, ontology_version_options, changed_files: [])
+  def save_ontology(commit_oid, ontology_version_options, changed_files: [],
+                    do_parse: true)
     # We expect that this method is only called, when we can expect an ontology
     # in this file.
     file_extension = File.extname(ontology_version_options.filepath)
@@ -22,6 +23,8 @@ class OntologySaver
                              changed_files)
     ontology.present = true
     ontology.save!
+
+    async_parse_version(version) if do_parse
 
     version
   end
@@ -41,19 +44,19 @@ class OntologySaver
           ontology_version_options = OntologyVersionOptions.new(
             f.path,
             options.delete(:user),
-            fast_parse: repository.has_changed?(f.path, commit.oid),
-            do_not_parse: true)
+            fast_parse: repository.has_changed?(f.path, commit.oid))
           versions << save_ontology(commit.oid, ontology_version_options,
-                                    changed_files: changed_files)
+                                    changed_files: changed_files,
+                                    do_parse: false)
         elsif f.renamed?
           ontology_version_options = OntologyVersionOptions.new(
             f.path,
             options.delete(:user),
             fast_parse: repository.has_changed?(f.path, commit.oid),
-            do_not_parse: true,
             previous_filepath: f.delta.old_file[:path])
           versions << save_ontology(commit.oid, ontology_version_options,
-                                    changed_files: changed_files)
+                                    changed_files: changed_files,
+                                    do_parse: false)
         elsif f.deleted?
           mark_ontology_as_having_file(f.path, has_file: false)
         end
@@ -74,6 +77,22 @@ class OntologySaver
       onto.has_file = has_file
       onto.save
     end
+  end
+
+  def async_parse_version(version)
+    return if version.nil?
+    version.update_state! :pending
+
+    Sidekiq::RetrySet.new.each do |job|
+      job.kill if job.args.first == version.id
+    end
+
+    OntologyParsingWorker.
+      perform_async([[version.id,
+                      {fast_parse: version.fast_parse,
+                       files_to_parse_afterwards: version.
+                         files_to_parse_afterwards},
+                      1]])
   end
 
   protected
@@ -132,7 +151,6 @@ class OntologySaver
         file_extension: File.extname(ontology_version_options.filepath),
         fast_parse: ontology_version_options.fast_parse },
       { without_protection: true })
-    version.do_not_parse! if ontology_version_options.do_not_parse
     version.files_to_parse_afterwards = files_to_parse(ontology, changed_files)
     version.save!
     ontology.ontology_version = version

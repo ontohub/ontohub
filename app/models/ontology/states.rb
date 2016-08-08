@@ -13,7 +13,8 @@ module Ontology::States
     # Enqueues new parse jobs for all failed ontologies
     def retry_failed
       state(:failed).without_parent.find_each do |ontology|
-        ontology.current_version.try :async_parse
+        OntologySaver.new(ontology.repository).
+          async_parse_version(ontology.current_version)
       end
     end
 
