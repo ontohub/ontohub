@@ -7,7 +7,8 @@ class OntologySaver
     self.repository = repository
   end
 
-  def save_ontology(commit_oid, ontology_version_options, changed_files: [], do_parse: true)
+  def save_ontology(commit_oid, ontology_version_options, changed_files: [],
+                    do_parse: true)
     # We expect that this method is only called, when we can expect an ontology
     # in this file.
     file_extension = File.extname(ontology_version_options.filepath)
