@@ -24,10 +24,12 @@ Given(/^my subject is a (.+)$/) do |kind|
 end
 
 Given(/^I visit my subject's locid$/) do
+  Capybara.current_session.driver.header('Accept', 'text/html')
   visit @subject.locid
 end
 
 Given(/^I visit my subject's (\S+) command$/) do |command|
+  Capybara.current_session.driver.header('Accept', 'text/html')
   visit polymorphic_path([@subject, command])
 end
 
