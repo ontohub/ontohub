@@ -200,14 +200,14 @@ Will provide a subsite of a specific ontology.
 
   # Loc/Id-Show(-equivalent) routes
   ######
-  specified_get '/:repository_id/*locid' => 'ontologies#show',
+  specified_get '/:repository_id/*locid' => 'api/v1/ontologies#show',
     as: :ontology_iri,
     constraints: [
       LocIdRouterConstraint.new(Ontology, ontology: :id),
     ] do
-      accept 'text/html'
-      reroute_on_mime 'text/plain', to: 'api/v1/ontologies#show'
-      reroute_on_mime 'application/json', to: 'api/v1/ontologies#show'
+      accept 'text/plain'
+      accept 'application/json'
+      reroute_on_mime 'text/html', to: 'ontologies#show'
 
       doc title: 'loc/id reference to an ontology',
           body: <<-BODY
