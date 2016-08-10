@@ -1,7 +1,8 @@
 namespace :ontology do
   desc 'Reanalyze old ontologies'
   task :reanalyze_all => :environment do
-    Ontology.where(parent_id: nil, present: true).find_each do |ontology|
+    Ontology.where(parent_id: nil, present: true).order('updated_at desc').
+      find_each do |ontology|
       if ontology.current_version.nil?
         commit_oid = ontology.repository.git.get_file!(ontology.path).oid
         ontology_version_options = OntologyVersionOptions.new(ontology.path,
