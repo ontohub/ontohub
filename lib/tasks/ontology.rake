@@ -10,8 +10,14 @@ namespace :ontology do
         OntologySaver.new(ontology.repository).
           save_ontology(commit_oid, ontology_version_options)
       else
-        OntologyParsingWorker.perform_async([[ontology.current_version.id,
-          {fast_parse: false, files_to_parse_afterwards: []}, 1]])
+        OntologyParsingMigrationWorker.
+          perform_async([[ontology.current_version.id,
+            {fast_parse: false, files_to_parse_afterwards: []}, 1]])
+        Sidekiq::Client.push('queue' => 'hets-migration',
+                     'class' => OntologyParsingWorker,
+                     'args' => [[[ontology.current_version.id,
+                                  {fast_parse: false,
+                                   files_to_parse_afterwards: []}, 1]]])
       end
     end
   end
