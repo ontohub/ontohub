@@ -38,7 +38,7 @@ ontology version referenced by the {reference}.
     constraints: [
       RefLocIdRouterConstraint.new(Ontology, ontology: :id),
     ] do
-      accept 'text/html'
+      accept 'text/html', constraint: true
 
       doc title: 'Ontology IRI (loc/id) with version reference',
           body: <<-BODY
