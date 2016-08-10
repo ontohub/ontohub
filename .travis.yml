@@ -46,4 +46,5 @@ before_script:
   - sudo hets -update
   - mkdir -p tmp/{git,data/{git,git_daemon,commits}}
   - env
+  - which bundle
   - RAILS_ENV=test bundle exec rake db:migrate || true
