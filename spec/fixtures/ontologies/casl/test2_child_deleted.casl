@@ -1,0 +1,8 @@
+spec sp =
+  sort s
+  op f:s->s
+  . forall x:s . f(x) = x
+then
+  . exists x:s . f(x) = x
+with s |-> s
+end

@@ -1,7 +1,3 @@
-Given(/^there is an ontology$/) do
-  @ontology = FactoryGirl.create :ontology
-end
-
 When(/^I open the ontologies overview page$/) do
   visit ontologies_path
 end

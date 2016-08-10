@@ -39,19 +39,19 @@ module Hets
         child_locid = parent_ontology.locid_for_child(internal_iri)
 
         # find or create child-ontology by IRI
-        ontology = parent_ontology.children.find_with_locid(child_locid)
+        ontology = parent_ontology.all_children.find_with_locid(child_locid)
         if ontology.nil?
           options = {
             name: internal_iri,
             basepath: parent_ontology.basepath,
             file_extension: parent_ontology.file_extension,
             repository_id: parent_ontology.repository_id,
-            present: true,
           }
           ontology = SingleOntology.new(options, without_protection: true)
           parent_ontology.children << ontology
-          ontology.save!
         end
+        ontology.present = true
+        ontology.save! if ontology.changed? || !ontology.persisted?
 
         version = ontology.versions.build
         version.basepath = ontology.basepath
@@ -147,6 +147,16 @@ module Hets
       def update_ontologies_per_logic_count!(ontologies)
         Logic.where(id: ontologies.map(&:logic_id)).pluck(:id).each do |logic_id|
           Logic.reset_counters(logic_id, :ontologies)
+        end
+      end
+
+      def set_all_children_inactive_except(present_ontologies)
+        return if parent_ontology.nil?
+        parent_ontology.all_children.each do |child|
+          unless present_ontologies.include?(child.name)
+            child.present = false
+            child.save!
+          end
         end
       end
     end

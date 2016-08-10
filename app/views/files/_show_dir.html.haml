@@ -20,9 +20,9 @@
         %tr{"data-id" => entry.index}
           - if i == 0
             %td.ontology{rowspan: entries.size}
-              - unless entry.dir? || entry.ontologies.empty?
+              - unless entry.dir? || entry.ontologies.present.empty?
                 %ul.ontology-list
-                  - entry.ontologies.each do |ontology|
+                  - entry.ontologies.present.each do |ontology|
                     %li.ontology-list-item
                       = fancy_link ontology
                       - if ontology.state=='failed'

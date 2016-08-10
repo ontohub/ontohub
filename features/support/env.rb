@@ -7,6 +7,7 @@ require 'simplecov'
 require 'sidekiq/testing'
 require 'cucumber/rails'
 require 'capybara/poltergeist'
+require 'cucumber/rspec/doubles'
 require 'webmock'
 require 'vcr'
 
