@@ -6,6 +6,8 @@ class Api::V1::OntologyVersionsController < Api::V1::Base
   actions :index, :show
   respond_to :text, only: %i(show)
 
+  before_filter :set_format
+
   def show
     super do |format|
       format.text { send_download }
@@ -20,5 +22,9 @@ class Api::V1::OntologyVersionsController < Api::V1::Base
 
   def default_serializer_options
     {each_serializer: OntologyVersionSerializer::Reference}
+  end
+
+  def set_format
+    request.format = :text unless request.format.to_sym == :json
   end
 end
