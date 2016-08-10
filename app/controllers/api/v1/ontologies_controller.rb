@@ -1,6 +1,7 @@
 class Api::V1::OntologiesController < Api::V1::Base
   inherit_resources
   actions :show
+  before_filter :set_format
 
   respond_to :text, only: %i(show)
 
@@ -21,5 +22,9 @@ class Api::V1::OntologiesController < Api::V1::Base
   def version
     finder = OntologyVersionFinder.new(params[:reference], resource)
     @version ||= finder.find if params[:reference]
+  end
+
+  def set_format
+    request.format = :text unless request.format.to_sym == :json
   end
 end
