@@ -8,7 +8,7 @@ Given(/^there is an ontology file$/i) do
   repository = @ontology.repository
   user = repository.permissions.first.subject
   Tempfile.create('testfile') do |f|
-    repository.save_file_only(f.path, @ontology.path, 'add ontology file', user)
+    repository.save_file(f.path, @ontology.path, 'add ontology file', user, do_parse: false)
   end
 end
 

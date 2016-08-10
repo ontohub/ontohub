@@ -54,16 +54,6 @@ module Repository::Git
     version
   end
 
-  def save_file_only(tmp_file, filepath, message, user)
-    commit = nil
-    git.add_file(user_info(user), tmp_file, filepath, message) do |commit_oid|
-      commit = commit_oid
-    end
-    commit_for!(commit, user)
-    touch
-    commit
-  end
-
   def commit_for!(commit_oid, pusher)
     instance = Commit.where(repository_id: self,
                             commit_oid: commit_oid).
