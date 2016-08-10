@@ -94,7 +94,11 @@ class OntologiesController < InheritedResources::Base
 
     scope.retry_failed
 
-    redirect_to (id ? [parent, scope.first!, :ontology_versions] : [parent, :ontologies])
+    if id
+      redirect_to url_for([resource, :ontology_versions])
+    else
+      redirect_to [parent, :ontologies]
+    end
   end
 
   def oops_state

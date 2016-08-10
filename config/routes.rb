@@ -141,6 +141,19 @@ MMT-query-string.
       BODY
     end
 
+  specified_post '/:repository_id/*locid///retry' => 'ontologies#retry_failed',
+    as: :ontology_retry,
+    constraints: [
+      LocIdRouterConstraint.new(Ontology, ontology: :id),
+    ] do
+      accept 'text/html'
+
+      doc title: 'Ontology retry parsing command',
+          body: <<-BODY
+Will parse the ontology again.
+      BODY
+    end
+
   # Subsites for ontologies
   ontology_subsites = %i(
     comments metadata graphs
