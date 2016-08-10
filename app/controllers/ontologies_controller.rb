@@ -52,6 +52,8 @@ class OntologiesController < InheritedResources::Base
 
   def show
     @content_object = :ontology
+    ref_id = params[:id]
+    params[:id] = params[:ontology_id] if params[:ontology_id]
 
     if !params[:repository_id]
       # redirect for legacy routing
@@ -120,6 +122,7 @@ class OntologiesController < InheritedResources::Base
       clazz = type=='DistributedOntology' ? DistributedOntology : SingleOntology
       @ontology = clazz.new params[:ontology]
       @ontology.repository = parent
+      puts @ontology
       @ontology
     end
   end
