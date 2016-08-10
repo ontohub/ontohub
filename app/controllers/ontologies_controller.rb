@@ -121,7 +121,6 @@ class OntologiesController < InheritedResources::Base
       clazz = type=='DistributedOntology' ? DistributedOntology : SingleOntology
       @ontology = clazz.new params[:ontology]
       @ontology.repository = parent
-      puts @ontology
       @ontology
     end
   end
