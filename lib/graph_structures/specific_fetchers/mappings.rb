@@ -22,7 +22,7 @@ module GraphStructures
 
       def fetch_mappings_by_kind(ontology, kind)
         query, args = mappings_by_kind_query(ontology, kind)
-        Ontology.where("id IN (#{query})", *args)
+        Ontology.where("ontologies.id IN (#{query})", *args)
       end
 
       def mappings_by_kind_query(center, kind)
