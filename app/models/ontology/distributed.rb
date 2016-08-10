@@ -2,8 +2,6 @@ module Ontology::Distributed
   extend ActiveSupport::Concern
 
   included do
-    acts_as_tree
-
     def self.homogeneous
       select_with_character_selector(HOMOGENEOUS_SELECTOR)
     end

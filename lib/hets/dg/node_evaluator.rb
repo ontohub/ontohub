@@ -7,6 +7,7 @@ module Hets
       attr_accessor :current_element
       attr_accessor :internal_iri
 
+      register :all, :start, to: :all_start
       register :all, :end, to: :all_end
       register :root, :start, to: :dgraph
       register :ontology, :start, to: :ontology_start
@@ -22,6 +23,10 @@ module Hets
         importer.dgnode_count = current_element['dgnodes'].to_i
       end
 
+      def all_start
+        @node_names = []
+      end
+
       def all_end
         importer.versions.compact.each do |version|
           version.save!
@@ -33,9 +38,11 @@ module Hets
           ontology.__elasticsearch__.index_document
           ontology.__elasticsearch__.update_document
         end
+        set_all_children_inactive_except(@node_names)
       end
 
       def ontology_start(current_element)
+        @node_names << current_element['name']
         self.internal_iri = child_name = current_element['name']
 
         ontohub_iri = generate_ontology_iri(internal_iri, current_element)

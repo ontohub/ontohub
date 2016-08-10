@@ -1,9 +1,10 @@
-Given(/^there is a distributed ontology$/) do
+Given(/^there is a distributed ontology$/i) do
   @distributed_ontology = FactoryGirl.create :distributed_ontology, :with_versioned_children
   @ontology = @distributed_ontology
+  @ontology_version = @ontology.current_version
 end
 
-Given(/^there is an ontology file$/) do
+Given(/^there is an ontology file$/i) do
   repository = @ontology.repository
   user = repository.permissions.first.subject
   Tempfile.create('testfile') do |f|

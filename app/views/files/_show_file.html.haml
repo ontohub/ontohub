@@ -35,9 +35,9 @@
               = f.button t('files.discard'), type: 'cancel', id: 'codemirror-btn-discard', class: 'btn btn-danger'
       = render partial: 'modal_discard'
     - unless resource.ontologies.empty?
-      %h4
+      %h4#ontology-list-headline
         Defining
-        = pluralize resource.ontologies.size, Settings.OMS
+        = pluralize resource.ontologies.present.count, Settings.OMS
       %ul.ontology-list
-        - resource.ontologies.each do |ontology|
+        - resource.ontologies.present.each do |ontology|
           %li= fancy_link ontology

@@ -65,7 +65,7 @@ module OntologyVersion::Parsing
 
   def update_states_for_self_and_children(state)
     update_state!(state)
-    ontology.children.each do |child|
+    ontology.reload.children.each do |child|
       child.versions.where(commit_oid: commit_oid).first.update_state!(state)
       child.versions.where(commit_oid: commit_oid).first.save!
     end
