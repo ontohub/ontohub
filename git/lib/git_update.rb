@@ -5,10 +5,10 @@ require 'ontohub_net'
 class GitUpdate
 
   def self.update_redis(repo_path, oldrev, newrev, refname, key_id)
-    Subprocess.run 'redis-cli', 'rpush', "#{Settings.redis_namespace}:queue:default", {
-      class: 'RepositoryUpdateWorker',
-      args: [repo_path, oldrev, newrev, refname, key_id]
-    }.to_json
+    Subprocess.run 'redis-cli', 'rpush',
+      "#{Settings.redis_namespace}:sidekiq:queue:default",
+      {class: 'RepositoryUpdateWorker',
+       args: [repo_path, oldrev, newrev, refname, key_id]}.to_json
   end
 
   def initialize(repo_path, key_id, refs)
