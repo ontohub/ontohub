@@ -18,7 +18,7 @@ module Ontohub
     # -- all .rb files in that directory are automatically loaded.
 
     # Custom directories with classes and modules you want to be autoloadable.
-    config.autoload_paths += %W(#{config.root}/lib)
+    config.eager_load_paths += %W(#{config.root}/lib)
 
     # HACK https://gist.github.com/1184816
     if defined? Compass
