@@ -67,8 +67,9 @@ module Repository::Git
   def commit_for!(commit_oid, pusher)
     instance = Commit.where(repository_id: self,
                             commit_oid: commit_oid).
-      first_or_initialize(pusher_id: pusher.try(:id),
-                          pusher_name: pusher.try(:name))
+      first_or_initialize({pusher_id: pusher.try(:id),
+                           pusher_name: pusher.try(:name)},
+                          without_protection: true)
     instance.fill_commit_instance! unless instance.persisted?
     instance
   end
