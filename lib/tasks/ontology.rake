@@ -4,12 +4,17 @@ namespace :ontology do
     Ontology.where(parent_id: nil, present: true).order('updated_at desc').
       find_each do |ontology|
       if ontology.current_version.nil?
-        commit_oid = ontology.repository.git.get_file!(ontology.path).oid
-        ontology_version_options = OntologyVersionOptions.new(ontology.path,
-          User.where(admin: true).first)
+        begin
+          commit_oid = ontology.repository.git.get_file!(ontology.path).oid
+          ontology_version_options = OntologyVersionOptions.new(ontology.path,
+            User.where(admin: true).first)
 
-        OntologySaver.new(ontology.repository).
-          save_ontology(commit_oid, ontology_version_options)
+          OntologySaver.new(ontology.repository).
+            save_ontology(commit_oid, ontology_version_options)
+        rescue GitRepository::PathNotFoundError
+          ontology.present = false
+          ontology.save!
+        end
       else
         OntologyParsingMigrationWorker.
           perform_async([[ontology.current_version.id,
