@@ -2,6 +2,7 @@ module Hets
   class HetsErrorProcess
     HETS_ERROR_CODES = %w(400 422 500)
     HETS_ERROR_MESSAGE_REGEXP = /\A[*]{3}\s*Error:\s*/
+    HETS_HEADER_LINES_MAX = 9
 
     attr_reader :error, :response
     delegate :body, to: :response
@@ -45,7 +46,9 @@ module Hets
     end
 
     def error_header?
-      !!(error_header =~ HETS_ERROR_MESSAGE_REGEXP)
+      body_lines[0..HETS_HEADER_LINES_MAX].any? do |line|
+        line =~ HETS_ERROR_MESSAGE_REGEXP
+      end
     end
   end
 end
