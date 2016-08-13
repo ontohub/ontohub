@@ -1,10 +1,4 @@
-# enforce eager-loading of parsing classes
-Dir.glob(Rails.root + 'lib/parsing_callback/*.rb').each do |file|
-  require file
-end
-
 module ParsingCallback
-
   def self.determine_for(ontology)
     logic_name = ontology.logic.to_s
     self.constants.each do |constant|
@@ -17,5 +11,4 @@ module ParsingCallback
     end
     GenericCallback.new(ontology)
   end
-
 end

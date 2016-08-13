@@ -1,5 +1,4 @@
 module ParsingCallback::OWL
-
   IDENTIFIERS = %w(OWL OWL2)
 
   def self.defined_for?(logic_name)
