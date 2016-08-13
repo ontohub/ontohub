@@ -22,8 +22,8 @@ class ExternalRepository
 
     def add_to_repository(iri, message, user, location: iri)
       tmp_path = download_iri(location)
-      repository.save_file_only(tmp_path, determine_path(iri, :fullpath),
-                                message, user)
+      repository.save_file(tmp_path, determine_path(iri, :fullpath),
+                           message, user)
     end
 
     def determine_locid(external_iri)

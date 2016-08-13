@@ -90,7 +90,7 @@ describe FilesController do
             tmpfile.write('unchanged')
             tmpfile.close
 
-            repository.save_file_only(tmpfile, filepath, message, user)
+            repository.save_file(tmpfile, filepath, message, user, do_parse: false)
           end
 
           context "without validation error" do
@@ -159,7 +159,7 @@ describe FilesController do
           tmpfile.write('unchanged')
           tmpfile.close
 
-          repository.save_file_only(tmpfile, filepath, message, user)
+          repository.save_file(tmpfile, filepath, message, user, do_parse: false)
         end
 
         before do
