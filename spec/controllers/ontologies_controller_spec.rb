@@ -24,7 +24,7 @@ describe OntologiesController do
         post :retry_failed, repository_id: repository.to_param, id: ontology.id
       end
 
-      it{ response.should redirect_to [repository, ontology, :ontology_versions] }
+      it{ response.should redirect_to(url_for([ontology, :ontology_versions])) }
     end
 
   end
