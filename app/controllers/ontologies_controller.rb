@@ -52,6 +52,7 @@ class OntologiesController < InheritedResources::Base
 
   def show
     @content_object = :ontology
+    params[:id] = params[:ontology_id] if params[:ontology_id]
 
     if !params[:repository_id]
       # redirect for legacy routing

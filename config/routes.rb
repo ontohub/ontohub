@@ -17,14 +17,12 @@ Specroutes.define(Ontohub::Application.routes) do
     end
 
   # Special (/ref-based) Loc/Id routes
-  specified_get '/ref/:reference/:repository_id/*locid' => 'api/v1/ontology_versions#show',
+  specified_get '/ref/:reference/:repository_id/*locid' => 'ontologies#show',
     as: :ontology_iri_versioned,
     constraints: [
-      RefLocIdRouterConstraint.new(Ontology, ontology: :ontology_id),
+      RefLocIdRouterConstraint.new(Ontology, ontology: :id),
     ] do
-      accept 'application/json', constraint: true
-      accept 'text/plain', constraint: true
-      # reroute_on_mime 'application/json', to: 'api/v1/ontology_versions#show'
+      accept 'text/html', constraint: true
 
       doc title: 'Ontology IRI (loc/id) with version reference',
           body: <<-BODY
@@ -33,12 +31,14 @@ ontology version referenced by the {reference}.
       BODY
     end
 
-  specified_get '/ref/:reference/:repository_id/*locid' => 'ontologies#show',
+  specified_get '/ref/:reference/:repository_id/*locid' => 'api/v1/ontology_versions#show',
     as: :ontology_iri_versioned,
     constraints: [
-      RefLocIdRouterConstraint.new(Ontology, ontology: :id),
+      RefLocIdRouterConstraint.new(Ontology, ontology: :ontology_id),
     ] do
-      accept 'text/html'
+      accept 'application/json'
+      accept 'text/plain'
+      # reroute_on_mime 'application/json', to: 'api/v1/ontology_versions#show'
 
       doc title: 'Ontology IRI (loc/id) with version reference',
           body: <<-BODY
@@ -293,14 +293,14 @@ Will provide a subsite of a specific ontology.
 
   # Loc/Id-Show(-equivalent) routes
   ######
-  specified_get '/:repository_id/*locid' => 'ontologies#show',
+  specified_get '/:repository_id/*locid' => 'api/v1/ontologies#show',
     as: :ontology_iri,
     constraints: [
       LocIdRouterConstraint.new(Ontology, ontology: :id),
     ] do
-      accept 'text/html'
-      reroute_on_mime 'text/plain', to: 'api/v1/ontologies#show'
-      reroute_on_mime 'application/json', to: 'api/v1/ontologies#show'
+      accept 'text/plain'
+      accept 'application/json'
+      reroute_on_mime 'text/html', to: 'ontologies#show'
 
       doc title: 'loc/id reference to an ontology',
           body: <<-BODY
