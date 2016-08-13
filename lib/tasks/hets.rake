@@ -16,7 +16,7 @@ namespace :hets do
   end
 
   desc 'Start a hets server'
-  task :start do
+  task :start => :environment do
     if already_running?
       puts 'Hets is already running...'
     else
@@ -27,7 +27,7 @@ namespace :hets do
   end
 
   desc 'Stop a running hets server'
-  task :stop do
+  task :stop => :environment do
     if already_running?
       pid = fetch_pid
       system("kill #{pid}")
@@ -38,7 +38,7 @@ namespace :hets do
   end
 
   desc 'Run a hets server synchronously'
-  task :run do
+  task :run => :environment do
     exec(hets_cmd)
   end
 
@@ -73,11 +73,6 @@ namespace :hets do
   end
 
   def hets_server_options
-    load_environment_light_with_hets
     Settings.hets.server_options
-  end
-
-  def load_environment_light_with_hets
-    require Rails.root.join('lib', 'environment_light_with_hets.rb').to_s
   end
 end
