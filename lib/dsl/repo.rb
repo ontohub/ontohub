@@ -1,4 +1,3 @@
-#require 'subprocess.rb'
 require 'singleton'
 
 def init(path)
