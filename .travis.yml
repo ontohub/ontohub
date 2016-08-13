@@ -31,9 +31,7 @@ notifications:
 before_install:
   - 'export DISPLAY=:99.0'
   - 'sh -e /etc/init.d/xvfb start'
-  - 'gem uninstall bundler bundle rubygems-update --all -x && gem update --system 2.6.1 && gem install bundler && gem uninstall rubygems-update --all -x && gem update --system 2.6.4'
-  - 'gem --version'
-  - 'bundle --version'
+  - 'gem install bundler'
 
 script:
   - SPEC_OPTS='--format documentation' CUCUMBER_OPTS='--format pretty' ELASTIC_TEST_PORT=9200 bundle exec rake
