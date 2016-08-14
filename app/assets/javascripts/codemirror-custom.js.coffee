@@ -6,6 +6,7 @@ $ ->
   if $("#code-area").length > 0
     editor = CodeMirror.fromTextArea(document.getElementById("code-area"),
       mode: $("#code-area").data("mime-type")
+      lineSeparator: $("#code-area").data("line-break")
       lineNumbers: true
       readOnly: true
     )
