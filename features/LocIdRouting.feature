@@ -1,17 +1,20 @@
 Feature: LocId Routing
 
+@require_accept_html
 Scenario: Visiting a SingleOntology
   When my subject is a SingleOntology
   And I visit my subject's locid
   Then I should get a response with a status of 200
   And the page title should include the subject's name
 
+@require_accept_html
 Scenario: Visiting a DistributedOntology
   When my subject is a DistributedOntology
   And I visit my subject's locid
   Then I should get a response with a status of 200
   And the page title should include the subject's name
 
+@require_accept_html
 Scenario: Visiting a child Ontology
   When my subject is a child Ontology
   And I visit my subject's locid

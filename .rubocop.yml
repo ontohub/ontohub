@@ -4,6 +4,7 @@ AllCops:
     - 'spec/**/*'
     - 'features/**/*'
     - 'script/**/*'
+    - 'config/routes.rb'
   TargetRubyVersion: 2.1
 
 # These are all the cops that are enabled in the default configuration.
