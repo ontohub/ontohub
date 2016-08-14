@@ -12,8 +12,9 @@ module GitRepository::Cloning
       fetch:  '+refs/*:refs/*',
       mirror: 'true'
 
-    pull
+    result = pull
     set_group_permissions
+    result
   end
 
   def clone_svn(url)
@@ -31,8 +32,9 @@ module GitRepository::Cloning
     end
 
     set_section %w(svn-remote svn), options
-    pull_svn
+    result = pull_svn
     set_group_permissions
+    result
   end
 
   def pull
