@@ -24,7 +24,12 @@ class GitRepository
     else
       FileUtils.mkdir_p(Ontohub::Application.config.git_root)
       @repo = Rugged::Repository.init_at(path, true)
+      set_group_permissions
     end
+  end
+
+  def set_group_permissions
+    FileUtils.chmod_R('g+ws', path)
   end
 
   def destroy
