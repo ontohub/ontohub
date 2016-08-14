@@ -17,7 +17,7 @@ Specroutes.define(Ontohub::Application.routes) do
     end
 
   # Special (/ref-based) Loc/Id routes
-  specified_get '/ref/:reference/:repository_id/*locid' => 'ontologies#show',
+  specified_get '/ref/:reference/:repository_id/*locid' => 'ontology_versions#show',
     as: :ontology_iri_versioned,
     constraints: [
       RefLocIdRouterConstraint.new(Ontology, ontology: :id),
