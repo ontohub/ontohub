@@ -41,6 +41,7 @@ module ActionDispatch
       end
 
       def build_locid_url(base_url, record, commands, query_components)
+        raise ArgumentError.new("locid not set for #{record}") if !record.respond_to?(:locid) || record.locid.nil?
         url = "#{base_url}#{URI.escape(record.locid)}"
         url << "///#{commands.join('///')}" if commands.any?
         url << "?#{query_components.to_query}" if query_components.any?
