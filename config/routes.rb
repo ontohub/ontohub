@@ -387,20 +387,19 @@ is determined according to the *locid.
     end
 
 
-  specified_get '/:repository_id/*locid' => 'prover_outputs#show',
-    as: :"prover_output_iri",
+  specified_get "/:repository_id/*locid///prover_output" => "prover_outputs#show",
+    as: :prover_output,
     constraints: [
-      LocIdRouterConstraint.new(ProverOutput, ontology: :ontology_id, theorem: :theorem_id, proof_attempt: :proof_attempt_id, element: :id),
+      LocIdRouterConstraint.new(ProofAttempt, ontology: :ontology_id, theorem: :theorem_id, element: :proof_attempt_id),
     ] do
-      accept 'application/json'
-      reroute_on_mime 'application/json', to: "api/v1/prover_outputs#show"
+      accept 'text/html', constraint: true
 
-      doc title: 'loc/id reference to a prover output',
+      doc title: 'loc/id reference to a proof attempt subsite',
           body: <<-BODY
-  Will return a prover output.
-  The prover output is determined according to the *locid.
-      BODY
-    end
+      Will return a subsite of the proof attempt. The proof attempt is determined
+      according to the *locid.
+            BODY
+  end
 
   proof_attempt_api_subsites = %i(
     used_axioms generated_axioms
