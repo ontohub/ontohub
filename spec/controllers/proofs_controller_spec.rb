@@ -48,7 +48,7 @@ describe ProofsController do
         it { should respond_with :found }
 
         it 'redirect to the theorems view' do
-          expect(response).to redirect_to([repository, ontology, :theorems])
+          expect(response).to redirect_to(url_for([ontology, :theorems]))
         end
 
         it 'instantiates a Proof object' do
@@ -157,7 +157,7 @@ describe ProofsController do
 
         it 'redirect to the proof_attempts index' do
           expect(response).
-            to redirect_to([repository, ontology, theorem, :proof_attempts])
+            to redirect_to(url_for([theorem, :proof_attempts]))
         end
 
         it 'instantiates a Proof object' do

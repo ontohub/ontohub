@@ -11,7 +11,7 @@ class ProofsController < InheritedResources::Base
     if resource.valid?
       resource.save!
       flash[:success] = t('proofs.create.starting_jobs')
-      redirect_to(redirect_chain)
+      redirect_to(overview_url)
     else
       flash[:alert] = t('proofs.create.invalid_resource')
       redirect_to(action: :new, params: {proof: params[:proof]})
@@ -28,13 +28,11 @@ class ProofsController < InheritedResources::Base
     resource.ontology
   end
 
-  def redirect_chain
-    @redirect_chain = resource_chain
+  def overview_url
     if resource.theorem?
-      @redirect_chain << resource.proof_obligation
-      @redirect_chain << :proof_attempts
+      url_for([resource.proof_obligation, :proof_attempts])
     else
-      @redirect_chain << :theorems
+      url_for([resource.proof_obligation.ontology, :theorems])
     end
   end
 

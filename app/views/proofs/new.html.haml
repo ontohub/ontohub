@@ -12,7 +12,7 @@
     - theorems.each do |theorem|
       = render partial: 'theorems/theorem_large', locals: {resource: theorem}
 %h2= t('proofs.new.configuration')
-= simple_form_for resource, url: form_url_chain do |f|
+= simple_form_for resource, url: url_prove_form do |f|
   #prover-list.columnized-items
     = f.input :prover_ids, label: t('proofs.new.provers.label'), collection: ontology.current_version.provers, label_method: :to_s, as: :check_boxes, hint: t('proofs.new.provers.none_is_default')
     .col-lg-2

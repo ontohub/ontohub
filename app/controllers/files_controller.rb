@@ -37,7 +37,7 @@ class FilesController < InheritedResources::Base
     if resource.valid?
       flash[:success] = "Successfully saved the uploaded file."
       if ontology = repository.ontologies.with_path(resource.target_path).without_parent.first
-        redirect_to edit_repository_ontology_path(repository, ontology)
+        redirect_to url_for([ontology, :edit])
       else
         redirect_to fancy_repository_path(repository, path: resource.target_path)
       end

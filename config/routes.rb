@@ -141,6 +141,19 @@ MMT-query-string.
       BODY
     end
 
+  specified_post '/:repository_id/*locid///retry' => 'ontologies#retry_failed',
+    as: :ontology_retry,
+    constraints: [
+      LocIdRouterConstraint.new(Ontology, ontology: :id),
+    ] do
+      accept 'text/html'
+
+      doc title: 'Ontology retry parsing command',
+          body: <<-BODY
+Will parse the ontology again.
+      BODY
+    end
+
   # Subsites for ontologies
   ontology_subsites = %i(
     comments metadata graphs
@@ -169,6 +182,34 @@ Will provide a subsite of a specific ontology.
       end
   end
 
+  specified_post '/:repository_id/*locid///prove' => 'proofs#create',
+    as: :"theorem_prove",
+    constraints: [
+      LocIdRouterConstraint.new(Theorem, ontology: :ontology_id, element: :theorem_id),
+    ] do
+      accept 'text/html'
+
+      doc title: 'loc/id reference to a theorem command',
+          body: <<-BODY
+Will return a representation of the theorem command. The theorem
+is determined according to the *locid.
+      BODY
+    end
+
+  specified_get '/:repository_id/*locid///prove' => 'proofs#new',
+    as: :theorem_prove,
+    constraints: [
+      LocIdRouterConstraint.new(Theorem, ontology: :ontology_id, element: :theorem_id),
+    ] do
+      accept 'text/html'
+
+      doc title: 'loc/id reference to a theorem command',
+          body: <<-BODY
+Will return a representation of the theorem command. The theorem
+is determined according to the *locid.
+      BODY
+    end
+
   ontology_api_subsites.each do |category|
     specified_get "/:repository_id/*locid///#{category}" => "#{category}#index",
       as: :"ontology_iri_#{category}",
@@ -184,6 +225,58 @@ Will provide a subsite of a specific ontology.
         BODY
       end
   end
+
+  specified_get '/:repository_id/*locid///prove' => 'proofs#new',
+    as: :ontology_prove,
+    constraints: [
+      LocIdRouterConstraint.new(Ontology, ontology: :ontology_id),
+    ] do
+      accept 'text/html'
+
+      doc title: 'Ontology prove command',
+          body: <<-BODY
+Will provide a site to the ontology command.
+      BODY
+    end
+
+  specified_post '/:repository_id/*locid///prove' => 'proofs#create',
+    as: :ontology_prove,
+    constraints: [
+      LocIdRouterConstraint.new(Ontology, ontology: :ontology_id),
+    ] do
+      accept 'text/html'
+
+      doc title: 'Ontology prove command',
+          body: <<-BODY
+Will provide a site to the ontology command.
+      BODY
+    end
+
+  specified_get '/:repository_id/*locid///edit' => 'ontologies#edit',
+    as: :ontology_edit,
+    constraints: [
+      LocIdRouterConstraint.new(Ontology, ontology: :id),
+    ] do
+      accept 'text/html'
+
+      doc title: 'Ontology edit command',
+          body: <<-BODY
+Will provide a site to the ontology command.
+      BODY
+    end
+
+  specified_put '/:repository_id/*locid' => 'ontologies#update',
+    as: :ontology_update,
+    constraints: [
+      LocIdRouterConstraint.new(Ontology, ontology: :id),
+    ] do
+      accept 'text/html'
+
+      doc title: 'Ontology update command',
+          body: <<-BODY
+Will provide a site to the ontology command.
+      BODY
+    end
 
   specified_get "/:repository_id/*locid///sentences" => "api/v1/sentences#index",
     as: :"ontology_iri_sentences",
@@ -265,8 +358,36 @@ Currently this will return the list of all symbols of the ontology.
       end
   end
 
+  specified_post '/:repository_id/*locid///prove' => 'proofs#create',
+    as: :theorem_prove,
+    constraints: [
+      LocIdRouterConstraint.new(Theorem, ontology: :ontology_id, element: :theorem_id),
+    ] do
+      accept 'text/html'
 
-  specified_get "/:repository_id/*locid" => "prover_outputs#show",
+      doc title: 'loc/id reference to a theorem command',
+          body: <<-BODY
+Will return a representation of the theorem command. The theorem
+is determined according to the *locid.
+      BODY
+    end
+
+  specified_get '/:repository_id/*locid///prove' => 'proofs#new',
+    as: :theorem_prove,
+    constraints: [
+      LocIdRouterConstraint.new(Theorem, ontology: :ontology_id, element: :theorem_id),
+    ] do
+      accept 'text/html'
+
+      doc title: 'loc/id reference to a theorem command',
+          body: <<-BODY
+Will return a representation of the theorem command. The theorem
+is determined according to the *locid.
+      BODY
+    end
+
+
+  specified_get '/:repository_id/*locid' => 'prover_outputs#show',
     as: :"prover_output_iri",
     constraints: [
       LocIdRouterConstraint.new(ProverOutput, ontology: :ontology_id, theorem: :theorem_id, proof_attempt: :proof_attempt_id, element: :id),

@@ -11,7 +11,7 @@ module StateHelper
 
   def retry_resource_chain(resource)
     if resource.is_a?(Ontology)
-      [:retry_failed, *resource_chain]
+      url_for([resource, :retry])
     elsif resource.is_a?(Theorem)
       [:retry_failed, *resource_chain, resource]
     elsif resource.is_a?(ProofAttempt)
