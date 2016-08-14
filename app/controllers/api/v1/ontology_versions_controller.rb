@@ -1,12 +1,12 @@
 class Api::V1::OntologyVersionsController < Api::V1::Base
+  include PlainTextDefaultHelper
+
   inherit_resources
   defaults collection_name: :versions, finder: :find_by_number!
   belongs_to :ontology
 
   actions :index, :show
   respond_to :text, only: %i(show)
-
-  before_filter :set_format
 
   def show
     super do |format|
@@ -22,9 +22,5 @@ class Api::V1::OntologyVersionsController < Api::V1::Base
 
   def default_serializer_options
     {each_serializer: OntologyVersionSerializer::Reference}
-  end
-
-  def set_format
-    request.format = :text unless request.format.to_sym == :json
   end
 end
