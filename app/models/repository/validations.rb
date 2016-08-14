@@ -74,7 +74,7 @@ module Repository::Validations
 
     # It is against our code style conventions to place a constant here,
     # but it is necessary to have all the inherent methods defined above of it.
-    RESERVED_NAMES = toplevel_namespaces
+    RESERVED_NAMES = toplevel_namespaces + ['new']
   end
 
   class NameNotChangedAfterSetValidator < ActiveModel::Validator
