@@ -7,7 +7,6 @@ Given(/^there is a single\-in\-distributed ontology$/) do
   @ontology = @parent_ontology.children.first
 end
 
-@require_accept_html
 When(/^I visit the ontology via the loc\/id$/) do
   visit @ontology.locid
 end

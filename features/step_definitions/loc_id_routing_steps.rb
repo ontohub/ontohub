@@ -23,12 +23,10 @@ Given(/^my subject is a (.+)$/) do |kind|
     end
 end
 
-@require_accept_html
 Given(/^I visit my subject's locid$/) do
   visit @subject.locid
 end
 
-@require_accept_html
 Given(/^I visit my subject's (\S+) command$/) do |command|
   visit polymorphic_path([@subject, command])
 end
