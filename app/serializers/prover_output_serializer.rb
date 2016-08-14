@@ -3,7 +3,7 @@ class ProverOutputSerializer < ApplicationSerializer
     attributes :iri
 
     def iri
-      url_for(object)
+      url_for([object.proof_attempt, :prover_output])
     end
   end
 
