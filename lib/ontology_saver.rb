@@ -33,6 +33,7 @@ class OntologySaver
     versions = []
     commits_count = 0
     highest_change_file_count = 0
+    user = options.delete(:user)
     repository.walk_commits(options) { |commit|
       commits_count += 1
       current_file_count = 0
@@ -43,7 +44,7 @@ class OntologySaver
           mark_ontology_as_having_file(f.path, has_file: true)
           ontology_version_options = OntologyVersionOptions.new(
             f.path,
-            options.delete(:user),
+            user,
             fast_parse: repository.has_changed?(f.path, commit.oid))
           versions << save_ontology(commit.oid, ontology_version_options,
                                     changed_files: changed_files,
@@ -51,7 +52,7 @@ class OntologySaver
         elsif f.renamed?
           ontology_version_options = OntologyVersionOptions.new(
             f.path,
-            options.delete(:user),
+            user,
             fast_parse: repository.has_changed?(f.path, commit.oid),
             previous_filepath: f.delta.old_file[:path])
           versions << save_ontology(commit.oid, ontology_version_options,
