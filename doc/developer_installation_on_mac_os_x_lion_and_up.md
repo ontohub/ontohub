@@ -50,11 +50,9 @@ or to update it.)*
 
 - `brew install postgresql`
 
-Now we have to add postgresql to **launchd**, the launch-daemon used
-in OSX, to ensure that postgresql starts with the system.
-
-- `ln -sfv /usr/local/opt/postgresql/homebrew.mxcl.postgresql.plist  ~/Library/LaunchAgents`
-- `launchctl load ~/Library/LaunchAgents/homebrew.mxcl.postgresql.plist`
+As the *caveats*-section suggests we need to also start the
+service and add to the ones, that are supposed to be automatically
+started on boot. `brew services start postgresql` takes care of this.
 
 Mac OS X Version equal or higher to 10.7 (Lion) are shipped
 with postgresql-libraries. In order to use our homebrew
@@ -75,10 +73,11 @@ Now we have to create the user to be used by ontohub in development:
 
 - `createuser -d -w -s postgres`
 
-You'll also (probably) need to create the two databases:
+You'll also need to create the two databases:
 
-- `createdb ontohub_development`
-- `createdb ontohub_test`
+- `bundle exec rake db:create`, will create these databases:
+  - *ontohub_development*
+  - *ontohub_test*
 
 ## phantomjs
 We use `phantomjs` as a headless javascript-enabled browser for our integration
@@ -102,20 +101,24 @@ Now we can actually start installing the necessary gems:
 - `bundle install`
   - If it fails because of a **mysql** dependency, remove that dependency from the *Gemfile*.
   - and try again...
+  
+## java
+
+A few tools need java-support. Specifically elasticsearch and the *mandatory* provers
+pellet and owltools have been built upon java. This means that java needs to be installed
+on your system. *pellet* however isn't compatible with java8 yet, which means that we also
+need to install a specific version of java:
+
+```
+brew tap caskroom/versions
+brew cask install java7
+```
 
 ## elasticsearch
 
-On Lion and up Java isn't installed automatically anymore.
-To force a java installation issue the following command:
-
-- `java –version`
-
-After this a window will appear which will prompt the java installation.
-
-Then, install elasticsearch and put it into autostart with
 ```
 brew install elasticsearch
-launchctl load ~/Library/LaunchAgents/homebrew.mxcl.elasticsearch.plist
+brew services start elasticsearch
 ```
 
 ## redis
@@ -123,12 +126,11 @@ launchctl load ~/Library/LaunchAgents/homebrew.mxcl.elasticsearch.plist
 In order for resque to work, we need to install redis.
 We use homebrew for that:
 
-- `brew install redis`
+```
+brew install redis
+brew services start redis
+```
 
-Ensure that redis is managed by launchd:
-
-- `ln -sfv /usr/local/opt/redis/*.plist ~/Library/LaunchAgents`
-- `launchctl load ~/Library/LaunchAgents/homebrew.mxcl.redis.plist`
 
 a call to `redis-cli` should successfully connect you to the database.
 *exit* with `exit`.
@@ -136,23 +138,40 @@ a call to `redis-cli` should successfully connect you to the database.
 ## hets
 
 The Heterogenous Toolset is needed to perform Operations during Ontology import.
-You can fetch it from its [Uni Bremen Homepage][hets_link]. Just download
-the most current version (at the time of writing: [2013-06-28][hets_current_dmg]), open
-it and drag the Hets file (actually the Hets.app directory) into your Applications directory.
+You can fetch it from its [Uni Bremen Homepage][hets_link]. Just download the
+most current version, open it and drag the Hets file (actually the Hets.app
+directory) into your Applications directory.
 
 **Important:** As of January 30th 2014 the hets builds provided by the Uni Bremen homepage
 will **only** work with Mac OS X Mavericks (10.9) and up.
 
-Furthermore, we now have a homebrew package for hets, which will build hets from scratch.
+However the recommended way of working with hets on Mac OS X is to use the
+provided homebrew-formula.
 
 We can install it like this:
 
 ```
-brew tap 0robustus1/hets
-brew install hets --with-wrapper
+brew tap spechub/hets
+
+brew cask install xquartz
+
+# either
+brew install hets
+# or
+brew install hets-server
 ```
 
 If there is a new version released you can update hets through the homebrew process (`brew upgrade`).
+In the repository you need to configure the hets-executable path:
+
+```
+hets:
+  # This is the path to the hets executable we use in `rake hets:*` and for the
+  # process manager in production mode (god)
+
+  # supply either hets-server or hets
+  executable_path: /usr/local/bin/hets-server
+```
 
 ## Extra executables
 
@@ -179,4 +198,3 @@ script/rebuild-ontohub
 Now you should be ready...
 
 [hets_link]: http://www.informatik.uni-bremen.de/agbkb/forschung/formal_methods/CoFI/hets/intel-mac/dmgs/
-[hets_current_dmg]: http://www.informatik.uni-bremen.de/agbkb/forschung/formal_methods/CoFI/hets/intel-mac/dmgs/Hets-2013-06-28.dmg
