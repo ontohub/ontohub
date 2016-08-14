@@ -4,9 +4,9 @@ module LineBreakHelper
     n = resource.content.scan(/\n/).count - rn
 
     if(rn > n)
-      "\r\n"
+      "rn"
     else
-      "\n"
+      "n"
     end
   end
 end

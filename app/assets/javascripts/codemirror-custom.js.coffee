@@ -6,7 +6,7 @@ $ ->
   if $("#code-area").length > 0
     window.editor = editor = CodeMirror.fromTextArea(document.getElementById("code-area"),
       mode: $("#code-area").data("mime-type")
-      lineSeparator: $("#code-area").data("line-break")
+      lineSeparator: if $("#code-area").data("line-break") == 'rn' then '\r\n' else '\n'
       lineNumbers: true
       readOnly: true
     )
