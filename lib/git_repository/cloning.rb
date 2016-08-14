@@ -13,6 +13,7 @@ module GitRepository::Cloning
       mirror: 'true'
 
     pull
+    set_group_permissions
   end
 
   def clone_svn(url)
@@ -31,6 +32,7 @@ module GitRepository::Cloning
 
     set_section %w(svn-remote svn), options
     pull_svn
+    set_group_permissions
   end
 
   def pull
