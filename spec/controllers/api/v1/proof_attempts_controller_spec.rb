@@ -85,6 +85,26 @@ describe Api::V1::ProofAttemptsController do
     end
   end
 
+  context 'on GET to prover_output' do
+    context 'requesting json representation', api_specification: true do
+      before do
+        get :prover_output,
+            repository_id: repository.to_param,
+            ontology_id: ontology.to_param,
+            theorem_id: theorem.to_param,
+            id: proof_attempt.to_param,
+            locid: url_for([proof_attempt, :prover_output]),
+            format: :json
+      end
+
+      it { should respond_with :success }
+
+      it 'respond with json content type' do
+        expect(response.content_type.to_s).to eq('application/json')
+      end
+    end
+  end
+
   context 'on GET to show' do
     context 'requesting json representation', api_specification: true do
       let(:proof_attempt_schema) do

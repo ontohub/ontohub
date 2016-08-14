@@ -27,6 +27,11 @@ Given(/^I visit my subject's locid$/) do
   visit @subject.locid
 end
 
+Given(/^I visit the prover-output's locid$/) do
+  Capybara.current_session.driver.header('Accept', 'text/html')
+  visit polymorphic_path([@subject.proof_attempt, :prover_output])
+end
+
 Given(/^I visit my subject's (\S+) command$/) do |command|
   visit polymorphic_path([@subject, command])
 end

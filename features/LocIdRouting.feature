@@ -125,6 +125,6 @@ Scenario: Visiting a ProofAttempt
 
 Scenario: Visiting a ProverOutput
   When my subject is a ProverOutput
-  And I visit my subject's locid
+  And I visit the prover-output's locid
   Then I should get a response with a status of 200
   And a headline should include "Prover Output for [theorem's name]'s proof attempt #[proof attempt's number]"
