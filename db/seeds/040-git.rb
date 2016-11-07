@@ -34,7 +34,7 @@ ontologies.each do |path|
   version = nil
   begin
     version = repository.save_file path, basename, "#{basename} added", @user
-  rescue Hets::SyntaxError
+  rescue Hets::SyntaxError, Hets::Errors::HetsFileError
     # Suppress this error in the seeds. We want to have erroneous ontologies in
     # the basic data.
   end

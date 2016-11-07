@@ -20,33 +20,53 @@ class FrequentSymbolSetMiningAxiomSelection < ActiveRecord::Base
 
   delegate :goal, :ontology, :lock_key, :mark_as_finished!, to: :axiom_selection
 
+  TIMEOUT_PREPARATION = 60.minutes
+  TIMEOUT_SELECTION = 2.minutes
+  CODE_TIMEOUT_PREPARATION = -1
+  CODE_TIMEOUT_SELECTION = -2
+
+  def prepare
+    perform(TIMEOUT_PREPARATION, CODE_TIMEOUT_PREPARATION) do
+      preprocess unless other_finished_axiom_selections(self.class).any?
+    end
+  end
+
   def call
-    Semaphore.exclusively(lock_key) do
-      unless finished
-        begin
-          record_processing_time do
-            Timeout::timeout(2.minutes) do
-              transaction do
-                preprocess unless other_finished_axiom_selections(self.class).any?
-                select_axioms
-                mark_as_finished!
-              end
-            end
-          end
-        rescue Timeout::Error
-          processing_time = -1
-          axiom_selection.mark_as_finished!
-          save!
-          axiom_selection.save!
-          raise
-        end
-      else
-        raise 'previous execution expired' if processing_time == -1
-      end
+    perform(TIMEOUT_SELECTION, CODE_TIMEOUT_SELECTION) do
+      select_axioms
+      mark_as_finished!
     end
   end
 
   protected
+
+  def perform(timeout, code)
+    Semaphore.exclusively(lock_key) do
+      if !finished
+        begin
+          record_processing_time do
+            Timeout::timeout(timeout) do
+              transaction do
+                yield
+              end
+            end
+          end
+        rescue Timeout::Error
+          save_on_timeout(code)
+          raise
+        end
+      elsif [CODE_TIMEOUT_PREPARATION, CODE_TIMEOUT_SELECTION].include?(processing_time)
+        raise 'previous execution expired'
+      end
+    end
+  end
+
+  def save_on_timeout(code)
+    processing_time = code
+    axiom_selection.mark_as_finished!
+    save!
+    axiom_selection.save!
+  end
 
   def preprocess
     FrequentSymbolSetsCalculator.new(axiom_selection,

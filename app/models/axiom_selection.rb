@@ -23,6 +23,10 @@ class AxiomSelection < ActiveRecord::Base
     self.finished = false
   end
 
+  def prepare
+    # overwrite this in the "subclasses"
+  end
+
   def call
     # overwrite this in the "subclasses"
   end

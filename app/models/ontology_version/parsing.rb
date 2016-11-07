@@ -21,6 +21,7 @@ module OntologyVersion::Parsing
       # Import version
       ontology.import_version(self, pusher, input_io)
       retrieve_available_provers_for_self_and_children
+      prepare_axiom_selections
       update_states_for_self_and_children(:done)
     end
 
@@ -44,6 +45,32 @@ module OntologyVersion::Parsing
 
   def parse_fast(files_to_parse_afterwards = [])
     parse(structure_only: true, files_to_parse_afterwards: files_to_parse_afterwards)
+  end
+
+  def prepare_axiom_selections
+    # To compute all frequent symbol sets and all SInE related association
+    # objects, it suffices to create a SInE-Fresym axiom selection and prepare
+    # it, because that selection needs association objects of all selection
+    # methods.
+    if theorem = ontology.theorems.first
+      proof_attempt_configuration =
+        ProofAttemptConfiguration.new(timeout: nil,
+                                      prover_id: Prover.first.id)
+      proof_attempt =
+        ProofAttempt.new(proof_status_id: 'OPN',
+                         sentence_id: theorem.id,
+                         proof_attempt_configuration_id: proof_attempt_configuration.id)
+      axiom_selection_method = :sine_fresym_axiom_selection
+      axiom_selection =
+        SineFresymAxiomSelection.new(commonness_threshold: 1,
+                                     depth_limit: nil,
+                                     tolerance: 1,
+                                     minimum_support: 1,
+                                     minimum_support_type: :absolute,
+                                     symbol_set_tolerance: 1)
+        axiom_selection.prepare
+        axiom_selection.save!
+    end
   end
 
   def retrieve_available_provers_for_self_and_children
