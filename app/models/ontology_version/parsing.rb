@@ -21,7 +21,10 @@ module OntologyVersion::Parsing
       # Import version
       ontology.import_version(self, pusher, input_io)
       retrieve_available_provers_for_self_and_children
-      prepare_axiom_selections
+      [ontology, *ontology.children].each do |ontology|
+        ontology.versions.where(commit_oid: commit_oid).first.
+          prepare_axiom_selections
+      end
       update_states_for_self_and_children(:done)
     end
 
