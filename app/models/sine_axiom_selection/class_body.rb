@@ -28,7 +28,7 @@ module SineAxiomSelection::ClassBody
 
   def prepare
     perform(TIMEOUT_PREPARATION, CODE_TIMEOUT_PREPARATION) do
-      preprocess unless other_finished_axiom_selections(self.class).any?
+      preprocess
     end
   end
 
@@ -82,8 +82,10 @@ module SineAxiomSelection::ClassBody
   end
 
   def preprocess
-    calculate_commonness_table
-    calculate_symbol_axiom_trigger_table
+    unless other_finished_axiom_selections(self.class).any?
+      calculate_commonness_table
+      calculate_symbol_axiom_trigger_table
+    end
   end
 
   def calculate_commonness_table

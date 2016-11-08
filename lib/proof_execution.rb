@@ -17,6 +17,7 @@ class ProofExecution
   protected
 
   def prepare_axiom_selection
+    proof_attempt_configuration.axiom_selection.specific.prepare
     proof_attempt_configuration.axiom_selection.specific.call
   end
 

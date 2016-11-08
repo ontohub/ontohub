@@ -427,7 +427,7 @@ describe Ontology do
       end
 
       it 'have a proven Theorem' do
-        expect(version.ontology.theorems.first.proof_status.identifier).
+        expect(version.ontology.theorems.last.proof_status.identifier).
           to eq(ProofStatus::DEFAULT_PROVEN_STATUS)
       end
     end

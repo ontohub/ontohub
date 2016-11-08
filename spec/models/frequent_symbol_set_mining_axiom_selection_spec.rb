@@ -231,6 +231,7 @@ describe FrequentSymbolSetMiningAxiomSelection do
       context '-1' do
         before do
           subject.depth_limit = -1
+          subject.prepare
           subject.call
         end
 
@@ -242,6 +243,7 @@ describe FrequentSymbolSetMiningAxiomSelection do
       context '0' do
         before do
           subject.depth_limit = 0
+          subject.prepare
           subject.call
         end
 
@@ -253,6 +255,7 @@ describe FrequentSymbolSetMiningAxiomSelection do
       context '1' do
         before do
           subject.depth_limit = 1
+          subject.prepare
           subject.call
         end
 
@@ -264,6 +267,7 @@ describe FrequentSymbolSetMiningAxiomSelection do
       context '2' do
         before do
           subject.depth_limit = 2
+          subject.prepare
           subject.call
         end
 
@@ -277,6 +281,7 @@ describe FrequentSymbolSetMiningAxiomSelection do
       context '0' do
         before do
           subject.short_axiom_tolerance = 0
+          subject.prepare
           subject.call
         end
 
@@ -288,6 +293,7 @@ describe FrequentSymbolSetMiningAxiomSelection do
       context '1' do
         before do
           subject.short_axiom_tolerance = 1
+          subject.prepare
           subject.call
         end
 
@@ -300,6 +306,7 @@ describe FrequentSymbolSetMiningAxiomSelection do
       context '2' do
         before do
           subject.short_axiom_tolerance = 2
+          subject.prepare
           subject.call
         end
 
@@ -312,6 +319,7 @@ describe FrequentSymbolSetMiningAxiomSelection do
       context '3' do
         before do
           subject.short_axiom_tolerance = 3
+          subject.prepare
           subject.call
         end
 
@@ -331,6 +339,7 @@ describe FrequentSymbolSetMiningAxiomSelection do
       context '1' do
         before do
           subject.minimum_support = 1
+          subject.prepare
           subject.call
         end
 
@@ -343,6 +352,7 @@ describe FrequentSymbolSetMiningAxiomSelection do
       context '2' do
         before do
           subject.minimum_support = 2
+          subject.prepare
           subject.call
         end
 
@@ -354,6 +364,7 @@ describe FrequentSymbolSetMiningAxiomSelection do
       context '4' do
         before do
           subject.minimum_support = 4
+          subject.prepare
           subject.call
         end
 
@@ -369,6 +380,7 @@ describe FrequentSymbolSetMiningAxiomSelection do
       context '1/8' do
         before do
           subject.minimum_support = 12.5
+          subject.prepare
           subject.call
         end
 
@@ -381,6 +393,7 @@ describe FrequentSymbolSetMiningAxiomSelection do
       context '2/8' do
         before do
           subject.minimum_support = 25
+          subject.prepare
           subject.call
         end
 
@@ -392,6 +405,7 @@ describe FrequentSymbolSetMiningAxiomSelection do
       context '5/8' do
         before do
           subject.minimum_support = 62.5
+          subject.prepare
           subject.call
         end
 
@@ -405,6 +419,7 @@ describe FrequentSymbolSetMiningAxiomSelection do
       context '2' do
         before do
           subject.minimal_symbol_set_size = 2
+          subject.prepare
           subject.call
         end
 
@@ -420,6 +435,7 @@ describe FrequentSymbolSetMiningAxiomSelection do
         before do
           subject.minimal_symbol_set_size = 3
           subject.short_axiom_tolerance = 1
+          subject.prepare
           subject.call
         end
 
@@ -433,6 +449,7 @@ describe FrequentSymbolSetMiningAxiomSelection do
         before do
           subject.minimal_symbol_set_size = 3
           subject.short_axiom_tolerance = 2
+          subject.prepare
           subject.call
         end
 
@@ -446,6 +463,7 @@ describe FrequentSymbolSetMiningAxiomSelection do
         before do
           subject.minimal_symbol_set_size = 3
           subject.short_axiom_tolerance = 3
+          subject.prepare
           subject.call
         end
 

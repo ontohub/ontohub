@@ -110,6 +110,7 @@ describe SineAxiomSelection do
         ontology_fixture_file: ontology_fixture_file
     end
     subject { sine_axiom_selection }
+    before { subject.prepare }
 
     context 'not preprocessing if already preprocessed once' do
       let(:proof_attempt) do
@@ -126,13 +127,17 @@ describe SineAxiomSelection do
       end
 
       before do
+        sine_axiom_selection_previous.prepare
         sine_axiom_selection_previous.call
-        allow(subject).to receive(:preprocess).and_call_original
+        allow(subject).to receive(:calculate_commonness_table).and_call_original
+        allow(subject).to receive(:calculate_symbol_axiom_trigger_table).and_call_original
+        subject.prepare
       end
 
       it 'not calling preprocess' do
         subject.call
-        expect(subject).not_to have_received(:preprocess)
+        expect(subject).not_to have_received(:calculate_commonness_table)
+        expect(subject).not_to have_received(:calculate_symbol_axiom_trigger_table)
       end
 
       it 'selecting axioms anyway' do

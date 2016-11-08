@@ -255,6 +255,7 @@ describe SineFresymAxiomSelection do
       context '0' do
         before do
           subject.commonness_threshold = 0
+          subject.prepare
           subject.call
         end
 
@@ -266,6 +267,7 @@ describe SineFresymAxiomSelection do
       context '2' do
         before do
           subject.commonness_threshold = 2
+          subject.prepare
           subject.call
         end
 
@@ -280,6 +282,7 @@ describe SineFresymAxiomSelection do
       context '3' do
         before do
           subject.commonness_threshold = 3
+          subject.prepare
           subject.call
         end
 
@@ -299,6 +302,7 @@ describe SineFresymAxiomSelection do
       context '0' do
         before do
           subject.commonness_threshold = 0
+          subject.prepare
           subject.call
         end
 
@@ -310,6 +314,7 @@ describe SineFresymAxiomSelection do
       context '2' do
         before do
           subject.commonness_threshold = 2
+          subject.prepare
           subject.call
         end
 
@@ -323,6 +328,7 @@ describe SineFresymAxiomSelection do
       context '3' do
         before do
           subject.commonness_threshold = 3
+          subject.prepare
           subject.call
         end
 
@@ -339,6 +345,7 @@ describe SineFresymAxiomSelection do
       context '0' do
         before do
           subject.depth_limit = 0
+          subject.prepare
           subject.call
         end
 
@@ -350,6 +357,7 @@ describe SineFresymAxiomSelection do
       context '1' do
         before do
           subject.depth_limit = 1
+          subject.prepare
           subject.call
         end
 
@@ -361,6 +369,7 @@ describe SineFresymAxiomSelection do
       context '2' do
         before do
           subject.depth_limit = 2
+          subject.prepare
           subject.call
         end
 
@@ -376,6 +385,7 @@ describe SineFresymAxiomSelection do
       context '0' do
         before do
           subject.depth_limit = 0
+          subject.prepare
           subject.call
         end
 
@@ -387,6 +397,7 @@ describe SineFresymAxiomSelection do
       context '1' do
         before do
           subject.depth_limit = 1
+          subject.prepare
           subject.call
         end
 
@@ -400,6 +411,7 @@ describe SineFresymAxiomSelection do
       context '2' do
         before do
           subject.depth_limit = 2
+          subject.prepare
           subject.call
         end
 
@@ -415,6 +427,7 @@ describe SineFresymAxiomSelection do
       context '1' do
         before do
           subject.tolerance = 1
+          subject.prepare
           subject.call
         end
 
@@ -426,6 +439,7 @@ describe SineFresymAxiomSelection do
       context '1.5' do
         before do
           subject.tolerance = 1.5
+          subject.prepare
           subject.call
         end
 
@@ -439,6 +453,7 @@ describe SineFresymAxiomSelection do
       context '3' do
         before do
           subject.tolerance = 3
+          subject.prepare
           subject.call
         end
 
@@ -458,6 +473,7 @@ describe SineFresymAxiomSelection do
       context '1' do
         before do
           subject.minimum_support = 1
+          subject.prepare
           subject.call
         end
 
@@ -469,6 +485,7 @@ describe SineFresymAxiomSelection do
       context '4' do
         before do
           subject.minimum_support = 4
+          subject.prepare
           subject.call
         end
 
@@ -480,6 +497,7 @@ describe SineFresymAxiomSelection do
       context '5' do
         before do
           subject.minimum_support = 5
+          subject.prepare
           subject.call
         end
 
@@ -495,6 +513,7 @@ describe SineFresymAxiomSelection do
       context '1/8' do
         before do
           subject.minimum_support = 12.5
+          subject.prepare
           subject.call
         end
 
@@ -506,6 +525,7 @@ describe SineFresymAxiomSelection do
       context '4/8' do
         before do
           subject.minimum_support = 50
+          subject.prepare
           subject.call
         end
 
@@ -517,6 +537,7 @@ describe SineFresymAxiomSelection do
       context '5/8' do
         before do
           subject.minimum_support = 62.5
+          subject.prepare
           subject.call
         end
 
@@ -530,6 +551,7 @@ describe SineFresymAxiomSelection do
       context '1' do
         before do
           subject.symbol_set_tolerance = 1
+          subject.prepare
           subject.call
         end
 
@@ -541,6 +563,7 @@ describe SineFresymAxiomSelection do
       context '3' do
         before do
           subject.symbol_set_tolerance = 3
+          subject.prepare
           subject.call
         end
 
@@ -552,6 +575,7 @@ describe SineFresymAxiomSelection do
       context '10' do
         before do
           subject.symbol_set_tolerance = 10
+          subject.prepare
           subject.call
         end
 
