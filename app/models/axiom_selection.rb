@@ -39,11 +39,11 @@ class AxiomSelection < ActiveRecord::Base
     @goal ||= proof_attempt_configurations.first.proof_attempt.theorem
   end
 
-  def record_processing_time
+  def record_time(field)
     start = Time.now
     yield
     finish = Time.now
-    self.processing_time = (finish - start) * 1000
+    send("#{field}=", (finish - start) * 1000)
     save!
   end
 

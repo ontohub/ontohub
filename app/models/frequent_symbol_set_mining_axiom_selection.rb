@@ -26,13 +26,13 @@ class FrequentSymbolSetMiningAxiomSelection < ActiveRecord::Base
   CODE_TIMEOUT_SELECTION = -2
 
   def prepare
-    perform(TIMEOUT_PREPARATION, CODE_TIMEOUT_PREPARATION) do
+    perform(TIMEOUT_PREPARATION, CODE_TIMEOUT_PREPARATION, :preparation_time) do
       preprocess unless other_finished_axiom_selections(self.class).any?
     end
   end
 
   def call
-    perform(TIMEOUT_SELECTION, CODE_TIMEOUT_SELECTION) do
+    perform(TIMEOUT_SELECTION, CODE_TIMEOUT_SELECTION, :selection_time) do
       select_axioms
       mark_as_finished!
     end
@@ -40,11 +40,11 @@ class FrequentSymbolSetMiningAxiomSelection < ActiveRecord::Base
 
   protected
 
-  def perform(timeout, code)
+  def perform(timeout, timeout_code, time_recording_field)
     Semaphore.exclusively(lock_key) do
       if !finished
         begin
-          record_processing_time do
+          record_time(time_recording_field) do
             Timeout::timeout(timeout) do
               transaction do
                 yield
@@ -52,17 +52,17 @@ class FrequentSymbolSetMiningAxiomSelection < ActiveRecord::Base
             end
           end
         rescue Timeout::Error
-          save_on_timeout(code)
+          save_on_timeout(timeout_code, time_recording_field)
           raise
         end
-      elsif [CODE_TIMEOUT_PREPARATION, CODE_TIMEOUT_SELECTION].include?(processing_time)
+      elsif send(time_recording_field) == timeout_code
         raise 'previous execution expired'
       end
     end
   end
 
-  def save_on_timeout(code)
-    processing_time = code
+  def save_on_timeout(timeout_code, time_recording_field)
+    send("#{time_recording_field}=", timeout_code)
     axiom_selection.mark_as_finished!
     save!
     axiom_selection.save!

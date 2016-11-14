@@ -18,7 +18,7 @@ module SineAxiomSelection::ClassBody
     validates_numericality_of :tolerance, greater_than_or_equal_to: 1
 
     delegate :goal, :ontology, :lock_key, :mark_as_finished!, :other_finished_axiom_selections,
-             :processing_time, :record_processing_time, to: :axiom_selection
+             :preparation_time, :selection_time, :record_time, to: :axiom_selection
   end
 
   TIMEOUT_PREPARATION = 60.minutes
@@ -27,13 +27,13 @@ module SineAxiomSelection::ClassBody
   CODE_TIMEOUT_SELECTION = -2
 
   def prepare
-    perform(TIMEOUT_PREPARATION, CODE_TIMEOUT_PREPARATION) do
+    perform(TIMEOUT_PREPARATION, CODE_TIMEOUT_PREPARATION, :preparation_time) do
       preprocess
     end
   end
 
   def call
-    perform(TIMEOUT_SELECTION, CODE_TIMEOUT_SELECTION) do
+    perform(TIMEOUT_SELECTION, CODE_TIMEOUT_SELECTION, :selection_time) do
       select_axioms
       mark_as_finished!
     end
@@ -53,29 +53,29 @@ module SineAxiomSelection::ClassBody
 
   protected
 
-  def perform(timeout, code)
+  def perform(timeout, timeout_code, time_recording_field)
     Semaphore.exclusively(lock_key) do
       if !finished
         begin
-          Timeout::timeout(timeout) do
-            record_processing_time do
+          record_time(time_recording_field) do
+            Timeout::timeout(timeout) do
               transaction do
                 yield
               end
             end
           end
         rescue Timeout::Error
-          save_on_timeout(code)
+          save_on_timeout(timeout_code, time_recording_field)
           raise
         end
-      elsif [CODE_TIMEOUT_PREPARATION, CODE_TIMEOUT_SELECTION].include?(processing_time)
+      elsif send(time_recording_field) == timeout_code
         raise 'previous execution expired'
       end
     end
   end
 
-  def save_on_timeout(code)
-    processing_time = code
+  def save_on_timeout(timeout_code, time_recording_field)
+    send("#{time_recording_field}=", timeout_code)
     axiom_selection.mark_as_finished!
     save!
     axiom_selection.save!
