@@ -1,4 +1,5 @@
 class Api::V1::OntologiesController < Api::V1::Base
+  include PlainTextDefaultHelper
   inherit_resources
   actions :show
   before_filter :set_format
