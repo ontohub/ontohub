@@ -48,6 +48,8 @@ module Hets
             ProofStatus::DEFAULT_PROVEN_STATUS
           when 'Disproved'
             ProofStatus::DEFAULT_DISPROVEN_STATUS
+          when /Timeout/
+            ProofStatus::DEFAULT_TIMEOUT_STATUS
           else
             ProofStatus::DEFAULT_UNKNOWN_STATUS
           end
