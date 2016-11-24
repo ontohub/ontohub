@@ -7,6 +7,7 @@ class ProofStatus < ActiveRecord::Base
   DEFAULT_DISPROVEN_STATUS = 'CSA'
   DEFAULT_DISPROVEN_ON_SUBSET = 'CSAS'
   DEFAULT_UNKNOWN_STATUS = 'UNK'
+  DEFAULT_TIMEOUT_STATUS = 'TMO'
   CONTRADICTORY = 'CONTR'
 
   self.primary_key = :identifier
