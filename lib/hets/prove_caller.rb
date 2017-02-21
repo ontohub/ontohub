@@ -2,7 +2,7 @@ module Hets
   class ProveCaller < ActionCaller
     CMD = 'prove'
     METHOD = :post
-    COMMAND_LIST = %w(auto)
+    COMMAND_LIST = %w(auto full-theories full-signatures)
 
     PROVE_OPTIONS = {format: 'json', include: 'true'}
 
@@ -16,7 +16,11 @@ module Hets
     end
 
     def build_query_string
-      {}
+      if hets_options.options[:'input-type']
+        {:'input-type' => hets_options.options[:'input-type']}
+      else
+        {}
+      end
     end
 
     def timeout
