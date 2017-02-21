@@ -16,11 +16,13 @@ module Hets
     end
 
     def build_query_string
-      if hets_options.options[:'input-type']
-        {:'input-type' => hets_options.options[:'input-type']}
-      else
-        {}
-      end
+      mixin =
+        if hets_options.options[:'input-type']
+          {:'input-type' => hets_options.options[:'input-type']}
+        else
+          {}
+        end
+      super.merge(mixin)
     end
 
     def timeout
