@@ -73,7 +73,7 @@ module Hets
       end
 
       def time_taken_from_hash(proof_info)
-        if proof_info[:time_taken] < 0
+        if proof_info[:time_taken].to_i < 0
           0
         else
           proof_info[:time_taken]
