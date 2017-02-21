@@ -14,6 +14,8 @@ module Ontology::AssociationsAndAttributes
     belongs_to :repository
     belongs_to :formality_level
 
+    has_one :loc_id, foreign_key: :specific_id
+
     has_many :symbol_groups
     has_many :alternative_iris, dependent: :destroy
     has_many :source_mappings,
