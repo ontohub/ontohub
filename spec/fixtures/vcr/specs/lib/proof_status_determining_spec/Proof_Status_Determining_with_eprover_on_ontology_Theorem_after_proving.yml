@@ -2,61 +2,7 @@
 http_interactions:
 - request:
     method: post
-    uri: http://localhost:8000/prove/http:%2F%2Flocalhost:3001%2Fref%2F1%2Frepository-398%2FSimple_Implications%2F%2FTheorem/auto
-    body:
-      encoding: UTF-8
-      string: '{"format":"json","include":"true","prover":"eprover","timeout":"8","theorems":["Ax1"],"node":"Theorem"}'
-    headers:
-      Content-Type:
-      - application/json
-      Accept-Encoding:
-      - gzip;q=1.0,deflate;q=0.6,identity;q=0.3
-      Accept:
-      - "*/*"
-      User-Agent:
-      - Ruby
-      Host:
-      - localhost:8000
-  response:
-    status:
-      code: 200
-      message: OK
-    headers:
-      Transfer-Encoding:
-      - chunked
-      Date:
-      - Tue, 14 Jul 2015 06:09:49 GMT
-      Server:
-      - Warp/3.0.11
-      Content-Type:
-      - application/json
-    body:
-      encoding: UTF-8
-      string: |-
-        [{
-        "node": "Theorem",
-        "goals": [{
-         "name": "Ax1",
-         "result": "Proved",
-         "details": "",
-         "used_prover": { "identifier": "eprover", "name": "eprover" },
-         "used_translation": "CASL2SoftFOL",
-         "tactic_script": { "time_limit": 8, "extra_options": [] },
-         "proof_tree": "",
-         "used_time": {
-          "seconds": -1,
-          "components": { "hours": -1, "mins": 59, "secs": 59 }
-          },
-         "used_axioms": [],
-         "prover_output":
-          "# Parsed axioms                        : 1\n# SZS output end CNFRefutation.\n# SZS output start CNFRefutation.\n# SZS status Theorem\n"
-         }]
-        }]
-    http_version: 
-  recorded_at: Tue, 14 Jul 2015 06:09:49 GMT
-- request:
-    method: post
-    uri: http://localhost:8000/prove/http:%2F%2Flocalhost:3001%2Fref%2F1%2Frepository-5%2FSimple_Implications%2F%2FTheorem/auto?input-type=casl%3B
+    uri: http://localhost:8000/prove/http:%2F%2Flocalhost:3001%2Fref%2F1%2Frepository-5%2FSimple_Implications%2F%2FTheorem/auto/full-theories/full-signatures?input-type=casl%3Bhets-libdirs=http://localhost:3001/repository-5%3B
     body:
       encoding: UTF-8
       string: '{"format":"json","include":"true","prover":"eprover","timeout":"5","input-type":"casl","theorems":["Ax1"],"node":"Theorem"}'
@@ -79,9 +25,9 @@ http_interactions:
       Transfer-Encoding:
       - chunked
       Date:
-      - Mon, 28 Sep 2015 15:45:14 GMT
+      - Wed, 22 Feb 2017 22:01:15 GMT
       Server:
-      - Warp/3.0.1.1
+      - Warp/3.2.9
       Content-Type:
       - application/json
     body:
@@ -107,5 +53,5 @@ http_interactions:
          }]
         }]
     http_version: 
-  recorded_at: Mon, 28 Sep 2015 15:45:14 GMT
-recorded_with: VCR 2.9.3
+  recorded_at: Wed, 22 Feb 2017 22:01:15 GMT
+recorded_with: VCR 3.0.3

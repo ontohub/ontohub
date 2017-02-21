@@ -23,21 +23,24 @@ module Hets
   def self.parse_via_api(resource, hets_options, structure_only: false)
     mode = structure_only ? :fast_run : :default
     HetsInstance.with_instance! do |hets_instance|
-      parse_caller = Hets::ParseCaller.new(hets_instance, hets_options)
+      parse_caller = Hets::ParseCaller.new(hets_instance, hets_options,
+                                           resource.repository)
       parse_caller.call(qualified_loc_id_for(resource), with_mode: mode)
     end
   end
 
   def self.prove_via_api(resource, prove_options)
     HetsInstance.with_instance! do |hets_instance|
-      prove_caller = Hets::ProveCaller.new(hets_instance, prove_options)
+      prove_caller = Hets::ProveCaller.new(hets_instance, prove_options,
+                                           resource.repository)
       prove_caller.call(qualified_loc_id_for(resource))
     end
   end
 
   def self.provers_via_api(resource, provers_options)
     HetsInstance.with_instance! do |hets_instance|
-      provers_caller = Hets::ProversCaller.new(hets_instance, provers_options)
+      provers_caller = Hets::ProversCaller.new(hets_instance, provers_options,
+                                               resource.repository)
       provers_caller.call(qualified_loc_id_for(resource))
     end
   end

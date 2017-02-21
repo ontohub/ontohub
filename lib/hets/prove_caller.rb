@@ -20,7 +20,7 @@ module Hets
         {:'input-type' => hets_options.options[:'input-type']}
       else
         {}
-      end
+      end.merge('hets-libdirs' => libdirs)
     end
 
     def timeout

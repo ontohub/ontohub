@@ -23,8 +23,13 @@ def hets_prove_matcher(request1, request2)
 
   match1[:end] == match2[:end] &&
   inner_match1[:ontology] == inner_match2[:ontology] &&
+
+  query1 = uri1.query.sub(/hets-libdirs=.*?(%3B|;|%26|&)/i, '')
+  query2 = uri2.query.sub(/hets-libdirs=.*?(%3B|;|%26|&)/i, '')
+  return false unless query1 == query2
+
   # We don't check for the port because the HetsInstances factory varies it.
-  %i(scheme host query fragment).all? { |m| uri1.send(m) == uri2.send(m)}
+  %i(scheme host fragment).all? { |m| uri1.send(m) == uri2.send(m)}
 end
 
 def hets_vcr_file(subdir, ontology_fixture)
