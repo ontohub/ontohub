@@ -199,7 +199,12 @@ class RepositoryFile < FakeRecord
       @target_filename  = opts[:path].split('/')[-1]
     else
       @target_directory = opts[:target_directory]
-      @target_filename  = opts[:target_filename]
+      @target_filename  =
+        if opts[:target_filename].blank? && opts[:temp_file].present?
+          opts[:temp_file].headers.match(/filename="([^"]+)"/)[1]
+        else
+          opts[:target_filename]
+        end
     end
     @temp_file  = opts[:temp_file]
     @file_upload_type = opts[:file_upload_type]
@@ -234,4 +239,3 @@ class RepositoryFile < FakeRecord
   end
 
 end
-
