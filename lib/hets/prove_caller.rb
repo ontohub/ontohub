@@ -22,10 +22,5 @@ module Hets
         {}
       end.merge('hets-libdirs' => libdirs)
     end
-
-    def timeout
-      # The HTTP timeout must be as long as Hets maximally takes.
-      HetsInstance::FORCE_FREE_WAITING_PERIOD
-    end
   end
 end

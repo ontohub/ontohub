@@ -24,5 +24,10 @@ module Hets
     rescue Hets::NotAHetsError
       raise error
     end
+
+    def timeout
+      # The HTTP timeout must be as long as Hets maximally takes.
+      HetsInstance::FORCE_FREE_WAITING_PERIOD
+    end
   end
 end
