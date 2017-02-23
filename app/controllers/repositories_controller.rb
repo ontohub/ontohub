@@ -24,6 +24,8 @@ class RepositoriesController < InheritedResources::Base
 
   def index
     @repositories = Repository.accessible_by(current_user)
+    @featured_repositories = @repositories.where(featured: true)
+    @common_repositories = @repositories.where(featured: false)
     super
   end
 

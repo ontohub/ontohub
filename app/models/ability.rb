@@ -38,6 +38,9 @@ class Ability
           (subject.permission?(:editor, user) || subject.public_rw?)
         end
       end
+      can [:feature], Repository do |subject|
+        user.admin?
+      end
       can [:update, :destroy, :permissions], Repository do |subject|
         subject.permission?(:owner, user)
       end

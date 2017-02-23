@@ -20,4 +20,8 @@
     = select_tag :access_options_non_mirror, options_for_select(access_options)
     = select_tag :access_options_mirror, options_for_select(access_options_mirror)
 
+  - if can?(:feature, @repository)
+    = f.input :featured, as: :boolean
+
+
   = f.button :wrapped
