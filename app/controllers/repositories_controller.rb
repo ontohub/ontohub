@@ -23,7 +23,7 @@ class RepositoriesController < InheritedResources::Base
   end
 
   def index
-    @repositories = Repository.accessible_by(current_user)
+    @repositories = Repository.accessible_by(current_user).order(:path)
     @featured_repositories = @repositories.where(featured: true)
     @common_repositories = @repositories.where(featured: false)
     super
