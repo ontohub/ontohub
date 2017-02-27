@@ -10,6 +10,11 @@ cache:
 
 addons:
   postgresql: '9.3'
+  apt:
+    sources:
+      - elasticsearch-2.x
+    packages:
+    - elasticsearch
 
 branches:
   except:
@@ -50,4 +55,5 @@ before_script:
   - sudo ln -s /usr/bin/hets-server /usr/bin/hets
   - sudo ln -s /usr/lib/hets/hets-server /usr/lib/hets/hets
   - mkdir -p tmp/{git,data/{git,git_daemon,commits}}
+  - curl http://localhost:9200
   - RAILS_ENV=test bundle exec rake db:migrate || true
