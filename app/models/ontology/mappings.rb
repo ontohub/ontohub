@@ -31,9 +31,13 @@ class Ontology
         owner = proxy_association.owner
         if owner.distributed?
           locid_for_child(endpoint)
+        elsif owner.locid.end_with?(endpoint)
+          # It's a mapping to this single ontology - a locid for a child would
+          # be wrong. The IRI must point to this single ontology:
+          "#{Hostname.url_authority}#{owner.locid}"
         else
           # It's a mapping to a single ontology - a locid for a child would be
-          # wrong. Build the iri manually:
+          # wrong. Guess that the endpoint is in the repository root:
           "#{Hostname.url_authority}/#{owner.repository.path}/#{endpoint}"
         end
       end
