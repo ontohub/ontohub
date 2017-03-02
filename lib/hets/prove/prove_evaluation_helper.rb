@@ -139,6 +139,10 @@ module Hets
       def create_prover_output(proof_attempt, proof_info)
         prover_output = ProverOutput.new
         prover_output.proof_attempt = proof_attempt
+        # Find previous prover output to overwrite it (if it exists)
+        if locid = LocId.find_by_locid(prover_output.generate_locid_string)
+          prover_output = locid.specific
+        end
         prover_output.content = proof_info[:prover_output]
         prover_output.save!
       end
