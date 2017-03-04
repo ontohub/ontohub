@@ -117,6 +117,7 @@ class SineAxiomSelection < ActiveRecord::Base
   def select_axioms
     @selected_axioms = triggered_axioms_by_commonness_threshold.to_a
     select_new_axioms(goal, 0)
+    @selected_axioms += select_exceptions
     self.axioms = @selected_axioms.uniq
   end
 
@@ -151,5 +152,25 @@ class SineAxiomSelection < ActiveRecord::Base
 
   def depth_limited?
     depth_limit != -1
+  end
+
+  def select_exceptions
+    return [] unless tptp?
+    # Select all type formulae of TFF/THF
+    all_type_sentences = goal.ontology.sentences.
+      where("text ILIKE 'tff(%,%type%,%' OR text ILIKE 'thf(%,%type%,%'")
+
+    selected_symbol_ids =
+      @selected_axioms.map { |sen| sen.symbols.select(:id) }.flatten.uniq
+
+    all_type_sentences.select do |sentence|
+      sentence.symbols.select(:id).any? do |sentence_symbol_id|
+        selected_symbol_ids.include?(sentence_symbol_id)
+      end
+    end
+  end
+
+  def tptp?
+    goal.ontology.logic.name.downcase == 'tptp'
   end
 end
