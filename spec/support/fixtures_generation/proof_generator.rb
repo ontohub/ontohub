@@ -6,7 +6,7 @@ module FixturesGeneration
 
     def perform(file)
       header = {'Content-Type' => 'application/json'}
-      data = {format: 'json', include: 'true'}
+      data = {format: 'json', include: 'false'}
       call_hets(file, 'prove', method: :post, header: header, data: data)
     end
 

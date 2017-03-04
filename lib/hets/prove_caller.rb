@@ -4,7 +4,7 @@ module Hets
     METHOD = :post
     COMMAND_LIST = %w(auto full-theories full-signatures)
 
-    PROVE_OPTIONS = {format: 'json', include: 'true'}
+    PROVE_OPTIONS = {format: 'json', include: 'false'}
 
     def call(iri)
       escaped_iri = Rack::Utils.escape_path(iri)
