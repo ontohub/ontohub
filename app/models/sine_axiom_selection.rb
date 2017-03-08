@@ -157,13 +157,13 @@ class SineAxiomSelection < ActiveRecord::Base
   def select_exceptions
     return [] unless tptp?
     # Select all type formulae of TFF/THF
-    all_type_sentences = goal.ontology.sentences.
-      where("text ILIKE 'tff(%,%type%,%' OR text ILIKE 'thf(%,%type%,%'")
+    all_type_and_definition_sentences = goal.ontology.sentences.
+      where("text ILIKE 'tff(%,%type%,%' OR text ILIKE 'thf(%,%type%,%' OR text ILIKE 'tff(%,%definition%,%' OR text ILIKE 'thf(%,%definition%,%'")
 
     selected_symbol_ids =
       @selected_axioms.map { |sen| sen.symbols.select(:id) }.flatten.uniq
 
-    all_type_sentences.select do |sentence|
+    all_type_and_definition_sentences.select do |sentence|
       sentence.symbols.select(:id).any? do |sentence_symbol_id|
         selected_symbol_ids.include?(sentence_symbol_id)
       end
