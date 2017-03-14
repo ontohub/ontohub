@@ -12,6 +12,7 @@ class SineAxiomSelection < ActiveRecord::Base
   attr_accessible :commonness_threshold, :depth_limit, :tolerance
   has_many :sine_symbol_commonnesses, dependent: :destroy
   has_many :sine_symbol_axiom_triggers, dependent: :destroy
+  has_many :proof_attempts, through: :axiom_selection
 
   validates_numericality_of :commonness_threshold,
                             greater_than_or_equal_to: 0,
