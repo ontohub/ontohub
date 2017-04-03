@@ -29,7 +29,7 @@ describe RepositoryDirectory do
 
       let(:save_operation) do
         file = Tempfile.new('tempfile').path
-        repository.save_file_only(file, filepath, 'message', user)
+        repository.save_file(file, filepath, 'message', user, do_parse: false)
       end
 
       it 'should add a commit' do

@@ -26,9 +26,7 @@ module UriFetcher
     if write_file
       File.open(write_file.to_s, 'w') do |file|
         file.flock(File::LOCK_EX)
-        response.read_body do |chunk|
-          file.write chunk
-        end
+        file.write(response.read_body)
       end
       write_file
     else
