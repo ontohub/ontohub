@@ -104,8 +104,9 @@ module GitRepository::Cloning
     args.push \
       GIT_DIR: local_path.to_s,
       LANG:    'C'
-
-    Subprocess.run *args
+    Semaphore.exclusively("#{GitRepository::LOCK_NAMESPACE}:#{repo}") do
+      Subprocess.run(*args)
+    end
   end
 
   # Yields the given block and returns the head OID

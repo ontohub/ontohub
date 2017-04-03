@@ -1,6 +1,7 @@
 require 'json'
 require File.join(File.expand_path('../../../lib', __FILE__), 'subprocess')
 require 'ontohub_net'
+require File.join(File.expand_path('../../../lib', __FILE__), 'git_repository')
 
 class GitUpdate
 
@@ -26,6 +27,12 @@ class GitUpdate
   end
 
   def exec
+    Semaphore.exclusively("#{GitRepository::LOCK_NAMESPACE}:#{@repo_name}") do
+      exec_without_lock
+    end
+  end
+
+  def exec_without_lock
     # If its push over ssh
     # we need to check user persmission per branch first
     if ssh?
