@@ -74,7 +74,7 @@ gem 'active_model_serializers', '~> 0.9.3'
 gem 'json-stream', '~> 0.2.1'
 
 # XML Parser
-gem 'nokogiri', '~> 1.6.8'
+gem 'nokogiri', '~> 1.7.1'
 
 # Authentication
 # devise => 4.0.0 does not support Rails 3.2 and Rails 4.0
