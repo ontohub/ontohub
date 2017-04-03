@@ -103,7 +103,7 @@ gem 'sidetiq', github: 'PaulMest/sidetiq', ref: 'd88f9e483affcbadbd9e8b98b4a0a95
 gem 'sidekiq-failures', '~> 0.4.5'
 gem 'sidekiq-retries', '~> 0.4.0'
 gem 'sidekiq-status', '~> 0.6.0'
-gem 'sinatra', '~> 1.4.5', require: false, group: [:development, :production]
+gem 'sinatra', '~> 1.4.5', require: false
 
 # Search engine
 gem 'progress_bar', '~> 1.0.2'
