@@ -74,7 +74,7 @@ gem 'active_model_serializers', '~> 0.9.3'
 gem 'json-stream', '~> 0.2.1'
 
 # XML Parser
-gem 'nokogiri', '~> 1.6.8'
+gem 'nokogiri', '~> 1.7.1'
 
 # Authentication
 # devise => 4.0.0 does not support Rails 3.2 and Rails 4.0
@@ -103,7 +103,7 @@ gem 'sidetiq', github: 'PaulMest/sidetiq', ref: 'd88f9e483affcbadbd9e8b98b4a0a95
 gem 'sidekiq-failures', '~> 0.4.5'
 gem 'sidekiq-retries', '~> 0.4.0'
 gem 'sidekiq-status', '~> 0.6.0'
-gem 'sinatra', '~> 1.4.5', require: false, group: [:development, :production]
+gem 'sinatra', '~> 1.4.5', require: false
 
 # Search engine
 gem 'progress_bar', '~> 1.0.2'

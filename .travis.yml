@@ -1,3 +1,5 @@
+dist: trusty
+sudo: required
 language: ruby
 
 rvm:
@@ -8,6 +10,11 @@ cache:
 
 addons:
   postgresql: '9.3'
+  apt:
+    sources:
+      - elasticsearch-2.x
+    packages:
+    - elasticsearch
 
 branches:
   except:
@@ -44,7 +51,9 @@ before_script:
   - sudo apt-add-repository -y 'deb http://archive.canonical.com/ubuntu precise partner'
   - sudo apt-add-repository -y 'deb http://archive.ubuntu.com/ubuntu precise-updates main restricted universe multiverse'
   - sudo apt-get update
-  - sudo apt-get install libsane libgphoto2-2 hets-core subversion udrawgraph git-svn
-  - sudo hets -update
+  - sudo apt-get install libsane libgphoto2-2 hets-server subversion git-svn
+  - sudo ln -s /usr/bin/hets-server /usr/bin/hets
+  - sudo ln -s /usr/lib/hets/hets-server /usr/lib/hets/hets
   - mkdir -p tmp/{git,data/{git,git_daemon,commits}}
+  - curl http://localhost:9200
   - RAILS_ENV=test bundle exec rake db:migrate || true
