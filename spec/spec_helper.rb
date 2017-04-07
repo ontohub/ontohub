@@ -2,6 +2,9 @@
 ENV["RAILS_ENV"] ||= 'test'
 
 require 'simplecov'
+require 'coveralls'
+Coveralls.wear_merged!('rails')
+
 require File.expand_path("../../config/environment", __FILE__)
 require File.expand_path("../hets_helper", __FILE__)
 require 'rspec/rails'
