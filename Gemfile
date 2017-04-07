@@ -195,8 +195,9 @@ end
 group :production do
   # puma is __the only exception__ for which we don't specify a version.
   gem 'puma'
-  gem 'eye', '~> 0.8'
   gem 'puma_worker_killer', '~> 0.0.6'
+  gem 'eye', '~> 0.8', require: false
+  gem 'daemons', '~> 1.2.3', require: false
   # exception_notification >= 4.2.0 is not compatible to rails 3
   gem 'exception_notification', '~> 4.1.0'
 end

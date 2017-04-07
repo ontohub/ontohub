@@ -1,0 +1,122 @@
+#!/usr/bin/env ruby
+
+require 'optparse'
+require_relative '../lib/environment_light.rb'
+
+RAILS_ROOT ||= File.expand_path('../..', __FILE__).freeze
+SIDEKIQ_EXECUTABLE = File.join(RAILS_ROOT, 'bin/sidekiq').freeze
+
+# Parse options
+def parse_options
+  options = {environment: 'production',
+             workdir: Dir.pwd,
+             timeout: 15}
+  OptionParser.new do |opts|
+    opts.banner = "Usage: #{File.basename(__FILE__)} [options]"
+
+    opts.on('-eMANDATORY', '--environment=Rails env',
+            "Set Rails environment (default: #{options[:environment]})") do |e|
+      options[:environment] = e
+    end
+
+    opts.on('-wMANDATORY', '--workdir=directory',
+            'Set work directory (default: CWD)') do |w|
+      options[:workdir] = w
+    end
+
+    opts.on('-tMANDATORY', '--timeout=seconds',
+            'Set timeout in seconds until sidekiq jobs are killed at '\
+            "sidekiq shutdown (default: #{options[:timeout]})") do |t|
+      options[:timeout] = t
+    end
+  end.parse!
+  options
+end
+
+def run_process(options, arguments, name)
+  Process.spawn(SIDEKIQ_EXECUTABLE, *arguments,
+                '--require', RAILS_ROOT,
+                '--environment', options[:environment],
+                '--timeout', options[:timeout].to_s,
+                '--pidfile', "#{File.join(options[:workdir], name)}.pid",
+                '--logfile', "#{File.join(options[:workdir], name)}.log")
+end
+
+def wait_for_process(statuses, wait_threads, name, pid, pids)
+  wait_threads << Thread.new do
+    _pid, status = Process.wait2(pid)
+    statuses << status
+    stop_all_processes(name, pid, pids)
+  end
+end
+
+def send_signal(signal, pid)
+  Process.kill(signal, pid)
+rescue Errno::ESRCH
+  $stderr.puts "Could not send signal: Process #{pid} was already terminated."
+end
+
+$stopped_all = false
+def stop_all_processes(name_dead, pid_dead, pids)
+  unless $stopped_all
+    pids.each do |name, pid|
+      unless pid == pid_dead
+        $stderr.puts "Stopping #{name} because one sidekiq process"\
+                     "(#{name_dead}) exited..."
+        send_signal('TERM', pid)
+      end
+    end
+  end
+  $stopped_all = true
+end
+
+def exit_with_status(statuses)
+  if statuses.all? { |status| status.exited? && status.success? }
+    exit 0
+  else
+    exit 1
+  end
+end
+
+def hets_queue_thread_count
+  # One thread per configured hets instance, minus one for the sequential queue.
+  [1, Settings.hets.instance_urls.size - 1].max
+end
+
+options = parse_options
+pids = {}
+processes =
+  {:'sidekiq-hets' => %W(--queue prioirty_push,25
+                         --queue hets,5
+                         --queue hets-migration,1
+                         --concurrency #{hets_queue_thread_count}),
+   :'sidekiq-sequential' => %w(--queue sequential
+                               --concurrency 1),
+   :'sidekiq-default' => %w(--queue default
+                            --queue hets_load_balancing
+                            --concurrency 5)}
+
+# USR1: terminate in the near future
+# USR2: reopen logs
+# TERM: terminate in the near future, at most after `timeout` seconds
+%w(USR1 USR2 TERM).each do |signal|
+  Signal.trap(signal) do
+    pids.each do |name, pid|
+      $stdout.puts "Sending #{signal} to #{name}..."
+      send_signal(signal, pid)
+    end
+  end
+end
+
+processes.each do |name, arguments|
+  pids[name] = run_process(options, arguments, "#{name}")
+end
+
+wait_threads = []
+statuses = []
+pids.each do |name, pid|
+  wait_for_process(statuses, wait_threads, name, pid, pids)
+end
+wait_threads.each(&:join)
+
+exit_with_status(statuses)

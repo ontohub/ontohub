@@ -1,43 +1,26 @@
-require 'fileutils'
-require File.expand_path('../../../lib/environment_light_with_hets.rb', __FILE__)
-require File.expand_path('../eye_methods.rb', __FILE__)
+RAILS_ROOT = File.join(File.dirname(__FILE__), '../..')
+RAILS_ENV = ENV['RAILS_ENV'] || 'production'
+SVCADM = '/usr/sbin/svcadm'
 
+SIDEKIQ_BASE = '/var/sidekiq'
 Eye.config do
-  logger "#{Rails.root}/log/eye.log"
-end
-
-def hets_queue_thread_count
-  # One thread per configured hets instance, minus one for the sequential queue.
-  [1, Settings.hets.instance_urls.size - 1].max
+  logger "#{RAILS_ROOT}/log/eye.log"
 end
 
 Eye.application :ontohub do
-  working_dir Rails.root.to_s
-  env 'RAILS_ENV' => Rails.env
-  env 'PID_DIR' => Rails.root.join('tmp', 'pids').to_s
+  working_dir RAILS_ROOT
+  env 'RAILS_ENV' => RAILS_ENV
+  env 'PID_DIR' => File.join(RAILS_ROOT, 'tmp/pids')
 
-  # Create PID dir
-  FileUtils.mkdir_p(env['PID_DIR'])
-
-  group :sidekiq do
-    # prioritize queues:
-    # priority_push 5x as high as hets, which is 5x as high as hets-migration
-    sidekiq_process self, :"sidekiq-hets",
-                    ['priority_push,25', 'hets,5', 'hets-migration,1'],
-                    hets_queue_thread_count
-
-    # one multithreaded worker for the default queue and hets_load_balancing
-    sidekiq_process self, :'sidekiq-default', ['default', 'hets_load_balancing'], 5
-
-    # one worker for the sequential queue
-    sidekiq_process self, :'sidekiq-sequential', 'sequential', 1
-  end
-
-  group :hets do
-    Settings.hets.instance_urls.each do |url|
-      if url.match(%r{\Ahttps?://(localhost|127.0.0.1|0.0.0.0|::1)})
-        hets_process self, URI(url).port
-      end
+  {git: File.join(env['PID_DIR'], 'git.pid'),
+   hets: File.join(env['PID_DIR'], 'hets.pid'),
+   puma: File.join(env['PID_DIR'], 'puma.pid'),
+   sidekiq: File.join(SIDEKIQ_BASE, 'master.pid')}.each do |service, pidfile|
+    process service do
+      daemonize false
+      pid_file pidfile
+      start_command "#{SVCADM} enable -s #{service}"
+      stop_command "#{SVCADM} disable -s #{service}"
     end
   end
 end
