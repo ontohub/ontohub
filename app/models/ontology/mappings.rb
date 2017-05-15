@@ -28,6 +28,12 @@ class Ontology
 
       def determine_mapping_endpoint_iri(endpoint_iri, endpoint)
         return endpoint_iri if endpoint_iri
+        absolute =
+          begin
+            URI(endpoint).absolute?
+          rescue ArgumentError
+            false
+          end
         owner = proxy_association.owner
         if owner.distributed?
           locid_for_child(endpoint)
@@ -35,6 +41,8 @@ class Ontology
           # It's a mapping to this single ontology - a locid for a child would
           # be wrong. The IRI must point to this single ontology:
           "#{Hostname.url_authority}#{owner.locid}"
+        elsif absolute
+          endpoint
         else
           # It's a mapping to a single ontology - a locid for a child would be
           # wrong. Guess that the endpoint is in the repository root:
