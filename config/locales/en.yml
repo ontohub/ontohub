@@ -162,8 +162,8 @@ en:
   proofs:
     new:
       title: 'Attempt to prove %{klass} %{resource}'
-      theorems_definitions: Definitions
-      theorem_definition: Definition
+      theorems_definitions: Theorems to prove
+      theorem_definition: Theorem to prove
       configuration: Proving Configuration
       send: 'Prove'
       klass:
