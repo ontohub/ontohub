@@ -9,10 +9,7 @@ class HetsInstance < ActiveRecord::Base
   end
 
   class NoSelectableHetsInstanceError < Error
-    DEFAULT_MSG = <<-MSG
-There is no HetsInstance which is reachable and
-has a minimal Hets version of #{Hets.minimal_version_string}
-    MSG
+    DEFAULT_MSG = 'There is no HetsInstance which is reachable'
 
     def initialize(msg = DEFAULT_MSG)
       super
@@ -34,7 +31,7 @@ has a minimal Hets version of #{Hets.minimal_version_string}
   validate :queue_size, numericality: {greater_than_or_equal_to: 0}
 
   scope :active, -> do
-    where(up: true).where('version >= ?', Hets.minimal_version_string)
+    where(up: true)
   end
   scope :free, -> do
     where(state: 'free')
