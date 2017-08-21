@@ -12,6 +12,7 @@ class SineAxiomSelection < ActiveRecord::Base
   attr_accessible :commonness_threshold, :depth_limit, :tolerance
   has_many :sine_symbol_commonnesses, dependent: :destroy
   has_many :sine_symbol_axiom_triggers, dependent: :destroy
+  has_many :proof_attempts, through: :axiom_selection
 
   validates_numericality_of :commonness_threshold,
                             greater_than_or_equal_to: 0,
@@ -117,6 +118,7 @@ class SineAxiomSelection < ActiveRecord::Base
   def select_axioms
     @selected_axioms = triggered_axioms_by_commonness_threshold.to_a
     select_new_axioms(goal, 0)
+    @selected_axioms += select_exceptions
     self.axioms = @selected_axioms.uniq
   end
 
@@ -151,5 +153,39 @@ class SineAxiomSelection < ActiveRecord::Base
 
   def depth_limited?
     depth_limit != -1
+  end
+
+  def select_exceptions
+    return [] unless tptp?
+    # Select all type formulae of TFF/THF
+    all_type_and_definition_sentences = goal.ontology.sentences.
+      where("text ILIKE 'tff(%,%type%,%' OR text ILIKE 'thf(%,%type%,%' OR text ILIKE 'tff(%,%definition%,%' OR text ILIKE 'thf(%,%definition%,%'")
+
+    selected_symbol_ids =
+      @selected_axioms.map { |sen| sen.symbols.select(:id) }.flatten.uniq
+
+    additional_axioms = []
+    new_axioms = [:just_a_start_value_which_is_deleted_in_the_next_step]
+    while new_axioms.nil? || new_axioms.any?
+      new_axioms = select_exceptions_types_defs(all_type_and_definition_sentences,
+                                                selected_symbol_ids)
+      selected_symbol_ids = new_axioms.map { |sen| sen.symbols.select(:id) }.flatten.uniq
+      new_axioms -= additional_axioms
+      additional_axioms += new_axioms
+      puts new_axioms.map(&:id)
+    end
+    additional_axioms
+  end
+
+  def select_exceptions_types_defs(all_type_and_definition_sentences, selected_symbol_ids)
+    all_type_and_definition_sentences.select do |sentence|
+      sentence.symbols.select(:id).any? do |sentence_symbol_id|
+        selected_symbol_ids.include?(sentence_symbol_id)
+      end
+    end
+  end
+
+  def tptp?
+    goal.ontology.logic.name.downcase == 'tptp'
   end
 end

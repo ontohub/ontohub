@@ -8,7 +8,7 @@ module FixturesGeneration
 
     def perform(file)
       header = {'Content-Type' => 'application/json'}
-      data_template = {format: 'json', include: 'true'}
+      data_template = {format: 'json', include: 'false'}
       NODES.each do |node|
         PROVERS.each do |prover|
           data = data_template.merge(prover: prover, node: node)

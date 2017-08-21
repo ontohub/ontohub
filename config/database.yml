@@ -5,7 +5,7 @@ development: &config
   adapter: postgresql
   encoding: unicode
   template: template0
-  database: ontohub_development
+  database: ontohub_legacy_development
   username: postgres
   password:
   pool: 5
@@ -30,7 +30,7 @@ development: &config
 # Do not set this db to the same as development or production.
 test: &test
   <<: *config
-  database: ontohub_test
+  database: ontohub_legacy_test
 
 production:
   <<: *config

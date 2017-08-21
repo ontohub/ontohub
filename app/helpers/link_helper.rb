@@ -28,9 +28,15 @@ module LinkHelper
         resource
       end
 
-    link_to name, linked_to,
+    link = link_to name, linked_to,
       data_type => value,
       title: title
+
+    if resource.respond_to?(:featured?) && resource.featured?
+      %(<i class="fa fa-star-o"></i> #{link}).html_safe
+    else
+      link
+    end
   end
 
   def format_links(*args, &block)

@@ -26,13 +26,37 @@ class Ontology
         kind || Mapping::DEFAULT_MAPPING_KIND
       end
 
+      def determine_mapping_endpoint_iri(endpoint_iri, endpoint)
+        return endpoint_iri if endpoint_iri
+        absolute =
+          begin
+            URI(endpoint).absolute?
+          rescue ArgumentError
+            false
+          end
+        owner = proxy_association.owner
+        if owner.distributed?
+          locid_for_child(endpoint)
+        elsif owner.locid.end_with?(endpoint)
+          # It's a mapping to this single ontology - a locid for a child would
+          # be wrong. The IRI must point to this single ontology:
+          "#{Hostname.url_authority}#{owner.locid}"
+        elsif absolute
+          endpoint
+        else
+          # It's a mapping to a single ontology - a locid for a child would be
+          # wrong. Guess that the endpoint is in the repository root:
+          "#{Hostname.url_authority}/#{owner.repository.path}/#{endpoint}"
+        end
+      end
+
       def update_or_create_from_hash(hash, _user, timestamp = Time.now)
         raise ArgumentError, 'No hash given.' unless hash.is_a? Hash
         # hash['name'] # maybe nil, in this case, we need to generate a name
         mapping_iri   = locid_for_child(hash['name'] || hash['linkid'])
         mapping_name  = hash['name']
-        source_iri = hash['source_iri'] || locid_for_child(hash['source'])
-        target_iri = hash['target_iri'] || locid_for_child(hash['target'])
+        source_iri = determine_mapping_endpoint_iri(hash['source_iri'], hash['source'])
+        target_iri = determine_mapping_endpoint_iri(hash['target_iri'], hash['target'])
 
         source = Ontology.find_with_iri(source_iri) || (raise ArgumentError,
           "source #{Settings.OMS} not found: #{source_iri}")

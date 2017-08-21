@@ -48,6 +48,8 @@ module Hets
             ProofStatus::DEFAULT_PROVEN_STATUS
           when 'Disproved'
             ProofStatus::DEFAULT_DISPROVEN_STATUS
+          when /Timeout/
+            ProofStatus::DEFAULT_TIMEOUT_STATUS
           else
             ProofStatus::DEFAULT_UNKNOWN_STATUS
           end
@@ -71,10 +73,10 @@ module Hets
       end
 
       def time_taken_from_hash(proof_info)
-        if proof_info[:time_taken] < 0
+        if proof_info[:time_taken].to_f < 0
           0
         else
-          proof_info[:time_taken]
+          proof_info[:time_taken].to_f
         end
       end
 
@@ -137,6 +139,10 @@ module Hets
       def create_prover_output(proof_attempt, proof_info)
         prover_output = ProverOutput.new
         prover_output.proof_attempt = proof_attempt
+        # Find previous prover output to overwrite it (if it exists)
+        if locid = LocId.find_by_locid(prover_output.generate_locid_string)
+          prover_output = locid.specific
+        end
         prover_output.content = proof_info[:prover_output]
         prover_output.save!
       end

@@ -3,7 +3,7 @@ module Ontology::HetsOptions
 
   # Hets has some trouble inferring those input types
   # by itself, so we give it a hint:
-  EXTENSIONS_TO_INPUT_TYPES = {'.p' => 'tptp'}
+  EXTENSIONS_TO_INPUT_TYPES = {'.ax' => 'tptp', '.p' => 'tptp'}
 
   def hets_options
     Hets::HetsOptions.new(:'url-catalog' => repository.url_maps,

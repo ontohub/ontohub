@@ -28,10 +28,8 @@ module ParsingCallback::OWL
             symbol.save
           end if symbol
         end
-        false
-      else
-        true
       end
+      true
     end
 
     def axiom(hash, axiom)

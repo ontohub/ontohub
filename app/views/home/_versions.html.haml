@@ -3,10 +3,19 @@
 .pull-right
   = link_to 'Browse Repositories', repositories_path, class: 'btn btn-primary', type: 'button'
 
-- @repositories.each do |repository|
-  %div
-    = fancy_link repository
-    = timestamp repository.updated_at
+- if @featured_repositories.any?
+  %h4 Featured
+  - @featured_repositories.each do |repository|
+    %div
+      = fancy_link repository
+      = timestamp repository.updated_at
+
+- if @common_repositories.any?
+  %h4 Common
+  - @common_repositories.each do |repository|
+    %div
+      = fancy_link repository
+      = timestamp repository.updated_at
 
 %h2 Recently Updated #{Settings.OMS.pluralize.capitalize}
 

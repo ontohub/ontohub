@@ -6,6 +6,7 @@ class AxiomSelection < ActiveRecord::Base
   attr_accessible :finished
 
   has_many :proof_attempt_configurations, dependent: :destroy
+  has_many :proof_attempts, through: :proof_attempt_configurations
   has_and_belongs_to_many :axioms,
                           class_name: 'Axiom',
                           association_foreign_key: 'sentence_id',

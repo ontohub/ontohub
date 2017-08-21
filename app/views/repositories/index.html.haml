@@ -15,7 +15,16 @@
       = t('.clone_list_prefix')
       = link_to t('.clone_list_link'), repositories_path(format: :txt)
 
-.row
-  .col-md-12.repository-index
-    %ul.list-group
-      = render collection
+- if @featured_repositories.any?
+  %h3 Featured Repositories
+  .row
+    .col-md-12.repository-index
+      %ul.list-group
+        = render @featured_repositories
+
+- if @common_repositories.any?
+  %h3 Common Repositories
+  .row
+    .col-md-12.repository-index
+      %ul.list-group
+        = render @common_repositories

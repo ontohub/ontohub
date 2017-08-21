@@ -14,6 +14,7 @@ module Repository::AssociationsAndAttributes
                       :source_address,
                       :remote_type,
                       :access,
+                      :featured,
                       :destroy_job_id,
                       :is_destroying
   end

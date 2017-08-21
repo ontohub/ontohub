@@ -2,9 +2,9 @@ module Hets
   class ProveCaller < ActionCaller
     CMD = 'prove'
     METHOD = :post
-    COMMAND_LIST = %w(auto)
+    COMMAND_LIST = %w(auto full-theories full-signatures)
 
-    PROVE_OPTIONS = {format: 'json', include: 'true'}
+    PROVE_OPTIONS = {format: 'json', include: 'false'}
 
     def call(iri)
       escaped_iri = Rack::Utils.escape_path(iri)
@@ -16,12 +16,11 @@ module Hets
     end
 
     def build_query_string
-      {}
-    end
-
-    def timeout
-      # The HTTP timeout must be as long as Hets maximally takes.
-      HetsInstance::FORCE_FREE_WAITING_PERIOD
+      if hets_options.options[:'input-type']
+        {:'input-type' => hets_options.options[:'input-type']}
+      else
+        {}
+      end.merge('hets-libdirs' => libdirs)
     end
   end
 end
